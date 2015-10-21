@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
+    <include
+        android:id="@+id/planet_title"
+        layout="@layout/title_bar" />
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/planet_title">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@mipmap/ic_planet_bg"
+            app:layout_heightPercent="50%"
+            app:layout_widthPercent="100%" />
+
+        <include
+            layout="@layout/planet_footer_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            app:layout_heightPercent="50%"
+            android:layout_marginBottom="@dimen/base_margin"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            app:layout_widthPercent="100%" />
+    </android.support.percent.PercentRelativeLayout>
+
+</RelativeLayout>
