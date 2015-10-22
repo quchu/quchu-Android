@@ -1,44 +1,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/base_margin"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/base_margin"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        android:layout_marginTop="@dimen/half_margin"
         android:orientation="horizontal">
 
-        <TextView
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_margin="4dp"
-            android:text="我关注的"
-            android:textColor="@color/planet_text_color_white"
-            android:textSize="@dimen/word_size_body" />
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
 
-        <View style="@style/VerticalLine" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="@dimen/base_margin"
+                android:layout_marginTop="@dimen/base_margin"
+                android:text="我关注的"
+                android:textColor="@color/planet_text_color_white"
+                android:textSize="@dimen/word_size_body" />
+        </RelativeLayout>
 
 
-        <TextView
+        <View
+            style="@style/VerticalLine"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_marginTop="@dimen/half_margin" />
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_margin="4dp"
-            android:text="我关注的"
-            android:textColor="@color/planet_text_color_white"
-            android:textSize="@dimen/word_size_body" />
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="@dimen/base_margin"
+                android:layout_marginTop="@dimen/base_margin"
+                android:text="我关注的"
+                android:textColor="@color/planet_text_color_white"
+                android:textSize="@dimen/word_size_body" />
+        </RelativeLayout>
 
     </LinearLayout>
 
     <View style="@style/HorizontalLine" />
 
-    <ListView
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="60dp"></ListView>
+
+        android:layout_height="80dp" />
 
     <View style="@style/HorizontalLine" />
 
@@ -60,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/base_margin"
-                android:src="@mipmap/ic_planet_discover" />
+                android:src="@drawable/ic_planet_collect" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -85,14 +107,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/base_margin"
-                android:src="@mipmap/ic_planet_discover" />
+                android:src="@drawable/ic_planet_discover" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp"
-                android:text="发现"
+                android:text="scends"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>
@@ -117,14 +139,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/base_margin"
-                android:src="@mipmap/ic_planet_discover" />
+                android:src="@drawable/ic_planet_postcaard" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp"
-                android:text="发现"
+                android:fontFamily="sans-serif-thin"
+                android:text="discaff"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>
@@ -134,7 +157,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"></View>
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <View style="@style/HorizontalLine" />

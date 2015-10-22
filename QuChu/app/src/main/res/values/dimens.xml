@@ -2,6 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <!-- margin-->
     <dimen name="base_margin">16dp</dimen>
+    <dimen name="half_margin">8dp</dimen>
     <dimen name="dialog_margin">24dp</dimen>
 
     <dimen name="line_thickness">0.5dp</dimen>
