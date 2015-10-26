@@ -435,7 +435,7 @@ public class MovePath {
         double y1=0;
         double x0=coordinate[0];
         double y0=coordinate[1];
-        Log.i(TAG, "getCircleData x y: " + x1+"  ,"+y1);
+//        Log.i(TAG, "getCircleData x y: " + x1+"  ,"+y1);
 
         double R=Math.sqrt((x1-x0)*(x1-x0)+(y1-y0)*(y1-y0));
 
@@ -462,7 +462,7 @@ public class MovePath {
 
         double i=a+number;
 
-        Log.i(TAG, "getCircleData a: " + a + "  R:" + R);
+//        Log.i(TAG, "getCircleData a: " + a + "  R:" + R);
         while (i<=(a+2*pi)){
             double y,x;
             x=x0+R*Math.cos(i);y=y0+R*Math.sin(i);

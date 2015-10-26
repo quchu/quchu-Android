@@ -6,9 +6,16 @@
     <!-- 自定义属性-->
     <color name="titleBackground">#383635</color>
     <color name="appBackground">#383635</color>
+    <color name="transparent">#00000000</color>
+    <color name="palnet_Yellow">#f2e725</color>
+    <color name="planet_progress_white">#dcdddd</color>
     <color name="white">#ffffff</color>
     <!-- 我的趣星球 、titleBar字体颜色-->
     <color name="planet_text_color_white">#ffffff</color>
     <color name="lineBackground_gray">#8a8a89</color>
-    <color name="transparent">#00000000</color>
+    <color name="roundProgressBackground_black">#26000000</color>
+    <!-- 图片item 蒙版颜色-->
+    <color name="itemMask_black">#D9000000</color>
+
+
 </resources>

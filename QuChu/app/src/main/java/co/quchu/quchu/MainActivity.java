@@ -10,13 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import co.quchu.quchu.helper.Reutils;
 
 public class MainActivity extends AppCompatActivity {
     TextView txt;
-    SimpleDraweeView draweeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         txt = (TextView) findViewById(R.id.mian_txt);
-        draweeView = (SimpleDraweeView) findViewById(R.id.my_image_view);
     }
 
     @Override

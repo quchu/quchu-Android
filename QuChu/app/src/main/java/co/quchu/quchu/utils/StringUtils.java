@@ -82,7 +82,13 @@ public class StringUtils {
      */
     public static int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
+        LogUtils.json(scale+" display");
         return (int) (dpValue * scale + 0.5f);
+    }
+    public static int pt2sp(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().xdpi;
+        final float scd = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (dpValue * scale  * (1.0f/(72*scd)));
     }
 
     /**

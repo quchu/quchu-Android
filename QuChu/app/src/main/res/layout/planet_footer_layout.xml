@@ -57,9 +57,17 @@
     <View style="@style/HorizontalLine" />
 
 
-    <android.support.v7.widget.RecyclerView
+    <GridView
+        android:id="@+id/id_recyclerview"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginBottom="@dimen/half_margin"
+        android:divider="#00000000"
+        android:numColumns="4"
+        android:horizontalSpacing="4dp"
+        android:columnWidth="90dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
         android:layout_width="match_parent"
-
         android:layout_height="80dp" />
 
     <View style="@style/HorizontalLine" />
