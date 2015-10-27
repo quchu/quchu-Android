@@ -4,73 +4,100 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:background="@drawable/ic_planet_bg">
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:background="@drawable/planet_crile_bg"
         android:layout_centerInParent="true"
-        android:layout_height="wrap_content"/>
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/planet_avatar_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/ic_launcher" />
+    </FrameLayout>
 
-    <ImageView
-        android:id="@+id/planet_avatar_icon"
+    <FrameLayout
+        android:id="@+id/mid_luncher"
         android:layout_width="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_planet_avatar" />
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_planet_avatar" />
+        </FrameLayout>
+
 
     <co.quchu.quchu.widget.RoundProgressView
-        android:id="@+id/imageView4"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_above="@+id/planet_avatar_icon"
-        android:layout_alignEnd="@+id/imageView"
-        android:layout_alignRight="@+id/imageView"
-        android:layout_marginBottom="@dimen/base_margin"
+        android:id="@+id/design_rpv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/mid_luncher"
+        android:layout_alignEnd="@+id/mid_luncher"
+        android:layout_alignRight="@+id/mid_luncher"
+        android:layout_marginBottom="4dp"
+        app:roundProgressColor="@color/planet_progress_white"
+        app:roundProgressBackground="@color/itemMask_black"
         android:layout_marginRight="@dimen/half_margin"
         android:src="@drawable/ic_planet_discover" />
 
     <co.quchu.quchu.widget.RoundProgressView
-        android:id="@+id/imageView2"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_alignBottom="@+id/imageView"
+        android:id="@+id/pavilion_rpv"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_alignBottom="@+id/mid_luncher"
         android:layout_marginBottom="48dp"
-        android:layout_marginLeft="40dp"
-        app:roundProgressColor="@color/planet_progress_white"
-        android:layout_toEndOf="@+id/planet_avatar_icon"
-        android:layout_toRightOf="@+id/planet_avatar_icon"
-        android:src="@drawable/ic_planet_discover" />
-
-    <co.quchu.quchu.widget.RoundProgressView
-        android:id="@+id/imageView3"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        app:roundProgressColor="@color/palnet_Yellow"
-        android:layout_below="@+id/imageView"
-        android:layout_toRightOf="@+id/planet_avatar_icon"
+        android:layout_marginLeft="18dp"
+        app:roundProgressColor="@color/planet_progress_yellow"
+        app:roundProgressBackground="@color/itemMask_black"
+        android:layout_toEndOf="@+id/mid_luncher"
+        android:layout_toRightOf="@+id/mid_luncher"
         />
 
     <co.quchu.quchu.widget.RoundProgressView
-        android:id="@+id/imageView1"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_below="@+id/planet_avatar_icon"
+        android:id="@+id/atmosphere_rpv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:roundProgressColor="@color/planet_progress_white"
+        app:roundProgressBackground="@color/itemMask_black"
+        android:layout_below="@+id/mid_luncher"
+        android:layout_marginLeft="22dp"
+        android:layout_toRightOf="@+id/mid_luncher"
+        />
+
+    <co.quchu.quchu.widget.RoundProgressView
+        android:id="@+id/stroll_rpv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/mid_luncher"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
+        app:roundProgressColor="@color/planet_progress_yellow"
+        app:roundProgressBackground="@color/itemMask_black"
+        android:layout_marginTop="4dp"
         android:src="@drawable/ic_planet_discover" />
 
     <co.quchu.quchu.widget.RoundProgressView
-        android:id="@+id/imageView5"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/cate_rpv"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="32dp"
-        app:roundProgressColor="@color/palnet_Yellow"
+        android:layout_marginLeft="24dp"
+        app:roundProgressColor="@color/planet_progress_yellow"
+        app:roundProgressBackground="@color/itemMask_black"
        />
+    <TextView
+        android:id="@+id/planet_gene_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/itemMask_black"
+        android:textColor="@color/white"
+        android:textSize="@dimen/word_size_body"
+        android:text="探索我的趣基因"
+        android:gravity="center"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/base_margin"
+        android:layout_marginBottom="@dimen/half_margin"
+        />
 </RelativeLayout>

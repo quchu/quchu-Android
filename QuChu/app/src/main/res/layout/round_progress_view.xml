@@ -9,11 +9,14 @@
     <co.quchu.quchu.widget.RoundProgressBar
         android:id="@+id/roundPrgoress_rpb"
         android:layout_width="match_parent"
+        android:layout_centerInParent="true"
         android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/roundPrgoress_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="1dp"
         android:fadeScrollbars="false" />
 </RelativeLayout>
