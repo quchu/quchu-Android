@@ -13,7 +13,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 
@@ -94,7 +93,7 @@ public class RoundProgressBar extends View {
     public static final int STROKE = 0;
     public static final int FILL = 1;
     private int spreadCount;
-
+    Typeface fontsType;
     public RoundProgressBar(Context context) {
         this(context, null);
     }
@@ -126,6 +125,7 @@ public class RoundProgressBar extends View {
         roundProgressBackground = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressBackground, Color.BLACK);
 
         mTypedArray.recycle();
+        fontsType = Typeface.createFromAsset(getContext().getAssets(), "zzgf_shanghei.otf");
     }
 
 
@@ -143,9 +143,7 @@ public class RoundProgressBar extends View {
         paint.setStrokeWidth(roundWidth); //设置圆环的宽度
         paint.setAntiAlias(true);  //消除锯齿
         canvas.drawCircle(centre, centre, radius, paint); //画出圆环
-        paint.setColor(roundColor); //设置圆环的颜色
-        paint.setStyle(Paint.Style.STROKE); //设置空心
-        paintR.setColor( Color.BLACK); //设置圆环的颜色
+        paintR.setColor( roundColor); //设置圆环的颜色
         paintR.setStyle(Paint.Style.STROKE); //设置空心
         paintR.setStrokeWidth(roundWidth*2/3); //设置圆环的宽度
         paintR.setAntiAlias(true);  //消除锯齿
@@ -159,7 +157,7 @@ public class RoundProgressBar extends View {
         paint.setStrokeWidth(0);
         paint.setColor(textColor);
         paint.setTextSize(textSize);
-        paint.setTypeface(Typeface.DEFAULT); //设置字体
+        paint.setTypeface(fontsType); //设置字体
         int percent = (int) (((float) drawProgress / (float) max) * 100);  //中间的进度百分比，先转换成float在进行除法运算，不然都为0
 
         //自定义
@@ -168,7 +166,7 @@ public class RoundProgressBar extends View {
 
             if (textIsDisplayable && spreadCount >= 0 && style == STROKE) {
                 if (textStyle == 1)
-                    canvas.drawText(percent + "%", centre - textWidth, centre + textSize / 2, paint);//画出进度百分比
+                    canvas.drawText(percent + "%", centre - (textWidth*1.5f), centre + textSize / 2, paint);//画出进度百分比
                 else if (textStyle == 2 && !StringUtils.isEmpty(progressText))
                     canvas.drawText(progressText, centre - (textWidth*1.8f), centre + textSize / 2, paint); //画出文字
             }
@@ -332,7 +330,6 @@ public void setStyle(int style){
                     }else {
                         handler.sendMessageDelayed(handler.obtainMessage(1), AnimationInterval);
                     }
-                    LogUtils.json("hndler===" + msg + "///draw==" + drawProgress);
                     break;
                 case 1:
                     drawProgress = progress;

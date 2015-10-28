@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="@dimen/title_bar_heigh"
     android:background="@color/titleBackground"
-    tools:context=".MainActivity">
+   >
 
     <RelativeLayout
         android:id="@+id/title_back_rl"

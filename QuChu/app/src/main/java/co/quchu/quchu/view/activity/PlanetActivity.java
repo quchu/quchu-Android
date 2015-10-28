@@ -8,6 +8,7 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -42,7 +43,7 @@ import co.quchu.quchu.widget.planetanimations.MyAnimation;
  * Date: 2015-10-21
  * 我的趣星球
  */
-public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnGlobalLayoutListener {
+public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnGlobalLayoutListener ,AdapterView.OnItemClickListener {
 
     @Bind(R.id.mid_luncher)
     FrameLayout midLuncher;
@@ -89,6 +90,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         initActivityViewHolder();
         presenter = new PlanetActPresenter(this, planetHolder);
         presenter.setPlanetGene(planetGeneTv);
+        presenter.setImageGalery(planetImageGv, this);
         ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(this);
         Picasso.with(this).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565)
@@ -126,7 +128,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     @Override
     protected void onResume() {
-        presenter.setImageGalery();
         super.onResume();
     }
 
@@ -209,5 +210,10 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         heigh = midLuncher.getHeight();
         midLuncher.getViewTreeObserver().removeGlobalOnLayoutListener(this);
          initAnimation();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(this,"Image click="+position,Toast.LENGTH_SHORT).show();
     }
 }

@@ -14,6 +14,7 @@ import co.quchu.quchu.view.holder.PlannetViewHolder;
  * PlanetImgGalleryAda
  * User: Chenhs
  * Date: 2015-10-23
+ * recylerVIew
  */
 public class PlanetImgGalleryAda extends RecyclerView.Adapter<PlannetViewHolder> {
     private Context context;

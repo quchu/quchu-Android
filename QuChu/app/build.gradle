@@ -39,4 +39,6 @@ dependencies {
     //    compile files('libs/okhttp-urlconnection-2.0.0.jar')
     compile files('libs/nineoldandroids-2.4.0.jar')
     compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile 'com.umeng.analytics:analytics:5.+' //友盟统计
 }

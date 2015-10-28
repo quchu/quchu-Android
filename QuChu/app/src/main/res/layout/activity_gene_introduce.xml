@@ -18,6 +18,7 @@
         android:background="@color/gene_desc_blck_bg">
 
         <TextView
+            android:id="@+id/gene_introduce_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -35,38 +36,13 @@
             android:src="@drawable/ic_gene_right_arrow" />
     </RelativeLayout>
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/gene_introduce_iv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical">
-
-        <include layout="@layout/gene_body" />
-    </LinearLayout>
-
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="1dp"-->
-    <!--android:background="@color/gene_desc_blck_bg"-->
-    <!--/>-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/cardview_dark_background">
-
-        <GridView
-            android:id="@+id/gene_progress_gv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:columnWidth="90dp"
-            android:divider="#00000000"
-            android:gravity="center"
-            android:horizontalSpacing="4dp"
-            android:numColumns="4"
-            android:padding="@dimen/base_margin"
-            android:stretchMode="columnWidth" />
-    </RelativeLayout>
+        android:background="@drawable/ic_activity_bg"
+        android:src="@drawable/ic_gene_introduce_img" />
 
 
 </LinearLayout>

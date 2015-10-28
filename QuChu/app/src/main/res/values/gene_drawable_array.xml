@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gene_images">
+        <item>@drawable/ic_gene_explore</item>
+        <item>@drawable/ic_gene_foodie</item>
+        <item>@drawable/ic_gene_art</item>
+        <item>@drawable/ic_gene_rich</item>
+    </string-array>
+</resources>

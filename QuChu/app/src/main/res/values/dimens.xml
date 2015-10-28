@@ -1,8 +1,10 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="title_bar_heigh">56dp</dimen>
     <!-- margin-->
     <dimen name="base_margin">16dp</dimen>
     <dimen name="half_margin">8dp</dimen>
+    <dimen name="quarter_margin">4dp</dimen>
     <dimen name="dialog_margin">24dp</dimen>
 
     <dimen name="line_thickness">0.5dp</dimen>
@@ -10,5 +12,6 @@
     <dimen name="word_title_body">20sp</dimen>
     <dimen name="word_size_body">14sp</dimen>
     <dimen name="word_size_time">12sp</dimen>
+
 
 </resources>
