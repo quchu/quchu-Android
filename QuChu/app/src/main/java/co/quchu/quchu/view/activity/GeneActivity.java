@@ -48,15 +48,17 @@ public class GeneActivity extends BaseActivity {
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)
     TextView title_content_tv;
+    @Bind(R.id.gene_introduce_tv)
+    TextView gene_introduce_tv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gene);
         ButterKnife.bind(this);
         title_content_tv.setText(getTitle());
-        Typeface face= Typeface.createFromAsset(getAssets(), "zzgf_shanghei.otf");
+        Typeface face= Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
 //        Typeface face=Typeface.createFromAsset(getAssets(), "Roboto-Bold.ttf");
-        title_content_tv.setTypeface(face);
+        gene_introduce_tv.setTypeface(face);
         geneProgressGv.setAdapter(new GeneProgressAdapter(this,GeneProgressAdapter.GENE));
     }
 

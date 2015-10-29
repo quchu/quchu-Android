@@ -18,6 +18,7 @@
         android:background="@color/gene_desc_blck_bg">
 
         <TextView
+            android:id="@+id/gene_introduce_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

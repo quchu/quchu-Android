@@ -10,9 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-
-import co.quchu.quchu.helper.Reutils;
-
 public class MainActivity extends AppCompatActivity {
     TextView txt;
 
@@ -57,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void netWork() {
-        Reutils.getUn();
     }
 
     @Override

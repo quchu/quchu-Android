@@ -63,7 +63,14 @@ public class LogUtils {
      */
     public static void json(String msg){
         if (Constants.ISDEBUG) {
-           Log.e(tag+"Json=",msg);
+           Log.e(tag + "Json=", msg);
         }
     }
+
+    public static void netLog(Object msg){
+        if (Constants.ISDEBUG) {
+            Log.e(tag+"Net=",msg.toString());
+        }
+    }
+
 }

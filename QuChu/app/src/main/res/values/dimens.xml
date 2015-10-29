@@ -10,6 +10,7 @@
     <dimen name="line_thickness">0.5dp</dimen>
     <!--字号-->
     <dimen name="word_title_body">20sp</dimen>
+    <dimen name="word_subhead_size">16sp</dimen>
     <dimen name="word_size_body">14sp</dimen>
     <dimen name="word_size_time">12sp</dimen>
 

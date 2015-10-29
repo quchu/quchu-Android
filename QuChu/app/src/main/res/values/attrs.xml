@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="RoundProgressBar">
         <attr name="roundColor" format="color" />
         <attr name="roundProgressColor" format="color" />
@@ -20,4 +21,11 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="AnimationRatingBar">
+        <attr name="starImageSize" format="dimension" />
+        <attr name="starCount" format="integer" />
+        <attr name="starEmpty" format="reference" />
+        <attr name="starFill" format="reference" />
+
+    </declare-styleable>
 </resources>

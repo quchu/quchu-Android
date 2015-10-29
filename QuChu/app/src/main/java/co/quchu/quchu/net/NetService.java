@@ -45,4 +45,5 @@ public class NetService {
         T netService = getInstance().retrofit.create(service);
         return netService;
     }
+
 }

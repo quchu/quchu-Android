@@ -216,4 +216,27 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(this,"Image click="+position,Toast.LENGTH_SHORT).show();
     }
+    Intent intent;
+    @OnClick({R.id.design_rpv,R.id.atmosphere_rpv,R.id.cate_rpv,R.id.pavilion_rpv,R.id.stroll_rpv})
+    public void click(View v){
+        intent = new Intent();
+        switch (v.getId()){
+            case R.id.design_rpv: //设计
+                intent.setClass(this,FriendsCircleIntroduceActivity.class);
+            break;
+            case R.id.pavilion_rpv://展馆
+
+                break;
+            case R.id.atmosphere_rpv: //氛围
+
+                break;
+            case R.id.stroll_rpv://逛店
+
+                break;
+            case R.id.cate_rpv: //美食
+
+                break;
+        }
+        startActivity(intent);
+    }
 }

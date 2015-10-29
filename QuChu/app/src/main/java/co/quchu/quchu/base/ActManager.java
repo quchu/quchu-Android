@@ -45,6 +45,14 @@ public class ActManager {
         return activity;
     }
 
+    public void startActivity4N(Class cls){
+        for (Activity activity : activityStack) {
+            if (activity.getClass().equals(cls)) {
+
+            }
+        }
+    }
+
     /**
      * 结束当前Activity
      */

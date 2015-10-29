@@ -1,8 +1,5 @@
 package co.quchu.quchu.helper;
 
-import com.google.gson.Gson;
-
-import co.quchu.quchu.model.ArticleListModel;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.LogUtils;
@@ -27,12 +24,14 @@ public class Reutils {
             @Override
             public void onResponse(Response<String> response, Retrofit retrofit) {
                 try {
+//if (response.body().has("result"))
                     LogUtils.e("Code=" + response.code() + "   message= " + response.message() + "///" + response.body());
 
-                    ArticleListModel alm = new Gson().fromJson(response.body(), ArticleListModel.class);
-                    LogUtils.d((alm == null ? "true" : "false") + "/////" + (System.currentTimeMillis() - tt));
+//                    ArticleListModel alm = new Gson().fromJson(response.body(), ArticleListModel.class);
+//                    LogUtils.d((alm == null ? "true" : "false") + "/////" + (System.currentTimeMillis() - tt));
                 } catch (Exception e) {
                     e.printStackTrace();
+                    LogUtils.e(e.toString());
                 }
             }
 
@@ -44,7 +43,6 @@ public class Reutils {
     }
 
     interface getuser {
-
         @GET(NetApi.GetCityList)
         Call<String> listRepos();
     }
