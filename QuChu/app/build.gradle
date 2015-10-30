@@ -17,6 +17,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    useLibrary 'org.apache.http.legacy'
+
 }
 repositories {
     maven { url "https://jitpack.io" }
@@ -36,9 +38,10 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     //    compile 'com.facebook.fresco:fresco:0.6.0+'
     //    compile 'com.android.support:percent:22.2.+'
-    //    compile files('libs/okhttp-urlconnection-2.0.0.jar')
     compile files('libs/nineoldandroids-2.4.0.jar')
     compile 'com.jakewharton:butterknife:7.0.1'
-
-    compile 'com.umeng.analytics:analytics:5.+' //友盟统计
+    compile 'com.umeng.analytics:analytics:5.+'
+    //友盟统计
+    compile files('libs/volley.jar')
+    compile files('libs/okhttp-urlconnection-2.0.0.jar')
 }

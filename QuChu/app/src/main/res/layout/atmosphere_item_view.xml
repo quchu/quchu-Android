@@ -3,16 +3,18 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="24dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    card_view:cardBackgroundColor="@android:color/black"
-    card_view:cardCornerRadius="6dp"
-    card_view:cardElevation="24dp">
+    android:id="@+id/root_cv"
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="6dp">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/atrmosphere_item_title_tv"
@@ -23,35 +25,23 @@
             android:textColor="@color/white"
             android:textSize="@dimen/word_subhead_size" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/base_margin"
-            android:text="威风乐急"
-            android:textColor="@color/white"
-            android:textSize="@dimen/word_subhead_size" />
 
         <ImageView
             android:id="@+id/atrmosphere_item_image_iv"
             android:layout_width="match_parent"
-            android:layout_height="61dp"
+            android:layout_height="128dp"
             android:layout_below="@id/atrmosphere_item_title_tv"
             android:layout_gravity="center"
+            android:layout_marginBottom="12dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_gene_introduce_img" />
-
-        <RatingBar
-            android:layout_width="wrap_content"
-            android:minHeight="12dp"
-            android:layout_height="wrap_content"
+        <TextView
             android:layout_below="@id/atrmosphere_item_image_iv"
-            android:background="@color/transparent"
-            android:numStars="5"
-            android:minWidth="182dp"
-            android:stepSize="1"
-            style="@style/QuchuRatingBarStyle"
-            android:rating="2"/>
-            <!--style="@style/QuchuRatingBarStyle"-->
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/base_margin"
+            android:text="威风乐急"
+            android:textColor="@color/white"
+            android:textSize="@dimen/word_subhead_size" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>
