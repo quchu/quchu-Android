@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -29,7 +30,6 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.presenter.PlanetActPresenter;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.holder.PlanetActHolder;
 import co.quchu.quchu.widget.RoundProgressView;
@@ -43,8 +43,7 @@ import co.quchu.quchu.widget.planetanimations.MyAnimation;
  * Date: 2015-10-21
  * 我的趣星球
  */
-public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnGlobalLayoutListener ,AdapterView.OnItemClickListener {
-
+public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnGlobalLayoutListener, AdapterView.OnItemClickListener {
     @Bind(R.id.mid_luncher)
     FrameLayout midLuncher;
     @Bind(R.id.planet_avatar_icon)
@@ -98,17 +97,28 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                 .centerCrop().into(planetAvatarIcon);
     }
 
-    @OnClick({R.id.title_more_rl,R.id.title_back_rl,R.id.planet_gene_tv})
+    Snackbar snackbar;
+
+    @OnClick({R.id.title_more_rl, R.id.title_back_rl, R.id.planet_gene_tv})
     public void ViewClick(View v) {
-        switch (v.getId()){
-            case R.id.title_more_rl:
-                Toast.makeText(PlanetActivity.this,"more is click",Toast.LENGTH_SHORT).show();
-                break;
+        switch (v.getId()) {
+//            case R.id.title_more_rl:
+//                Toast.makeText(PlanetActivity.this, "more is click", Toast.LENGTH_SHORT).show();
+//                break;
             case R.id.title_back_rl:
-                Toast.makeText(PlanetActivity.this,"back is click",Toast.LENGTH_SHORT).show();
+                snackbar = Snackbar.make(titleBackRL, "back is click", Snackbar.LENGTH_SHORT);
+                snackbar.setAction("已知", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (snackbar != null && snackbar.isShown()) {
+                            snackbar.dismiss();
+                        }
+                    }
+                });
+                snackbar.show();
                 break;
-               case R.id.planet_gene_tv:
-             startActivity(new Intent(PlanetActivity.this,GeneActivity.class));
+            case R.id.planet_gene_tv:
+                startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
                 break;
         }
     }
@@ -120,7 +130,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     @Override
     protected void onPause() {
-        if (animatorSet!=null){
+        if (animatorSet != null) {
             animatorSet.cancel();
         }
         super.onPause();
@@ -135,15 +145,14 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    if (animatorSet!=null) {
+                    if (animatorSet != null) {
                         animatorSet.start();
-                    }else{
+                    } else {
                         myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 1000);
                     }
                     break;
                 case 1:
                     if (animatorSet != null) {
-                        LogUtils.json("animation is running?=" + animatorSet.isRunning());
                         if (!animatorSet.isRunning())
                             animatorSet.start();
                     }
@@ -209,21 +218,23 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     public void onGlobalLayout() {
         heigh = midLuncher.getHeight();
         midLuncher.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-         initAnimation();
+        initAnimation();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this,"Image click="+position,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Image click=" + position, Toast.LENGTH_SHORT).show();
     }
+
     Intent intent;
-    @OnClick({R.id.design_rpv,R.id.atmosphere_rpv,R.id.cate_rpv,R.id.pavilion_rpv,R.id.stroll_rpv})
-    public void click(View v){
+
+    @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv})
+    public void click(View v) {
         intent = new Intent();
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.design_rpv: //设计
-                intent.setClass(this,FriendsCircleIntroduceActivity.class);
-            break;
+                intent.setClass(this, FriendsCircleIntroduceActivity.class);
+                break;
             case R.id.pavilion_rpv://展馆
 
                 break;

@@ -10,6 +10,7 @@
     <color name="planet_progress_yellow">#f2e725</color>
     <color name="planet_progress_white">#dcdddd</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <!-- 我的趣星球 、titleBar字体颜色-->
     <color name="planet_text_color_white">#ffffff</color>
     <color name="lineBackground_gray">#8a8a89</color>

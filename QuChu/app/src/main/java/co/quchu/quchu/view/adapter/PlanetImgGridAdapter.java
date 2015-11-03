@@ -7,12 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -58,12 +57,12 @@ public class PlanetImgGridAdapter extends BaseAdapter {
         }
         if (position==3) {
             pvh.planet_gallery_mask_rl.setVisibility(View.VISIBLE);
-        pvh.planet_gallery_mask_tv.setText(" 88\r\n 照片");
+        pvh.planet_gallery_mask_tv.setText("  88\r\n 照片");
         }else{
             pvh.planet_gallery_mask_rl.setVisibility(View.INVISIBLE);
         }
 
-        Picasso.with(context).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565).resize(StringUtils.dip2px(context,80), StringUtils.dip2px(context,80))
+        AppContext.picasso.with(context).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565).resize(StringUtils.dip2px(context,40), StringUtils.dip2px(context,40))
                 .centerCrop().into(pvh.sdv);
         return convertView;
     }
@@ -71,11 +70,11 @@ public class PlanetImgGridAdapter extends BaseAdapter {
 
     class PlanetImgItemHolder {
         public ImageView sdv;
-        public RelativeLayout planet_gallery_mask_rl;
+        public LinearLayout planet_gallery_mask_rl;
         public TextView planet_gallery_mask_tv;
         public PlanetImgItemHolder(View view) {
             sdv = (ImageView) view.findViewById(R.id.planet_gallery_img);
-            planet_gallery_mask_rl= (RelativeLayout) view.findViewById(R.id.planet_gallery_mask_rl);
+            planet_gallery_mask_rl= (LinearLayout) view.findViewById(R.id.planet_gallery_mask_rl);
             planet_gallery_mask_tv= (TextView) view.findViewById(R.id.planet_gallery_mask_tv);
         }
     }

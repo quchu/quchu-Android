@@ -12,7 +12,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.utils.LogUtils;
 
 /**
  * 什么是趣友圈
@@ -41,7 +40,7 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
         title_content_tv.setText(getTitle().toString());
         geneIntroduceTv.setText(getResources().getString(R.string.subtitle_word_gene_introduce));
         titleMoreRl.setVisibility(View.GONE);
-        LogUtils.json("onCreate");
+        geneIntroduceIv.setImageResource(R.drawable.ic_friends_introduce);
     }
 
     @OnClick({R.id.title_back_rl, R.id.gene_introduce})
@@ -59,37 +58,31 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        LogUtils.json("onPostCreate");
         super.onPostCreate(savedInstanceState);
     }
 
     @Override
     protected void onStop() {
-        LogUtils.json("onStop");
         super.onStop();
     }
 
     @Override
     protected void onPostResume() {
-        LogUtils.json("onPostResume");
         super.onPostResume();
     }
 
     @Override
     protected void onDestroy() {
-        LogUtils.json("onDestroy");
         super.onDestroy();
     }
 
     @Override
     protected void onPause() {
-        LogUtils.json("onPause");
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        LogUtils.json("onResume");
         overridePendingTransition(R.anim.in_push_right_to_left,
                 R.anim.in_stable);
         super.onResume();

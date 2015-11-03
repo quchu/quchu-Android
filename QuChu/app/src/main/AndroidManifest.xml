@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name="co.quchu.quchu.view.activity.AtmosphereActivity"
+            android:name="co.quchu.quchu.view.activity.PlanetActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +30,10 @@
             android:name="co.quchu.quchu.view.activity.FriendsCircleIntroduceActivity"
             android:launchMode="singleInstance"
             android:label="@string/titlebar_word_friends_introduce" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.AtmosphereActivity"
+            android:launchMode="singleInstance"
+            android:label="@string/titlebar_word_atmosphere" />
     </application>
 
 </manifest>

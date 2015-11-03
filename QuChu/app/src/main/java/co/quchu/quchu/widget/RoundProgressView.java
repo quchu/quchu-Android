@@ -60,12 +60,14 @@ public class RoundProgressView extends RelativeLayout {
         bar.setroundColor(mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, Color.BLACK));
         bar.setCricleProgressColor(mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, Color.WHITE));
         bar.setTextColor(-1 == mTypedArray.getColor(R.styleable.RoundProgressBar_textColor, Color.WHITE) ? mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, Color.WHITE) : mTypedArray.getColor(R.styleable.RoundProgressBar_textColor, Color.WHITE));
-        bar.setTextSize(mTypedArray.getDimension(R.styleable.RoundProgressBar_textSize, 15));
-        bar.setRoundWidth(mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth, 10));
+        bar.setTextSize(mTypedArray.getDimension(R.styleable.RoundProgressBar_textSize, 16));
+        bar.setRoundWidth(mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth, 15));
         bar.setMax(mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100));
-        bar.setStyle(mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0));
-        bar.setTextStyle(mTypedArray.getInt(R.styleable.RoundProgressBar_textStyle, 0));
+        bar.setStyle(mTypedArray.getInt(R.styleable.RoundProgressBar_style, RoundProgressBar.STROKE));
+        bar.setTextStyle(mTypedArray.getInt(R.styleable.RoundProgressBar_textStyle, RoundProgressBar.TextStyleHide));
         bar.setRoundProgressBackground(mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressBackground, Color.BLACK));
+        bar.setProgressText(mTypedArray.getString(R.styleable.RoundProgressBar_roundProgressText));
+        bar.setProgress(mTypedArray.getInt(R.styleable.RoundProgressBar_progress,0));
         mTypedArray.recycle();
     }
 

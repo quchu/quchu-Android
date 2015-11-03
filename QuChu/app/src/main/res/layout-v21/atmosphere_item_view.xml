@@ -7,9 +7,10 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="@dimen/cardview_margintop"
-    android:clickable="true"
     android:fitsSystemWindows="true"
     android:foreground="?attr/selectableItemBackground"
+    android:stateListAnimator="@anim/cardview_touch_raise"
+    card_view:cardCornerRadius="6dp"
     card_view:cardElevation="@dimen/cardview_elevation">
 
     <RelativeLayout
@@ -29,9 +30,8 @@
         <ImageView
             android:id="@+id/atrmosphere_item_image_iv"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="176dp"
             android:layout_below="@id/atrmosphere_item_title_tv"
-            android:layout_gravity="center"
             android:scaleType="fitXY" />
 
         <co.quchu.quchu.widget.ratingbar.ProperRatingBar

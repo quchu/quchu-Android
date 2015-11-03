@@ -3,12 +3,16 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,32 +54,64 @@ public class GeneActivity extends BaseActivity {
     TextView title_content_tv;
     @Bind(R.id.gene_introduce_tv)
     TextView gene_introduce_tv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gene);
         ButterKnife.bind(this);
         title_content_tv.setText(getTitle());
-        Typeface face= Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
-//        Typeface face=Typeface.createFromAsset(getAssets(), "Roboto-Bold.ttf");
+
+        Typeface face = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
         gene_introduce_tv.setTypeface(face);
-        geneProgressGv.setAdapter(new GeneProgressAdapter(this,GeneProgressAdapter.GENE));
+        geneProgressGv.setAdapter(new GeneProgressAdapter(this, GeneProgressAdapter.GENE));
     }
 
-    @OnClick({R.id.title_back_rl,R.id.gene_introduce})
-    public void Click(View view){
-        Intent intent=new Intent();
-        switch (view.getId()){
+    MaterialDialog dialog;
+
+    @OnClick({R.id.title_back_rl, R.id.gene_introduce, R.id.atmosphere_rpv, R.id.title_more_rl})
+    public void Click(View view) {
+        Intent intent = new Intent();
+        switch (view.getId()) {
             case R.id.title_back_rl:
                 GeneActivity.this.finish();
                 break;
+            case R.id.title_more_rl:
+//                dialog = new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
+//                        .theme(Theme.DARK)
+//                        .content("网络数据加载中...")
+//                        .progress(true, 0)
+//                        .cancelable(false)
+//                        .contentColor(getResources().getColor(R.color.planet_text_color_white))
+//                        .contentGravity(GravityEnum.END)
+//                        .show();
+//                handler.sendMessageDelayed(handler.obtainMessage(0x00),1000*5);
+                break;
             case R.id.gene_introduce:
-//              跳转什么是趣基因
-                intent.setClass(this,GeneIntroduceActivity.class);
+                //  跳转什么是趣基因
+                intent.setClass(this, GeneIntroduceActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.atmosphere_rpv:
+                //  跳转氛围
+                intent.setClass(this, AtmosphereActivity.class);
                 startActivity(intent);
                 break;
         }
     }
+private Handler handler = new Handler(){
+    @Override
+    public void handleMessage(Message msg) {
+        switch (msg.what){
+            case 0x00:
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                break;
+        }
+        super.handleMessage(msg);
+    }
+};
 
     @Override
     protected void onDestroy() {

@@ -76,7 +76,10 @@ public class RoundProgressBar extends View {
      * 文字风格
      * 0=隐藏  1=数字  2=文字
      */
-    private int textStyle = 1;
+    private int textStyle = TextStyleNum;
+    public static int TextStyleHide = 0x00;
+    public static int TextStyleNum = 0x01;
+    public static int TextStyleText = 0x02;
     /**
      * 绘制动画进度
      */
@@ -94,6 +97,7 @@ public class RoundProgressBar extends View {
     public static final int FILL = 1;
     private int spreadCount;
     Typeface fontsType;
+
     public RoundProgressBar(Context context) {
         this(context, null);
     }
@@ -121,9 +125,10 @@ public class RoundProgressBar extends View {
         max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);
         textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable, true);
         style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0);
-        textStyle = mTypedArray.getInt(R.styleable.RoundProgressBar_textStyle, 0);
+        textStyle = mTypedArray.getInt(R.styleable.RoundProgressBar_textStyle, TextStyleNum);
         roundProgressBackground = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressBackground, Color.BLACK);
-
+        progressText = mTypedArray.getString(R.styleable.RoundProgressBar_roundProgressText);
+        progress = mTypedArray.getInt(R.styleable.RoundProgressBar_progress, 0);
         mTypedArray.recycle();
         fontsType = Typeface.createFromAsset(getContext().getAssets(), "zzgf_shanghei.otf");
     }
@@ -143,11 +148,11 @@ public class RoundProgressBar extends View {
         paint.setStrokeWidth(roundWidth); //设置圆环的宽度
         paint.setAntiAlias(true);  //消除锯齿
         canvas.drawCircle(centre, centre, radius, paint); //画出圆环
-        paintR.setColor( roundColor); //设置圆环的颜色
+        paintR.setColor(roundColor); //设置圆环的颜色
         paintR.setStyle(Paint.Style.STROKE); //设置空心
-        paintR.setStrokeWidth(roundWidth*2/3); //设置圆环的宽度
+        paintR.setStrokeWidth(roundWidth * 2 / 3); //设置圆环的宽度
         paintR.setAntiAlias(true);  //消除锯齿
-        int strokeRadius = (int) (centre - roundWidth/3); //圆环的半径
+        int strokeRadius = (int) (centre - roundWidth / 3); //圆环的半径
         canvas.drawCircle(centre, centre, strokeRadius, paintR); //画出圆环
 //        Log.e("log", centre + "");
 
@@ -161,14 +166,14 @@ public class RoundProgressBar extends View {
         int percent = (int) (((float) drawProgress / (float) max) * 100);  //中间的进度百分比，先转换成float在进行除法运算，不然都为0
 
         //自定义
-        if (textStyle != 0) {
+        if (textStyle != TextStyleHide) {
             float textWidth = paint.measureText(String.valueOf(spreadCount));   //测量字体宽度，我们需要根据字体的宽度设置在圆环中间
 
             if (textIsDisplayable && spreadCount >= 0 && style == STROKE) {
-                if (textStyle == 1)
-                    canvas.drawText(percent + "%", centre - (textWidth*1.5f), centre + textSize / 2, paint);//画出进度百分比
-                else if (textStyle == 2 && !StringUtils.isEmpty(progressText))
-                    canvas.drawText(progressText, centre - (textWidth*1.8f), centre + textSize / 2, paint); //画出文字
+                if (textStyle == TextStyleNum)
+                    canvas.drawText(percent + "%", centre - (textWidth * 1.5f), centre + textSize / 2, paint);//画出进度百分比
+                else if (textStyle == TextStyleText && !StringUtils.isEmpty(progressText))
+                    canvas.drawText(progressText, centre - (textWidth * 1.8f), centre + textSize / 2, paint); //画出文字
             }
         }
         /**
@@ -176,7 +181,7 @@ public class RoundProgressBar extends View {
          */
         //设置进度是实心还是空心
 
-        paint.setStrokeWidth(roundWidth*2/3); //设置圆环的宽度
+        paint.setStrokeWidth(roundWidth * 2 / 3); //设置圆环的宽度
         paint.setColor(roundProgressColor);  //设置进度的颜色
         RectF oval = new RectF(centre - strokeRadius, centre - strokeRadius, centre
                 + strokeRadius, centre + strokeRadius);  //用于定义的圆弧的形状和大小的界限
@@ -299,7 +304,9 @@ public class RoundProgressBar extends View {
 
     public void setProgressText(String progressText) {
         this.progressText = progressText;
-    }  public void setRoundProgressBackground(int  roundProgressBackground) {
+    }
+
+    public void setRoundProgressBackground(int roundProgressBackground) {
         this.roundProgressBackground = roundProgressBackground;
     }
 
@@ -311,9 +318,11 @@ public class RoundProgressBar extends View {
     public void setTextStyle(int textStyle) {
         this.textStyle = textStyle;
     }
-public void setStyle(int style){
-    this.style=style;
-}
+
+    public void setStyle(int style) {
+        this.style = style;
+    }
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -324,10 +333,10 @@ public void setStyle(int style){
                         drawProgress += 1;
                         if (drawProgress >= progress) {
                             handler.sendMessageDelayed(handler.obtainMessage(1), AnimationInterval);
-                        }else {
-                        handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
+                        } else {
+                            handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
                         }
-                    }else {
+                    } else {
                         handler.sendMessageDelayed(handler.obtainMessage(1), AnimationInterval);
                     }
                     break;

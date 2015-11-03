@@ -39,6 +39,10 @@
         android:layout_alignRight="@+id/mid_luncher"
         android:layout_marginBottom="4dp"
         android:layout_marginRight="@dimen/half_margin"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="设计"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_white" />
 
@@ -51,6 +55,10 @@
         android:layout_marginLeft="18dp"
         android:layout_toEndOf="@+id/mid_luncher"
         android:layout_toRightOf="@+id/mid_luncher"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="展馆"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_yellow" />
 
@@ -62,6 +70,10 @@
         android:layout_marginLeft="22dp"
         android:layout_toRightOf="@+id/mid_luncher"
         app:roundProgressBackground="@color/itemMask_black"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="氛围"
         app:roundProgressColor="@color/planet_progress_white" />
 
     <co.quchu.quchu.widget.RoundProgressView
@@ -72,6 +84,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="4dp"
         app:roundProgressBackground="@color/itemMask_black"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="逛店"
         app:roundProgressColor="@color/planet_progress_yellow" />
 
     <co.quchu.quchu.widget.RoundProgressView
@@ -80,6 +96,10 @@
         android:layout_height="64dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="24dp"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="美食"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_yellow" />
     <!--<TextView-->

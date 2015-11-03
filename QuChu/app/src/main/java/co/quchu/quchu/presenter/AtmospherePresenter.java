@@ -28,7 +28,7 @@ public class AtmospherePresenter {
         NetService.get(activity, NetApi.GetCityList, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                LogUtils.json(response.toString());
+//                LogUtils.json(response.toString());
                 Gson gson =  new Gson();
                 AtmosphereItemModel aim;
                 if (response.has("result")){

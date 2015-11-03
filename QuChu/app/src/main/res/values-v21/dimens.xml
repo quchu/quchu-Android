@@ -14,14 +14,8 @@
     <dimen name="word_size_body">14sp</dimen>
     <dimen name="word_size_time">12sp</dimen>
 
-    <!-- RatingBar start-->
-    <dimen name="prb_symbolic_tick_default_text_size">15sp</dimen>
-    <dimen name="prb_drawable_tick_default_spacing">1dp</dimen>
-    <!-- RatingBar end-->
     <!-- RecyclerView Item Margin-->
-    <dimen name="recycler_item_margin">0.1dp</dimen>
-    <dimen name="cardview_margintop">12dp</dimen>
-    <dimen name="cardview_elevation">1dp</dimen>
-    <!-- cardView 点击阴影-->
-    <dimen name="touch_raise">8dp</dimen>
+    <dimen name="recycler_item_margin">8dp</dimen>
+    <dimen name="cardview_margintop">16dp</dimen>
+    <dimen name="cardview_elevation">6dp</dimen>
 </resources>

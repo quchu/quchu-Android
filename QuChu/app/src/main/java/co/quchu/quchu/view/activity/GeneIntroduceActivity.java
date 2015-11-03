@@ -41,6 +41,8 @@ public class GeneIntroduceActivity extends BaseActivity {
         title_content_tv.setText(getTitle().toString());
         geneIntroduceTv.setText(getResources().getString(R.string.subtitle_word_friends_introduce));
         titleMoreRl.setVisibility(View.GONE);
+
+        geneIntroduceIv.setImageResource(R.drawable.ic_gene_introduce_img);
     }
 
     @OnClick({R.id.title_back_rl, R.id.gene_introduce})

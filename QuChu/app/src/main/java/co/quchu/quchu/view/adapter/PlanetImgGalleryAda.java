@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.holder.PlannetViewHolder;
 
 /**
@@ -26,14 +25,12 @@ public class PlanetImgGalleryAda extends RecyclerView.Adapter<PlannetViewHolder>
             PlannetViewHolder pvh= new PlannetViewHolder((LayoutInflater.from(
                     context).inflate(R.layout.planet_gaallery_item, parent,
                     false)));
-        LogUtils.json("PlanetImgGalleryAda===onCreateViewHolder=");
         return pvh;
     }
 
     @Override
     public void onBindViewHolder(PlannetViewHolder holder, int position) {
             holder.galleryImg.setImageURI(Uri.parse("http://imgdn.paimeilv.com/1444721523235"));
-        LogUtils.json("PlanetImgGalleryAda===onBindViewHolder=");
     }
 
     @Override
