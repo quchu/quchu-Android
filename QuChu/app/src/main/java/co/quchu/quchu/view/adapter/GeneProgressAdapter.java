@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -130,11 +130,11 @@ public class GeneProgressAdapter extends BaseAdapter {
 
     class PlanetImgItemHolder {
         public ImageView sdv;
-        public RelativeLayout planet_gallery_mask_rl;
+        public LinearLayout planet_gallery_mask_rl;
         public TextView planet_gallery_mask_tv;
         public PlanetImgItemHolder(View view) {
             sdv = (ImageView) view.findViewById(R.id.planet_gallery_img);
-            planet_gallery_mask_rl= (RelativeLayout) view.findViewById(R.id.planet_gallery_mask_rl);
+            planet_gallery_mask_rl= (LinearLayout) view.findViewById(R.id.planet_gallery_mask_rl);
             planet_gallery_mask_tv= (TextView) view.findViewById(R.id.planet_gallery_mask_tv);
         }
     }

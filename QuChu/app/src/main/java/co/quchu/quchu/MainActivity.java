@@ -45,15 +45,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            netWork();
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void netWork() {
     }
 
     @Override

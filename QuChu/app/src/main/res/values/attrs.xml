@@ -56,4 +56,13 @@
     </declare-styleable>
 
     <item name="prb_child_tag_id" type="id" />
+
+    <!-- **********RecyclerViewPager************ -->
+    <declare-styleable name="RecyclerViewPager">
+        <attr name="triggerOffset" format="float" />
+        <attr name="flingFactor" format="float" />
+        <attr name="singlePageFling" format="boolean" />
+        <attr name="loopEnabled" format="boolean" />
+    </declare-styleable>
+
 </resources>

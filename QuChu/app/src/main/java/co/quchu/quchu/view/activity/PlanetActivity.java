@@ -97,25 +97,26 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                 .centerCrop().into(planetAvatarIcon);
     }
 
-    Snackbar snackbar;
 
     @OnClick({R.id.title_more_rl, R.id.title_back_rl, R.id.planet_gene_tv})
     public void ViewClick(View v) {
         switch (v.getId()) {
-//            case R.id.title_more_rl:
+            case R.id.title_more_rl:
 //                Toast.makeText(PlanetActivity.this, "more is click", Toast.LENGTH_SHORT).show();
-//                break;
+                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                break;
             case R.id.title_back_rl:
-                snackbar = Snackbar.make(titleBackRL, "back is click", Snackbar.LENGTH_SHORT);
-                snackbar.setAction("已知", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (snackbar != null && snackbar.isShown()) {
-                            snackbar.dismiss();
-                        }
-                    }
-                });
-                snackbar.show();
+//                snackbar = Snackbar.make(titleBackRL, "back is click", Snackbar.LENGTH_SHORT);
+//                snackbar.setAction("已知", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (snackbar != null && snackbar.isShown()) {
+//                            snackbar.dismiss();
+//                        }
+//                    }
+//                });
+//                snackbar.show();
                 break;
             case R.id.planet_gene_tv:
                 startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
@@ -228,7 +229,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     Intent intent;
 
-    @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv})
+    @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv, R.id.planet_postcard_ll})
     public void click(View v) {
         intent = new Intent();
         switch (v.getId()) {
@@ -245,6 +246,9 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
                 break;
             case R.id.cate_rpv: //美食
+
+                break;
+            case R.id.planet_postcard_ll: //明信片
 
                 break;
         }
