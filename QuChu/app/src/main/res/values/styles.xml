@@ -11,6 +11,7 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -35,5 +36,13 @@
         <!--<item name="indeterminateDrawable">@drawable/ratingbar_full</item>-->
         <item name="android:progressDrawable">@drawable/ratingbar_layer_list</item>
         <item name="android:indeterminateDrawable">@drawable/ratingbar_layer_list</item>
+    </style>
+
+    <!-- ************* SwipeBackLayout ************ -->
+    <style name="SwipeBackLayout">
+        <item name="edge_size">50dip</item>
+        <item name="shadow_left">@drawable/shadow_left</item>
+        <item name="shadow_right">@drawable/shadow_right</item>
+        <item name="shadow_bottom">@drawable/shadow_bottom</item>
     </style>
 </resources>

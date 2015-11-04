@@ -10,7 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import co.quchu.quchu.base.BaseActivity;
+
+public class MainActivity extends BaseActivity {
     TextView txt;
 
     @Override

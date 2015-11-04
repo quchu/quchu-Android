@@ -16,7 +16,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 
 /**
@@ -25,7 +24,7 @@ import co.quchu.quchu.R;
  * @author Green
  */
 public class RecyclerViewPager extends RecyclerView {
-    public static final boolean DEBUG = BuildConfig.DEBUG;
+    public static final boolean DEBUG = false;
 
     private RecyclerViewPagerAdapter<?> mViewPagerAdapter;
     private float mTriggerOffset = 0.25f;
@@ -479,6 +478,30 @@ public class RecyclerViewPager extends RecyclerView {
 
     public interface OnPageChangedListener {
         void OnPageChanged(int oldPosition, int newPosition);
+    }
+
+    @Override
+    public void addOnScrollListener(OnScrollListener listener) {
+        if (listener ==null){
+            super.addOnScrollListener(new HorizontalScrollListener(this));
+        }else {
+            super.addOnScrollListener(listener);
+        }
+    }
+    public void addOnScrollListener(){
+        addOnScrollListener(new HorizontalScrollListener(this));
+    }
+
+    @Override
+    public void addOnLayoutChangeListener(OnLayoutChangeListener listener) {
+        if (listener ==null){
+            super.addOnLayoutChangeListener(new HorizontalLayoutChangeListener(this));
+        }else {
+            super.addOnLayoutChangeListener(listener);
+        }
+    }
+    public void addOnLayoutChangeListener(){
+        addOnLayoutChangeListener(new HorizontalLayoutChangeListener(this));
     }
 
 }
