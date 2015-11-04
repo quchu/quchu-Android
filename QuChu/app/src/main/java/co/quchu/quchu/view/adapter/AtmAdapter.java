@@ -56,7 +56,7 @@ public class AtmAdapter extends RecyclerView.Adapter<AtmAdapter.AtmHolder> {
     @Override
     public AtmHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         AtmHolder pvh = new AtmHolder((LayoutInflater.from(
-                activity).inflate(R.layout.atmosphere_item_view, parent,
+                activity).inflate(R.layout.item_atmosphere_view, parent,
                 false)), listener);
         return pvh;
     }
@@ -80,7 +80,7 @@ public class AtmAdapter extends RecyclerView.Adapter<AtmAdapter.AtmHolder> {
 
 
     /**
-     * This class contains all butterknife-injected Views & Layouts from layout file 'atmosphere_item_view.xml'
+     * This class contains all butterknife-injected Views & Layouts from layout file 'item_atmosphere_view.xml'
      * for easy to all layout elements.
      *
      * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)

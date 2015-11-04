@@ -5,6 +5,7 @@
     <string name="titlebar_word_planet">我的趣星球</string>
     <string name="titlebar_word_gene">我的趣基因</string>
     <string name="titlebar_word_atmosphere">氛围</string>
+    <string name="titlebar_word_discover">我的发现</string>
 
     <!-- ********** 趣星球 ********* -->
     <string name="prb_default_symbolic_string">$</string>

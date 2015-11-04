@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/base_margin"
+    android:layout_marginTop="@dimen/base_margin"
+    android:background="@color/item_discover_bg_color"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/item_discover_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:text="沙坡尾"
+        android:textColor="@color/item_discover_title_color"
+        android:textSize="@dimen/word_subhead_size" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_discover_title_tv"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginTop="@dimen/quarter_margin"
+        android:text="沙坡尾"
+        android:textColor="@color/item_discover_subtitle_color"
+        android:textSize="@dimen/word_size_body" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="编辑内容"
+        android:layout_marginBottom="@dimen/base_margin"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:background="@drawable/shape_tv_black_bg"
+        android:textColor="@color/gene_textcolor_yellow" />
+
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/gene_textcolor_yellow"
+        android:layout_height="100dp" />
+</RelativeLayout>

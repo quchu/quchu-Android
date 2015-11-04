@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/base_margin"
-            android:textColor="@color/white"
+            android:textColor="@color/text_color_white"
             android:textSize="@dimen/word_subhead_size" />
 
 
@@ -57,7 +57,7 @@
             android:layout_below="@id/atrmosphere_item_rb"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            android:textColor="@color/white"
+            android:textColor="@color/text_color_white"
             android:textSize="@dimen/word_size_body" />
 
 

@@ -88,7 +88,7 @@ public class GeneProgressAdapter extends BaseAdapter {
         GeneProgressItemHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(
-                    context).inflate(R.layout.gene_progress_item, null);
+                    context).inflate(R.layout.item_gene_progress, null);
             holder = new GeneProgressItemHolder(convertView);
             convertView.setTag(holder);
         } else {

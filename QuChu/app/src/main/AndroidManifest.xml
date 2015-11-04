@@ -34,6 +34,10 @@
             android:name="co.quchu.quchu.view.activity.AtmosphereActivity"
             android:launchMode="singleInstance"
             android:label="@string/titlebar_word_atmosphere" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.DiscoverActivity"
+            android:launchMode="singleInstance"
+            android:label="@string/titlebar_word_discover" />
     </application>
 
 </manifest>

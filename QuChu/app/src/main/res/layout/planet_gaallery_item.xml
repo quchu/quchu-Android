@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/white"
+            android:textColor="@color/text_color_white"
             android:textSize="@dimen/word_size_body" />
 
         <TextView
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="照片"
-            android:textColor="@color/white"
+            android:textColor="@color/text_color_white"
             android:textSize="@dimen/word_size_body" />
     </LinearLayout>
 </RelativeLayout>
