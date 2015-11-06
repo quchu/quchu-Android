@@ -75,6 +75,7 @@ public class AtmosphereActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
     @Override

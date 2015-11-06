@@ -3,8 +3,7 @@ package co.quchu.quchu.base;
 import android.app.Application;
 import android.content.Context;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.picasso.OkHttpDownloader;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.picasso.Picasso;
 
 
@@ -18,9 +17,10 @@ public static Picasso picasso;
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        OkHttpClient okHttpClient = new OkHttpClient();
-        OkHttpDownloader downloader = new OkHttpDownloader(okHttpClient);
-         picasso = new Picasso.Builder(this).downloader(downloader).build();
+        Fresco.initialize(mContext);
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//        OkHttpDownloader downloader = new OkHttpDownloader(okHttpClient);
+//         picasso = new Picasso.Builder(this).downloader(downloader).build();
     }
 
 

@@ -1,18 +1,25 @@
 package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.decoder.ProgressiveJpegConfig;
+import com.facebook.imagepipeline.image.ImmutableQualityInfo;
+import com.facebook.imagepipeline.image.QualityInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.util.ArrayList;
 
@@ -21,7 +28,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.AtmosphereItemModel;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.AtmosphereActivity;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -40,6 +46,21 @@ public class AtmAdapter extends RecyclerView.Adapter<AtmAdapter.AtmHolder> {
     public AtmAdapter(Activity atmosphereActivity, ArrayList<AtmosphereItemModel> arrayList) {
         activity = atmosphereActivity;
         this.arrayList = arrayList;
+        ProgressiveJpegConfig pjpegConfig = new ProgressiveJpegConfig() {
+            @Override
+            public int getNextScanNumberToDecode(int scanNumber) {
+                return scanNumber + 2;
+            }
+
+            public QualityInfo getQualityInfo(int scanNumber) {
+                boolean isGoodEnough = (scanNumber >= 5);
+                return ImmutableQualityInfo.of(scanNumber, isGoodEnough, false);
+            }
+        };
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(activity)
+                .setProgressiveJpegConfig(pjpegConfig)
+                .build();
+        Fresco.initialize(activity, config);
     }
 
 
@@ -63,13 +84,22 @@ public class AtmAdapter extends RecyclerView.Adapter<AtmAdapter.AtmHolder> {
 
     @Override
     public void onBindViewHolder(AtmHolder holder, int position) {
-        Picasso.with(activity).load(arrayList.get(position % 10).getCover())
-                .config(Bitmap.Config.RGB_565).resize(StringUtils.dip2px(activity, 100), StringUtils.dip2px(activity, 100))
-                .centerCrop().into(holder.atrmosphereItemImageIv);
         holder.rootCv.setCardBackgroundColor(Color.parseColor("#" + arrayList.get(position % 10).getRgb()));
         holder.atrmosphereItemTitleTv.setText(arrayList.get(position % 10).getName());
         holder.atrmosphereItemAddressTv.setText(arrayList.get(position % 10).getAddress());
         holder.atrmosphereItemRb.setRating(arrayList.get(position % 10).getTakeIndex());
+        ImageRequest request = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse(arrayList.get(position % 10).getCover()))
+                .setProgressiveRenderingEnabled(true)
+                .build();
+        PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
+                .setImageRequest(request)
+                .setOldController(holder.atrmosphereItemImageIv.getController())
+                .build();
+        holder.atrmosphereItemImageIv.setController(controller);
+//        holder.atrmosphereItemImageIv.setImageURI();
+
+        holder.atrmosphereItemImageIv.setAspectRatio(1.33f);
 
     }
 
@@ -89,7 +119,7 @@ public class AtmAdapter extends RecyclerView.Adapter<AtmAdapter.AtmHolder> {
         @Bind(R.id.atrmosphere_item_title_tv)
         public TextView atrmosphereItemTitleTv;
         @Bind(R.id.atrmosphere_item_image_iv)
-        public ImageView atrmosphereItemImageIv;
+        public SimpleDraweeView atrmosphereItemImageIv;
         @Bind(R.id.atrmosphere_item_rb)
         public ProperRatingBar atrmosphereItemRb;
         @Bind(R.id.atrmosphere_item_address_tv)

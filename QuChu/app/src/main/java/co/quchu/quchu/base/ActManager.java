@@ -2,9 +2,9 @@ package co.quchu.quchu.base;
 
 import android.app.Activity;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.LinkedList;
+
+//import com.orhanobut.logger.Logger;
 
 public class ActManager {
 
@@ -109,7 +109,7 @@ public class ActManager {
     public void printActStack() {
         for (int i = 0; i < activityStack.size(); i++) {
 //            System.out.println(activityStack.get(i).getClass().getSimpleName());
-            Logger.d(activityStack.get(i).getClass().getSimpleName());
+//            Logger.d(activityStack.get(i).getClass().getSimpleName());
         }
     }
 

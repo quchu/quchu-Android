@@ -38,6 +38,10 @@
         app:roundProgressColor="@color/planet_progress_white"
         app:roundProgressBackground="@color/itemMask_black"
         android:layout_marginRight="@dimen/half_margin"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="@string/text_planet_design"
         />
 
     <co.quchu.quchu.widget.RoundProgressView
@@ -51,6 +55,10 @@
         app:roundProgressBackground="@color/itemMask_black"
         android:layout_toEndOf="@+id/mid_luncher"
         android:layout_toRightOf="@+id/mid_luncher"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="@string/text_planet_pavilion"
         />
 
     <co.quchu.quchu.widget.RoundProgressView
@@ -62,6 +70,10 @@
         android:layout_below="@+id/mid_luncher"
         android:layout_marginLeft="22dp"
         android:layout_toRightOf="@+id/mid_luncher"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="@string/text_planet_atmosphere"
         />
 
     <co.quchu.quchu.widget.RoundProgressView
@@ -73,6 +85,10 @@
         app:roundProgressColor="@color/planet_progress_yellow"
         app:roundProgressBackground="@color/itemMask_black"
         android:layout_marginTop="4dp"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="@string/text_planet_stroll"
        />
 
     <co.quchu.quchu.widget.RoundProgressView
@@ -83,6 +99,10 @@
         android:layout_marginLeft="24dp"
         app:roundProgressColor="@color/planet_progress_yellow"
         app:roundProgressBackground="@color/itemMask_black"
+        app:textSize="9sp"
+        app:progress="33"
+        app:textStyle="WORD"
+        app:roundProgressText="@string/text_planet_cate"
        />
     <TextView
         android:id="@+id/planet_gene_tv"
@@ -91,7 +111,7 @@
         android:background="@color/itemMask_black"
         android:textColor="@color/white"
         android:textSize="@dimen/word_size_body"
-        android:text="探索我的趣基因"
+        android:text="@string/text_planet_discover_gene"
         android:gravity="center"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"

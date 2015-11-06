@@ -70,10 +70,12 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     LinearLayout planetDiscoverLl;
     @Bind(R.id.planet_postcard_ll)
     LinearLayout planetPostcardLl;
+
     @Bind(R.id.title_back_rl)
     RelativeLayout titleBackRL;
     @Bind(R.id.title_more_rl)
     RelativeLayout titleMoreRl;
+
     @Bind(R.id.planet_gene_tv)
     TextView planetGeneTv;
     private int AnimationDuration = 10 * 1000;
@@ -98,7 +100,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     }
 
 
-    @OnClick({R.id.title_more_rl, R.id.title_back_rl, R.id.planet_gene_tv})
+    @OnClick({R.id.title_more_rl, R.id.title_back_rl, R.id.planet_gene_tv, R.id.planet_collect_ll})
     public void ViewClick(View v) {
         switch (v.getId()) {
             case R.id.title_more_rl:
@@ -121,12 +123,16 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
             case R.id.planet_gene_tv:
                 startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
                 break;
+            case R.id.planet_collect_ll:
+                startActivity(new Intent(PlanetActivity.this, DiscoverActivity.class));
+                break;
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
     @Override
@@ -240,7 +246,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
                 break;
             case R.id.atmosphere_rpv: //氛围
-
+                intent.setClass(this, AtmosphereActivity.class);
                 break;
             case R.id.stroll_rpv://逛店
 

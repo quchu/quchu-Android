@@ -60,6 +60,7 @@ public class GeneIntroduceActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
     @Override

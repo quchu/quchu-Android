@@ -1,46 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_discover_root_ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/base_margin"
     android:layout_marginTop="@dimen/base_margin"
-    android:background="@color/item_discover_bg_color"
-    android:fitsSystemWindows="true">
+    android:clickable="true"
+    android:fitsSystemWindows="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/item_discover_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginTop="@dimen/half_margin"
-        android:text="沙坡尾"
-        android:textColor="@color/item_discover_title_color"
-        android:textSize="@dimen/word_subhead_size" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/item_discover_bg_color">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/item_discover_title_tv"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:text="沙坡尾"
-        android:textColor="@color/item_discover_subtitle_color"
-        android:textSize="@dimen/word_size_body" />
+        <TextView
+            android:id="@+id/item_discover_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            android:text="沙坡尾"
+            android:textColor="@color/item_discover_title_color"
+            android:textSize="@dimen/word_subhead_size" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="编辑内容"
-        android:layout_marginBottom="@dimen/base_margin"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:background="@drawable/shape_tv_black_bg"
-        android:textColor="@color/gene_textcolor_yellow" />
 
-    <ImageView
-        android:layout_width="72dp"
-        android:layout_alignParentRight="true"
-        android:background="@color/gene_textcolor_yellow"
-        android:layout_height="100dp" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/item_discover_address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_discover_title_tv"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginTop="@dimen/quarter_margin"
+            android:text="沙坡尾"
+            android:textColor="@color/item_discover_subtitle_color"
+            android:textSize="@dimen/word_size_body" />
+
+        <TextView
+            android:id="@+id/item_discover_editbutton_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/base_margin"
+            android:background="@drawable/shape_tv_black_bg"
+            android:text="编辑内容"
+            android:textColor="@color/gene_textcolor_yellow" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/item_discover_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            fresco:actualImageScaleType="focusCrop" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/half_margin"
+        android:layout_marginLeft="@dimen/quarter_margin"
+        android:background="@drawable/shape_shadow_toptobottom" />
+</LinearLayout>

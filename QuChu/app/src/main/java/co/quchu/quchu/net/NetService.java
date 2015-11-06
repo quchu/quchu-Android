@@ -3,9 +3,6 @@ package co.quchu.quchu.net;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.GravityEnum;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,10 +16,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import co.quchu.quchu.R;
-import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.utils.LogUtils;
 
 /**
  * NetService
@@ -32,7 +26,7 @@ import co.quchu.quchu.utils.LogUtils;
  * 对返回数据初步处理
  */
 public class NetService {
-    private static MaterialDialog dialog;
+//    private static MaterialDialog dialog;
     public static RequestQueue mRequestQueue = Volley
             .newRequestQueue(AppContext.mContext, new OkHttpStack(new OkHttpClient()));
 
@@ -55,28 +49,13 @@ public class NetService {
 
 
         } else {
-            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
-                    .theme(Theme.DARK)
-                    .content("网络数据加载中...")
-                    .progress(true, 0).autoDismiss(false)
-                    .contentGravity(GravityEnum.CENTER)
-                    .show();
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0);
         }
     }
 
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            dialog = new MaterialDialog.Builder(AppContext.mContext)
-                    .title("shaohou")
-                    .show();
         } else {
-            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
-                    .theme(Theme.DARK)
-                    .content("网络数据加载中...")
-                    .progress(true, 0).autoDismiss(false)
-                    .contentGravity(GravityEnum.CENTER)
-                    .show();
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0);
         }
     }
@@ -84,12 +63,12 @@ public class NetService {
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
         } else {
-            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
-                    .theme(Theme.DARK)
-                    .content("网络数据加载中...")
-                    .progress(true, 0).autoDismiss(false)
-                    .contentGravity(GravityEnum.CENTER)
-                    .show();
+//            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
+//                    .theme(Theme.DARK)
+//                    .content("网络数据加载中...")
+//                    .progress(true, 0).autoDismiss(false)
+//                    .contentGravity(GravityEnum.CENTER)
+//                    .show();
             addToQueue(Request.Method.GET, pUrl, params, pListener, 0);
         }
         new HashMap<String, String>();
@@ -113,9 +92,9 @@ public class NetService {
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
+//                if (dialog != null) {
+//                    dialog.dismiss();
+//                }
 //                LogUtils.json("Response-Listener===" + response);
                 boolean result = false;
                 if (response.has("result")) {
@@ -148,9 +127,9 @@ public class NetService {
             @Override
             public void onErrorResponse(VolleyError error) {
 //                dialog.dismiss();
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
+//                if (dialog != null) {
+//                    dialog.dismiss();
+//                }
                 if (error != null && error.networkResponse != null) {
                     pListener.onError(error.toString());
                     if (error.networkResponse.statusCode == 401) {

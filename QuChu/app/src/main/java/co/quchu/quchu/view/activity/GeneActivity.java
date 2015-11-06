@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -67,7 +66,6 @@ public class GeneActivity extends BaseActivity {
         geneProgressGv.setAdapter(new GeneProgressAdapter(this, GeneProgressAdapter.GENE));
     }
 
-    MaterialDialog dialog;
 
     @OnClick({R.id.title_back_rl, R.id.gene_introduce, R.id.atmosphere_rpv, R.id.title_more_rl})
     public void Click(View view) {
@@ -104,9 +102,6 @@ private Handler handler = new Handler(){
     public void handleMessage(Message msg) {
         switch (msg.what){
             case 0x00:
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
                 break;
         }
         super.handleMessage(msg);
@@ -116,6 +111,7 @@ private Handler handler = new Handler(){
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
     @Override

@@ -17,22 +17,22 @@ public class LogUtils {
 
     public static void e(String msg) {
         if (Constants.ISDEBUG) {
-            Logger.init();
-            Logger.e(msg);
+//            Logger.init();
+//            Logger.e(msg);
         }
     }
 
     public static void i(String msg) {
         if (Constants.ISDEBUG) {
-            Logger.init();
-            Logger.i(msg);
+//            Logger.init();
+//            Logger.i(msg);
         }
     }
 
     public static void i(String TAG, String msg) {
         if (Constants.ISDEBUG) {
-            Logger.init();
-            Logger.i(msg);
+//            Logger.init();
+//            Logger.i(msg);
         }
     }
 
@@ -45,15 +45,15 @@ public class LogUtils {
 
     public static void d(String msg) {
         if (Constants.ISDEBUG) {
-            Logger.init();
-            Logger.d(msg);
+//            Logger.init();
+//            Logger.d(msg);
         }
     }
 
     public static void w(String msg) {
         if (Constants.ISDEBUG) {
-            Logger.init();
-            Logger.w(msg);
+//            Logger.init();
+//            Logger.w(msg);
         }
     }
 
@@ -73,4 +73,9 @@ public class LogUtils {
         }
     }
 
+
+    /*
+    *Error:Execution failed for task ':app:dexDebug'.
+> com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException: Process 'command 'C:\Program Files\Java\jdk1.8.0_60\bin\java.exe'' finished with non-zero exit value 2
+    * */
 }
