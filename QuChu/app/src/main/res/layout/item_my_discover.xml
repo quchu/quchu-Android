@@ -59,7 +59,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/half_margin"
+        android:layout_height="@dimen/quarter_margin"
         android:layout_marginLeft="@dimen/quarter_margin"
         android:background="@drawable/shape_shadow_toptobottom" />
 </LinearLayout>

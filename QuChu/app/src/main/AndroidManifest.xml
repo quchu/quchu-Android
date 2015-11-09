@@ -11,6 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+            <!--android:name="co.quchu.quchu.view.activity.PlanetActivity"-->
         <activity
             android:name="co.quchu.quchu.view.activity.PlanetActivity"
             android:label="@string/app_name">
@@ -38,6 +39,10 @@
             android:name="co.quchu.quchu.view.activity.DiscoverActivity"
             android:launchMode="singleInstance"
             android:label="@string/titlebar_word_discover" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.QuFriendsActivity"
+            android:launchMode="singleInstance"
+            android:label="@string/titlebar_word_qu_friends" />
     </application>
 
 </manifest>

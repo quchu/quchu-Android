@@ -17,7 +17,7 @@ import co.quchu.quchu.utils.StringUtils;
  * User: Chenhs
  * Date: 2015-10-23
  * 当LayoutManager为LinearLayoutManager时 的item装饰类
- *  显示item分割
+ * 显示item分割
  */
 public class DefaultDecoration extends RecyclerView.ItemDecoration {
     private static final int[] ATTRS = new int[]{
@@ -31,18 +31,22 @@ public class DefaultDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 
     private int mOrientation;
+    private int marginLift = 0;
+    private int marginRight = 0;
+    private Context mContext;
 
     public DefaultDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
         a.recycle();
         setOrientation(orientation);
+        mContext = context;
     }
 
     public void setOrientation(int orientation) {
         if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
 //            throw new IllegalArgumentException("invalid orientation");
-            mOrientation=VERTICAL_LIST;
+            mOrientation = VERTICAL_LIST;
         }
         mOrientation = orientation;
     }
@@ -85,7 +89,11 @@ public class DefaultDecoration extends RecyclerView.ItemDecoration {
                     .getLayoutParams();
             final int left = child.getRight() + params.rightMargin;
             final int right = left + mDivider.getIntrinsicHeight();
-            mDivider.setBounds(left, top, right, bottom);
+            if (marginLift != 0 || marginRight != 0) {
+                mDivider.setBounds(left - marginLift, top, right - marginRight, bottom);
+            } else {
+                mDivider.setBounds(left, top, right, bottom);
+            }
             mDivider.draw(c);
         }
     }
@@ -93,9 +101,17 @@ public class DefaultDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
         if (mOrientation == VERTICAL_LIST) {
-            outRect.set(0, 0, 0, StringUtils.dip2px(AppContext.mContext,4));
+            outRect.set(0, 0, 0, StringUtils.dip2px(AppContext.mContext, 4));
         } else {
-            outRect.set(0, 0, StringUtils.dip2px(AppContext.mContext,4), 0);
+            outRect.set(0, 0, StringUtils.dip2px(AppContext.mContext, 4), 0);
         }
+    }
+
+    public void setMarginLift(int marginLift) {
+        this.marginLift = StringUtils.dip2px(mContext, marginLift);
+    }
+
+    public void setMarginRight(int marginLift) {
+        this.marginRight = StringUtils.dip2px(mContext, marginLift);
     }
 }

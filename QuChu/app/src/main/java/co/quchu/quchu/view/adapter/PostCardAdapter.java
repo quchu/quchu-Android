@@ -100,7 +100,7 @@ public class PostCardAdapter extends RecyclerView.Adapter<PostCardAdapter.Simple
         holder.myImageView.setController(controller);
 
 //        holder.myImageView.setImageURI();
-        final int itemId = mItems.get(position);
+//        final int itemId = mItems.get(position);
     }
 
     @Override

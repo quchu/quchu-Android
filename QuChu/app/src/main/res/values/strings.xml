@@ -6,6 +6,7 @@
     <string name="titlebar_word_gene">我的趣基因</string>
     <string name="titlebar_word_atmosphere">氛围</string>
     <string name="titlebar_word_discover">我的发现</string>
+    <string name="titlebar_word_qu_friends">趣星人</string>
 
     <!-- ********** 趣星球 ********* -->
     <string name="prb_default_symbolic_string">$</string>
@@ -26,9 +27,16 @@
     <string name="text_planet_pavilion">展馆</string>
     <string name="text_planet_design">设计</string>
     <string name="text_planet_discover_gene">探索我的趣基因</string>
+    <string name="text_planet_discover_friends">探索我的趣友圈</string>
     <string name="text_planet_stroll">逛店</string>
     <string name="text_planet_cate">美食</string>
 
     <!-- ********** 氛围 ********* -->
+
+
+    <!-- ********** 趣星人 ********* -->
+    <string name="text_friends_following">%d&#032;我关注的</string>
+    <string name="text_friends_follower">%d&#032;关注我的</string>
+    <!--<string name="text_friends_item_address">%1s&#032;,&#032;%2s</string>-->
 
 </resources>
