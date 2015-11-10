@@ -22,6 +22,7 @@ import co.quchu.quchu.widget.RoundProgressView;
  * QuFriendsActivity
  * User: Chenhs
  * Date: 2015-11-09
+ * 趣星人
  */
 public class QuFriendsActivity extends BaseActivity {
     @Bind(R.id.planet_avatar_icon)

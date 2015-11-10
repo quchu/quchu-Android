@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground">
+
+    <co.quchu.quchu.widget.CircleWaveView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_activity_bg"
+        app:rb_color="#0099CC"
+        app:rb_duration="3600"
+        app:rb_radius="24dp"
+        app:rb_rippleAmount="1"
+        app:rb_scale="5">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_planet_avatar"/>
+    </co.quchu.quchu.widget.CircleWaveView>
+
+
+</RelativeLayout>

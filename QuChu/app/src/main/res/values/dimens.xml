@@ -25,4 +25,8 @@
     <!-- cardView 点击阴影-->
     <dimen name="touch_raise">8dp</dimen>
     <dimen name="item_friends_icon_size">48dp</dimen>
+
+
+    <dimen name="rippleStrokeWidth">2dp</dimen>
+    <dimen name="rippleRadius">64dp</dimen>
 </resources>
