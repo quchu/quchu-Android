@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:fitsSystemWindows="true">
+
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_activity_bg"
+        android:layout_below="@id/title_bar">
+
+
+
+        <co.quchu.quchu.widget.PostCardRecyclerView
+            android:id="@+id/atmosphere_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/half_margin"
+        android:layout_below="@id/title_bar"
+        android:background="@drawable/shape_shadow_toptobottom" />
+
+
+</RelativeLayout>

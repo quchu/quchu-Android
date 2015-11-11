@@ -33,7 +33,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile files('libs/gson-2.4.jar')
     compile 'com.github.orhanobut:logger:1.12'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+
     compile 'com.jakewharton:butterknife:7.0.1'
     compile files('libs/volley.jar')
     compile 'com.facebook.fresco:fresco:0.8.1' //FRESCO
@@ -41,6 +41,7 @@ dependencies {
     compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
 
+    //    compile 'com.squareup.picasso:picasso:2.5.2'
 //    compile 'com.squareup.okio:okio:1.6.0'
 ////    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
 //    //    compile 'com.android.support:percent:22.2.+'

@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.squareup.picasso.Picasso;
 
 
 /**
@@ -12,7 +11,6 @@ import com.squareup.picasso.Picasso;
  */
 public class AppContext extends Application {
     public static Context mContext;
-public static Picasso picasso;
     @Override
     public void onCreate() {
         super.onCreate();

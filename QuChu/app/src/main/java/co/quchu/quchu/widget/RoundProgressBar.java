@@ -80,6 +80,7 @@ public class RoundProgressBar extends View {
     public static int TextStyleHide = 0x00;
     public static int TextStyleNum = 0x01;
     public static int TextStyleText = 0x02;
+    public static int NumStyleText = 0x03;
     /**
      * 绘制动画进度
      */
@@ -93,10 +94,20 @@ public class RoundProgressBar extends View {
      */
     private int roundProgressBackground;
     private String progressText = "";
+    /**
+     * 环形
+     */
     public static final int STROKE = 0;
+    /**
+     * 圆形
+     */
     public static final int FILL = 1;
     private int spreadCount;
     Typeface fontsType;
+
+    public int progressStyle;
+    private static final int DefaultProgressStyle=0x01;
+    private static final int AnimationProgressStyle=0x00;
 
     public RoundProgressBar(Context context) {
         this(context, null);
@@ -129,6 +140,7 @@ public class RoundProgressBar extends View {
         roundProgressBackground = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressBackground, Color.BLACK);
         progressText = mTypedArray.getString(R.styleable.RoundProgressBar_roundProgressText);
         progress = mTypedArray.getInt(R.styleable.RoundProgressBar_progress, 0);
+        progressStyle = mTypedArray.getInt(R.styleable.RoundProgressBar_progress, 0x00);
         mTypedArray.recycle();
         fontsType = Typeface.createFromAsset(getContext().getAssets(), "zzgf_shanghei.otf");
     }
@@ -174,6 +186,8 @@ public class RoundProgressBar extends View {
                     canvas.drawText(percent + "%", centre - (textWidth * 1.5f), centre + textSize / 2, paint);//画出进度百分比
                 else if (textStyle == TextStyleText && !StringUtils.isEmpty(progressText))
                     canvas.drawText(progressText, centre - (textWidth * 1.8f), centre + textSize / 2, paint); //画出文字
+                else if (textStyle == NumStyleText && !StringUtils.isEmpty(progressText))
+                    canvas.drawText(progressText, centre - ((textWidth * 1.8f)/2), centre +((textWidth * 1.8f)/3), paint); //画出文字
             }
         }
         /**
@@ -247,13 +261,18 @@ public class RoundProgressBar extends View {
         if (progress < 0) {
             throw new IllegalArgumentException("progress not less than 0");
         }
-        if (progress > max) {
-            progress = max;
-            handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
-        }
-        if (progress <= max) {
-            this.progress = progress;
-            handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
+        if (progressStyle==DefaultProgressStyle) {
+            if (progress > max) {
+                progress = max;
+                handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
+            }
+            if (progress <= max) {
+                this.progress = progress;
+                handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
+            }
+        }else {
+            this.progress=drawProgress=progress>=max?max:progress;
+            postInvalidate();
         }
     }
 

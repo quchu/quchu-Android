@@ -14,7 +14,7 @@
         app:roundProgressColor="@color/planet_progress_yellow"
         app:textColor="@color/planet_progress_yellow"
         app:textSize="14sp"
-        app:textStyle="NUM" />
+        app:textStyle="Num" />
 
     <LinearLayout
         android:layout_width="wrap_content"

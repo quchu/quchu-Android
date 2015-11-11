@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/planet_gallery_img"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"
+        fresco:actualImageScaleType="focusCrop"
         android:fadeScrollbars="false" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/planet_gallery_mask_rl"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -25,16 +27,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
             android:textColor="@color/text_color_white"
             android:textSize="@dimen/word_size_body" />
 
-        <TextView
+ <!--       <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="照片"
             android:textColor="@color/text_color_white"
-            android:textSize="@dimen/word_size_body" />
-    </LinearLayout>
+            android:textSize="@dimen/word_size_body" />-->
+    </RelativeLayout>
 </RelativeLayout>

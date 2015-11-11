@@ -1,3 +1,4 @@
+/*
 package co.quchu.quchu.widget;
 
 import android.graphics.Bitmap;
@@ -7,11 +8,13 @@ import android.graphics.Paint;
 
 import com.squareup.picasso.Transformation;
 
+*/
 /**
  * CircleTransform
  * User: Chenhs
  * Date: 2015-10-26
- */
+ *//*
+
     public class CircleTransform implements Transformation {
         @Override
         public Bitmap transform(Bitmap source) {
@@ -46,3 +49,4 @@ import com.squareup.picasso.Transformation;
             return "circle";
         }
 }
+*/

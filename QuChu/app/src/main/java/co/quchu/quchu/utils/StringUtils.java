@@ -1,8 +1,14 @@
 package co.quchu.quchu.utils;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +16,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 
 /**
@@ -142,5 +149,19 @@ public class StringUtils {
             }
         }
         return true;
+    }
+
+    /**
+     * 文字高亮处理
+     * @param view  Textview
+     * @param startIndex 起始位置
+     * @param endIndex 结束位置
+     */
+    public static void setTextHighlighting(TextView view,int startIndex,int endIndex){
+        SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
+        ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(R.color.planet_progress_yellow));
+        builder.setSpan(redSpan, startIndex,endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new StyleSpan(Typeface.BOLD),startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        view.setText(builder);
     }
 }

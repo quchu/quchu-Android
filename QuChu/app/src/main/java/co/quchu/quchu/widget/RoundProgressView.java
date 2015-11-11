@@ -6,13 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
-import com.squareup.picasso.Picasso;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import co.quchu.quchu.R;
 
@@ -22,7 +22,7 @@ import co.quchu.quchu.R;
  */
 public class RoundProgressView extends RelativeLayout {
 
-    private ImageView imageView;
+    private SimpleDraweeView imageView;
     private final RoundProgressBar bar;
     private boolean opacity = false;
     private boolean greyscale;
@@ -49,7 +49,7 @@ public class RoundProgressView extends RelativeLayout {
         mInflater.inflate(R.layout.round_progress_view, this, true);
         bar = (RoundProgressBar) findViewById(R.id.roundPrgoress_rpb);
         initRoundProgressBar(context, attrs, defStyle);
-        imageView = (ImageView) findViewById(R.id.roundPrgoress_img);
+        imageView = (SimpleDraweeView) findViewById(R.id.roundPrgoress_img);
         bar.bringToFront();
     }
 
@@ -268,7 +268,9 @@ bar.setProgress(progress);
     }
 
     public void setImage(String imageURL) {
-        Picasso.with(context).load(imageURL).resize(65,65).centerInside().transform(new CircleTransform()).into(imageView);
+       // Picasso.with(context).load(imageURL).resize(65,65).centerInside().transform(new CircleTransform()).into(imageView);
+        imageView.setImageURI(Uri.parse(imageURL));
+        imageView.setAspectRatio(1.0f);
     }
 
     public void setCricleColor(int cricleColor) {

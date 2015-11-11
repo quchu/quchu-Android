@@ -1,7 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,14 +12,13 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.nineoldandroids.animation.AnimatorSet;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,6 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.presenter.PlanetActPresenter;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.holder.PlanetActHolder;
 import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.planetanimations.Interpolator.BezierInterpolators;
@@ -47,7 +45,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     @Bind(R.id.mid_luncher)
     FrameLayout midLuncher;
     @Bind(R.id.planet_avatar_icon)
-    ImageView planetAvatarIcon;
+    SimpleDraweeView planetAvatarIcon;
     @Bind(R.id.design_rpv)
     RoundProgressView designRpv;
     @Bind(R.id.pavilion_rpv)
@@ -78,7 +76,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     @Bind(R.id.planet_gene_tv)
     TextView planetGeneTv;
-    private int AnimationDuration = 10 * 1000;
+    private int AnimationDuration = 50 * 1000;
     private PlanetActPresenter presenter;
     private PlanetActHolder planetHolder;
     private AnimatorSet animatorSet;
@@ -94,9 +92,12 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         presenter.setImageGalery(planetImageGv, this);
         ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(this);
-        Picasso.with(this).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565)
+    /*    Picasso.with(this).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565)
                 .resize(StringUtils.dip2px(this, 50), StringUtils.dip2px(this, 50))
-                .centerCrop().into(planetAvatarIcon);
+                .centerCrop().into(planetAvatarIcon);*/
+        planetAvatarIcon.setImageURI(Uri.parse("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg"));
+
+        atmosphereRpv.setImage("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg");
     }
 
 

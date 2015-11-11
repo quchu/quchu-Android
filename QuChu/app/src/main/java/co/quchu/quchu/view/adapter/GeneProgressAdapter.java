@@ -2,7 +2,7 @@ package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -11,13 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.RoundProgressBar;
 
 /**
@@ -123,18 +122,20 @@ public class GeneProgressAdapter extends BaseAdapter {
             pvh.planet_gallery_mask_rl.setVisibility(View.INVISIBLE);
         }
 
-        Picasso.with(context).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565).resize(StringUtils.dip2px(context,80), StringUtils.dip2px(context,80))
-                .centerCrop().into(pvh.sdv);
+       /* Picasso.with(context).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565).resize(StringUtils.dip2px(context,80), StringUtils.dip2px(context,80))
+                .centerCrop().into(pvh.sdv);*/
+
+        pvh.sdv.setImageURI(Uri.parse("http://imgdn.paimeilv.com/1444721523235"));
         return convertView;
     }
 
     class PlanetImgItemHolder {
-        public ImageView sdv;
-        public LinearLayout planet_gallery_mask_rl;
+        public SimpleDraweeView sdv;
+        public RelativeLayout planet_gallery_mask_rl;
         public TextView planet_gallery_mask_tv;
         public PlanetImgItemHolder(View view) {
-            sdv = (ImageView) view.findViewById(R.id.planet_gallery_img);
-            planet_gallery_mask_rl= (LinearLayout) view.findViewById(R.id.planet_gallery_mask_rl);
+            sdv = (SimpleDraweeView) view.findViewById(R.id.planet_gallery_img);
+            planet_gallery_mask_rl= (RelativeLayout) view.findViewById(R.id.planet_gallery_mask_rl);
             planet_gallery_mask_tv= (TextView) view.findViewById(R.id.planet_gallery_mask_tv);
         }
     }

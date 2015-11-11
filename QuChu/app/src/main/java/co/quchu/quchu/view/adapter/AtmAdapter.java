@@ -53,7 +53,7 @@ public class AtmAdapter extends RecyclerView.Adapter<AtmAdapter.AtmHolder> {
             }
 
             public QualityInfo getQualityInfo(int scanNumber) {
-                boolean isGoodEnough = (scanNumber >= 5);
+                boolean isGoodEnough = (scanNumber >= 2);
                 return ImmutableQualityInfo.of(scanNumber, isGoodEnough, false);
             }
         };
@@ -88,6 +88,7 @@ public class AtmAdapter extends RecyclerView.Adapter<AtmAdapter.AtmHolder> {
         holder.atrmosphereItemTitleTv.setText(arrayList.get(position % 10).getName());
         holder.atrmosphereItemAddressTv.setText(arrayList.get(position % 10).getAddress());
         holder.atrmosphereItemRb.setRating(arrayList.get(position % 10).getTakeIndex());
+
         ImageRequest request = ImageRequestBuilder
                 .newBuilderWithSource(Uri.parse(arrayList.get(position % 10).getCover()))
                 .setProgressiveRenderingEnabled(true)

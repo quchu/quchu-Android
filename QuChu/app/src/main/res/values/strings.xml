@@ -7,6 +7,9 @@
     <string name="titlebar_word_atmosphere">氛围</string>
     <string name="titlebar_word_discover">我的发现</string>
     <string name="titlebar_word_qu_friends">趣星人</string>
+    <string name="titlebar_word_gene_introduce">什么是趣基因</string>
+    <string name="titlebar_word_friends_introduce">什么是趣友圈</string>
+    <string name="titlebar_word_care_about_friends_introduce">我的趣友圈</string>
 
     <!-- ********** 趣星球 ********* -->
     <string name="prb_default_symbolic_string">$</string>
@@ -19,10 +22,9 @@
         <item >艺术基因</item>
         <item >土豪基因</item>
     </array>
-    <string name="titlebar_word_gene_introduce">什么是趣基因</string>
     <string name="subtitle_word_gene_introduce">什么是趣基因?</string>
-    <string name="titlebar_word_friends_introduce">什么是趣友圈</string>
     <string name="subtitle_word_friends_introduce">什么是趣友圈?</string>
+    <string name="subtitle_word_care_about_friends_introduce">最关心我的趣星人</string>
     <string name="text_planet_atmosphere">氛围</string>
     <string name="text_planet_pavilion">展馆</string>
     <string name="text_planet_design">设计</string>

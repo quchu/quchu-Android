@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:background="@drawable/ic_gene_background">
 
     <FrameLayout
@@ -10,10 +11,15 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/planet_avatar_icon"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            fresco:roundBottomRight="true"
+            fresco:roundTopLeft="true"
+            fresco:roundTopRight="true"
+            fresco:roundedCornerRadius="180dp"
+            fresco:actualImageScaleType="focusCrop"
             android:src="@mipmap/ic_launcher" />
     </FrameLayout>
 
@@ -41,7 +47,7 @@
         android:layout_marginRight="@dimen/half_margin"
         app:textSize="9sp"
         app:progress="33"
-        app:textStyle="WORD"
+        app:textStyle="Word"
         app:roundProgressText="设计"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_white" />
@@ -57,7 +63,7 @@
         android:layout_toRightOf="@+id/mid_luncher"
         app:textSize="9sp"
         app:progress="33"
-        app:textStyle="WORD"
+        app:textStyle="Word"
         app:roundProgressText="展馆"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_yellow" />
@@ -72,7 +78,7 @@
         app:roundProgressBackground="@color/itemMask_black"
         app:textSize="9sp"
         app:progress="33"
-        app:textStyle="WORD"
+        app:textStyle="Word"
         app:roundProgressText="氛围"
         app:roundProgressColor="@color/planet_progress_white" />
 
@@ -86,7 +92,7 @@
         app:roundProgressBackground="@color/itemMask_black"
         app:textSize="9sp"
         app:progress="33"
-        app:textStyle="WORD"
+        app:textStyle="Word"
         app:roundProgressText="逛店"
         app:roundProgressColor="@color/planet_progress_yellow" />
 
@@ -98,7 +104,7 @@
         android:layout_marginLeft="24dp"
         app:textSize="9sp"
         app:progress="33"
-        app:textStyle="WORD"
+        app:textStyle="Word"
         app:roundProgressText="美食"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_yellow" />
