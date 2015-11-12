@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp"
-                android:text="发现"
+                android:text="收藏"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp"
-                android:text="scends"
+                android:text="发现"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>
@@ -156,7 +156,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp"
                 android:fontFamily="sans-serif-thin"
-                android:text="discaff"
+                android:text="明信片"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>

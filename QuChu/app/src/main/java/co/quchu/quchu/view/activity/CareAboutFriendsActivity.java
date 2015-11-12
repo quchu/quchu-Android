@@ -5,11 +5,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.view.adapter.CareFriendsAdapter;
+import co.quchu.quchu.view.adapter.DiscoverAdapter;
 import co.quchu.quchu.widget.PostCardRecyclerView;
 
 /**
@@ -34,7 +37,7 @@ public class CareAboutFriendsActivity extends BaseActivity {
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)
     TextView title_content_tv;
-
+    private final List<PostCardRecyclerView.OnBackPressedListener> listeners = new ArrayList<PostCardRecyclerView.OnBackPressedListener>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,23 @@ public class CareAboutFriendsActivity extends BaseActivity {
         title_content_tv.setText(getTitle());
 
         atmosphereRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
-        atmosphereRv.setAdapter(new CareFriendsAdapter(this));
+        atmosphereRv.setAdapter(new DiscoverAdapter(this));
+    }
+
+    public void addOnBackPressedListener( PostCardRecyclerView.OnBackPressedListener onBackPressedListener ) {
+        if ( this.listeners.indexOf( onBackPressedListener ) == -1 ) {
+            this.listeners.add( onBackPressedListener );
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        if ( this.listeners.size() > 0 ) {
+            for ( PostCardRecyclerView.OnBackPressedListener item : this.listeners ) {
+                if ( item.onBackPressed() ) {
+                    return;
+                }
+            }
+        }
+        super.onBackPressed();
     }
 }

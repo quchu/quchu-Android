@@ -15,5 +15,7 @@ public class NetApi {
      ****/
     public static final String GetCityList = HOST + "/place/getPlaceList";
     public static final String GetCircleList = HOST + "/place/GetCircleList";
+    public static final String GetCardList = HOST + "/personal/getCardList?accesstoken=%s";
+
     /****  Get end  ****/
 }

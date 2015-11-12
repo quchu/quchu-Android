@@ -92,9 +92,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         presenter.setImageGalery(planetImageGv, this);
         ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(this);
-    /*    Picasso.with(this).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565)
-                .resize(StringUtils.dip2px(this, 50), StringUtils.dip2px(this, 50))
-                .centerCrop().into(planetAvatarIcon);*/
         planetAvatarIcon.setImageURI(Uri.parse("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg"));
 
         atmosphereRpv.setImage("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg");
@@ -105,21 +102,10 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     public void ViewClick(View v) {
         switch (v.getId()) {
             case R.id.title_more_rl:
-//                Toast.makeText(PlanetActivity.this, "more is click", Toast.LENGTH_SHORT).show();
                 Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 break;
             case R.id.title_back_rl:
-//                snackbar = Snackbar.make(titleBackRL, "back is click", Snackbar.LENGTH_SHORT);
-//                snackbar.setAction("已知", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if (snackbar != null && snackbar.isShown()) {
-//                            snackbar.dismiss();
-//                        }
-//                    }
-//                });
-//                snackbar.show();
                 break;
             case R.id.planet_gene_tv:
                 startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
@@ -236,7 +222,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     Intent intent;
 
-    @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv, R.id.planet_postcard_ll})
+    @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv, R.id.planet_postcard_ll, R.id.planet_discover_ll, R.id.planet_collect_ll})
     public void click(View v) {
         intent = new Intent();
         switch (v.getId()) {
@@ -256,6 +242,12 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
                 break;
             case R.id.planet_postcard_ll: //明信片
+                intent.setClass(this, PostCardActivity.class);
+                break;
+            case R.id.planet_discover_ll: //发现
+
+                break;
+            case R.id.planet_collect_ll: //收藏
 
                 break;
         }

@@ -1,6 +1,6 @@
 package co.quchu.quchu.view.adapter;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
@@ -39,11 +39,11 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
  */
 public class AtmAdapter extends RecyclerView.Adapter<AtmAdapter.AtmHolder> {
 
-    private Activity activity;
+    private Context activity;
     private ArrayList<AtmosphereItemModel> arrayList;
     private AtmItemClickListener listener;
 
-    public AtmAdapter(Activity atmosphereActivity, ArrayList<AtmosphereItemModel> arrayList) {
+    public AtmAdapter(Context atmosphereActivity, ArrayList<AtmosphereItemModel> arrayList) {
         activity = atmosphereActivity;
         this.arrayList = arrayList;
         ProgressiveJpegConfig pjpegConfig = new ProgressiveJpegConfig() {
