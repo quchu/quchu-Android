@@ -6,21 +6,22 @@
 
 
     <RelativeLayout
+        android:id="@+id/widget_switch_root_rl"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:background="@drawable/shape_flickr_buttons_bg">
 
         <View
             android:id="@+id/widget_switch_selected_view"
-            android:layout_width="72dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:background="@drawable/shape_flickr_button_selected_bg" />
 
         <ImageButton
             android:id="@+id/widget_switch_hot_btn"
-            android:layout_width="72dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:background="@drawable/shape_flickr_button_unselected_bg"
@@ -28,7 +29,7 @@
 
         <ImageButton
             android:id="@+id/widget_switch_new_btn"
-            android:layout_width="72dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -39,8 +40,8 @@
 
     <ImageView
         android:id="@+id/widget_switch_center_iv"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_widget_center_shrink" />
 </RelativeLayout>

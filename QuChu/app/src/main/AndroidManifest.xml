@@ -46,6 +46,10 @@
             android:name="co.quchu.quchu.view.activity.QuFriendsActivity"
             android:launchMode="singleInstance"
             android:label="@string/titlebar_word_qu_friends" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.FlickrActivity"
+            android:launchMode="singleInstance"
+            android:label="@string/titlebar_word_flickr" />
     </application>
 
 </manifest>

@@ -218,6 +218,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(this, "Image click=" + position, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(PlanetActivity.this,FlickrActivity.class));
     }
 
     Intent intent;
