@@ -54,10 +54,10 @@ public class PlanetImgGridAdapter extends BaseAdapter {
         } else {
             pvh = (PlanetImgItemHolder) convertView.getTag();
         }
-        if (position==3) {
+        if (position == 3) {
             pvh.planet_gallery_mask_rl.setVisibility(View.VISIBLE);
-        pvh.planet_gallery_mask_tv.setText("  88\r\n 照片");
-        }else{
+            pvh.planet_gallery_mask_tv.setText("  88\r\n 照片");
+        } else {
             pvh.planet_gallery_mask_rl.setVisibility(View.INVISIBLE);
         }
 
@@ -73,10 +73,11 @@ public class PlanetImgGridAdapter extends BaseAdapter {
         public SimpleDraweeView sdv;
         public RelativeLayout planet_gallery_mask_rl;
         public TextView planet_gallery_mask_tv;
+
         public PlanetImgItemHolder(View view) {
             sdv = (SimpleDraweeView) view.findViewById(R.id.planet_gallery_img);
-            planet_gallery_mask_rl= (RelativeLayout) view.findViewById(R.id.planet_gallery_mask_rl);
-            planet_gallery_mask_tv= (TextView) view.findViewById(R.id.planet_gallery_mask_tv);
+            planet_gallery_mask_rl = (RelativeLayout) view.findViewById(R.id.planet_gallery_mask_rl);
+            planet_gallery_mask_tv = (TextView) view.findViewById(R.id.planet_gallery_mask_tv);
         }
     }
 }

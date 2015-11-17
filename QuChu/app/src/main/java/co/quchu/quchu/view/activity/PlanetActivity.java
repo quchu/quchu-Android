@@ -29,6 +29,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.presenter.PlanetActPresenter;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.holder.PlanetActHolder;
 import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.planetanimations.Interpolator.BezierInterpolators;
@@ -183,24 +184,26 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
      */
     public void initAnimation() {
         final MovePath movePath = new MovePath();
-        List animationList = new ArrayList();
+        List animationList = new ArrayList();  //动画集合
         DisplayMetrics dm = new DisplayMetrics();
         //获取屏幕信息
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int screenWidth = dm.widthPixels;
+        //movePath.getCircleData 获取圆形移动路径
         List lis4t = movePath.getCircleData(designRpv, new float[]{0, 140});
         List list2 = movePath.getCircleData(pavilionRpv, new float[]{-(screenWidth / 2 - heigh / 2) + 40, (heigh / 4) + 20});
         List list3 = movePath.getCircleData(atmosphereRpv, new float[]{-heigh * 2 / 3, -heigh / 2});
         List list1 = movePath.getCircleData(strollRpv, new float[]{20, -heigh});
         List list5 = movePath.getCircleData(cateRpv, new float[]{Math.abs((screenWidth / 2 - heigh / 2) - 20), 0});
         MyAnimation moveAnimation = new MyAnimation();
+        //将5个button 的移动动画加入list集合中
         animationList.add(moveAnimation.setTranslation(designRpv, (List) lis4t.get(0), (List) lis4t.get(1), AnimationDuration));
         animationList.add(moveAnimation.setTranslation(pavilionRpv, (List) list2.get(0), (List) list2.get(1), AnimationDuration));
         animationList.add(moveAnimation.setTranslation(atmosphereRpv, (List) list3.get(0), (List) list3.get(1), AnimationDuration));
         animationList.add(moveAnimation.setTranslation(strollRpv, (List) list1.get(0), (List) list1.get(1), AnimationDuration));
         animationList.add(moveAnimation.setTranslation(cateRpv, (List) list5.get(0), (List) list5.get(1), AnimationDuration));
 
-        animatorSet = moveAnimation.playTogether(animationList);
+        animatorSet = moveAnimation.playTogether(animationList); //动画集合
         animatorSet.setDuration(AnimationDuration);
         animatorSet.setInterpolator(new BezierInterpolators(0.1f, 0.1f, 0.1f, 0.1f));
         myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
@@ -218,7 +221,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(this, "Image click=" + position, Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(PlanetActivity.this,FlickrActivity.class));
+        startActivity(new Intent(PlanetActivity.this, FlickrActivity.class));
     }
 
     Intent intent;
@@ -228,30 +231,32 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         intent = new Intent();
         switch (v.getId()) {
             case R.id.design_rpv: //设计
+                LogUtils.json(this.getClass().getSimpleName()+"////////////click==design_rpv");
                 intent.setClass(this, FriendsCircleIntroduceActivity.class);
                 break;
             case R.id.pavilion_rpv://展馆
-
+                LogUtils.json(this.getClass().getSimpleName()+"////////////click==Pavilion");
                 break;
             case R.id.atmosphere_rpv: //氛围
                 intent.setClass(this, AtmosphereActivity.class);
                 break;
             case R.id.stroll_rpv://逛店
-
+                LogUtils.json(this.getClass().getSimpleName()+"////////////click==stroll_rpv");
                 break;
             case R.id.cate_rpv: //美食
 
                 break;
             case R.id.planet_postcard_ll: //明信片
+                LogUtils.json(this.getClass().getSimpleName()+"////////////click==planet_postcard_ll"+System.currentTimeMillis());
                 intent.setClass(this, PostCardActivity.class);
                 break;
             case R.id.planet_discover_ll: //发现
-
+                intent.setClass(this, DiscoverActivity.class);
                 break;
             case R.id.planet_collect_ll: //收藏
 
                 break;
         }
-        startActivity(intent);
+     /*   startActivity(intent);*/
     }
 }

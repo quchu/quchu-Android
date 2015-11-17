@@ -1,11 +1,13 @@
 package co.quchu.quchu.base;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
@@ -20,10 +22,11 @@ import co.quchu.quchu.widget.swipbacklayout.Utils;
 public class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
-
+    @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+LogUtils.json("onCreate    this.getClass().getSimpleName()==" + this.getClass().getSimpleName() + " getLocalClassName= " + this.getLocalClassName()+"    //getComponentName="+this.getComponentName());
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
         overridePendingTransition(R.anim.in_push_right_to_left,
@@ -45,6 +48,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         super.onDestroy();
         // 结束Activity&从堆栈中移除
         ActManager.getAppManager().finishActivity(this);
+        LogUtils.json("onCreate    this.getClass().getSimpleName()==" + this.getClass().getSimpleName() + " getLocalClassName= " + this.getLocalClassName() + "    //getComponentName=" + this.getComponentName());
     }
 
     @Override

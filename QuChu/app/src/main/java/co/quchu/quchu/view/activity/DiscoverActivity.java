@@ -44,6 +44,8 @@ public class DiscoverActivity extends BaseActivity {
         atmosphereRv.setLayoutManager(mLayoutManager);
         atmosphereRv.setAdapter(new DiscoverAdapter(this));
 //        titleBackRL.setOnClickListener(this);
+
+        atmosphereRv.scrollTo(0,120);
     }
 
     @OnClick(R.id.title_more_rl)
