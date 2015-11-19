@@ -20,7 +20,7 @@
             fresco:roundBottomRight="true"
             fresco:roundTopLeft="true"
             fresco:roundTopRight="true"
-            android:src="@mipmap/ic_launcher" />
+          />
     </FrameLayout>
 
     <FrameLayout

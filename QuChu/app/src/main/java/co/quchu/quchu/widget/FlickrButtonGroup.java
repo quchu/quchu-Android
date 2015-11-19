@@ -15,6 +15,7 @@ import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -126,7 +127,8 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
 
     /**
      * 黄色色块移动动画，
-     * @param isL2R  true 自左向右   false 自右向左
+     *
+     * @param isL2R true 自左向右   false 自右向左
      */
     private void selectedViewL2R(boolean isL2R) {
         if (newBtnX == -1f || hotBtnX == -1f) {
@@ -134,7 +136,7 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
             hotBtnX = widgetSwitchHotBtn.getX();
             TranslationDuration = (long) (widget_switch_root_rl.getWidth() * 0.5f);
         }
-
+        LogUtils.json("newBtnX==" + newBtnX + "////hotBtnX==" + hotBtnX);
         animatorSet = new AnimatorSet();
         if (isL2R) {
             objectAnimator = ObjectAnimator.ofFloat(widgetSwitchSelectedView, "translationX", hotBtnX, newBtnX - StringUtils.dip2px(context, 4));
@@ -195,7 +197,7 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
         animatorSet = new AnimatorSet();
         objectAnimator1 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleX", 1f, 0.9f, 0.8f, 0.4f);
         objectAnimator2 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleY", 1f, 0.9f, 0.8f, 0.4f);
-        animatorSet.playTogether(objectAnimator1,objectAnimator2);
+        animatorSet.playTogether(objectAnimator1, objectAnimator2);
         animatorSet.setDuration(ScaleDuration);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -205,7 +207,7 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
 
             @Override
             public void onAnimationEnd(Animator animation) {
-            animCenterAmplify();
+                animCenterAmplify();
 
             }
 
@@ -228,16 +230,16 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
      */
     private void animCenterAmplify() {
         animatorSet = new AnimatorSet();
-        if (isCenterSelected){
+        if (isCenterSelected) {
             widgetSwitchCenterIv.setImageResource(R.drawable.ic_widget_center_amplify);
-            isCenterSelected=false;
-        }else{
+            isCenterSelected = false;
+        } else {
             widgetSwitchCenterIv.setImageResource(R.drawable.ic_widget_center_shrink);
-            isCenterSelected=true;
+            isCenterSelected = true;
         }
         objectAnimator1 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleX", 0.4f, 0.8f, 0.9f, 1.0f);
-        objectAnimator2 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleY",  0.4f, 0.8f, 0.9f, 1.0f);
-        animatorSet.playTogether(objectAnimator1,objectAnimator2);
+        objectAnimator2 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleY", 0.4f, 0.8f, 0.9f, 1.0f);
+        animatorSet.playTogether(objectAnimator1, objectAnimator2);
         animatorSet.setDuration(ScaleDuration);
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.addListener(new Animator.AnimatorListener() {
@@ -250,9 +252,9 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
             public void onAnimationEnd(Animator animation) {
                 setViewsClickable(true);
                 if (listener != null) {
-                    if (isCenterSelected){
+                    if (isCenterSelected) {
                         listener.onViewsClick(SelectedCT);
-                    }else{
+                    } else {
                         listener.onViewsClick(SelectedCF);
                     }
                 }
@@ -278,11 +280,12 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
         public void onViewsClick(int flag);
     }
 
-    private void setViewsClickable(boolean isClickable){
-         widgetSwitchHotBtn.setClickable(isClickable);
-         widgetSwitchNewBtn.setClickable(isClickable);
-         widgetSwitchCenterIv.setClickable(isClickable);
+    private void setViewsClickable(boolean isClickable) {
+        widgetSwitchHotBtn.setClickable(isClickable);
+        widgetSwitchNewBtn.setClickable(isClickable);
+        widgetSwitchCenterIv.setClickable(isClickable);
     }
+
     /**
      * 回调结果：
      * SelectedR== 当前选中右边

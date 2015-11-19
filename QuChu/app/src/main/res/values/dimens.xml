@@ -9,6 +9,8 @@
 
     <dimen name="line_thickness">0.5dp</dimen>
     <!--字号-->
+
+    <dimen name="word_large_number">34sp</dimen>
     <dimen name="word_title_body">20sp</dimen>
     <dimen name="word_subhead_size">16sp</dimen>
     <dimen name="word_size_body">14sp</dimen>
@@ -30,4 +32,8 @@
 
     <dimen name="rippleStrokeWidth">2dp</dimen>
     <dimen name="rippleRadius">64dp</dimen>
+    <!-- tabLayout 高度   我关注的|关注我的 -->
+    <dimen name="subTabLayoutHeight">48dp</dimen>
+    <!-- 带图 TabLayout -->
+    <dimen name="ImageSubTabLayoutHeight">112dp</dimen>
 </resources>

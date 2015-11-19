@@ -207,13 +207,14 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         animatorSet.setDuration(AnimationDuration);
         animatorSet.setInterpolator(new BezierInterpolators(0.1f, 0.1f, 0.1f, 0.1f));
         myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
+
     }
 
     private int heigh = 0;
 
     @Override
     public void onGlobalLayout() {
-        heigh = midLuncher.getHeight();
+        heigh = midLuncher.getHeight()/2;
         midLuncher.getViewTreeObserver().removeGlobalOnLayoutListener(this);
         initAnimation();
     }
@@ -257,6 +258,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
                 break;
         }
-     /*   startActivity(intent);*/
+        startActivity(intent);
     }
 }
