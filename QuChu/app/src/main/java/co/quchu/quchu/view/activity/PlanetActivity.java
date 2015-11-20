@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.presenter.FlickrPresenter;
 import co.quchu.quchu.presenter.PlanetActPresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.holder.PlanetActHolder;
@@ -96,6 +97,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         planetAvatarIcon.setImageURI(Uri.parse("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg"));
 
         atmosphereRpv.setImage("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg");
+        FlickrPresenter.getAlbum(this);
     }
 
 

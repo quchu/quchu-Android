@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.utils.LogUtils;
 
 /**
  * NetService
@@ -56,6 +57,7 @@ public class NetService {
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
         } else {
+            LogUtils.json("Net==="+pUrl);
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0);
         }
     }
@@ -69,6 +71,8 @@ public class NetService {
 //                    .progress(true, 0).autoDismiss(false)
 //                    .contentGravity(GravityEnum.CENTER)
 //                    .show();
+
+            LogUtils.json(pUrl);
             addToQueue(Request.Method.GET, pUrl, params, pListener, 0);
         }
         new HashMap<String, String>();
@@ -95,7 +99,7 @@ public class NetService {
 //                if (dialog != null) {
 //                    dialog.dismiss();
 //                }
-//                LogUtils.json("Response-Listener===" + response);
+             LogUtils.json("Response-Listener===" + response);
                 boolean result = false;
                 if (response.has("result")) {
                     try {

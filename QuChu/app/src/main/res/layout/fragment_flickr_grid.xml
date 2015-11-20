@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<co.quchu.quchu.widget.InnerGridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_flickr_gv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:horizontalSpacing="4dp"
+    android:layout_marginLeft="@dimen/base_margin"
+    android:layout_marginRight="@dimen/base_margin"
+    android:numColumns="4"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    android:verticalSpacing="4dp" />
+
+

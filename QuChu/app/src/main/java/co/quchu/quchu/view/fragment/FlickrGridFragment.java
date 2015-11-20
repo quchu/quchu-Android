@@ -10,24 +10,26 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.view.adapter.MyListAdapter;
-import co.quchu.quchu.widget.InnerListView;
+import co.quchu.quchu.view.adapter.FlickrGridAdapter;
+import co.quchu.quchu.widget.InnerGridView;
 
 /**
- * FlickrListFragment
+ * FlickrGridFragment
  * User: Chenhs
  * Date: 2015-11-18
  */
-public class FlickrListFragment extends Fragment {
-    @Bind(R.id.fragment_flickr_lv)
-    InnerListView fragmentFlickrLv;
+public class FlickrGridFragment extends Fragment {
+
+    @Bind(R.id.fragment_flickr_gv)
+    InnerGridView fragmentFlickrGv;
     private View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_flickr_list, null);
+        view = inflater.inflate(R.layout.fragment_flickr_grid, null);
         ButterKnife.bind(this, view);
-        fragmentFlickrLv.setAdapter( new MyListAdapter(getActivity()));
+        fragmentFlickrGv.setAdapter(new FlickrGridAdapter(getActivity()));
         return view;
     }
 

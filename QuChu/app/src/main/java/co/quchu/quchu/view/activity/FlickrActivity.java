@@ -1,8 +1,7 @@
 package co.quchu.quchu.view.activity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -10,8 +9,10 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.view.fragment.FlickrGridFragment;
 import co.quchu.quchu.view.fragment.FlickrListFragment;
 import co.quchu.quchu.widget.FlickrButtonGroup;
 import co.quchu.quchu.widget.ImageSubtabLayout;
@@ -42,7 +43,9 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)
     TextView title_content_tv;
-
+    FlickrListFragment flickrF;
+    FlickrGridFragment flickrGridFragment;
+    FragmentTransaction transaction;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +54,10 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
         title_content_tv.setText(getTitle());
         flickrFbg.setSelectedListener(this);
 
-        FlickrListFragment flickrF = new FlickrListFragment();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
+        flickrF = new FlickrListFragment();
+        flickrGridFragment = new FlickrGridFragment();
+
+        transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flickr_fl, flickrF);
         transaction.commit();
 
@@ -89,17 +93,31 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 break;
             case FlickrButtonGroup.SelectedL://选中hot
                 break;
-           /* case FlickrButtonGroup.SelectedCT: //选中大图
-                flickrRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-                flickrRv.setAdapter(new FlickrLargeAdapter(this));
+            case FlickrButtonGroup.SelectedCT: //选中大图
+                transaction = getSupportFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.flickr_fl, flickrF);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             case FlickrButtonGroup.SelectedCF://选中小图
-                flickrRv.setLayoutManager(new GridLayoutManager(this, 4));
-                FlickrDecoration decoration = new FlickrDecoration(this, 2);
-                decoration.setLineNum(4);
-                flickrRv.addItemDecoration(decoration);
-                break;*/
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.flickr_fl, flickrGridFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                break;
         }
     }
 
+    @OnClick({R.id.title_back_rl,R.id.title_more_rl})
+    public void titleClick(View view){
+        switch (view.getId()){
+            case R.id.title_back_rl:
+                finish();
+                break;
+            case R.id.title_more_rl:
+
+                break;
+        }
+    }
 }

@@ -56,11 +56,8 @@ public class MyListAdapter extends BaseAdapter {
     }
 
     class FlickrLargeHolder {
-        /*    @Bind(R.id.item_flickr_image_large_emptyview)
-            View itemFlickrImageLargeEmptyview;*/
         @Bind(R.id.item_flickr_image_large_sdv)
         SimpleDraweeView itemFlickrImageLargeSdv;
-
         public FlickrLargeHolder(View itemView) {
             ButterKnife.bind(this, itemView);
         }
