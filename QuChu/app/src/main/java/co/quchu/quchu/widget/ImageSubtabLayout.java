@@ -196,7 +196,12 @@ public class ImageSubtabLayout extends RelativeLayout {
         this.listener = listener;
     }
 
+
     public interface ImageSubtabSelectedListener {
+        /**
+         * 顶部按钮选中回调
+         * @param selectedNum   0=选中左边   1=选中右边
+         */
         void onSelected(int selectedNum);
     }
 

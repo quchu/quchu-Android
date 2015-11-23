@@ -1,6 +1,6 @@
 package co.quchu.quchu.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FlickrModel
@@ -12,24 +12,21 @@ public class FlickrModel {
 
     /**
      * cover : http://7xo7et.com1.z0.glb.clouddn.com/1442483892452
-     * height : 292
      * num : 5
-     * rgb : 827d63
-     * width : 433
      */
+
     private FavoriteEntity favorite;
     /**
+     * pageCount : 119
      * pageSize : 5
      * pagesNo : 1
-     * result : [{"height":683,"imagId":45,"path":"http://7xo7et.com1.z0.glb.clouddn.com/1442461307213","rgb":"606769","width":1024}]
+     * result : [{"imagId":45,"path":"http://7xo7et.com1.z0.glb.clouddn.com/1442461307213"}]
      */
 
     private ImgsEntity imgs;
     /**
-     * cover : http://7xo7et.com1.z0.glb.clouddn.com/1442459807995
-     * height : 639
+     * cover : http://7xo7et.com1.z0.glb.clouddn.com/1442460151639
      * num : 594
-     * width : 960
      */
 
     private PhotoEntity photo;
@@ -80,17 +77,19 @@ public class FlickrModel {
     }
 
     public static class ImgsEntity {
+        private int pageCount;
         private int pageSize;
         private int pagesNo;
         /**
-         * height : 683
          * imagId : 45
          * path : http://7xo7et.com1.z0.glb.clouddn.com/1442461307213
-         * rgb : 606769
-         * width : 1024
          */
 
-        private ArrayList<String> photos;
+        private List<ResultEntity> result;
+
+        public void setPageCount(int pageCount) {
+            this.pageCount = pageCount;
+        }
 
         public void setPageSize(int pageSize) {
             this.pageSize = pageSize;
@@ -100,6 +99,13 @@ public class FlickrModel {
             this.pagesNo = pagesNo;
         }
 
+        public void setResult(List<ResultEntity> result) {
+            this.result = result;
+        }
+
+        public int getPageCount() {
+            return pageCount;
+        }
 
         public int getPageSize() {
             return pageSize;
@@ -109,12 +115,29 @@ public class FlickrModel {
             return pagesNo;
         }
 
-        public ArrayList<String> getPhotos() {
-            return photos;
+        public List<ResultEntity> getResult() {
+            return result;
         }
 
-        public void setPhoto(ArrayList<String> list) {
-            this.photos=list;
+        public static class ResultEntity {
+            private int imagId;
+            private String path;
+
+            public void setImagId(int imagId) {
+                this.imagId = imagId;
+            }
+
+            public void setPath(String path) {
+                this.path = path;
+            }
+
+            public int getImagId() {
+                return imagId;
+            }
+
+            public String getPath() {
+                return path;
+            }
         }
     }
 

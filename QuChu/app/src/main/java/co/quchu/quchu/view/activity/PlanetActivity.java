@@ -97,7 +97,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         planetAvatarIcon.setImageURI(Uri.parse("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg"));
 
         atmosphereRpv.setImage("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg");
-        FlickrPresenter.getAlbum(this);
+
     }
 
 

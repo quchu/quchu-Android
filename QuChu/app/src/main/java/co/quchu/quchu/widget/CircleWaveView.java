@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -21,7 +22,7 @@ import co.quchu.quchu.R;
 public class CircleWaveView extends RelativeLayout {
 
     private static final int DEFAULT_RIPPLE_COUNT=6;
-    private static final int DEFAULT_DURATION_TIME=3000;
+    private static final int DEFAULT_DURATION_TIME=2300;
     private static final float DEFAULT_SCALE=6.0f;
     private static final int DEFAULT_FILL_TYPE=0;
 
@@ -135,10 +136,12 @@ public class CircleWaveView extends RelativeLayout {
         protected void onDraw(Canvas canvas) {
             int radius=(Math.min(getWidth(),getHeight()))/2;
             paint.setAntiAlias(true);  //消除锯齿
+            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
             canvas.drawCircle(radius,radius,radius-rippleStrokeWidth,paint);
 //            paint.setStyle(Paint.Style.STROKE); //设置空心
 //            paint.setColor(getResources().getColor(R.color.planet_progress_yellow));
 //            canvas.drawCircle(radius,radius,radius,paint);
+
         }
     }
 

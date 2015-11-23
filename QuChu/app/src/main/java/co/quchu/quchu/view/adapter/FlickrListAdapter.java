@@ -12,22 +12,25 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.FlickrModel;
 
 /**
- * MyListAdapter
+ * FlickrListAdapter
  * User: Chenhs
  * Date: 2015-11-17
  */
-public class MyListAdapter extends BaseAdapter {
+public class FlickrListAdapter extends BaseAdapter {
     private Context mContext;
+    private FlickrModel.ImgsEntity imgsEntity;
 
-    public MyListAdapter(Context mContext) {
+    public FlickrListAdapter(Context mContext, FlickrModel.ImgsEntity images) {
         this.mContext = mContext;
+        imgsEntity = images;
     }
 
     @Override
     public int getCount() {
-        return 15;
+        return imgsEntity.getResult().size();
     }
 
     @Override
@@ -44,13 +47,13 @@ public class MyListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         FlickrLargeHolder flickrLargeHolder;
         if (convertView == null) {
-            convertView=LayoutInflater.from(mContext).inflate(R.layout.item_flickr_image_large, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_flickr_image_large, null);
             flickrLargeHolder = new FlickrLargeHolder(convertView);
             convertView.setTag(flickrLargeHolder);
         } else {
             flickrLargeHolder = (FlickrLargeHolder) convertView.getTag();
         }
-        flickrLargeHolder.itemFlickrImageLargeSdv.setImageURI(Uri.parse("http://pic.nipic.com/2007-11-09/200711912453162_2.jpg"));
+        flickrLargeHolder.itemFlickrImageLargeSdv.setImageURI(Uri.parse(imgsEntity.getResult().get(position).getPath()));
         flickrLargeHolder.itemFlickrImageLargeSdv.setAspectRatio(1.0f);
         return convertView;
     }
@@ -58,8 +61,13 @@ public class MyListAdapter extends BaseAdapter {
     class FlickrLargeHolder {
         @Bind(R.id.item_flickr_image_large_sdv)
         SimpleDraweeView itemFlickrImageLargeSdv;
+
         public FlickrLargeHolder(View itemView) {
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public void updateDataSet(FlickrModel.ImgsEntity imgsEntity) {
+        this.imgsEntity = imgsEntity;
     }
 }

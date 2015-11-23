@@ -5,21 +5,31 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground">
 
-    <co.quchu.quchu.widget.CircleWaveView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <co.quchu.quchu.widget.CircleWaveView
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="360dp"
         android:background="@drawable/ic_activity_bg"
-        app:rb_color="#0099CC"
-        app:rb_duration="3600"
+        app:rb_color="@color/gene_textcolor_yellow"
+        app:rb_duration="2100"
         app:rb_radius="24dp"
         app:rb_rippleAmount="1"
         app:rb_scale="5">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_planet_avatar"/>
+
+        <ImageView
+            android:id="@+id/splash_circle_iv"
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:src="@drawable/shape_circle_splash" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_planet_avatar" />
+
     </co.quchu.quchu.widget.CircleWaveView>
 
 
