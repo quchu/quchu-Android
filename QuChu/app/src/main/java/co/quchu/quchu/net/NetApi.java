@@ -21,7 +21,9 @@ public class NetApi {
      * type 数据获取类型(image(照片)/favorite(收藏)) 为空则为image
      * orderby 排序类型(hot/new) 为空则为hot
      */
-    public static final String GetImageAlbum = HOST + "/personal/getAlbum?accesstoke=%s&type=image&orderby=%s&pageno=%d"; //相册接口
-    public static final String GetFavoriteAlbum = HOST + "/personal/getAlbum?accesstoke=%s&type=favorite&orderby=%s&pageno=%d"; //相册接口
+    public static final String GetImageAlbum = HOST + "/personal/getAlbum?accesstoken=%s&type=image&orderby=%s&pageno=%d"; //相册接口
+    public static final String GetFavoriteAlbum = HOST + "/personal/getAlbum?accesstoken=%s&type=favorite&orderby=%s&pageno=%d"; //相册接口
+    public static final String AlbumTypeHot = "hot";
+    public static final String AlbumTypeNew = "new";
     /****  Get end  ****/
 }

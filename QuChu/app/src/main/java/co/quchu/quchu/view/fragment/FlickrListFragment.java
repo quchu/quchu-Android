@@ -43,7 +43,6 @@ public class FlickrListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @Override
@@ -57,9 +56,12 @@ public class FlickrListFragment extends Fragment {
     }
 
     public void updateDataSet(FlickrModel.ImgsEntity images) {
-        this.images.getResult().addAll(images.getResult());
+        this.images.addResult(images.getResult());
         listAdapter.notifyDataSetChanged();
     }
+    public void changeDataSet(FlickrModel.ImgsEntity images) {
 
+        listAdapter.updateDataSet(images);
+    }
 
 }

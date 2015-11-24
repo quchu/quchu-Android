@@ -197,7 +197,8 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
         animatorSet = new AnimatorSet();
         objectAnimator1 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleX", 1f, 0.9f, 0.8f, 0.4f);
         objectAnimator2 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleY", 1f, 0.9f, 0.8f, 0.4f);
-        animatorSet.playTogether(objectAnimator1, objectAnimator2);
+        objectAnimator = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "rotation", 0f, 180,360);
+        animatorSet.playTogether(objectAnimator1, objectAnimator2,objectAnimator);
         animatorSet.setDuration(ScaleDuration);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -239,7 +240,8 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
         }
         objectAnimator1 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleX", 0.4f, 0.8f, 0.9f, 1.0f);
         objectAnimator2 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleY", 0.4f, 0.8f, 0.9f, 1.0f);
-        animatorSet.playTogether(objectAnimator1, objectAnimator2);
+        objectAnimator = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "alpha", 0.4f, 0.8f, 0.9f, 1.0f);
+        animatorSet.playTogether(objectAnimator1, objectAnimator2,objectAnimator);
         animatorSet.setDuration(ScaleDuration);
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.addListener(new Animator.AnimatorListener() {

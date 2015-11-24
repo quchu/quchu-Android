@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,12 +28,19 @@ public class FlickrGridFragment extends Fragment {
 
     private FlickrModel.ImgsEntity images;
     private FlickrGridAdapter gridAdapter;
+    private Context context;
+
+    public FlickrGridFragment(Context context, FlickrModel.ImgsEntity imgs) {
+        this.context = context;
+        this.images = imgs;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_flickr_grid, null);
         ButterKnife.bind(this, view);
-        gridAdapter=new FlickrGridAdapter(getActivity());
+        gridAdapter = new FlickrGridAdapter(getActivity(), images);
         fragmentFlickrGv.setAdapter(gridAdapter);
         return view;
     }
@@ -48,13 +56,22 @@ public class FlickrGridFragment extends Fragment {
         super.onDestroy();
     }
 
-    public FlickrGridFragment(){
-
+    /**
+     * 分页显示， 添加数据后刷新
+     *
+     * @param images imgsEntity
+     */
+    public void updateDataSet(FlickrModel.ImgsEntity images) {
+        this.images.addResult(images.getResult());
+        gridAdapter.notifyDataSetChanged();
     }
 
-
-    public void updateDataSet(FlickrModel.ImgsEntity images) {
-        this.images.getResult().addAll(images.getResult());
-        gridAdapter.notifyDataSetChanged();
+    /**
+     * 切换显示数据源，
+     *
+     * @param images imgsEntity
+     */
+    public void changeDataSet(FlickrModel.ImgsEntity images) {
+        gridAdapter.updateDataSet(images);
     }
 }

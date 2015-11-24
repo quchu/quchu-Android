@@ -15,4 +15,8 @@ public class AppKey {
      * 设备uuid
      */
     public static final String UUID = "device_id";
+    /**
+     * 令牌
+     */
+    public static final String USERTOKEN = "user_token";
 }

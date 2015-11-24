@@ -69,5 +69,6 @@ public class FlickrListAdapter extends BaseAdapter {
 
     public void updateDataSet(FlickrModel.ImgsEntity imgsEntity) {
         this.imgsEntity = imgsEntity;
+        notifyDataSetChanged();
     }
 }

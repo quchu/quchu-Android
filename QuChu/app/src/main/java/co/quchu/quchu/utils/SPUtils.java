@@ -9,11 +9,12 @@ import java.util.Map;
  * SPUtils
  * User: Chenhs
  * Date: 2015-10-19
- *   SharedPreferencesUtils 本地数据保存工具类
+ * SharedPreferencesUtils 本地数据保存工具类
  */
 public class SPUtils {
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor edit;
+
     /**
      * 存储布尔值
      *
@@ -125,7 +126,7 @@ public class SPUtils {
      *
      * @param mContext
      */
-    public static void putIntToSPMap(Context mContext,String key ,int value) {
+    public static void putIntToSPMap(Context mContext, String key, int value) {
         preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.putInt(key, value);
@@ -172,4 +173,11 @@ public class SPUtils {
         putValueToSPMap(mContext, key, "");
     }
 
+    public static String getUserToken(Context context) {
+        return getValueFromSPMap(context, AppKey.USERTOKEN, "");
+    }
+
+    public static void setUserToken(Context context, String userToken) {
+        putValueToSPMap(context, AppKey.USERTOKEN, userToken);
+    }
 }

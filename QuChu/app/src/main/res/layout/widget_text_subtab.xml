@@ -78,6 +78,10 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <View
+        style="@style/HorizontalLine"
+        android:layout_height="1.5dp"
+        android:layout_alignParentBottom="true" />
 
     <ImageView
         android:id="@+id/widget_text_index_iv"

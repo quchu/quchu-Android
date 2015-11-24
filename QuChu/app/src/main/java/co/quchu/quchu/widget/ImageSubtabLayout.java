@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.widget.textcounter.CounterView;
 
 /**
  * FlickrButtonGroup
@@ -36,13 +37,13 @@ public class ImageSubtabLayout extends RelativeLayout {
     @Bind(R.id.widget_image_subtab_left_sdv)
     SimpleDraweeView widgetImageSubtabLeftSdv;
     @Bind(R.id.widget_image_subtab_left_num_tv)
-    TextView widgetImageSubtabLeftNumTv;
+    CounterView widgetImageSubtabLeftNumTv;
     @Bind(R.id.widget_image_subtab_left_des_tv)
     TextView widgetImageSubtabLeftDesTv;
     @Bind(R.id.widget_image_subtab_right_sdv)
     SimpleDraweeView widgetImageSubtabRightSdv;
     @Bind(R.id.widget_image_subtab_right_num_tv)
-    TextView widgetImageSubtabRightNumTv;
+    CounterView widgetImageSubtabRightNumTv;
     @Bind(R.id.widget_image_subtab_right_des_tv)
     TextView widgetImageSubtabRightDesTv;
     @Bind(R.id.widget_animation_index_iv)
@@ -125,7 +126,7 @@ public class ImageSubtabLayout extends RelativeLayout {
         }
         if (objectAnimator != null) {
             objectAnimator.setDuration(ScaleDuration);
-            objectAnimator.setInterpolator(new DecelerateInterpolator());
+            objectAnimator.setInterpolator(new OvershootInterpolator());
             objectAnimator.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -200,7 +201,8 @@ public class ImageSubtabLayout extends RelativeLayout {
     public interface ImageSubtabSelectedListener {
         /**
          * 顶部按钮选中回调
-         * @param selectedNum   0=选中左边   1=选中右边
+         *
+         * @param selectedNum 0=选中左边   1=选中右边
          */
         void onSelected(int selectedNum);
     }
@@ -213,12 +215,18 @@ public class ImageSubtabLayout extends RelativeLayout {
         widgetImageSubtabLeftSdv.setImageURI(Uri.parse(url));
     }
 
-    public void setWidgetRightNum(String Num) {
-        widgetImageSubtabRightNumTv.setText(Num);
+    public void setWidgetRightNum(int Num) {
+        widgetImageSubtabRightNumTv.setEndValue(Num);
+        widgetImageSubtabLeftNumTv.setIncrement(1f);
+        widgetImageSubtabRightNumTv.setTimeInterval(12); // the time interval (ms) at which the text changes
+        widgetImageSubtabRightNumTv.start();
     }
 
-    public void setWidgetLeftNum(String Num) {
-        widgetImageSubtabLeftNumTv.setText(Num);
+    public void setWidgetLeftNum(int Num) {
+        widgetImageSubtabLeftNumTv.setEndValue(Num);
+        widgetImageSubtabLeftNumTv.setIncrement(1f);
+        widgetImageSubtabLeftNumTv.setTimeInterval(12); // the time interval (ms) at which the text changes
+        widgetImageSubtabLeftNumTv.start();
     }
 
     public void setWidgetRightDes(String des) {

@@ -12,6 +12,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.FlickrModel;
 
 /**
  * FlickrGridAdapter
@@ -20,14 +21,16 @@ import co.quchu.quchu.R;
  */
 public class FlickrGridAdapter extends BaseAdapter {
     private Context mContext;
+    private FlickrModel.ImgsEntity imgsEntity;
 
-    public FlickrGridAdapter(Context context) {
+    public FlickrGridAdapter(Context context,FlickrModel.ImgsEntity imgsEntity) {
         this.mContext = context;
+        this.imgsEntity=imgsEntity;
     }
 
     @Override
     public int getCount() {
-        return 22;
+        return imgsEntity.getResult().size();
     }
 
     @Override
@@ -50,7 +53,7 @@ public class FlickrGridAdapter extends BaseAdapter {
         } else {
             holder = (FlickrGridHolder) convertView.getTag();
         }
-        holder.itemFlickrGridviewSdv.setImageURI(Uri.parse("http://pic.nipic.com/2007-11-09/200711912453162_2.jpg"));
+        holder.itemFlickrGridviewSdv.setImageURI(Uri.parse(imgsEntity.getResult().get(position).getPath()));
         holder.itemFlickrGridviewSdv.setAspectRatio(1.0f);
         return convertView;
     }
@@ -64,5 +67,8 @@ public class FlickrGridAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
-
+    public void updateDataSet(FlickrModel.ImgsEntity imgsEntity) {
+        this.imgsEntity = imgsEntity;
+        notifyDataSetChanged();
+    }
 }

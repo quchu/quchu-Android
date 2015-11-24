@@ -102,6 +102,9 @@ public class FlickrModel {
         public void setResult(List<ResultEntity> result) {
             this.result = result;
         }
+        public void addResult(List<ResultEntity> result) {
+            this.result.addAll(result);
+        }
 
         public int getPageCount() {
             return pageCount;

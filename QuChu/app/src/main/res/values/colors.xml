@@ -29,4 +29,10 @@
     <color name="item_discover_title_color">#fefefe</color>
     <color name="item_discover_subtitle_color">#b4b5b5</color>
     <color name="splash_progress_yellow">#99f4e727</color>
+
+    <!--上拉加载更多  进度条-->
+    <color name="load_progress_yellow">#e9dd34</color>
+    <color name="load_progress_gray">#697081</color>
+    <color name="load_progress_black">#221613</color>
+    <color name="load_progress_white">#fefefe</color>
 </resources>

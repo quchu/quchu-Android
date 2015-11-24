@@ -204,12 +204,12 @@ public class TextSubtabLayout extends RelativeLayout implements View.OnClickList
         void onSelected(int selectedNum);
     }
 
-    public void setRightNum(String Num) {
-        widgetTextSubtabRightNumTv.setText(Num);
+    public void setRightNum(int  Num) {
+        widgetTextSubtabRightNumTv.setText(String.valueOf(Num));
     }
 
-    public void setLeftNum(String Num) {
-        widgetTextSubtabLeftNumTv.setText(Num);
+    public void setLeftNum(int Num) {
+        widgetTextSubtabLeftNumTv.setText(String.valueOf(Num));
     }
 
     public void setRightDes(String des) {
