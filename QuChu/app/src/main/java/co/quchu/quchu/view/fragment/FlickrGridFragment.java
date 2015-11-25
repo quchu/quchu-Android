@@ -72,6 +72,10 @@ public class FlickrGridFragment extends Fragment {
      * @param images imgsEntity
      */
     public void changeDataSet(FlickrModel.ImgsEntity images) {
-        gridAdapter.updateDataSet(images);
+        if (null != gridAdapter) {
+            this.images=images;
+            gridAdapter.updateDataSet(images);
+        }
+
     }
 }

@@ -6,7 +6,7 @@
     <dimen name="half_margin">8dp</dimen>
     <dimen name="quarter_margin">4dp</dimen>
     <dimen name="dialog_margin">24dp</dimen>
-
+    <dimen name="login_logo_margin_top">128dp</dimen>
     <dimen name="line_thickness">0.5dp</dimen>
     <!--字号-->
 

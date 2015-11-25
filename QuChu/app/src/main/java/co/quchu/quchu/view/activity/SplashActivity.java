@@ -36,7 +36,7 @@ public class SplashActivity extends BaseActivity {
         circleIv= (ImageView) findViewById(R.id.splash_circle_iv);
 /*        rippleBackground.startRippleAnimation();*/
         initCircleAnimation();
-        /*handler.sendMessageDelayed(handler.obtainMessage(0x00),3*1000);*/
+
     }
 
 
@@ -100,5 +100,6 @@ public class SplashActivity extends BaseActivity {
         super.onResume();
         if (animatorSet !=null)
             animatorSet.start();
+        rippleBackground.stopRippleAnimation();
     }
 }

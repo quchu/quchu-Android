@@ -35,4 +35,9 @@
     <color name="load_progress_gray">#697081</color>
     <color name="load_progress_black">#221613</color>
     <color name="load_progress_white">#fefefe</color>
+
+
+    <!-- 用户登陆 -->
+    <color name="user_login_text_hint_text_color">#b3b3b3</color>
+
 </resources>

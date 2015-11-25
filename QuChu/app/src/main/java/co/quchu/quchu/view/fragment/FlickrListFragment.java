@@ -59,9 +59,12 @@ public class FlickrListFragment extends Fragment {
         this.images.addResult(images.getResult());
         listAdapter.notifyDataSetChanged();
     }
-    public void changeDataSet(FlickrModel.ImgsEntity images) {
 
-        listAdapter.updateDataSet(images);
+    public void changeDataSet(FlickrModel.ImgsEntity images) {
+        if (listAdapter != null) {
+            this.images = images;
+            listAdapter.updateDataSet(images);
+        }
     }
 
 }

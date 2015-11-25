@@ -92,10 +92,11 @@ public class StringUtils {
 //        LogUtils.json(scale+" display");
         return (int) (dpValue * scale + 0.5f);
     }
+
     public static int pt2sp(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().xdpi;
         final float scd = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (dpValue * scale  * (1.0f/(72*scd)));
+        return (int) (dpValue * scale * (1.0f / (72 * scd)));
     }
 
     /**
@@ -107,7 +108,8 @@ public class StringUtils {
     }
 
     /**
-     *获取设备uuid
+     * 获取设备uuid
+     *
      * @return
      */
     public static String getMyUUID() {
@@ -135,6 +137,7 @@ public class StringUtils {
 
     /**
      * 判断字符串是否为空
+     *
      * @param input
      * @return
      */
@@ -153,15 +156,31 @@ public class StringUtils {
 
     /**
      * 文字高亮处理
-     * @param view  Textview
+     *
+     * @param view       Textview
      * @param startIndex 起始位置
-     * @param endIndex 结束位置
+     * @param endIndex   结束位置
      */
-    public static void setTextHighlighting(TextView view,int startIndex,int endIndex){
+    public static void setTextHighlighting(TextView view, int startIndex, int endIndex) {
         SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
         ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(R.color.planet_progress_yellow));
-        builder.setSpan(redSpan, startIndex,endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.setSpan(new StyleSpan(Typeface.BOLD),startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        view.setText(builder);
+    }
+
+    /**
+     * 修改部分文字颜色
+     *
+     * @param view       textview
+     * @param startIndex 起始位置
+     * @param endIndex  需改变的文字字数  结束位置
+     * @param mColor     颜色id
+     */
+    public static void alterTextColor(TextView view, int startIndex, int endIndex, int mColor) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
+        ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(mColor));
+        builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         view.setText(builder);
     }
 }

@@ -68,6 +68,7 @@ public class FlickrGridAdapter extends BaseAdapter {
         }
     }
     public void updateDataSet(FlickrModel.ImgsEntity imgsEntity) {
+        this.imgsEntity = null;
         this.imgsEntity = imgsEntity;
         notifyDataSetChanged();
     }

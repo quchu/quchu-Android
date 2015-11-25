@@ -83,11 +83,10 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 flickrTsl.initIndexView(selectedNum);
                 if (selectedNum == 0) {
                     isSelectedImages = true;
-                    changeDataSet();
                 } else {
                     isSelectedImages = false;
-                    changeDataSet();
                 }
+                    changeDataSet();
                 /**
                  * 顶部选中回调
                  */
@@ -99,11 +98,10 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 tabBar.initIndexView(selectedNum);
                 if (selectedNum == 0) {
                     isSelectedImages = true;
-                    changeDataSet();
                 } else {
                     isSelectedImages = false;
-                    changeDataSet();
                 }
+                    changeDataSet();
             }
         });
         scrollViewFlickr.setOverScrollListener(new OutSideScrollView.OverScrolledListener() {
@@ -132,18 +130,23 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 changeDataSet();
                 break;
             case FlickrButtonGroup.SelectedCT: //选中大图
+                isSelectedLarge = true;
+                changeDataSet();
                 transaction = getSupportFragmentManager().beginTransaction();
+         /*       transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
                 transaction.replace(R.id.flickr_fl, flickrListFragment);
              /*   transaction.addToBackStack(null);*/
                 transaction.commit();
-                isSelectedLarge = true;
+
                 break;
             case FlickrButtonGroup.SelectedCF://选中小图
+                isSelectedLarge = false;
+                changeDataSet();
                 transaction = getSupportFragmentManager().beginTransaction();
+          /*      transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
                 transaction.replace(R.id.flickr_fl, flickrGridFragment);
                /* transaction.addToBackStack(null);*/
                 transaction.commit();
-                isSelectedLarge = false;
                 scrollViewFlickr.smoothScrollTo(0, 0);
                 break;
         }

@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_activity_bg">
     <co.quchu.quchu.widget.CircleWaveView
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="360dp"
-        android:background="@drawable/ic_activity_bg"
         app:rb_color="@color/gene_textcolor_yellow"
         app:rb_duration="2100"
         app:rb_radius="24dp"
@@ -18,8 +20,8 @@
 
         <ImageView
             android:id="@+id/splash_circle_iv"
-            android:layout_width="260dp"
-            android:layout_height="260dp"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
             android:visibility="invisible"
             android:layout_centerInParent="true"
             android:src="@drawable/shape_circle_splash" />
@@ -32,5 +34,5 @@
 
     </co.quchu.quchu.widget.CircleWaveView>
 
-
+</RelativeLayout>
 </RelativeLayout>
