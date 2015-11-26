@@ -89,6 +89,7 @@ public class NetService {
                 pListener));
         req.setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
         addRequest(req, tag);
+        LogUtils.json("http Request:"+req);
     }
 
     private static Response.Listener<JSONObject> newResponseListener(

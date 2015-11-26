@@ -26,4 +26,10 @@ public class NetApi {
     public static final String AlbumTypeHot = "hot";
     public static final String AlbumTypeNew = "new";
     /****  Get end  ****/
+
+    /******************POST*******************/
+  /*  public static final String IsUnique = HOST + "/sns/feedback";*/
+    public static final String IsUnique = HOST + "/mregister/isUnique?username=%s&type=fullname";
+
+    /****************** POST *******************/
 }

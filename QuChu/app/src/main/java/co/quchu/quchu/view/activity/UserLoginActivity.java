@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.view.fragment.PhoneLoginFragment;
 import co.quchu.quchu.view.fragment.UserLoginMainFragment;
 
 /**
@@ -24,7 +25,7 @@ public class UserLoginActivity extends BaseActivity {
         setContentView(R.layout.activity_user_login);
         transaction = getSupportFragmentManager().beginTransaction();
          /*       transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
-        transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
+        transaction.replace(R.id.user_login_fl, new PhoneLoginFragment());
              /*   transaction.addToBackStack(null);*/
         transaction.commit();
     }

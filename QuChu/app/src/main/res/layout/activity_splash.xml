@@ -4,35 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ic_activity_bg">
-    <co.quchu.quchu.widget.CircleWaveView
-        android:id="@+id/content"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="360dp"
-        app:rb_color="@color/gene_textcolor_yellow"
-        app:rb_duration="2100"
-        app:rb_radius="24dp"
-        app:rb_rippleAmount="1"
-        app:rb_scale="5">
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_activity_bg">
 
-        <ImageView
-            android:id="@+id/splash_circle_iv"
-            android:layout_width="230dp"
-            android:layout_height="230dp"
-            android:visibility="invisible"
-            android:layout_centerInParent="true"
-            android:src="@drawable/shape_circle_splash" />
+        <co.quchu.quchu.widget.CircleWaveView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            app:rb_color="@color/gene_textcolor_yellow"
+            app:rb_duration="2100"
+            app:rb_radius="24dp"
+            app:rb_rippleAmount="1"
+            app:rb_scale="5">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_planet_avatar" />
+            <ImageView
+                android:id="@+id/splash_circle_iv"
+                android:layout_width="230dp"
+                android:layout_height="230dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/shape_circle_splash"
+                android:visibility="invisible" />
 
-    </co.quchu.quchu.widget.CircleWaveView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_planet_avatar" />
 
-</RelativeLayout>
+        </co.quchu.quchu.widget.CircleWaveView>
+
+    </RelativeLayout>
 </RelativeLayout>
