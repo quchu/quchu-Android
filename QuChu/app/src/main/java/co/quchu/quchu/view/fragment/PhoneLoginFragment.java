@@ -2,6 +2,8 @@ package co.quchu.quchu.view.fragment;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -18,9 +20,12 @@ import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.UserLoginActivity;
 
 /**
  * UserLoginMainFragment
@@ -48,8 +53,35 @@ public class PhoneLoginFragment extends Fragment {
     TextView phoneLoginEnterTv;
     @Bind(R.id.phone_login_progress_iv)
     ImageView phoneLoginProgressIv;
+    @Bind(R.id.user_login_forget_tv)
+    TextView userLoginForgetTv;
+    @Bind(R.id.user_login_nickname_et)
+    EditText userLoginNicknameEt;
+    @Bind(R.id.user_login_nickname_ll)
+    LinearLayout userLoginNicknameLl;
+
     private View view;
     private AnimationDrawable animationDrawable;
+    /**
+     * isRegiest=0 注册  =1登录  =2 重置密码
+     */
+    private int isRegiest = 0;
+    private long waitTime = 3 * 1000;
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            stopUserLoginProgress(); //隐藏进度条
+            LogUtils.json("handler");
+            switch (msg.what) {
+                case 0x00:
+                    toRegiest();
+                    break;
+                case 0x01:
+                    toLogin();
+                    break;
+            }
+        }
+    };
 
     @Nullable
     @Override
@@ -57,7 +89,7 @@ public class PhoneLoginFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_user_login_phone, null);
         ButterKnife.bind(this, view);
         phoneLoginPnumEt.addTextChangedListener(new PhoneNumWatcher());
-
+        initEditText();
         return view;
     }
 
@@ -80,6 +112,34 @@ public class PhoneLoginFragment extends Fragment {
     }
 
     /**
+     * 点击事件
+     */
+    @OnClick({R.id.getauthcode_login_tv, R.id.phone_login_enter_tv,R.id.user_login_forget_tv})
+    public void userLoginClick(View view) {
+        switch (view.getId()) {
+            case R.id.getauthcode_login_tv:
+                getAuthCode();
+
+                break;
+            case R.id.phone_login_enter_tv:
+                if (isRegiest == 0) {
+                    userRegiest();
+                } else if (isRegiest == 2) {
+                    userResetPassword();
+                } else {
+                    userLogin();
+                }
+                break;
+            case R.id.user_login_forget_tv:
+                isRegiest = 2;
+                LogUtils.json("user_login_forget_tv");
+                forgetPassword();
+                break;
+        }
+    }
+
+
+    /**
      * 开始播放帧动画
      */
     private void startUserLoginProgress() {
@@ -91,14 +151,130 @@ public class PhoneLoginFragment extends Fragment {
 
     private void stopUserLoginProgress() {
         if (phoneLoginProgressIv.getVisibility() == View.VISIBLE) {
+            phoneLoginProgressIv.setImageResource(R.drawable.user_login_progress);
             animationDrawable = (AnimationDrawable) phoneLoginProgressIv.getDrawable();
-            animationDrawable.stop();
+            if (animationDrawable.isRunning())
+                animationDrawable.stop();
             phoneLoginProgressIv.setVisibility(View.GONE);
         }
     }
 
 
+    /**
+     * 手机号码唯一
+     * 展示注册界面
+     */
+    private void toRegiest() {
+        hintOtherView();
+        phoneLoginPasswordLl.setVisibility(View.VISIBLE);
+        authcodeLoginPasswordLl.setVisibility(View.VISIBLE);
+        phoneLoginEnterTv.setVisibility(View.VISIBLE);
+        userLoginForgetTv.setVisibility(View.VISIBLE);
+        userLoginNicknameLl.setVisibility(View.VISIBLE);
+        phoneLoginEnterTv.setText("创建");
+        userLoginForgetTv.setText("创建账户即代表同意并遵守《趣处用户协议》");
+    }
+
+    /**
+     * 展示登录界面
+     */
+    private void toLogin() {
+        hintOtherView();
+        LogUtils.json("toLogin");
+        phoneLoginPasswordLl.setVisibility(View.VISIBLE);
+        phoneLoginEnterTv.setVisibility(View.VISIBLE);
+        userLoginForgetTv.setVisibility(View.VISIBLE);
+        phoneLoginEnterTv.setText("提交");
+        userLoginForgetTv.setText("忘记密码");
+    }
+
+    private void forgetPassword() {
+        phoneLoginPasswordLl.setVisibility(View.VISIBLE);
+        phoneLoginEnterTv.setVisibility(View.VISIBLE);
+        authcodeLoginPasswordLl.setVisibility(View.VISIBLE);
+        userLoginForgetTv.setText("想起密码");
+    }
+
+
+    private void hintOtherView() {
+        phoneLoginPasswordLl.setVisibility(View.GONE);
+        authcodeLoginPasswordLl.setVisibility(View.GONE);
+        phoneLoginEnterTv.setVisibility(View.GONE);
+        userLoginForgetTv.setVisibility(View.GONE);
+        userLoginNicknameLl.setVisibility(View.GONE);
+        authcodeLoginPasswordEt.setText("");
+        phoneLoginPasswordEt.setText("");
+        userLoginNicknameEt.setText("");
+    }
+
+    private void initEditText() {
+        //输入密码
+        phoneLoginPasswordEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                LogUtils.json("onTextChanged");
+                if (isRegiest == 0) {
+                    setRegiestButtonClickable(s.length() > 0 && authcodeLoginPasswordEt.getText().toString().trim().length() > 0 && userLoginNicknameEt.getText().toString().trim().length() > 0);
+                } else if (isRegiest == 1) {
+                    setRegiestButtonClickable(phoneLoginPnumEt.getText().toString().trim().length() > 0 && s.length() > 0);
+                } else {
+                    setRegiestButtonClickable(s.length() > 0 && authcodeLoginPasswordEt.getText().toString().trim().length() > 0 && phoneLoginPnumEt.getText().toString().trim().length() > 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        userLoginNicknameEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isRegiest == 0) {
+                    setRegiestButtonClickable(s.length() > 0 && authcodeLoginPasswordEt.getText().toString().trim().length() > 0 && phoneLoginPasswordEt.getText().toString().trim().length() > 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        authcodeLoginPasswordEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isRegiest == 0) {
+                    setRegiestButtonClickable(s.length() > 0 && userLoginNicknameEt.getText().toString().trim().length() > 0 && phoneLoginPasswordEt.getText().toString().trim().length() > 0);
+                } else if (isRegiest == 2) {
+                    setRegiestButtonClickable(s.length() > 0 && phoneLoginPasswordEt.getText().toString().trim().length() > 0 && phoneLoginPnumEt.getText().toString().trim().length() > 0);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    /**
+     * 手机号输入监听
+     */
     private class PhoneNumWatcher implements TextWatcher {
+        long requestTime = 0l;
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -106,14 +282,39 @@ public class PhoneLoginFragment extends Fragment {
         }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        public void onTextChanged(CharSequence s, final int start, int before, int count) {
 
             if (s.length() >= 11) {
                 String phoneNo = s.toString().trim();
                 if (phoneNo.length() >= 11) {
                     if (StringUtils.isMobileNO(phoneNo)) {
+                        hintOtherView();
                         startUserLoginProgress();
-                        UserLoginPresenter.decideMobileCanLogin(getActivity(),phoneNo);
+                        final long startTime = System.currentTimeMillis();
+                        UserLoginPresenter.decideMobileCanLogin(getActivity(), phoneNo,
+                                new UserLoginPresenter.UserNameUniqueListener() {
+                                    @Override
+                                    public void isUnique(String msg) {
+                                        isRegiest = 0;
+                                        requestTime = System.currentTimeMillis() - start;
+                                        if (requestTime > waitTime) {
+                                            handler.sendMessageDelayed(handler.obtainMessage(0x00), 1000);
+                                        } else {
+                                            handler.sendMessageDelayed(handler.obtainMessage(0x00), waitTime - requestTime);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void notUnique(String msg) {
+                                        isRegiest = 1;
+                                        if (requestTime > waitTime) {
+                                            handler.sendMessageDelayed(handler.obtainMessage(0x01), 1000);
+                                        } else {
+                                            handler.sendMessageDelayed(handler.obtainMessage(0x01), waitTime - requestTime);
+                                        }
+
+                                    }
+                                });
                     } else {
                         Toast.makeText(getActivity(), "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
                         stopUserLoginProgress();
@@ -122,8 +323,9 @@ public class PhoneLoginFragment extends Fragment {
                     Toast.makeText(getActivity(), "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
                     stopUserLoginProgress();
                 }
-            }else {
+            } else {
                 stopUserLoginProgress();
+                hintOtherView();
             }
         }
 
@@ -133,4 +335,87 @@ public class PhoneLoginFragment extends Fragment {
         }
     }
 
+    private void setRegiestButtonClickable(boolean clickable) {
+        if (clickable) {
+            phoneLoginEnterTv.setBackgroundColor(getResources().getColor(R.color.user_login_textbg_clickable));
+            phoneLoginEnterTv.setTextColor(getResources().getColor(R.color.user_login_text_clickable));
+        } else {
+            phoneLoginEnterTv.setBackgroundColor(getResources().getColor(R.color.user_login_text_hint_text_color));
+            phoneLoginEnterTv.setTextColor(getResources().getColor(R.color.white));
+        }
+        phoneLoginEnterTv.setClickable(clickable);
+    }
+
+
+    /**
+     * 获取验证码
+     */
+    private void getAuthCode() {
+        UserLoginPresenter.getCaptcha(getActivity(), phoneLoginPnumEt.getText().toString().trim(), isRegiest == 0 ? UserLoginPresenter.getCaptcha_regiest : UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
+            @Override
+            public void isUnique(String msg) {
+
+            }
+
+            @Override
+            public void notUnique(String msg) {
+                LogUtils.json(msg);
+            }
+        });
+    }
+
+    /**
+     * 用户注册
+     */
+    private void userRegiest() {
+        UserLoginPresenter.userRegiest(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
+                phoneLoginPasswordEt.getText().toString().trim(), userLoginNicknameEt.getText().toString().trim(),
+                authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
+                    @Override
+                    public void isUnique(String msg) {
+                        ((UserLoginActivity) getActivity()).userLogin();
+                    }
+
+                    @Override
+                    public void notUnique(String msg) {
+
+                    }
+                });
+    }
+
+    /**
+     * 用户登录
+     */
+    private void userLogin() {
+        UserLoginPresenter.userLogin(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
+                phoneLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
+                    @Override
+                    public void isUnique(String msg) {
+                        ((UserLoginActivity) getActivity()).userLogin();
+                    }
+
+                    @Override
+                    public void notUnique(String msg) {
+
+                    }
+                });
+    }
+
+    /**
+     * 重置密码
+     */
+    private void userResetPassword() {
+        UserLoginPresenter.resetPassword(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
+                phoneLoginPasswordEt.getText().toString().trim(), authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
+                    @Override
+                    public void isUnique(String msg) {
+                        toLogin();
+                    }
+
+                    @Override
+                    public void notUnique(String msg) {
+
+                    }
+                });
+    }
 }

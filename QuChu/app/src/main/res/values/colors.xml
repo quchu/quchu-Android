@@ -40,5 +40,7 @@
     <!-- 用户登陆 -->
     <color name="user_login_text_hint_text_color">#b3b3b3</color>
     <color name="user_login_view_bg_color">#33ffffff</color>
+    <color name="user_login_text_clickable">#221714</color>
+    <color name="user_login_textbg_clickable">#fff000</color>
 
 </resources>

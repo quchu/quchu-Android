@@ -6,7 +6,8 @@ import co.quchu.quchu.base.Constants;
  * netApi
  */
 public class NetApi {
-    public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
+     public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
+//    public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     public static String DEBUG_TOKEN = "8c6c7322163dc815c3f45c39c9f63dbb16460465";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
     public static final String HOST = Constants.ISDEBUG ? DEBUG_HOST : DEBUG_HOST;
@@ -25,11 +26,16 @@ public class NetApi {
     public static final String GetFavoriteAlbum = HOST + "/personal/getAlbum?accesstoken=%s&type=favorite&orderby=%s&pageno=%d"; //相册接口
     public static final String AlbumTypeHot = "hot";
     public static final String AlbumTypeNew = "new";
+    public static final String GetCaptcha = HOST + "/mregister/getCaptcha?username=%s&method=%s"; //获取验证码 register=注册  reset=重置密码
     /****  Get end  ****/
 
-    /******************POST*******************/
-  /*  public static final String IsUnique = HOST + "/sns/feedback";*/
-    public static final String IsUnique = HOST + "/mregister/isUnique?username=%s&type=fullname";
+    /******************
+     * POST
+     *******************/
+    public static final String IsUnique = HOST + "/mregister/isUnique?username=%s&type=username"; //验证用户唯一性   type=username 验证手机号码  type=fullname  验证用户昵称 是否可用
+    public static final String Regiester = HOST + "/mregister?username=%s&password=%s&captcha=%s&regType=tel&equip=%s&fullname=%s"; //用户注册  username=PhoneNo  captcha =验证码 equip=uuid  fullname=NickName
+    public static final String Mlogin = HOST + "/mlogin?j_username=%s&j_password=%s&equip=%s"; //用户登录  username=PhoneNo  captcha =验证码 equip=uuid
+    public static final String ResertPsw = HOST + "/mregister/resertPsw?resType=tel&tel=%s&newpsw=%s&captcha=%s"; //重置密码  username=PhoneNo  captcha =验证码 newpsw=密码
 
     /****************** POST *******************/
 }

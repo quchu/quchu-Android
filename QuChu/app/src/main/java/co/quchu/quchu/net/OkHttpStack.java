@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import co.quchu.quchu.utils.LogUtils;
+
 /**
  * OkHttpStack
  * User: Chenhs
@@ -126,6 +128,7 @@ private final OkHttpClient mClient;
                 builder.delete();
                 break;
             case Request.Method.POST:
+                LogUtils.json("okhttp:=="+request.toString());
                 builder.post(createRequestBody(request));
                 break;
             case Request.Method.PUT:

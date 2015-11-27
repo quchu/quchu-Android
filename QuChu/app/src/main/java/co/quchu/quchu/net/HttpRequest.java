@@ -43,7 +43,7 @@ public class HttpRequest extends JsonObjectRequest {
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Charset", "UTF-8");
-        headers.put("Content-Type", "application/x-www-form-urlencoded");
+        headers.put("Content-Type", "application/json;charset=UTF-8");
         headers.put("quchu-token",SPUtils.getUserToken(AppContext.mContext) );
         LogUtils.json("getHeaders == user=="+SPUtils.getUserToken(AppContext.mContext) );
         return headers;

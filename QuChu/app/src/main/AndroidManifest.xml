@@ -15,6 +15,7 @@
             <!--android:name="co.quchu.quchu.view.activity.PlanetActivity"-->
         <activity
             android:name="co.quchu.quchu.view.activity.UserLoginActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

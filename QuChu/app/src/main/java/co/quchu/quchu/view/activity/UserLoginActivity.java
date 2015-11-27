@@ -52,4 +52,8 @@ public class UserLoginActivity extends BaseActivity {
         transaction.commit();*/
         Toast.makeText(this,"selected Phone",0).show();
     }
+
+    public void userLogin(){
+
+    }
 }

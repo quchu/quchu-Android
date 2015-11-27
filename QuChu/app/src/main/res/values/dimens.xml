@@ -35,5 +35,5 @@
     <!-- tabLayout 高度   我关注的|关注我的 -->
     <dimen name="subTabLayoutHeight">48dp</dimen>
     <!-- 带图 TabLayout -->
-    <dimen name="ImageSubTabLayoutHeight">112dp</dimen>
+    <dimen name="ImageSubTabLayoutHeight">96dp</dimen>
 </resources>

@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * NetService
@@ -27,7 +28,7 @@ import co.quchu.quchu.utils.LogUtils;
  * 对返回数据初步处理
  */
 public class NetService {
-//    private static MaterialDialog dialog;
+    //    private static MaterialDialog dialog;
     public static RequestQueue mRequestQueue = Volley
             .newRequestQueue(AppContext.mContext, new OkHttpStack(new OkHttpClient()));
 
@@ -57,7 +58,6 @@ public class NetService {
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
         } else {
-            LogUtils.json("Net==="+pUrl);
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0);
         }
     }
@@ -71,8 +71,7 @@ public class NetService {
 //                    .progress(true, 0).autoDismiss(false)
 //                    .contentGravity(GravityEnum.CENTER)
 //                    .show();
-
-            LogUtils.json(pUrl);
+LogUtils.json(pUrl);
             addToQueue(Request.Method.GET, pUrl, params, pListener, 0);
         }
         new HashMap<String, String>();
@@ -89,7 +88,6 @@ public class NetService {
                 pListener));
         req.setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
         addRequest(req, tag);
-        LogUtils.json("http Request:"+req);
     }
 
     private static Response.Listener<JSONObject> newResponseListener(
@@ -100,25 +98,36 @@ public class NetService {
 //                if (dialog != null) {
 //                    dialog.dismiss();
 //                }
-             LogUtils.json("Response-Listener===" + response);
                 boolean result = false;
+                LogUtils.json("NetService==" + response.toString());
                 if (response.has("result")) {
                     try {
+                        //   LogUtils.json("Response-Listener===" + response.getString("data").toString() + "//isnull==" + StringUtils.isEmpty(response.getString("data").toString()) + "//isnull==" + response.getString("data").equals("null"));
                         result = response.getBoolean("result");
                         if (null != pListener) {
                             if (result) {
-                                if (response.has("data") && null != response.getJSONObject("data")) {
+                                if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
                                     pListener.onSuccess(response.getJSONObject("data"));
                                 } else {
                                     pListener.onSuccess(response);
+
                                 }
                             } else {
-                                Toast.makeText(AppContext.mContext, "网络出错", 0).show();
-                                pListener.onError("");
+                                if (response.has("msg") && response.has("exception") && "error".equals(response.getString("msg")) && "登录名已存在".equals(response.getString("exception"))) {
+                                    pListener.onSuccess(response);
+                                } else {
+                                    if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
+                                        Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), 0).show();
+                                    } else {
+                                        Toast.makeText(AppContext.mContext, "网络出错", 0).show();
+                                    }
+                                    pListener.onError(response.toString());
+                                }
                             }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        LogUtils.json("NetService JSONException" + e);
                     }
                 }
 
