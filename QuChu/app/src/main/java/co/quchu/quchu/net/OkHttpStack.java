@@ -52,6 +52,9 @@ private final OkHttpClient mClient;
 
     public OkHttpStack(OkHttpClient client) {
         this.mClient = client;
+        LogUtils.json("Client ==" +mClient.getFollowRedirects());
+        mClient.setFollowRedirects(false);
+        LogUtils.json("Client ==" +mClient.getFollowRedirects());
     }
 
     @Override

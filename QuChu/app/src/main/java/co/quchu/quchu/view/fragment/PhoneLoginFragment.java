@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.UserLoginActivity;
@@ -114,7 +115,7 @@ public class PhoneLoginFragment extends Fragment {
     /**
      * 点击事件
      */
-    @OnClick({R.id.getauthcode_login_tv, R.id.phone_login_enter_tv,R.id.user_login_forget_tv})
+    @OnClick({R.id.getauthcode_login_tv, R.id.phone_login_enter_tv, R.id.user_login_forget_tv})
     public void userLoginClick(View view) {
         switch (view.getId()) {
             case R.id.getauthcode_login_tv:
@@ -216,7 +217,6 @@ public class PhoneLoginFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                LogUtils.json("onTextChanged");
                 if (isRegiest == 0) {
                     setRegiestButtonClickable(s.length() > 0 && authcodeLoginPasswordEt.getText().toString().trim().length() > 0 && userLoginNicknameEt.getText().toString().trim().length() > 0);
                 } else if (isRegiest == 1) {
@@ -373,7 +373,7 @@ public class PhoneLoginFragment extends Fragment {
                 authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
                     @Override
                     public void isUnique(String msg) {
-                        ((UserLoginActivity) getActivity()).userLogin();
+
                     }
 
                     @Override
@@ -388,15 +388,10 @@ public class PhoneLoginFragment extends Fragment {
      */
     private void userLogin() {
         UserLoginPresenter.userLogin(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
-                phoneLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
+                phoneLoginPasswordEt.getText().toString().trim(), new UserLoginListener() {
                     @Override
-                    public void isUnique(String msg) {
-                        ((UserLoginActivity) getActivity()).userLogin();
-                    }
-
-                    @Override
-                    public void notUnique(String msg) {
-
+                    public void loginSuccess() {
+                        ((UserLoginActivity) getActivity()).enterApp();
                     }
                 });
     }

@@ -23,7 +23,7 @@ public class SPUtils {
      * @param value
      */
     public static void putBooleanToSPMap(Context mContext, String key, boolean value) {
-        preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.putBoolean(key, value);
         edit.commit();
@@ -37,13 +37,13 @@ public class SPUtils {
      * @return
      */
     public static Boolean getBooleanFromSPMap(Context mContext, String key) {
-        preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         boolean value = preferences.getBoolean(key, false);
         return value;
     }
 
     public static Boolean getBooleanFromSPMap(Context mContext, String key, boolean def) {
-        preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         boolean value = preferences.getBoolean(key, def);
         return value;
     }
@@ -56,7 +56,7 @@ public class SPUtils {
      * @param value
      */
     public static void putValueToSPMap(Context mContext, String key, String value) {
-        preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.putString(key, value);
         edit.commit();
@@ -68,7 +68,7 @@ public class SPUtils {
      * @param mContext
      */
     public static void putValueToSPMap(Context mContext, Map<String, String> map) {
-        preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         String value;
         for (String key : map.keySet()) {
@@ -87,7 +87,7 @@ public class SPUtils {
      */
     public static String getValueFromSPMap(Context mContext, String key) {
         if (null != mContext) {
-            preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+            preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
             String value = preferences.getString(key, "");
             return value;
         } else {
@@ -96,7 +96,7 @@ public class SPUtils {
     }
 
     public static double getDoubleFromSPMap(Context mContext, String key) {
-        preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         double value;
         value = (double) preferences.getFloat(key, 0f);
         return value;
@@ -113,7 +113,7 @@ public class SPUtils {
 
     public static String getValueFromSPMap(Context mContext, String key, String defaults) {
         if (null != mContext) {
-            preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+            preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
             String value = preferences.getString(key, defaults);
             return value;
         } else {
@@ -127,7 +127,7 @@ public class SPUtils {
      * @param mContext
      */
     public static void putIntToSPMap(Context mContext, String key, int value) {
-        preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.putInt(key, value);
         edit.commit();
@@ -143,7 +143,7 @@ public class SPUtils {
      */
     public static int getIntFromSPMap(Context mContext, String key, int defaults) {
         if (null != mContext) {
-            preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+            preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
             int value = preferences.getInt(key, defaults);
             return value;
         } else {
@@ -157,7 +157,7 @@ public class SPUtils {
      * @param mContext
      */
     public static void clearSPMap(Context mContext) {
-        preferences = mContext.getSharedPreferences(AppKey.USERINFO, Context.MODE_PRIVATE);
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.clear();
         edit.commit();
@@ -179,5 +179,12 @@ public class SPUtils {
 
     public static void setUserToken(Context context, String userToken) {
         putValueToSPMap(context, AppKey.USERTOKEN, userToken);
+    }
+    public static void setUserInfo(Context context, String userToken) {
+        putValueToSPMap(context, AppKey.USERINFO, userToken);
+    }
+
+    public static String getUserInfo(Context context) {
+        return getValueFromSPMap(context, AppKey.USERTOKEN, "");
     }
 }

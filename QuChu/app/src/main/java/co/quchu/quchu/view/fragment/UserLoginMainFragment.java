@@ -14,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 import co.quchu.quchu.widget.CircleWaveView;
@@ -60,13 +61,15 @@ public class UserLoginMainFragment extends Fragment {
     public void onLoginClick(View view) {
         switch (view.getId()) {
             case R.id.user_login_main_phone_ll:
-                ((UserLoginActivity) getActivity()).clickPhone();
+                ((UserLoginActivity) getActivity()).mobileNoLogin();
                 break;
             case R.id.user_login_main_wechat_ll:
-
+                LogUtils.json("user_login_main_wechat_ll");
+                ((UserLoginActivity) getActivity()).weixinLogin();
                 break;
             case R.id.user_login_main_weibo_ll:
-
+                LogUtils.json("user_login_main_weibo_ll");
+                ((UserLoginActivity) getActivity()).sinaLogin();
                 break;
         }
     }

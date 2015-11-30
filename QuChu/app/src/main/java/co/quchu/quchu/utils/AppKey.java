@@ -10,7 +10,7 @@ public class AppKey {
     /**
      * sharedPreference 文件名
      */
-    public static final String USERINFO = "QuChu";
+    public static final String APPINFO = "QuChu";
     /**
      * 设备uuid
      */
@@ -19,4 +19,9 @@ public class AppKey {
      * 令牌
      */
     public static final String USERTOKEN = "user_token";
+
+    /**
+     *
+     */
+    public static final String USERINFO = "user_info";
 }

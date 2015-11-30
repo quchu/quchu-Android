@@ -27,7 +27,9 @@ import co.quchu.quchu.utils.StringUtils;
  * 网络请求框架的进一步封装
  * 对返回数据初步处理
  */
+
 public class NetService {
+
     //    private static MaterialDialog dialog;
     public static RequestQueue mRequestQueue = Volley
             .newRequestQueue(AppContext.mContext, new OkHttpStack(new OkHttpClient()));
@@ -71,7 +73,7 @@ public class NetService {
 //                    .progress(true, 0).autoDismiss(false)
 //                    .contentGravity(GravityEnum.CENTER)
 //                    .show();
-LogUtils.json(pUrl);
+            LogUtils.json(pUrl);
             addToQueue(Request.Method.GET, pUrl, params, pListener, 0);
         }
         new HashMap<String, String>();
@@ -100,7 +102,9 @@ LogUtils.json(pUrl);
 //                }
                 boolean result = false;
                 LogUtils.json("NetService==" + response.toString());
-                if (response.has("result")) {
+                if (response.has("access_token") && response.has("openid")) {
+                    pListener.onSuccess(response);
+                } else if (response.has("result")) {
                     try {
                         //   LogUtils.json("Response-Listener===" + response.getString("data").toString() + "//isnull==" + StringUtils.isEmpty(response.getString("data").toString()) + "//isnull==" + response.getString("data").equals("null"));
                         result = response.getBoolean("result");

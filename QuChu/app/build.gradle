@@ -11,12 +11,21 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            //混淆
             minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     useLibrary 'org.apache.http.legacy'
 
 }
@@ -32,27 +41,25 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.github.orhanobut:logger:1.12'
-
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.facebook.fresco:fresco:0.8.1' //FRESCO
-/** ***************************************************************/
+    compile 'com.facebook.fresco:fresco:0.8.1'
+    //FRESCO
+    /** ***************************************************************/
     compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
-
-
+    compile 'com.umeng.analytics:analytics:latest.integration'
     compile files('libs/volley.jar')
     compile files('libs/gson-2.4.jar')
-
     //compile 'com.umeng.analytics:analytics:latest.integration'
     //    compile 'com.squareup.picasso:picasso:2.5.2'
-//    compile 'com.squareup.okio:okio:1.6.0'
-////    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
-//    //    compile 'com.android.support:percent:22.2.+'
-//    compile files('libs/nineoldandroids-2.4.0.jar')
-//    compile files('libs/okhttp-urlconnection-2.0.0.jar')
-//    compile('com.github.afollestad.material-dialogs:core:0.8.5.0@aar') {
-//        transitive = true
-//    }
-
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    //    compile 'com.squareup.okio:okio:1.6.0'
+    ////    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    //    //    compile 'com.android.support:percent:22.2.+'
+    //    compile files('libs/nineoldandroids-2.4.0.jar')
+    //    compile files('libs/okhttp-urlconnection-2.0.0.jar')
+    //    compile('com.github.afollestad.material-dialogs:core:0.8.5.0@aar') {
+    //        transitive = true
+    //    }
+    compile files('libs/weibosdkcore.jar')
+    compile files('libs/libammsdk.jar')
 }

@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.thirdhelp.UserInfoHelper;
+import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -118,12 +120,13 @@ public class UserLoginPresenter {
      * @param password 密码
      * @param listener 回调
      */
-    public static void userLogin(Context context, String phoneNo, String password, UserNameUniqueListener listener) {
+    public static void userLogin(Context context, String phoneNo, String password, final UserLoginListener listener) {
         NetService.post(context, String.format(NetApi.Mlogin, phoneNo, password, StringUtils.getMyUUID()), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
-
+                UserInfoHelper.saveUserInfo(response);
+                listener.loginSuccess();
             }
 
             @Override
