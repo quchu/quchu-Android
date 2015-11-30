@@ -30,8 +30,8 @@ public class NetApi {
     public static final String GetCaptcha = HOST + "/mregister/getCaptcha?username=%s&method=%s"; //获取验证码 register=注册  reset=重置密码
     public static final String WeiboLogin = HOST + "/oauth/checkWeibo?token=%s&openId=%s&equip=%s&type=login"; //微博注册/登录 token=微博返回的token openid= 微博返回的uid  equip=设备uuid
     public static final String WeiboBind = HOST + "/oauth/checkWeibo?token=%s&openId=%s&equip=%s&type=bind&accesstoken=%s"; //账号绑定微博   accesstoken=服务器返回的用户token
-    public static final String WechatLogin = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=login"; //账号绑定微博   accesstoken=服务器返回的用户token
-    public static final String WechatBind = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=bind&accesstoken=%s"; //账号绑定微博   accesstoken=服务器返回的用户token
+    public static final String WechatLogin = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=login"; //微信注册登录   accesstoken=服务器返回的用户token
+    public static final String WechatBind = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=bind&accesstoken=%s"; //微信绑定   accesstoken=服务器返回的用户token
     /****  Get end  ****/
 
     /******************
