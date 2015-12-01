@@ -43,4 +43,6 @@
     <color name="user_login_text_clickable">#221714</color>
     <color name="user_login_textbg_clickable">#fff000</color>
 
+    <!--下拉菜单-->
+    <color name="menu_wiper_switch_off">#bf000000</color>
 </resources>

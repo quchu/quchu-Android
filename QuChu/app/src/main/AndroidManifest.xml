@@ -4,63 +4,79 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".base.AppContext"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
+        android:screenOrientation="portrait"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme.NoActionBar">
-            <!--android:name="co.quchu.quchu.view.activity.PlanetActivity"-->
+        <!--android:name="co.quchu.quchu.view.activity.PlanetActivity"-->
         <activity
             android:name="co.quchu.quchu.view.activity.UserLoginActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-     <!--   <activity
+        <activity
             android:name="co.quchu.quchu.view.activity.PlanetActivity"
-            android:label="@string/titlebar_word_planet" />-->
+            android:label="@string/titlebar_word_planet"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar_top" />
         <activity
             android:name="co.quchu.quchu.view.activity.GeneActivity"
-            android:label="@string/titlebar_word_gene" />
+            android:label="@string/titlebar_word_gene"
+            android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.GeneIntroduceActivity"
+            android:label="@string/titlebar_word_gene_introduce"
             android:launchMode="singleInstance"
-            android:label="@string/titlebar_word_gene_introduce" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.FriendsCircleIntroduceActivity"
+            android:label="@string/titlebar_word_friends_introduce"
             android:launchMode="singleInstance"
-            android:label="@string/titlebar_word_friends_introduce" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.AtmosphereActivity"
-            android:launchMode="singleInstance"
-            android:label="@string/titlebar_word_atmosphere" />
+            android:label="@string/titlebar_word_atmosphere"
+            android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.DiscoverActivity"
-            android:launchMode="singleInstance"
-            android:label="@string/titlebar_word_discover" />
+            android:label="@string/titlebar_word_discover"
+            android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.QuFriendsActivity"
-            android:launchMode="singleInstance"
-            android:label="@string/titlebar_word_qu_friends" />
+            android:label="@string/titlebar_word_qu_friends"
+            android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.FlickrActivity"
-            android:launchMode="singleInstance"
-            android:label="@string/titlebar_word_flickr" />
+            android:label="@string/titlebar_word_flickr"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.MenusActivity"
+            android:label="@string/titlebar_word_flickr"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name" />
 
-        <meta-data android:value="5655121fe0f55a5ee8008dd5" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="Channel ID" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5655121fe0f55a5ee8008dd5" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" />
 
     </application>
 

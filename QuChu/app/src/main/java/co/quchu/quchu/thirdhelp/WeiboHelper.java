@@ -2,7 +2,6 @@ package co.quchu.quchu.thirdhelp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuth;
@@ -69,6 +68,7 @@ public class WeiboHelper {
         this.listener = listener;
     }
 
+
     public void weiboLogin() {
         if (mWeiboAuth == null)
             mWeiboAuth = new WeiboAuth(activity, APP_KEY, REDIRECT_URL, SCOPE);
@@ -97,7 +97,6 @@ public class WeiboHelper {
             LogUtils.json("uid==" + uid);
             regiest2Server(access_token, uid);
             LogUtils.json("access_token==" + access_token);
-            Toast.makeText(activity, values.toString(), Toast.LENGTH_SHORT).show();
             mCode = _weibo_transaction;
         }
 
@@ -115,8 +114,10 @@ public class WeiboHelper {
         NetService.get(activity, String.format(NetApi.WeiboLogin, token, uid, StringUtils.getMyUUID()), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
+                UserInfoHelper.saveUserInfo(response);
                 listener.loginSuccess();
-                LogUtils.json(response.toString());
+
+                LogUtils.json("skdf" + response.toString());
             }
 
             @Override

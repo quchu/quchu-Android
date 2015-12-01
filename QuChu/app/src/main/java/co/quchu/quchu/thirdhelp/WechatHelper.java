@@ -32,16 +32,21 @@ public class WechatHelper {
         return mActivity;
     }
 
-    private UserLoginListener listener;
+    private static UserLoginListener listener;
 
-    public WechatHelper(Activity activity,UserLoginListener listener) {
+    public WechatHelper(Activity activity, UserLoginListener listener) {
         mActivity = activity;
         api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
                 false);
         api.registerApp(WECHAT_APP_ID);
-        this.listener=listener;
+        this.listener = listener;
     }
-
+    public WechatHelper(Activity activity) {
+        mActivity = activity;
+        api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
+                false);
+        api.registerApp(WECHAT_APP_ID);
+    }
     public IWXAPI getApi() {
         return api;
     }
@@ -84,6 +89,7 @@ public class WechatHelper {
                     String access_token = response.getString("access_token");
                     String openid = response.getString("openid");
                     if (!StringUtils.isEmpty(access_token) && !StringUtils.isEmpty(openid)) {
+                        LogUtils.json("access_token != null");
                         regiestWechat2Server(access_token, openid);
                     }
                 } catch (JSONException e) {
@@ -100,12 +106,13 @@ public class WechatHelper {
     }
 
     private void regiestWechat2Server(String token, String appId) {
-        NetService.get(mActivity, String.format(NetApi.WechatLogin, token, appId,StringUtils.getMyUUID()), new IRequestListener() {
+        NetService.get(mActivity, String.format(NetApi.WechatLogin, token, appId, StringUtils.getMyUUID()), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
                 UserInfoHelper.saveUserInfo(response);
-                listener.loginSuccess();
+                if (null != listener)
+                    listener.loginSuccess();
             }
 
             @Override

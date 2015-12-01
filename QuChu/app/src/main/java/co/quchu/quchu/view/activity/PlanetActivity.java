@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -28,10 +27,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.presenter.FlickrPresenter;
 import co.quchu.quchu.presenter.PlanetActPresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.holder.PlanetActHolder;
+import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.planetanimations.Interpolator.BezierInterpolators;
 import co.quchu.quchu.widget.planetanimations.MovePath;
@@ -74,7 +73,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     @Bind(R.id.title_back_rl)
     RelativeLayout titleBackRL;
     @Bind(R.id.title_more_rl)
-    RelativeLayout titleMoreRl;
+    MoreButtonView titleMoreRl;
 
     @Bind(R.id.planet_gene_tv)
     TextView planetGeneTv;
@@ -95,34 +94,21 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(this);
         planetAvatarIcon.setImageURI(Uri.parse("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg"));
-
         atmosphereRpv.setImage("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg");
-
+        titleMoreRl.setMoreClick(new MoreButtonView.MoreClicklistener() {
+            @Override
+            public void moreClick() {
+                startActivity(new Intent(PlanetActivity.this, MenusActivity.class));
+            }
+        });
     }
 
-
-    @OnClick({R.id.title_more_rl, R.id.title_back_rl, R.id.planet_gene_tv, R.id.planet_collect_ll})
-    public void ViewClick(View v) {
-        switch (v.getId()) {
-            case R.id.title_more_rl:
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                break;
-            case R.id.title_back_rl:
-                break;
-            case R.id.planet_gene_tv:
-                startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
-                break;
-            case R.id.planet_collect_ll:
-                startActivity(new Intent(PlanetActivity.this, DiscoverActivity.class));
-                break;
-        }
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        LogUtils.json("PlanetActivity   onDestroy ");
     }
 
     @Override
@@ -131,11 +117,13 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
             animatorSet.cancel();
         }
         super.onPause();
+        LogUtils.json("PlanetActivity   onPause ");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtils.json("PlanetActivity   onResume ");
     }
 
     Handler myHandler = new Handler() {
@@ -216,7 +204,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     @Override
     public void onGlobalLayout() {
-        heigh = midLuncher.getHeight()/2;
+        heigh = midLuncher.getHeight() / 2;
         midLuncher.getViewTreeObserver().removeGlobalOnLayoutListener(this);
         initAnimation();
     }
@@ -234,23 +222,19 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         intent = new Intent();
         switch (v.getId()) {
             case R.id.design_rpv: //设计
-                LogUtils.json(this.getClass().getSimpleName()+"////////////click==design_rpv");
                 intent.setClass(this, FriendsCircleIntroduceActivity.class);
                 break;
             case R.id.pavilion_rpv://展馆
-                LogUtils.json(this.getClass().getSimpleName()+"////////////click==Pavilion");
                 break;
             case R.id.atmosphere_rpv: //氛围
                 intent.setClass(this, AtmosphereActivity.class);
                 break;
             case R.id.stroll_rpv://逛店
-                LogUtils.json(this.getClass().getSimpleName()+"////////////click==stroll_rpv");
                 break;
             case R.id.cate_rpv: //美食
 
                 break;
             case R.id.planet_postcard_ll: //明信片
-                LogUtils.json(this.getClass().getSimpleName()+"////////////click==planet_postcard_ll"+System.currentTimeMillis());
                 intent.setClass(this, PostCardActivity.class);
                 break;
             case R.id.planet_discover_ll: //发现
@@ -262,4 +246,23 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         }
         startActivity(intent);
     }
+
+    @OnClick({R.id.title_back_rl, R.id.planet_gene_tv, R.id.planet_collect_ll})
+    public void ViewClick(View v) {
+        switch (v.getId()) {
+      /*      case R.id.title_more_rl:
+               LogUtils.json("title_more_rl  is click");
+                break;*/
+            case R.id.title_back_rl:
+                this.finish();
+                break;
+            case R.id.planet_gene_tv:
+                startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
+                break;
+            case R.id.planet_collect_ll:
+                startActivity(new Intent(PlanetActivity.this, DiscoverActivity.class));
+                break;
+        }
+    }
+
 }

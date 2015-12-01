@@ -41,5 +41,5 @@
     <string name="text_friends_following">%d&#032;我关注的</string>
     <string name="text_friends_follower">%d&#032;关注我的</string>
     <!--<string name="text_friends_item_address">%1s&#032;,&#032;%2s</string>-->
-
+    <string name="text_login_resetpassowrd">密码重置成功，请重新登陆</string>
 </resources>

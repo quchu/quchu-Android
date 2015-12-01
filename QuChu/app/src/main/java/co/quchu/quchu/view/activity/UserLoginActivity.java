@@ -1,16 +1,24 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.PhoneLoginFragment;
 import co.quchu.quchu.view.fragment.UserEnterAppFragment;
@@ -30,10 +38,14 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
+            if (AppContext.user == null)
+                AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
+            enterApp();
+        }
         setContentView(R.layout.activity_user_login);
         transaction = getSupportFragmentManager().beginTransaction();
          /*       transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
@@ -55,6 +67,8 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
     @Override
     protected void onResume() {
+        if (null != AppContext.user)
+            loginSuccess();
         super.onResume();
     }
 
@@ -90,14 +104,17 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
     @Override
     public void loginSuccess() {
+        LogUtils.json("login success");
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.user_login_fl, new UserEnterAppFragment());
         transaction.addToBackStack(null);
         transaction.commit();
+        KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));
     }
 
     public void enterApp() {
         startActivity(new Intent(this, PlanetActivity.class));
         this.finish();
     }
+
 }

@@ -180,11 +180,17 @@ public class SPUtils {
     public static void setUserToken(Context context, String userToken) {
         putValueToSPMap(context, AppKey.USERTOKEN, userToken);
     }
+
     public static void setUserInfo(Context context, String userToken) {
         putValueToSPMap(context, AppKey.USERINFO, userToken);
     }
 
     public static String getUserInfo(Context context) {
-        return getValueFromSPMap(context, AppKey.USERTOKEN, "");
+        return getValueFromSPMap(context, AppKey.USERINFO, "");
+    }
+
+    public static void cliearUserinfo(Context mContext) {
+        putValueToSPMap(mContext, AppKey.USERINFO, "");
+        putValueToSPMap(mContext, AppKey.USERTOKEN, "");
     }
 }

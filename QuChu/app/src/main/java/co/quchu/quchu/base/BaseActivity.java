@@ -7,7 +7,8 @@ import android.view.View;
 
 import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.view.activity.MenusActivity;
+import co.quchu.quchu.view.activity.UserLoginActivity;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
@@ -22,24 +23,32 @@ import co.quchu.quchu.widget.swipbacklayout.Utils;
 public class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
+
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-LogUtils.json("onCreate    this.getClass().getSimpleName()==" + this.getClass().getSimpleName() + " getLocalClassName= " + this.getLocalClassName()+"    //getComponentName="+this.getComponentName());
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
-        overridePendingTransition(R.anim.in_push_right_to_left,
-                R.anim.in_stable);
+        if (this instanceof MenusActivity) {
+            overridePendingTransition(R.anim.in_top_to_bottom,
+                    R.anim.in_stable);
+        } else {
+            overridePendingTransition(R.anim.in_push_right_to_left,
+                    R.anim.in_stable);
+        }
         //压栈
         ActManager.getAppManager().addActivity(this);
 
         mSwipeBackLayout = getSwipeBackLayout();
-        if (this instanceof MainActivity) {
+        if (this instanceof MainActivity || this instanceof UserLoginActivity) {
             mSwipeBackLayout.setEnableGesture(false);
+        } else if (this instanceof MenusActivity) {
+            mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
+            mSwipeBackLayout.setEdgeSize(360);
         } else {
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-            mSwipeBackLayout.setEdgeSize(400);
+            mSwipeBackLayout.setEdgeSize(360);
         }
     }
 
@@ -48,14 +57,17 @@ LogUtils.json("onCreate    this.getClass().getSimpleName()==" + this.getClass().
         super.onDestroy();
         // 结束Activity&从堆栈中移除
         ActManager.getAppManager().finishActivity(this);
-        LogUtils.json("onCreate    this.getClass().getSimpleName()==" + this.getClass().getSimpleName() + " getLocalClassName= " + this.getLocalClassName() + "    //getComponentName=" + this.getComponentName());
     }
 
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.in_stable,
-                R.anim.out_push_left_to_right);
+      /*  if (this instanceof MenusActivity) {
+            overridePendingTransition(R.anim.in_stable,
+                    R.anim.out_push_left_to_right);
+        }*/
+  /*      overridePendingTransition(R.anim.in_stable,
+                R.anim.out_push_left_to_right);*/
     }
 
     @Override

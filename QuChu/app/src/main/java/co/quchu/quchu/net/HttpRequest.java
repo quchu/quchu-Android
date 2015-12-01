@@ -16,6 +16,8 @@ import java.util.Map;
 
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 
 
 /**
@@ -43,6 +45,9 @@ public class HttpRequest extends JsonObjectRequest {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Charset", "UTF-8");
         headers.put("Content-Type", "application/json;charset=UTF-8");
+        if (!StringUtils.isEmpty(SPUtils.getUserInfo(AppContext.mContext))) {
+            headers.put("quchu-token", SPUtils.getUserToken(AppContext.mContext));
+        }
       /*  headers.put("quchu-token",SPUtils.getUserToken(AppContext.mContext) );
         LogUtils.json("getHeaders == user=="+SPUtils.getUserToken(AppContext.mContext) );*/
         return headers;
@@ -78,7 +83,7 @@ public class HttpRequest extends JsonObjectRequest {
                 try {
                     _Body += key + "=" + mJsonRequest.getString(key);
                     if (_Iterator.hasNext())
-                        _Body+= "&";
+                        _Body += "&";
                     LogUtils.json(_Body);
                 } catch (JSONException e) {
                     e.printStackTrace();

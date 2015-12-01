@@ -23,22 +23,17 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="我的趣星球"
         android:gravity="center"
+        android:text="我的趣星球"
         android:textColor="@color/planet_text_color_white"
         android:textSize="@dimen/word_title_body" />
 
-    <RelativeLayout
+
+    <co.quchu.quchu.widget.MoreButtonView
         android:id="@+id/title_more_rl"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:paddingRight="16dp"
-   >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_title_more" />
-    </RelativeLayout>
+        android:src="@drawable/ic_title_more" />
 </LinearLayout>

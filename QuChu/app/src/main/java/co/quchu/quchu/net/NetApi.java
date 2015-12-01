@@ -6,12 +6,12 @@ import co.quchu.quchu.base.Constants;
  * netApi
  */
 public class NetApi {
-    public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
+   // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
     public static String location_HOST = "http://192.168.1.134:8080/appservices";
-    //    public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
+      public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     public static String DEBUG_TOKEN = "8c6c7322163dc815c3f45c39c9f63dbb16460465";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
-    public static final String HOST = Constants.ISDEBUG ? location_HOST : location_HOST;
+    public static final String HOST = Constants.ISDEBUG ? DEBUG_HOST : DEBUG_HOST;
     /****
      * Get start
      ****/
@@ -32,6 +32,11 @@ public class NetApi {
     public static final String WeiboBind = HOST + "/oauth/checkWeibo?token=%s&openId=%s&equip=%s&type=bind&accesstoken=%s"; //账号绑定微博   accesstoken=服务器返回的用户token
     public static final String WechatLogin = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=login"; //微信注册登录   accesstoken=服务器返回的用户token
     public static final String WechatBind = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=bind&accesstoken=%s"; //微信绑定   accesstoken=服务器返回的用户token
+
+
+    public static final String UserStar = HOST + "/personal/getUserStar"; //我的趣星球
+
+
     /****  Get end  ****/
 
     /******************

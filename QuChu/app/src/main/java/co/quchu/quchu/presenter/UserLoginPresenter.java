@@ -32,7 +32,7 @@ public class UserLoginPresenter {
                         listener.notUnique("");
                     } else {
                         LogUtils.json("msg.equals(\"error\")" + "唯一" + response);
-                        listener.isUnique("");
+                        listener.isUnique(null);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -66,7 +66,7 @@ public class UserLoginPresenter {
                     response.getString("result");
                     if (response.has("result") && !StringUtils.isEmpty(response.getString("result"))) {
 
-                        listener.isUnique(response.getString("result"));
+                        listener.isUnique(response.getJSONObject("result"));
                     } else {
                         listener.notUnique("");
                     }
@@ -141,7 +141,7 @@ public class UserLoginPresenter {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
-                listener.isUnique(response.toString());
+                listener.isUnique(response);
 
             }
 
@@ -157,7 +157,7 @@ public class UserLoginPresenter {
          * 用户名或昵称可用
          * 成功
          */
-        void isUnique(String msg);
+        void isUnique(JSONObject msg);
 
         /**
          * 用户名或昵称已经被占用

@@ -18,11 +18,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -80,9 +83,27 @@ public class PhoneLoginFragment extends Fragment {
                 case 0x01:
                     toLogin();
                     break;
+                case 0x02:
+                    counterText();
+                    break;
             }
         }
     };
+
+    private int mAuthCounter = 60;
+    private String mAuthDesc = "%ds后重新获取";
+
+    private void counterText() {
+        if (mAuthCounter > 0) {
+            getauthcodeLoginTv.setText(String.format(mAuthDesc, mAuthCounter));
+            mAuthCounter--;
+            handler.sendMessageDelayed(handler.obtainMessage(0x02), 1000);
+        } else {
+            getauthcodeLoginTv.setText("获取验证码");
+            getauthcodeLoginTv.setClickable(true);
+            mAuthCounter = 60;
+        }
+    }
 
     @Nullable
     @Override
@@ -119,6 +140,7 @@ public class PhoneLoginFragment extends Fragment {
     public void userLoginClick(View view) {
         switch (view.getId()) {
             case R.id.getauthcode_login_tv:
+
                 getAuthCode();
 
                 break;
@@ -167,6 +189,7 @@ public class PhoneLoginFragment extends Fragment {
      */
     private void toRegiest() {
         hintOtherView();
+        isRegiest = 0;
         phoneLoginPasswordLl.setVisibility(View.VISIBLE);
         authcodeLoginPasswordLl.setVisibility(View.VISIBLE);
         phoneLoginEnterTv.setVisibility(View.VISIBLE);
@@ -181,6 +204,7 @@ public class PhoneLoginFragment extends Fragment {
      */
     private void toLogin() {
         hintOtherView();
+        isRegiest = 1;
         LogUtils.json("toLogin");
         phoneLoginPasswordLl.setVisibility(View.VISIBLE);
         phoneLoginEnterTv.setVisibility(View.VISIBLE);
@@ -190,6 +214,7 @@ public class PhoneLoginFragment extends Fragment {
     }
 
     private void forgetPassword() {
+        isRegiest = 2;
         phoneLoginPasswordLl.setVisibility(View.VISIBLE);
         phoneLoginEnterTv.setVisibility(View.VISIBLE);
         authcodeLoginPasswordLl.setVisibility(View.VISIBLE);
@@ -294,7 +319,7 @@ public class PhoneLoginFragment extends Fragment {
                         UserLoginPresenter.decideMobileCanLogin(getActivity(), phoneNo,
                                 new UserLoginPresenter.UserNameUniqueListener() {
                                     @Override
-                                    public void isUnique(String msg) {
+                                    public void isUnique(JSONObject msg) {
                                         isRegiest = 0;
                                         requestTime = System.currentTimeMillis() - start;
                                         if (requestTime > waitTime) {
@@ -351,9 +376,11 @@ public class PhoneLoginFragment extends Fragment {
      * 获取验证码
      */
     private void getAuthCode() {
+        getauthcodeLoginTv.setClickable(false);
+        handler.sendMessage(handler.obtainMessage(0x02));
         UserLoginPresenter.getCaptcha(getActivity(), phoneLoginPnumEt.getText().toString().trim(), isRegiest == 0 ? UserLoginPresenter.getCaptcha_regiest : UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
             @Override
-            public void isUnique(String msg) {
+            public void isUnique(JSONObject msg) {
 
             }
 
@@ -372,8 +399,10 @@ public class PhoneLoginFragment extends Fragment {
                 phoneLoginPasswordEt.getText().toString().trim(), userLoginNicknameEt.getText().toString().trim(),
                 authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
                     @Override
-                    public void isUnique(String msg) {
-
+                    public void isUnique(JSONObject msg) {
+                        LogUtils.json("user regiest " + msg);
+                        UserInfoHelper.saveUserInfo(msg);
+                        ((UserLoginActivity) getActivity()).loginSuccess();
                     }
 
                     @Override
@@ -391,7 +420,7 @@ public class PhoneLoginFragment extends Fragment {
                 phoneLoginPasswordEt.getText().toString().trim(), new UserLoginListener() {
                     @Override
                     public void loginSuccess() {
-                        ((UserLoginActivity) getActivity()).enterApp();
+                        ((UserLoginActivity) getActivity()).loginSuccess();
                     }
                 });
     }
@@ -403,7 +432,8 @@ public class PhoneLoginFragment extends Fragment {
         UserLoginPresenter.resetPassword(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
                 phoneLoginPasswordEt.getText().toString().trim(), authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
                     @Override
-                    public void isUnique(String msg) {
+                    public void isUnique(JSONObject msg) {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.text_login_resetpassowrd), Toast.LENGTH_SHORT).show();
                         toLogin();
                     }
 

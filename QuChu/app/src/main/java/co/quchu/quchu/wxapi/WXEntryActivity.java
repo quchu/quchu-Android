@@ -11,6 +11,7 @@ import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.utils.LogUtils;
 
@@ -23,6 +24,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     @Override
     public void onReq(BaseReq baseReq) {
     }
+
 
     public interface OnWxShareListenter {
         public void upMissionSucces();
@@ -87,7 +89,8 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
             this.finish();
         }
     }
-//
+
+    //
 //    public static void putSpreadMapActivity(SpreadMapActivity spreadMapActivity) {
 //        sma = spreadMapActivity;
 //    }
