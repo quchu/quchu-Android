@@ -45,4 +45,5 @@
 
     <!--下拉菜单-->
     <color name="menu_wiper_switch_off">#bf000000</color>
+    <color name="menu_pop_setting_bg">#80595757</color>
 </resources>

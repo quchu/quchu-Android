@@ -53,6 +53,8 @@ public class RoundProgressView extends RelativeLayout {
         bar.bringToFront();
     }
 
+
+
     private void initRoundProgressBar(Context context, AttributeSet attrs, int defStyle) {
         TypedArray mTypedArray = this.context.obtainStyledAttributes(attrs,
                 R.styleable.RoundProgressBar);

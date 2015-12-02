@@ -20,6 +20,7 @@ import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ValueAnimator;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * @author xiaanming
@@ -54,16 +55,18 @@ public class WiperSwitch extends View {
     private boolean slideable;
 
     private Bitmap bitmap;
-
+private Context context;
     private StatusListener listener;
 
     public WiperSwitch(Context context) {
         super(context);
+        this.context= context;
         initDrawingVal();
     }
 
     public WiperSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context= context;
         initDrawingVal();
     }
 
@@ -83,7 +86,7 @@ public class WiperSwitch extends View {
 
         this.textPaint = new Paint();
         this.textPaint.setAntiAlias(true);
-        this.textPaint.setTextSize(50);
+        this.textPaint.setTextSize(StringUtils.dip2px(context,16));
         this.textPaint.setStyle(Paint.Style.STROKE);
         this.textPaint.setFakeBoldText(true);
 
@@ -198,7 +201,7 @@ public class WiperSwitch extends View {
                         break;
                     }
                     this.frontRect_left_begin = this.frontRect_left;
-                    boolean toRight = this.frontRect_left_begin > this.max_left / 2;
+                    boolean toRight = this.frontRect_left_begin > this.max_left*4 / 5;
                     this.moveToDest(toRight);
                     break;
                 case MotionEvent.ACTION_MOVE:

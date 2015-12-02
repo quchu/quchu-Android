@@ -8,6 +8,7 @@ import android.view.View;
 import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
 import co.quchu.quchu.view.activity.MenusActivity;
+import co.quchu.quchu.view.activity.PlanetActivity;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
@@ -41,7 +42,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         ActManager.getAppManager().addActivity(this);
 
         mSwipeBackLayout = getSwipeBackLayout();
-        if (this instanceof MainActivity || this instanceof UserLoginActivity) {
+        if (this instanceof MainActivity || this instanceof UserLoginActivity ||this instanceof PlanetActivity) {
             mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
@@ -52,20 +53,26 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         // 结束Activity&从堆栈中移除
+        if (this instanceof PlanetActivity){
+            ActManager.getAppManager().AppExit();
+        }else {
+
         ActManager.getAppManager().finishActivity(this);
+        }
     }
 
     @Override
     public void finish() {
         super.finish();
-      /*  if (this instanceof MenusActivity) {
-            overridePendingTransition(R.anim.in_stable,
-                    R.anim.out_push_left_to_right);
-        }*/
+        if (this instanceof MenusActivity) {
+            overridePendingTransition(R.anim.out_bottom_to_top,
+                    R.anim.out_bottom_to_top);
+        }
   /*      overridePendingTransition(R.anim.in_stable,
                 R.anim.out_push_left_to_right);*/
     }
@@ -110,4 +117,6 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         Utils.convertActivityToTranslucent(this);
         getSwipeBackLayout().scrollToFinishActivity();
     }
+
+
 }
