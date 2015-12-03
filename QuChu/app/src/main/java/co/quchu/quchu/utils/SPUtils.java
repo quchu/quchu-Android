@@ -189,7 +189,7 @@ public class SPUtils {
         return getValueFromSPMap(context, AppKey.USERINFO, "");
     }
 
-    public static void cliearUserinfo(Context mContext) {
+    public static void clearUserinfo(Context mContext) {
         putValueToSPMap(mContext, AppKey.USERINFO, "");
         putValueToSPMap(mContext, AppKey.USERTOKEN, "");
     }

@@ -18,7 +18,7 @@ public class BakedBezierInterpolator implements Interpolator {
     /**
      * Use getInstance instead of instantiating.
      */
-    private BakedBezierInterpolator() {
+    public BakedBezierInterpolator() {
         super();
     }
 

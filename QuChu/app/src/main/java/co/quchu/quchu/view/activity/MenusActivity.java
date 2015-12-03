@@ -1,7 +1,10 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,9 +13,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.MenusSettingDialog;
+import co.quchu.quchu.utils.BlurUtils;
+import co.quchu.quchu.utils.PopupWindowUtils;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.ShotScreenUtils;
 import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.WiperSwitch;
 import co.quchu.quchu.widget.textcounter.PullMenusView;
@@ -50,6 +57,15 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
             menusSearchMoreRl.setMoreClick(this);
             menusPullmenusPmv.setItemClickListener(this);
         }
+
+        menusSearchMoreRl.getViewTreeObserver().addOnDrawListener(new ViewTreeObserver.OnDrawListener() {
+            @Override
+            public void onDraw() {
+                Bitmap screenshots = ShotScreenUtils.screenshot(MenusActivity.this);
+
+            }
+        });
+
     }
 
     @OnClick({R.id.menus_search_rl, R.id.menus_add_topic})
@@ -77,12 +93,20 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     @Override
     protected void onResume() {
         super.onResume();
+
     }
+
+    private Bitmap bg;
 
     @Override
     public void statusOpen() {
         //退出登陆
         Toast.makeText(this, "退出登陆", Toast.LENGTH_SHORT).show();
+        ActManager.getAppManager().finishActivitiesAndKeepLastOne();
+        SPUtils.clearUserinfo(this);
+        AppContext.user = null;
+        startActivity(new Intent(this, UserLoginActivity.class));
+        this.finish();
     }
 
     @Override
@@ -92,7 +116,7 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
 
     @Override
     public void moreClick() {
-
+        this.finish();
     }
 
     @Override
@@ -106,12 +130,16 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                 break;
             case PullMenusView.ClickSetting:
                 Toast.makeText(this, " ClickSetting ", Toast.LENGTH_SHORT).show();
-            new MenusSettingDialog(this).show();
+                if (bg == null)
+                    bg = BlurUtils.doBlur(ShotScreenUtils.screenshot(MenusActivity.this), 23, true);
+                if (bg != null)
+                    PopupWindowUtils.initPopupWindow(menusPullmenusPmv, this, bg);
                 break;
             case PullMenusView.ClickHome:
                 Toast.makeText(this, " ClickHome ", Toast.LENGTH_SHORT).show();
                 break;
-
         }
     }
+
+
 }

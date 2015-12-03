@@ -49,8 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:paddingRight="16dp"
-              />
+                android:paddingRight="16dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -120,4 +119,9 @@
         </RelativeLayout>
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/shotScreen"
+        android:layout_width="120dp"
+        android:layout_height="120dp" />
 </RelativeLayout>

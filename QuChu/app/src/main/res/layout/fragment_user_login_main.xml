@@ -5,40 +5,67 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <co.quchu.quchu.widget.CircleWaveView
-        android:id="@+id/user_login_main_cwv"
-        android:layout_width="match_parent"
+    <!-- <co.quchu.quchu.widget.CircleWaveView
+         android:id="@+id/user_login_main_cwv"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="@dimen/login_logo_margin_top"
+         app:rb_color="@color/gene_textcolor_yellow"
+         app:rb_duration="2100"
+         app:rb_radius="24dp"
+         app:rb_rippleAmount="1"
+         app:rb_scale="5">
+
+         <ImageView
+             android:id="@+id/user_login_main_circle_iv"
+             android:layout_width="230dp"
+             android:layout_height="230dp"
+             android:layout_centerInParent="true"
+             android:src="@drawable/shape_circle_splash"
+             android:visibility="invisible" />
+
+         <ImageView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerInParent="true"
+             android:src="@drawable/ic_user_login_logo" />
+
+     </co.quchu.quchu.widget.CircleWaveView>-->
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/login_logo_margin_top"
-        app:rb_color="@color/gene_textcolor_yellow"
-        app:rb_duration="2100"
-        app:rb_radius="24dp"
-        app:rb_rippleAmount="1"
-        app:rb_scale="5">
+        android:layout_marginTop="80dp">
 
         <ImageView
-            android:id="@+id/user_login_main_circle_iv"
-            android:layout_width="230dp"
-            android:layout_height="230dp"
+            android:id="@+id/user_login_bg_animators_iv"
+            android:layout_width="288dp"
+            android:layout_height="288dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/shape_circle_splash"
+            android:src="@drawable/ic_user_login_logo_bg"
             android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/user_login_bg_animator_iv"
+            android:layout_width="288dp"
+            android:layout_height="288dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_user_login_logo_bg" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_user_login_logo" />
-
-    </co.quchu.quchu.widget.CircleWaveView>
+            android:src="@drawable/ic_pull_menus_avatar" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/user_login_third_ll"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:layout_marginBottom="36dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="36dp"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
         android:orientation="horizontal">
@@ -50,19 +77,21 @@
             android:layout_marginRight="@dimen/quarter_margin"
             android:layout_weight="1"
             android:background="#99fc9206">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_user_login_weibo" />
+
             <TextView
                 android:id="@+id/user_login_main_weibo_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/half_margin"
-                android:textSize="@dimen/word_size_body"
                 android:text="新浪微博登陆"
-                android:textColor="@color/user_login_text_hint_text_color"/>
+                android:textColor="@color/user_login_text_hint_text_color"
+                android:textSize="@dimen/word_size_body" />
         </LinearLayout>
 
         <LinearLayout
@@ -71,21 +100,23 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/quarter_margin"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:background="#9950bf08">
+            android:background="#9950bf08"
+            android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_user_login_wechat" />
+
             <TextView
                 android:id="@+id/user_login_main_wechat_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/half_margin"
-                android:textSize="@dimen/word_size_body"
                 android:text="微信登陆"
-                android:textColor="@color/user_login_text_hint_text_color" />
+                android:textColor="@color/user_login_text_hint_text_color"
+                android:textSize="@dimen/word_size_body" />
         </LinearLayout>
     </LinearLayout>
 
@@ -93,11 +124,11 @@
         android:id="@+id/user_login_main_phone_ll"
         android:layout_width="match_parent"
         android:layout_height="36dp"
+        android:layout_above="@id/user_login_third_ll"
         android:layout_marginBottom="@dimen/half_margin"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
         android:background="#33ffffff"
-        android:layout_above="@id/user_login_third_ll"
         android:orientation="horizontal">
 
         <ImageView
@@ -110,8 +141,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/half_margin"
-            android:textSize="@dimen/word_size_body"
             android:text="填写手机号码登录或注册"
-            android:textColor="@color/user_login_text_hint_text_color" />
+            android:textColor="@color/user_login_text_hint_text_color"
+            android:textSize="@dimen/word_size_body" />
     </LinearLayout>
 </RelativeLayout>

@@ -45,14 +45,15 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
             if (AppContext.user == null)
                 AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
             enterApp();
-        }
-        setContentView(R.layout.activity_user_login);
-        transaction = getSupportFragmentManager().beginTransaction();
+        } else {
+            setContentView(R.layout.activity_user_login);
+            transaction = getSupportFragmentManager().beginTransaction();
          /*       transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
-        transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
+            transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
              /*   transaction.addToBackStack(null);*/
-        transaction.commit();
-        LogUtils.json(StringUtils.getMyUUID());
+            transaction.commit();
+            LogUtils.json(StringUtils.getMyUUID());
+        }
     }
 
     @Override

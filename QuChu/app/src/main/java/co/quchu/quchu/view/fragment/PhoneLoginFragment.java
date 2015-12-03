@@ -7,7 +7,9 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,9 +156,13 @@ public class PhoneLoginFragment extends Fragment {
                 }
                 break;
             case R.id.user_login_forget_tv:
-                isRegiest = 2;
-                LogUtils.json("user_login_forget_tv");
-                forgetPassword();
+                if (isRegiest == 1) {
+
+                    LogUtils.json("user_login_forget_tv");
+                    forgetPassword();
+                } else if (isRegiest == 2) {
+                    toLogin();
+                }
                 break;
         }
     }
@@ -196,7 +202,12 @@ public class PhoneLoginFragment extends Fragment {
         userLoginForgetTv.setVisibility(View.VISIBLE);
         userLoginNicknameLl.setVisibility(View.VISIBLE);
         phoneLoginEnterTv.setText("创建");
-        userLoginForgetTv.setText("创建账户即代表同意并遵守《趣处用户协议》");
+        //   userLoginForgetTv.setText("创建账户即代表同意并遵守《趣处用户协议》");
+        userLoginForgetTv.setText(
+                Html.fromHtml(
+                        "创建账户即代表同意并遵守" +
+                                "<font color=#f4e727><a href=\"http://www.quchu.co/user-agreement.html\">《趣处用户协议》</a> </font> "));
+        userLoginForgetTv.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     /**
