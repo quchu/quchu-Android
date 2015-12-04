@@ -2,19 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pop_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bab">
 
-    <ImageView
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <TextView
+        android:id="@+id/pop_menus_setting_feedback_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_margin="@dimen/base_margin"
+        android:text="快速反馈"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
+
+    <TextView
+        android:id="@+id/pop_menus_setting_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/pop_menus_setting_feedback_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/base_margin"
         android:text="账户设置"
         android:textColor="@color/text_color_white"
         android:textSize="@dimen/word_subhead_size" />
 
+    <TextView
+        android:id="@+id/pop_menus_setting_aboutus_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pop_menus_setting_feedback_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/base_margin"
+        android:text="关于我们"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
 </RelativeLayout>

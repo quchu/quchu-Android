@@ -63,8 +63,20 @@
             android:label="@string/titlebar_word_flickr"
             android:screenOrientation="portrait" />
         <activity
+            android:name="co.quchu.quchu.view.activity.FeedbackActivity"
+            android:label="@string/titlebar_word_feedback"
+            android:screenOrientation="portrait" />
+        <!--下拉菜单-->
+        <activity
             android:name="co.quchu.quchu.view.activity.MenusActivity"
-            android:label="@string/titlebar_word_flickr"
+            android:screenOrientation="portrait" />
+        <!--搜索-->
+        <activity
+            android:name="co.quchu.quchu.view.activity.SearchActivity"
+            android:screenOrientation="portrait" />
+        <!-- 账户设置-->
+        <activity
+            android:name="co.quchu.quchu.view.activity.AccountSettingActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"

@@ -128,12 +128,13 @@
         android:layout_marginBottom="@dimen/half_margin"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
-        android:background="#33ffffff"
+        android:background="@color/user_login_view_bg_color"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_user_login_phone" />
 
         <TextView

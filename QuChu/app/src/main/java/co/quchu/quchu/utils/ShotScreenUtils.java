@@ -1,9 +1,11 @@
 package co.quchu.quchu.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RSRuntimeException;
@@ -26,11 +28,8 @@ public class ShotScreenUtils {
         Rect rect = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         int statusBarHeight = rect.top;
-        System.out.println(statusBarHeight);
-
         int width = activity.getWindowManager().getDefaultDisplay().getWidth();
         int height = activity.getWindowManager().getDefaultDisplay().getHeight();
-
         Bitmap bitmap2 = Bitmap.createBitmap(bitmap, 0, statusBarHeight, width, height - statusBarHeight);
         view.destroyDrawingCache();
         return bitmap2;
@@ -49,6 +48,8 @@ public class ShotScreenUtils {
             return null;
         }
     }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static Bitmap doBlur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap, Context context) {
         Bitmap bitmap;
 
@@ -80,7 +81,22 @@ public class ShotScreenUtils {
         }
         return null;
     }
+
     private static Bitmap convertRGB565toARGB888(Bitmap bitmap) {
         return bitmap.copy(Bitmap.Config.ARGB_8888, true);
     }
+
+  /*  private void sees(Activity activity) {
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels + StringUtils.dip2px(activity, 40);  //图片空间宽度增大
+        int height = StringUtils.dip2px(activity, 240);
+        FrameLayout.LayoutParams param = new FrameLayout.LayoutParams(width, height);
+        param.gravity = Gravity.CENTER_HORIZONTAL;    //设置居中
+        param.topMargin = StringUtils.dip2px(activity, 240);
+        bmp2 = new BoxBlurFilter().filter(bmp1);
+        img1.setImageBitmap(bmp1);
+        img2.setImageBitmap(bmp2);
+    }*/
+
 }

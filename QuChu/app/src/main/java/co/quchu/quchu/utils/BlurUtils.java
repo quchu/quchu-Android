@@ -17,17 +17,18 @@ public class BlurUtils {
     /**
      * 水平方向模糊度
      */
-    private static float hRadius = 15;
+    private static float hRadius = 8;
     /**
      * 竖直方向模糊度
      */
-    private static float vRadius = 15;
+    private static float vRadius = 8;
     /**
      * 模糊迭代度
      */
-    private static int iterations = 15;
+    private static int iterations = 8;
 
     public static Bitmap BoxBlurFilter(Bitmap bmp) {
+        LogUtils.json("BoxBlurFilter  start");
         if (bmp != null) {
             int width = bmp.getWidth();
             int height = bmp.getHeight();
@@ -43,7 +44,8 @@ public class BlurUtils {
             blurFractional(inPixels, outPixels, width, height, hRadius);
             blurFractional(outPixels, inPixels, height, width, vRadius);
             bitmap.setPixels(inPixels, 0, width, 0, 0, width, height);
-            return bitmap;
+            LogUtils.json("BoxBlurFilter  finish");
+            return Bitmap.createBitmap(bitmap, 12, 12, width-12,height-12);
         }else {
             return  null;
         }

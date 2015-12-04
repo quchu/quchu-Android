@@ -3,6 +3,8 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
@@ -58,11 +60,11 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
             menusPullmenusPmv.setItemClickListener(this);
         }
 
-        menusSearchMoreRl.getViewTreeObserver().addOnDrawListener(new ViewTreeObserver.OnDrawListener() {
-            @Override
-            public void onDraw() {
-                Bitmap screenshots = ShotScreenUtils.screenshot(MenusActivity.this);
 
+        menusPullmenusPmv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                handler.sendMessageDelayed(handler.obtainMessage(1), 300);
             }
         });
 
@@ -72,6 +74,7 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.menus_search_rl:
+                startActivity(new Intent(this, SearchActivity.class));
                 Toast.makeText(this, " 搜索", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menus_add_topic:
@@ -129,11 +132,8 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                 Toast.makeText(this, " ClickMessage ", Toast.LENGTH_SHORT).show();
                 break;
             case PullMenusView.ClickSetting:
-                Toast.makeText(this, " ClickSetting ", Toast.LENGTH_SHORT).show();
-                if (bg == null)
-                    bg = BlurUtils.doBlur(ShotScreenUtils.screenshot(MenusActivity.this), 23, true);
-                if (bg != null)
-                    PopupWindowUtils.initPopupWindow(menusPullmenusPmv, this, bg);
+
+                    PopupWindowUtils.initPopupWindow(menusPullmenusPmv, this);
                 break;
             case PullMenusView.ClickHome:
                 Toast.makeText(this, " ClickHome ", Toast.LENGTH_SHORT).show();
@@ -141,5 +141,17 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
         }
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            final Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);
+            new Thread() {
+                @Override
+                public void run() {
+                    bg = BlurUtils.BoxBlurFilter(screens);
+                }
+            }.start();
+        }
+    };
 
 }
