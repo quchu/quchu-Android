@@ -2,6 +2,8 @@ package co.quchu.quchu.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +20,12 @@ import co.quchu.quchu.view.activity.FeedbackActivity;
  * Date: 2015-12-03
  */
 public class PopupWindowUtils {
-    public static void initPopupWindow(final View v, final Activity act) {
+    public static void initPopupWindow(final View v, final Activity act,Bitmap bitmap) {
         LayoutInflater inflater = LayoutInflater.from(v.getContext());
         // 引入窗口配置文件
         View view = inflater.inflate(R.layout.pop_menus_setting, null);
         //  ( view.findViewById(R.id.pop_root)).setBackground(act.getResources().getDrawable(R.drawable.bb));
-        //( view.findViewById(R.id.pop_root)).setBackground(new BitmapDrawable(bg));
+        ( view.findViewById(R.id.pop_root)).setBackground(new BitmapDrawable(bitmap));
         // 创建PopupWindow对象
         final PopupWindow pop = new PopupWindow(view,
                 RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, false);

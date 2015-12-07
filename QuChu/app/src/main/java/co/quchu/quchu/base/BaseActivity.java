@@ -1,6 +1,7 @@
 package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,7 +22,7 @@ import co.quchu.quchu.widget.swipbacklayout.Utils;
  * Date: 2015-10-19
  * activity 基类
  */
-public class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase {
+public class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase, View.OnClickListener {
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
 
@@ -40,9 +41,8 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         }
         //压栈
         ActManager.getAppManager().addActivity(this);
-
         mSwipeBackLayout = getSwipeBackLayout();
-        if (this instanceof MainActivity || this instanceof UserLoginActivity ||this instanceof PlanetActivity) {
+        if (this instanceof MainActivity || this instanceof UserLoginActivity || this instanceof PlanetActivity) {
             mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
@@ -58,11 +58,11 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     protected void onDestroy() {
         super.onDestroy();
         // 结束Activity&从堆栈中移除
-        if (this instanceof PlanetActivity){
+        if (this instanceof PlanetActivity) {
             ActManager.getAppManager().AppExit();
-        }else {
+        } else {
 
-        ActManager.getAppManager().finishActivity(this);
+            ActManager.getAppManager().finishActivity(this);
         }
     }
 
@@ -118,5 +118,20 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         getSwipeBackLayout().scrollToFinishActivity();
     }
 
+    public void initTitleBar(){
+        this.findViewById(R.id.title_back_iv).setOnClickListener(this);
+        this.findViewById(R.id.title_more_rl).setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.title_back_iv:
+                this.finish();
+                break;
+            case R.id.title_more_rl:
+                this.startActivity(new Intent(this, MenusActivity.class));
+                break;
+        }
+    }
 }

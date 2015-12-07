@@ -6,9 +6,9 @@ import co.quchu.quchu.base.Constants;
  * netApi
  */
 public class NetApi {
-   // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
+    // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
     public static String location_HOST = "http://192.168.1.134:8080/appservices";
-      public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
+    public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     public static String DEBUG_TOKEN = "8c6c7322163dc815c3f45c39c9f63dbb16460465";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
     public static final String HOST = Constants.ISDEBUG ? DEBUG_HOST : DEBUG_HOST;
@@ -36,6 +36,8 @@ public class NetApi {
 
     public static final String UserStar = HOST + "/personal/getUserStar"; //我的趣星球
 
+    public static final String getRootTags = HOST + "/place/getRootTags"; //获取趣处分类列表
+
 
     /****  Get end  ****/
 
@@ -46,6 +48,7 @@ public class NetApi {
     public static final String Regiester = HOST + "/mregister?username=%s&password=%s&captcha=%s&regType=tel&equip=%s&fullname=%s"; //用户注册  username=PhoneNo  captcha =验证码 equip=uuid  fullname=NickName
     public static final String Mlogin = HOST + "/login/android?j_username=%s&j_password=%s&equip=%s"; //用户登录  username=PhoneNo  captcha =验证码 equip=uuid
     public static final String ResertPsw = HOST + "/mregister/resertPsw?resType=tel&tel=%s&newpsw=%s&captcha=%s"; //重置密码  username=PhoneNo  captcha =验证码 newpsw=密码
+    public static final String FeedBack = HOST + "/sns/feedback?value=%s"; //意见反馈
 
     /****************** POST *******************/
 }

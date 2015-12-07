@@ -36,7 +36,6 @@ public class DiscoverActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atmosphere);
-        ButterKnife.setDebug(true);
         ButterKnife.bind(this);
         titleContentTv.setText("faxian");
 //        title_content_tv.setText(getTitle());

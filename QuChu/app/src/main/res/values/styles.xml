@@ -37,6 +37,11 @@
         <item name="android:background">@color/lineBackground_gray</item>
     </style>
 
+    <style name="AccountBHl" parent="HorizontalLine">
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:background">@color/user_login_text_hint_text_color</item>
+    </style>
+
     <style name="QuchuRatingBarStyle" parent="android:Widget.RatingBar">
         <!--<item name="progressDrawable">@drawable/ratingbar_full</item>-->
         <!--<item name="indeterminateDrawable">@drawable/ratingbar_full</item>-->

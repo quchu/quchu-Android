@@ -30,8 +30,12 @@ public class BlurUtils {
     public static Bitmap BoxBlurFilter(Bitmap bmp) {
         LogUtils.json("BoxBlurFilter  start");
         if (bmp != null) {
-            int width = bmp.getWidth();
-            int height = bmp.getHeight();
+            int bimapW=bmp.getWidth();
+            int bitmapH=bmp.getHeight();
+
+            Bitmap bitmaps = Bitmap.createBitmap(bmp, bimapW / 2 - 25, bitmapH / 2 - 25, bimapW / 2 + 25, bitmapH / 2 + 25);
+            int width = bitmaps.getWidth();
+            int height = bitmaps.getHeight();
             int[] inPixels = new int[width * height];
             int[] outPixels = new int[width * height];
             Bitmap bitmap = Bitmap.createBitmap(width, height,
@@ -45,7 +49,7 @@ public class BlurUtils {
             blurFractional(outPixels, inPixels, height, width, vRadius);
             bitmap.setPixels(inPixels, 0, width, 0, 0, width, height);
             LogUtils.json("BoxBlurFilter  finish");
-            return Bitmap.createBitmap(bitmap, 12, 12, width-12,height-12);
+            return bitmap;
         }else {
             return  null;
         }

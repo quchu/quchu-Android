@@ -132,8 +132,12 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                 Toast.makeText(this, " ClickMessage ", Toast.LENGTH_SHORT).show();
                 break;
             case PullMenusView.ClickSetting:
-
-                    PopupWindowUtils.initPopupWindow(menusPullmenusPmv, this);
+                 Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);
+                int startWidth=screens.getWidth()-50;
+                 int startHeight=screens.getHeight()-50;
+        /*        bg=Bitmap.createBitmap(screens,startWidth,startWidth,450,450);*/
+              bg = BlurUtils.BoxBlurFilter(Bitmap.createBitmap(screens,startWidth,startWidth,250,250));
+                    PopupWindowUtils.initPopupWindow(menusPullmenusPmv, this,bg);
                 break;
             case PullMenusView.ClickHome:
                 Toast.makeText(this, " ClickHome ", Toast.LENGTH_SHORT).show();
@@ -144,11 +148,10 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            final Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);
+
             new Thread() {
                 @Override
                 public void run() {
-                    bg = BlurUtils.BoxBlurFilter(screens);
                 }
             }.start();
         }

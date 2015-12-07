@@ -8,6 +8,7 @@
     <dimen name="dialog_margin">24dp</dimen>
     <dimen name="login_logo_margin_top">128dp</dimen>
     <dimen name="line_thickness">0.5dp</dimen>
+    <dimen name="tow_dp_margin">2dp</dimen>
     <!--字号-->
 
     <dimen name="word_large_number">34sp</dimen>
@@ -36,4 +37,5 @@
     <dimen name="subTabLayoutHeight">48dp</dimen>
     <!-- 带图 TabLayout -->
     <dimen name="ImageSubTabLayoutHeight">96dp</dimen>
+    <dimen name="account_setting_phone_marginleft">104dp</dimen>
 </resources>

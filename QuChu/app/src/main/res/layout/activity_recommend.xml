@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:id="@+id/recommend_title_bar_rl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_heigh">
+
+        <RelativeLayout
+            android:id="@+id/recommend_title_location_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:src="@drawable/ic_recommed_title_location" />
+        </RelativeLayout>
+
+        <co.quchu.quchu.widget.RecommendTitleGroup
+            android:id="@+id/recommend_title_center_rtg"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <co.quchu.quchu.widget.MoreButtonView
+            android:id="@+id/recommend_title_more_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="16dp"
+            android:src="@drawable/ic_title_more" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/recommend_body_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/recommend_title_bar_rl" />
+
+</RelativeLayout>

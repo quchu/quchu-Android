@@ -63,15 +63,22 @@ public class MoreButtonView extends RelativeLayout implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (listener != null)
-            listener.onClick(v);
-        onMenuOpenAnim();
+        if (isNeedAnimation) {
+            if (listener != null)
+                listener.onClick(v);
+            onMenuOpenAnim();
+        } else {
+            if (moreClicklistener != null)
+                moreClicklistener.moreClick();
+        }
+
     }
 
     private OnClickListener listener;
     private long animationDuration = 200;//动画时长
     ObjectAnimator objectAnimator;
     private int menuState = 0x00; //0x00 当前状态为+  0x01 当前状态为X
+    private boolean isNeedAnimation = true;
 
     private void onMenuOpenAnim() {
         objectAnimator = ObjectAnimator.ofFloat(mTitleMore, "rotation", 0f, 90);
@@ -110,5 +117,9 @@ public class MoreButtonView extends RelativeLayout implements View.OnClickListen
 
     public interface MoreClicklistener {
         public void moreClick();
+    }
+
+    public void isNeedAnimation(boolean isNeed) {
+        isNeedAnimation = isNeed;
     }
 }

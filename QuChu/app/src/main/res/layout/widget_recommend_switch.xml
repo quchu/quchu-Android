@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true">
+
+
+    <RelativeLayout
+        android:id="@+id/widget_switch_root_rl"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape_flickr_buttons_bg">
+
+        <View
+            android:id="@+id/widget_switch_selected_view"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:background="@drawable/shape_recommend_button_selected_bg" />
+        <View
+            android:id="@+id/widget_switch_selected_right_view"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:background="@drawable/shape_recommend_button_selected_bg" />
+        <TextView
+            android:id="@+id/widget_switch_hot_btn"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_recommend_button_unselected_bg"
+            android:gravity="center"
+            android:text="推荐"
+            android:textColor="@color/black"
+            android:textSize="@dimen/word_subhead_size" />
+
+        <TextView
+            android:id="@+id/widget_switch_new_btn"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_recommend_button_unselected_bg"
+            android:gravity="center"
+            android:text="分类"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_subhead_size" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+

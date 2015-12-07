@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <!--android:name="co.quchu.quchu.view.activity.PlanetActivity"-->
         <activity
-            android:name="co.quchu.quchu.view.activity.UserLoginActivity"
+            android:name="co.quchu.quchu.view.activity.RecommendActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
