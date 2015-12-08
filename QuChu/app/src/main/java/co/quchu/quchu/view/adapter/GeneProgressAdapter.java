@@ -94,7 +94,7 @@ public class GeneProgressAdapter extends BaseAdapter {
             holder = (GeneProgressItemHolder) convertView.getTag();
         }
         holder.gene_progress_item_rpb.setRoundWidth(20);
-        holder.gene_progress_item_rpb.setProgress(110);
+        holder.gene_progress_item_rpb.setProgress(98);
         holder.gene_progress_item_tv.setText(textArray[position]);
         holder.gene_progress_item_iv.setImageResource(imagesArray[position]);
         SpannableStringBuilder builder = new SpannableStringBuilder(textArray[position]);

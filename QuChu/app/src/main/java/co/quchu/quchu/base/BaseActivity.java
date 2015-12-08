@@ -10,6 +10,7 @@ import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
 import co.quchu.quchu.view.activity.MenusActivity;
 import co.quchu.quchu.view.activity.PlanetActivity;
+import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
@@ -42,7 +43,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         //压栈
         ActManager.getAppManager().addActivity(this);
         mSwipeBackLayout = getSwipeBackLayout();
-        if (this instanceof MainActivity || this instanceof UserLoginActivity || this instanceof PlanetActivity) {
+        if (this instanceof MainActivity || this instanceof UserLoginActivity || this instanceof RecommendActivity) {
             mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);

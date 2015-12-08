@@ -111,7 +111,11 @@ public class NetService {
                         if (null != pListener) {
                             if (result) {
                                 if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
-                                    pListener.onSuccess(response.getJSONObject("data"));
+                                    if (response.has("exception")&&"分类列表".equals(response.getString("exception"))){
+                                        pListener.onSuccess(response);
+                                    }else {
+                                        pListener.onSuccess(response.getJSONObject("data"));
+                                    }
                                 } else {
                                     pListener.onSuccess(response);
 

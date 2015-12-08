@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <!--android:name="co.quchu.quchu.view.activity.PlanetActivity"-->
         <activity
-            android:name="co.quchu.quchu.view.activity.RecommendActivity"
+            android:name="co.quchu.quchu.view.activity.UserLoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
@@ -65,6 +65,10 @@
         <activity
             android:name="co.quchu.quchu.view.activity.FeedbackActivity"
             android:label="@string/titlebar_word_feedback"
+            android:screenOrientation="portrait" />
+        <!-- 我的趣推荐 -->
+        <activity
+            android:name="co.quchu.quchu.view.activity.RecommendActivity"
             android:screenOrientation="portrait" />
         <!--下拉菜单-->
         <activity

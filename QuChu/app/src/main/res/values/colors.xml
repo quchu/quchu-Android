@@ -53,4 +53,6 @@
     <color name="account_setting_weibo_color">#F39700</color>
     <color name="account_setting_wechat_color">#8EC31E</color>
 
+    <!-- 横向 数字进度条 -->
+    <color name="widget_horizontal_progressbar_bg">#26000000</color>
 </resources>

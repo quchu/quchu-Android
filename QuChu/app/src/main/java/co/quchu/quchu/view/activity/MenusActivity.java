@@ -126,18 +126,18 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     public void onItemClick(int itemID) {
         switch (itemID) {
             case PullMenusView.ClickAvatar:
-                Toast.makeText(this, " ClickAvatar ", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MenusActivity.this, PlanetActivity.class));
                 break;
             case PullMenusView.ClickMessage:
                 Toast.makeText(this, " ClickMessage ", Toast.LENGTH_SHORT).show();
                 break;
             case PullMenusView.ClickSetting:
-                 Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);
-                int startWidth=screens.getWidth()-50;
-                 int startHeight=screens.getHeight()-50;
+                Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);
+                int startWidth = screens.getWidth() - 50;
+                int startHeight = screens.getHeight() - 50;
         /*        bg=Bitmap.createBitmap(screens,startWidth,startWidth,450,450);*/
-              bg = BlurUtils.BoxBlurFilter(Bitmap.createBitmap(screens,startWidth,startWidth,250,250));
-                    PopupWindowUtils.initPopupWindow(menusPullmenusPmv, this,bg);
+                bg = BlurUtils.BoxBlurFilter(Bitmap.createBitmap(screens, startWidth, startWidth, 250, 250));
+                PopupWindowUtils.initPopupWindow(menusPullmenusPmv, this, bg);
                 break;
             case PullMenusView.ClickHome:
                 Toast.makeText(this, " ClickHome ", Toast.LENGTH_SHORT).show();

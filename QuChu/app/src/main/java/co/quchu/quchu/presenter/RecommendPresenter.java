@@ -1,0 +1,127 @@
+package co.quchu.quchu.presenter;
+
+import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+
+import com.google.gson.Gson;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.net.IRequestListener;
+import co.quchu.quchu.net.NetApi;
+import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.fragment.RecommendFragment;
+
+/**
+ * RecommendPresenter
+ * User: Chenhs
+ * Date: 2015-12-08
+ * 趣处推荐 逻辑类
+ */
+public class RecommendPresenter {
+
+    public static void getRecommendList(final Context context, String urls, final GetRecommendListener listener) {
+
+        NetService.get(context, NetApi.getPlaceList, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("getPlaceList==" + response.toString());
+                try {
+                    if (response.has("result") && !StringUtils.isEmpty(response.getString("result"))) {
+                        JSONArray array = response.getJSONArray("result");
+                        if (array.length() > 0) {
+                            Gson gson = new Gson();
+                            ArrayList<RecommendModel> arrayList = new ArrayList<RecommendModel>();
+                            RecommendModel model;
+                            for (int i = 0; i < array.length(); i++) {
+                                model = gson.fromJson(array.getString(i), RecommendModel.class);
+                                arrayList.add(model);
+                            }
+                            listener.onSuccess(arrayList);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public boolean onError(String error) {
+                return false;
+            }
+        });
+    }
+
+    public interface GetRecommendListener {
+        void onSuccess(ArrayList<RecommendModel> arrayList);
+    }
+
+
+    public static void showBottomAnimation(final Fragment fragment, final ViewGroup viewGroup, int viewHeight, final boolean isNeedShow) {
+int duration =360;
+        AnimatorSet animatorSet = new AnimatorSet();
+        viewGroup.getY();
+        ObjectAnimator objectAnimator;
+        ObjectAnimator objectAnimator1;
+        if (isNeedShow) {
+            objectAnimator = ObjectAnimator.ofFloat(viewGroup, "translationY", viewHeight, viewHeight / 2, viewHeight / 2, viewHeight / 3, 0);
+            objectAnimator1 = ObjectAnimator.ofFloat(viewGroup, "scaleX", 1f, 1.1f, 1.2f, 1.1f, 1f, 0.9f, 0.8f, 1f);
+        } else {
+            objectAnimator = ObjectAnimator.ofFloat(viewGroup, "translationY", 0, viewHeight / 3, viewHeight / 3, viewHeight / 2, viewHeight);
+            objectAnimator1 = ObjectAnimator.ofFloat(viewGroup, "scaleX", 1f, 0.8f, 0.9f, 1f, 1.1f, 1.2f, 1.1f, 1f);
+        }
+       // objectAnimator.setDuration(400);
+ /*       ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(viewGroup, "scaleY",0.8f, 1f, 1.1f,1.2f,1.4f,
+                Animation.RELATIVE_TO_SELF, 0.8f, Animation.RELATIVE_TO_SELF,1f);*/
+     //   objectAnimator1.setDuration(550);
+        animatorSet.playTogether(objectAnimator, objectAnimator1);
+       animatorSet.setDuration(duration);
+        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                    viewGroup.setVisibility(View.VISIBLE);
+                ((RecommendFragment)fragment).isRunningAnimation=true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (isNeedShow)
+                    viewGroup.setVisibility(View.VISIBLE);
+                else
+                    viewGroup.setVisibility(View.INVISIBLE);
+                ((RecommendFragment)fragment).isRunningAnimation=false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        animatorSet.start();
+
+    }
+
+    public static void hintBottomAnimation() {
+
+    }
+
+}

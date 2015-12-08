@@ -114,7 +114,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     }
 
     public void enterApp() {
-        startActivity(new Intent(this, PlanetActivity.class));
+        startActivity(new Intent(this, RecommendActivity.class));
         this.finish();
     }
 

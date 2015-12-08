@@ -38,7 +38,7 @@ public class NetApi {
 
     public static final String getRootTags = HOST + "/place/getRootTags"; //获取趣处分类列表
 
-
+    public static final String getPlaceList = HOST + "/place/getPlaceList?cityId=5&tagsEn=luxury&latitude=24.504639439827&longitude=118.13262111507&pagesNo=";//获取趣处 推荐列表
     /****  Get end  ****/
 
     /******************

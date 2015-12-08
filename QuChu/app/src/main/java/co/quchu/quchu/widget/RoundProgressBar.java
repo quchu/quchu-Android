@@ -174,7 +174,7 @@ public class RoundProgressBar extends View {
         paint.setStrokeWidth(0);
         paint.setColor(textColor);
         paint.setTextSize(textSize);
-        paint.setTypeface(fontsType); //设置字体
+
         int percent = (int) (((float) drawProgress / (float) max) * 100);  //中间的进度百分比，先转换成float在进行除法运算，不然都为0
 
         //自定义
@@ -182,9 +182,10 @@ public class RoundProgressBar extends View {
             float textWidth = paint.measureText(String.valueOf(spreadCount));   //测量字体宽度，我们需要根据字体的宽度设置在圆环中间
 
             if (textIsDisplayable && spreadCount >= 0 && style == STROKE) {
-                if (textStyle == TextStyleNum)
+                if (textStyle == TextStyleNum) {
+                    paint.setTypeface(fontsType); //设置字体
                     canvas.drawText(percent + "%", centre - (textWidth * 1.5f), centre + textSize / 2, paint);//画出进度百分比
-                else if (textStyle == TextStyleText && !StringUtils.isEmpty(progressText))
+                }else if (textStyle == TextStyleText && !StringUtils.isEmpty(progressText))
                     canvas.drawText(progressText, centre - (textWidth * 1.8f), centre + textSize / 2, paint); //画出文字
                 else if (textStyle == NumStyleText && !StringUtils.isEmpty(progressText))
                     canvas.drawText(progressText, centre - ((textWidth * 1.8f)/2), centre +((textWidth * 1.8f)/3), paint); //画出文字

@@ -38,4 +38,5 @@
     <!-- 带图 TabLayout -->
     <dimen name="ImageSubTabLayoutHeight">96dp</dimen>
     <dimen name="account_setting_phone_marginleft">104dp</dimen>
+    <dimen name="horizontal_progressbar_height">16dp</dimen>
 </resources>

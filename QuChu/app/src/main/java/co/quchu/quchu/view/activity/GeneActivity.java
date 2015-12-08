@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.GeneProgressAdapter;
 import co.quchu.quchu.widget.RoundProgressView;
 
@@ -64,6 +65,8 @@ public class GeneActivity extends BaseActivity {
         Typeface face = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
         gene_introduce_tv.setTypeface(face);
         geneProgressGv.setAdapter(new GeneProgressAdapter(this, GeneProgressAdapter.GENE));
+        designRpv.setRoundWidth(20);
+        designRpv.setTextSize(StringUtils.dip2px(this,10));
     }
 
 

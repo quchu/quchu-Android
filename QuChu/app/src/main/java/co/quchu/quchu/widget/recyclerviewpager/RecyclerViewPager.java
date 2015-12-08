@@ -24,7 +24,7 @@ import co.quchu.quchu.R;
  * @author Green
  */
 public class RecyclerViewPager extends RecyclerView {
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     private RecyclerViewPagerAdapter<?> mViewPagerAdapter;
     private float mTriggerOffset = 0.25f;

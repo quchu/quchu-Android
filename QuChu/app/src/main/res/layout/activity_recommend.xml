@@ -25,7 +25,7 @@
 
         <co.quchu.quchu.widget.RecommendTitleGroup
             android:id="@+id/recommend_title_center_rtg"
-            android:layout_width="200dp"
+            android:layout_width="184dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
 
@@ -39,10 +39,16 @@
             android:src="@drawable/ic_title_more" />
     </RelativeLayout>
 
-    <android.support.v4.view.ViewPager
+    <co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager
         android:id="@+id/recommend_body_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/ic_activity_bg"
         android:layout_below="@id/recommend_title_bar_rl" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@id/recommend_title_bar_rl"
+        android:background="@drawable/shape_shadow_toptobottom"
+        android:layout_height="8dp"/>
 </RelativeLayout>

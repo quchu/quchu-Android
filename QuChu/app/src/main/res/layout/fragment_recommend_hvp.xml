@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/f_recommend_bottom_rl"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_height="36dp"
+       >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="48dp"
+            android:layout_height="36dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/shape_recommend_bottom_bg"
+            android:src="@drawable/ic_recommend_bottom_scrolltotop" />
+        <View
+            android:layout_width="6dp"
+            android:background="@drawable/shape_shadow_ltor"
+            android:layout_toRightOf="@id/imageView"
+            android:layout_alignParentBottom="true"
+            android:layout_height="16dp"/>
+
+    </RelativeLayout>
+    <co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/f_recommend_rvp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/f_recommend_bottom_rl"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        app:singlePageFling="true"
+        app:triggerOffset="0.1" />
+
+</RelativeLayout>
