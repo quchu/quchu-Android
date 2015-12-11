@@ -9,9 +9,9 @@ import android.view.View;
 import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
 import co.quchu.quchu.view.activity.MenusActivity;
-import co.quchu.quchu.view.activity.PlanetActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.UserLoginActivity;
+import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
@@ -23,7 +23,7 @@ import co.quchu.quchu.widget.swipbacklayout.Utils;
  * Date: 2015-10-19
  * activity 基类
  */
-public class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase, View.OnClickListener {
+public class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase, View.OnClickListener, MoreButtonView.MoreClicklistener {
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
 
@@ -34,8 +34,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
         if (this instanceof MenusActivity) {
-            overridePendingTransition(R.anim.in_top_to_bottom,
-                    R.anim.in_stable);
+
         } else {
             overridePendingTransition(R.anim.in_push_right_to_left,
                     R.anim.in_stable);
@@ -59,12 +58,12 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     protected void onDestroy() {
         super.onDestroy();
         // 结束Activity&从堆栈中移除
-        if (this instanceof PlanetActivity) {
+   /*     if (this instanceof PlanetActivity) {
             ActManager.getAppManager().AppExit();
-        } else {
+        } else {*/
 
-            ActManager.getAppManager().finishActivity(this);
-        }
+        ActManager.getAppManager().finishActivity(this);
+        /*}*/
     }
 
     @Override
@@ -86,6 +85,10 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onResume() {
         super.onResume();
+        if (this instanceof MenusActivity) {
+            overridePendingTransition(R.anim.in_top_to_bottom,
+                    R.anim.in_stable);
+        }
     }
 
 
@@ -119,9 +122,13 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         getSwipeBackLayout().scrollToFinishActivity();
     }
 
-    public void initTitleBar(){
+    /**
+     * title bar 控制  start
+     */
+    public void initTitleBar() {
         this.findViewById(R.id.title_back_iv).setOnClickListener(this);
-        this.findViewById(R.id.title_more_rl).setOnClickListener(this);
+        MoreButtonView mvv = (MoreButtonView) this.findViewById(R.id.title_more_rl);
+        mvv.setMoreClick(this);
     }
 
     @Override
@@ -130,9 +137,19 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
             case R.id.title_back_iv:
                 this.finish();
                 break;
-            case R.id.title_more_rl:
-                this.startActivity(new Intent(this, MenusActivity.class));
-                break;
+
         }
     }
+
+    @Override
+    public void moreClick() {
+        this.startActivity(new Intent(this, MenusActivity.class));
+        if (this instanceof RecommendActivity) {
+        } else {
+            this.finish();
+        }
+    }
+    /**
+     * title bar 控制  end
+     */
 }

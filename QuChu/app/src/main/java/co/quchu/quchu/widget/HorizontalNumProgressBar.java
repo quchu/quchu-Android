@@ -20,6 +20,7 @@ public class HorizontalNumProgressBar extends RelativeLayout {
     private Typeface fontsType;
     private ProgressBar progressBar;
     private TextView progressNum;
+    private TextView progressName;
 
     public HorizontalNumProgressBar(Context context) {
         this(context, null);
@@ -38,6 +39,7 @@ public class HorizontalNumProgressBar extends RelativeLayout {
         fontsType = Typeface.createFromAsset(getContext().getAssets(), "zzgf_shanghei.otf");
         progressBar = (ProgressBar) findViewById(R.id.widget_horizontal_pb);
         progressNum = (TextView) findViewById(R.id.widget_horizontal_progress_num_tv);
+        progressName = (TextView) findViewById(R.id.widget_horizontal_progress_name_tv);
         progressNum.setTypeface(fontsType);
     }
 
@@ -59,7 +61,7 @@ public class HorizontalNumProgressBar extends RelativeLayout {
             }
         }
         progressBar.setProgress(progress);
-        progressNum.setText( progress+"%");
+        progressNum.setText(progress + "%");
     }
 
     public void setProgress(double progress) {
@@ -72,5 +74,13 @@ public class HorizontalNumProgressBar extends RelativeLayout {
 
     public void setProgressBarWhite() {
         progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_white));
+    }
+
+    public void setProgressName(String names) {
+        progressName.setText(names.length() == 2 ? names.substring(0, 1) + "　" + names.substring(1, 2) : names);
+    }
+
+    public void setProgressNameColor(int colorId) {
+        progressName.setTextColor(getResources().getColor(colorId));
     }
 }

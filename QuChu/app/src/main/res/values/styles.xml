@@ -1,4 +1,4 @@
-<resources>
+<resources  >
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -24,17 +24,33 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <!-- 自定义style  -->
+
     <!-- 纵向分隔线 -->
-    <style name="VerticalLine">
-        <item name="android:layout_width">@dimen/line_thickness</item>
+       <style name="VerticalLine">
+           <item name="android:layout_width">@dimen/line_thickness</item>
+           <item name="android:layout_height">match_parent</item>
+           <item name="android:background">@color/lineBackground_gray</item>
+       </style>
+
+    <style name="DetailVerticalLine">
+        <item name="android:layout_width">@dimen/detail_horizontal_line_height</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/lineBackground_gray</item>
+        <item name="android:background">@color/text_color_white</item>
     </style>
     <!-- 横向分隔线 -->
     <style name="HorizontalLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/line_thickness</item>
         <item name="android:background">@color/lineBackground_gray</item>
+    </style>
+
+    <style name="DetailHorizontalLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">@dimen/base_margin</item>
+        <item name="android:layout_marginTop">@dimen/half_margin</item>
+        <item name="android:layout_marginRight">@dimen/base_margin</item>
+        <item name="android:layout_height">@dimen/detail_horizontal_line_height</item>
+        <item name="android:background">@color/text_color_white</item>
     </style>
 
     <style name="AccountBHl" parent="HorizontalLine">
@@ -62,7 +78,7 @@
     <style name="loading_dialog" parent="android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/menu_pop_setting_bg</item>
+        <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
@@ -72,5 +88,11 @@
         <!-- 指定显示的动画xml -->
         <item name="android:windowExitAnimation">@anim/out_bottom_to_top</item>
         <!-- 指定消失的动画xml -->
+    </style>
+
+   <style name="DetailTextStyle_sub">
+
+        <item name="textColor">@color/text_color_white</item>
+        <item name="textSize">@dimen/word_subhead_size</item>
     </style>
 </resources>

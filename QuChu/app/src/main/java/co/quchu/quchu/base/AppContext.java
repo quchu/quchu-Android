@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.google.gson.Gson;
 
 import co.quchu.quchu.model.UserInfoModel;
@@ -24,6 +26,11 @@ public class AppContext extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         Fresco.initialize(mContext);
+        GenericDraweeHierarchyBuilder builder =
+                new GenericDraweeHierarchyBuilder(getResources());
+        GenericDraweeHierarchy hierarchy = builder
+                .setFadeDuration(300)
+                .build();
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
             if (user == null){
                 LogUtils.json(SPUtils.getUserInfo(this));

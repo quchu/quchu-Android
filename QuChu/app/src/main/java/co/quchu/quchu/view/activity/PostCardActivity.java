@@ -27,7 +27,7 @@ public class PostCardActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postcard);
         ButterKnife.bind(this);
-
+        initTitleBar();
         LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layout);
         mRecyclerView.setAdapter(new PostCardAdapter(this));

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -63,7 +64,7 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
         widgetSwitchHotBtn = (TextView) findViewById(R.id.widget_switch_hot_btn);
         widgetSwitchNewBtn = (TextView) findViewById(R.id.widget_switch_new_btn);
         widget_switch_root_rl = (RelativeLayout) findViewById(R.id.widget_switch_root_rl);
-        setInitSelected(true);
+        setInitSelected(false);
         widgetSwitchHotBtn.setOnClickListener(this);
         widgetSwitchNewBtn.setOnClickListener(this);
     }
@@ -97,35 +98,43 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
         widgetSwitchSelectedView.setVisibility(VISIBLE);
     }
 
+    public void selectedLeft() {
+        if (isHotSelected)
+            return;
+        setViewsClickable(false);
+        selectedViewL2R(false);
+        isNewSelected = false;
+        isHotSelected = true;
+        if (listener != null) {
+
+            listener.onViewsClick(SelectedL);
+        }
+    }
+
     @Override
     public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.widget_switch_hot_btn:
-                if (isHotSelected)
-                    return;
-                setViewsClickable(false);
-                selectedViewL2R(false);
-                isNewSelected = false;
-                isHotSelected = true;
-                if (listener != null) {
-
-                    listener.onViewsClick(SelectedL);
-                }
-                break;
-            case R.id.widget_switch_new_btn:
-                if (isNewSelected)
-                    return;
-                setViewsClickable(false);
-                selectedViewL2R(true);
-                isHotSelected = false;
-                isNewSelected = true;
-                if (listener != null) {
-                    listener.onViewsClick(SelectedR);
-                }
-                break;
-
+        if (isViewClickable) {
+            switch (v.getId()) {
+                case R.id.widget_switch_hot_btn:
+                    selectedLeft();
+                    break;
+                case R.id.widget_switch_new_btn:
+                    if (isNewSelected)
+                        return;
+                    setViewsClickable(false);
+                    selectedViewL2R(true);
+                    isHotSelected = false;
+                    isNewSelected = true;
+                    if (listener != null) {
+                        listener.onViewsClick(SelectedR);
+                    }
+                    break;
+            }
+        } else {
+            Toast.makeText(context, "请先选择感兴趣的类型！", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     private ObjectAnimator objectAnimator, objectAnimator1, objectAnimator2;
@@ -149,7 +158,7 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
         animatorSet = new AnimatorSet();
         if (isInitSelectedRight) {
             if (isL2R) {
-                objectAnimator = ObjectAnimator.ofFloat(widgetSwitchSelectedView, "translationX",- newBtnX+ StringUtils.dip2px(context, 3), hotBtnX - StringUtils.dip2px(context, 4));
+                objectAnimator = ObjectAnimator.ofFloat(widgetSwitchSelectedView, "translationX", -newBtnX + StringUtils.dip2px(context, 3), hotBtnX - StringUtils.dip2px(context, 4));
             } else {
                 objectAnimator = ObjectAnimator.ofFloat(widgetSwitchSelectedView, "translationX", hotBtnX - StringUtils.dip2px(context, 3), -newBtnX + StringUtils.dip2px(context, 3));
             }
@@ -192,8 +201,8 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
     }
 
     private void animationStartChange(boolean isHotSelected) {
-                   widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.black));
-            widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.black));
+        widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.black));
+        widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.black));
     }
 
     private void animationEndChange(boolean isHotSelected) {
@@ -212,18 +221,19 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
      */
     public interface RecoSelectedistener {
         /**
-         *
-         * @param flag  SelectedR= 0 = 当前选中右边  SelectedL= 1= 当前选中左边
-         *
+         * @param flag SelectedR= 0 = 当前选中右边  SelectedL= 1= 当前选中左边
          */
-         void onViewsClick(int flag);
+        void onViewsClick(int flag);
     }
 
-    private void setViewsClickable(boolean isClickable) {
-        widgetSwitchHotBtn.setClickable(isClickable);
-        widgetSwitchNewBtn.setClickable(isClickable);
+    public void setViewsClickable(boolean isClickable) {
+        isViewClickable = isClickable;
+       /* widgetSwitchHotBtn.setClickable(isClickable);
+        widgetSwitchNewBtn.setClickable(isClickable);*/
+
     }
 
+    private boolean isViewClickable = true;
     /**
      * 回调结果：
      * SelectedR== 当前选中右边

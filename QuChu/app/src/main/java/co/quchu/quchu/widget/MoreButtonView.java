@@ -23,6 +23,11 @@ public class MoreButtonView extends RelativeLayout implements View.OnClickListen
     private Context context;
     private ImageView mTitleMore;
 
+    private OnClickListener listener;
+    private long animationDuration = 300;//动画时长
+    ObjectAnimator objectAnimator;
+    private int menuState = 0x00; //0x00 当前状态为+  0x01 当前状态为X
+    private boolean isNeedAnimation = true;
     /**
      * 初始化
      *
@@ -74,11 +79,6 @@ public class MoreButtonView extends RelativeLayout implements View.OnClickListen
 
     }
 
-    private OnClickListener listener;
-    private long animationDuration = 200;//动画时长
-    ObjectAnimator objectAnimator;
-    private int menuState = 0x00; //0x00 当前状态为+  0x01 当前状态为X
-    private boolean isNeedAnimation = true;
 
     private void onMenuOpenAnim() {
         objectAnimator = ObjectAnimator.ofFloat(mTitleMore, "rotation", 0f, 90);

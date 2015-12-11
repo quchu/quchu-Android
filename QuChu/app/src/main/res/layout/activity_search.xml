@@ -10,6 +10,14 @@
         android:layout_height="match_parent"
         android:background="@drawable/ic_activity_bg">
 
+        <co.quchu.quchu.widget.VerTextView
+            android:id="@+id/search_result_isnull_vtv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="4dp"
+            android:visibility="invisible" />
+
         <LinearLayout
             android:id="@+id/search_title_bar_ll"
             android:layout_width="match_parent"
@@ -41,6 +49,8 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="搜索趣处或活动"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
                     android:textColor="@color/text_color_white"
                     android:textColorHint="@color/user_login_text_hint_text_color"
                     android:textSize="@dimen/word_size_body" />
@@ -56,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/half_margin"
-                    android:text="搜索"
+                    android:text="取消"
                     android:textColor="@color/gene_textcolor_yellow"
                     android:textSize="@dimen/word_subhead_size" />
             </RelativeLayout>
@@ -66,6 +76,7 @@
             android:id="@+id/search_history_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:layout_below="@id/search_title_bar_ll">
 
             <LinearLayout
@@ -74,27 +85,44 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/search_history_hint_fl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/search_title_bar_ll"
                     android:layout_marginLeft="@dimen/base_margin"
-                    android:layout_marginTop="@dimen/dialog_margin"
+                    android:layout_marginTop="@dimen/base_margin"
                     android:text="历史记录"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_subhead_size" />
-
+                <!--
+                                  <LinearLayout
+                                      android:layout_width="match_parent"
+                                      android:layout_height="0dp"
+                                      android:layout_weight="1">-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/search_history_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/base_margin"
+                    android:layout_marginBottom="@dimen/base_margin"
+                    android:layout_marginTop="@dimen/half_margin"
+                    android:overScrollMode="never"
                     android:visibility="gone" />
+                <!--              </LinearLayout>-->
+                <!--          <co.quchu.quchu.widget.InnerListView
+                              android:id="@+id/search_history_rv"
+                              android:layout_width="match_parent"
+                              android:layout_height="0dp"
+                              android:layout_margin="@dimen/base_margin"
+                              android:layout_weight="1"
+                              android:overScrollMode="never"
+                              android:visibility="gone" />-->
 
                 <RelativeLayout
                     android:id="@+id/search_history_clear_rl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:layout_margin="@dimen/base_margin"
                     android:background="@color/load_progress_yellow">
 
@@ -118,28 +146,19 @@
             android:layout_below="@id/search_title_bar_ll"
             android:visibility="gone">
 
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/search_result_rv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dialog_margin" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/search_result_isnull_fl"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/search_title_bar_ll"
-           >
-
-            <co.quchu.quchu.widget.VerTextView
-                android:id="@+id/search_result_isnull_vtv"
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="4dp"
-                android:layout_gravity="center" />
+                android:layout_marginLeft="@dimen/dialog_margin"
+                android:layout_marginRight="@dimen/dialog_margin"
+                android:layout_marginTop="@dimen/base_margin"
+                android:overScrollMode="never" />
 
         </FrameLayout>
+
+
     </RelativeLayout>
 
 </RelativeLayout>

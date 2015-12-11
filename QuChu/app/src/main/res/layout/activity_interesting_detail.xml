@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground">
+
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar" />
+
+
+    <co.quchu.quchu.widget.OutSideScrollView
+        android:id="@+id/scrollView_flickr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:background="@drawable/ic_activity_bg"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/item_card_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/base_margin" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_button_group_height"
+                android:layout_marginTop="@dimen/half_margin"
+                card_view:cardBackgroundColor="@color/detail_card_bg_color"
+                card_view:cardCornerRadius="@dimen/detail_card_radius"
+                card_view:cardElevation="@dimen/cardview_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dialog_margin"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginBottom="@dimen/tow_dp_margin"
+                            android:layout_marginTop="@dimen/tow_dp_margin"
+                            android:src="@drawable/ic_detail_uncollect" />
+                    </RelativeLayout>
+
+                    <View style="@style/DetailVerticalLine" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginBottom="@dimen/tow_dp_margin"
+                            android:layout_marginTop="@dimen/tow_dp_margin"
+                            android:src="@drawable/ic_detail_uncollect" />
+                    </RelativeLayout>
+
+                    <View style="@style/DetailVerticalLine" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginBottom="@dimen/tow_dp_margin"
+                            android:layout_marginTop="@dimen/tow_dp_margin"
+                            android:src="@drawable/ic_detail_uncollect" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_margin"
+                card_view:cardBackgroundColor="@color/detail_card_bg_color"
+                card_view:cardCornerRadius="@dimen/detail_card_radius"
+                card_view:cardElevation="@dimen/cardview_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/detail_text_margin_right"
+                        android:layout_marginTop="@dimen/half_margin"
+                        android:text="sds"
+                        android:textColor="@color/text_color_white"
+                        android:textSize="@dimen/word_subhead_size" />
+
+                    <View style="@style/DetailHorizontalLine" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/base_margin">
+
+                        <co.quchu.quchu.widget.ratingbar.ProperRatingBar
+                            android:id="@+id/detail_suggest_prb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/quarter_margin"
+                            android:layout_marginTop="@dimen/half_margin" />
+
+
+                        <TextView
+                            android:id="@+id/detail_avg_price_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@color/detail_avg_price_text_bg"
+                            android:paddingLeft="@dimen/half_margin"
+                            android:paddingRight="@dimen/base_margin"
+                            android:text="sdkj"
+                            android:textColor="@color/text_color_white"
+                            android:textSize="@dimen/word_subhead_size" />
+
+                        <co.quchu.quchu.widget.InnerGridView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/base_margin"
+                            android:layout_toLeftOf="@id/detail_avg_price_tv" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_margin"
+                card_view:cardBackgroundColor="@color/detail_card_bg_color"
+                card_view:cardCornerRadius="@dimen/detail_card_radius"
+                card_view:cardElevation="@dimen/cardview_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/detail_text_margin_right"
+                        android:layout_marginRight="@dimen/detail_text_margin_right"
+                        android:layout_marginTop="@dimen/base_margin"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/DetailTextStyle_sub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+
+                            android:gravity="center_vertical"
+                            android:text="地址 "
+                            android:textColor="@color/text_color_white"
+                            android:textSize="@dimen/word_size_body" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_detail_right_arrow" />
+                    </LinearLayout>
+
+                    <View style="@style/DetailHorizontalLine" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/base_margin"
+                        android:layout_marginTop="@dimen/half_margin"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/DetailTextStyle_sub"
+
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+
+                            android:layout_marginLeft="@dimen/detail_text_margin_right"
+
+                            android:layout_weight="1"
+                            android:text="电话号码"
+                            android:textColor="@color/text_color_white"
+                            android:textSize="@dimen/word_size_body" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/detail_text_margin_right"
+                            android:src="@drawable/ic_detail_right_arrow" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_margin"
+                card_view:cardBackgroundColor="@color/detail_card_bg_color"
+                card_view:cardCornerRadius="@dimen/detail_card_radius"
+                card_view:cardElevation="@dimen/cardview_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/base_margin"
+                    android:orientation="vertical">
+
+                    <co.quchu.quchu.widget.HorizontalNumProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/base_margin"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/base_margin"
+                        android:layout_marginRight="@dimen/base_margin"
+                        android:layout_marginTop="@dimen/quarter_margin" />
+
+                    <co.quchu.quchu.widget.HorizontalNumProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/base_margin"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/base_margin"
+                        android:layout_marginRight="@dimen/base_margin"
+                        android:layout_marginTop="@dimen/quarter_margin" />
+
+                    <co.quchu.quchu.widget.HorizontalNumProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/base_margin"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/base_margin"
+                        android:layout_marginRight="@dimen/base_margin"
+                        android:layout_marginTop="@dimen/quarter_margin" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_margin"
+                card_view:cardBackgroundColor="@color/detail_card_bg_color"
+                card_view:cardCornerRadius="@dimen/detail_card_radius"
+                card_view:cardElevation="@dimen/cardview_elevation">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/half_margin"
+                    android:layout_marginTop="@dimen/half_margin"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableTop="@drawable/rb_detail_box"
+                                android:gravity="center"
+                                android:singleLine="false"
+                                android:text="包厢"
+                                android:textColor="@color/rb_detail_textcolor_seletcer"
+                                android:textSize="@dimen/word_size_body" />
+                        </RelativeLayout>
+
+                        <View style="@style/DetailVerticalLine" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableTop="@drawable/rb_detail_mess"
+                                android:gravity="center"
+                                android:text="食堂"
+                                android:textColor="@color/rb_detail_textcolor_seletcer"
+                                android:textSize="@dimen/word_size_body" />
+                        </RelativeLayout>
+
+                        <View style="@style/DetailVerticalLine" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:button="@null"
+                                android:checked="false"
+                                android:contextClickable="true"
+                                android:drawableTop="@drawable/rb_detail_takeout"
+                                android:gravity="center"
+                                android:text="外送"
+                                android:textColor="@color/rb_detail_textcolor_seletcer"
+                                android:textSize="@dimen/word_size_body" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <View style="@style/DetailHorizontalLine" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="@dimen/half_margin"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableTop="@drawable/rb_detail_cash"
+                                android:gravity="center"
+                                android:text="现金"
+                                android:textColor="@color/rb_detail_textcolor_seletcer"
+                                android:textSize="@dimen/word_size_body" />
+                        </RelativeLayout>
+
+                        <View style="@style/DetailVerticalLine" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableTop="@drawable/rb_detail_cardpay"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="银行卡"
+                                android:textColor="@color/rb_detail_textcolor_seletcer"
+                                android:textSize="@dimen/word_size_body" />
+                        </RelativeLayout>
+
+                        <View style="@style/DetailVerticalLine" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableTop="@drawable/rb_detail_zfb"
+                                android:gravity="center"
+                                android:text="支付宝"
+                                android:textColor="@color/rb_detail_textcolor_seletcer"
+                                android:textSize="@dimen/word_size_body" />
+                        </RelativeLayout>
+
+                        <View style="@style/DetailVerticalLine" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableTop="@drawable/rb_detail_wechat"
+                                android:elegantTextHeight="false"
+                                android:gravity="center"
+                                android:text="微信支付"
+                                android:textColor="@color/rb_detail_textcolor_seletcer"
+                                android:textSize="@dimen/word_size_body" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+    </co.quchu.quchu.widget.OutSideScrollView>
+
+
+</RelativeLayout>

@@ -32,6 +32,7 @@ public class RecommendModel {
     private String name;
     private int pid;
     private String rgb;
+    private double suggest = 5;
     /**
      * key : 文艺
      * value : 95
@@ -93,6 +94,14 @@ public class RecommendModel {
 
     public String getCover() {
         return cover;
+    }
+
+    public void setSuggest(double suggest) {
+        this.suggest = suggest;
+    }
+
+    public double getSuggess() {
+        return suggest;
     }
 
     public String getDescribe() {

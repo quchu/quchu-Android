@@ -16,9 +16,12 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.dialog.NetErrorDialog;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.SearchActivity;
 
 /**
  * NetService
@@ -50,8 +53,7 @@ public class NetService {
                             IRequestListener pListener) {
 
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-
-
+            NetErrorDialog.showProgess(cont);
         } else {
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0);
         }
@@ -59,13 +61,16 @@ public class NetService {
 
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+            NetErrorDialog.showProgess(cont);
         } else {
+
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0);
         }
     }
 
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+            NetErrorDialog.showProgess(cont);
         } else {
 //            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
 //                    .theme(Theme.DARK)
@@ -73,7 +78,6 @@ public class NetService {
 //                    .progress(true, 0).autoDismiss(false)
 //                    .contentGravity(GravityEnum.CENTER)
 //                    .show();
-            LogUtils.json(pUrl);
             addToQueue(Request.Method.GET, pUrl, params, pListener, 0);
         }
         new HashMap<String, String>();
@@ -111,9 +115,9 @@ public class NetService {
                         if (null != pListener) {
                             if (result) {
                                 if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
-                                    if (response.has("exception")&&"分类列表".equals(response.getString("exception"))){
+                                    if (response.has("exception") && "分类列表".equals(response.getString("exception"))) {
                                         pListener.onSuccess(response);
-                                    }else {
+                                    } else {
                                         pListener.onSuccess(response.getJSONObject("data"));
                                     }
                                 } else {
@@ -121,15 +125,24 @@ public class NetService {
 
                                 }
                             } else {
-                                if (response.has("msg") && response.has("exception") && "error".equals(response.getString("msg")) && "登录名已存在".equals(response.getString("exception"))) {
-                                    pListener.onSuccess(response);
+                                if (ActManager.getAppManager().currentActivity() instanceof SearchActivity) {
+                                    if (response.has("msg") && !StringUtils.isEmpty(response.getString("msg")))
+                                        pListener.onError(response.getString("msg"));
                                 } else {
-                                    if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
-                                        Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), 0).show();
+                                    if (response.has("msg") && response.has("exception") && "error".equals(response.getString("msg")) && !StringUtils.isEmpty(response.getString("exception")) && "登录名已存在".equals(response.getString("exception"))) {
+                                        pListener.onSuccess(response);
                                     } else {
-                                        Toast.makeText(AppContext.mContext, "网络出错", 0).show();
+                                        if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
+                                            Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), 0).show();
+                                            if (response.has("msg") && response.has("exception") && StringUtils.isEmpty(response.getString("exception")) && !StringUtils.isEmpty(response.getString("msg"))) {
+                                                pListener.onError(response.getString("msg"));
+                                            }
+                                        } else {
+                                            Toast.makeText(AppContext.mContext, "网络出错", 0).show();
+                                        }
+                                        pListener.onError(response.toString());
+
                                     }
-                                    pListener.onError(response.toString());
                                 }
                             }
                         }

@@ -19,7 +19,7 @@ public class ClassifyModel {
     private String en;
     private String maxImg;
     private String minImg;
-    private int weight;
+    private double weight;
     private String zh;
 
     public void setEn(String en) {
@@ -34,7 +34,7 @@ public class ClassifyModel {
         this.minImg = minImg;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
@@ -54,7 +54,7 @@ public class ClassifyModel {
         return minImg;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 

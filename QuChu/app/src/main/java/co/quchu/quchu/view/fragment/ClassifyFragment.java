@@ -24,7 +24,10 @@ import co.quchu.quchu.model.ClassifyModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.adapter.ClassifyAdapter;
 import co.quchu.quchu.view.adapter.ClassifyDecoration;
 
@@ -39,6 +42,7 @@ public class ClassifyFragment extends Fragment {
     RecyclerView fragmentFirendsRv;
     private View view;
     private ClassifyAdapter cAdapter;
+    private ArrayList<ClassifyModel> cList;
 
     @Nullable
     @Override
@@ -62,11 +66,10 @@ public class ClassifyFragment extends Fragment {
                         try {
                             JSONArray datas = response.getJSONArray("data");
                             if (datas.length() > 0) {
-                                final ArrayList<ClassifyModel> cList = new ArrayList<ClassifyModel>();
-                                ClassifyModel classifyModel;
+                                cList = new ArrayList<ClassifyModel>();
                                 Gson gson = new Gson();
                                 for (int i = 0; i < datas.length(); i++) {
-                                    classifyModel = gson.fromJson(datas.getString(i), ClassifyModel.class);
+                                    ClassifyModel classifyModel = gson.fromJson(datas.getString(i), ClassifyModel.class);
                                     cList.add(classifyModel);
                                     LogUtils.json(datas.getString(i));
                                 }
@@ -79,7 +82,9 @@ public class ClassifyFragment extends Fragment {
                                 cAdapter.setOnItemCliskListener(new ClassifyAdapter.ClasifyClickListener() {
                                     @Override
                                     public void cItemClick(View view, int position) {
-                                        LogUtils.json("cItemClick position=" + position + "item=" + cList.get(position));
+                                        SPUtils.putValueToSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, cList.get(position).getEn());
+                                        ((RecommendActivity) getActivity()).selectedClassify();
+                                        LogUtils.json("分类 被点击  条目==" + position);
                                     }
                                 });
                             }
@@ -98,6 +103,24 @@ public class ClassifyFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.json("classify is onresume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LogUtils.json("classify is onpause");
+    }
+
+    public void hintClassify(){
+        fragmentFirendsRv.setVisibility(View.GONE);
+    }
+    public void showClassify(){
+        fragmentFirendsRv.setVisibility(View.VISIBLE);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

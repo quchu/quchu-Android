@@ -48,7 +48,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Classi
     @Override
     public void onBindViewHolder(ClassifyHolder holder, int position) {
         holder.itemClassifyImageSdv.setImageURI(Uri.parse(arrayList.get(position).getMaxImg()));
-        holder.itemClassifyImageSdv.setAspectRatio(1.76f);
+        holder.itemClassifyImageSdv.setAspectRatio(1.73f);
 
     }
 

@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import java.util.Map;
 
+import co.quchu.quchu.base.AppContext;
+
 /**
  * SPUtils
  * User: Chenhs
@@ -193,4 +195,38 @@ public class SPUtils {
         putValueToSPMap(mContext, AppKey.USERINFO, "");
         putValueToSPMap(mContext, AppKey.USERTOKEN, "");
     }
+
+    public static void setCityId(int cityId){
+        putValueToSPMap(AppContext.mContext, AppKey.CITYID,String.valueOf(cityId));
+    }
+
+    public static int getCityId(){
+        return Integer.parseInt(getValueFromSPMap(AppContext.mContext,AppKey.CITYID,"5"));
+    }
+
+    public static void setCityName(int cityId){
+        putValueToSPMap(AppContext.mContext, AppKey.CITYNAME,String.valueOf(cityId));
+    }
+
+    public static String getCityName(){
+        return getValueFromSPMap(AppContext.mContext, AppKey.CITYID, " ");
+    }
+    public static void setLongitude(double cityId){
+        putValueToSPMap(AppContext.mContext, AppKey.LON,String.valueOf(cityId));
+    }
+
+    public static double getLongitude(){
+        return Double.parseDouble(getValueFromSPMap(AppContext.mContext, AppKey.LON, "0"));
+    }
+    public static void setLatitude(double cityId){
+        putValueToSPMap(AppContext.mContext, AppKey.LAT,String.valueOf(cityId));
+    }
+
+    public static double getLatitude(){
+        return Double.parseDouble(getValueFromSPMap(AppContext.mContext,AppKey.LAT,"0"));
+    }
+
 }
+
+
+

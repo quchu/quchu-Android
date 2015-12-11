@@ -19,6 +19,9 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.RecommendPresenter;
+import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
 import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
 
@@ -36,7 +39,8 @@ public class RecommendFragment extends Fragment {
     private View view;
     private float viewStartY = 0f;
     private int viewHeight = 0;
-public boolean isRunningAnimation=false;
+    public boolean isRunningAnimation = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,23 +65,18 @@ public boolean isRunningAnimation=false;
                 if (newPosition <= 2) {
                     if (fRecommendBottomRl.getVisibility() == View.VISIBLE)
                         if (!isRunningAnimation)
-                        RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
+                            RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
                 } else if (newPosition >= 3) {
                     if (fRecommendBottomRl.getVisibility() == View.INVISIBLE)
                         if (!isRunningAnimation)
-                        RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, true);
-
+                            RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, true);
                 }
             }
         });
-
         fRecommendRvp.addOnLayoutChangeListener();
-        RecommendPresenter.getRecommendList(getActivity(), "", new RecommendPresenter.GetRecommendListener() {
-            @Override
-            public void onSuccess(ArrayList<RecommendModel> arrayList) {
-                adapter.changeDataSet(arrayList);
-            }
-        });
+        if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
+            changeDataSetFromServer();
+        }
         return view;
     }
 
@@ -92,6 +91,18 @@ public boolean isRunningAnimation=false;
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    public void changeDataSetFromServer() {
+        RecommendPresenter.getRecommendList(getActivity(), new RecommendPresenter.GetRecommendListener() {
+            @Override
+            public void onSuccess(ArrayList<RecommendModel> arrayList) {
+                adapter.changeDataSet(arrayList);
+                fRecommendRvp.smoothScrollToPosition(0);
+                if (fRecommendBottomRl.getVisibility() == View.VISIBLE)
+                    RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
+            }
+        });
     }
 
 

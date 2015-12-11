@@ -11,6 +11,8 @@ import com.sina.weibo.sdk.exception.WeiboException;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -69,11 +71,10 @@ public class WeiboHelper {
     }
 
 
-    public void weiboLogin() {
-        if (mWeiboAuth == null)
-            mWeiboAuth = new WeiboAuth(activity, APP_KEY, REDIRECT_URL, SCOPE);
-        if (mSsoHandler == null)
-            mSsoHandler = new SsoHandler(activity, mWeiboAuth);
+    public void weiboLogin(Activity context) {
+        this.activity = context;
+        mWeiboAuth = new WeiboAuth(activity, APP_KEY, REDIRECT_URL, SCOPE);
+        mSsoHandler = new SsoHandler(activity, mWeiboAuth);
         mSsoHandler.authorize(new AuthListener());
     }
 
@@ -81,6 +82,13 @@ public class WeiboHelper {
 
         @Override
         public void onComplete(Bundle values) {
+            Oauth2AccessToken accessToken = Oauth2AccessToken.parseAccessToken(values);
+            if (accessToken != null && accessToken.isSessionValid()) {
+                String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
+                        new java.util.Date(accessToken.getExpiresTime()));
+                AccessTokenKeeper.writeAccessToken(activity, accessToken);
+            }
+
             LogUtils.json(values.toString());
             if (null == values) {
                 LogUtils.json("values is empty");

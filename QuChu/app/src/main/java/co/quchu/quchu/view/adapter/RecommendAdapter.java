@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +20,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -56,7 +56,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     @Override
     public void onBindViewHolder(RecommendHolder holder, int position) {
         RecommendModel model = arrayList.get(position);
-        holder.rootCv.setCardBackgroundColor(Color.parseColor("#" + model.getRgb()));
+        if (!StringUtils.isEmpty(model.getRgb())) {
+            holder.rootCv.setCardBackgroundColor(Color.parseColor("#" + model.getRgb()));
+        } else {
+            holder.rootCv.setCardBackgroundColor(Color.parseColor("#808080"));
+        }
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (isFlyme) {
             holder.itemRecommendCardPhotoSdv.setAspectRatio(1.9f);
@@ -66,21 +70,16 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         holder.itemRecommendCardAddressTv.setText(model.getAddress());
         holder.itemRecommendCardCityTv.setText(model.getDescribe());
         holder.itemRecommendCardNameTv.setText(model.getName());
-        if (model.getGenes().size() >= 3) {
-            holder.itemRecommendCardProgressOne.setProgress(model.getGenes().get(0).getValue());
-            holder.itemRecommendCardProgressNameOne.setText(model.getGenes().get(0).getKey());
-            holder.itemRecommendCardProgressTwo.setProgress(model.getGenes().get(1).getValue());
-            holder.itemRecommendCardProgressNameTwo.setText(model.getGenes().get(1).getKey());
-            holder.itemRecommendCardProgressThree.setProgress(model.getGenes().get(2).getValue());
-            holder.itemRecommendCardProgressNameThree.setText(model.getGenes().get(2).getKey());
-            holder.itemRecommendCardProgressOneLl.setVisibility(View.VISIBLE);
-            holder.itemRecommendCardProgressTwoLl.setVisibility(View.VISIBLE);
-            holder.itemRecommendCardProgressThreeLl.setVisibility(View.VISIBLE);
-        }else {
-            holder.itemRecommendCardProgressOneLl.setVisibility(View.INVISIBLE);
-            holder.itemRecommendCardProgressTwoLl.setVisibility(View.INVISIBLE);
-            holder.itemRecommendCardProgressThreeLl.setVisibility(View.INVISIBLE);
-        }
+        holder.itemRecommendCardPrb.setRating((int) (model.getSuggess() + 0.5) >= 5 ? 5 : ((int) (model.getSuggess())));
+
+        holder.itemRecommendCardProgressOne.setProgress(model.getGenes().get(0).getValue());
+        holder.itemRecommendCardProgressOne.setProgressName(model.getGenes().get(0).getKey());
+        holder.itemRecommendCardProgressTwo.setProgress(model.getGenes().get(1).getValue());
+        holder.itemRecommendCardProgressTwo.setProgressName(model.getGenes().get(1).getKey());
+        holder.itemRecommendCardProgressThree.setProgress(model.getGenes().get(2).getValue());
+        holder.itemRecommendCardProgressThree.setProgressName(model.getGenes().get(2).getKey());
+
+
     }
 
 
@@ -110,24 +109,12 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         @Bind(R.id.item_recommend_card_reply_rl)
         RelativeLayout itemRecommendCardReplyRl;
 
-        @Bind(R.id.item_recommend_card_progress_name_one)
-        TextView itemRecommendCardProgressNameOne;
         @Bind(R.id.item_recommend_card_progress_one)
         HorizontalNumProgressBar itemRecommendCardProgressOne;
-        @Bind(R.id.item_recommend_card_progress_one_ll)
-        LinearLayout itemRecommendCardProgressOneLl;
-        @Bind(R.id.item_recommend_card_progress_name_two)
-        TextView itemRecommendCardProgressNameTwo;
         @Bind(R.id.item_recommend_card_progress_two)
         HorizontalNumProgressBar itemRecommendCardProgressTwo;
-        @Bind(R.id.item_recommend_card_progress_two_ll)
-        LinearLayout itemRecommendCardProgressTwoLl;
-        @Bind(R.id.item_recommend_card_progress_name_three)
-        TextView itemRecommendCardProgressNameThree;
         @Bind(R.id.item_recommend_card_progress_three)
         HorizontalNumProgressBar itemRecommendCardProgressThree;
-        @Bind(R.id.item_recommend_card_progress_three_ll)
-        LinearLayout itemRecommendCardProgressThreeLl;
         @Bind(R.id.root_cv)
         CardView rootCv;
 

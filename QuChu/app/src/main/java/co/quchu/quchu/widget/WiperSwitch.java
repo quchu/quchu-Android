@@ -143,7 +143,8 @@ private Context context;
         canvas.drawRoundRect(this.middleCircleRect, (float) radius, (float) radius, this.paint);
 
         //draw white text
-        this.textPaint.setColor(Color.parseColor("#e9dd34"));
+        this.textPaint.setColor(BACK_COLOR);
+
         String whiteText = subTextWithRect(this.textPaint, SWIPE_LOGIN_TEXT, this.middleCircleRect);
         canvas.drawText(whiteText, text_X, text_Y, textPaint);
 

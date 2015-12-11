@@ -17,11 +17,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 
@@ -33,11 +37,15 @@ import co.quchu.quchu.view.fragment.RecommendFragment;
  */
 public class RecommendPresenter {
 
-    public static void getRecommendList(final Context context, String urls, final GetRecommendListener listener) {
+    public static void getRecommendList(final Context context, final GetRecommendListener listener) {
+        DialogUtil.showProgess(context, "数据加载中...");
+        NetService.get(context, String.format(NetApi.getPlaceList,SPUtils.getCityId(),
+                SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""),SPUtils.getLatitude(),SPUtils.getLongitude()
+                ), new IRequestListener() {
 
-        NetService.get(context, NetApi.getPlaceList, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
+
                 LogUtils.json("getPlaceList==" + response.toString());
                 try {
                     if (response.has("result") && !StringUtils.isEmpty(response.getString("result"))) {
@@ -51,6 +59,7 @@ public class RecommendPresenter {
                                 arrayList.add(model);
                             }
                             listener.onSuccess(arrayList);
+                            DialogUtil.dismissProgess();
                         }
                     }
                 } catch (JSONException e) {
@@ -71,7 +80,7 @@ public class RecommendPresenter {
 
 
     public static void showBottomAnimation(final Fragment fragment, final ViewGroup viewGroup, int viewHeight, final boolean isNeedShow) {
-int duration =360;
+        int duration = 360;
         AnimatorSet animatorSet = new AnimatorSet();
         viewGroup.getY();
         ObjectAnimator objectAnimator;
@@ -83,18 +92,18 @@ int duration =360;
             objectAnimator = ObjectAnimator.ofFloat(viewGroup, "translationY", 0, viewHeight / 3, viewHeight / 3, viewHeight / 2, viewHeight);
             objectAnimator1 = ObjectAnimator.ofFloat(viewGroup, "scaleX", 1f, 0.8f, 0.9f, 1f, 1.1f, 1.2f, 1.1f, 1f);
         }
-       // objectAnimator.setDuration(400);
+        // objectAnimator.setDuration(400);
  /*       ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(viewGroup, "scaleY",0.8f, 1f, 1.1f,1.2f,1.4f,
                 Animation.RELATIVE_TO_SELF, 0.8f, Animation.RELATIVE_TO_SELF,1f);*/
-     //   objectAnimator1.setDuration(550);
+        //   objectAnimator1.setDuration(550);
         animatorSet.playTogether(objectAnimator, objectAnimator1);
-       animatorSet.setDuration(duration);
+        animatorSet.setDuration(duration);
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                    viewGroup.setVisibility(View.VISIBLE);
-                ((RecommendFragment)fragment).isRunningAnimation=true;
+                viewGroup.setVisibility(View.VISIBLE);
+                ((RecommendFragment) fragment).isRunningAnimation = true;
             }
 
             @Override
@@ -103,7 +112,7 @@ int duration =360;
                     viewGroup.setVisibility(View.VISIBLE);
                 else
                     viewGroup.setVisibility(View.INVISIBLE);
-                ((RecommendFragment)fragment).isRunningAnimation=false;
+                ((RecommendFragment) fragment).isRunningAnimation = false;
             }
 
             @Override
@@ -120,8 +129,50 @@ int duration =360;
 
     }
 
-    public static void hintBottomAnimation() {
+    public static void getCityList(Context context , final CityListListener listener) {
+        //  NetService.get(context,String.format( NetApi.GetCityList, SPUtils.getCityName()), new IRequestListener() {
+        NetService.get(context, NetApi.GetCityList, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("city ==" + response.toString());
+                if (response != null) {
+                    try {
+                        Gson gson = new Gson();
+                        if (response.has("default") && !StringUtils.isEmpty(response.getString("default"))) {
+                            CityModel defaultCity = gson.fromJson(response.getString("default"), CityModel.class);
+                            SPUtils.setCityId(defaultCity.getCid());
+                            LogUtils.json("response.has(\"default\")");
+                        }
+                        if (response.has("page") && !StringUtils.isEmpty(response.getString("page"))) {
+                            LogUtils.json("response.has(pages)");
+                            JSONArray pages = response.getJSONObject("page").getJSONArray("result");
 
+                            ArrayList<CityModel> cityList = new ArrayList<CityModel>();
+                            for (int i = 0; i < pages.length(); i++) {
+                                LogUtils.json("response.has(pages)"+i);
+                                CityModel model = gson.fromJson(pages.getString(i), CityModel.class);
+                                cityList.add(model);
+                                if (model.getCvalue().equals(SPUtils.getCityName())) {
+                                    SPUtils.setCityId(model.getCid());
+                                }
+                            }
+                            listener.hasCityList(cityList);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public boolean onError(String error) {
+                return false;
+            }
+        });
     }
 
+    public interface CityListListener{
+        void hasCityList(ArrayList<CityModel> list);
+    }
 }

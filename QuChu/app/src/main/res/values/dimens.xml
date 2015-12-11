@@ -16,6 +16,7 @@
     <dimen name="word_subhead_size">16sp</dimen>
     <dimen name="word_size_body">14sp</dimen>
     <dimen name="word_size_time">12sp</dimen>
+    <dimen name="word_size_minimum">10sp</dimen>
 
     <!-- RatingBar start-->
     <dimen name="prb_symbolic_tick_default_text_size">15sp</dimen>
@@ -24,7 +25,7 @@
     <!-- RecyclerView Item Margin-->
     <dimen name="recycler_item_margin">0.1dp</dimen>
     <dimen name="cardview_margintop">12dp</dimen>
-    <dimen name="cardview_elevation">1dp</dimen>
+    <dimen name="cardview_elevation">0.1dp</dimen>
     <!-- cardView 点击阴影-->
     <dimen name="touch_raise">8dp</dimen>
     <dimen name="item_friends_icon_size">48dp</dimen>
@@ -38,5 +39,11 @@
     <!-- 带图 TabLayout -->
     <dimen name="ImageSubTabLayoutHeight">96dp</dimen>
     <dimen name="account_setting_phone_marginleft">104dp</dimen>
-    <dimen name="horizontal_progressbar_height">16dp</dimen>
+    <dimen name="horizontal_progressbar_height">14dp</dimen>
+
+    <!--趣处详情-->
+    <dimen name="detail_text_margin_right">18dp</dimen>
+    <dimen name="detail_card_radius">8dp</dimen>
+    <dimen name="detail_horizontal_line_height">0.5dp</dimen>
+    <dimen name="detail_button_group_height">32dp</dimen>
 </resources>

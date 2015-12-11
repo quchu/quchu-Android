@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,11 +25,7 @@ import co.quchu.quchu.view.adapter.AtmAdapter;
  * 氛围
  */
 public class AtmosphereActivity extends BaseActivity {
-    /** title ***/
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRL;
-    @Bind(R.id.title_more_rl)
-    RelativeLayout titleMoreRl;
+
     @Bind(R.id.title_content_tv)
     TextView title_content_tv;
     /** title ***/
@@ -42,6 +37,7 @@ public class AtmosphereActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atmosphere);
         ButterKnife.bind(this);
+        initTitleBar();
         atmosphereRv.setHasFixedSize(true);
         title_content_tv.setText(getTitle());
         // use a linear layout manager

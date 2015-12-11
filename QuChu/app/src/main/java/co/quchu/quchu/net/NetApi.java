@@ -15,7 +15,7 @@ public class NetApi {
     /****
      * Get start
      ****/
-    public static final String GetCityList = HOST + "/place/getPlaceList";
+
     public static final String GetCircleList = HOST + "/place/GetCircleList";
     public static final String GetCardList = HOST + "/personal/getCardList?accesstoken=%s";
     /**
@@ -38,7 +38,10 @@ public class NetApi {
 
     public static final String getRootTags = HOST + "/place/getRootTags"; //获取趣处分类列表
 
-    public static final String getPlaceList = HOST + "/place/getPlaceList?cityId=5&tagsEn=luxury&latitude=24.504639439827&longitude=118.13262111507&pagesNo=";//获取趣处 推荐列表
+    // public static final String getPlaceList = HOST + "/place/getPlaceList";//获取趣处 推荐列表
+    public static final String getPlaceList = HOST + "/place/getPlaceList?cityId=%d&tagsEn=%s&latitude=%s&longitude=%s";//获取趣处 推荐列表
+    public static final String GetCityList = HOST + "/place/getCityList";  //获取城市列表  或验证城市
+    public static final String Seach = HOST + "/search?value=%s&pageno=%d";  //搜索 value=搜索内容  gageno=分页页码
     /****  Get end  ****/
 
     /******************

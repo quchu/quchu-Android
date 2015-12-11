@@ -52,7 +52,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
             transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
              /*   transaction.addToBackStack(null);*/
             transaction.commit();
-            LogUtils.json(StringUtils.getMyUUID());
+
         }
     }
 
@@ -86,7 +86,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     }
 
     public void sinaLogin() {
-        new WeiboHelper(this, this).weiboLogin();
+        new WeiboHelper(this, this).weiboLogin(this);
     }
 
     public void weixinLogin() {
@@ -98,6 +98,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         super.onActivityResult(requestCode, resultCode, data);
         // SSO 授权回调
         // 重要：发起 SSO 登陆的 Activity 必须重写 onActivityResult
+        LogUtils.json("requestCode="+requestCode+"///resultCode="+resultCode+"data="+data);
         if (WeiboHelper.mSsoHandler != null) {
             WeiboHelper.mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
