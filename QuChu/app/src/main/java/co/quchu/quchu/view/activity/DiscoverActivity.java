@@ -5,10 +5,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.net.IRequestListener;
+import co.quchu.quchu.net.NetApi;
+import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.adapter.DiscoverAdapter;
 
 /**
@@ -32,14 +38,12 @@ public class DiscoverActivity extends BaseActivity {
         setContentView(R.layout.activity_atmosphere);
         ButterKnife.bind(this);
         initTitleBar();
-        titleContentTv.setText("faxian");
-//        title_content_tv.setText(getTitle());
+        titleContentTv.setText(getTitle());
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         atmosphereRv.setLayoutManager(mLayoutManager);
         atmosphereRv.setAdapter(new DiscoverAdapter(this));
-//        titleBackRL.setOnClickListener(this);
+        initDiscoverData(1);
 
-        atmosphereRv.scrollTo(0,120);
     }
 
 
@@ -60,12 +64,18 @@ public class DiscoverActivity extends BaseActivity {
         ButterKnife.unbind(this);
     }
 
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.title_more_rl:
-//
-//                break;
-//        }
-//    }
+    private void initDiscoverData(int pageNo){
+        NetService.get(this,String.format(NetApi.getProposalPlaceList,pageNo), new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("initDiscoverData=="+response);
+            }
+
+            @Override
+            public boolean onError(String error) {
+                return false;
+            }
+        });
+    }
+
 }

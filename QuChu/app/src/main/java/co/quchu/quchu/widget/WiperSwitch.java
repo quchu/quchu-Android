@@ -153,7 +153,7 @@ private Context context;
   /*     canvas.drawRoundRect(this.frontCircleRect, (float) radius, (float) radius, this.paint);*/
       //  canvas.drawBitmap(iconbit, 0,0, this.paint);
         if (this.bitmap != null) {
-            drawBitmapCenter(canvas, this.bitmap, this.frontCircleRect.centerX()+2, this.frontCircleRect.centerY()+8, 1, this.paint);
+            drawBitmapCenter(canvas, this.bitmap, this.frontCircleRect.centerX()+StringUtils.dip2px(context, 1), this.frontCircleRect.centerY()+StringUtils.dip2px(context,2), 1, this.paint);
         }
 
     }

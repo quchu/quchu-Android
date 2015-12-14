@@ -50,6 +50,8 @@ public class NetApi {
     public static final String FavTypeCard = "card";
     public static final String userFavorite = HOST + "/sns/favorite?formId=%d&type=%s";  //收藏 formId=423&type=image  formId=id  type=（image:图片,article:资讯,place:趣处,card: 明信片）
     public static final String userDelFavorite = HOST + "/sns/delfavorite?formId=%d&type=%s";  //收藏 formId=423&type=image  formId=id  type=（image:图片,article:资讯,place:趣处,card: 明信片）
+    public static final String getFavorite = HOST + "/personal/getFavorite";  //获取我的收藏
+    public static final String getProposalPlaceList = HOST + "/personal/getProposalPlaceList?pageno=%d";  //获取我的发现
     /****  Get end  ****/
 
     /******************

@@ -70,6 +70,10 @@
             android:name="co.quchu.quchu.view.activity.PostCardActivity"
             android:label="@string/titlebar_word_postcard"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.FavoriteActivity"
+            android:label="@string/titlebar_word_favorite"
+            android:screenOrientation="portrait" />
         <!-- 我的趣推荐 -->
         <activity
             android:name="co.quchu.quchu.view.activity.RecommendActivity"
