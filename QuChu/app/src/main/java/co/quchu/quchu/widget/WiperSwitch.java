@@ -148,12 +148,12 @@ private Context context;
         String whiteText = subTextWithRect(this.textPaint, SWIPE_LOGIN_TEXT, this.middleCircleRect);
         canvas.drawText(whiteText, text_X, text_Y, textPaint);
 
-        this.frontCircleRect.set(this.frontRect_left, 15, this.frontRect_left + this.backCircleRect.height() - 30, this.backCircleRect.height() - 15);
+        this.frontCircleRect.set(this.frontRect_left, 15, this.frontRect_left + this.backCircleRect.height() - 30, this.backCircleRect.height() - 18);
         this.paint.setColor(Color.YELLOW);
   /*     canvas.drawRoundRect(this.frontCircleRect, (float) radius, (float) radius, this.paint);*/
       //  canvas.drawBitmap(iconbit, 0,0, this.paint);
         if (this.bitmap != null) {
-            drawBitmapCenter(canvas, this.bitmap, this.frontCircleRect.centerX()-4, this.frontCircleRect.centerY()+6, 1, this.paint);
+            drawBitmapCenter(canvas, this.bitmap, this.frontCircleRect.centerX()+2, this.frontCircleRect.centerY()+8, 1, this.paint);
         }
 
     }

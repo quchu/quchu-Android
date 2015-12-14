@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
@@ -32,14 +34,16 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
  */
 public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.RecommendHolder> {
 
+
     private Context mContext;
     private boolean isFlyme = false;
     private ArrayList<RecommendModel> arrayList;
+    private CardClickListener listener;
 
-    public RecommendAdapter(Context mContext) {
+    public RecommendAdapter(Context mContext, CardClickListener listener) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
-
+        this.listener = listener;
     }
 
     public void changeDataSet(ArrayList<RecommendModel> arrayList) {
@@ -49,7 +53,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
     @Override
     public RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecommendHolder holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview, parent, false));
+        RecommendHolder holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview, parent, false), listener);
         return holder;
     }
 
@@ -70,8 +74,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         holder.itemRecommendCardAddressTv.setText(model.getAddress());
         holder.itemRecommendCardCityTv.setText(model.getDescribe());
         holder.itemRecommendCardNameTv.setText(model.getName());
-        holder.itemRecommendCardPrb.setRating((int) (model.getSuggess() + 0.5) >= 5 ? 5 : ((int) (model.getSuggess())));
-
+        holder.itemRecommendCardPrb.setRating((int) (model.getSuggest() + 0.5) >= 5 ? 5 : (model.getSuggest()));
+        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
         holder.itemRecommendCardProgressOne.setProgress(model.getGenes().get(0).getValue());
         holder.itemRecommendCardProgressOne.setProgressName(model.getGenes().get(0).getKey());
         holder.itemRecommendCardProgressTwo.setProgress(model.getGenes().get(1).getValue());
@@ -117,11 +121,24 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         HorizontalNumProgressBar itemRecommendCardProgressThree;
         @Bind(R.id.root_cv)
         CardView rootCv;
+        @Bind(R.id.item_recommend_card_collect_iv)
+        ImageView itemRecommendCardCollectIv;
+        private CardClickListener listener;
 
-        public RecommendHolder(View itemView) {
+        public RecommendHolder(View itemView, CardClickListener listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.listener = listener;
         }
 
+        @OnClick({R.id.root_cv,R.id.item_recommend_card_collect_rl})
+        public void cardClick(View view) {
+            if (listener != null)
+                listener.onCardLick(view, getPosition());
+        }
+    }
+
+    public interface CardClickListener {
+        void onCardLick(View view, int position);
     }
 }

@@ -70,7 +70,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         holder.itemRecommendCardAddressTv.setText(model.getAddress());
         holder.itemRecommendCardCityTv.setText(model.getDescribe());
         holder.itemRecommendCardNameTv.setText(model.getName());
-        holder.itemRecommendCardPrb.setRating((int) (model.getSuggess() + 0.5) >= 5 ? 5 : ((int) (model.getSuggess())));
+        holder.itemRecommendCardPrb.setRating((int) (model.getSuggest() + 0.5) >= 5 ? 5 : ((int) (model.getSuggest())));
 
         holder.itemRecommendCardProgressOne.setProgress(model.getGenes().get(0).getValue());
         holder.itemRecommendCardProgressOne.setProgressName(model.getGenes().get(0).getKey());

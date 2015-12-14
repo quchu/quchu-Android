@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_recommend_card_progress_one_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/widget_horizontal_progress_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/half_margin"
+        android:gravity="center_vertical"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_size_time" />
+
+
+    <ProgressBar
+        android:id="@+id/widget_horizontal_pb"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/horizontal_progressbar_height"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_bar_detail_white" />
+
+
+    <TextView
+        android:id="@+id/widget_horizontal_progress_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center_vertical"
+
+        android:layout_marginLeft="@dimen/half_margin"
+        android:textColor="@color/black"
+        android:textSize="@dimen/word_size_time" />
+
+</LinearLayout>
+

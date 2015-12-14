@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -176,7 +177,7 @@ public class StringUtils {
      *
      * @param view       textview
      * @param startIndex 起始位置
-     * @param endIndex  需改变的文字字数  结束位置
+     * @param endIndex   需改变的文字字数  结束位置
      * @param mColor     颜色id
      */
     public static void alterTextColor(TextView view, int startIndex, int endIndex, int mColor) {
@@ -200,13 +201,27 @@ public class StringUtils {
         ^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$
         */
         String telRegex = "[1][34578]\\d{9}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
-      //  String telRegex = "`((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8]))\\\\d{8}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
-      //  String telRegex = "((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
+        //  String telRegex = "`((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8]))\\\\d{8}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
+        //  String telRegex = "((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         if (TextUtils.isEmpty(mobiles)) return false;
         else return Pattern.matches(telRegex, mobiles);
     }
 
-
+    /**
+     * 字符串 以， 切割 返回string List
+     *
+     * @param str 待切割字符串
+     * @return ArrayList
+     */
+    public static ArrayList<String> convertStrToArray(String str) {
+        String[] strArray = null;
+        strArray = str.split(","); //拆分字符为"," ,然后把结果交给数组strArray
+        ArrayList<String> nearByList = new ArrayList<String>();
+        for (int i = 0; i < strArray.length; i++) {
+            nearByList.add(strArray[i]);
+        }
+        return nearByList;
+    }
 
 
 }

@@ -138,7 +138,12 @@ public class NetService {
                                                 pListener.onError(response.getString("msg"));
                                             }
                                         } else {
-                                            Toast.makeText(AppContext.mContext, "网络出错", 0).show();
+                                            if (response.has("exception") && !StringUtils.isEmpty(response.getString("exception")) && "已有记录".equals(response.getString("exception"))) {
+                                                Toast.makeText(AppContext.mContext, "已有记录", Toast.LENGTH_SHORT).show();
+                                            } else {
+
+                                                Toast.makeText(AppContext.mContext, "网络出错", 0).show();
+                                            }
                                         }
                                         pListener.onError(response.toString());
 

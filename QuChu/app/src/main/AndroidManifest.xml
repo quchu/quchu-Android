@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <!--android:name="co.quchu.quchu.view.activity.PlanetActivity"-->
         <activity
-            android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
+            android:name="co.quchu.quchu.view.activity.UserLoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
@@ -87,6 +87,10 @@
         <activity
             android:name="co.quchu.quchu.view.activity.AccountSettingActivity"
             android:screenOrientation="portrait" />
+        <!-- 趣处详情-->
+        <activity
+            android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -97,7 +101,7 @@
             android:value="5655121fe0f55a5ee8008dd5" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="Channel ID" />
+            android:value="ChannelID" />
 
     </application>
 

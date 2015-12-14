@@ -20,10 +20,10 @@
     <string name="follower">关注我的</string>
     <!-- ********** 趣基因 ********* -->
     <array name="MyGene">
-        <item >探索基因</item>
-        <item >吃货基因</item>
-        <item >艺术基因</item>
-        <item >土豪基因</item>
+        <item>探索基因</item>
+        <item>吃货基因</item>
+        <item>艺术基因</item>
+        <item>土豪基因</item>
     </array>
     <string name="subtitle_word_gene_introduce">什么是趣基因?</string>
     <string name="subtitle_word_friends_introduce">什么是趣友圈?</string>
@@ -44,4 +44,6 @@
     <string name="text_friends_follower">%d&#032;关注我的</string>
     <!--<string name="text_friends_item_address">%1s&#032;,&#032;%2s</string>-->
     <string name="text_login_resetpassowrd">密码重置成功，请重新登陆</string>
+    <string name="detail_price_hint_text">&#165;%s&#047;人</string>
+    <string name="detail_address_hint_text">%1$s &#040;%2$s &#041;</string>
 </resources>

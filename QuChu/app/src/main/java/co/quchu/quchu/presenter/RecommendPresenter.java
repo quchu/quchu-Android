@@ -3,8 +3,8 @@ package co.quchu.quchu.presenter;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.nineoldandroids.animation.Animator;
@@ -79,7 +79,7 @@ public class RecommendPresenter {
     }
 
 
-    public static void showBottomAnimation(final Fragment fragment, final ViewGroup viewGroup, int viewHeight, final boolean isNeedShow) {
+    public static void showBottomAnimation(final Fragment fragment, final ImageView viewGroup, int viewHeight, final boolean isNeedShow) {
         int duration = 360;
         AnimatorSet animatorSet = new AnimatorSet();
         viewGroup.getY();

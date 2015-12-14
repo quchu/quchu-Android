@@ -42,6 +42,14 @@ public class NetApi {
     public static final String getPlaceList = HOST + "/place/getPlaceList?cityId=%d&tagsEn=%s&latitude=%s&longitude=%s";//获取趣处 推荐列表
     public static final String GetCityList = HOST + "/place/getCityList";  //获取城市列表  或验证城市
     public static final String Seach = HOST + "/search?value=%s&pageno=%d";  //搜索 value=搜索内容  gageno=分页页码
+    public static final String getDetail = HOST + "/place/GetPlace?pId=%d";  //获取趣处详情信息 pid=趣处id
+    public static final String getUserOutPlace = HOST + "/operate/userOutPlace?pId=%d";  //趣处详情 去过
+    public static final String FavTypeImg = "image";
+    public static final String FavTypeArt = "article";
+    public static final String FavTypePlace = "place";
+    public static final String FavTypeCard = "card";
+    public static final String userFavorite = HOST + "/sns/favorite?formId=%d&type=%s";  //收藏 formId=423&type=image  formId=id  type=（image:图片,article:资讯,place:趣处,card: 明信片）
+    public static final String userDelFavorite = HOST + "/sns/delfavorite?formId=%d&type=%s";  //收藏 formId=423&type=image  formId=id  type=（image:图片,article:资讯,place:趣处,card: 明信片）
     /****  Get end  ****/
 
     /******************

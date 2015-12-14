@@ -58,5 +58,7 @@
     <!-- 趣处详情 -->
     <color name="detail_card_bg_color">#595656</color>
     <color name="detail_avg_price_text_bg">#26000000</color><!--人均消费 文字背景色-->
+    <color name="detail_line_color">#717071</color><!--人均消费 文字背景色-->
+    <color name="detail_subtitle_bg">#272525</color><!--人均消费 文字背景色-->
 
 </resources>

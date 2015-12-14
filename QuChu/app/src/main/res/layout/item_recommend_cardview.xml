@@ -51,10 +51,10 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/item_recommend_card_photo_sdv"
-            android:layout_marginTop="@dimen/half_margin"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/item_recommend_card_title_textrl"
+            android:layout_marginTop="@dimen/half_margin"
             android:layout_weight="1"
             card_view:actualImageScaleType="centerCrop" />
 
@@ -92,8 +92,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/half_margin"
-          />
+            android:layout_marginTop="@dimen/half_margin" />
 
 
         <co.quchu.quchu.widget.HorizontalNumProgressBar
@@ -103,8 +102,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/quarter_margin"
-        />
+            android:layout_marginTop="@dimen/quarter_margin" />
 
 
         <co.quchu.quchu.widget.HorizontalNumProgressBar
@@ -114,8 +112,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/quarter_margin"
-           />
+            android:layout_marginTop="@dimen/quarter_margin" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -129,10 +126,20 @@
                 android:layout_centerVertical="true">
 
                 <ImageView
+                    android:id="@+id/item_recommend_card_collect_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/base_margin"
                     android:src="@drawable/ic_atmophere_unselected" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/item_recommend_card_collect_iv" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_toRightOf="@id/item_recommend_card_collect_iv"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -143,10 +150,20 @@
                 android:layout_centerVertical="true">
 
                 <ImageView
+                    android:id="@+id/item_recommend_card_interest_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/base_margin"
                     android:src="@drawable/ic_recommend_bc_right" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/item_recommend_card_interest_iv" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_toRightOf="@id/item_recommend_card_interest_iv"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -157,10 +174,20 @@
                 android:layout_centerVertical="true">
 
                 <ImageView
+                    android:id="@+id/item_recommend_card_reply_Iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/base_margin"
                     android:src="@drawable/ic_atmosphere_more" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/item_recommend_card_reply_Iv" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_toRightOf="@id/item_recommend_card_reply_Iv" />
             </RelativeLayout>
         </RelativeLayout>
 

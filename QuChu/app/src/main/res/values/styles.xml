@@ -1,4 +1,4 @@
-<resources  >
+<resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -26,16 +26,16 @@
     <!-- 自定义style  -->
 
     <!-- 纵向分隔线 -->
-       <style name="VerticalLine">
-           <item name="android:layout_width">@dimen/line_thickness</item>
-           <item name="android:layout_height">match_parent</item>
-           <item name="android:background">@color/lineBackground_gray</item>
-       </style>
+    <style name="VerticalLine">
+        <item name="android:layout_width">@dimen/line_thickness</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/lineBackground_gray</item>
+    </style>
 
     <style name="DetailVerticalLine">
         <item name="android:layout_width">@dimen/detail_horizontal_line_height</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/text_color_white</item>
+        <item name="android:background">@color/detail_line_color</item>
     </style>
     <!-- 横向分隔线 -->
     <style name="HorizontalLine">
@@ -46,11 +46,11 @@
 
     <style name="DetailHorizontalLine">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginLeft">@dimen/base_margin</item>
+        <item name="android:layout_marginLeft">@dimen/half_margin</item>
         <item name="android:layout_marginTop">@dimen/half_margin</item>
-        <item name="android:layout_marginRight">@dimen/base_margin</item>
+        <item name="android:layout_marginRight">@dimen/half_margin</item>
         <item name="android:layout_height">@dimen/detail_horizontal_line_height</item>
-        <item name="android:background">@color/text_color_white</item>
+        <item name="android:background">@color/detail_line_color</item>
     </style>
 
     <style name="AccountBHl" parent="HorizontalLine">
@@ -90,9 +90,22 @@
         <!-- 指定消失的动画xml -->
     </style>
 
-   <style name="DetailTextStyle_sub">
-
+    <style name="DetailTextStyle_sub">
         <item name="textColor">@color/text_color_white</item>
         <item name="textSize">@dimen/word_subhead_size</item>
+    </style>
+    <!-- 详情界面 便利标签 radiobutton 风格 -->
+
+    <style name="DetailRadioButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:button">@null</item>
+        <item name="android:checked">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:textColor">@color/rb_detail_textcolor_seletcer</item>
+        <item name="android:textSize">@dimen/word_size_time</item>
     </style>
 </resources>
