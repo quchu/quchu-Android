@@ -10,16 +10,20 @@ import android.widget.ListView;
  * Date: 2015-11-17
  */
 public class InnerListView extends ListView {
+    Context context;
     public InnerListView(Context context) {
         super(context);
+        this.context=context;
     }
 
     public InnerListView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context=context;
     }
 
     public InnerListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context=context;
     }
 
     @Override

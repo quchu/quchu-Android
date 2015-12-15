@@ -72,9 +72,11 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         if (this instanceof MenusActivity) {
             overridePendingTransition(R.anim.out_bottom_to_top,
                     R.anim.out_bottom_to_top);
+        }else {
+                  overridePendingTransition(R.anim.in_stable,
+                R.anim.out_push_left_to_right);
         }
-  /*      overridePendingTransition(R.anim.in_stable,
-                R.anim.out_push_left_to_right);*/
+
     }
 
     @Override

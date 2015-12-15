@@ -51,14 +51,14 @@ public class HorizontalNumProgressBar extends RelativeLayout {
     public void setProgress(int progress) {
         if (progress <= 80) {
             setProgressBarWhite();
-            progressNum.setTextColor(getResources().getColor(R.color.load_progress_white));
+        //    progressNum.setTextColor(getResources().getColor(R.color.load_progress_white));
         } else {
             setProgressBarYellow();
-            if (progress >= 95) {
+          /*  if (progress >= 95) {
                 progressNum.setTextColor(getResources().getColor(R.color.black));
             } else {
                 progressNum.setTextColor(getResources().getColor(R.color.load_progress_white));
-            }
+            }*/
         }
         progressBar.setProgress(progress);
         progressNum.setText(progress + "%");

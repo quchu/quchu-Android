@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -214,7 +217,9 @@ public class InterestingDetailsActivity extends BaseActivity {
         initConvenienceIcons();
         changeBottomBeenBg(dModel.isIsout());
         changeCollectState(dModel.isIsf());
-        detailImageListIlv.setAdapter(new DetailListViewAdapter(this, dModel.getImglist()));
+        DetailListViewAdapter dlvAdapter = new DetailListViewAdapter(this, dModel.getImglist());
+        detailImageListIlv.setAdapter(dlvAdapter);
+        setListViewHeightBasedOnChildren(detailImageListIlv);
         detailOutsideSv.smoothScrollTo(0, 0);
 
     }
@@ -272,8 +277,8 @@ public class InterestingDetailsActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.detail_store_phone_ll, R.id.detail_been_tv,R.id.detail_button_collect_out_rl,R.id.detail_button_collect_rl,
-            R.id.detail_button_add_postcard_out_rl,R.id.detail_button_add_postcard_rl,R.id.detail_button_share_out_rl,R.id.detail_button_share_rl})
+    @OnClick({R.id.detail_store_phone_ll, R.id.detail_been_tv, R.id.detail_button_collect_out_rl, R.id.detail_button_collect_rl,
+            R.id.detail_button_add_postcard_out_rl, R.id.detail_button_add_postcard_rl, R.id.detail_button_share_out_rl, R.id.detail_button_share_rl})
     public void detailClick(View v) {
         switch (v.getId()) {
             case R.id.detail_store_phone_ll:
@@ -321,10 +326,10 @@ public class InterestingDetailsActivity extends BaseActivity {
             public void onSuccessCall(String str) {
                 dModel.setIsf(!dModel.isIsf());
                 changeCollectState(dModel.isIsf());
-                if (dModel.isIsf()){
-                    Toast.makeText(InterestingDetailsActivity.this,"收藏成功!",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(InterestingDetailsActivity.this,"取消收藏!",Toast.LENGTH_SHORT).show();
+                if (dModel.isIsf()) {
+                    Toast.makeText(InterestingDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(InterestingDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -343,5 +348,27 @@ public class InterestingDetailsActivity extends BaseActivity {
         }
     }
 
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+        // 获取ListView对应的Adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        int totalHeight = 0;
+        totalHeight= (int) (( listView.getWidth()/0.75f)*listAdapter.getCount());
+       /* for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
+            // listAdapter.getCount()返回数据项的数目
+            View listItem = listAdapter.getView(i, null, listView);
+            // 计算子项View 的宽高
+            listItem.measure(0, 0);
+            // 统计所有子项的总高度
+            totalHeight += listItem.getMeasuredHeight();
+        }*/
 
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() + StringUtils.dip2px(this, 330)));
+        // listView.getDividerHeight()获取子项间分隔符占用的高度
+        // params.height最后得到整个ListView完整显示需要的高度
+        listView.setLayoutParams(params);
+    }
 }

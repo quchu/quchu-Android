@@ -17,7 +17,7 @@ public class NetApi {
      ****/
 
     public static final String GetCircleList = HOST + "/place/GetCircleList";
-    public static final String GetCardList = HOST + "/personal/getCardList?accesstoken=%s";
+    public static final String GetCardList = HOST + "/personal/getCardList"; //获取我的明信片
     /**
      * URL:{host}/appservices/personal/getAlbum?accesstoke=075a849f43383e6f18daba73c229532f3b671a0d&pageno=1&type=favorite&orderby=new
      * type 数据获取类型(image(照片)/favorite(收藏)) 为空则为image
@@ -52,6 +52,8 @@ public class NetApi {
     public static final String userDelFavorite = HOST + "/sns/delfavorite?formId=%d&type=%s";  //收藏 formId=423&type=image  formId=id  type=（image:图片,article:资讯,place:趣处,card: 明信片）
     public static final String getFavorite = HOST + "/personal/getFavorite";  //获取我的收藏
     public static final String getProposalPlaceList = HOST + "/personal/getProposalPlaceList?pageno=%d";  //获取我的发现
+    public static final String getFavoriteList = HOST + "/personal/getFavoriteList?pageno=%d&type=%s";  //获取我收藏的趣处/明信片
+
     /****  Get end  ****/
 
     /******************

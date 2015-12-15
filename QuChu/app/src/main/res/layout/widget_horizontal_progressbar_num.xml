@@ -10,24 +10,27 @@
         android:id="@+id/widget_horizontal_progress_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/half_margin"
         android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/half_margin"
         android:gravity="center_vertical"
         android:textColor="@color/text_color_white"
         android:textSize="@dimen/word_size_time" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="@dimen/horizontal_progressbar_height"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@drawable/shape_progress_gray_bg"
+        android:orientation="horizontal">
 
         <ProgressBar
             android:id="@+id/widget_horizontal_pb"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
+            android:layout_weight="1"
             android:max="100"
             android:progress="0"
             android:progressDrawable="@drawable/progress_bar_yellow" />
@@ -39,9 +42,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:textColor="@color/black"
+            android:textColor="@color/load_progress_white"
             android:textSize="@dimen/word_size_time" />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
 

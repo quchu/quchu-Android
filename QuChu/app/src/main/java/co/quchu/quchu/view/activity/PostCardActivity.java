@@ -1,16 +1,19 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.view.adapter.PostCardAdapter;
-import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
-import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
+import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.view.fragment.PostCardDetailFg;
+import co.quchu.quchu.view.fragment.PostCardListFg;
+import co.quchu.quchu.widget.cardsui.MyCard;
+
 
 /**
  * PostCardActivity
@@ -19,8 +22,15 @@ import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
  * 明信片
  */
 public class PostCardActivity extends BaseActivity {
-    @Bind(R.id.atmosphere_rv)
-    RecyclerViewPager mRecyclerView;
+
+
+    @Bind(R.id.title_content_tv)
+    TextView mTitleContentTv;
+    @Bind(R.id.postcard_fl)
+    FrameLayout postcardFl;
+    FragmentTransaction transaction;
+    PostCardListFg postCardListFg;
+    MyCard.PostCardItemClickListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,29 +38,33 @@ public class PostCardActivity extends BaseActivity {
         setContentView(R.layout.activity_postcard);
         ButterKnife.bind(this);
         initTitleBar();
-        LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(layout);
-        mRecyclerView.setAdapter(new PostCardAdapter(this));
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLongClickable(true);
+        mTitleContentTv.setText(getTitle());
 
-        mRecyclerView.addOnScrollListener();
-        mRecyclerView.addOnPageChangedListener(new RecyclerViewPager.OnPageChangedListener() {
+        listener = new MyCard.PostCardItemClickListener() {
             @Override
-            public void OnPageChanged(int oldPosition, int newPosition) {
-                Log.d("test", "oldPosition:" + oldPosition + " newPosition:" + newPosition);
-                if (newPosition == 0) {
-                    mSwipeBackLayout.setEnableGesture(true);
-                    mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-                    mSwipeBackLayout.setEdgeSize(100);
-                } else {
-                    mSwipeBackLayout.setEnableGesture(false);
-                }
+            public void onPostCardItemClick(int Pid, String rgbStr) {
+                LogUtils.json(Pid + "pid" + rgbStr);
+          if (postCardListFg!=null)
+              postCardListFg.setInvisiable(true);
+                transaction = getSupportFragmentManager().beginTransaction();
+              //  transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);
+                transaction.replace(R.id.postcard_fl, new PostCardDetailFg());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
-        });
+        };
 
-        mRecyclerView.addOnLayoutChangeListener();
+        postCardListFg = new PostCardListFg(listener);
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.in_top_to_bottom,R.anim.out_bottom_to_top);
+        transaction.replace(R.id.postcard_fl, postCardListFg);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+
+
     }
+
 
     @Override
     protected void onDestroy() {
@@ -68,4 +82,6 @@ public class PostCardActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
     }
+
+
 }

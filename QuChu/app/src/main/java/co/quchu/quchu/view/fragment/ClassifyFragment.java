@@ -115,12 +115,16 @@ public class ClassifyFragment extends Fragment {
         LogUtils.json("classify is onpause");
     }
 
-    public void hintClassify(){
-        fragmentFirendsRv.setVisibility(View.GONE);
+    public void hintClassify() {
+        if (fragmentFirendsRv != null)
+            fragmentFirendsRv.setVisibility(View.GONE);
     }
-    public void showClassify(){
-        fragmentFirendsRv.setVisibility(View.VISIBLE);
+
+    public void showClassify() {
+        if (fragmentFirendsRv != null)
+            fragmentFirendsRv.setVisibility(View.VISIBLE);
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

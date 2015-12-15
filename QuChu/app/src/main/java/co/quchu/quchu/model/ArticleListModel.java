@@ -245,7 +245,7 @@ public class ArticleListModel {
 
             @Override
             public String toString() {
-                return "ResultEntity{" +
+                return "PostCardItem{" +
                         "aid=" + aid +
                         ", autor='" + autor + '\'' +
                         ", comNum=" + comNum +

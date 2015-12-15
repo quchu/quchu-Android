@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
+    android:clickable="true"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -10,19 +11,12 @@
         android:id="@+id/title_bar"
         layout="@layout/title_bar" />
 
-    <co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/atmosphere_rv"
+    <FrameLayout
+        android:id="@+id/postcard_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:layout_below="@id/title_bar"
-        android:background="@drawable/ic_activity_bg"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
+        android:background="@drawable/ic_activity_bg" />
 
-        app:singlePageFling="true"
-        app:triggerOffset="0.1" />
+
 </RelativeLayout>

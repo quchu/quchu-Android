@@ -83,6 +83,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         setContentView(R.layout.activity_planet);
         ButterKnife.bind(this);
         initTitleBar();
+
         initActivityViewHolder();
         presenter = new PlanetActPresenter(this, planetHolder);
         presenter.setPlanetGene(planetGeneTv);
