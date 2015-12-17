@@ -54,6 +54,10 @@ public class NetApi {
     public static final String getProposalPlaceList = HOST + "/personal/getProposalPlaceList?pageno=%d";  //获取我的发现
     public static final String getFavoriteList = HOST + "/personal/getFavoriteList?pageno=%d&type=%s";  //获取我收藏的趣处/明信片
 
+
+    public static final String getPlaceCardList = HOST + "/place/getCardList?pageno=%d&pId=%s";  //趣处的明信片列表
+
+
     /****  Get end  ****/
 
     /******************

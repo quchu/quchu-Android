@@ -20,6 +20,7 @@ import co.quchu.quchu.widget.cardsui.views.CardUI;
  * FriendsFollowerFg
  * User: Chenhs
  * Date: 2015-11-09
+ * 获取我的明信片
  */
 public class PostCardListFg extends Fragment {
     View view;
@@ -30,6 +31,7 @@ public class PostCardListFg extends Fragment {
 
     public PostCardListFg(MyCard.PostCardItemClickListener listener) {
         this.listener = listener;
+        initPostCardData();
     }
 
     @Nullable
@@ -37,7 +39,8 @@ public class PostCardListFg extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_postcard_listview, null);
         ButterKnife.bind(this, view);
-        initPostCardData();
+        if (pModel != null)
+            dataBinding();
         return view;
     }
 
@@ -55,28 +58,17 @@ public class PostCardListFg extends Fragment {
         ButterKnife.unbind(this);
     }
 
+    private PostCardModel pModel;
+
     private void initPostCardData() {
         PostCardPresenter.GetPostCardList(getActivity(), new PostCardPresenter.MyPostCardListener() {
             @Override
             public void onSuccess(PostCardModel model) {
+
                 if (model != null) {
+                    pModel = model;
 
-
-                    CardStack stack = new CardStack(getActivity());
-                    MyCard card = null;
-                    for (int i = 0; i < 8; i++) {
-                        model.getResult().get(0).setCardId(i);
-                        model.getResult().get(0).setAddress(i + "");
-                        card = new MyCard(model.getResult().get(0), listener);
-                        stack.add(card);
-
-
-                    }
-
-                    postcardCardsui.addStack(stack);
-
-                    // draw cards
-                    postcardCardsui.refresh();
+                    dataBinding();
                 }
             }
 
@@ -85,5 +77,22 @@ public class PostCardListFg extends Fragment {
 
             }
         });
+    }
+
+    CardStack stack;
+
+    private void dataBinding() {
+
+        stack = new CardStack(getActivity());
+        MyCard card = null;
+        for (int i = 0; i < pModel.getResult().size(); i++) {
+            card = new MyCard(pModel.getResult().get(i), listener);
+            stack.add(card);
+        }
+        if (null != postcardCardsui) {
+            postcardCardsui.addStack(stack);
+            // draw cards
+            postcardCardsui.refresh();
+        }
     }
 }

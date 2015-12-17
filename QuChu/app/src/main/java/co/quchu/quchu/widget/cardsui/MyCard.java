@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.cardsui.objects.Card;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -54,6 +55,10 @@ public class MyCard extends Card {
     RelativeLayout itemRecommendCardReplyRl;
     @Bind(R.id.root_cv)
     CardView rootCv;
+    @Bind(R.id.item_my_postcard_card_nickname_tv)
+    TextView itemMyPostcardCardNicknameTv;
+    @Bind(R.id.item_my_postcard_card_tiem_tv)
+    TextView itemMyPostcardCardTiemTv;
     private PostCardModel.PostCardItem item;
     private PostCardItemClickListener listener;
 
@@ -73,14 +78,17 @@ public class MyCard extends Card {
         itemRecommendCardCityTv.setText(item.getAddress());
         itemMyPostcardCardPrb.setRating(item.getScore());
         itemMyPostcardCardCommentTv.setText(item.getComment());
+        itemMyPostcardCardNicknameTv.setText(item.getAutor());
+        itemMyPostcardCardTiemTv.setText(StringUtils.isEmpty(item.getTime())?"":item.getTime().substring(0,10));
         itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
-        itemRecommendCardPhotoSdv.setAspectRatio(1f);
+        itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
         rootCv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LogUtils.json("view is click");
-                listener.onPostCardItemClick(item.getCardId(), item.getRgb());
+                if (listener!=null)
+                listener.onPostCardItemClick(item);
             }
         });
         return v;
@@ -94,6 +102,6 @@ public class MyCard extends Card {
 
 
     public interface PostCardItemClickListener {
-        void onPostCardItemClick(int Pid, String rgbStr);
+        void onPostCardItemClick(PostCardModel.PostCardItem item);
     }
 }

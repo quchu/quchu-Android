@@ -293,6 +293,12 @@ public class InterestingDetailsActivity extends BaseActivity {
             case R.id.detail_button_add_postcard_out_rl:
             case R.id.detail_button_add_postcard_rl:
                 //添加明信片
+                Intent intent = new Intent();
+                intent.putExtra("pId",dModel.getPid());
+                intent.putExtra("pName",dModel.getName());
+                intent.setClass(this,PlacePostCardActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.detail_button_collect_out_rl:
             case R.id.detail_button_collect_rl:

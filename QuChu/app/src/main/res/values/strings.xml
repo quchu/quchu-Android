@@ -13,7 +13,10 @@
     <string name="titlebar_word_friends_introduce">什么是趣友圈</string>
     <string name="titlebar_word_care_about_friends_introduce">我的趣友圈</string>
     <string name="titlebar_word_postcard">明信片</string>
+    <string name="titlebar_word_add_postcard">创建明信片</string>
     <string name="titlebar_word_favorite">我的收藏</string>
+    <string name="titlebar_word_imagebucket">手机相册</string>
+    <string name="titlebar_word_imagephoto">相片</string>
 
     <!-- ********** 趣星球 ********* -->
     <string name="prb_default_symbolic_string">$</string>
@@ -49,4 +52,15 @@
     <string name="detail_address_hint_text">%1$s &#040;%2$s &#041;</string>
 
     <string name="loading_dialog_text">数据加载中...</string>
+    <string name="place_postcard_add_new_postcard">在这里留下一张明信片</string>
+    <string name="place_postcard_add_read_my_postcard">查看我在这里留下的明信片</string>
+    <string name="place_postcard_data_null_hinttext">目前尚无用户在此留下明信片</string>
+    <array name="addPostCardSuggetStrings">
+        <item>请给趣处打分</item>
+        <item>不喜欢</item>
+        <item>不推荐</item>
+        <item>还行</item>
+        <item>挺喜欢的</item>
+        <item>非常棒!</item>
+    </array>
 </resources>

@@ -68,7 +68,7 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
         }
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (isFlyme) {
-            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.9f);
+            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.45f);
         } else {
             holder.itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         }

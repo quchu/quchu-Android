@@ -86,6 +86,7 @@
                 card_view:prb_totalTicks="5" />
 
             <TextView
+                android:id="@+id/item_my_postcard_card_nickname_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_my_postcard_card_prb"
@@ -97,10 +98,12 @@
                 android:textSize="@dimen/word_size_body" />
 
             <TextView
+                android:id="@+id/item_my_postcard_card_tiem_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/base_margin"
+                android:layout_centerVertical="true"
                 android:text="2015"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/word_size_body" />
@@ -121,6 +124,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/half_margin"
             android:layout_gravity="bottom"
             android:orientation="horizontal">
 

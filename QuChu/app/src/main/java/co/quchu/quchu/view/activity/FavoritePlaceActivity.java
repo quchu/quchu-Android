@@ -55,6 +55,9 @@ public class FavoritePlaceActivity extends BaseActivity {
                         intent.setClass(FavoritePlaceActivity.this, InterestingDetailsActivity.class);
                         startActivity(intent);
                         break;
+                    case R.id.root_cv:
+
+                        break;
                 }
             }
         });

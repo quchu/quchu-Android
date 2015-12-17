@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <!--android:name="co.quchu.quchu.view.activity.PlanetActivity"-->
         <activity
-            android:name="co.quchu.quchu.view.activity.PostCardActivity"
+            android:name="co.quchu.quchu.view.activity.UserLoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
@@ -66,10 +66,15 @@
             android:name="co.quchu.quchu.view.activity.FeedbackActivity"
             android:label="@string/titlebar_word_feedback"
             android:screenOrientation="portrait" />
-    <!--    <activity
+        <activity
             android:name="co.quchu.quchu.view.activity.PostCardActivity"
             android:label="@string/titlebar_word_postcard"
-            android:screenOrientation="portrait" />-->
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.AddPostCardActivity"
+            android:label="@string/titlebar_word_add_postcard"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.FavoriteActivity"
             android:label="@string/titlebar_word_favorite"
@@ -77,6 +82,18 @@
         <activity
             android:name="co.quchu.quchu.view.activity.FavoritePlaceActivity"
             android:label="@string/titlebar_word_favorite"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.PlacePostCardActivity"
+            android:label="@string/titlebar_word_favorite"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".photo.ImageBucketActivity"
+            android:label="@string/titlebar_word_imagebucket"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".photo.ImageGridActivity"
+            android:label="@string/titlebar_word_imagephoto"
             android:screenOrientation="portrait" />
         <!-- 我的趣推荐 -->
         <activity

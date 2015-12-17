@@ -32,9 +32,11 @@ public class AppContext extends Application {
                 .setFadeDuration(300)
                 .build();
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
+
             if (user == null){
                 LogUtils.json(SPUtils.getUserInfo(this));
                 user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
+
             }
         }
     }

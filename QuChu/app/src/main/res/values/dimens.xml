@@ -47,4 +47,5 @@
     <dimen name="detail_horizontal_line_height">0.5dp</dimen>
     <dimen name="detail_button_group_height">40dp</dimen>
     <dimen name="detail_marginright">12dp</dimen>
+    <dimen name="add_postcard_margin_del">6dp</dimen>
 </resources>

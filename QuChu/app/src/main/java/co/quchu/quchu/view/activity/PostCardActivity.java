@@ -9,6 +9,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.fragment.PostCardDetailFg;
 import co.quchu.quchu.view.fragment.PostCardListFg;
@@ -31,6 +32,7 @@ public class PostCardActivity extends BaseActivity {
     FragmentTransaction transaction;
     PostCardListFg postCardListFg;
     MyCard.PostCardItemClickListener listener;
+    private int fragmentIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,25 +44,18 @@ public class PostCardActivity extends BaseActivity {
 
         listener = new MyCard.PostCardItemClickListener() {
             @Override
-            public void onPostCardItemClick(int Pid, String rgbStr) {
-                LogUtils.json(Pid + "pid" + rgbStr);
-          if (postCardListFg!=null)
-              postCardListFg.setInvisiable(true);
-                transaction = getSupportFragmentManager().beginTransaction();
-              //  transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);
-                transaction.replace(R.id.postcard_fl, new PostCardDetailFg());
-                transaction.addToBackStack(null);
+            public void onPostCardItemClick(PostCardModel.PostCardItem item) {
+                if (postCardListFg != null)
+                    transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);
+                transaction.replace(R.id.postcard_fl, new PostCardDetailFg(item));
                 transaction.commit();
+                fragmentIndex = 1;
+                //    postCardListFg.setInvisiable(true);
             }
         };
-
         postCardListFg = new PostCardListFg(listener);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_top_to_bottom,R.anim.out_bottom_to_top);
-        transaction.replace(R.id.postcard_fl, postCardListFg);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
+        showListFragment();
 
 
     }
@@ -83,5 +78,29 @@ public class PostCardActivity extends BaseActivity {
         super.onResume();
     }
 
+    @Override
+    public void onBackPressed() {
+        LogUtils.json("back");
 
+     //   super.onBackPressed();
+        fragmentJump();
+    }
+
+    private void fragmentJump() {
+        if (fragmentIndex == 1) {
+            showListFragment();
+        } else {
+            this.finish();
+        }
+    }
+
+    private void showListFragment() {
+
+
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);
+        transaction.replace(R.id.postcard_fl, postCardListFg);
+        transaction.commit();
+        fragmentIndex = 0;
+    }
 }

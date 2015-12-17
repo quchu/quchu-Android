@@ -69,10 +69,12 @@ public class DiscoverActivity extends BaseActivity {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("initDiscoverData=="+response);
+
             }
 
             @Override
             public boolean onError(String error) {
+                LogUtils.json("errorrrrrr");
                 return false;
             }
         });

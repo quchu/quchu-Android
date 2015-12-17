@@ -70,6 +70,7 @@
                         android:id="@+id/favorite_postcard_gvcv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:layout_below="@id/favorite_postcard_name_tv"
                         android:layout_margin="@dimen/half_margin"
                         card_view:cardBackgroundColor="@color/titleBackground"
@@ -80,6 +81,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/half_margin"
+                            android:clickable="false"
                             android:divider="#00000000"
                             android:gravity="center"
                             android:horizontalSpacing="8dp"
@@ -142,6 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/favorite_place_name_tv"
                         android:layout_margin="@dimen/half_margin"
+                        android:clickable="false"
                         card_view:cardBackgroundColor="@color/titleBackground"
                         card_view:cardCornerRadius="8dp">
 
@@ -150,6 +153,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/half_margin"
+                            android:clickable="false"
                             android:divider="#00000000"
                             android:gravity="center"
                             android:horizontalSpacing="8dp"
