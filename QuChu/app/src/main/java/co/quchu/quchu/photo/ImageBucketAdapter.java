@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.StringUtils;
 
 public class ImageBucketAdapter extends BaseAdapter {
 	final String TAG = getClass().getSimpleName();
@@ -22,6 +24,7 @@ public class ImageBucketAdapter extends BaseAdapter {
 	 */
 	List<ImageBucket> dataList;
 	BitmapCache cache;
+	int  itemWidth=100 ;
 	BitmapCache.ImageCallback callback = new BitmapCache.ImageCallback() {
 		@Override
 		public void imageLoad(ImageView imageView, Bitmap bitmap,
@@ -43,6 +46,7 @@ public class ImageBucketAdapter extends BaseAdapter {
 		this.act = act;
 		dataList = list;
 		cache = new BitmapCache();
+		itemWidth	=( act.getWindowManager().getDefaultDisplay().getWidth()-(StringUtils.dip2px(act, 50)))/2;
 	}
 
 	@Override
@@ -85,6 +89,7 @@ public class ImageBucketAdapter extends BaseAdapter {
 			holder.selected = (ImageView) arg1.findViewById(R.id.isselected);
 			holder.name = (TextView) arg1.findViewById(R.id.name);
 			holder.count = (TextView) arg1.findViewById(R.id.count);
+			arg1.setLayoutParams(new GridView.LayoutParams(itemWidth,itemWidth));
 			arg1.setTag(holder);
 		} else {
 			holder = (Holder) arg1.getTag();

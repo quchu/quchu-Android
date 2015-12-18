@@ -27,6 +27,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.PostCardActivity;
 import co.quchu.quchu.widget.cardsui.MyCard;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -89,7 +90,6 @@ public class PostCardDetailFg extends Fragment {
         view = inflater.inflate(R.layout.fragment_postcard_detail, null);
         ButterKnife.bind(this, view);
         initPostCardDetailData();
-
         return view;
     }
 
@@ -98,7 +98,7 @@ public class PostCardDetailFg extends Fragment {
             rootCv.setCardBackgroundColor(Color.parseColor("#" + item.getRgb()));
            /*     revealLayoutShow();*/
             itemRecommendCardNameTv.setText(item.getPlcaeName());
-            itemRecommendCardCityTv.setText(item.getAddress());
+            itemRecommendCardCityTv.setText(item.getPlcaeAddress());
             itemMyPostcardCardPrb.setRating(item.getScore());
             itemMyPostcardCardCommentTv.setText(item.getComment());
             itemMyPostcardCardNicknameTv.setText(item.getAutor());
@@ -106,12 +106,20 @@ public class PostCardDetailFg extends Fragment {
             itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
             itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
             itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
+            if (item.isIsf()) {
+                itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_collect));
+            } else {
+                itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_uncollect));
+            }
         }
     }
 
-    @OnClick({R.id.item_my_postcard_heart_rl, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl})
+    @OnClick({R.id.item_my_postcard_heart_rl, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl, R.id.root_cv})
     public void cardItemClick(View view) {
         switch (view.getId()) {
+            case R.id.root_cv:
+                ((PostCardActivity) getActivity()).showListFragment();
+                break;
             case R.id.item_my_postcard_heart_rl:
 
                 break;

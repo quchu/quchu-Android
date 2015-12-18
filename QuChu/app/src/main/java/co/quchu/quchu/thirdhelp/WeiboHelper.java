@@ -3,8 +3,8 @@ package co.quchu.quchu.thirdhelp;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
-import com.sina.weibo.sdk.auth.WeiboAuth;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
@@ -42,7 +42,7 @@ public class WeiboHelper {
     /**
      * 微博 Web 授权接口类，提供登陆等功能
      */
-    private WeiboAuth mWeiboAuth;
+
     /**
      * 获取到的 Code
      */
@@ -53,7 +53,7 @@ public class WeiboHelper {
     private Oauth2AccessToken mAccessToken;
     private static final String APP_KEY = "1884585494";
     private static final String REDIRECT_URL = "http://www.paimeilv.com";
-    private static final String USER_URL = "https://api.weibo.com/2/users/show.json";
+
     private static final String SCOPE = "email,direct_messages_read,direct_messages_write,"
             + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
             + "follow_app_official_microblog," + "invitation_write";
@@ -63,18 +63,22 @@ public class WeiboHelper {
     public static SsoHandler mSsoHandler;
     private Activity activity;
     private UserLoginListener listener;
-
+    AuthInfo     mAuthInfo;
     public WeiboHelper(Activity context, UserLoginListener listener) {
         this.activity = context;
-        mWeiboAuth = new WeiboAuth(activity, APP_KEY, REDIRECT_URL, SCOPE);
+/*        AuthInfo     mAuthInfo = new AuthInfo(context, APP_KEY,
+                REDIRECT_URL, SCOPE);*/
+        mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
         this.listener = listener;
     }
 
 
     public void weiboLogin(Activity context) {
         this.activity = context;
-        mWeiboAuth = new WeiboAuth(activity, APP_KEY, REDIRECT_URL, SCOPE);
-        mSsoHandler = new SsoHandler(activity, mWeiboAuth);
+        if (mAuthInfo==null)
+        mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
+        if (mSsoHandler==null)
+        mSsoHandler = new SsoHandler(activity, mAuthInfo);
         mSsoHandler.authorize(new AuthListener());
     }
 

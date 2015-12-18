@@ -15,7 +15,7 @@ import java.io.IOException;
  * Date: 2015-12-04
  */
 public class FileUtils {
-    public static String SDPATH = Environment.getExternalStorageDirectory()
+    public static String SDPATH = Environment.getExternalStorageDirectory().getAbsolutePath()
             + "/Quchu/";
 
     public static void saveBitmap(Bitmap bm, String picName) {
@@ -86,7 +86,6 @@ public class FileUtils {
                 return false;
             }
         } catch (Exception e) {
-
             return false;
         }
         return true;

@@ -56,6 +56,7 @@ public class NetApi {
 
 
     public static final String getPlaceCardList = HOST + "/place/getCardList?pageno=%d&pId=%s";  //趣处的明信片列表
+    public static final String getQiniuToken = HOST + "/operate/getQiniuToenk";  //获取七牛token
 
 
     /****  Get end  ****/
@@ -68,6 +69,7 @@ public class NetApi {
     public static final String Mlogin = HOST + "/login/android?j_username=%s&j_password=%s&equip=%s"; //用户登录  username=PhoneNo  captcha =验证码 equip=uuid
     public static final String ResertPsw = HOST + "/mregister/resertPsw?resType=tel&tel=%s&newpsw=%s&captcha=%s"; //重置密码  username=PhoneNo  captcha =验证码 newpsw=密码
     public static final String FeedBack = HOST + "/sns/feedback?value=%s"; //意见反馈
+    public static final String saveOrUpdateCard = HOST + "/operate/saveOrUpdateCard"; //意见反馈
 
     /****************** POST *******************/
 }

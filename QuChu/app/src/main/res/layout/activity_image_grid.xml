@@ -1,32 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBackground"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#ff495a">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="相册"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:gravity="center"
-            android:text="取消"
-            android:textSize="20sp" />
-    </RelativeLayout>
+    <include
+        android:id="@+id/image_grid_title_bar"
+        layout="@layout/title_bar" />
 
     <LinearLayout
         android:id="@+id/bottom_bar"
@@ -36,35 +16,38 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ff495a" />
-
-        <Button
             android:id="@+id/bt"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="完成"
-            android:textColor="#ff495a"
-            android:textSize="20sp" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            android:background="@drawable/shape_detail_bottom_full_bg"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/black"
+            android:textSize="@dimen/word_size_body" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_bar"
-        android:layout_below="@id/title_bar"
+        android:layout_below="@id/image_grid_title_bar"
+        android:background="@drawable/ic_activity_bg"
         android:orientation="vertical">
 
         <GridView
             android:id="@+id/gridview"
             android:layout_width="match_parent"
-            android:layout_height="490dp"
-            android:layout_margin="8dp"
-            android:horizontalSpacing="8dp"
-            android:numColumns="3"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/base_margin"
+            android:horizontalSpacing="2dp"
+            android:numColumns="4"
+            android:overScrollMode="never"
             android:scrollbars="none"
-            android:verticalSpacing="8dp"></GridView>
+            android:verticalSpacing="2dp" />
 
 
     </LinearLayout>

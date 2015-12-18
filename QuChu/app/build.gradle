@@ -27,7 +27,9 @@ android {
     }
 
     useLibrary 'org.apache.http.legacy'
-
+    sourceSets.main {
+        jniLibs.srcDirs "libs"
+    }
 }
 repositories {
     maven { url "https://jitpack.io" }
@@ -48,8 +50,8 @@ dependencies {
     compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
     compile 'com.umeng.analytics:analytics:latest.integration'
-
-
+    compile 'com.qiniu:qiniu-android-sdk:7.0.+'
+    //七牛
     compile files('libs/volley.jar')
     compile files('libs/gson-2.4.jar')
     //compile 'com.umeng.analytics:analytics:latest.integration'
@@ -64,4 +66,5 @@ dependencies {
     //    }
     compile files('libs/weibosdkcore.jar')
     compile files('libs/libammsdk.jar')
+    compile files('libs/weiboSDKCore_3.1.2.jar')
 }

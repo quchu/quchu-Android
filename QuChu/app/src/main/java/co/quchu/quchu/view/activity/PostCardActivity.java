@@ -94,7 +94,7 @@ public class PostCardActivity extends BaseActivity {
         }
     }
 
-    private void showListFragment() {
+    public void showListFragment() {
 
 
         transaction = getSupportFragmentManager().beginTransaction();

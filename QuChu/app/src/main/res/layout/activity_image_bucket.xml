@@ -1,45 +1,29 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f1eff5"
-    android:orientation="vertical" >
+    android:background="@color/appBackground"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/image_bucket_title_bar"
+        layout="@layout/title_bar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#ff495a" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="相册"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"         
-            android:textColor="@color/text_color_white"
-            android:text="取消"
-            android:textSize="20sp" />
-              
-    </RelativeLayout>
-
-    <GridView
-        android:id="@+id/gridview"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:horizontalSpacing="20dp"
-        android:numColumns="2"
-        android:scrollbars="none"
-        android:verticalSpacing="20dp" >
-    </GridView>
+        android:layout_below="@id/image_bucket_title_bar"
+        android:background="@drawable/ic_activity_bg">
 
-</LinearLayout>
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/base_margin"
+            android:horizontalSpacing="20dp"
+            android:numColumns="2"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:verticalSpacing="20dp" />
+    </RelativeLayout>
+</RelativeLayout>

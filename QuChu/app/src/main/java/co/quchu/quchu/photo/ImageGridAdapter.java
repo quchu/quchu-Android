@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.StringUtils;
 
 public class ImageGridAdapter extends BaseAdapter {
 
@@ -53,11 +55,13 @@ public class ImageGridAdapter extends BaseAdapter {
         textcallback = listener;
     }
 
+       int itemWidth;
     public ImageGridAdapter(Activity act, List<ImageItem> list, Handler mHandler) {
         this.act = act;
         dataList = list;
         cache = new BitmapCache();
         this.mHandler = mHandler;
+        itemWidth =( act.getWindowManager().getDefaultDisplay().getWidth()-(StringUtils.dip2px(act, 44)))/4;
     }
 
     @Override
@@ -100,6 +104,7 @@ public class ImageGridAdapter extends BaseAdapter {
             holder.text = (TextView) convertView
                     .findViewById(R.id.item_image_grid_text);
 
+            convertView.setLayoutParams(new GridView.LayoutParams(itemWidth,itemWidth));
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -113,8 +118,7 @@ public class ImageGridAdapter extends BaseAdapter {
             holder.selected.setVisibility(View.VISIBLE);
             holder.text.setBackgroundResource(R.color.gene_textcolor_yellow);
         } else {
-            holder.selected.setVisibility(View.INVISIBLE);
-            holder.text.setBackgroundColor(0x00000000);
+            holder.selected.setVisibility(View.INVISIBLE);            holder.text.setBackgroundColor(0x00000000);
         }
         holder.iv.setOnClickListener(new OnClickListener() {
 

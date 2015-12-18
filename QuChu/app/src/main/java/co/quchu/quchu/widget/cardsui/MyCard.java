@@ -75,7 +75,7 @@ public class MyCard extends Card {
         v.setCardBackgroundColor(Color.parseColor("#" + item.getRgb()));
         ButterKnife.bind(this, v);
         itemRecommendCardNameTv.setText(item.getPlcaeName());
-        itemRecommendCardCityTv.setText(item.getAddress());
+        itemRecommendCardCityTv.setText(item.getPlcaeAddress());
         itemMyPostcardCardPrb.setRating(item.getScore());
         itemMyPostcardCardCommentTv.setText(item.getComment());
         itemMyPostcardCardNicknameTv.setText(item.getAutor());
@@ -83,6 +83,11 @@ public class MyCard extends Card {
         itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
         itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
+        if (item.isIsf()) {
+            itemRecommendCardCollectIv.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_detail_collect));
+        } else {
+            itemRecommendCardCollectIv.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_detail_uncollect));
+        }
         rootCv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

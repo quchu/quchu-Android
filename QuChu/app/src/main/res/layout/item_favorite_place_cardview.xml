@@ -31,7 +31,6 @@
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
                 android:layout_marginTop="@dimen/base_margin"
-                android:text="地理位置"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/word_subhead_size"
                 android:textStyle="bold" />
@@ -80,7 +79,6 @@
             android:layout_below="@id/item_recommend_card_prb"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            android:text="厦门"
             android:textColor="@color/text_color_white"
             android:textSize="@dimen/word_size_body" />
 
