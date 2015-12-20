@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.FileUtils;
 
 public class PhotoActivity extends Activity {
 

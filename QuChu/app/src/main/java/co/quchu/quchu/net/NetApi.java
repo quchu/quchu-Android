@@ -59,6 +59,10 @@ public class NetApi {
     public static final String getQiniuToken = HOST + "/operate/getQiniuToenk";  //获取七牛token
 
 
+    public static final String getCardDetail = HOST + "/place/getCard?cId=%d";  //获取明信片详情
+    public static final String delPostCard = HOST + "/operate/delCard?cId=%d";  //获取明信片详情
+
+
     /****  Get end  ****/
 
     /******************

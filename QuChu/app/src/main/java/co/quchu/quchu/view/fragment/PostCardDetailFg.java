@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PostCardActivity;
+import co.quchu.quchu.view.activity.PostCardDetailActivity;
 import co.quchu.quchu.widget.cardsui.MyCard;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -130,7 +132,7 @@ public class PostCardDetailFg extends Fragment {
 
                 break;
             case R.id.item_recommend_card_reply_rl:
-
+                getActivity().startActivity(new Intent(getActivity(), PostCardDetailActivity.class).putExtra("cId", item.getCardId()));
                 break;
 
         }

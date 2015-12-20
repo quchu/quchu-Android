@@ -290,18 +290,18 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
             if (isSelectedImages) {      //大图 listFragment  我的照片
                 if (isSelectedHot) {//大图 listFragment  我的照片  hot
                     loadMoreUrl=String.format(NetApi.GetImageAlbum, SPUtils.getUserToken(this),NetApi.AlbumTypeHot,flickrImagesHot.getImgs().getPagesNo()+1);
-                    isNeedLoadMore=!(flickrImagesHot.getImgs().getPagesNo()+1>=flickrImagesHot.getImgs().getPageCount()+1);
+                    isNeedLoadMore=!(flickrImagesHot.getImgs().getPagesNo()+1>=flickrImagesHot.getImgs().getPageCount());
                 } else {//大图 listFragment  我的照片  new
                     loadMoreUrl=String.format(NetApi.GetImageAlbum, SPUtils.getUserToken(this),NetApi.AlbumTypeNew,flickrImagesNew.getImgs().getPagesNo()+1);
-                    isNeedLoadMore=!(flickrImagesNew.getImgs().getPagesNo()+1>=flickrImagesNew.getImgs().getPageCount()+1);
+                    isNeedLoadMore=!(flickrImagesNew.getImgs().getPagesNo()+1>=flickrImagesNew.getImgs().getPageCount());
                 }
             } else {  //大图 listFragment  我的收藏
                 if (isSelectedHot) {//大图 listFragment  我的收藏  hot
                     loadMoreUrl=String.format(NetApi.GetFavoriteAlbum, SPUtils.getUserToken(this),NetApi.AlbumTypeHot,flickrFavoriteHot.getImgs().getPagesNo()+1);
-                    isNeedLoadMore=!(flickrFavoriteHot.getImgs().getPagesNo()+1>=flickrFavoriteHot.getImgs().getPageCount()+1);
+                    isNeedLoadMore=!(flickrFavoriteHot.getImgs().getPagesNo()+1>=flickrFavoriteHot.getImgs().getPageCount());
                 } else {//大图 listFragment  我的收藏  new
                     loadMoreUrl=String.format(NetApi.GetFavoriteAlbum, SPUtils.getUserToken(this),NetApi.AlbumTypeNew,flickrFavoriteNew.getImgs().getPagesNo()+1);
-                    isNeedLoadMore=!(flickrFavoriteNew.getImgs().getPagesNo()+1>=flickrFavoriteNew.getImgs().getPageCount()+1);
+                    isNeedLoadMore=!(flickrFavoriteNew.getImgs().getPagesNo()+1>=flickrFavoriteNew.getImgs().getPageCount());
                 }
             }
         if (isNeedLoadMore && !StringUtils.isEmpty(loadMoreUrl)) {

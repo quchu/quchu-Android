@@ -34,7 +34,10 @@ public class FlickrGridFragment extends Fragment {
         this.context = context;
         this.images = imgs;
     }
-
+    public FlickrGridFragment() {
+        this.context = getActivity();
+        this.images = new FlickrModel.ImgsEntity();
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class FlickrGridFragment extends Fragment {
 
     /**
      * 分页显示， 添加数据后刷新
-     *
+
      * @param images imgsEntity
      */
     public void updateDataSet(FlickrModel.ImgsEntity images) {

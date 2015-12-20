@@ -40,7 +40,6 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCardListAdapter.PPCHolder> {
 
 
-
     private Context mContext;
     private boolean isFlyme = false;
     private List<PlacePostCardModel.PageEntity.pPostCardEntity> arrayList;
@@ -59,7 +58,7 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
 
     @Override
     public PPCHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        PPCHolder holder = new PPCHolder(LayoutInflater.from(mContext).inflate(R.layout.item_my_postcard_view, parent, false), listener);
+        PPCHolder holder = new PPCHolder(LayoutInflater.from(mContext).inflate(R.layout.item_my_postcard_list_view, parent, false), listener);
         return holder;
     }
 
@@ -81,21 +80,14 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
         } else {
             holder.itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         }
-        holder.itemMyPostcardCardTiemTv.setText(model.getTime());
+        holder.itemMyPostcardCardTiemTv.setText(StringUtils.isEmpty(model.getTime()) ? "" : model.getTime().substring(0, 10));
         holder.itemRecommendCardCityTv.setText(model.getPlcaeAddress());
         holder.itemRecommendCardNameTv.setText(model.getPlcaeName());
         holder.itemMyPostcardCardPrb.setRating((int) (model.getScore() + 0.5) >= 5 ? 5 : (model.getScore()));
         holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
-
-    /*    itemRecommendCardNameTv.setText(item.getPlcaeName());
-        itemRecommendCardCityTv.setText(item.getPlcaeAddress());
-        itemMyPostcardCardPrb.setRating(item.getScore());
-        itemMyPostcardCardCommentTv.setText(item.getComment());
-        itemMyPostcardCardNicknameTv.setText(item.getAutor());
-        itemMyPostcardCardTiemTv.setText(StringUtils.isEmpty(item.getTime())?"":item.getTime().substring(0,10));
-        itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
-        itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
-        itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));*/
+        holder.itemMyPostcardAvatarSdv.setImageURI(Uri.parse(model.getAutorPhoto()));
+        holder.itemMyPostcardCardNicknameTv.setText(model.getAutor());
+        holder.itemMyPostcardCardCommentTv.setText(model.getComment());
 
     }
 

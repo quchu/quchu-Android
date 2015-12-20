@@ -39,6 +39,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -244,6 +245,7 @@ public class AddPostCardActivity extends BaseActivity {
         // 完成上传服务器后 .........
         /*FileUtils.deleteDir();*/
         if (addPostcardSuggestPrb.getRating() > 0) {
+            DialogUtil.showProgess(this, "数据上传中...");
             if (list.size() > 0) {
                 getQiNiuToken();
             } else {
@@ -258,6 +260,7 @@ public class AddPostCardActivity extends BaseActivity {
         PostCardPresenter.sacePostCard(this, pId, addPostcardSuggestPrb.getRating(), addPostcardAboutPlaceTv.getText().toString(), imageStr, new PostCardPresenter.MyPostCardListener() {
             @Override
             public void onSuccess(PostCardModel model) {
+                DialogUtil.dismissProgessDirectly();
                 Toast.makeText(AddPostCardActivity.this, "成个添加了趣处!", Toast.LENGTH_SHORT).show();
                 AddPostCardActivity.this.finish();
             }
@@ -273,6 +276,7 @@ public class AddPostCardActivity extends BaseActivity {
     UploadManager uploadManager;
 
     private void getQiNiuToken() {
+
         NetService.get(this, NetApi.getQiniuToken, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
@@ -281,7 +285,7 @@ public class AddPostCardActivity extends BaseActivity {
                 if (response != null && response.has("token")) {
                     try {
                         qiniuToken = response.getString("token");
-                           uploadManager = new UploadManager();
+                        uploadManager = new UploadManager();
                         addImage2QiNiu();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -302,7 +306,7 @@ public class AddPostCardActivity extends BaseActivity {
 
     private void addImage2QiNiu() {
         // if (uploadManager == null) {
-    //    uploadManager = new UploadManager();
+        //    uploadManager = new UploadManager();
         //  }
         LogUtils.json("addImage2QiNiu  addImage2QiNiu  addImage2QiNiu" + list.get(imageIndex));
         uploadManager.put(ImageUtils.Bitmap2Bytes(Bimp.bmp.get(imageIndex), 100), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
@@ -330,6 +334,7 @@ public class AddPostCardActivity extends BaseActivity {
                                             if (i == 0) {
                                                 imageStr += imageUrlInQiNiu.get(i).toString();
                                             } else {
+                                                //   imageStr += '|' + imageUrlInQiNiu.get(i).toString();
                                                 imageStr += "%7C" + imageUrlInQiNiu.get(i).toString();
                                             }
                                         }

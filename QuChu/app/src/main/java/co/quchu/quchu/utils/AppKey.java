@@ -30,6 +30,10 @@ public class AppKey {
      */
     public static final String USERSELECTEDCLASSIFY = "UserSelectedClassify";
     /**
+     * 用户选中分类中文名
+     */
+    public static final String USERSELECTEDCLASSIFY_CHS = "UserSelectedClassify_Chs";
+    /**
      * 当前用户选中的城市id
      * 或默认的
      */
@@ -46,8 +50,10 @@ public class AppKey {
      * 定位后获得的 经度
      */
     public static final String LON = "longitude";
-
-
+    /**
+     * 搜索历史
+     */
     public static final String SEARCHHISTORY = "search_history";
+
 
 }

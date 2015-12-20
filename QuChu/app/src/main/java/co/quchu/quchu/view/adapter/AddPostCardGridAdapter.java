@@ -2,6 +2,7 @@ package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.IOException;
 
@@ -60,26 +63,42 @@ public class AddPostCardGridAdapter extends BaseAdapter {
         }
 
 
-        if (position == 0) {
-            //  holder.itemAddpostcardSdv.setImageURI(Uri.parse("res://" + mContext.getPackageName() + "/" + R.drawable.ic_add_photo_image));
-            holder.itemAddpostcardSdv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_add_photo_image));
-            holder.itemAddpostcardDelIv.setVisibility(View.GONE);
+        if (Bimp.bmp.size() < 9) {
+            if (position == 0) {
+                //  holder.itemAddpostcardSdv.setImageURI(Uri.parse("res://" + mContext.getPackageName() + "/" + R.drawable.ic_add_photo_image));
+                holder.itemAddpostcardSdv.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic_add_photo_image));
+                holder.itemAddpostcardDelIv.setVisibility(View.GONE);
+            } else {
+                // holder.itemAddpostcardSdv.setImageURI(Uri.parse("file://" + Bimp.drr.get(position - 1)));
+                if (Bimp.bmp.size() > 0)
+                    holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get(position - 1));
+                holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
+                holder.itemAddpostcardDelIv.setTag(position - 1);
+                holder.itemAddpostcardDelIv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int positions = (int) v.getTag();
+                        Toast.makeText(mContext, positions + "del==" + position, Toast.LENGTH_SHORT).show();
+                        Bimp.drr.remove(positions);
+                        Bimp.bmp.remove(positions);
+                        notifyDataSetChanged();
+                    }
+                });
+            }
         } else {
-            // holder.itemAddpostcardSdv.setImageURI(Uri.parse("file://" + Bimp.drr.get(position - 1)));
-            if (Bimp.bmp.size() > 0)
-                holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get(position - 1));
+            holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get(position));
             holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
-            holder.itemAddpostcardDelIv.setTag(position - 1);
+            holder.itemAddpostcardDelIv.setTag(position);
             holder.itemAddpostcardDelIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int positions = (int) v.getTag();
-                    Toast.makeText(mContext, positions + "del==" + position, Toast.LENGTH_SHORT).show();
                     Bimp.drr.remove(positions);
                     Bimp.bmp.remove(positions);
                     notifyDataSetChanged();
                 }
             });
+            holder.itemAddpostcardSdv.setAspectRatio(1f);
         }
 
 
@@ -92,7 +111,7 @@ public class AddPostCardGridAdapter extends BaseAdapter {
 
     class ViewHolder {
         @Bind(R.id.item_addpostcard_sdv)
-        ImageView itemAddpostcardSdv;
+        SimpleDraweeView itemAddpostcardSdv;
         @Bind(R.id.item_addpostcard_del_iv)
         ImageView itemAddpostcardDelIv;
         @Bind(R.id.item_addpostcard_root_rl)

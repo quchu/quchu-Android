@@ -83,6 +83,7 @@ public class ClassifyFragment extends Fragment {
                                     @Override
                                     public void cItemClick(View view, int position) {
                                         SPUtils.putValueToSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, cList.get(position).getEn());
+                                        SPUtils.putValueToSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY_CHS, cList.get(position).getZh());
                                         ((RecommendActivity) getActivity()).selectedClassify();
                                         LogUtils.json("分类 被点击  条目==" + position);
                                     }

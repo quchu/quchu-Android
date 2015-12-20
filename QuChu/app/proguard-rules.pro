@@ -27,3 +27,16 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
+
+################## 友盟统计混淆 start ########################
+-keepclassmembers class * {
+   public (org.json.JSONObject);
+}
+-keep public class co.quchu.quchu.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+################## 友盟统计混淆 end ########################

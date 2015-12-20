@@ -5,7 +5,7 @@
     android:background="@color/appBackground"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout
+   <!-- <RelativeLayout
         android:id="@+id/recommend_title_bar_rl"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_heigh">
@@ -37,7 +37,10 @@
             android:layout_centerVertical="true"
             android:paddingRight="16dp"
             android:src="@drawable/ic_title_more" />
-    </RelativeLayout>
+    </RelativeLayout>-->
+    <include layout="@layout/title_bar"
+        android:id="@+id/recommend_title_bar_rl"
+        />
 
     <co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager
         android:id="@+id/recommend_body_vp"

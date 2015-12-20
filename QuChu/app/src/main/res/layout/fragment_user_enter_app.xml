@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,11 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/login_logo_margin_top"
-        app:rb_color="@color/gene_textcolor_yellow"
-        app:rb_duration="2100"
-        app:rb_radius="24dp"
-        app:rb_rippleAmount="1"
-        app:rb_scale="5">
+        fresco:rb_color="@color/gene_textcolor_yellow"
+        fresco:rb_duration="2100"
+        fresco:rb_radius="24dp"
+        fresco:rb_rippleAmount="1"
+        fresco:rb_scale="5">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_enter_app_circle_iv"

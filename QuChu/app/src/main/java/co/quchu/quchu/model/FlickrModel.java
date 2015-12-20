@@ -1,5 +1,6 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * Date: 2015-11-20
  * 网络相册model
  */
-public class FlickrModel {
+public class FlickrModel implements Serializable{
 
     /**
      * cover : http://7xo7et.com1.z0.glb.clouddn.com/1442483892452

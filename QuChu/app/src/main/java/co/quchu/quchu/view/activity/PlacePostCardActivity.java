@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -48,24 +49,30 @@ public class PlacePostCardActivity extends BaseActivity {
     private String pName = "";
     PlacePostCardModel model;
     PlacePostCardListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_postcard);
         ButterKnife.bind(this);
         titleContentTv.setText(getTitle());
+        initTitleBar();
         pId = getIntent().getIntExtra("pId", 2);
         pName = getIntent().getStringExtra("pName");
         initPostCardData(1);
 
-        adapter = new PlacePostCardListAdapter(PlacePostCardActivity.this,new PlacePostCardListAdapter.CardClickListener(){
+        adapter = new PlacePostCardListAdapter(PlacePostCardActivity.this, new PlacePostCardListAdapter.CardClickListener() {
 
             @Override
             public void onCardLick(View view, int position) {
-
+                    switch (view.getId()){
+                        case  R.id.item_recommend_card_reply_rl:
+                            startActivity(new Intent(PlacePostCardActivity.this,PostCardDetailActivity.class).putExtra("cId",model.getPage().getResult().get(position).getCardId()));
+                            break;
+                    }
             }
         });
-        placePostcardCenterRv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        placePostcardCenterRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         placePostcardCenterRv.setAdapter(adapter);
     }
 
@@ -76,12 +83,17 @@ public class PlacePostCardActivity extends BaseActivity {
             public void onSuccess(JSONObject response) {
                 LogUtils.json(";;;;respone=" + response);
                 try {
-                    if (response.has("data")&& (StringUtils.isEmpty(response.getString("data")) ||"null".equals(response.getString("data")))) {
+                    if (response.has("data") && (StringUtils.isEmpty(response.getString("data")) || "null".equals(response.getString("data")))) {
                         placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_new_postcard));
                         placePostcardHintFl.setVisibility(View.VISIBLE);
                     } else {
                         Gson gson = new Gson();
                         model = gson.fromJson(response.toString(), PlacePostCardModel.class);
+                        if (model.isIshave()) {
+                            placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_read_my_postcard));
+                        } else {
+                            placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_new_postcard));
+                        }
                         placePostcardHintFl.setVisibility(View.INVISIBLE);
                         adapter.changeDataSet(model.getPage().getResult());
                     }
@@ -103,11 +115,23 @@ public class PlacePostCardActivity extends BaseActivity {
     public void placePostCardClick(View v) {
         switch (v.getId()) {
             case R.id.place_postcard_bottom_botton_rl:
-                Intent intent = new Intent();
-                intent.putExtra("pName", pName);
-                intent.putExtra("pId", pId);
-                intent.setClass(this, AddPostCardActivity.class);
-                startActivity(intent);
+                if (model == null) {
+                    Intent intent = new Intent();
+                    intent.putExtra("pName", pName);
+                    intent.putExtra("pId", pId);
+                    intent.setClass(this, AddPostCardActivity.class);
+                    startActivity(intent);
+                } else {
+                    if (model.isIshave()) {
+                        Toast.makeText(this, "查看我在这里留下的明信片", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent();
+                        intent.putExtra("pName", pName);
+                        intent.putExtra("pId", pId);
+                        intent.setClass(this, AddPostCardActivity.class);
+                        startActivity(intent);
+                    }
+                }
                 break;
         }
     }

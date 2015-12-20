@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.umeng.analytics.MobclickAgent;
+
 import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
 import co.quchu.quchu.view.activity.MenusActivity;
@@ -26,7 +28,7 @@ import co.quchu.quchu.widget.swipbacklayout.Utils;
 public class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase, View.OnClickListener, MoreButtonView.MoreClicklistener {
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
-
+    protected String TAG = getClass().getName();
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,8 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
     }
 
     @Override
@@ -91,6 +95,8 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
             overridePendingTransition(R.anim.in_top_to_bottom,
                     R.anim.in_stable);
         }
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);
     }
 
 

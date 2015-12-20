@@ -86,7 +86,7 @@ public class PostCardListFg extends Fragment {
         stack = new CardStack(getActivity());
         MyCard card = null;
         for (int i = 0; i < pModel.getResult().size(); i++) {
-            card = new MyCard(pModel.getResult().get(i), listener);
+            card = new MyCard(pModel.getResult().get(i), listener,getActivity());
             stack.add(card);
         }
         if (null != postcardCardsui) {

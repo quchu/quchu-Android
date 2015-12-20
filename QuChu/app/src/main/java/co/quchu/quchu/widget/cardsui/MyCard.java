@@ -1,6 +1,7 @@
 package co.quchu.quchu.widget.cardsui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
@@ -14,10 +15,12 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.PostCardDetailActivity;
 import co.quchu.quchu.widget.cardsui.objects.Card;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -61,10 +64,12 @@ public class MyCard extends Card {
     TextView itemMyPostcardCardTiemTv;
     private PostCardModel.PostCardItem item;
     private PostCardItemClickListener listener;
+    private Context mContext;
 
-    public MyCard(PostCardModel.PostCardItem item, PostCardItemClickListener listener) {
+    public MyCard(PostCardModel.PostCardItem item, PostCardItemClickListener listener, Context activity) {
         this.item = item;
         this.listener = listener;
+        this.mContext = activity;
     }
 
 
@@ -79,7 +84,7 @@ public class MyCard extends Card {
         itemMyPostcardCardPrb.setRating(item.getScore());
         itemMyPostcardCardCommentTv.setText(item.getComment());
         itemMyPostcardCardNicknameTv.setText(item.getAutor());
-        itemMyPostcardCardTiemTv.setText(StringUtils.isEmpty(item.getTime())?"":item.getTime().substring(0,10));
+        itemMyPostcardCardTiemTv.setText(StringUtils.isEmpty(item.getTime()) ? "" : item.getTime().substring(0, 10));
         itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
         itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
@@ -92,11 +97,20 @@ public class MyCard extends Card {
             @Override
             public void onClick(View v) {
                 LogUtils.json("view is click");
-                if (listener!=null)
-                listener.onPostCardItemClick(item);
+                if (listener != null)
+                    listener.onPostCardItemClick(item);
             }
         });
         return v;
+    }
+
+    @OnClick({R.id.item_recommend_card_reply_rl})
+    public void myCardClick(View view) {
+        switch (view.getId()) {
+            case R.id.item_recommend_card_reply_rl:
+                mContext.startActivity(new Intent(mContext, PostCardDetailActivity.class).putExtra("cId",item.getCardId()));
+                break;
+        }
     }
 
     @Override
