@@ -59,16 +59,18 @@ public class RecommendPresenter {
                                 arrayList.add(model);
                             }
                             listener.onSuccess(arrayList);
-                            DialogUtil.dismissProgess();
+
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtil.dismissProgess();
             }
 
             @Override
             public boolean onError(String error) {
+                DialogUtil.dismissProgess();
                 return false;
             }
         });

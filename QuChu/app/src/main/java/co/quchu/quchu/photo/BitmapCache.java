@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class BitmapCache extends Activity {
 
 	public Handler h = new Handler();
-	public final String TAG = getClass().getSimpleName();
+	//public final String TAG = getClass().getSimpleName();
 	private HashMap<String, SoftReference<Bitmap>> imageCache = new HashMap<String, SoftReference<Bitmap>>();
 
 	public void put(String path, Bitmap bmp) {
@@ -30,7 +30,7 @@ public class BitmapCache extends Activity {
 	public void displayBmp(final ImageView iv, final String thumbPath,
 			final String sourcePath, final ImageCallback callback) {
 		if (TextUtils.isEmpty(thumbPath) && TextUtils.isEmpty(sourcePath)) {
-			Log.e(TAG, "no paths pass in");
+		//	Log.e(TAG, "no paths pass in");
 			return;
 		}
 
@@ -55,7 +55,7 @@ public class BitmapCache extends Activity {
 					callback.imageLoad(iv, bmp, sourcePath);
 				}
 				iv.setImageBitmap(bmp);
-				Log.d(TAG, "hit cache");
+			//	Log.d(TAG, "hit cache");
 				return;
 			}
 		}
@@ -81,7 +81,7 @@ public class BitmapCache extends Activity {
 				if (thumb == null) {
 					thumb = ImageBucketActivity.bimap;
 				}
-				Log.e(TAG, "-------thumb------"+thumb);
+			//	Log.e(TAG, "-------thumb------"+thumb);
 				put(path, thumb);
 
 				if (callback != null) {

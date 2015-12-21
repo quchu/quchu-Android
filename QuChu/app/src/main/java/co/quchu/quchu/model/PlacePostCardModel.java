@@ -1,5 +1,6 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -93,7 +94,7 @@ public class PlacePostCardModel {
             return result;
         }
 
-        public static class pPostCardEntity {
+        public static class pPostCardEntity implements Serializable {
             private String address;
             private String autor;
             private int autorId;
@@ -299,7 +300,7 @@ public class PlacePostCardModel {
                 return imglist;
             }
 
-            public static class ImglistEntity {
+            public static class ImglistEntity implements Serializable {
                 private int imgId;
                 private boolean isCover;
                 private String path;

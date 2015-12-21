@@ -1,21 +1,24 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
+import android.os.Parcelable;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
-
-import java.util.ArrayList;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.widget.CircleWaveView;
+import co.quchu.quchu.photo.AlbumHelper;
+import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * SplashActivity
@@ -23,27 +26,46 @@ import co.quchu.quchu.widget.CircleWaveView;
  * Date: 2015-11-10
  */
 public class SplashActivity extends BaseActivity {
-    private CircleWaveView rippleBackground;
-    private ImageView circleIv;
-    private ArrayList<Animator> animatorList;
-    private AnimatorSet animatorSet;
-    private int durationTime=2300;
+    @Bind(R.id.splash_iv)
+    ImageView splashIv;
+    @Bind(R.id.splash_app_name_tv)
+    TextView splashAppNameTv;
+    @Bind(R.id.splash_app_version_name_tv)
+    TextView splashAppVersionNameTv;
+    private long viewDuration = 2 * 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-         rippleBackground=(CircleWaveView)findViewById(R.id.content);
-        circleIv= (ImageView) findViewById(R.id.splash_circle_iv);
+        ButterKnife.bind(this);
+        setIcon();
+        PackageManager pm = getPackageManager();//context为当前Activity上下文
+        PackageInfo pi = null;
+        String version = "";
+        try {
+            pi = pm.getPackageInfo(getPackageName(), 0);
+            version = pi.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (!StringUtils.isEmpty(version)) {
+            splashAppVersionNameTv.setText("V" + version);
+        }
+  /*       rippleBackground=(CircleWaveView)findViewById(R.id.content);
+        circleIv= (ImageView) findViewById(R.id.splash_circle_iv);*/
 /*        rippleBackground.startRippleAnimation();*/
-        initCircleAnimation();
-
+        // initCircleAnimation();
+        handler.sendMessageDelayed(handler.obtainMessage(0x01), viewDuration);
+        AlbumHelper.initAlbumHelper(this);
     }
 
 
 
 
 
-  public void   initCircleAnimation(){
+ /* public void   initCircleAnimation(){
       animatorList= new ArrayList<Animator>();
       animatorSet = new AnimatorSet();
       final ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(circleIv, "ScaleX", 0.3f, 1.0f);
@@ -82,14 +104,18 @@ public class SplashActivity extends BaseActivity {
 
           }
       });
-    }
+    }*/
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 0x00:
+            switch (msg.what) {
+              /*  case 0x00:
                     rippleBackground.startRippleAnimation();
+                    break;*/
+                case 0x01:
+                    startActivity(new Intent(SplashActivity.this, UserLoginActivity.class));
+                    SplashActivity.this.finish();
                     break;
             }
         }
@@ -98,8 +124,32 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (animatorSet !=null)
+ /*       if (animatorSet !=null)
             animatorSet.start();
-        rippleBackground.stopRippleAnimation();
+        rippleBackground.stopRippleAnimation();*/
+    }
+
+    protected void setIcon() {
+        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_NEED_ICON, true)) {
+            Intent shortcutintent = new Intent(
+                    "com.android.launcher.action.INSTALL_SHORTCUT");
+            // 不允许重复创建
+            shortcutintent.putExtra("duplicate", false);
+            // 需要现实的名称
+            shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                    getResources().getString(R.string.app_name));
+            // 快捷图片
+            Parcelable icon = Intent.ShortcutIconResource.fromContext(
+                    this.getApplicationContext(), R.mipmap.ic_launcher);
+            shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
+            // 点击快捷图片，运行的程序主入口
+            shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_INTENT,
+                    new Intent(getApplicationContext(), SplashActivity.class));
+            // 发送广播
+            sendBroadcast(shortcutintent);
+            //不允许重复创建
+            SPUtils.putBooleanToSPMap(this, AppKey.IS_NEED_ICON, false);
+        }
+
     }
 }

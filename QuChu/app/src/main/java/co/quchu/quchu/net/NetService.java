@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.NetErrorDialog;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -170,6 +171,7 @@ public class NetService {
 //                if (dialog != null) {
 //                    dialog.dismiss();
 //                }
+                DialogUtil.dismissProgessDirectly();
                 if (error != null && error.networkResponse != null) {
                     pListener.onError(error.toString());
                     if (error.networkResponse.statusCode == 401) {

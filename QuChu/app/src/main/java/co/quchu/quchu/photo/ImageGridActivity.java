@@ -1,6 +1,5 @@
 package co.quchu.quchu.photo;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -21,11 +20,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.utils.LogUtils;
 
-public class ImageGridActivity extends Activity {
+public class ImageGridActivity extends BaseActivity {
     public static final String EXTRA_IMAGE_LIST = "imagelist";
-
+    public static final String EXTRA_IMAGE_NAME = "imageName";
 
     List<ImageItem> dataList;
     GridView gridView;
@@ -52,15 +52,15 @@ public class ImageGridActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_image_grid);
-
+        initTitleBar();
         helper = AlbumHelper.getHelper();
         helper.init(getApplicationContext());
-
+        ((TextView) findViewById(R.id.title_content_tv)).setText(getIntent().getStringExtra(EXTRA_IMAGE_NAME));
         dataList = (List<ImageItem>) getIntent().getSerializableExtra(
                 EXTRA_IMAGE_LIST);
 
-        initView();
         bt = (TextView) findViewById(R.id.bt);
+        initView();
         bt.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -103,12 +103,15 @@ public class ImageGridActivity extends Activity {
         adapter = new ImageGridAdapter(ImageGridActivity.this, dataList,
                 mHandler);
         gridView.setAdapter(adapter);
+        if (Bimp.drr.size() + Bimp.imglist.size() > 0) {
+            bt.setText("完成" + "(" + (Bimp.drr.size() + Bimp.imglist.size()) + ")");
+        }
         adapter.setTextCallback(new ImageGridAdapter.TextCallback() {
             public void onListen(int count) {
                 if (count == 0) {
                     bt.setText("完成");
                 } else {
-                    bt.setText("完成" + "(" + count + ")");
+                    bt.setText("完成" + "(" +  (Bimp.drr.size() + Bimp.imglist.size()+count) + ")");
                 }
             }
         });

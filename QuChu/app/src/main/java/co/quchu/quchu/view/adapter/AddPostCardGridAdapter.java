@@ -3,6 +3,7 @@ package co.quchu.quchu.view.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.photo.Bimp;
 import co.quchu.quchu.utils.FileUtils;
+import co.quchu.quchu.utils.LogUtils;
 
 /**
  * FlickrGridAdapter
@@ -37,7 +38,8 @@ public class AddPostCardGridAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return Bimp.drr.size() < 9 ? Bimp.drr.size() + 1 : Bimp.drr.size();
+        LogUtils.json("count==" + (Bimp.bmp.size() + Bimp.imglist.size()));
+        return (Bimp.bmp.size() + Bimp.imglist.size()) < 9 ? (Bimp.bmp.size() + Bimp.imglist.size()) + 1 : 9;
         // return 9;
     }
 
@@ -61,15 +63,36 @@ public class AddPostCardGridAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        LogUtils.json("position==" + position + "//rePosi=" + (position - Bimp.imglist.size()) + "///imagelistsize=" + Bimp.imglist.size() + "///bim==" + Bimp.bmp.size());
 
-
-        if (Bimp.bmp.size() < 9) {
+        if ((Bimp.bmp.size() + Bimp.imglist.size()) < 9) {
             if (position == 0) {
-                //  holder.itemAddpostcardSdv.setImageURI(Uri.parse("res://" + mContext.getPackageName() + "/" + R.drawable.ic_add_photo_image));
-                holder.itemAddpostcardSdv.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic_add_photo_image));
+                holder.itemAddpostcardSdv.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_add_photo_image));
                 holder.itemAddpostcardDelIv.setVisibility(View.GONE);
             } else {
-                // holder.itemAddpostcardSdv.setImageURI(Uri.parse("file://" + Bimp.drr.get(position - 1)));
+                if (Bimp.imglist.size() > 0) {
+                    if (position <= Bimp.imglist.size()) {
+                        holder.itemAddpostcardSdv.setImageURI(Uri.parse(Bimp.imglist.get(position - 1).getPath()));
+                        holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
+                        holder.itemAddpostcardSdv.setAspectRatio(1f);
+                    } else {
+                        if (Bimp.bmp.size() > 0) {
+                            if ((position - Bimp.imglist.size()) <= Bimp.bmp.size()) {
+                                holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get((position - Bimp.imglist.size()-1)));
+                                holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
+                                holder.itemAddpostcardSdv.setAspectRatio(1f);
+                            }
+                        }
+                    }
+                } else {
+                    if (Bimp.bmp.size() > 0) {
+                        holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get(position - Bimp.imglist.size() - 1));
+                        holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
+                        holder.itemAddpostcardSdv.setAspectRatio(1f);
+                    }
+                }
+
+/*
                 if (Bimp.bmp.size() > 0)
                     holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get(position - 1));
                 holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
@@ -83,22 +106,72 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                         Bimp.bmp.remove(positions);
                         notifyDataSetChanged();
                     }
-                });
+                });*/
             }
         } else {
-            holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get(position));
-            holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
+            if (Bimp.imglist.size() > 0) {
+                if (position < Bimp.imglist.size()) {
+                    holder.itemAddpostcardSdv.setImageURI(Uri.parse(Bimp.imglist.get(position).getPath()));
+                    holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
+                    holder.itemAddpostcardSdv.setAspectRatio(1f);
+                } else {
+                    if (Bimp.bmp.size() > 0) {
+                        holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get(position - Bimp.imglist.size()));
+                        holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
+                        holder.itemAddpostcardSdv.setAspectRatio(1f);
+                    }
+                }
+            } else {
+                if (Bimp.bmp.size() > 0) {
+                    holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get(position - Bimp.imglist.size()));
+                    holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
+
+                    holder.itemAddpostcardSdv.setAspectRatio(1f);
+                }
+            }
             holder.itemAddpostcardDelIv.setTag(position);
             holder.itemAddpostcardDelIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int positions = (int) v.getTag();
-                    Bimp.drr.remove(positions);
-                    Bimp.bmp.remove(positions);
-                    notifyDataSetChanged();
+                    if (Bimp.bmp.size() + Bimp.imglist.size() < 9) {
+                        if (Bimp.imglist.size() > 0) {
+                            if (positions <= Bimp.imglist.size()) {
+                                Bimp.imglist.remove(positions - 1);
+                                notifyDataSetChanged();
+                            } else if (positions > Bimp.imglist.size()) {
+                                Bimp.bmp.remove(positions - Bimp.imglist.size() - 1);
+                                Bimp.drr.remove(positions - Bimp.imglist.size() - 1);
+                                notifyDataSetChanged();
+                            }
+                        } else {
+                            if (positions <= Bimp.bmp.size()) {
+                                Bimp.bmp.remove(positions - 1);
+                                Bimp.drr.remove(positions - 1);
+                                notifyDataSetChanged();
+                            }
+                        }
+                    } else {
+                        if (Bimp.imglist.size() > 0) {
+                            if (positions < Bimp.imglist.size()) {
+                                Bimp.imglist.remove(positions);
+                                notifyDataSetChanged();
+                            } else if (positions > Bimp.imglist.size() && positions <= (Bimp.bmp.size() + Bimp.imglist.size())) {
+                                Bimp.bmp.remove(positions - Bimp.imglist.size());
+                                Bimp.drr.remove(positions - Bimp.imglist.size());
+                                notifyDataSetChanged();
+                            }
+                        } else {
+                            if (positions < Bimp.bmp.size()) {
+                                Bimp.bmp.remove(positions);
+                                Bimp.drr.remove(positions);
+                                notifyDataSetChanged();
+                            }
+                        }
+                    }
+
                 }
             });
-            holder.itemAddpostcardSdv.setAspectRatio(1f);
         }
 
 
@@ -158,7 +231,6 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                             message.what = 1;
                             handler.sendMessage(message);
                         } catch (IOException e) {
-
                             e.printStackTrace();
                         }
                     }

@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_weight="1"
     android:background="@color/appBackground">
 
-    <RelativeLayout
+
+    <ImageView
+        android:id="@+id/splash_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp"
+        android:src="@drawable/ic_quchu_app_logo" />
+
+    <TextView
+        android:id="@+id/splash_app_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/splash_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/quarter_margin"
+        android:text="趣处"
+        android:textColor="@color/text_color_white"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/splash_app_version_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/splash_app_name_tv"
+        android:layout_marginLeft="@dimen/tow_dp_margin"
+        android:layout_marginTop="@dimen/tow_dp_margin"
+        android:layout_toRightOf="@id/splash_app_name_tv"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_size_time" />
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/ic_activity_bg">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_horizontal"
+        android:text="Copyright &#169; 2015 QUCHU Technologies. \r\nAll rights resvered"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_size_body" />
 
-        <co.quchu.quchu.widget.CircleWaveView
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="360dp"
-            app:rb_color="@color/gene_textcolor_yellow"
-            app:rb_duration="2100"
-            app:rb_radius="24dp"
-            app:rb_rippleAmount="1"
-            app:rb_scale="5">
 
-            <ImageView
-                android:id="@+id/splash_circle_iv"
-                android:layout_width="230dp"
-                android:layout_height="230dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/shape_circle_splash"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_planet_avatar" />
-
-        </co.quchu.quchu.widget.CircleWaveView>
-
-    </RelativeLayout>
 </RelativeLayout>

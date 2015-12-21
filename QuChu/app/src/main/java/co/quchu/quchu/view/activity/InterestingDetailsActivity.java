@@ -177,7 +177,7 @@ public class InterestingDetailsActivity extends BaseActivity {
 
     private void bindingDetailData() {
         itemCardImageSdv.setImageURI(Uri.parse(dModel.getCover()));
-        itemCardImageSdv.setAspectRatio(1f);
+        itemCardImageSdv.setAspectRatio(dModel.getWidth()/dModel.getHeight());
         detailStoreNameTv.setText(dModel.getName());
         if (StringUtils.isEmpty(dModel.getTraffic())) {
             detailStoreAddressTv.setText(dModel.getAddress());

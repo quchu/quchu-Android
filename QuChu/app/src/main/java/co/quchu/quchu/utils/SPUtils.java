@@ -226,6 +226,29 @@ public class SPUtils {
         return Double.parseDouble(getValueFromSPMap(AppContext.mContext,AppKey.LAT,"0"));
     }
 
+
+    public static void putUserSelectedClassify(String enStr){
+        switch (enStr){
+            case "creative":
+                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "灵感之源");
+                break;
+            case "luxury":
+                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "轻奢格调");
+                break;
+            case "discover":
+                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "探索世界");
+                break;
+            case "social":
+                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, " 有朋自远方来");
+                break;
+            case "local":
+                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "闲来无事");
+                break;
+            case "culture":
+                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "学而不倦");
+                break;
+        }
+    }
 }
 
 

@@ -1,6 +1,5 @@
 package co.quchu.quchu.photo;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,19 +8,22 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.List;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseActivity;
 
-public class ImageBucketActivity extends Activity {
+public class ImageBucketActivity extends BaseActivity {
 	// ArrayList<Entity> dataList;//用来装载数据源的列表
 	List<ImageBucket> dataList;
 	GridView gridView;
 	ImageBucketAdapter adapter;// 自定义的适配器
 	AlbumHelper helper;
 	public static final String EXTRA_IMAGE_LIST = "imagelist";
+	public static final String EXTRA_IMAGE_NAME = "imageName";
 	public static Bitmap bimap;
 	
 	@Override
@@ -29,7 +31,8 @@ public class ImageBucketActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_image_bucket);
-
+		initTitleBar();
+		((TextView) findViewById(R.id.title_content_tv)).setText("相册");
 		helper = AlbumHelper.getHelper();
 		helper.init(getApplicationContext());
 
@@ -78,6 +81,8 @@ public class ImageBucketActivity extends Activity {
 						ImageGridActivity.class);
 				intent.putExtra(ImageBucketActivity.EXTRA_IMAGE_LIST,
 						(Serializable) dataList.get(position).imageList);
+				intent.putExtra(ImageBucketActivity.EXTRA_IMAGE_NAME,
+						(Serializable) dataList.get(position).bucketName);
 				startActivity(intent);
 				finish();
 			}

@@ -60,7 +60,6 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.menus_search_rl:
-                Toast.makeText(this, " 搜索", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, SearchActivity.class));
                 break;
             case R.id.menus_add_topic:

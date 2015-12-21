@@ -52,7 +52,6 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
             transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
              /*   transaction.addToBackStack(null);*/
             transaction.commit();
-
         }
     }
 

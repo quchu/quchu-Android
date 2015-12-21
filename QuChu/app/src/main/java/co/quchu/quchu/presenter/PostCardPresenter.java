@@ -71,4 +71,40 @@ public class PostCardPresenter {
 
         void onError(String error);
     }
+
+    /**
+     * 点赞、取消点赞功能
+     *
+     * @param isPraise   当前状态是否已经点赞 true 已经点赞 则进行取消点赞
+     * @param typeIsCard 点赞或取消点赞 类型  true==当前操作类型为明信片
+     * @param praiseId   id  操作对象id
+     */
+    public static void setPraise(Context mContext, boolean isPraise, boolean typeIsCard, int praiseId ,final MyPostCardListener listener) {
+        String urlStr = "";
+        if (isPraise) {
+            if (typeIsCard) {
+                urlStr = String.format(NetApi.delPraise, praiseId, "card");
+            } else {
+                urlStr = String.format(NetApi.delPraise, praiseId, "image");
+            }
+        } else {
+            if (typeIsCard) {
+                urlStr = String.format(NetApi.doPraise, praiseId, "card");
+            } else {
+                urlStr = String.format(NetApi.doPraise, praiseId, "image");
+            }
+        }
+        NetService.get(mContext,urlStr, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                listener.onSuccess(null);
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.onError("");
+                return false;
+            }
+        });
+    }
 }

@@ -55,13 +55,14 @@ public class ImageGridAdapter extends BaseAdapter {
         textcallback = listener;
     }
 
-       int itemWidth;
+    int itemWidth;
+
     public ImageGridAdapter(Activity act, List<ImageItem> list, Handler mHandler) {
         this.act = act;
         dataList = list;
         cache = new BitmapCache();
         this.mHandler = mHandler;
-        itemWidth =( act.getWindowManager().getDefaultDisplay().getWidth()-(StringUtils.dip2px(act, 44)))/4;
+        itemWidth = (act.getWindowManager().getDefaultDisplay().getWidth() - (StringUtils.dip2px(act, 44))) / 4;
     }
 
     @Override
@@ -104,7 +105,7 @@ public class ImageGridAdapter extends BaseAdapter {
             holder.text = (TextView) convertView
                     .findViewById(R.id.item_image_grid_text);
 
-            convertView.setLayoutParams(new GridView.LayoutParams(itemWidth,itemWidth));
+            convertView.setLayoutParams(new GridView.LayoutParams(itemWidth, itemWidth));
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -118,7 +119,8 @@ public class ImageGridAdapter extends BaseAdapter {
             holder.selected.setVisibility(View.VISIBLE);
             holder.text.setBackgroundResource(R.color.gene_textcolor_yellow);
         } else {
-            holder.selected.setVisibility(View.INVISIBLE);            holder.text.setBackgroundColor(0x00000000);
+            holder.selected.setVisibility(View.INVISIBLE);
+            holder.text.setBackgroundColor(0x00000000);
         }
         holder.iv.setOnClickListener(new OnClickListener() {
 
@@ -126,7 +128,7 @@ public class ImageGridAdapter extends BaseAdapter {
             public void onClick(View v) {
                 String path = dataList.get(position).imagePath;
 
-                if ((Bimp.drr.size() + selectTotal) < 9) {
+                if ((Bimp.drr.size() + Bimp.imglist.size() + selectTotal) < 9) {
                     item.isSelected = !item.isSelected;
                     if (item.isSelected) {
 
@@ -149,7 +151,7 @@ public class ImageGridAdapter extends BaseAdapter {
                             textcallback.onListen(selectTotal);
                         map.remove(path);
                     }
-                } else if ((Bimp.drr.size() + selectTotal) >= 9) {
+                } else if ((Bimp.drr.size() + Bimp.imglist.size() + selectTotal) >= 9) {
                     if (item.isSelected == true) {
                         item.isSelected = !item.isSelected;
                         holder.selected.setVisibility(View.INVISIBLE);

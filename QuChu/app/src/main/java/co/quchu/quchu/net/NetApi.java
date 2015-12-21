@@ -62,6 +62,9 @@ public class NetApi {
     public static final String getCardDetail = HOST + "/place/getCard?cId=%d";  //获取明信片详情
     public static final String delPostCard = HOST + "/operate/delCard?cId=%d";  //获取明信片详情
 
+    public static final String delPraise = HOST + "/sns/delpraise?formId=%d&type=%s";  //取消点赞
+    public static final String doPraise = HOST + "/sns/praise?formId=%d&type=%s";  //点赞
+
 
     /****  Get end  ****/
 

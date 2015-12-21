@@ -40,6 +40,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -85,33 +86,53 @@ public class AddPostCardActivity extends BaseActivity {
     OutSideScrollView detailOutsideSv;
     private String pName = "";
     AddPostCardGridAdapter adapter;
-
+    PlacePostCardModel.PageEntity.pPostCardEntity defaulModel;
     private boolean isNeedUpdate = false;
     int pId;
+    private String editTextDefaultText = "";
+    String[] prbHintText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_add_postcard);
-        pName = getIntent().getStringExtra("pName");
-        pId = getIntent().getIntExtra("pId", 2);
         ButterKnife.bind(this);
+        initTitleBar();
+        prbHintText = getResources().getStringArray(R.array.addPostCardSuggetStrings);
+        initData();
         setPRBlistener();
-        addPostcardTopTv.setText(String.format("你对%s印象如何?", pName));
-        StringUtils.alterTextColor(addPostcardTopTv, 2, 2 + pName.length(), R.color.gene_textcolor_yellow);
-
+        if (!StringUtils.isEmpty(pName)) {
+            addPostcardTopTv.setText(String.format("你对%s印象如何?", pName));
+            StringUtils.alterTextColor(addPostcardTopTv, 2, 2 + pName.length(), R.color.gene_textcolor_yellow);
+        }
         adapter = new AddPostCardGridAdapter(this);
         addPostcardImageIgv.setAdapter(adapter);
         addPostcardImageIgv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    LogUtils.json("jump 2selected image view");
-                    new PopupWindows(AddPostCardActivity.this, addPostcardImageIgv);
+                if ((Bimp.imglist.size() + Bimp.drr.size()) < 9) {
+                    if (position == 0) {
+                        new PopupWindows(AddPostCardActivity.this, addPostcardImageIgv);
+                    }
+                } else {
+
                 }
             }
         });
+    }
+
+
+    private void initData() {
+        defaulModel = (PlacePostCardModel.PageEntity.pPostCardEntity) getIntent().getSerializableExtra("pCardModel");
+        if (defaulModel != null) {
+            Bimp.imglist = defaulModel.getImglist();
+            addPostcardSuggestPrb.setRating(defaulModel.getScore());
+            addPostcardAboutPlaceTv.setText(defaulModel.getComment());
+            addPostcardSuggestTv.setText(prbHintText[defaulModel.getScore()]);
+        }
+        pName = getIntent().getStringExtra("pName");
+        pId = getIntent().getIntExtra("pId", 2);
     }
 
     private void setPRBlistener() {
@@ -119,8 +140,12 @@ public class AddPostCardActivity extends BaseActivity {
             @Override
             public void onRatePicked(ProperRatingBar ratingBar) {
                 LogUtils.json("rating==" + ratingBar.getRating());
-                String[] prbHintText = getResources().getStringArray(R.array.addPostCardSuggetStrings);
+
                 addPostcardSuggestTv.setText(prbHintText[ratingBar.getRating()]);
+                if (StringUtils.isEmpty(addPostcardAboutPlaceTv.getText().toString()) || editTextDefaultText.equals(addPostcardAboutPlaceTv.getText().toString())) {
+                    addPostcardAboutPlaceTv.setText(prbHintText[ratingBar.getRating()]);
+                    editTextDefaultText = prbHintText[ratingBar.getRating()];
+                }
             }
         });
     }
@@ -176,6 +201,7 @@ public class AddPostCardActivity extends BaseActivity {
         if (isNeedUpdate) {
             if (Bimp.drr.size() > 0 && adapter != null)
                 adapter.notifyDataSetChanged();
+            isNeedUpdate = false;
         }
         LogUtils.json("on onResume");
         super.onResume();
@@ -254,6 +280,8 @@ public class AddPostCardActivity extends BaseActivity {
         } else {
             Toast.makeText(this, "请给该趣处评个分", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     private void saveCard(String imageStr) {
@@ -329,6 +357,8 @@ public class AddPostCardActivity extends BaseActivity {
                                     if (imageIndex < list.size()) {
                                         addImage2QiNiu();
                                     } else {
+                                        File file = new File(FileUtils.SDPATH);
+                                        FileUtils.RecursionDeleteFile(file);
                                         String imageStr = "";
                                         for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
                                             if (i == 0) {
@@ -340,6 +370,7 @@ public class AddPostCardActivity extends BaseActivity {
                                         }
                                         saveCard(imageStr);
                                     }
+
                                 } else {
 
                                 }

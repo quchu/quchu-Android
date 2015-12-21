@@ -1,8 +1,10 @@
 package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,12 +26,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.PlacePostCardModel;
+import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
+import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.AddPostCardActivity;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -85,6 +90,11 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
         holder.itemRecommendCardNameTv.setText(model.getPlcaeName());
         holder.itemMyPostcardCardPrb.setRating((int) (model.getScore() + 0.5) >= 5 ? 5 : (model.getScore()));
         holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        if (model.isIsme()) {
+            holder.itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_post_card_editer));
+        } else {
+            holder.itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+        }
         holder.itemMyPostcardAvatarSdv.setImageURI(Uri.parse(model.getAutorPhoto()));
         holder.itemMyPostcardCardNicknameTv.setText(model.getAutor());
         holder.itemMyPostcardCardCommentTv.setText(model.getComment());
@@ -146,17 +156,49 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
 
         }
 
-        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl})
+        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl, R.id.item_my_postcard_heart_rl})
         public void cardClick(View view) {
             switch (view.getId()) {
                 case R.id.item_recommend_card_collect_rl:
                     setFavorite(getPosition());
                     break;
-
+                case R.id.item_my_postcard_heart_rl:
+                    if (arrayList.get(getPosition()).isIsme()) {
+                        Intent intent = new Intent(mContext, AddPostCardActivity.class).putExtra("pName", arrayList.get(getPosition()).getPlcaeName());
+                        intent.putExtra("pId", arrayList.get(getPosition()).getPlaceId());
+                        Bundle mBundle = new Bundle();
+                        mBundle.putSerializable("pCardModel", arrayList.get(getPosition()));
+                        intent.putExtras(mBundle);
+                        mContext.startActivity(intent);
+                    } else {
+                        doParise(getPosition());
+                    }
+                    break;
             }
             if (listener != null)
                 listener.onCardLick(view, getPosition());
         }
+    }
+
+    private void doParise(final int positions) {
+
+        PostCardPresenter.setPraise(mContext, arrayList.get(positions).isIsp(), true, arrayList.get(positions).getCardId(), new PostCardPresenter.MyPostCardListener() {
+            @Override
+            public void onSuccess(PostCardModel model) {
+                arrayList.get(positions).setIsp(!arrayList.get(positions).isIsp());
+                notifyDataSetChanged();
+                if (arrayList.get(positions).isIsp()) {
+                    Toast.makeText(mContext, "点赞成功!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "取消点赞!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     public interface CardClickListener {

@@ -57,9 +57,9 @@ public class FileUtils {
         return file.exists();
     }
 
-    public static void delFile(String fileName){
+    public static void delFile(String fileName) {
         File file = new File(SDPATH + fileName);
-        if(file.isFile()){
+        if (file.isFile()) {
             file.delete();
         }
         file.exists();
@@ -77,6 +77,33 @@ public class FileUtils {
                 deleteDir(); // 递规的方式删除文件夹
         }
         dir.delete();// 删除目录本身
+    }
+
+
+    /**
+     * 递归删除文件和文件夹
+     *
+     * @param
+     */
+    public static void RecursionDeleteFile(File file) {
+
+        if (file == null || !file.exists() || !file.isDirectory())
+            return;
+        if (file.isFile()) {
+            file.delete();
+            return;
+        }
+        if (file.isDirectory()) {
+            File[] childFile = file.listFiles();
+            if (childFile == null || childFile.length == 0) {
+                file.delete();
+                return;
+            }
+            for (File f : childFile) {
+                RecursionDeleteFile(f);
+            }
+            file.delete();
+        }
     }
 
     public static boolean fileIsExists(String path) {

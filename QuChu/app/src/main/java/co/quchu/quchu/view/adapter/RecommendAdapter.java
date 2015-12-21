@@ -51,6 +51,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         notifyDataSetChanged();
     }
 
+
     @Override
     public RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecommendHolder holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview, parent, false), listener);
@@ -67,10 +68,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         }
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (isFlyme) {
-            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.9f);
+            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.6f);
         } else {
             holder.itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         }
+
         holder.itemRecommendCardAddressTv.setText(model.getAddress());
         holder.itemRecommendCardCityTv.setText(model.getDescribe());
         holder.itemRecommendCardNameTv.setText(model.getName());
@@ -131,7 +133,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             this.listener = listener;
         }
 
-        @OnClick({R.id.root_cv,R.id.item_recommend_card_collect_rl})
+        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl})
         public void cardClick(View view) {
             if (listener != null)
                 listener.onCardLick(view, getPosition());

@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <!--android:name="co.quchu.quchu.view.activity.PlanetActivity"-->
         <activity
-            android:name="co.quchu.quchu.view.activity.UserLoginActivity"
+            android:name="co.quchu.quchu.view.activity.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
@@ -118,6 +118,10 @@
         <!-- 趣处详情-->
         <activity
             android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
+            android:screenOrientation="portrait" />
+        <!-- 趣处详情-->
+        <activity
+            android:name="co.quchu.quchu.view.activity.UserLoginActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"

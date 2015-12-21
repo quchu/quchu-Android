@@ -12,6 +12,7 @@ import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
 import co.quchu.quchu.view.activity.MenusActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
+import co.quchu.quchu.view.activity.SplashActivity;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
@@ -29,6 +30,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
     protected String TAG = getClass().getName();
+
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         //压栈
         ActManager.getAppManager().addActivity(this);
         mSwipeBackLayout = getSwipeBackLayout();
-        if (this instanceof MainActivity || this instanceof UserLoginActivity || this instanceof RecommendActivity) {
+        if (this instanceof MainActivity || this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity) {
             mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
@@ -74,9 +76,9 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         if (this instanceof MenusActivity) {
             overridePendingTransition(R.anim.out_bottom_to_top,
                     R.anim.out_bottom_to_top);
-        }else {
-                  overridePendingTransition(R.anim.in_stable,
-                R.anim.out_push_left_to_right);
+        } else {
+            overridePendingTransition(R.anim.in_stable,
+                    R.anim.out_push_left_to_right);
         }
 
     }

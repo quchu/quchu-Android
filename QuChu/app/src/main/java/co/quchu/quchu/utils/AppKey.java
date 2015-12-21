@@ -54,6 +54,10 @@ public class AppKey {
      * 搜索历史
      */
     public static final String SEARCHHISTORY = "search_history";
+    /**
+     * 是否需要创建桌面快捷方式
+     */
+    public static final String IS_NEED_ICON = "is_need_icon";
 
 
 }
