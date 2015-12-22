@@ -45,7 +45,7 @@ public class DialogUtil {
             }
             if (!loadingDialog.isShowing()) {
                 loadingDialog.show();
-             //   handler.sendMessageDelayed(handler.obtainMessage(2), 30 * 1000);
+                handler.sendMessageDelayed(handler.obtainMessage(2), 50 * 1000);
             }
         }
     }

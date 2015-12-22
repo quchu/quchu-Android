@@ -79,6 +79,10 @@
             android:label="@string/titlebar_word_favorite"
             android:screenOrientation="portrait" />
         <activity
+            android:name="co.quchu.quchu.view.activity.PalceMyPostCardActivity"
+            android:label="@string/titlebar_word_place_my_postcard"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="co.quchu.quchu.view.activity.FavoritePlaceActivity"
             android:label="@string/titlebar_word_favorite"
             android:screenOrientation="portrait" />
@@ -131,10 +135,15 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5655121fe0f55a5ee8008dd5" />
-        <meta-data
+        <meta-dataa
             android:name="UMENG_CHANNEL"
             android:value="ChannelID" />
-
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>

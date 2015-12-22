@@ -72,8 +72,9 @@ public class FavoriteGridAdapter extends BaseAdapter {
                 holder.itemDiscoverRootLl.setCardBackgroundColor(Color.parseColor("#" + model.getPlace().getData().get(position).getRgb()));
             } else {
                 holder.itemFavoritePrb.setRating(0);
+                holder.itemFavoriteSdv.setImageDrawable(mContext.getResources().getDrawable(R.color.favorite_scard_none_bg));
                 holder.itemFavoriteSdv.setAspectRatio(1.33f);
-                holder.itemDiscoverRootLl.setCardBackgroundColor(mContext.getResources().getColor(R.color.favorite_scard_none_bg));
+                holder.itemDiscoverRootLl.setCardBackgroundColor(mContext.getResources().getColor(R.color.detail_card_bg_color));
             }
 
 
@@ -86,8 +87,9 @@ public class FavoriteGridAdapter extends BaseAdapter {
                 holder.itemDiscoverRootLl.setCardBackgroundColor(Color.parseColor("#" + model.getCard().getData().get(position).getRgb()));
             }else {
                 holder.itemFavoritePrb.setRating(0);
+                holder.itemFavoriteSdv.setImageDrawable(mContext.getResources().getDrawable(R.color.favorite_scard_none_bg));
                 holder.itemFavoriteSdv.setAspectRatio(1.33f);
-                holder.itemDiscoverRootLl.setCardBackgroundColor(mContext.getResources().getColor(R.color.favorite_scard_none_bg));
+                holder.itemDiscoverRootLl.setCardBackgroundColor(mContext.getResources().getColor(R.color.detail_card_bg_color));
             }
         }
 

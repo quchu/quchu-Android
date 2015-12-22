@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -78,7 +79,7 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                     } else {
                         if (Bimp.bmp.size() > 0) {
                             if ((position - Bimp.imglist.size()) <= Bimp.bmp.size()) {
-                                holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get((position - Bimp.imglist.size()-1)));
+                                holder.itemAddpostcardSdv.setImageBitmap(Bimp.bmp.get((position - Bimp.imglist.size() - 1)));
                                 holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
                                 holder.itemAddpostcardSdv.setAspectRatio(1f);
                             }
@@ -129,51 +130,54 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                     holder.itemAddpostcardSdv.setAspectRatio(1f);
                 }
             }
-            holder.itemAddpostcardDelIv.setTag(position);
-            holder.itemAddpostcardDelIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int positions = (int) v.getTag();
-                    if (Bimp.bmp.size() + Bimp.imglist.size() < 9) {
-                        if (Bimp.imglist.size() > 0) {
-                            if (positions <= Bimp.imglist.size()) {
-                                Bimp.imglist.remove(positions - 1);
-                                notifyDataSetChanged();
-                            } else if (positions > Bimp.imglist.size()) {
-                                Bimp.bmp.remove(positions - Bimp.imglist.size() - 1);
-                                Bimp.drr.remove(positions - Bimp.imglist.size() - 1);
-                                notifyDataSetChanged();
-                            }
-                        } else {
-                            if (positions <= Bimp.bmp.size()) {
-                                Bimp.bmp.remove(positions - 1);
-                                Bimp.drr.remove(positions - 1);
-                                notifyDataSetChanged();
-                            }
+
+        }
+        holder.itemAddpostcardDelIv.setTag(position);
+        holder.itemAddpostcardDelIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int positions = (int) v.getTag();
+                Toast.makeText(mContext, "dele" + positions, Toast.LENGTH_SHORT).show();
+                if (Bimp.bmp.size() + Bimp.imglist.size() < 9) {
+                    if (Bimp.imglist.size() > 0) {
+                        if (positions <= Bimp.imglist.size()) {
+                            Bimp.delImageIdList.add(Bimp.imglist.get(positions - 1).getImgId());
+                            Bimp.imglist.remove(positions - 1);
+                            notifyDataSetChanged();
+                        } else if (positions > Bimp.imglist.size()) {
+                            Bimp.bmp.remove(positions - Bimp.imglist.size() - 1);
+                            Bimp.drr.remove(positions - Bimp.imglist.size() - 1);
+                            notifyDataSetChanged();
                         }
                     } else {
-                        if (Bimp.imglist.size() > 0) {
-                            if (positions < Bimp.imglist.size()) {
-                                Bimp.imglist.remove(positions);
-                                notifyDataSetChanged();
-                            } else if (positions > Bimp.imglist.size() && positions <= (Bimp.bmp.size() + Bimp.imglist.size())) {
-                                Bimp.bmp.remove(positions - Bimp.imglist.size());
-                                Bimp.drr.remove(positions - Bimp.imglist.size());
-                                notifyDataSetChanged();
-                            }
-                        } else {
-                            if (positions < Bimp.bmp.size()) {
-                                Bimp.bmp.remove(positions);
-                                Bimp.drr.remove(positions);
-                                notifyDataSetChanged();
-                            }
+                        if (positions <= Bimp.bmp.size()) {
+                            Bimp.bmp.remove(positions - 1);
+                            Bimp.drr.remove(positions - 1);
+                            notifyDataSetChanged();
                         }
                     }
-
+                } else {
+                    if (Bimp.imglist.size() > 0) {
+                        if (positions < Bimp.imglist.size()) {
+                            Bimp.delImageIdList.add(Bimp.imglist.get(positions).getImgId());
+                            Bimp.imglist.remove(positions);
+                            notifyDataSetChanged();
+                        } else if (positions > Bimp.imglist.size() && positions <= (Bimp.bmp.size() + Bimp.imglist.size())) {
+                            Bimp.bmp.remove(positions - Bimp.imglist.size());
+                            Bimp.drr.remove(positions - Bimp.imglist.size());
+                            notifyDataSetChanged();
+                        }
+                    } else {
+                        if (positions < Bimp.bmp.size()) {
+                            Bimp.bmp.remove(positions);
+                            Bimp.drr.remove(positions);
+                            notifyDataSetChanged();
+                        }
+                    }
                 }
-            });
-        }
 
+            }
+        });
 
         return convertView;
     }

@@ -64,7 +64,10 @@ public class NetApi {
 
     public static final String delPraise = HOST + "/sns/delpraise?formId=%d&type=%s";  //取消点赞
     public static final String doPraise = HOST + "/sns/praise?formId=%d&type=%s";  //点赞
+    public static final String delPostCardImage = HOST + "/place/delCardImg?imgId=%s";  //删除明信片照片
 
+
+    public static final String getPlaceUserCard = HOST + "/place/getPlaceUserCard?pId=%d";  //获取趣处中我留下的明信片
 
     /****  Get end  ****/
 

@@ -167,5 +167,15 @@ public class UserLoginMainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        if (animatorSet != null) {
+            animatorSet.cancel();
+            animatorSet.end();
+            animatorSet = null;
+        }
+        if (  animatorSets!=null){
+            animatorSets.cancel();
+            animatorSets.end();
+            animatorSets=null;
+        }
     }
 }

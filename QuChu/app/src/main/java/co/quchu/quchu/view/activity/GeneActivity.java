@@ -1,7 +1,6 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,7 +10,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,8 +60,6 @@ public class GeneActivity extends BaseActivity {
         ButterKnife.bind(this);
         title_content_tv.setText(getTitle());
 
-        Typeface face = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
-        gene_introduce_tv.setTypeface(face);
         geneProgressGv.setAdapter(new GeneProgressAdapter(this, GeneProgressAdapter.GENE));
         designRpv.setRoundWidth(20);
         designRpv.setTextSize(StringUtils.dip2px(this,10));

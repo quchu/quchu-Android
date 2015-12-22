@@ -19,7 +19,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -57,6 +59,7 @@ public class PlacePostCardActivity extends BaseActivity {
         ButterKnife.bind(this);
         titleContentTv.setText(getTitle());
         initTitleBar();
+        placePostcardHintFl.setVisibility(View.INVISIBLE);
         pId = getIntent().getIntExtra("pId", 2);
         pName = getIntent().getStringExtra("pName");
         initPostCardData(1);
@@ -65,11 +68,11 @@ public class PlacePostCardActivity extends BaseActivity {
 
             @Override
             public void onCardLick(View view, int position) {
-                    switch (view.getId()){
-                        case  R.id.item_recommend_card_reply_rl:
-                            startActivity(new Intent(PlacePostCardActivity.this,PostCardDetailActivity.class).putExtra("cId",model.getPage().getResult().get(position).getCardId()));
-                            break;
-                    }
+                switch (view.getId()) {
+                    case R.id.item_recommend_card_reply_rl:
+                        startActivity(new Intent(PlacePostCardActivity.this, PostCardDetailActivity.class).putExtra("cId", model.getPage().getResult().get(position).getCardId()));
+                        break;
+                }
             }
         });
         placePostcardCenterRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -78,6 +81,7 @@ public class PlacePostCardActivity extends BaseActivity {
 
 
     private void initPostCardData(int pageNos) {
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
         NetService.get(this, String.format(NetApi.getPlaceCardList, pageNos, pId), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
@@ -89,6 +93,7 @@ public class PlacePostCardActivity extends BaseActivity {
                     } else {
                         Gson gson = new Gson();
                         model = gson.fromJson(response.toString(), PlacePostCardModel.class);
+                        AppContext.ppcModel = model;
                         if (model.isIshave()) {
                             placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_read_my_postcard));
                         } else {
@@ -100,11 +105,12 @@ public class PlacePostCardActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                DialogUtil.dismissProgess();
             }
 
             @Override
             public boolean onError(String error) {
+                DialogUtil.dismissProgess();
                 return false;
             }
         });
@@ -124,6 +130,7 @@ public class PlacePostCardActivity extends BaseActivity {
                 } else {
                     if (model.isIshave()) {
                         Toast.makeText(this, "查看我在这里留下的明信片", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, PalceMyPostCardActivity.class).putExtra("pId", pId));
                     } else {
                         Intent intent = new Intent();
                         intent.putExtra("pName", pName);
@@ -133,6 +140,17 @@ public class PlacePostCardActivity extends BaseActivity {
                     }
                 }
                 break;
+        }
+    }
+
+    private boolean isNeedRefresh = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isNeedRefresh && AppContext.ppcModel != null && AppContext.ppcModel.getPage().getResult().size() >= 0) {
+            model = AppContext.ppcModel;
+            adapter.changeDataSet(model.getPage().getResult());
         }
     }
 }

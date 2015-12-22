@@ -8,6 +8,7 @@ import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.google.gson.Gson;
 
+import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -19,7 +20,9 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class AppContext extends Application {
     public static Context mContext;
-    public static UserInfoModel user;
+    public static UserInfoModel user;//用户信息
+
+    public static PlacePostCardModel ppcModel;//趣处明信片信息 用户返回后刷新
 
     @Override
     public void onCreate() {
@@ -33,7 +36,7 @@ public class AppContext extends Application {
                 .build();
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
 
-            if (user == null){
+            if (user == null) {
                 LogUtils.json(SPUtils.getUserInfo(this));
                 user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
 

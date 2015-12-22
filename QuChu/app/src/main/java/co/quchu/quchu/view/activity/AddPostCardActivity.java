@@ -275,7 +275,18 @@ public class AddPostCardActivity extends BaseActivity {
             if (list.size() > 0) {
                 getQiNiuToken();
             } else {
-                saveCard("");
+
+                String imageStr = "";
+                if (Bimp.imglist.size() > 0) {
+                    for (int j = 0; j < Bimp.imglist.size(); j++) {
+                        if (j == 0) {
+                            imageStr += Bimp.imglist.get(j).getPath();
+                        } else {
+                            imageStr += "%7C" + Bimp.imglist.get(j).getPath();
+                        }
+                    }
+                }
+                saveCard(imageStr);
             }
         } else {
             Toast.makeText(this, "请给该趣处评个分", Toast.LENGTH_SHORT).show();
@@ -288,20 +299,57 @@ public class AddPostCardActivity extends BaseActivity {
         PostCardPresenter.sacePostCard(this, pId, addPostcardSuggestPrb.getRating(), addPostcardAboutPlaceTv.getText().toString(), imageStr, new PostCardPresenter.MyPostCardListener() {
             @Override
             public void onSuccess(PostCardModel model) {
+                //   if (Bimp.delImageIdList.size() == 0) {
                 DialogUtil.dismissProgessDirectly();
-                Toast.makeText(AddPostCardActivity.this, "成个添加了趣处!", Toast.LENGTH_SHORT).show();
+                if (Bimp.imglist.size() > 0) {
+                    Toast.makeText(AddPostCardActivity.this, "成功修改了趣处!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddPostCardActivity.this, "成功添加了趣处!", Toast.LENGTH_SHORT).show();
+                }
                 AddPostCardActivity.this.finish();
+              /*  } else {
+                    delImageFromServer();
+                }*/
             }
 
             @Override
             public void onError(String error) {
-
+                DialogUtil.dismissProgessDirectly();
             }
         });
     }
 
     private String qiniuToken = "";
     UploadManager uploadManager;
+
+    private void delImageFromServer() {
+        String delStr = "";
+        if (Bimp.delImageIdList.size() > 0) {
+            for (int i = 0; i < Bimp.delImageIdList.size(); i++) {
+                if (i == 0) {
+                    delStr = Bimp.delImageIdList.get(i) + "";
+                } else {
+                    delStr += "%7C" + Bimp.delImageIdList.get(i);
+                }
+            }
+        }
+        LogUtils.json("delete==" + String.format(NetApi.delPostCardImage, delStr));
+        NetService.get(this, String.format(NetApi.delPostCardImage, delStr), new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("delete==" + response);
+                DialogUtil.dismissProgessDirectly();
+                Toast.makeText(AddPostCardActivity.this, "成个添加了趣处!", Toast.LENGTH_SHORT).show();
+                AddPostCardActivity.this.finish();
+            }
+
+            @Override
+            public boolean onError(String error) {
+                DialogUtil.dismissProgessDirectly();
+                return false;
+            }
+        });
+    }
 
     private void getQiNiuToken() {
 
@@ -360,12 +408,25 @@ public class AddPostCardActivity extends BaseActivity {
                                         File file = new File(FileUtils.SDPATH);
                                         FileUtils.RecursionDeleteFile(file);
                                         String imageStr = "";
-                                        for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
-                                            if (i == 0) {
-                                                imageStr += imageUrlInQiNiu.get(i).toString();
-                                            } else {
-                                                //   imageStr += '|' + imageUrlInQiNiu.get(i).toString();
+                                        if (Bimp.imglist.size() > 0) {
+                                            for (int j = 0; j < Bimp.imglist.size(); j++) {
+                                                if (j == 0) {
+                                                    imageStr += Bimp.imglist.get(j).getPath();
+                                                } else {
+                                                    imageStr += "%7C" + Bimp.imglist.get(j).getPath();
+                                                }
+                                            }
+                                            for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
                                                 imageStr += "%7C" + imageUrlInQiNiu.get(i).toString();
+                                            }
+                                        } else {
+                                            for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
+                                                if (i == 0) {
+                                                    imageStr += imageUrlInQiNiu.get(i).toString();
+                                                } else {
+                                                    //   imageStr += '|' + imageUrlInQiNiu.get(i).toString();
+                                                    imageStr += "%7C" + imageUrlInQiNiu.get(i).toString();
+                                                }
                                             }
                                         }
                                         saveCard(imageStr);
@@ -392,6 +453,8 @@ public class AddPostCardActivity extends BaseActivity {
     private void clearImageSelected() {
         Bimp.bmp = new ArrayList<Bitmap>();
         Bimp.drr = new ArrayList<String>();
+        Bimp.delImageIdList = new ArrayList<>();
+        Bimp.imglist = new ArrayList<>();
         list = new ArrayList<String>();
     }
 

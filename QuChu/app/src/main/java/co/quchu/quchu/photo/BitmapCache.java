@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.BufferedInputStream;
@@ -107,8 +106,8 @@ public class BitmapCache extends Activity {
 		int i = 0;
 		Bitmap bitmap = null;
 		while (true) {
-			if ((options.outWidth >> i <= 256)
-					&& (options.outHeight >> i <= 256)) {
+			if ((options.outWidth >> i <= 512)
+					&& (options.outHeight >> i <= 512)) {
 				in = new BufferedInputStream(
 						new FileInputStream(new File(path)));
 				options.inSampleSize = (int) Math.pow(2.0D, i);
