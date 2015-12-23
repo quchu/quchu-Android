@@ -123,7 +123,7 @@
         <activity
             android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
             android:screenOrientation="portrait" />
-        <!-- 趣处详情-->
+        <!-- 用户登录-->
         <activity
             android:name="co.quchu.quchu.view.activity.UserLoginActivity"
             android:screenOrientation="portrait" />

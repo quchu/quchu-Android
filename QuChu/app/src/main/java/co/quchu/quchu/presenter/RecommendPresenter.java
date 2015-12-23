@@ -143,7 +143,7 @@ public class RecommendPresenter {
                         if (response.has("default") && !StringUtils.isEmpty(response.getString("default"))) {
                             CityModel defaultCity = gson.fromJson(response.getString("default"), CityModel.class);
                             SPUtils.setCityId(defaultCity.getCid());
-                            LogUtils.json("response.has(\"default\")");
+                            LogUtils.json("response.has(default)");
                         }
                         if (response.has("page") && !StringUtils.isEmpty(response.getString("page"))) {
                             LogUtils.json("response.has(pages)");

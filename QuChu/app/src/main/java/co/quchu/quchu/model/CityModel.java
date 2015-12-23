@@ -15,7 +15,7 @@ public class CityModel {
 
     private String cvalue;
     private int cid;
-
+    private boolean isSelected=false;
     public void setCvalue(String cvalue) {
         this.cvalue = cvalue;
     }
@@ -30,5 +30,13 @@ public class CityModel {
 
     public int getCid() {
         return cid;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 }

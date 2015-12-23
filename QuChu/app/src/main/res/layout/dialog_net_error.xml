@@ -4,8 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_net_error_toast_bg"
-    android:minHeight="160dp"
-    android:minWidth="240dp"
+    android:minHeight="90dp"
+    android:minWidth="120dp"
     android:orientation="vertical"
     android:padding="4dp">
 
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:singleLine="true"
-            android:text="网络不可用，请检查网络设置。"
+            android:text="网络不可用 \r\n 请检查网络设置"
             android:textColor="@color/text_color_white"
             android:textSize="16sp" />
     </RelativeLayout>

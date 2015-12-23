@@ -129,6 +129,8 @@ public class AddPostCardActivity extends BaseActivity {
             Bimp.imglist = defaulModel.getImglist();
             addPostcardSuggestPrb.setRating(defaulModel.getScore());
             addPostcardAboutPlaceTv.setText(defaulModel.getComment());
+            addPostcardAboutPlaceTv.setText(defaulModel.getComment());
+            editTextDefaultText = prbHintText[defaulModel.getScore()];
             addPostcardSuggestTv.setText(prbHintText[defaulModel.getScore()]);
         }
         pName = getIntent().getStringExtra("pName");
@@ -377,7 +379,7 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
     private int imageIndex = 0;
-    private String defaulQiNiuFileName = "%d_%d.JPEG";
+    private String defaulQiNiuFileName = "%d-%d.JPEG";
     private ArrayList<String> imageUrlInQiNiu = new ArrayList<String>();
 
     private void addImage2QiNiu() {
@@ -414,18 +416,19 @@ public class AddPostCardActivity extends BaseActivity {
                                                     imageStr += Bimp.imglist.get(j).getPath();
                                                 } else {
                                                     imageStr += "%7C" + Bimp.imglist.get(j).getPath();
+                                                    //   imageStr += "%7C" + Bimp.imglist.get(j).getPath();
                                                 }
                                             }
                                             for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
-                                                imageStr += "%7C" + imageUrlInQiNiu.get(i).toString();
+                                                imageStr += "%7C" + "http://7xo7ey.com1.z0.glb.clouddn.com/" + imageUrlInQiNiu.get(i).toString();
                                             }
                                         } else {
                                             for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
                                                 if (i == 0) {
-                                                    imageStr += imageUrlInQiNiu.get(i).toString();
+                                                    imageStr += "http://7xo7ey.com1.z0.glb.clouddn.com/" + imageUrlInQiNiu.get(i).toString();
                                                 } else {
                                                     //   imageStr += '|' + imageUrlInQiNiu.get(i).toString();
-                                                    imageStr += "%7C" + imageUrlInQiNiu.get(i).toString();
+                                                    imageStr += "%7C" + "http://7xo7ey.com1.z0.glb.clouddn.com/" + imageUrlInQiNiu.get(i).toString();
                                                 }
                                             }
                                         }

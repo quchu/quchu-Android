@@ -54,10 +54,8 @@ public class NetApi {
     public static final String getProposalPlaceList = HOST + "/personal/getProposalPlaceList?pageno=%d";  //获取我的发现
     public static final String getFavoriteList = HOST + "/personal/getFavoriteList?pageno=%d&type=%s";  //获取我收藏的趣处/明信片
 
-
     public static final String getPlaceCardList = HOST + "/place/getCardList?pageno=%d&pId=%s";  //趣处的明信片列表
     public static final String getQiniuToken = HOST + "/operate/getQiniuToenk";  //获取七牛token
-
 
     public static final String getCardDetail = HOST + "/place/getCard?cId=%d";  //获取明信片详情
     public static final String delPostCard = HOST + "/operate/delCard?cId=%d";  //获取明信片详情
@@ -65,7 +63,6 @@ public class NetApi {
     public static final String delPraise = HOST + "/sns/delpraise?formId=%d&type=%s";  //取消点赞
     public static final String doPraise = HOST + "/sns/praise?formId=%d&type=%s";  //点赞
     public static final String delPostCardImage = HOST + "/place/delCardImg?imgId=%s";  //删除明信片照片
-
 
     public static final String getPlaceUserCard = HOST + "/place/getPlaceUserCard?pId=%d";  //获取趣处中我留下的明信片
 

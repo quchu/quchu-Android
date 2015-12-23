@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,6 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.utils.AppKey;
@@ -74,7 +74,7 @@ public class RecommendActivity extends BaseActivity {
         titleMoreRl.setMoreClick(this);
     }
 
-    @OnClick({ R.id.title_back_rl})
+    @OnClick({R.id.title_back_rl})
     public void titleClick(View view) {
         switch (view.getId()) {
 
@@ -84,7 +84,8 @@ public class RecommendActivity extends BaseActivity {
                     recommendBodyVp.setCurrentItem(1);
                     viewpagerSelected(1);
                 } else {
-                    Toast.makeText(this, "城市选择", Toast.LENGTH_SHORT).show();
+                    LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance();
+                    lDialog.show(getFragmentManager(), "blur_sample");
                 }
                 break;
         }

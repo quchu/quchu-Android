@@ -60,7 +60,7 @@ public class NetErrorDialog extends Dialog {
             try {
                 if (!dialog.isShowing()) {
                     dialog.show();
-                    handler.sendMessageDelayed(handler.obtainMessage(1), 2000);
+                    handler.sendMessageDelayed(handler.obtainMessage(1), 5000);
                 }
             } catch (Exception e) {
                 // TODO: handle exception

@@ -10,6 +10,8 @@ android {
         targetSdkVersion 22
         versionCode 4
         versionName "1.0.3"
+        renderscriptTargetApi 22
+        renderscriptSupportModeEnabled true
     }
     lintOptions {
         abortOnError false
@@ -57,6 +59,7 @@ dependencies {
     //七牛
     compile files('libs/volley.jar')
     compile files('libs/gson-2.4.jar')
+
     //compile 'com.umeng.analytics:analytics:latest.integration'
     //    compile 'com.squareup.picasso:picasso:2.5.2'
     //    compile 'com.squareup.okio:okio:1.6.0'
