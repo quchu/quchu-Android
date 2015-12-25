@@ -77,15 +77,14 @@ public class RecommendActivity extends BaseActivity {
     @OnClick({R.id.title_back_rl})
     public void titleClick(View view) {
         switch (view.getId()) {
-
-
             case R.id.title_back_rl:
                 if (viewPagerIndex == 0) {
                     recommendBodyVp.setCurrentItem(1);
                     viewpagerSelected(1);
                 } else {
-                    LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance();
+                    LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance(list);
                     lDialog.show(getFragmentManager(), "blur_sample");
+
                 }
                 break;
         }

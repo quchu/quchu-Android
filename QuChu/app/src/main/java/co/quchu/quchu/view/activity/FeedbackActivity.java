@@ -49,26 +49,26 @@ public class FeedbackActivity extends BaseActivity {
         setContentView(R.layout.activity_feedback);
         ButterKnife.bind(this);
         titleContentTv.setText(getTitle());
+        titleMoreRl.setImage(R.drawable.ic_feed_back_submit);
+        titleMoreRl.isNeedAnimation(false);
         feedbackHintTv.setText(String.format(feedBackStr, AppUtil.getVerName(this)));
         titleBackIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_menus_title_more));
-        titleMoreRl.setImage(R.drawable.ic_menus_title_more);
-        titleMoreRl.isNeedAnimation(false);
         titleMoreRl.setMoreClick(new MoreButtonView.MoreClicklistener() {
             @Override
             public void moreClick() {
-                if (StringUtils.isEmpty(feedbackEditerBet.getText().toString())){
-                    Toast.makeText(FeedbackActivity.this,"请填写您在使用趣处过程中产生的任何疑问、反馈或建议",Toast.LENGTH_SHORT).show();
-                }else {
+                if (StringUtils.isEmpty(feedbackEditerBet.getText().toString())) {
+                    Toast.makeText(FeedbackActivity.this, "请填写您在使用趣处过程中产生的任何疑问、反馈或建议", Toast.LENGTH_SHORT).show();
+                } else {
                     NetService.post(FeedbackActivity.this, String.format(NetApi.FeedBack, feedbackEditerBet.getText().toString()), null, new IRequestListener() {
                         @Override
                         public void onSuccess(JSONObject response) {
-                            Toast.makeText(FeedbackActivity.this,"感谢您的反馈！",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FeedbackActivity.this, "感谢您的反馈!", Toast.LENGTH_SHORT).show();
                             FeedbackActivity.this.finish();
                         }
 
                         @Override
                         public boolean onError(String error) {
-                            Toast.makeText(FeedbackActivity.this,"网络连接异常，请稍后重试！",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FeedbackActivity.this, "网络连接异常，请稍后重试！", Toast.LENGTH_SHORT).show();
                             return false;
                         }
                     });

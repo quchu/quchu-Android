@@ -8,8 +8,8 @@ android {
         applicationId "co.quchu.quchu"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 6
+        versionName "1.0.5"
         renderscriptTargetApi 22
         renderscriptSupportModeEnabled true
     }
@@ -59,7 +59,6 @@ dependencies {
     //七牛
     compile files('libs/volley.jar')
     compile files('libs/gson-2.4.jar')
-
     //compile 'com.umeng.analytics:analytics:latest.integration'
     //    compile 'com.squareup.picasso:picasso:2.5.2'
     //    compile 'com.squareup.okio:okio:1.6.0'
@@ -73,4 +72,5 @@ dependencies {
     compile files('libs/weibosdkcore.jar')
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.2.jar')
+    compile files('libs/open_sdk_r5509.jar')
 }

@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:actualImageScaleType="focusCrop"
-        card_view:placeholderImageScaleType="fitCenter"
+        card_view:placeholderImageScaleType="focusCrop"
         card_view:roundedCornerRadius="4dp" />
     </RelativeLayout>
     <View

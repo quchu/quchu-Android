@@ -7,6 +7,13 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--腾讯 所需权限-->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <application
         android:name=".base.AppContext"
@@ -93,10 +100,19 @@
         <activity
             android:name="co.quchu.quchu.view.activity.PostCardDetailActivity"
             android:label="@string/titlebar_word_my_postcard"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            </activity>
         <activity
             android:name=".photo.ImageBucketActivity"
             android:label="@string/titlebar_word_imagebucket"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.AccountSettingActivity"
+            android:label="@string/titlebar_word_account_setting"
             android:screenOrientation="portrait" />
         <activity
             android:name=".photo.ImageGridActivity"
@@ -116,9 +132,7 @@
             android:name="co.quchu.quchu.view.activity.SearchActivity"
             android:screenOrientation="portrait" />
         <!-- 账户设置-->
-        <activity
-            android:name="co.quchu.quchu.view.activity.AccountSettingActivity"
-            android:screenOrientation="portrait" />
+
         <!-- 趣处详情-->
         <activity
             android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
@@ -141,9 +155,27 @@
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" >
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"></activity>
+
+
+        <!-- tencent -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent1104964977" />
+            </intent-filter>
         </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
     </application>
 
 </manifest>

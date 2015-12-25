@@ -1,18 +1,30 @@
 package co.quchu.quchu.thirdhelp;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import com.sina.weibo.sdk.api.WebpageObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
+import com.sina.weibo.sdk.api.share.SendMultiMessageToWeiboRequest;
+import com.sina.weibo.sdk.api.share.WeiboShareSDK;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.utils.LogUtil;
+import com.sina.weibo.sdk.utils.Utility;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -63,7 +75,8 @@ public class WeiboHelper {
     public static SsoHandler mSsoHandler;
     private Activity activity;
     private UserLoginListener listener;
-    AuthInfo     mAuthInfo;
+    AuthInfo mAuthInfo;
+
     public WeiboHelper(Activity context, UserLoginListener listener) {
         this.activity = context;
 /*        AuthInfo     mAuthInfo = new AuthInfo(context, APP_KEY,
@@ -75,10 +88,10 @@ public class WeiboHelper {
 
     public void weiboLogin(Activity context) {
         this.activity = context;
-        if (mAuthInfo==null)
-        mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
-        if (mSsoHandler==null)
-        mSsoHandler = new SsoHandler(activity, mAuthInfo);
+        if (mAuthInfo == null)
+            mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
+        if (mSsoHandler == null)
+            mSsoHandler = new SsoHandler(activity, mAuthInfo);
         mSsoHandler.authorize(new AuthListener());
     }
 
@@ -138,4 +151,75 @@ public class WeiboHelper {
             }
         });
     }
+
+    public static void share2Weibo(final Activity activity, String shareUrl, String shareTitle) {
+        IWeiboShareAPI mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(activity, APP_KEY);
+        mWeiboShareAPI.registerApp();
+        WeiboMultiMessage weiboMessage = new WeiboMultiMessage();//初始化微博的分享消息
+        WebpageObject mediaObject = new WebpageObject();
+        mediaObject.identify = Utility.generateGUID();
+        mediaObject.title = shareTitle;
+        mediaObject.description = "←戳\n" + "(*^◎^*)";
+        Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);
+        // 设置 Bitmap 类型的图片到视频对象里  设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。
+
+
+        ByteArrayOutputStream os = null;
+        try {
+            os = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
+            System.out.println("kkkkkkk    size  "+ os.toByteArray().length );
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.e("Weibo.BaseMediaObject", "put thumb failed");
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 设置 Bitmap 类型的图片到视频对象里         设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。
+        mediaObject.setThumbImage(bitmap);
+        mediaObject.actionUrl = shareUrl;
+        mediaObject.defaultText = shareTitle;
+        weiboMessage.mediaObject = mediaObject;
+
+        SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
+        // 用transaction唯一标识一个请求
+        request.transaction = String.valueOf(System.currentTimeMillis());
+        request.multiMessage = weiboMessage;
+
+        mWeiboShareAPI.sendRequest(activity, request);
+
+       /* AuthInfo authInfo = new AuthInfo(activity, APP_KEY,REDIRECT_URL, SCOPE);
+        Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(activity);
+        String token = "";
+        if (accessToken != null) {
+            token = accessToken.getToken();
+        }
+        mWeiboShareAPI.sendRequest(activity, request, authInfo, token, new WeiboAuthListener() {
+
+            @Override
+            public void onWeiboException( WeiboException arg0 ) {
+            }
+
+            @Override
+            public void onComplete( Bundle bundle ) {
+                // TODO Auto-generated method stub
+                Oauth2AccessToken newToken = Oauth2AccessToken.parseAccessToken(bundle);
+                AccessTokenKeeper.writeAccessToken(activity, newToken);
+            }
+
+            @Override
+            public void onCancel() {
+            }
+        });*/
+
+
+    }
+
 }

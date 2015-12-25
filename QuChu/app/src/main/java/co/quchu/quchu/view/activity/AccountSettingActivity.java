@@ -63,6 +63,7 @@ public class AccountSettingActivity extends BaseActivity {
         setContentView(R.layout.activity_account_setting);
         ButterKnife.bind(this);
         initTitleBar();
+        titleContentTv.setText(getTitle());
         userInfoBinding();
     }
 
@@ -81,7 +82,7 @@ public class AccountSettingActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.account_setting_avatar_editer_tv,R.id.account_setting_gender_tv})
+    @OnClick({R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv})
     public void accountClick(View v) {
         switch (v.getId()) {
             case R.id.account_setting_avatar_editer_tv:

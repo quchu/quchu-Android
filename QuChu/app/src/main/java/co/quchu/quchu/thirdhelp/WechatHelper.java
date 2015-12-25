@@ -1,15 +1,23 @@
 package co.quchu.quchu.thirdhelp;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
 import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+
+import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -41,12 +49,14 @@ public class WechatHelper {
         api.registerApp(WECHAT_APP_ID);
         this.listener = listener;
     }
+
     public WechatHelper(Activity activity) {
         mActivity = activity;
         api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
                 false);
         api.registerApp(WECHAT_APP_ID);
     }
+
     public IWXAPI getApi() {
         return api;
     }
@@ -122,9 +132,58 @@ public class WechatHelper {
         });
     }
 
+    public void shareFriends(String shareUrl, String title,
+                             boolean isShare4Friends) {
+        if (!api.isWXAppInstalled()) {
+            Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        WXMediaMessage msg;
+
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = shareUrl;
+        msg = new WXMediaMessage(webpage);
+        if (isShare4Friends) {
+            msg.description = "←戳\n" +"(*^◎^*)";
+        }
+        msg.title = title;
+
+        msg.thumbData = bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
+                R.mipmap.ic_launcher), true);
 
 
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.message = msg;
+        if (isShare4Friends) {
+            req.scene = SendMessageToWX.Req.WXSceneSession;
+        } else {
+            req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        }
+        api.sendReq(req);
+    }
 
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis())
+                : type + System.currentTimeMillis();
+    }
+
+    public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
+        if (needRecycle) {
+            bmp.recycle();
+        }
+
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
     /* public void share2WeChat(String id,
                              String description, Bitmap bitmap) {

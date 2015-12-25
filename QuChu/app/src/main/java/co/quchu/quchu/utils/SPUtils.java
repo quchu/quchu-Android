@@ -196,39 +196,41 @@ public class SPUtils {
         putValueToSPMap(mContext, AppKey.USERTOKEN, "");
     }
 
-    public static void setCityId(int cityId){
-        putValueToSPMap(AppContext.mContext, AppKey.CITYID,String.valueOf(cityId));
+    public static void setCityId(int cityId) {
+        putValueToSPMap(AppContext.mContext, AppKey.CITYID, String.valueOf(cityId));
     }
 
-    public static int getCityId(){
-        return Integer.parseInt(getValueFromSPMap(AppContext.mContext,AppKey.CITYID,"5"));
+    public static int getCityId() {
+        return Integer.parseInt(getValueFromSPMap(AppContext.mContext, AppKey.CITYID, "5"));
     }
 
-    public static void setCityName(int cityId){
-        putValueToSPMap(AppContext.mContext, AppKey.CITYNAME,String.valueOf(cityId));
+    public static void setCityName(String cityId) {
+        putValueToSPMap(AppContext.mContext, AppKey.CITYNAME, cityId);
     }
 
-    public static String getCityName(){
-        return getValueFromSPMap(AppContext.mContext, AppKey.CITYID, " ");
-    }
-    public static void setLongitude(double cityId){
-        putValueToSPMap(AppContext.mContext, AppKey.LON,String.valueOf(cityId));
+    public static String getCityName() {
+        return getValueFromSPMap(AppContext.mContext, AppKey.CITYNAME, " ");
     }
 
-    public static double getLongitude(){
+    public static void setLongitude(double cityId) {
+        putValueToSPMap(AppContext.mContext, AppKey.LON, String.valueOf(cityId));
+    }
+
+    public static double getLongitude() {
         return Double.parseDouble(getValueFromSPMap(AppContext.mContext, AppKey.LON, "0"));
     }
-    public static void setLatitude(double cityId){
-        putValueToSPMap(AppContext.mContext, AppKey.LAT,String.valueOf(cityId));
+
+    public static void setLatitude(double cityId) {
+        putValueToSPMap(AppContext.mContext, AppKey.LAT, String.valueOf(cityId));
     }
 
-    public static double getLatitude(){
-        return Double.parseDouble(getValueFromSPMap(AppContext.mContext,AppKey.LAT,"0"));
+    public static double getLatitude() {
+        return Double.parseDouble(getValueFromSPMap(AppContext.mContext, AppKey.LAT, "0"));
     }
 
 
-    public static void putUserSelectedClassify(String enStr){
-        switch (enStr){
+    public static void putUserSelectedClassify(String enStr) {
+        switch (enStr) {
             case "creative":
                 SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "灵感之源");
                 break;

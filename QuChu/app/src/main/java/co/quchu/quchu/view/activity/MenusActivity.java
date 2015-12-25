@@ -15,6 +15,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.WiperSwitch;
@@ -124,9 +125,10 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
         *//*        bg=Bitmap.createBitmap(screens,startWidth,startWidth,450,450);*//*
                 bg = BlurUtils.BoxBlurFilter(Bitmap.createBitmap(screens, startWidth, startWidth, 250, 250));
                 PopupWindowUtils.initPopupWindow(menusPullmenusPmv, this, bg);*/
+                MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;
             case PullMenusView.ClickHome:
-              MenusActivity.this.finish();
+                MenusActivity.this.finish();
                 break;
         }
     }

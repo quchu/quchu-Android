@@ -25,9 +25,9 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.DetailListViewAdapter;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
@@ -145,7 +145,7 @@ public class InterestingDetailsActivity extends BaseActivity {
         detailOutsideSv.setOverScrollListener(new OutSideScrollView.OverScrolledListener() {
             @Override
             public void onOverScrolled(int scrollX, int scrollY) {
-                LogUtils.json("scrollY=" + scrollY + "//detailButtonGroupLl==" + detailButtonGroupLlHeight);
+                //         LogUtils.json("scrollY=" + scrollY + "//detailButtonGroupLl==" + detailButtonGroupLlHeight);
                 if (scrollY >= detailButtonGroupLlHeight) {
                     detailButtonGroupOutLl.setVisibility(View.VISIBLE);
                 } else {
@@ -177,7 +177,7 @@ public class InterestingDetailsActivity extends BaseActivity {
 
     private void bindingDetailData() {
         itemCardImageSdv.setImageURI(Uri.parse(dModel.getCover()));
-        itemCardImageSdv.setAspectRatio(dModel.getWidth()/dModel.getHeight());
+        itemCardImageSdv.setAspectRatio(1f);
         detailStoreNameTv.setText(dModel.getName());
         if (StringUtils.isEmpty(dModel.getTraffic())) {
             detailStoreAddressTv.setText(dModel.getAddress());
@@ -294,9 +294,9 @@ public class InterestingDetailsActivity extends BaseActivity {
             case R.id.detail_button_add_postcard_rl:
                 //添加明信片
                 Intent intent = new Intent();
-                intent.putExtra("pId",dModel.getPid());
-                intent.putExtra("pName",dModel.getName());
-                intent.setClass(this,PlacePostCardActivity.class);
+                intent.putExtra("pId", dModel.getPid());
+                intent.putExtra("pName", dModel.getName());
+                intent.setClass(this, PlacePostCardActivity.class);
                 startActivity(intent);
 
                 break;
@@ -308,6 +308,8 @@ public class InterestingDetailsActivity extends BaseActivity {
             case R.id.detail_button_share_out_rl:
             case R.id.detail_button_share_rl:
                 //分享
+                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
+                shareDialogFg.show(getFragmentManager(), "share_dialog");
                 break;
         }
     }
@@ -361,7 +363,7 @@ public class InterestingDetailsActivity extends BaseActivity {
             return;
         }
         int totalHeight = 0;
-        totalHeight= (int) (( listView.getWidth()/0.75f)*listAdapter.getCount());
+        totalHeight = (int) ((listView.getWidth() / 0.75f) * listAdapter.getCount());
        /* for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
             // listAdapter.getCount()返回数据项的数目
             View listItem = listAdapter.getView(i, null, listView);

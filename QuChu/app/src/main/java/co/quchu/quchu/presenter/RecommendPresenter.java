@@ -39,9 +39,9 @@ public class RecommendPresenter {
 
     public static void getRecommendList(final Context context, final GetRecommendListener listener) {
         DialogUtil.showProgess(context, "数据加载中...");
-        NetService.get(context, String.format(NetApi.getPlaceList,SPUtils.getCityId(),
-                SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""),SPUtils.getLatitude(),SPUtils.getLongitude()
-                ), new IRequestListener() {
+        NetService.get(context, String.format(NetApi.getPlaceList, SPUtils.getCityId(),
+                SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude()
+        ), new IRequestListener() {
 
             @Override
             public void onSuccess(JSONObject response) {
@@ -131,7 +131,7 @@ public class RecommendPresenter {
 
     }
 
-    public static void getCityList(Context context , final CityListListener listener) {
+    public static void getCityList(Context context, final CityListListener listener) {
         //  NetService.get(context,String.format( NetApi.GetCityList, SPUtils.getCityName()), new IRequestListener() {
         NetService.get(context, NetApi.GetCityList, new IRequestListener() {
             @Override
@@ -140,9 +140,10 @@ public class RecommendPresenter {
                 if (response != null) {
                     try {
                         Gson gson = new Gson();
-                        if (response.has("default") && !StringUtils.isEmpty(response.getString("default"))) {
+                        if (response.has("default") && !StringUtils.isEmpty(response.getString("default")) && StringUtils.isEmpty(SPUtils.getCityName())) {
                             CityModel defaultCity = gson.fromJson(response.getString("default"), CityModel.class);
                             SPUtils.setCityId(defaultCity.getCid());
+                            SPUtils.setCityName(defaultCity.getCvalue());
                             LogUtils.json("response.has(default)");
                         }
                         if (response.has("page") && !StringUtils.isEmpty(response.getString("page"))) {
@@ -151,12 +152,16 @@ public class RecommendPresenter {
 
                             ArrayList<CityModel> cityList = new ArrayList<CityModel>();
                             for (int i = 0; i < pages.length(); i++) {
-                                LogUtils.json("response.has(pages)"+i);
+
                                 CityModel model = gson.fromJson(pages.getString(i), CityModel.class);
-                                cityList.add(model);
                                 if (model.getCvalue().equals(SPUtils.getCityName())) {
-                                    SPUtils.setCityId(model.getCid());
+                                    //   SPUtils.setCityId(model.getCid());
+                                    model.setIsSelected(true);
+                                    LogUtils.json("response.has(pages)" + i);
+                                } else {
+                                    model.setIsSelected(false);
                                 }
+                                cityList.add(model);
                             }
                             listener.hasCityList(cityList);
                         }
@@ -174,7 +179,7 @@ public class RecommendPresenter {
         });
     }
 
-    public interface CityListListener{
+    public interface CityListListener {
         void hasCityList(ArrayList<CityModel> list);
     }
 }

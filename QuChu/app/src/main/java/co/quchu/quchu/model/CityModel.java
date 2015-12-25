@@ -1,12 +1,14 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
+
 /**
  * CityModel
  * User: Chenhs
  * Date: 2015-12-09
  * 城市信息
  */
-public class CityModel {
+public class CityModel implements Serializable {
 
     /**
      * cvalue : 厦门
@@ -15,7 +17,8 @@ public class CityModel {
 
     private String cvalue;
     private int cid;
-    private boolean isSelected=false;
+    private boolean isSelected = false;
+
     public void setCvalue(String cvalue) {
         this.cvalue = cvalue;
     }

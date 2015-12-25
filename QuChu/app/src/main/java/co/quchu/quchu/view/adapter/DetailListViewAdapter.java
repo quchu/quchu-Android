@@ -56,7 +56,7 @@ public class DetailListViewAdapter extends BaseAdapter {
             flickrLargeHolder = (FlickrLargeHolder) convertView.getTag();
         }
         flickrLargeHolder.itemFlickrImageLargeSdv.setImageURI(Uri.parse(images.get(position).getImgpath()));
-        flickrLargeHolder.itemFlickrImageLargeSdv.setAspectRatio(images.get(position).getWidth() / images.get(position).getHeight());
+        flickrLargeHolder.itemFlickrImageLargeSdv.setAspectRatio((float)images.get(position).getWidth() /(float) images.get(position).getHeight());
         return convertView;
     }
 

@@ -3,12 +3,14 @@ package co.quchu.quchu.dialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,7 +21,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
+import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -35,29 +40,32 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     private static final String CITY_LIST_MODEL = "city_list_model";
     @Bind(R.id.dialog_location_selected_city_tv)
     TextView dialogLocationSelectedCityTv;
-    @Bind(R.id.dialog_location_xm_cb)
-    CheckBox dialogLocationXmCb;
-    @Bind(R.id.dialog_location_hz_cb)
-    CheckBox dialogLocationHzCb;
+    /*    @Bind(R.id.dialog_location_xm_cb)
+        CheckBox dialogLocationXmCb;
+        @Bind(R.id.dialog_location_hz_cb)
+        CheckBox dialogLocationHzCb;*/
     @Bind(R.id.dialog_location_submit_tv)
     TextView dialogLocationSubmitTv;
     @Bind(R.id.dialog_location_cancel_tv)
     TextView dialogLocationCancelTv;
     @Bind(R.id.dialog_location_bottom_textviews_rl)
     RelativeLayout dialogLocationBottomTextviewsRl;
+    @Bind(R.id.dialog_location_rv)
+    RecyclerView dialogLocationRv;
 
     private ArrayList<CityModel> cityList;
 
     /**
      * Retrieve a new instance of the sample fragment.
      *
+     * @param list
      * @return well instantiated fragment.
      * Serializable cityList
      */
-    public static LocationSelectedDialogFg newInstance() {
+    public static LocationSelectedDialogFg newInstance(ArrayList<CityModel> list) {
         LocationSelectedDialogFg fragment = new LocationSelectedDialogFg();
         Bundle args = new Bundle();
-        // args.putSerializable(CITY_LIST_MODEL, cityList);
+        args.putSerializable(CITY_LIST_MODEL, list);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,24 +88,55 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
         super.onCreate(savedInstanceState);
     }
 
+    private LocationSelectedAdapter adapter;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_location_selected, null);
-
         ButterKnife.bind(this, view);
+        initSelected();
+        dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        adapter = new LocationSelectedAdapter(cityList, dialogLocationSelectedCityTv, getActivity());
+        dialogLocationRv.setAdapter(adapter);
         builder.setView(view);
+        dialogLocationSelectedCityTv.setText("所在城市:" + SPUtils.getCityName());
+        StringUtils.alterTextColor(dialogLocationSelectedCityTv, 5, 5 + SPUtils.getCityName().length(), R.color.gene_textcolor_yellow);
 
-
-        selectedIndex = 0;
-        dialogLocationXmCb.setChecked(true);
-        dialogLocationXmCb.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
-        dialogLocationSelectedCityTv.setText("所在城市:厦门");
-        StringUtils.alterTextColor(dialogLocationSelectedCityTv,5,7,R.color.gene_textcolor_yellow);
-        //  handler.sendMessageDelayed(handler.obtainMessage(1), 3000);
         return builder.create();
     }
+
+    @Override
+    public void onResume() {
+        LogUtils.json("dialog resume");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        LogUtils.json("dialog onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        super.show(manager, tag);
+        if (adapter != null && dialogLocationRv != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void initSelected() {
+        for (int i = 0; i < cityList.size(); i++) {
+            if (cityList.get(i).getCvalue().equals(SPUtils.getCityName())) {
+                cityList.get(i).setIsSelected(true);
+            } else {
+                cityList.get(i).setIsSelected(false);
+            }
+        }
+    }
+
 
     private Handler handler = new Handler() {
         @Override
@@ -133,15 +172,17 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
 
     private int selectedIndex = 0;
 
-    @OnClick({R.id.dialog_location_xm_cb, R.id.dialog_location_hz_cb, R.id.dialog_location_submit_tv, R.id.dialog_location_cancel_tv})
+    @OnClick({R.id.dialog_location_submit_tv, R.id.dialog_location_cancel_tv})
     public void loacationDialogClick(View view) {
         switch (view.getId()) {
             case R.id.dialog_location_submit_tv:
                 //保存数据 而后关闭
+                SPUtils.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
+                SPUtils.setCityName(cityList.get(adapter.getSelectedIndex()).getCvalue());
             case R.id.dialog_location_cancel_tv:
                 LocationSelectedDialogFg.this.dismiss();
                 break;
-            case R.id.dialog_location_xm_cb:
+        /*    case R.id.dialog_location_xm_cb:
                 if (selectedIndex != 0) {
                     selectedIndex = 0;
                     dialogLocationXmCb.setChecked(true);
@@ -166,7 +207,7 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
                     dialogLocationSelectedCityTv.setText("所在城市:杭州");
                     StringUtils.alterTextColor(dialogLocationSelectedCityTv,5,7, R.color.gene_textcolor_yellow);
                 }
-                break;
+                break;*/
         }
     }
 
@@ -176,4 +217,5 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
 }
