@@ -10,41 +10,51 @@ import java.util.List;
 public class DetailModel {
 
     /**
-     * address : 鹭江道3号和平码头当丰新天地3楼302室
+     * activityInfo : 本次活动主要针对领基础的绘画爱好者,来之前一定要先预约哦
+     * activityInfoHtml : 本次活来之前一定要先预约哦
+     * address : 鼓浪屿龙头路菜市场二楼
+     * autor : 管理员
+     * autorId : 1
+     * autorPhoto : http://7xo7et.com1.z0.glb.clouddn.com/1-app-default-avatar
      * businessHours : 10:00-00:00
-     * cover : http://7xo7et.com1.z0.glb.clouddn.com/4-default-app-place-cover?imageMogr2/format/webp
-     * genes : [{"key":"美食","value":"89"}]
-     * height : 605
+     * cover : http://7xo7et.com1.z0.glb.clouddn.com/5-default-app-place-cover?imageMogr2/format/webp
+     * genes : [{"key":"美食","value":"79"}]
+     * height : 451
      * icons : [{"zh":"现金"}]
-     * imglist : [{"cid":86,"cindex":0,"height":605,"imgpath":"http://7xo7et.com1.z0.glb.clouddn.com/4@1?imageMogr2/format/webp","width":909}]
+     * imglist : [{"cid":15,"cindex":0,"height":451,"imgpath":"http://7xo7et.com1.z0.glb.clouddn.com/5@1?imageMogr2/format/webp","width":675}]
+     * isActivity : true
      * isf : false
      * isout : false
-     * latitude : 24.45613747484
-     * longitude : 118.08450240938
-     * name : ReNext里遇
-     * nearbySpot :
+     * latitude : 24.452339588489
+     * longitude : 118.07367153985
+     * name : 菜市场博物馆
      * net :
-     * pid : 4
-     * price : 128
+     * pid : 5
+     * price : 64
      * restDay :
-     * rgb : 6b4947
-     * suggest : 4
-     * tags : [{"zh":"下午茶"}]
-     * tel : 0592-2233995
-     * traffic :
-     * width : 909
+     * rgb : 583f2f
+     * suggest : 5
+     * tags : [{"zh":"闽菜"}]
+     * tel : 0592-7701155
+     * traffic : 龙头路菜市场
+     * width : 675
      */
 
+    private String activityInfo;
+    private String activityInfoHtml;
     private String address;
+    private String autor;
+    private int autorId;
+    private String autorPhoto;
     private String businessHours;
     private String cover;
     private int height;
+    private boolean isActivity;
     private boolean isf;
     private boolean isout;
     private String latitude;
     private String longitude;
     private String name;
-    private String nearbySpot;
     private String net;
     private int pid;
     private String price;
@@ -56,7 +66,7 @@ public class DetailModel {
     private int width;
     /**
      * key : 美食
-     * value : 89
+     * value : 79
      */
 
     private List<GenesEntity> genes;
@@ -66,22 +76,42 @@ public class DetailModel {
 
     private List<IconsEntity> icons;
     /**
-     * cid : 86
+     * cid : 15
      * cindex : 0
-     * height : 605
-     * imgpath : http://7xo7et.com1.z0.glb.clouddn.com/4@1?imageMogr2/format/webp
-     * width : 909
+     * height : 451
+     * imgpath : http://7xo7et.com1.z0.glb.clouddn.com/5@1?imageMogr2/format/webp
+     * width : 675
      */
 
     private List<ImglistEntity> imglist;
     /**
-     * zh : 下午茶
+     * zh : 闽菜
      */
 
     private List<TagsEntity> tags;
 
+    public void setActivityInfo(String activityInfo) {
+        this.activityInfo = activityInfo;
+    }
+
+    public void setActivityInfoHtml(String activityInfoHtml) {
+        this.activityInfoHtml = activityInfoHtml;
+    }
+
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public void setAutorId(int autorId) {
+        this.autorId = autorId;
+    }
+
+    public void setAutorPhoto(String autorPhoto) {
+        this.autorPhoto = autorPhoto;
     }
 
     public void setBusinessHours(String businessHours) {
@@ -94,6 +124,10 @@ public class DetailModel {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void setIsActivity(boolean isActivity) {
+        this.isActivity = isActivity;
     }
 
     public void setIsf(boolean isf) {
@@ -114,10 +148,6 @@ public class DetailModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setNearbySpot(String nearbySpot) {
-        this.nearbySpot = nearbySpot;
     }
 
     public void setNet(String net) {
@@ -172,8 +202,28 @@ public class DetailModel {
         this.tags = tags;
     }
 
+    public String getActivityInfo() {
+        return activityInfo;
+    }
+
+    public String getActivityInfoHtml() {
+        return activityInfoHtml;
+    }
+
     public String getAddress() {
         return address;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public int getAutorId() {
+        return autorId;
+    }
+
+    public String getAutorPhoto() {
+        return autorPhoto;
     }
 
     public String getBusinessHours() {
@@ -186,6 +236,10 @@ public class DetailModel {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean isIsActivity() {
+        return isActivity;
     }
 
     public boolean isIsf() {
@@ -206,10 +260,6 @@ public class DetailModel {
 
     public String getName() {
         return name;
-    }
-
-    public String getNearbySpot() {
-        return nearbySpot;
     }
 
     public String getNet() {

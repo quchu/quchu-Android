@@ -1,6 +1,6 @@
 package co.quchu.quchu.view.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
@@ -35,12 +35,12 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.RecommendHolder> {
 
 
-    private Context mContext;
+    private Activity mContext;
     private boolean isFlyme = false;
     private ArrayList<RecommendModel> arrayList;
     private CardClickListener listener;
 
-    public RecommendAdapter(Context mContext, CardClickListener listener) {
+    public RecommendAdapter(Activity mContext, CardClickListener listener) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
         this.listener = listener;
@@ -84,8 +84,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         holder.itemRecommendCardProgressTwo.setProgressName(model.getGenes().get(1).getKey());
         holder.itemRecommendCardProgressThree.setProgress(model.getGenes().get(2).getValue());
         holder.itemRecommendCardProgressThree.setProgressName(model.getGenes().get(2).getKey());
-
-
     }
 
 
@@ -133,7 +131,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             this.listener = listener;
         }
 
-        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl})
+        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl,R.id.item_recommend_card_interest_rl})
         public void cardClick(View view) {
             if (listener != null)
                 listener.onCardLick(view, getPosition());

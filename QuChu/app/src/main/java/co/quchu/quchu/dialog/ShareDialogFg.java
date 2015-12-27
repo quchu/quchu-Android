@@ -93,7 +93,7 @@ public class ShareDialogFg extends BlurDialogFragment implements AdapterView.OnI
         ButterKnife.bind(this, view);
         dialogShareGv.setAdapter(new DialogShareAdapter(getActivity()));
         dialogShareGv.setOnItemClickListener(this);
-        shareUrl = String.format(NetApi.sharePlace, shareId, SPUtils.getUserToken(AppContext.mContext));
+        shareUrl = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId, SPUtils.getUserToken(AppContext.mContext));
         builder.setView(view);
         return builder.create();
     }
@@ -123,7 +123,7 @@ public class ShareDialogFg extends BlurDialogFragment implements AdapterView.OnI
                 QQHelper.shareToQzone(getActivity(), mTencent, shareUrl, shareTitle);
                 break;
             case 4:
-                WeiboHelper.share2Weibo(getActivity(),shareUrl,shareTitle);
+                WeiboHelper.share2Weibo(getActivity(), shareUrl, shareTitle);
                 break;
         }
         ShareDialogFg.this.dismiss();

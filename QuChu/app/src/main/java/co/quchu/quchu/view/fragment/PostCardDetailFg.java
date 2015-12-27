@@ -23,6 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -129,7 +130,8 @@ public class PostCardDetailFg extends Fragment {
                 setFavorite();
                 break;
             case R.id.item_recommend_card_interest_rl:
-
+                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(item.getCardId(), item.getPlcaeName(), false);
+                shareDialogFg.show(getActivity().getFragmentManager(), "share_postcard");
                 break;
             case R.id.item_recommend_card_reply_rl:
                 getActivity().startActivity(new Intent(getActivity(), PostCardDetailActivity.class).putExtra("cId", item.getCardId()));

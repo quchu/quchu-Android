@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -49,6 +50,10 @@ public class FavoriteActivity extends BaseActivity {
     CardView favoritePlaceCv;
     @Bind(R.id.favorite_postcard_cv)
     CardView favoritePostcardCv;
+    @Bind(R.id.favorite_postcard_gvcv)
+    CardView favoritePostcardGvcv;
+    @Bind(R.id.favorite_place_name_gvcv)
+    CardView favoritePlaceNameGvcv;
     private FavoriteModel model;
 
     @Override
@@ -73,16 +78,27 @@ public class FavoriteActivity extends BaseActivity {
                     favoritePlaceGv.setAdapter(new FavoriteGridAdapter(FavoriteActivity.this, model, true));
                     favoritePostcardGv.setAdapter(new FavoriteGridAdapter(FavoriteActivity.this, model, false));
                     initCountView();
-                    DialogUtil.dismissProgess();
                     favoritePlaceCounterCv.start();
                     favoritePostcardCounterCv.start();
-
+                    favoritePlaceGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            startActivity(new Intent(FavoriteActivity.this, FavoritePlaceActivity.class));
+                        }
+                    });
+                    favoritePostcardGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            //跳转
+                        }
+                    });
                 }
-
+                DialogUtil.dismissProgess();
             }
 
             @Override
             public boolean onError(String error) {
+                DialogUtil.dismissProgess();
                 return false;
             }
         });
@@ -98,14 +114,15 @@ public class FavoriteActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.favorite_place_cv, R.id.favorite_postcard_cv})
+    @OnClick({R.id.favorite_place_cv, R.id.favorite_postcard_cv, R.id.favorite_postcard_gvcv, R.id.favorite_place_name_gvcv})
     public void favoriteClick(View v) {
         switch (v.getId()) {
             case R.id.favorite_postcard_cv:
-
+            case R.id.favorite_postcard_gvcv:
                 break;
             case R.id.favorite_place_cv:
-                startActivity(new Intent(this,FavoritePlaceActivity.class));
+            case R.id.favorite_place_name_gvcv:
+                startActivity(new Intent(this, FavoritePlaceActivity.class));
                 break;
         }
     }

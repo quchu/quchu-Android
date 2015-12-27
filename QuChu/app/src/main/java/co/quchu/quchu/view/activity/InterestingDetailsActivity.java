@@ -93,17 +93,11 @@ public class InterestingDetailsActivity extends BaseActivity {
     TextView detailStoreBusinessHoursKeyTv;
     @Bind(R.id.detail_store_business_hours_value_tv)
     TextView detailStoreBusinessHoursValueTv;
-    @Bind(R.id.detail_nearby_tv)
-    TextView detailNearbyTv;
-    @Bind(R.id.detail_nearby_tcv)
-    TagCloudView detailNearbyTcv;
 
     @Bind(R.id.detail_outside_sv)
     OutSideScrollView detailOutsideSv;
     @Bind(R.id.detail_store_business_hours_ll)
     LinearLayout detailStoreBusinessHoursLl;
-    @Bind(R.id.detail_nearby_ll)
-    LinearLayout detailNearbyLl;
     @Bind(R.id.detail_button_group_ll)
     LinearLayout detailButtonGroupLl;
     @Bind(R.id.detail_button_collect_out_rl)
@@ -126,6 +120,24 @@ public class InterestingDetailsActivity extends BaseActivity {
     ImageView detailButtonCollectIv;
     @Bind(R.id.detail_button_collect_out_iv)
     ImageView detailButtonCollectOutIv;
+    @Bind(R.id.detail_bottom_group_ll)
+    LinearLayout detailBottomGroupLl;
+    @Bind(R.id.detail_activity_initiator_title_tv)
+    TextView detailActivityInitiatorTitleTv;
+    @Bind(R.id.detail_activity_initiator_avator_sdv)
+    SimpleDraweeView detailActivityInitiatorAvatorSdv;
+    @Bind(R.id.detail_activity_initiator_name_tv)
+    TextView detailActivityInitiatorNameTv;
+    @Bind(R.id.detail_activity_initiator_ll)
+    LinearLayout detailActivityInitiatorLl;
+    @Bind(R.id.detail_activity_title_tv)
+    TextView detailActivityTitleTv;
+    @Bind(R.id.detail_activity_info_tv)
+    TextView detailActivityInfoTv;
+    @Bind(R.id.detail_activity_info_ll)
+    LinearLayout detailActivityInfoLl;
+    @Bind(R.id.detail_icons_rl)
+    RelativeLayout detailIconsRl;
     private int pId;
     private float detailButtonGroupLlHeight = 0f;
     public DetailModel dModel;
@@ -185,18 +197,18 @@ public class InterestingDetailsActivity extends BaseActivity {
             detailStoreAddressTv.setText(String.format(getResources().getString(R.string.detail_address_hint_text), dModel.getAddress(), dModel.getTraffic()));
         }
         detailStorePhoneTv.setText(dModel.getTel());
-        detailStoreBusinessHoursValueTv.setText(dModel.getBusinessHours() + " " + dModel.getRestDay());
+
         detailSuggestPrb.setRating(dModel.getSuggest());
         if (!StringUtils.isEmpty(dModel.getPrice()) && !"0".equals(dModel.getPrice())) {
             detailAvgPriceTv.setText(String.format(getResources().getString(R.string.detail_price_hint_text), dModel.getPrice()));
         } else {
             detailAvgPriceTv.setVisibility(View.INVISIBLE);
         }
-        if (StringUtils.isEmpty(dModel.getNearbySpot())) {
+        /*if (StringUtils.isEmpty(dModel.getNearbySpot())) {
             detailNearbyLl.setVisibility(View.GONE);
         } else {
             detailNearbyTcv.setTags(StringUtils.convertStrToArray(dModel.getNearbySpot()));
-        }
+        }*/
         if (dModel.getGenes().size() >= 3) {
             detailProgressOne.setProgressName(dModel.getGenes().get(0).getKey());
             detailProgressOne.setProgress(dModel.getGenes().get(0).getValue());
@@ -214,7 +226,23 @@ public class InterestingDetailsActivity extends BaseActivity {
         } else {
             detailStoreTagcloundTcv.setVisibility(View.GONE);
         }
-        initConvenienceIcons();
+        if (dModel.isIsActivity()) {
+            detailActivityInfoLl.setVisibility(View.VISIBLE);
+            detailActivityInitiatorLl.setVisibility(View.VISIBLE);
+            detailIconsRl.setVisibility(View.GONE);
+            detailStoreBusinessHoursLl.setVisibility(View.GONE);
+            detailActivityInitiatorAvatorSdv.setImageURI(Uri.parse(dModel.getAutorPhoto()));
+            detailActivityInitiatorNameTv.setText(dModel.getAutor());
+            detailActivityInfoTv.setText(dModel.getActivityInfo());
+        } else {
+            detailActivityInfoLl.setVisibility(View.GONE);
+            detailActivityInitiatorLl.setVisibility(View.GONE);
+            detailIconsRl.setVisibility(View.VISIBLE);
+            detailStoreBusinessHoursLl.setVisibility(View.VISIBLE);
+            detailStoreBusinessHoursValueTv.setText(dModel.getBusinessHours() + " " + dModel.getRestDay());
+            initConvenienceIcons();
+        }
+
         changeBottomBeenBg(dModel.isIsout());
         changeCollectState(dModel.isIsf());
         DetailListViewAdapter dlvAdapter = new DetailListViewAdapter(this, dModel.getImglist());
@@ -260,10 +288,10 @@ public class InterestingDetailsActivity extends BaseActivity {
     private void changeBottomBeenBg(boolean isOut) {
         if (isOut) {
             detailBeenTv.setTextColor(getResources().getColor(R.color.black));
-            detailBeenTv.setBackground(getResources().getDrawable(R.drawable.shape_detail_bottom_full_bg));
+            detailBeenTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_detail_bottom_full_bg));
         } else {
             detailBeenTv.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
-            detailBeenTv.setBackground(getResources().getDrawable(R.drawable.shape_detail_bottom_bg));
+            detailBeenTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_detail_bottom_bg));
         }
     }
 

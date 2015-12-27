@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.FavoritePlaceModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -57,6 +58,10 @@ public class FavoritePlaceActivity extends BaseActivity {
                         break;
                     case R.id.root_cv:
 
+                        break;
+                    case R.id.item_recommend_card_interest_rl:
+                        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(model.getResult().get(position).getPid(), model.getResult().get(position).getName(), true);
+                        shareDialogFg.show(getFragmentManager(), "share_place_dialog");
                         break;
                 }
             }

@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
@@ -124,6 +125,10 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                 break;
             case R.id.item_recommend_card_collect_rl:
                 setFavorite(position);
+                break;
+            case R.id.item_recommend_card_interest_rl:
+                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(cardList.get(position).getPid(), cardList.get(position).getName(), true);
+                shareDialogFg.show(getActivity().getFragmentManager(), "share_place");
                 break;
         }
     }

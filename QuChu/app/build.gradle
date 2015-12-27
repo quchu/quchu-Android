@@ -6,11 +6,11 @@ android {
 
     defaultConfig {
         applicationId "co.quchu.quchu"
-        minSdkVersion 16
-        targetSdkVersion 22
-        versionCode 6
-        versionName "1.0.5"
-        renderscriptTargetApi 22
+        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion ANDROID_BUILD_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
+        renderscriptTargetApi RENDERSCRIPT_TARGET_API as int
         renderscriptSupportModeEnabled true
     }
     lintOptions {
