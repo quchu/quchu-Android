@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -129,7 +128,6 @@ public class PlacePostCardActivity extends BaseActivity {
                     startActivity(intent);
                 } else {
                     if (model.isIshave()) {
-                        Toast.makeText(this, "查看我在这里留下的明信片", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(this, PalceMyPostCardActivity.class).putExtra("pId", pId));
                     } else {
                         Intent intent = new Intent();

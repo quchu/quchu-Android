@@ -10,8 +10,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"
-        fresco:actualImageScaleType="focusCrop"
-        android:fadeScrollbars="false" />
+        android:fadeScrollbars="false"
+        fresco:actualImageScaleType="focusCrop" />
 
     <RelativeLayout
         android:id="@+id/planet_gallery_mask_rl"
@@ -22,20 +22,39 @@
         android:orientation="vertical"
         android:visibility="invisible">
 
-        <TextView
-            android:id="@+id/planet_gallery_mask_tv"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/word_size_body" />
+            android:orientation="vertical">
 
- <!--       <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="照片"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/word_size_body" />-->
+            <co.quchu.quchu.widget.textcounter.CounterView
+                android:id="@+id/planet_collect_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_title_body"
+                fresco:autoStart="true"
+                fresco:incrementValue="1"
+                fresco:startValue="0" />
+
+            <TextView
+                android:id="@+id/planet_gallery_mask_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_size_body" />
+
+        </LinearLayout>
+        <!--       <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_horizontal"
+                   android:text="照片"
+                   android:textColor="@color/text_color_white"
+                   android:textSize="@dimen/word_size_body" />-->
     </RelativeLayout>
 </RelativeLayout>

@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/base_margin"
@@ -19,12 +20,26 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/planet_myfocus_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/following"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
+
+            <co.quchu.quchu.widget.textcounter.CounterView
+                android:id="@+id/planet_myfocus_count_cv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/half_margin"
+                android:layout_toLeftOf="@id/planet_myfocus_tv"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_size_body"
+                fresco:autoStart="true"
+                fresco:incrementValue="1"
+                fresco:startValue="0" />
         </RelativeLayout>
 
 
@@ -41,12 +56,26 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/planet_focusonme_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/follower"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
+
+            <co.quchu.quchu.widget.textcounter.CounterView
+                android:id="@+id/planet_focusonme_count_cv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/half_margin"
+                android:layout_toLeftOf="@id/planet_focusonme_tv"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_size_body"
+                fresco:autoStart="true"
+                fresco:incrementValue="1"
+                fresco:startValue="0" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -62,11 +91,11 @@
         android:layout_marginTop="@dimen/half_margin"
         android:columnWidth="90dp"
         android:divider="#00000000"
-        android:scrollbars="none"
         android:gravity="center"
-        android:overScrollMode="never"
         android:horizontalSpacing="6dp"
         android:numColumns="4"
+        android:overScrollMode="never"
+        android:scrollbars="none"
         android:stretchMode="columnWidth" />
 
     <View style="@style/HorizontalLine" />
@@ -91,11 +120,23 @@
                 android:layout_marginLeft="@dimen/base_margin"
                 android:src="@drawable/ic_planet_collect" />
 
+            <co.quchu.quchu.widget.textcounter.CounterView
+                android:id="@+id/planet_collect_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/half_margin"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_title_body"
+                fresco:autoStart="true"
+                fresco:incrementValue="1"
+                fresco:startValue="0" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="@dimen/quarter_margin"
                 android:text="收藏"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
@@ -117,11 +158,23 @@
                 android:layout_marginLeft="@dimen/base_margin"
                 android:src="@drawable/ic_planet_discover" />
 
+            <co.quchu.quchu.widget.textcounter.CounterView
+                android:id="@+id/planet_discover_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/half_margin"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_title_body"
+                fresco:autoStart="true"
+                fresco:incrementValue="1"
+                fresco:startValue="0" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="@dimen/quarter_margin"
                 android:text="发现"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
@@ -150,11 +203,23 @@
                 android:layout_marginLeft="@dimen/base_margin"
                 android:src="@drawable/ic_planet_postcaard" />
 
+            <co.quchu.quchu.widget.textcounter.CounterView
+                android:id="@+id/planet_postcard_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/half_margin"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_title_body"
+                fresco:autoStart="true"
+                fresco:incrementValue="1"
+                fresco:startValue="0" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="@dimen/quarter_margin"
                 android:fontFamily="sans-serif-thin"
                 android:text="明信片"
                 android:textColor="@color/planet_text_color_white"

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -128,7 +128,7 @@ public class TextSubtabLayout extends RelativeLayout implements View.OnClickList
         if (objectAnimator != null) {
 
             objectAnimator.setDuration(ScaleDuration);
-            objectAnimator.setInterpolator(new DecelerateInterpolator());
+            objectAnimator.setInterpolator(new OvershootInterpolator());
             objectAnimator.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {

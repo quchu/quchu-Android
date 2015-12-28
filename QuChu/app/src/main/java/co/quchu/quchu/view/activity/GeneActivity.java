@@ -1,22 +1,32 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.MyGeneModel;
+import co.quchu.quchu.net.IRequestListener;
+import co.quchu.quchu.net.NetApi;
+import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.view.adapter.GeneProgressAdapter;
 import co.quchu.quchu.widget.RoundProgressView;
 
@@ -29,7 +39,7 @@ public class GeneActivity extends BaseActivity {
     @Bind(R.id.gene_introduce)
     RelativeLayout geneIntroduce;
     @Bind(R.id.planet_avatar_icon)
-    ImageView planetAvatarIcon;
+    SimpleDraweeView planetAvatarIcon;
     @Bind(R.id.mid_luncher)
     FrameLayout midLuncher;
     @Bind(R.id.design_rpv)
@@ -59,31 +69,18 @@ public class GeneActivity extends BaseActivity {
         setContentView(R.layout.activity_gene);
         ButterKnife.bind(this);
         title_content_tv.setText(getTitle());
+        initTitleBar();
+        DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));
+        setGeneData();
+        planetAvatarIcon.setImageURI(Uri.parse(AppContext.user.getPhoto()));
 
-        geneProgressGv.setAdapter(new GeneProgressAdapter(this, GeneProgressAdapter.GENE));
-        designRpv.setRoundWidth(20);
-        designRpv.setTextSize(StringUtils.dip2px(this,10));
     }
 
 
-    @OnClick({R.id.title_back_rl, R.id.gene_introduce, R.id.atmosphere_rpv, R.id.title_more_rl})
+    @OnClick({R.id.gene_introduce, R.id.atmosphere_rpv})
     public void Click(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
-            case R.id.title_back_rl:
-                GeneActivity.this.finish();
-                break;
-            case R.id.title_more_rl:
-//                dialog = new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
-//                        .theme(Theme.DARK)
-//                        .content("网络数据加载中...")
-//                        .progress(true, 0)
-//                        .cancelable(false)
-//                        .contentColor(getResources().getColor(R.color.planet_text_color_white))
-//                        .contentGravity(GravityEnum.END)
-//                        .show();
-//                handler.sendMessageDelayed(handler.obtainMessage(0x00),1000*5);
-                break;
             case R.id.gene_introduce:
                 //  跳转什么是趣基因
                 intent.setClass(this, GeneIntroduceActivity.class);
@@ -96,22 +93,77 @@ public class GeneActivity extends BaseActivity {
                 break;
         }
     }
-private Handler handler = new Handler(){
-    @Override
-    public void handleMessage(Message msg) {
-        switch (msg.what){
-            case 0x00:
-                break;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0x00:
+                    break;
+            }
+            super.handleMessage(msg);
         }
-        super.handleMessage(msg);
-    }
-};
+    };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
     }
+
+    private GeneProgressAdapter adapter;
+
+    private void setGeneData() {
+        NetService.get(this, NetApi.getUserGene, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                if (response != null) {
+                    Gson gson = new Gson();
+                    MyGeneModel model = gson.fromJson(response.toString(), MyGeneModel.class);
+                    if (model != null) {
+                        adapter = new GeneProgressAdapter(GeneActivity.this, GeneProgressAdapter.GENE, model.getGenes());
+                        geneProgressGv.setAdapter(adapter);
+                        DialogUtil.dismissProgess();
+                        for (int i = 0; i < model.getStar().size(); i++) {
+                            switch (i) {
+                                case 0:
+                                    designRpv.setImage(model.getStar().get(i).getMinImg());
+                                    designRpv.setProgress(model.getStar().get(i).getWeight());
+                                    designRpv.setProgressText(model.getStar().get(i).getZh());
+                                    break;
+                                case 1:
+                                    pavilionRpv.setImage(model.getStar().get(i).getMinImg());
+                                    pavilionRpv.setProgress(model.getStar().get(i).getWeight());
+                                    pavilionRpv.setProgressText(model.getStar().get(i).getZh());
+                                    break;
+                                case 2:
+                                    atmosphereRpv.setImage(model.getStar().get(i).getMinImg());
+                                    atmosphereRpv.setProgress(model.getStar().get(i).getWeight());
+                                    atmosphereRpv.setProgressText(model.getStar().get(i).getZh());
+                                    break;
+                                case 3:
+                                    cateRpv.setImage(model.getStar().get(i).getMinImg());
+                                    cateRpv.setProgress(model.getStar().get(i).getWeight());
+                                    cateRpv.setProgressText(model.getStar().get(i).getZh());
+                                    break;
+                                case 4:
+                                    strollRpv.setImage(model.getStar().get(i).getMinImg());
+                                    strollRpv.setProgress(model.getStar().get(i).getWeight());
+                                    strollRpv.setProgressText(model.getStar().get(i).getZh());
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public boolean onError(String error) {
+                return false;
+            }
+        });
+    }
+
 
     @Override
     protected void onPause() {
@@ -121,5 +173,8 @@ private Handler handler = new Handler(){
     @Override
     protected void onResume() {
         super.onResume();
+     /*   if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }*/
     }
 }

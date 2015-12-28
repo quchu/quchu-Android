@@ -16,7 +16,11 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.widget.RoundProgressBar;
 
 /**
@@ -31,31 +35,35 @@ public class GeneProgressAdapter extends BaseAdapter {
      * 0=我的趣星球
      * 1=我的趣基因
      */
-    private int adapterTyle=0;
-    private  String[] textArray;
+    private int adapterTyle = 0;
+    /*    private String[] textArray;*/
     private int[] imagesArray;
-    public static final int GENE=1;
-    public static final int PLANET=0;
+    public static final int GENE = 1;
+    public static final int PLANET = 0;
 
+    private List<MyGeneModel.GenesEntity> genes = new ArrayList<>();
 
     public GeneProgressAdapter(Context context) {
         this.context = context;
     }
-    public GeneProgressAdapter(Context context,int adapterTyle) {
+
+    public GeneProgressAdapter(Context context, int adapterTyle, List<MyGeneModel.GenesEntity> genes) {
         this.context = context;
-        this.adapterTyle=adapterTyle;
-        switch (adapterTyle){
+        this.adapterTyle = adapterTyle;
+        switch (adapterTyle) {
             case GENE:
-                textArray=context.getResources().getStringArray(R.array.MyGene);
+      /*     textArray = context.getResources().getStringArray(R.array.MyGene);*/
                 TypedArray ar = context.getResources().obtainTypedArray(R.array.gene_images);
                 int len = ar.length();
                 imagesArray = new int[len];
                 for (int i = 0; i < len; i++)
                     imagesArray[i] = ar.getResourceId(i, 0);
                 ar.recycle();
+                this.genes = genes;
                 break;
         }
     }
+
     @Override
     public int getCount() {
         return 4;
@@ -73,17 +81,17 @@ public class GeneProgressAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        switch (adapterTyle){
+        switch (adapterTyle) {
             case 0:
-                return    getPlanetView(position,convertView,parent);
+                return getPlanetView(position, convertView, parent);
             case 1:
-                return  getGeneView(position, convertView, parent);
+                return getGeneView(position, convertView, parent);
         }
 
         return convertView;
     }
 
-    public View getGeneView(int position, View convertView, ViewGroup parent){
+    public View getGeneView(int position, View convertView, ViewGroup parent) {
         GeneProgressItemHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(
@@ -94,10 +102,10 @@ public class GeneProgressAdapter extends BaseAdapter {
             holder = (GeneProgressItemHolder) convertView.getTag();
         }
         holder.gene_progress_item_rpb.setRoundWidth(20);
-        holder.gene_progress_item_rpb.setProgress(98);
-        holder.gene_progress_item_tv.setText(textArray[position]);
+        holder.gene_progress_item_rpb.setProgress((int) genes.get(position).getWeight());
+        //  holder.gene_progress_item_tv.setText(genes.get(position).getZh());
         holder.gene_progress_item_iv.setImageResource(imagesArray[position]);
-        SpannableStringBuilder builder = new SpannableStringBuilder(textArray[position]);
+        SpannableStringBuilder builder = new SpannableStringBuilder(genes.get(position).getZh() + "基因");
         ForegroundColorSpan redSpan = new ForegroundColorSpan(context.getResources().getColor(R.color.planet_progress_yellow));
         builder.setSpan(redSpan, 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.gene_progress_item_tv.setText(builder);
@@ -105,7 +113,7 @@ public class GeneProgressAdapter extends BaseAdapter {
     }
 
 
-    public View getPlanetView(int position, View convertView, ViewGroup parent){
+    public View getPlanetView(int position, View convertView, ViewGroup parent) {
         PlanetImgItemHolder pvh;
         if (convertView == null) {
             convertView = LayoutInflater.from(
@@ -115,15 +123,12 @@ public class GeneProgressAdapter extends BaseAdapter {
         } else {
             pvh = (PlanetImgItemHolder) convertView.getTag();
         }
-        if (position==3) {
+        if (position == 3) {
             pvh.planet_gallery_mask_rl.setVisibility(View.VISIBLE);
             pvh.planet_gallery_mask_tv.setText(" 88\r\n 照片");
-        }else{
+        } else {
             pvh.planet_gallery_mask_rl.setVisibility(View.INVISIBLE);
         }
-
-       /* Picasso.with(context).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565).resize(StringUtils.dip2px(context,80), StringUtils.dip2px(context,80))
-                .centerCrop().into(pvh.sdv);*/
 
         pvh.sdv.setImageURI(Uri.parse("http://imgdn.paimeilv.com/1444721523235"));
         return convertView;
@@ -133,20 +138,23 @@ public class GeneProgressAdapter extends BaseAdapter {
         public SimpleDraweeView sdv;
         public RelativeLayout planet_gallery_mask_rl;
         public TextView planet_gallery_mask_tv;
+
         public PlanetImgItemHolder(View view) {
             sdv = (SimpleDraweeView) view.findViewById(R.id.planet_gallery_img);
-            planet_gallery_mask_rl= (RelativeLayout) view.findViewById(R.id.planet_gallery_mask_rl);
-            planet_gallery_mask_tv= (TextView) view.findViewById(R.id.planet_gallery_mask_tv);
+            planet_gallery_mask_rl = (RelativeLayout) view.findViewById(R.id.planet_gallery_mask_rl);
+            planet_gallery_mask_tv = (TextView) view.findViewById(R.id.planet_gallery_mask_tv);
         }
     }
+
     class GeneProgressItemHolder {
         public ImageView gene_progress_item_iv;
         public RoundProgressBar gene_progress_item_rpb;
         public TextView gene_progress_item_tv;
+
         public GeneProgressItemHolder(View view) {
             gene_progress_item_iv = (ImageView) view.findViewById(R.id.gene_progress_item_iv);
-            gene_progress_item_rpb= (RoundProgressBar) view.findViewById(R.id.gene_progress_item_rpb);
-            gene_progress_item_tv= (TextView) view.findViewById(R.id.gene_progress_item_tv);
+            gene_progress_item_rpb = (RoundProgressBar) view.findViewById(R.id.gene_progress_item_rpb);
+            gene_progress_item_tv = (TextView) view.findViewById(R.id.gene_progress_item_tv);
         }
     }
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_data_isnull" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dialog_margin"
+        android:text="@string/empty_face_text"
+        android:textColor="@color/gene_textcolor_yellow"
+        android:textSize="@dimen/word_size_body" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/half_margin"
+        android:text="@string/empty_hint_text"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_size_body" />
+
+    <TextView
+        android:id="@+id/empty_view_other_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/half_margin"
+        android:background="@drawable/shape_data_null_button_bg"
+        android:text="@string/empty_button_text"
+        android:textColor="@color/black"
+        android:textSize="@dimen/word_size_body" />
+</LinearLayout>

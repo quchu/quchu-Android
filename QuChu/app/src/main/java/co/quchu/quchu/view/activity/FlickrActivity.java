@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.FlickrModel;
@@ -60,6 +59,10 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     public FlickrModel flickrFavoriteNew = new FlickrModel();//我的收藏 new
     @Bind(R.id.flickr_act_swipe_refresh_layout)
     SwipeRefreshLayout flickrActSwipeRefreshLayout;
+    @Bind(R.id.empty_view_other_tv)
+    TextView emptyViewOtherTv;
+    @Bind(R.id.empty_view_fl)
+    FrameLayout emptyViewFl;
 
 
     @Override
@@ -67,6 +70,7 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flickr);
         ButterKnife.bind(this);
+        initTitleBar();
         title_content_tv.setText(getTitle());
         flickrFbg.setSelectedListener(this);
         flickrActSwipeRefreshLayout.setOnLoadListener(this);
@@ -86,7 +90,7 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 } else {
                     isSelectedImages = false;
                 }
-                    changeDataSet();
+                changeDataSet();
                 /**
                  * 顶部选中回调
                  */
@@ -101,7 +105,7 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 } else {
                     isSelectedImages = false;
                 }
-                    changeDataSet();
+                changeDataSet();
             }
         });
         scrollViewFlickr.setOverScrollListener(new OutSideScrollView.OverScrolledListener() {
@@ -158,23 +162,10 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     private boolean isSelectedImages = true;//true=现在我的照片 false=选中我的收藏
 
 
-    @OnClick({R.id.title_back_rl, R.id.title_more_rl})
-    public void titleClick(View view) {
-        switch (view.getId()) {
-            case R.id.title_back_rl:
-                finish();
-                break;
-            case R.id.title_more_rl:
-
-                break;
-        }
-    }
-
     @Override
     public void onLoad() {
-      loadMore();
+        loadMore();
     }
-
 
 
     /**
@@ -186,17 +177,21 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 if (isSelectedHot) {//大图 listFragment  我的照片  hot
                     LogUtils.json("大图 listFragment  我的照片  hot" + flickrImagesHot.getImgs().getResult().size());
                     flickrListFragment.changeDataSet(flickrImagesHot.getImgs());
+                    showEmptyView(flickrImagesHot.getImgs());
                 } else {//大图 listFragment  我的照片  new
                     LogUtils.json("大图 listFragment  我的照片  new " + flickrImagesNew.getImgs().getResult().size());
                     flickrListFragment.changeDataSet(flickrImagesNew.getImgs());
+                    showEmptyView(flickrImagesNew.getImgs());
                 }
             } else {  //大图 listFragment  我的收藏
                 if (isSelectedHot) {//大图 listFragment  我的收藏  hot
                     LogUtils.json("大图 listFragment   我的收藏  hot" + flickrFavoriteHot.getImgs().getResult().size());
                     flickrListFragment.changeDataSet(flickrFavoriteHot.getImgs());
+                    showEmptyView(flickrFavoriteHot.getImgs());
                 } else {//大图 listFragment  我的收藏  new
                     LogUtils.json("大图 listFragment   我的收藏  new" + flickrFavoriteNew.getImgs().getResult().size());
                     flickrListFragment.changeDataSet(flickrFavoriteNew.getImgs());
+                    showEmptyView(flickrFavoriteNew.getImgs());
                 }
             }
         } else {  //小图 gridFragment
@@ -205,17 +200,21 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 if (isSelectedHot) {//小图 gridFragment  我的照片  hot
                     LogUtils.json("小图 gridFragment  我的照片  hot" + flickrImagesHot.getImgs().getResult().size());
                     flickrGridFragment.changeDataSet(flickrImagesHot.getImgs());
+                    showEmptyView(flickrImagesHot.getImgs());
                 } else {//小图 gridFragment  我的照片  new
                     LogUtils.json("小图 gridFragment  我的照片  new" + flickrImagesNew.getImgs().getResult().size());
                     flickrGridFragment.changeDataSet(flickrImagesNew.getImgs());
+                    showEmptyView(flickrImagesNew.getImgs());
                 }
             } else {  //小图 gridFragment  我的收藏
                 if (isSelectedHot) {//小图 gridFragment  我的收藏  hot
                     LogUtils.json("小图 gridFragment  我的收藏  hot" + flickrFavoriteHot.getImgs().getResult().size());
                     flickrGridFragment.changeDataSet(flickrFavoriteHot.getImgs());
+                    showEmptyView(flickrFavoriteHot.getImgs());
                 } else {//小图 gridFragment  我的收藏  new
                     LogUtils.json("小图 gridFragment  我的收藏  new" + flickrFavoriteNew.getImgs().getResult().size());
                     flickrGridFragment.changeDataSet(flickrFavoriteNew.getImgs());
+                    showEmptyView(flickrFavoriteNew.getImgs());
                 }
             }
         }
@@ -235,8 +234,10 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 transaction.replace(R.id.flickr_fl, flickrListFragment);
                 transaction.commit();
                 scrollViewFlickr.smoothScrollTo(0, 0);
-                tabBar.setWidgetLeftImage(flickrImagesHot.getPhoto().getCover());
-                tabBar.setWidgetRightImage(flickrImagesHot.getFavorite().getCover());
+                if (!StringUtils.isEmpty(flickrImagesHot.getPhoto().getCover()))
+                    tabBar.setWidgetLeftImage(flickrImagesHot.getPhoto().getCover());
+                if (!StringUtils.isEmpty(flickrImagesHot.getFavorite().getCover()))
+                    tabBar.setWidgetRightImage(flickrImagesHot.getFavorite().getCover());
                 tabBar.setWidgetLeftNum(flickrImagesHot.getPhoto().getNum());
                 tabBar.setWidgetRightNum(flickrImagesHot.getFavorite().getNum());
                 flickrTsl.setLeftNum(flickrImagesHot.getPhoto().getNum());
@@ -248,7 +249,19 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
             public void onError(String error) {
             }
         });
+    }
 
+    private void showEmptyView(FlickrModel.ImgsEntity entity) {
+        if (entity.getResult().size() == 0) {
+            flickrFl.setVisibility(View.GONE);
+            flickrFbg.setVisibility(View.GONE);
+            emptyViewFl.setVisibility(View.VISIBLE);
+            flickrTsl.setVisibility(View.INVISIBLE);
+        } else {
+            emptyViewFl.setVisibility(View.GONE);
+            flickrFl.setVisibility(View.VISIBLE);
+            flickrFbg.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getOtherData() {
@@ -284,26 +297,27 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
         });
     }
 
-    private String loadMoreUrl="";
-    private boolean isNeedLoadMore=false;//是否需要加载 根据
+    private String loadMoreUrl = "";
+    private boolean isNeedLoadMore = false;//是否需要加载 根据
+
     private void loadMore() {
-            if (isSelectedImages) {      //大图 listFragment  我的照片
-                if (isSelectedHot) {//大图 listFragment  我的照片  hot
-                    loadMoreUrl=String.format(NetApi.GetImageAlbum, SPUtils.getUserToken(this),NetApi.AlbumTypeHot,flickrImagesHot.getImgs().getPagesNo()+1);
-                    isNeedLoadMore=!(flickrImagesHot.getImgs().getPagesNo()+1>=flickrImagesHot.getImgs().getPageCount());
-                } else {//大图 listFragment  我的照片  new
-                    loadMoreUrl=String.format(NetApi.GetImageAlbum, SPUtils.getUserToken(this),NetApi.AlbumTypeNew,flickrImagesNew.getImgs().getPagesNo()+1);
-                    isNeedLoadMore=!(flickrImagesNew.getImgs().getPagesNo()+1>=flickrImagesNew.getImgs().getPageCount());
-                }
-            } else {  //大图 listFragment  我的收藏
-                if (isSelectedHot) {//大图 listFragment  我的收藏  hot
-                    loadMoreUrl=String.format(NetApi.GetFavoriteAlbum, SPUtils.getUserToken(this),NetApi.AlbumTypeHot,flickrFavoriteHot.getImgs().getPagesNo()+1);
-                    isNeedLoadMore=!(flickrFavoriteHot.getImgs().getPagesNo()+1>=flickrFavoriteHot.getImgs().getPageCount());
-                } else {//大图 listFragment  我的收藏  new
-                    loadMoreUrl=String.format(NetApi.GetFavoriteAlbum, SPUtils.getUserToken(this),NetApi.AlbumTypeNew,flickrFavoriteNew.getImgs().getPagesNo()+1);
-                    isNeedLoadMore=!(flickrFavoriteNew.getImgs().getPagesNo()+1>=flickrFavoriteNew.getImgs().getPageCount());
-                }
+        if (isSelectedImages) {      //大图 listFragment  我的照片
+            if (isSelectedHot) {//大图 listFragment  我的照片  hot
+                loadMoreUrl = String.format(NetApi.GetImageAlbum, SPUtils.getUserToken(this), NetApi.AlbumTypeHot, flickrImagesHot.getImgs().getPagesNo() + 1);
+                isNeedLoadMore = !(flickrImagesHot.getImgs().getPagesNo() + 1 >= flickrImagesHot.getImgs().getPageCount());
+            } else {//大图 listFragment  我的照片  new
+                loadMoreUrl = String.format(NetApi.GetImageAlbum, SPUtils.getUserToken(this), NetApi.AlbumTypeNew, flickrImagesNew.getImgs().getPagesNo() + 1);
+                isNeedLoadMore = !(flickrImagesNew.getImgs().getPagesNo() + 1 >= flickrImagesNew.getImgs().getPageCount());
             }
+        } else {  //大图 listFragment  我的收藏
+            if (isSelectedHot) {//大图 listFragment  我的收藏  hot
+                loadMoreUrl = String.format(NetApi.GetFavoriteAlbum, SPUtils.getUserToken(this), NetApi.AlbumTypeHot, flickrFavoriteHot.getImgs().getPagesNo() + 1);
+                isNeedLoadMore = !(flickrFavoriteHot.getImgs().getPagesNo() + 1 >= flickrFavoriteHot.getImgs().getPageCount());
+            } else {//大图 listFragment  我的收藏  new
+                loadMoreUrl = String.format(NetApi.GetFavoriteAlbum, SPUtils.getUserToken(this), NetApi.AlbumTypeNew, flickrFavoriteNew.getImgs().getPagesNo() + 1);
+                isNeedLoadMore = !(flickrFavoriteNew.getImgs().getPagesNo() + 1 >= flickrFavoriteNew.getImgs().getPageCount());
+            }
+        }
         if (isNeedLoadMore && !StringUtils.isEmpty(loadMoreUrl)) {
             FlickrPresenter.loadMoreAlbum(this, loadMoreUrl, new FlickrPresenter.FlickrListener() {
                 @Override
@@ -311,18 +325,18 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                     if (isSelectedImages) {      //大图 listFragment  我的照片
                         if (isSelectedHot) {//大图 listFragment  我的照片  hot
                             flickrImagesHot.getImgs().addResult(flickrModel.getImgs().getResult());
-                            flickrImagesHot.getImgs().setPagesNo(flickrImagesHot.getImgs().getPagesNo()+1);
+                            flickrImagesHot.getImgs().setPagesNo(flickrImagesHot.getImgs().getPagesNo() + 1);
                         } else {//大图 listFragment  我的照片  new
                             flickrImagesNew.getImgs().addResult(flickrModel.getImgs().getResult());
-                            flickrImagesNew.getImgs().setPagesNo(flickrImagesNew.getImgs().getPagesNo()+1);
+                            flickrImagesNew.getImgs().setPagesNo(flickrImagesNew.getImgs().getPagesNo() + 1);
                         }
                     } else {  //大图 listFragment  我的收藏
                         if (isSelectedHot) {//大图 listFragment  我的收藏  hot
                             flickrFavoriteHot.getImgs().addResult(flickrModel.getImgs().getResult());
-                            flickrFavoriteHot.getImgs().setPagesNo(flickrFavoriteHot.getImgs().getPagesNo()+1);
+                            flickrFavoriteHot.getImgs().setPagesNo(flickrFavoriteHot.getImgs().getPagesNo() + 1);
                         } else {//大图 listFragment  我的收藏  new
                             flickrFavoriteNew.getImgs().addResult(flickrModel.getImgs().getResult());
-                            flickrFavoriteNew.getImgs().setPagesNo(flickrFavoriteNew.getImgs().getPagesNo()+1);
+                            flickrFavoriteNew.getImgs().setPagesNo(flickrFavoriteNew.getImgs().getPagesNo() + 1);
                         }
                     }
                     changeDataSet();
@@ -334,11 +348,10 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                     flickrActSwipeRefreshLayout.setLoading(false);
                 }
             });
-        }else {
+        } else {
             flickrActSwipeRefreshLayout.setLoading(false);
         }
     }
-
 
 
 }

@@ -14,7 +14,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -28,12 +27,17 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.PlanetModel;
 import co.quchu.quchu.presenter.PlanetActPresenter;
+import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.adapter.PlanetImgGridAdapter;
 import co.quchu.quchu.view.holder.PlanetActHolder;
 import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.planetanimations.Interpolator.BezierInterpolators;
 import co.quchu.quchu.widget.planetanimations.MovePath;
 import co.quchu.quchu.widget.planetanimations.MyAnimation;
+import co.quchu.quchu.widget.textcounter.CounterView;
 
 /**
  * PlanetActivity
@@ -70,9 +74,22 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     LinearLayout planetPostcardLl;
 
 
+    @Bind(R.id.title_content_tv)
+    TextView title_content_tv;
+
     @Bind(R.id.planet_gene_tv)
     TextView planetGeneTv;
-    private int AnimationDuration = 50 * 1000;
+    @Bind(R.id.planet_collect_num_tv)
+    CounterView planetCollectNumTv;
+    @Bind(R.id.planet_discover_num_tv)
+    CounterView planetDiscoverNumTv;
+    @Bind(R.id.planet_postcard_num_tv)
+    CounterView planetPostcardNumTv;
+    @Bind(R.id.planet_myfocus_count_cv)
+    CounterView planetMyfocusCountCv;
+    @Bind(R.id.planet_focusonme_count_cv)
+    CounterView planetFocusonmeCountCv;
+    private int AnimationDuration = 80 * 1000;
     private PlanetActPresenter presenter;
     private PlanetActHolder planetHolder;
     private AnimatorSet animatorSet;
@@ -83,16 +100,66 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         setContentView(R.layout.activity_planet);
         ButterKnife.bind(this);
         initTitleBar();
-
+        title_content_tv.setText(getTitle());
+        DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));
         initActivityViewHolder();
-        presenter = new PlanetActPresenter(this, planetHolder);
+        presenter = new PlanetActPresenter(this);
         presenter.setPlanetGene(planetGeneTv);
-        presenter.setImageGalery(planetImageGv, this);
+
         ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(this);
-        planetAvatarIcon.setImageURI(Uri.parse(AppContext.user.getPhoto()));
-        atmosphereRpv.setImage("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg");
-        presenter.initUserStarData();
+
+        presenter.initUserStarData(new PlanetActPresenter.PlanetNetListener() {
+            @Override
+            public void onNetSuccess(PlanetModel model) {
+                DialogUtil.dismissProgess();
+                planetImageGv.setAdapter(new PlanetImgGridAdapter(PlanetActivity.this, model.getImgs(), model.getImgNum()));
+                planetImageGv.setOnItemClickListener(PlanetActivity.this);
+                planetAvatarIcon.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+
+                for (int i = 0; i < model.getStar().size(); i++) {
+                    switch (i) {
+                        case 0:
+                            designRpv.setImage(model.getStar().get(i).getMinImg());
+                            designRpv.setProgress(model.getStar().get(i).getWeight());
+                            designRpv.setProgressText(model.getStar().get(i).getZh());
+                            break;
+                        case 1:
+                            pavilionRpv.setImage(model.getStar().get(i).getMinImg());
+                            pavilionRpv.setProgress(model.getStar().get(i).getWeight());
+                            pavilionRpv.setProgressText(model.getStar().get(i).getZh());
+                            break;
+                        case 2:
+                            atmosphereRpv.setImage(model.getStar().get(i).getMinImg());
+                            atmosphereRpv.setProgress(model.getStar().get(i).getWeight());
+                            atmosphereRpv.setProgressText(model.getStar().get(i).getZh());
+                            break;
+                        case 3:
+                            cateRpv.setImage(model.getStar().get(i).getMinImg());
+                            cateRpv.setProgress(model.getStar().get(i).getWeight());
+                            cateRpv.setProgressText(model.getStar().get(i).getZh());
+                            break;
+                        case 4:
+                            strollRpv.setImage(model.getStar().get(i).getMinImg());
+                            strollRpv.setProgress(model.getStar().get(i).getWeight());
+                            strollRpv.setProgressText(model.getStar().get(i).getZh());
+                            break;
+                    }
+                }
+
+                planetCollectNumTv.setEndValue(model.getFovNum());
+                planetDiscoverNumTv.setEndValue(model.getProposalNum());
+                planetPostcardNumTv.setEndValue(model.getCardNum());
+                planetMyfocusCountCv.setEndValue(model.getHostNum());
+                planetFocusonmeCountCv.setEndValue(model.getFollowNum());
+                planetCollectNumTv.start();
+                planetDiscoverNumTv.start();
+                planetPostcardNumTv.start();
+                planetMyfocusCountCv.start();
+                planetFocusonmeCountCv.start();
+
+            }
+        });
     }
 
 
@@ -169,24 +236,24 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int screenWidth = dm.widthPixels;
         //movePath.getCircleData 获取圆形移动路径
-        List lis4t = movePath.getCircleData(designRpv, new float[]{0, 140});
-        List list2 = movePath.getCircleData(pavilionRpv, new float[]{-(screenWidth / 2 - heigh / 2) + 40, (heigh / 4) + 20});
-        List list3 = movePath.getCircleData(atmosphereRpv, new float[]{-heigh * 2 / 3, -heigh / 2});
-        List list1 = movePath.getCircleData(strollRpv, new float[]{20, -heigh});
-        List list5 = movePath.getCircleData(cateRpv, new float[]{Math.abs((screenWidth / 2 - heigh / 2) - 20), 0});
+        List lis4t = movePath.getCircleData(designRpv, new float[]{StringUtils.dip2px(this, -26), StringUtils.dip2px(this, 88)});
+      List list2 = movePath.getCircleData(pavilionRpv, new float[]{StringUtils.dip2px(this, -108), StringUtils.dip2px(this, 14)});
+      List list3 = movePath.getCircleData(atmosphereRpv, new float[]{StringUtils.dip2px(this, -107), StringUtils.dip2px(this,- 89)});
+ List list1 = movePath.getCircleData(strollRpv, new float[]{StringUtils.dip2px(this, 1),  StringUtils.dip2px(this, -88)});
+     List list5 = movePath.getCircleData(cateRpv, new float[]{ StringUtils.dip2px(this, 126), 0});
         MyAnimation moveAnimation = new MyAnimation();
         //将5个button 的移动动画加入list集合中
-        animationList.add(moveAnimation.setTranslation(designRpv, (List) lis4t.get(0), (List) lis4t.get(1), AnimationDuration));
-        animationList.add(moveAnimation.setTranslation(pavilionRpv, (List) list2.get(0), (List) list2.get(1), AnimationDuration));
-        animationList.add(moveAnimation.setTranslation(atmosphereRpv, (List) list3.get(0), (List) list3.get(1), AnimationDuration));
-        animationList.add(moveAnimation.setTranslation(strollRpv, (List) list1.get(0), (List) list1.get(1), AnimationDuration));
-        animationList.add(moveAnimation.setTranslation(cateRpv, (List) list5.get(0), (List) list5.get(1), AnimationDuration));
+     animationList.add(moveAnimation.setTranslation(designRpv, (List) lis4t.get(0), (List) lis4t.get(1), AnimationDuration));
+   animationList.add(moveAnimation.setTranslation(pavilionRpv, (List) list2.get(0), (List) list2.get(1), AnimationDuration));
+
+          animationList.add(moveAnimation.setTranslation(atmosphereRpv, (List) list3.get(0), (List) list3.get(1), AnimationDuration));
+         animationList.add(moveAnimation.setTranslation(strollRpv, (List) list1.get(0), (List) list1.get(1), AnimationDuration));
+       animationList.add(moveAnimation.setTranslation(cateRpv, (List) list5.get(0), (List) list5.get(1), AnimationDuration));
 
         animatorSet = moveAnimation.playTogether(animationList); //动画集合
         animatorSet.setDuration(AnimationDuration);
-        animatorSet.setInterpolator(new BezierInterpolators(0.1f, 0.1f, 0.1f, 0.1f));
+       animatorSet.setInterpolator(new BezierInterpolators(0.03f, 0.05f, 0.1f, 0.1f));
         myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
-
     }
 
     private int heigh = 0;
@@ -200,13 +267,13 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, "Image click=" + position, Toast.LENGTH_SHORT).show();
         startActivity(new Intent(PlanetActivity.this, FlickrActivity.class));
     }
 
     Intent intent;
 
-    @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv, R.id.planet_postcard_ll, R.id.planet_discover_ll, R.id.planet_collect_ll, R.id.planet_gene_tv})
+    @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv, R.id.planet_postcard_ll, R.id.planet_discover_ll,
+            R.id.planet_collect_ll, R.id.planet_gene_tv, R.id.planet_myfocus_rl, R.id.planet_focusonme_rl})
     public void click(View v) {
         intent = new Intent();
         switch (v.getId()) {
@@ -215,17 +282,16 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                 startActivity(intent);
                 break;
             case R.id.pavilion_rpv://展馆
-                Toast.makeText(this, "开发中。。。", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.atmosphere_rpv: //氛围
-                intent.setClass(this, AtmosphereActivity.class);
-                startActivity(intent);
+               /* intent.setClass(this, AtmosphereActivity.class);
+                startActivity(intent);*/
                 break;
             case R.id.stroll_rpv://逛店
-                Toast.makeText(this, "开发中。。。", Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.cate_rpv: //美食
-                Toast.makeText(this, "开发中。。。", Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.planet_postcard_ll: //明信片
                 intent.setClass(this, PostCardActivity.class);
@@ -241,6 +307,10 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                 break;
             case R.id.planet_gene_tv:
                 startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
+                break;
+            case R.id.planet_myfocus_rl://趣星人
+            case R.id.planet_focusonme_rl://趣星人
+                startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class));
                 break;
         }
 

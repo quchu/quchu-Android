@@ -10,9 +10,9 @@
 
     <co.quchu.quchu.widget.SwipeRefreshLayout.SwipeRefreshLayout
         android:id="@+id/flickr_act_swipe_refresh_layout"
-        android:layout_below="@id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar">
 
         <co.quchu.quchu.widget.OutSideScrollView
             android:id="@+id/scrollView_flickr"
@@ -38,6 +38,16 @@
                     android:layout_height="match_parent"
                     android:layout_below="@id/tab_bar" />
 
+                <FrameLayout
+                    android:id="@+id/empty_view_fl"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/tab_bar"
+                    android:visibility="gone">
+
+                    <include layout="@layout/empty_view" />
+
+                </FrameLayout>
 
             </RelativeLayout>
         </co.quchu.quchu.widget.OutSideScrollView>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -34,6 +35,8 @@ public class FavoritePlaceActivity extends BaseActivity {
     RecyclerView favoritePlaceRv;
     @Bind(R.id.title_content_tv)
     TextView title_content_tv;
+    @Bind(R.id.favorite_place_empty_view)
+    FrameLayout favoritePlaceEmptyView;
     private FavoritePlaceModel model;
     private FavoritePlaceAdapter adapter;
 
@@ -77,7 +80,18 @@ public class FavoritePlaceActivity extends BaseActivity {
                 if (response != null) {
                     Gson gson = new Gson();
                     model = gson.fromJson(response.toString(), FavoritePlaceModel.class);
-                    adapter.changeDataSet(model.getResult());
+                    if (model != null && model.getResult().size() > 0) {
+                        adapter.changeDataSet(model.getResult());
+                        favoritePlaceRv.setVisibility(View.VISIBLE);
+                        favoritePlaceEmptyView.setVisibility(View.GONE);
+                    } else {
+                        favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                        favoritePlaceRv.setVisibility(View.GONE);
+                    }
+
+                } else {
+                    favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                    favoritePlaceRv.setVisibility(View.GONE);
                 }
             }
 

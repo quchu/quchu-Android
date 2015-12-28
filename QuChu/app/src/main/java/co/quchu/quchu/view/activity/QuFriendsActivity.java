@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.FriendsFollowerFg;
 import co.quchu.quchu.widget.RoundProgressView;
 
@@ -61,8 +62,11 @@ public class QuFriendsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qu_friends);
         ButterKnife.bind(this);
+        initTitleBar();
         title_content_tv.setText(getTitle().toString());
         planetGeneTv.setText(getResources().getString(R.string.text_planet_discover_friends));
+        StringUtils.alterBoldTextColor(planetGeneTv, 4, 7, R.color.gene_textcolor_yellow);
+
         final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add(String.format(getString(R.string.text_friends_following), 8118), FriendsFollowerFg.class)

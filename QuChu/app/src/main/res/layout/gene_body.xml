@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fresco="http://schemas.android.com/tools"
     android:background="@drawable/ic_gene_background">
 
     <FrameLayout
@@ -15,12 +15,12 @@
             android:id="@+id/planet_avatar_icon"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:src="@mipmap/ic_launcher"
+            fresco:actualImageScaleType="focusCrop"
             fresco:roundBottomRight="true"
             fresco:roundTopLeft="true"
             fresco:roundTopRight="true"
-            fresco:roundedCornerRadius="180dp"
-            fresco:actualImageScaleType="focusCrop"
-            android:src="@mipmap/ic_launcher" />
+            fresco:roundedCornerRadius="180dp" />
     </FrameLayout>
 
     <FrameLayout
@@ -45,12 +45,11 @@
         android:layout_alignRight="@+id/mid_luncher"
         android:layout_marginBottom="4dp"
         android:layout_marginRight="@dimen/half_margin"
-        app:textSize="9sp"
-        app:progress="33"
-        app:textStyle="Word"
-        app:roundProgressText="设计"
         app:roundProgressBackground="@color/itemMask_black"
-        app:roundProgressColor="@color/planet_progress_white" />
+        app:roundProgressColor="@color/planet_progress_white"
+        app:roundWidth="6dp"
+        app:textSize="@dimen/word_size_minimum"
+        app:textStyle="Word" />
 
     <co.quchu.quchu.widget.RoundProgressView
         android:id="@+id/pavilion_rpv"
@@ -61,12 +60,11 @@
         android:layout_marginLeft="18dp"
         android:layout_toEndOf="@+id/mid_luncher"
         android:layout_toRightOf="@+id/mid_luncher"
-        app:textSize="9sp"
-        app:progress="33"
-        app:textStyle="Word"
-        app:roundProgressText="展馆"
         app:roundProgressBackground="@color/itemMask_black"
-        app:roundProgressColor="@color/planet_progress_yellow" />
+        app:roundProgressColor="@color/planet_progress_yellow"
+        app:roundWidth="8dp"
+        app:textSize="@dimen/word_size_time"
+        app:textStyle="Word" />
 
     <co.quchu.quchu.widget.RoundProgressView
         android:id="@+id/atmosphere_rpv"
@@ -76,11 +74,10 @@
         android:layout_marginLeft="22dp"
         android:layout_toRightOf="@+id/mid_luncher"
         app:roundProgressBackground="@color/itemMask_black"
-        app:textSize="9sp"
-        app:progress="33"
-        app:textStyle="Word"
-        app:roundProgressText="氛围"
-        app:roundProgressColor="@color/planet_progress_white" />
+        app:roundProgressColor="@color/planet_progress_white"
+        app:roundWidth="6dp"
+        app:textSize="@dimen/word_size_minimum"
+        app:textStyle="Word" />
 
     <co.quchu.quchu.widget.RoundProgressView
         android:id="@+id/stroll_rpv"
@@ -90,11 +87,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="4dp"
         app:roundProgressBackground="@color/itemMask_black"
-        app:textSize="9sp"
-        app:progress="33"
-        app:textStyle="Word"
-        app:roundProgressText="逛店"
-        app:roundProgressColor="@color/planet_progress_yellow" />
+        app:roundProgressColor="@color/planet_progress_yellow"
+        app:roundWidth="6dp"
+        app:textSize="@dimen/word_size_minimum"
+        app:textStyle="Word" />
 
     <co.quchu.quchu.widget.RoundProgressView
         android:id="@+id/cate_rpv"
@@ -102,12 +98,11 @@
         android:layout_height="64dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="24dp"
-        app:textSize="9sp"
-        app:progress="33"
-        app:textStyle="Word"
-        app:roundProgressText="美食"
         app:roundProgressBackground="@color/itemMask_black"
-        app:roundProgressColor="@color/planet_progress_yellow" />
+        app:roundProgressColor="@color/planet_progress_yellow"
+        app:roundWidth="8dp"
+        app:textSize="@dimen/word_size_time"
+        app:textStyle="Word" />
     <!--<TextView-->
     <!--android:id="@+id/planet_gene_tv"-->
     <!--android:layout_width="wrap_content"-->

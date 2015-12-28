@@ -20,7 +20,7 @@
     <string name="titlebar_word_imagephoto">相片</string>
     <string name="titlebar_word_place_my_postcard">我留下的明信片</string>
     <string name="titlebar_word_account_setting">账户设置</string>
-
+    <string name="titlebar_word_favorite_place">我收藏的趣处</string>
     <!-- ********** 趣星球 ********* -->
     <string name="prb_default_symbolic_string">$</string>
     <string name="following">我关注的</string>
@@ -58,6 +58,9 @@
     <string name="place_postcard_add_new_postcard">在这里留下一张明信片</string>
     <string name="place_postcard_add_read_my_postcard">查看我在这里留下的明信片</string>
     <string name="place_postcard_data_null_hinttext">目前尚无用户在此留下明信片</string>
+    <string name="empty_face_text">(( _ _ ))..zzZZ</string>
+    <string name="empty_hint_text">这里什么都没有呢...</string>
+    <string name="empty_button_text">到别处看看</string>
     <array name="addPostCardSuggetStrings">
         <item>请给趣处打分</item>
         <item>不喜欢</item>

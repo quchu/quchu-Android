@@ -188,6 +188,22 @@ public class StringUtils {
     }
 
     /**
+     * 文字加粗高亮
+     *
+     * @param view
+     * @param startIndex
+     * @param endIndex
+     * @param mColor
+     */
+    public static void alterBoldTextColor(TextView view, int startIndex, int endIndex, int mColor) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
+        ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(mColor));
+        builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        view.setText(builder);
+    }
+
+    /**
      * 验证手机格式
      */
     public static boolean isMobileNO(String mobiles) {

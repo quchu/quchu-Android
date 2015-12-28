@@ -106,8 +106,8 @@ public class RoundProgressBar extends View {
     Typeface fontsType;
 
     public int progressStyle;
-    private static final int DefaultProgressStyle=0x01;
-    private static final int AnimationProgressStyle=0x00;
+    private static final int DefaultProgressStyle = 0x01;
+    private static final int AnimationProgressStyle = 0x00;
 
     public RoundProgressBar(Context context) {
         this(context, null);
@@ -185,10 +185,10 @@ public class RoundProgressBar extends View {
                 if (textStyle == TextStyleNum) {
                     paint.setTypeface(fontsType); //设置字体
                     canvas.drawText(percent + "%", centre - (textWidth * 1.5f), centre + textSize / 2, paint);//画出进度百分比
-                }else if (textStyle == TextStyleText && !StringUtils.isEmpty(progressText))
+                } else if (textStyle == TextStyleText && !StringUtils.isEmpty(progressText))
                     canvas.drawText(progressText, centre - (textWidth * 1.8f), centre + textSize / 2, paint); //画出文字
                 else if (textStyle == NumStyleText && !StringUtils.isEmpty(progressText))
-                    canvas.drawText(progressText, centre - ((textWidth * 1.8f)/2), centre +((textWidth * 1.8f)/3), paint); //画出文字
+                    canvas.drawText(progressText, centre - ((textWidth * 1.8f) / 2), centre + ((textWidth * 1.8f) / 3), paint); //画出文字
             }
         }
         /**
@@ -262,17 +262,16 @@ public class RoundProgressBar extends View {
         if (progress < 0) {
             throw new IllegalArgumentException("progress not less than 0");
         }
-        if (progressStyle==DefaultProgressStyle) {
+        if (progressStyle == AnimationProgressStyle) {
             if (progress > max) {
-                progress = max;
+                this.progress = max;
                 handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
-            }
-            if (progress <= max) {
+            } else if (progress <= max) {
                 this.progress = progress;
                 handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
             }
-        }else {
-            this.progress=drawProgress=progress>=max?max:progress;
+        } else {
+            this.progress = drawProgress = progress >= max ? max : progress;
             postInvalidate();
         }
     }

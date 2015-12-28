@@ -72,7 +72,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         } else {
             holder.itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         }
-
+        if (model.isIsActivity()) {
+            holder.item_place_event_tv.setVisibility(View.VISIBLE);
+        } else {
+            holder.item_place_event_tv.setVisibility(View.GONE);
+        }
         holder.itemRecommendCardAddressTv.setText(model.getAddress());
         holder.itemRecommendCardCityTv.setText(model.getDescribe());
         holder.itemRecommendCardNameTv.setText(model.getName());
@@ -106,6 +110,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         ProperRatingBar itemRecommendCardPrb;
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
+        @Bind(R.id.item_place_event_tv)
+        TextView item_place_event_tv;
         @Bind(R.id.item_recommend_card_collect_rl)
         RelativeLayout itemRecommendCardCollectRl;
         @Bind(R.id.item_recommend_card_interest_rl)
@@ -131,7 +137,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             this.listener = listener;
         }
 
-        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl,R.id.item_recommend_card_interest_rl})
+        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl})
         public void cardClick(View view) {
             if (listener != null)
                 listener.onCardLick(view, getPosition());

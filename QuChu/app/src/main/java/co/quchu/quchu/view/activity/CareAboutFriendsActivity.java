@@ -12,7 +12,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.view.adapter.DiscoverAdapter;
 import co.quchu.quchu.widget.PostCardRecyclerView;
 
 /**
@@ -47,7 +46,7 @@ public class CareAboutFriendsActivity extends BaseActivity {
         title_content_tv.setText(getTitle());
 
         atmosphereRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
-        atmosphereRv.setAdapter(new DiscoverAdapter(this));
+     //   atmosphereRv.setAdapter(new DiscoverAdapter(this, model.getResult()));
     }
 
     public void addOnBackPressedListener( PostCardRecyclerView.OnBackPressedListener onBackPressedListener ) {

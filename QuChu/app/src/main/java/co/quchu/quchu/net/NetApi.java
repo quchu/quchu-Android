@@ -68,6 +68,9 @@ public class NetApi {
     public static final String sharePlace = HOST + "/share/place?pId=%d&token=%s";  //分享趣处
     public static final String sharePostCard = HOST + "/share/card?cId=%d&token=%s";  //分享明信片
 
+
+    public static final String getUserGene = HOST + "/personal/getUserGene";  //获取用户基因
+
     /****  Get end  ****/
 
     /******************

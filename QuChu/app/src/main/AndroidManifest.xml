@@ -91,7 +91,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.FavoritePlaceActivity"
-            android:label="@string/titlebar_word_favorite"
+            android:label="@string/titlebar_word_favorite_place"
             android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.PlacePostCardActivity"
@@ -100,12 +100,7 @@
         <activity
             android:name="co.quchu.quchu.view.activity.PostCardDetailActivity"
             android:label="@string/titlebar_word_my_postcard"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".photo.ImageBucketActivity"
             android:label="@string/titlebar_word_imagebucket"
@@ -163,11 +158,13 @@
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent1104964977" />
             </intent-filter>
         </activity>

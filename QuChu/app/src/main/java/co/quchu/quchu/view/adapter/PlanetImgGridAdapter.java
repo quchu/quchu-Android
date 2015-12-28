@@ -11,7 +11,12 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.PlanetModel;
+import co.quchu.quchu.widget.textcounter.CounterView;
 
 /**
  * PlanetImgGalleryAda
@@ -20,14 +25,25 @@ import co.quchu.quchu.R;
  */
 public class PlanetImgGridAdapter extends BaseAdapter {
     private Context context;
+    List<PlanetModel.ImgsEntity> imgs = new ArrayList<>();
+    private int imageCount = 0;
 
-    public PlanetImgGridAdapter(Context context) {
+    public PlanetImgGridAdapter(Context context, List<PlanetModel.ImgsEntity> imgs, int imgNum) {
         this.context = context;
+        imageCount = imgNum;
+        this.imgs = imgs;
     }
+
+    int count = 1;
 
     @Override
     public int getCount() {
-        return 4;
+
+        if (imgs != null) {
+            count = imgs.size() >= 4 ? 4 : imgs.size();
+        }
+        return count;
+
     }
 
     @Override
@@ -54,17 +70,29 @@ public class PlanetImgGridAdapter extends BaseAdapter {
         } else {
             pvh = (PlanetImgItemHolder) convertView.getTag();
         }
-        if (position == 3) {
+        if (imgs == null || imgs.size() == 0) {
             pvh.planet_gallery_mask_rl.setVisibility(View.VISIBLE);
-            pvh.planet_gallery_mask_tv.setText("  88\r\n 照片");
+            pvh.planet_gallery_mask_tv.setText("照片");
+            pvh.planet_collect_num_tv.setEndValue(0);
+            pvh.planet_collect_num_tv.start();
+            pvh.sdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.drawable.ic_image_empty));
+            pvh.sdv.setAspectRatio(1.0f);
         } else {
-            pvh.planet_gallery_mask_rl.setVisibility(View.INVISIBLE);
-        }
+            if (position == count - 1) {
+                pvh.planet_gallery_mask_rl.setVisibility(View.VISIBLE);
+                pvh.planet_gallery_mask_tv.setText("照片");
+                pvh.planet_collect_num_tv.setEndValue(imageCount);
+                pvh.planet_collect_num_tv.start();
+
+            } else {
+                pvh.planet_gallery_mask_rl.setVisibility(View.INVISIBLE);
+            }
 
       /*  AppContext.picasso.with(context).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565).resize(StringUtils.dip2px(context,40), StringUtils.dip2px(context,40))
                 .centerCrop().into(pvh.sdv);*/
-        pvh.sdv.setImageURI(Uri.parse("http://e.hiphotos.baidu.com/image/pic/item/dcc451da81cb39db026e7657d2160924ab183000.jpg"));
-        pvh.sdv.setAspectRatio(1.0f);
+            pvh.sdv.setImageURI(Uri.parse(imgs.get(position).getPath()));
+            pvh.sdv.setAspectRatio(1.0f);
+        }
         return convertView;
     }
 
@@ -73,11 +101,13 @@ public class PlanetImgGridAdapter extends BaseAdapter {
         public SimpleDraweeView sdv;
         public RelativeLayout planet_gallery_mask_rl;
         public TextView planet_gallery_mask_tv;
+        public CounterView planet_collect_num_tv;
 
         public PlanetImgItemHolder(View view) {
             sdv = (SimpleDraweeView) view.findViewById(R.id.planet_gallery_img);
             planet_gallery_mask_rl = (RelativeLayout) view.findViewById(R.id.planet_gallery_mask_rl);
             planet_gallery_mask_tv = (TextView) view.findViewById(R.id.planet_gallery_mask_tv);
+            planet_collect_num_tv = (CounterView) view.findViewById(R.id.planet_collect_num_tv);
         }
     }
 }

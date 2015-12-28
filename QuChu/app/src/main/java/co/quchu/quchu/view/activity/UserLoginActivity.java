@@ -1,11 +1,8 @@
 package co.quchu.quchu.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -77,7 +74,6 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
       /*  transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
         transaction.commit();*/
-        Toast.makeText(this, "selected Phone", 0).show();
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.user_login_fl, new PhoneLoginFragment());
         transaction.addToBackStack(null);

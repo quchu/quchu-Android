@@ -16,7 +16,7 @@
     <color name="lineBackground_gray">#595757</color>
     <color name="roundProgressBackground_black">#26000000</color>
     <!-- 图片item 蒙版颜色-->
-    <color name="itemMask_black">#cc221814</color>
+    <color name="itemMask_black">#a6221814</color>
     <color name="imageLoaderingColor">#DCDCDC</color>
     <!-- 我的趣基因文字颜色 背景颜色 -->
     <color name="gene_textcolor_yellow">#f4e727</color>

@@ -11,10 +11,13 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.DiscoverModel;
 
 /**
  * DiscoverAdapter
@@ -24,9 +27,11 @@ import co.quchu.quchu.R;
 public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHolder> {
 
     private Context mContext;
+    private List<DiscoverModel.ResultEntity> resultList;
 
-    public DiscoverAdapter(Context mContext) {
+    public DiscoverAdapter(Context mContext, List<DiscoverModel.ResultEntity> result) {
         this.mContext = mContext;
+        this.resultList = result;
     }
 
     @Override
@@ -37,13 +42,17 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHol
 
     @Override
     public void onBindViewHolder(DisHolder holder, int position) {
-            holder.itemDiscoverIv.setImageURI(Uri.parse("http://a.hiphotos.baidu.com/image/pic/item/79f0f736afc37931e211bcd9e9c4b74542a911c0.jpg"));
-        holder.itemDiscoverIv.setAspectRatio(0.75f);
+        if (resultList.get(position).getImage().size() > 0) {
+            holder.itemDiscoverIv.setImageURI(Uri.parse(resultList.get(position).getImage().get(0).getImgpath()));
+            holder.itemDiscoverIv.setAspectRatio(0.86f);
+        }
+        holder.itemDiscoverAddressTv.setText(resultList.get(position).getAddress());
+        holder.itemDiscoverTitleTv.setText(resultList.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return resultList.size();
     }
 
     class DisHolder extends RecyclerView.ViewHolder {
@@ -64,7 +73,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHol
         }
 
         @OnClick(R.id.item_discover_root_ll)
-        public void MyClick(View view){
+        public void MyClick(View view) {
         }
     }
 }
