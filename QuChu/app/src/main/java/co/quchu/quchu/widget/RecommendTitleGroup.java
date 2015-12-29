@@ -7,14 +7,12 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -33,6 +31,7 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
     TextView widgetSwitchHotBtn;
     TextView widgetSwitchNewBtn;
     RelativeLayout widget_switch_root_rl;
+    View rootView;
     /**
      * 左边按钮选中状态
      * true==选中  false=未选中
@@ -60,13 +59,14 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
         this.context = context;
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mInflater.inflate(R.layout.widget_recommend_switch, this, true);
+        rootView = mInflater.inflate(R.layout.widget_recommend_switch, this, true);
         widgetSwitchHotBtn = (TextView) findViewById(R.id.widget_switch_hot_btn);
         widgetSwitchNewBtn = (TextView) findViewById(R.id.widget_switch_new_btn);
         widget_switch_root_rl = (RelativeLayout) findViewById(R.id.widget_switch_root_rl);
         setInitSelected(false);
         widgetSwitchHotBtn.setOnClickListener(this);
         widgetSwitchNewBtn.setOnClickListener(this);
+     //   LogUtils.json("RecommendTitleGroup   创建  创建");
     }
 
     public void setSelectedListener(RecoSelectedistener listener) {
@@ -74,6 +74,20 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
     }
 
     private boolean isInitSelectedRight;
+
+    public void setViewVisibility(int visibility) {
+        switch (visibility) {
+            case View.VISIBLE:
+                rootView.setVisibility(VISIBLE);
+                break;
+            case View.GONE:
+                rootView.setVisibility(GONE);
+                break;
+            case INVISIBLE:
+                rootView.setVisibility(INVISIBLE);
+                break;
+        }
+    }
 
     /**
      * 设置初始选中状态
@@ -131,7 +145,7 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
                     break;
             }
         } else {
-            Toast.makeText(context, "请先选择感兴趣的类型！", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(context, "请先选择感兴趣的类型！", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -154,7 +168,7 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
             hotBtnX = widgetSwitchHotBtn.getX();
             TranslationDuration = (long) (widget_switch_root_rl.getWidth() * 0.3f);
         }
-        LogUtils.json("newBtnX==" + newBtnX + "////hotBtnX==" + hotBtnX);
+      //  LogUtils.json("newBtnX==" + newBtnX + "////hotBtnX==" + hotBtnX);
         animatorSet = new AnimatorSet();
         if (isInitSelectedRight) {
             if (isL2R) {

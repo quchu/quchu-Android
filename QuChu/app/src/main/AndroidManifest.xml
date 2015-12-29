@@ -127,6 +127,12 @@
             android:name="co.quchu.quchu.view.activity.SearchActivity"
             android:screenOrientation="portrait" />
         <!-- 账户设置-->
+        <!-- 趣处小图浏览界面-->
+        <activity
+            android:name="co.quchu.quchu.view.activity.PostCardImageActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- 趣处小图浏览界面-->
 
         <!-- 趣处详情-->
         <activity

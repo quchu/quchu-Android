@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PlanetModel;
 import co.quchu.quchu.presenter.PlanetActPresenter;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.PlanetImgGridAdapter;
 import co.quchu.quchu.view.holder.PlanetActHolder;
@@ -73,7 +75,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     @Bind(R.id.planet_postcard_ll)
     LinearLayout planetPostcardLl;
 
-
     @Bind(R.id.title_content_tv)
     TextView title_content_tv;
 
@@ -89,7 +90,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     CounterView planetMyfocusCountCv;
     @Bind(R.id.planet_focusonme_count_cv)
     CounterView planetFocusonmeCountCv;
-    private int AnimationDuration = 80 * 1000;
+    private int AnimationDuration = 160 * 1000;
     private PlanetActPresenter presenter;
     private PlanetActHolder planetHolder;
     private AnimatorSet animatorSet;
@@ -166,14 +167,15 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (animatorSet != null) {
+            animatorSet.cancel();
+        }
         ButterKnife.unbind(this);
     }
 
     @Override
     protected void onPause() {
-        if (animatorSet != null) {
-            animatorSet.cancel();
-        }
+
         super.onPause();
     }
 
@@ -189,15 +191,17 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                     if (animatorSet != null) {
                         animatorSet.start();
                     } else {
-                        myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 1000);
+                        initAnimation();
                     }
                     break;
                 case 1:
                     if (animatorSet != null) {
                         if (!animatorSet.isRunning())
                             animatorSet.start();
+                    } else {
+                        initAnimation();
                     }
-                    myHandler.sendMessageDelayed(myHandler.obtainMessage(1), 12000);
+                    //   myHandler.sendMessageDelayed(myHandler.obtainMessage(1), 12000);
                     break;
             }
             super.handleMessage(msg);
@@ -237,22 +241,44 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         int screenWidth = dm.widthPixels;
         //movePath.getCircleData 获取圆形移动路径
         List lis4t = movePath.getCircleData(designRpv, new float[]{StringUtils.dip2px(this, -26), StringUtils.dip2px(this, 88)});
-      List list2 = movePath.getCircleData(pavilionRpv, new float[]{StringUtils.dip2px(this, -108), StringUtils.dip2px(this, 14)});
-      List list3 = movePath.getCircleData(atmosphereRpv, new float[]{StringUtils.dip2px(this, -107), StringUtils.dip2px(this,- 89)});
- List list1 = movePath.getCircleData(strollRpv, new float[]{StringUtils.dip2px(this, 1),  StringUtils.dip2px(this, -88)});
-     List list5 = movePath.getCircleData(cateRpv, new float[]{ StringUtils.dip2px(this, 126), 0});
+        List list2 = movePath.getCircleData(pavilionRpv, new float[]{StringUtils.dip2px(this, -108), StringUtils.dip2px(this, 14)});
+        List list3 = movePath.getCircleData(atmosphereRpv, new float[]{StringUtils.dip2px(this, -107), StringUtils.dip2px(this, -89)});
+        List list1 = movePath.getCircleData(strollRpv, new float[]{StringUtils.dip2px(this, 1), StringUtils.dip2px(this, -88)});
+        List list5 = movePath.getCircleData(cateRpv, new float[]{StringUtils.dip2px(this, 126), 0});
         MyAnimation moveAnimation = new MyAnimation();
         //将5个button 的移动动画加入list集合中
-     animationList.add(moveAnimation.setTranslation(designRpv, (List) lis4t.get(0), (List) lis4t.get(1), AnimationDuration));
-   animationList.add(moveAnimation.setTranslation(pavilionRpv, (List) list2.get(0), (List) list2.get(1), AnimationDuration));
+        animationList.add(moveAnimation.setTranslation(designRpv, (List) lis4t.get(0), (List) lis4t.get(1), AnimationDuration));
+        animationList.add(moveAnimation.setTranslation(pavilionRpv, (List) list2.get(0), (List) list2.get(1), AnimationDuration));
 
-          animationList.add(moveAnimation.setTranslation(atmosphereRpv, (List) list3.get(0), (List) list3.get(1), AnimationDuration));
-         animationList.add(moveAnimation.setTranslation(strollRpv, (List) list1.get(0), (List) list1.get(1), AnimationDuration));
-       animationList.add(moveAnimation.setTranslation(cateRpv, (List) list5.get(0), (List) list5.get(1), AnimationDuration));
+        animationList.add(moveAnimation.setTranslation(atmosphereRpv, (List) list3.get(0), (List) list3.get(1), AnimationDuration));
+        animationList.add(moveAnimation.setTranslation(strollRpv, (List) list1.get(0), (List) list1.get(1), AnimationDuration));
+        animationList.add(moveAnimation.setTranslation(cateRpv, (List) list5.get(0), (List) list5.get(1), AnimationDuration));
 
         animatorSet = moveAnimation.playTogether(animationList); //动画集合
         animatorSet.setDuration(AnimationDuration);
-       animatorSet.setInterpolator(new BezierInterpolators(0.03f, 0.05f, 0.1f, 0.1f));
+        animatorSet.setInterpolator(new BezierInterpolators(0.03f, 0.08f, 0.1f, 0.1f));
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                LogUtils.json("planet animation is end");
+                myHandler.sendMessageDelayed(myHandler.obtainMessage(1), 200);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
         myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
     }
 

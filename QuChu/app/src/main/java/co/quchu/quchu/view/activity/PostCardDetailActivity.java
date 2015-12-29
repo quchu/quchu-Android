@@ -105,6 +105,11 @@ public class PostCardDetailActivity extends BaseActivity {
     }
 
     private void bindingDatas() {
+        if (model.isIsme()){
+            postcardDetailDelTv.setVisibility(View.VISIBLE);
+        }else {
+            postcardDetailDelTv.setVisibility(View.GONE);
+        }
         rootCv.setCardBackgroundColor(Color.parseColor("#" + model.getRgb()));
         itemMyPostcardAvatarSdv.setImageURI(Uri.parse(model.getAutorPhoto()));
         itemMyPostcardAvatarSdv.setAspectRatio(1f);

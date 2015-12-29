@@ -23,6 +23,9 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
+import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
 import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
@@ -33,16 +36,16 @@ import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment extends Fragment implements RecommendAdapter.CardClickListener {
+public class DefaultRecommendFragment extends Fragment implements RecommendAdapter.CardClickListener {
     @Bind(R.id.f_recommend_rvp)
-    RecyclerViewPager fRecommendRvp;
+    RecyclerViewPager dfRecommendRvp;
     @Bind(R.id.f_recommend_bottom_rl)
-    ImageView fRecommendBottomRl;
+    ImageView dfRecommendBottomRl;
     private View view;
     private float viewStartY = 0f;
-    private int viewHeight = 0;
+    private int dViewHeight = 0;
     public boolean isRunningAnimation = false;
-    public ArrayList<RecommendModel> cardList;
+    public ArrayList<RecommendModel> dCardList;
 
     @Nullable
     @Override
@@ -50,36 +53,36 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
         view = inflater.inflate(R.layout.fragment_recommend_hvp, null);
         ButterKnife.bind(this, view);
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        fRecommendRvp.setLayoutManager(layout);
+        dfRecommendRvp.setLayoutManager(layout);
         adapter = new RecommendAdapter(getActivity(), this);
-        fRecommendRvp.setAdapter(adapter);
-        fRecommendRvp.setHasFixedSize(true);
-        fRecommendBottomRl.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        dfRecommendRvp.setAdapter(adapter);
+        dfRecommendRvp.setHasFixedSize(true);
+        dfRecommendBottomRl.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                viewHeight = fRecommendBottomRl.getHeight();
+                dViewHeight = dfRecommendBottomRl.getHeight();
             }
         });
-        fRecommendRvp.addOnScrollListener();
-        fRecommendRvp.addOnPageChangedListener(new RecyclerViewPager.OnPageChangedListener() {
+        dfRecommendRvp.addOnScrollListener();
+        dfRecommendRvp.addOnPageChangedListener(new RecyclerViewPager.OnPageChangedListener() {
             @Override
             public void OnPageChanged(int oldPosition, int newPosition) {
                 Log.d("test", "oldPosition:" + oldPosition + " newPosition:" + newPosition);
                 if (newPosition <= 2) {
-                    if (fRecommendBottomRl.getVisibility() == View.VISIBLE)
+                    if (dfRecommendBottomRl.getVisibility() == View.VISIBLE)
                         if (!isRunningAnimation)
-                            RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
+                            RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, false);
                 } else if (newPosition >= 3) {
-                    if (fRecommendBottomRl.getVisibility() == View.INVISIBLE)
+                    if (dfRecommendBottomRl.getVisibility() == View.INVISIBLE)
                         if (!isRunningAnimation)
-                            RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, true);
+                            RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, true);
                 }
             }
         });
-        fRecommendRvp.addOnLayoutChangeListener();
-      //  if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
+        dfRecommendRvp.addOnLayoutChangeListener();
+        if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
             changeDataSetFromServer();
-      //  }
+        }
         return view;
     }
 
@@ -87,7 +90,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
 
     @OnClick(R.id.f_recommend_bottom_rl)
     public void bottomClick(View view) {
-        fRecommendRvp.smoothScrollToPosition(0);
+        dfRecommendRvp.smoothScrollToPosition(0);
     }
 
     @Override
@@ -98,14 +101,14 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
 
 
     public void changeDataSetFromServer() {
-        RecommendPresenter.getRecommendList(getActivity(),true, new RecommendPresenter.GetRecommendListener() {
+        RecommendPresenter.getRecommendList(getActivity(),false, new RecommendPresenter.GetRecommendListener() {
             @Override
             public void onSuccess(ArrayList<RecommendModel> arrayList) {
                 adapter.changeDataSet(arrayList);
-                cardList = arrayList;
-                fRecommendRvp.smoothScrollToPosition(0);
-                if (fRecommendBottomRl.getVisibility() == View.VISIBLE)
-                    RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
+                dCardList = arrayList;
+                dfRecommendRvp.smoothScrollToPosition(0);
+                if (dfRecommendBottomRl.getVisibility() == View.VISIBLE)
+                    RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, false);
             }
         });
     }
@@ -117,26 +120,26 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
         switch (view.getId()) {
             case R.id.root_cv:
                 intent = new Intent(getActivity(), InterestingDetailsActivity.class);
-                intent.putExtra("pId", cardList.get(position).getPid());
+                intent.putExtra("pId", dCardList.get(position).getPid());
                 getActivity().startActivity(intent);
                 break;
             case R.id.item_recommend_card_collect_rl:
                 setFavorite(position);
                 break;
             case R.id.item_recommend_card_interest_rl:
-                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(cardList.get(position).getPid(), cardList.get(position).getName(), true);
+                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dCardList.get(position).getPid(), dCardList.get(position).getName(), true);
                 shareDialogFg.show(getActivity().getFragmentManager(), "share_place");
                 break;
         }
     }
 
     private void setFavorite(final int position) {
-        InterestingDetailPresenter.setDetailFavorite(getActivity(), cardList.get(position).getPid(), cardList.get(position).isIsf(), new InterestingDetailPresenter.DetailDataListener() {
+        InterestingDetailPresenter.setDetailFavorite(getActivity(), dCardList.get(position).getPid(), dCardList.get(position).isIsf(), new InterestingDetailPresenter.DetailDataListener() {
             @Override
             public void onSuccessCall(String str) {
-                cardList.get(position).setIsf(!cardList.get(position).isIsf());
+                dCardList.get(position).setIsf(!dCardList.get(position).isIsf());
                 adapter.notifyDataSetChanged();
-                if (cardList.get(position).isIsf()) {
+                if (dCardList.get(position).isIsf()) {
                     Toast.makeText(getActivity(), "收藏成功!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();

@@ -44,8 +44,10 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHol
     public void onBindViewHolder(DisHolder holder, int position) {
         if (resultList.get(position).getImage().size() > 0) {
             holder.itemDiscoverIv.setImageURI(Uri.parse(resultList.get(position).getImage().get(0).getImgpath()));
-            holder.itemDiscoverIv.setAspectRatio(0.86f);
+        } else {
+            holder.itemDiscoverIv.setImageURI(Uri.parse("http://7xo7et.com1.z0.glb.clouddn.com/default-place-cover?imageMogr2/format/webp"));
         }
+        holder.itemDiscoverIv.setAspectRatio(0.86f);
         holder.itemDiscoverAddressTv.setText(resultList.get(position).getAddress());
         holder.itemDiscoverTitleTv.setText(resultList.get(position).getName());
     }

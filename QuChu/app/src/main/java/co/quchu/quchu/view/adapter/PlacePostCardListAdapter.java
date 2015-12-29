@@ -35,6 +35,7 @@ import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.AddPostCardActivity;
+import co.quchu.quchu.view.activity.PostCardImageActivity;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -156,7 +157,8 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
 
         }
 
-        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl, R.id.item_my_postcard_heart_rl})
+        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl,
+                R.id.item_recommend_card_photo_sdv, R.id.item_my_postcard_heart_rl})
         public void cardClick(View view) {
             switch (view.getId()) {
                 case R.id.item_recommend_card_collect_rl:
@@ -172,6 +174,15 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
                         mContext.startActivity(intent);
                     } else {
                         doParise(getPosition());
+                    }
+                    break;
+                case R.id.item_recommend_card_photo_sdv:
+                    if (arrayList.get(getPosition()).getImglist().size() > 0) {
+                        Intent intent = new Intent(mContext, PostCardImageActivity.class);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putSerializable("pCardModel", arrayList.get(getPosition()));
+                        intent.putExtras(mBundle);
+                        mContext.startActivity(intent);
                     }
                     break;
             }

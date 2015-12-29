@@ -18,4 +18,5 @@ package co.quchu.quchu.analysis;
  */
 public class UserAnalysisUtils {
 
+
 }

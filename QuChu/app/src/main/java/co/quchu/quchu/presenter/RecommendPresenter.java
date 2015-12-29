@@ -27,6 +27,7 @@ import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.fragment.DefaultRecommendFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 
 /**
@@ -37,11 +38,19 @@ import co.quchu.quchu.view.fragment.RecommendFragment;
  */
 public class RecommendPresenter {
 
-    public static void getRecommendList(final Context context, final GetRecommendListener listener) {
+    public static void getRecommendList(final Context context, boolean isDefaultData, final GetRecommendListener listener) {
         DialogUtil.showProgess(context, "数据加载中...");
-        NetService.get(context, String.format(NetApi.getPlaceList, SPUtils.getCityId(),
-                SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude()
-        ), new IRequestListener() {
+        String urlStr = "";
+        if (isDefaultData) {
+            urlStr = String.format(NetApi.getDefaultPlaceList,
+                    SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude()
+            );
+        } else {
+            urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(),
+                    SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude()
+            );
+        }
+        NetService.get(context, urlStr, new IRequestListener() {
 
             @Override
             public void onSuccess(JSONObject response) {
@@ -105,7 +114,11 @@ public class RecommendPresenter {
             @Override
             public void onAnimationStart(Animator animation) {
                 viewGroup.setVisibility(View.VISIBLE);
-                ((RecommendFragment) fragment).isRunningAnimation = true;
+                if (fragment instanceof DefaultRecommendFragment) {
+                    ((DefaultRecommendFragment) fragment).isRunningAnimation = true;
+                }else if (fragment instanceof  RecommendFragment){
+                    ((RecommendFragment) fragment).isRunningAnimation = true;
+                }
             }
 
             @Override
@@ -114,7 +127,12 @@ public class RecommendPresenter {
                     viewGroup.setVisibility(View.VISIBLE);
                 else
                     viewGroup.setVisibility(View.INVISIBLE);
-                ((RecommendFragment) fragment).isRunningAnimation = false;
+                if (fragment instanceof DefaultRecommendFragment) {
+                    ((DefaultRecommendFragment) fragment).isRunningAnimation = false;
+                }else if (fragment instanceof  RecommendFragment){
+                    ((RecommendFragment) fragment).isRunningAnimation = false;
+                }
+
             }
 
             @Override

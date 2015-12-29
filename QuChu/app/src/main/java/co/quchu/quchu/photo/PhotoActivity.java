@@ -1,4 +1,3 @@
-/*
 package co.quchu.quchu.photo;
 
 import android.app.Activity;
@@ -10,15 +9,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.FileUtils;
 
 public class PhotoActivity extends Activity {
 
@@ -32,15 +28,15 @@ public class PhotoActivity extends Activity {
 	public List<String> del = new ArrayList<String>();
 	public int max;
 
-	RelativeLayout photo_relativeLayout;
+//	RelativeLayout photo_relativeLayout;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photo);
 
-		photo_relativeLayout = (RelativeLayout) findViewById(R.id.photo_relativeLayout);
+		/*photo_relativeLayout = (RelativeLayout) findViewById(R.id.photo_relativeLayout);
 		photo_relativeLayout.setBackgroundColor(0x70000000);
-
+*/
 		for (int i = 0; i < Bimp.bmp.size(); i++) {
 			bmp.add(Bimp.bmp.get(i));
 		}
@@ -49,7 +45,7 @@ public class PhotoActivity extends Activity {
 		}
 		max = Bimp.max;
 
-		Button photo_bt_exit = (Button) findViewById(R.id.photo_bt_exit);
+		/*Button photo_bt_exit = (Button) findViewById(R.id.photo_bt_exit);
 		photo_bt_exit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
@@ -93,7 +89,7 @@ public class PhotoActivity extends Activity {
 				}
 				finish();
 			}
-		});
+		});*/
 
 		pager = (ViewPager) findViewById(R.id.viewpager);
 		pager.setOnPageChangeListener(pageChangeListener);
@@ -181,4 +177,3 @@ public class PhotoActivity extends Activity {
 
 	}
 }
-*/
