@@ -1,14 +1,18 @@
 package co.quchu.quchu.view.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nineoldandroids.animation.Animator;
@@ -19,6 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.UserLoginActivity;
@@ -47,9 +52,19 @@ public class UserLoginMainFragment extends Fragment {
     ImageView user_login_bg_animator_iv;
     @Bind(R.id.user_login_bg_animators_iv)
     ImageView user_login_bg_animators_iv;
+    @Bind(R.id.user_login_empty_v)
+    View userLoginEmptyV;
+    @Bind(R.id.user_login_bg_animators_rl)
+    RelativeLayout userLoginBgAnimatorsRl;
+    @Bind(R.id.user_login_third_ll)
+    LinearLayout userLoginThirdLl;
     private View view;
     AnimatorSet animatorSet, animatorSets;
     private long aDuration = 2000L;
+
+    private float phoneViewStartY = 0;
+    private float phoneViewEndY = 0;
+
 
     @Nullable
     @Override
@@ -60,6 +75,16 @@ public class UserLoginMainFragment extends Fragment {
         StringUtils.alterTextColor(userLoginMainWechatTv, 0, 2, R.color.white);
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            userLoginMainPhoneLl.getViewTreeObserver().addOnDrawListener(new ViewTreeObserver.OnDrawListener() {
+                @Override
+                public void onDraw() {
+                    phoneViewStartY = userLoginMainPhoneLl.getY();
+                    phoneViewEndY = userLoginEmptyV.getY();
+
+                }
+            });
+        }
         return view;
     }
 
@@ -145,7 +170,8 @@ public class UserLoginMainFragment extends Fragment {
     public void onLoginClick(View view) {
         switch (view.getId()) {
             case R.id.user_login_main_phone_ll:
-                ((UserLoginActivity) getActivity()).mobileNoLogin();
+              /* */
+                transitionAnimation();
                 break;
             case R.id.user_login_main_wechat_ll:
                 LogUtils.json("user_login_main_wechat_ll");
@@ -172,10 +198,61 @@ public class UserLoginMainFragment extends Fragment {
             animatorSet.end();
             animatorSet = null;
         }
-        if (  animatorSets!=null){
+        if (animatorSets != null) {
             animatorSets.cancel();
             animatorSets.end();
-            animatorSets=null;
+            animatorSets = null;
         }
     }
+
+    AnimatorSet animatorSetTransition, animatorSetTransitionAlpha;
+
+    /**
+     * 输入手机号码前过渡动画
+     * 其他view 透明度渐变
+     * 目标view 位移
+     */
+    public void transitionAnimation() {
+        animatorSetTransitionAlpha = new AnimatorSet();
+        ObjectAnimator rountAalpha = ObjectAnimator.ofFloat(userLoginBgAnimatorsRl, "alpha", 1f, 0f);
+        ObjectAnimator rountAalphas = ObjectAnimator.ofFloat(userLoginThirdLl, "alpha", 1f, 0f);
+        rountAalpha.setDuration(380);
+        rountAalphas.setDuration(380);
+
+
+        animatorSetTransition = new AnimatorSet();
+        float hs = StringUtils.dip2px(96 + 36);
+
+
+        ObjectAnimator rountAx = ObjectAnimator.ofFloat(userLoginMainPhoneLl, "translationY", 0f, -(AppContext.Height - (hs * 1.8f)));
+        rountAx.setDuration(660);
+        //+ StringUtils.dip2px(36)));
+        animatorSetTransition.playTogether(rountAx,rountAalpha,rountAalphas);
+      //  animatorSetTransition.setDuration(1200);
+        animatorSetTransition.setInterpolator(new DecelerateInterpolator());
+        animatorSetTransition.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                ((UserLoginActivity) getActivity()).mobileNoLogin();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+        animatorSetTransition.start();
+    }
+
+
 }

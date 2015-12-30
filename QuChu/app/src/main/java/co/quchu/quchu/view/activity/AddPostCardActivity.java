@@ -40,7 +40,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.PlacePostCardModel;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -86,7 +86,7 @@ public class AddPostCardActivity extends BaseActivity {
     OutSideScrollView detailOutsideSv;
     private String pName = "";
     AddPostCardGridAdapter adapter;
-    PlacePostCardModel.PageEntity.pPostCardEntity defaulModel;
+    PostCardItemModel defaulModel;
     private boolean isNeedUpdate = false;
     int pId;
     private String editTextDefaultText = "";
@@ -124,7 +124,7 @@ public class AddPostCardActivity extends BaseActivity {
 
 
     private void initData() {
-        defaulModel = (PlacePostCardModel.PageEntity.pPostCardEntity) getIntent().getSerializableExtra("pCardModel");
+        defaulModel = (PostCardItemModel) getIntent().getSerializableExtra("pCardModel");
         if (defaulModel != null) {
             Bimp.imglist = defaulModel.getImglist();
             addPostcardSuggestPrb.setRating(defaulModel.getScore());

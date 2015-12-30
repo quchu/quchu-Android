@@ -108,10 +108,10 @@ public class RecommendActivity extends BaseActivity {
             viewpagerSelected(1);
 
         } else {*/
-            recommendTitleCenterRtg.setViewsClickable(true);
-            recommendTitleCenterRtg.setInitSelected(false);
-            recommendBodyVp.setCurrentItem(0);
-            viewpagerSelected(0);
+        recommendTitleCenterRtg.setViewsClickable(true);
+        recommendTitleCenterRtg.setInitSelected(false);
+        recommendBodyVp.setCurrentItem(0);
+        viewpagerSelected(0);
 
       /*  }*/
         recommendTitleCenterRtg.setSelectedListener(new RecommendTitleGroup.RecoSelectedistener() {
@@ -155,7 +155,6 @@ public class RecommendActivity extends BaseActivity {
     private void viewpagerSelected(int index) {
         if (index == 0) {
             LogUtils.json("selected == left");
-
             recommendTitleLocationIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_recommed_title_location));
             recommendBodyVp.setCurrentItem(0);//设置当前显示标签页为第一页
             titleContentTv.setVisibility(View.INVISIBLE);
@@ -191,5 +190,9 @@ public class RecommendActivity extends BaseActivity {
         if (defaultRecommendFragment != null) {
             ((DefaultRecommendFragment) defaultRecommendFragment).changeDataSetFromServer();
         }
+    }
+
+    public void updateRecommend() {
+        ((RecommendFragment) recoFragment).changeDataSetFromServer();
     }
 }

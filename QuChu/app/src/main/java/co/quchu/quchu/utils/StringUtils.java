@@ -95,7 +95,11 @@ public class StringUtils {
 //        LogUtils.json(scale+" display");
         return (int) (dpValue * scale + 0.5f);
     }
-
+    public static int dip2px( float dpValue) {
+        final float scale = AppContext.mContext.getResources().getDisplayMetrics().density;
+//        LogUtils.json(scale+" display");
+        return (int) (dpValue * scale + 0.5f);
+    }
     public static int pt2sp(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().xdpi;
         final float scd = context.getResources().getDisplayMetrics().scaledDensity;

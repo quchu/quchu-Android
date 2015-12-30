@@ -9,7 +9,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.fragment.PostCardDetailFg;
 import co.quchu.quchu.view.fragment.PostCardListFg;
@@ -44,7 +44,7 @@ public class PostCardActivity extends BaseActivity {
 
         listener = new MyCard.PostCardItemClickListener() {
             @Override
-            public void onPostCardItemClick(PostCardModel.PostCardItem item) {
+            public void onPostCardItemClick(PostCardItemModel item) {
                 if (postCardListFg != null)
                     transaction = getSupportFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);

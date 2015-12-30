@@ -14,7 +14,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.PlacePostCardModel;
+import co.quchu.quchu.model.PostCardImageListModel;
 
 /**
  * PostCardImageAdapter
@@ -23,15 +23,13 @@ import co.quchu.quchu.model.PlacePostCardModel;
  */
 public class PostCardImageAdapter extends BaseAdapter {
 
-    private List<PlacePostCardModel.PageEntity.pPostCardEntity.ImglistEntity> imglist;
+    private List<PostCardImageListModel> imglist;
     private Context mContext;
-
     public PostCardImageAdapter(Context mContext) {
         this.mContext = mContext;
-        //    this.imglist = imglist;
     }
 
-    public void setData(List<PlacePostCardModel.PageEntity.pPostCardEntity.ImglistEntity> imglist) {
+    public void setData(List<PostCardImageListModel> imglist) {
         this.imglist = imglist;
         notifyDataSetChanged();
     }
@@ -68,6 +66,7 @@ public class PostCardImageAdapter extends BaseAdapter {
         }
         holder.itemAddpostcardSdv.setImageURI(Uri.parse(imglist.get(position).getPath()));
         holder.itemAddpostcardSdv.setAspectRatio(1f);
+
         return convertView;
     }
 
@@ -81,4 +80,6 @@ public class PostCardImageAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
+
+
 }

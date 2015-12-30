@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.widget.cardsui.objects.Card;
 
 
@@ -17,9 +17,9 @@ import co.quchu.quchu.widget.cardsui.objects.Card;
  * Date: 2015-12-15
  */
 public class PostCardHolder extends Card {
-    private PostCardModel.PostCardItem item;
+    private PostCardItemModel item;
 
-    public PostCardHolder(PostCardModel.PostCardItem item) {
+    public PostCardHolder(PostCardItemModel item) {
         this.item = item;
     }
 

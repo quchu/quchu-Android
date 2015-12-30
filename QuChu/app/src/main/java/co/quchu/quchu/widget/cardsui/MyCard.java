@@ -17,7 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PostCardDetailActivity;
@@ -62,11 +62,13 @@ public class MyCard extends Card {
     TextView itemMyPostcardCardNicknameTv;
     @Bind(R.id.item_my_postcard_card_tiem_tv)
     TextView itemMyPostcardCardTiemTv;
-    private PostCardModel.PostCardItem item;
+    @Bind(R.id.item_recommend_card_photo_num_tv)
+    TextView itemRecommendCardPhotoNumTv;
+    private PostCardItemModel item;
     private PostCardItemClickListener listener;
     private Context mContext;
 
-    public MyCard(PostCardModel.PostCardItem item, PostCardItemClickListener listener, Context activity) {
+    public MyCard(PostCardItemModel item, PostCardItemClickListener listener, Context activity) {
         this.item = item;
         this.listener = listener;
         this.mContext = activity;
@@ -88,6 +90,12 @@ public class MyCard extends Card {
         itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
         itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
+        if (item.getImglist() != null && item.getImglist().size() > 0) {
+            itemRecommendCardPhotoNumTv.setVisibility(View.VISIBLE);
+            itemRecommendCardPhotoNumTv.setText("1/" + item.getImglist().size());
+        } else {
+            itemRecommendCardPhotoNumTv.setVisibility(View.INVISIBLE);
+        }
         if (item.isIsf()) {
             itemRecommendCardCollectIv.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_detail_collect));
         } else {
@@ -121,6 +129,6 @@ public class MyCard extends Card {
 
 
     public interface PostCardItemClickListener {
-        void onPostCardItemClick(PostCardModel.PostCardItem item);
+        void onPostCardItemClick(PostCardItemModel item);
     }
 }

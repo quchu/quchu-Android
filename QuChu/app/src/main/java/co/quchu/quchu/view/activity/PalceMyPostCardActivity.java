@@ -21,7 +21,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.PlacePostCardModel;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -87,7 +87,7 @@ public class PalceMyPostCardActivity extends BaseActivity {
         getDataFromServer();
     }
 
-    PlacePostCardModel.PageEntity.pPostCardEntity pPostCardModel;
+    PostCardItemModel pPostCardModel;
 
     private void getDataFromServer() {
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
@@ -96,7 +96,7 @@ public class PalceMyPostCardActivity extends BaseActivity {
             public void onSuccess(JSONObject response) {
                 LogUtils.json("pMpcA==" + response);
                 Gson gson = new Gson();
-                pPostCardModel = gson.fromJson(response.toString(), PlacePostCardModel.PageEntity.pPostCardEntity.class);
+                pPostCardModel = gson.fromJson(response.toString(), PostCardItemModel.class);
                 if (pPostCardModel != null) {
                     itemRecommendCardNameTv.setText(pPostCardModel.getPlcaeName());
                     itemRecommendCardCityTv.setText(pPostCardModel.getPlcaeAddress());

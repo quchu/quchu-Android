@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.quchu.quchu.model.PlacePostCardModel;
+import co.quchu.quchu.model.PostCardImageListModel;
 
 public class Bimp {
     public static int max = 0;
     public static boolean act_bool = true;
     public static List<Bitmap> bmp = new ArrayList<Bitmap>();
 
-    public static List<PlacePostCardModel.PageEntity.pPostCardEntity.ImglistEntity> imglist = new ArrayList<PlacePostCardModel.PageEntity.pPostCardEntity.ImglistEntity>();
+    public static List<PostCardImageListModel> imglist = new ArrayList<PostCardImageListModel>();
 
     public static List<Integer> delImageIdList = new ArrayList<Integer>();
     //图片sd地址  上传服务器时把图片调用下面方法压缩后 保存到临时文件夹 图片压缩后小于100KB，失真度不明显

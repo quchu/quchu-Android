@@ -46,12 +46,33 @@
                 android:textSize="@dimen/word_subhead_size" />
         </RelativeLayout>
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/item_recommend_card_photo_sdv"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/half_margin"
-            card_view:actualImageScaleType="centerCrop" />
+            android:layout_height="wrap_content">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/item_recommend_card_photo_sdv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_margin"
+                card_view:actualImageScaleType="centerCrop" />
+
+
+            <TextView
+                android:id="@+id/item_recommend_card_photo_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/half_margin"
+                android:background="@color/menu_wiper_switch_off"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:visibility="invisible"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_size_body" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -99,8 +120,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/base_margin"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/base_margin"
                 android:text="2015"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/word_size_body" />
@@ -121,8 +142,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/half_margin"
             android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/half_margin"
             android:orientation="horizontal">
 
             <RelativeLayout

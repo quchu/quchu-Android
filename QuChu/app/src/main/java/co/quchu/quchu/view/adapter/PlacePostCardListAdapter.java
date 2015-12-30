@@ -25,7 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.PlacePostCardModel;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -48,7 +48,7 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
 
     private Context mContext;
     private boolean isFlyme = false;
-    private List<PlacePostCardModel.PageEntity.pPostCardEntity> arrayList;
+    private List<PostCardItemModel> arrayList;
     private CardClickListener listener;
 
     public PlacePostCardListAdapter(Context mContext, CardClickListener listener) {
@@ -57,7 +57,7 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
         this.listener = listener;
     }
 
-    public void changeDataSet(List<PlacePostCardModel.PageEntity.pPostCardEntity> arrayList) {
+    public void changeDataSet(List<PostCardItemModel> arrayList) {
         this.arrayList = arrayList;
         notifyDataSetChanged();
     }
@@ -70,7 +70,7 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
 
     @Override
     public void onBindViewHolder(PPCHolder holder, int position) {
-        PlacePostCardModel.PageEntity.pPostCardEntity model = arrayList.get(position);
+        PostCardItemModel model = arrayList.get(position);
         if (!StringUtils.isEmpty(model.getRgb())) {
             holder.rootCv.setCardBackgroundColor(Color.parseColor("#" + model.getRgb()));
         } else {
@@ -95,6 +95,12 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
             holder.itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_post_card_editer));
         } else {
             holder.itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+        }
+        if (model.getImglist().size() > 0) {
+            holder.item_recommend_card_photo_num_tv.setVisibility(View.VISIBLE);
+            holder.item_recommend_card_photo_num_tv.setText("1/" + model.getImglist().size());
+        } else {
+            holder.item_recommend_card_photo_num_tv.setVisibility(View.INVISIBLE);
         }
         holder.itemMyPostcardAvatarSdv.setImageURI(Uri.parse(model.getAutorPhoto()));
         holder.itemMyPostcardCardNicknameTv.setText(model.getAutor());
@@ -148,6 +154,8 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
         RelativeLayout itemRecommendCardReplyRl;
         @Bind(R.id.root_cv)
         CardView rootCv;
+        @Bind(R.id.item_recommend_card_photo_num_tv)
+        TextView item_recommend_card_photo_num_tv;
         private CardClickListener listener;
 
         public PPCHolder(View itemView, CardClickListener listener) {

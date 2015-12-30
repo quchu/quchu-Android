@@ -32,7 +32,14 @@
              android:src="@drawable/ic_user_login_logo" />
 
      </co.quchu.quchu.widget.CircleWaveView>-->
+    <View
+        android:id="@+id/user_login_empty_v"
+        android:layout_width="1dp"
+        android:layout_marginTop="@dimen/ImageSubTabLayoutHeight"
+
+        android:layout_height="36dp"/>
     <RelativeLayout
+        android:id="@+id/user_login_bg_animators_rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -57,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_pull_menus_avatar" />
+            android:src="@drawable/ic_user_login_logo" />
     </RelativeLayout>
 
     <LinearLayout
@@ -74,7 +81,7 @@
             android:id="@+id/user_login_main_weibo_ll"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/half_margin"
             android:layout_weight="1"
             android:background="#99fc9206">
 
@@ -89,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/half_margin"
-                android:text="新浪微博登陆"
+                android:text="新浪微博登录"
                 android:textColor="@color/user_login_text_hint_text_color"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>
@@ -98,7 +105,7 @@
             android:id="@+id/user_login_main_wechat_ll"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginLeft="@dimen/half_margin"
             android:layout_weight="1"
             android:background="#9950bf08"
             android:orientation="horizontal">
@@ -114,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/half_margin"
-                android:text="微信登陆"
+                android:text="微信登录"
                 android:textColor="@color/user_login_text_hint_text_color"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>
@@ -125,7 +132,7 @@
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_above="@id/user_login_third_ll"
-        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginBottom="@dimen/base_margin"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
         android:background="@color/user_login_view_bg_color"

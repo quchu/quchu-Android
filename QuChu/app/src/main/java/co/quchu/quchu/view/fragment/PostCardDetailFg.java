@@ -24,13 +24,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.ShareDialogFg;
-import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PostCardActivity;
 import co.quchu.quchu.view.activity.PostCardDetailActivity;
+import co.quchu.quchu.view.activity.PostCardImageActivity;
 import co.quchu.quchu.widget.cardsui.MyCard;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -77,12 +78,14 @@ public class PostCardDetailFg extends Fragment {
     ImageView itemRecommendCardReplyIv;
     @Bind(R.id.item_recommend_card_reply_rl)
     RelativeLayout itemRecommendCardReplyRl;
+    @Bind(R.id.item_recommend_card_photo_num_tv)
+    TextView itemRecommendCardPhotoNumTv;
     @Bind(R.id.root_cv)
     CardView rootCv;
     private MyCard.PostCardItemClickListener listener;
-    private PostCardModel.PostCardItem item;
+    private PostCardItemModel item;
 
-    public PostCardDetailFg(PostCardModel.PostCardItem item) {
+    public PostCardDetailFg(PostCardItemModel item) {
         this.item = item;
     }
 
@@ -114,10 +117,17 @@ public class PostCardDetailFg extends Fragment {
             } else {
                 itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_uncollect));
             }
+            if (item.getImglist() != null && item.getImglist().size() > 0) {
+                itemRecommendCardPhotoNumTv.setVisibility(View.VISIBLE);
+                itemRecommendCardPhotoNumTv.setText("1/" + item.getImglist().size());
+            } else {
+                itemRecommendCardPhotoNumTv.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
-    @OnClick({R.id.item_my_postcard_heart_rl, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl, R.id.root_cv})
+    @OnClick({R.id.item_my_postcard_heart_rl, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl
+            , R.id.root_cv, R.id.item_recommend_card_photo_sdv})
     public void cardItemClick(View view) {
         switch (view.getId()) {
             case R.id.root_cv:
@@ -136,7 +146,15 @@ public class PostCardDetailFg extends Fragment {
             case R.id.item_recommend_card_reply_rl:
                 getActivity().startActivity(new Intent(getActivity(), PostCardDetailActivity.class).putExtra("cId", item.getCardId()));
                 break;
-
+            case R.id.item_recommend_card_photo_sdv:
+                if (item.getImglist().size() > 0) {
+                    Intent intent = new Intent(getActivity(), PostCardImageActivity.class);
+                    Bundle mBundle = new Bundle();
+                    mBundle.putSerializable("pCardModel", item);
+                    intent.putExtras(mBundle);
+                    getActivity().startActivity(intent);
+                }
+                break;
         }
     }
 
@@ -147,7 +165,7 @@ public class PostCardDetailFg extends Fragment {
     }
 
     private void setFavorite() {
-        if (!item.isIssys()) {
+        if (!item.issys()) {
             String favoUrl = "";
             if (item.isIsf()) {
                 favoUrl = String.format(NetApi.userDelFavorite, item.getCardId(), NetApi.FavTypeCard);

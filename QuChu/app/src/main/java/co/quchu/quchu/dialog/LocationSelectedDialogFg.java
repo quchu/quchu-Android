@@ -26,6 +26,7 @@ import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
  * LocationSelectedDialogFg
@@ -179,6 +180,8 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
                 //保存数据 而后关闭
                 SPUtils.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
                 SPUtils.setCityName(cityList.get(adapter.getSelectedIndex()).getCvalue());
+                if (getActivity() instanceof RecommendActivity)
+                    ((RecommendActivity) getActivity()).updateRecommend();
             case R.id.dialog_location_cancel_tv:
                 LocationSelectedDialogFg.this.dismiss();
                 break;

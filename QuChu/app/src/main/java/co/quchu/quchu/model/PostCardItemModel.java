@@ -4,65 +4,48 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * PostCardDetailModel
+ * PostCardItemModel
  * User: Chenhs
- * Date: 2015-12-20
- * 明信片详情 model
+ * Date: 2015-12-30
  */
-public class PostCardDetailModel implements Serializable{
-
-    /**
-     * address : 鹭江道3号和平码头当丰新天地3楼302室
-     * autor : chslalalala
-     * autorId : 11
-     * autorPhoto : http://tp1.sinaimg.cn/5230113944/50/40061324886/1
-     * cardId : 17
-     * comment : 覆盖才不会if的
-     * favoNum : 1
-     * imglist : [{"height":520,"imgId":482,"isCover":true,"path":"http://7xo7et.com1.z0.glb.clouddn.com/11_1450435086650.JPEG?imageMogr2/format/webp","rgb":"4d5156","width":390}]
-     * isf : false
-     * isme : false
-     * isp : false
-     * placeId : 4
-     * plcaeAddress : 厦门,中山路/轮渡
-     * plcaeCover : http://7xo7et.com1.z0.glb.clouddn.com/11_1450435086650.JPEG?imageMogr2/format/webp
-     * plcaeName : ReNext里遇
-     * praiseNum : 0
-     * rgb : 4d5156
-     * score : 5
-     * tel : 0592-2233995
-     * time : 2015-12-18 06:37:50
-     */
-
+public class PostCardItemModel implements Serializable {
     private String address;
     private String autor;
     private int autorId;
     private String autorPhoto;
     private int cardId;
-    private String comment="";
+    private String comment;
     private int favoNum;
+    private int height;
     private boolean isf;
     private boolean isme;
     private boolean isp;
     private int placeId;
-    private String plcaeAddress="";
-    private String plcaeCover="";
-    private String plcaeName="";
+    private String plcaeAddress;
+    private String plcaeCover;
+    private String plcaeName;
     private int praiseNum;
     private String rgb;
     private int score;
     private String tel;
     private String time;
-    /**
-     * height : 520
-     * imgId : 482
-     * isCover : true
-     * path : http://7xo7et.com1.z0.glb.clouddn.com/11_1450435086650.JPEG?imageMogr2/format/webp
-     * rgb : 4d5156
-     * width : 390
-     */
+    private int width;
+    private boolean issys = false;
 
-    private List<ImglistEntity> imglist;
+    /**
+     * imgId : 469
+     * isCover : true
+     * path : http://7xo7et.com1.z0.glb.clouddn.com/11_1450428218588.JPEG?imageMogr2/format/webp
+     */
+    public boolean issys() {
+        return issys;
+    }
+
+    public void setIssys(boolean issys) {
+        this.issys = issys;
+    }
+
+    private List<PostCardImageListModel> imglist;
 
     public void setAddress(String address) {
         this.address = address;
@@ -90,6 +73,10 @@ public class PostCardDetailModel implements Serializable{
 
     public void setFavoNum(int favoNum) {
         this.favoNum = favoNum;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public void setIsf(boolean isf) {
@@ -140,7 +127,11 @@ public class PostCardDetailModel implements Serializable{
         this.time = time;
     }
 
-    public void setImglist(List<ImglistEntity> imglist) {
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setImglist(List<PostCardImageListModel> imglist) {
         this.imglist = imglist;
     }
 
@@ -170,6 +161,10 @@ public class PostCardDetailModel implements Serializable{
 
     public int getFavoNum() {
         return favoNum;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public boolean isIsf() {
@@ -220,64 +215,16 @@ public class PostCardDetailModel implements Serializable{
         return time;
     }
 
-    public List<ImglistEntity> getImglist() {
+    public int getWidth() {
+        return width;
+    }
+
+    public List<PostCardImageListModel> getImglist() {
         return imglist;
     }
 
-    public static class ImglistEntity {
-        private int height;
-        private int imgId;
-        private boolean isCover;
-        private String path;
-        private String rgb;
-        private int width;
 
-        public void setHeight(int height) {
-            this.height = height;
-        }
-
-        public void setImgId(int imgId) {
-            this.imgId = imgId;
-        }
-
-        public void setIsCover(boolean isCover) {
-            this.isCover = isCover;
-        }
-
-        public void setPath(String path) {
-            this.path = path;
-        }
-
-        public void setRgb(String rgb) {
-            this.rgb = rgb;
-        }
-
-        public void setWidth(int width) {
-            this.width = width;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public int getImgId() {
-            return imgId;
-        }
-
-        public boolean isIsCover() {
-            return isCover;
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public String getRgb() {
-            return rgb;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-    }
 }
+
+
+

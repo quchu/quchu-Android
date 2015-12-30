@@ -30,6 +30,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/half_margin"
             android:background="@null"
+            android:focusable="true"
             android:hint="填写手机号码登录或注册"
             android:inputType="phone"
             android:maxLength="11"

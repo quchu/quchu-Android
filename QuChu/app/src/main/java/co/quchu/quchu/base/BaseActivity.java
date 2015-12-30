@@ -10,6 +10,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
+import co.quchu.quchu.photo.previewimage.PreviewImage;
 import co.quchu.quchu.view.activity.MenusActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
@@ -31,6 +32,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     protected SwipeBackLayout mSwipeBackLayout;
     protected String TAG = getClass().getName();
 
+
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,9 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         mHelper.onActivityCreate();
         if (this instanceof MenusActivity) {
 
+        }else if (this instanceof PreviewImage){
+            overridePendingTransition(R.anim.in_alpha,
+                    R.anim.out_alpha);
         } else {
             overridePendingTransition(R.anim.in_push_right_to_left,
                     R.anim.in_stable);
@@ -46,7 +51,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         //压栈
         ActManager.getAppManager().addActivity(this);
         mSwipeBackLayout = getSwipeBackLayout();
-        if (this instanceof MainActivity || this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity) {
+        if (this instanceof MainActivity || this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity || this instanceof PreviewImage) {
             mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
@@ -55,7 +60,9 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
             mSwipeBackLayout.setEdgeSize(360);
         }
+
     }
+
 
 
     @Override
@@ -76,6 +83,9 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         if (this instanceof MenusActivity) {
             overridePendingTransition(R.anim.out_bottom_to_top,
                     R.anim.out_bottom_to_top);
+        }else if (this instanceof PreviewImage){
+            overridePendingTransition(R.anim.in_alpha,
+                    R.anim.out_alpha);
         } else {
             overridePendingTransition(R.anim.in_stable,
                     R.anim.out_push_left_to_right);

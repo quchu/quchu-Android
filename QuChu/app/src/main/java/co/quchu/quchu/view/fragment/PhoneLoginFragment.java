@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.fragment;
 
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -88,6 +90,15 @@ public class PhoneLoginFragment extends Fragment {
                 case 0x02:
                     counterText();
                     break;
+                case 0x03:
+                    view.clearFocus();
+                    phoneLoginPnumEt.setFocusable(true);
+                    phoneLoginPnumEt.setFocusableInTouchMode(true);
+                    phoneLoginPnumEt.requestFocus();
+                    InputMethodManager inputManager =
+                            (InputMethodManager) phoneLoginPnumEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.showSoftInput(phoneLoginPnumEt, 0);
+                    break;
             }
         }
     };
@@ -114,6 +125,7 @@ public class PhoneLoginFragment extends Fragment {
         ButterKnife.bind(this, view);
         phoneLoginPnumEt.addTextChangedListener(new PhoneNumWatcher());
         initEditText();
+       handler.sendMessageDelayed(handler.obtainMessage(0x03),300);
         return view;
     }
 
@@ -220,7 +232,7 @@ public class PhoneLoginFragment extends Fragment {
         phoneLoginPasswordLl.setVisibility(View.VISIBLE);
         phoneLoginEnterTv.setVisibility(View.VISIBLE);
         userLoginForgetTv.setVisibility(View.VISIBLE);
-        phoneLoginEnterTv.setText("提交");
+        phoneLoginEnterTv.setText("登录");
         userLoginForgetTv.setText("忘记密码");
     }
 
@@ -304,8 +316,15 @@ public class PhoneLoginFragment extends Fragment {
 
             }
         });
-    }
 
+    }
+    private Handler hander=new Handler(){
+        public void handleMessage(android.os.Message msg) {
+
+            InputMethodManager inputManager = (InputMethodManager)phoneLoginPnumEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.showSoftInput(phoneLoginPnumEt, 0);
+        };
+    };
     /**
      * 手机号输入监听
      */
