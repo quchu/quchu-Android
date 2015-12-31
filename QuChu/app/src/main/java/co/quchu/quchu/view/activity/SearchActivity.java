@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,11 +23,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchModel;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SearchHistoryUtil;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
 import co.quchu.quchu.view.adapter.SearchHistoryAdapter;
 import co.quchu.quchu.widget.VerTextView;
@@ -125,17 +128,38 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void seachStr(String str, int pageNo) {
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
         SearchPresenter.searchFromService(this, str, pageNo, new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList) {
-                showSearchResult();
-                resultList = arrayList;
-                resultAdapter.changeDataSet(resultList);
+                if (arrayList.size() > 0) {
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(
+                                    SearchActivity.this
+                                            .getCurrentFocus()
+                                            .getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+                    showSearchResult();
+                    resultList = arrayList;
+                    resultAdapter.changeDataSet(resultList);
+                } else {
+                  /*  resultList = null;
+                    resultAdapter.changeDataSet(resultList);*/
+                    Toast.makeText(SearchActivity.this,"没有搜索到内容!",Toast.LENGTH_SHORT).show();
+                    updateHistory();
+                }
+
+                DialogUtil.dismissProgess();
             }
 
             @Override
             public void errorNull() {
                 //数据为空
+                DialogUtil.dismissProgess();
+             /*   resultList = null;
+                resultAdapter.changeDataSet(resultList);*/
+                Toast.makeText(SearchActivity.this,"没有搜索到内容!",Toast.LENGTH_SHORT).show();
+                updateHistory();
             }
         });
     }
@@ -145,16 +169,17 @@ public class SearchActivity extends BaseActivity {
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {//修改回车键功能
-                    // 先隐藏键盘
-                    seachStr(searchInputEt.getText().toString(), 1);
-                    LogUtils.json("KEYCODE_ENTER  KEYCODE_ENTER");
-                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(
-                                    SearchActivity.this
-                                            .getCurrentFocus()
-                                            .getWindowToken(),
-                                    InputMethodManager.HIDE_NOT_ALWAYS);
-                    addHistory();
+                    if (StringUtils.isEmpty(searchInputEt.getText().toString())) {
+                        Toast.makeText(SearchActivity.this, "请输入搜索内容!", Toast.LENGTH_SHORT).show();
+                        searchInputEt.setFocusable(true);
+                    } else {
+                        addHistory();
+                        // 先隐藏键盘
+                        seachStr(searchInputEt.getText().toString(), 1);
+                        LogUtils.json("KEYCODE_ENTER  KEYCODE_ENTER");
+
+
+                    }
                 }
                 return false;
             }
@@ -185,9 +210,11 @@ public class SearchActivity extends BaseActivity {
     private void addHistory() {
         if (searchModel == null)
             searchModel = new SearchModel();
-        LogUtils.json("model="+searchModel.toString());
+        //   LogUtils.json("model=" + searchModel.toString());
         searchModel.addSearchHistory(searchInputEt.getText().toString());
-        LogUtils.json("model="+searchModel.toString());
+        if (historyAdapter != null)
+            historyAdapter.updateData(searchModel);
+        //  LogUtils.json("model=" + searchModel.toString());
 
     }
 
@@ -248,11 +275,22 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                LogUtils.json("   lm.findLastCompletelyVisibleItemPosition()=" + lm.findLastCompletelyVisibleItemPosition() + "/////findLastVisibleItemPosition" + lm.findLastVisibleItemPosition());
+
             }
         });
         lm = (LinearLayoutManager) searchHistoryRv.getLayoutManager();
 
+    }
+
+    private void updateHistory() {
+        searchHistoryFl.setVisibility(View.VISIBLE);
+        searchHistoryRv.setVisibility(View.VISIBLE);
+        searchHistoryClearRl.setVisibility(View.VISIBLE);
+        searchResultFl.setVisibility(View.GONE);
+        searchHistoryHintFl.setText("历史记录");
+        SearchHistoryUtil.saveSearchHistory(searchModel);
+        searchModel = SearchHistoryUtil.getSearchHistory();
+        historyAdapter.updateData(searchModel);
     }
 
     public void showSearchResult() {

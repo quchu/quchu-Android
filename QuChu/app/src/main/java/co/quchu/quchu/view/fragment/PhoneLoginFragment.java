@@ -70,6 +70,7 @@ public class PhoneLoginFragment extends Fragment {
 
     private View view;
     private AnimationDrawable animationDrawable;
+    private InputMethodManager inputManager;
     /**
      * isRegiest=0 注册  =1登录  =2 重置密码
      */
@@ -95,9 +96,27 @@ public class PhoneLoginFragment extends Fragment {
                     phoneLoginPnumEt.setFocusable(true);
                     phoneLoginPnumEt.setFocusableInTouchMode(true);
                     phoneLoginPnumEt.requestFocus();
-                    InputMethodManager inputManager =
+                    inputManager =
                             (InputMethodManager) phoneLoginPnumEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputManager.showSoftInput(phoneLoginPnumEt, 0);
+                    break;
+                case 0x04://用户注册 昵称获取输入框
+                    view.clearFocus();
+                    userLoginNicknameEt.setFocusable(true);
+                    userLoginNicknameEt.setFocusableInTouchMode(true);
+                    userLoginNicknameEt.requestFocus();
+                    inputManager =
+                            (InputMethodManager) userLoginNicknameEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.showSoftInput(userLoginNicknameEt, 0);
+                    break;
+                case 0x05://用户登录 密码获取输入框
+                    view.clearFocus();
+                    phoneLoginPasswordEt.setFocusable(true);
+                    phoneLoginPasswordEt.setFocusableInTouchMode(true);
+                    phoneLoginPasswordEt.requestFocus();
+                    inputManager =
+                            (InputMethodManager) phoneLoginPasswordEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.showSoftInput(phoneLoginPasswordEt, 0);
                     break;
             }
         }
@@ -125,7 +144,7 @@ public class PhoneLoginFragment extends Fragment {
         ButterKnife.bind(this, view);
         phoneLoginPnumEt.addTextChangedListener(new PhoneNumWatcher());
         initEditText();
-       handler.sendMessageDelayed(handler.obtainMessage(0x03),300);
+        handler.sendMessageDelayed(handler.obtainMessage(0x03), 300);
         return view;
     }
 
@@ -220,6 +239,7 @@ public class PhoneLoginFragment extends Fragment {
                         "创建账户即代表同意并遵守" +
                                 "<font color=#f4e727><a href=\"http://www.quchu.co/user-agreement.html\">《趣处用户协议》</a> </font> "));
         userLoginForgetTv.setMovementMethod(LinkMovementMethod.getInstance());
+        handler.sendMessageDelayed(handler.obtainMessage(0x04), 180);
     }
 
     /**
@@ -234,6 +254,7 @@ public class PhoneLoginFragment extends Fragment {
         userLoginForgetTv.setVisibility(View.VISIBLE);
         phoneLoginEnterTv.setText("登录");
         userLoginForgetTv.setText("忘记密码");
+        handler.sendMessageDelayed(handler.obtainMessage(0x05), 180);
     }
 
     private void forgetPassword() {
@@ -318,13 +339,18 @@ public class PhoneLoginFragment extends Fragment {
         });
 
     }
-    private Handler hander=new Handler(){
+
+    private Handler hander = new Handler() {
         public void handleMessage(android.os.Message msg) {
 
-            InputMethodManager inputManager = (InputMethodManager)phoneLoginPnumEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputManager = (InputMethodManager) phoneLoginPnumEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.showSoftInput(phoneLoginPnumEt, 0);
-        };
+        }
+
+        ;
     };
+    long startTime = 0l;
+
     /**
      * 手机号输入监听
      */
@@ -345,13 +371,13 @@ public class PhoneLoginFragment extends Fragment {
                     if (StringUtils.isMobileNO(phoneNo)) {
                         hintOtherView();
                         startUserLoginProgress();
-                        final long startTime = System.currentTimeMillis();
+                        startTime = System.currentTimeMillis();
                         UserLoginPresenter.decideMobileCanLogin(getActivity(), phoneNo,
                                 new UserLoginPresenter.UserNameUniqueListener() {
                                     @Override
                                     public void isUnique(JSONObject msg) {
                                         isRegiest = 0;
-                                        requestTime = System.currentTimeMillis() - start;
+                                        requestTime = System.currentTimeMillis() - startTime;
                                         if (requestTime > waitTime) {
                                             handler.sendMessageDelayed(handler.obtainMessage(0x00), 1000);
                                         } else {

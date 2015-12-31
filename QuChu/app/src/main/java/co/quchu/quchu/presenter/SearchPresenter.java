@@ -16,7 +16,6 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * SearchPresenter
@@ -29,8 +28,10 @@ public class SearchPresenter {
         NetService.get(context, String.format(NetApi.Seach, seachStr, pageNum), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
+                LogUtils.json("////search=="+response);
                 try {
-                    if (response.has("result") && !StringUtils.isEmpty(response.getString("result"))) {
+         //           if (response.has("result") && !StringUtils.isEmpty(response.getString("result"))) {
+                    if (response!=null) {
                         JSONArray array = response.getJSONArray("result");
                         if (array.length() > 0) {
                             Gson gson = new Gson();
@@ -41,10 +42,16 @@ public class SearchPresenter {
                                 arrayList.add(model);
                             }
                             listener.successResult(arrayList);
-                            DialogUtil.dismissProgess();
+                        }else {
+                            listener.errorNull();
                         }
+                        DialogUtil.dismissProgess();
+                    }else {
+                        listener.errorNull();
                     }
                 } catch (JSONException e) {
+                    DialogUtil.dismissProgess();
+                    listener.errorNull();
                     e.printStackTrace();
                 }
             }
@@ -52,6 +59,7 @@ public class SearchPresenter {
             @Override
             public boolean onError(String error) {
                 LogUtils.json("onError=" + error.toString());
+                DialogUtil.dismissProgess();
                 listener.errorNull();
                 return false;
             }

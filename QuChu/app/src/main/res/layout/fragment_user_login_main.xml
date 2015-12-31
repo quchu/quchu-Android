@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_user_login_logo" />
+            android:src="@drawable/ic_user_loginview_logo" />
     </RelativeLayout>
 
     <LinearLayout

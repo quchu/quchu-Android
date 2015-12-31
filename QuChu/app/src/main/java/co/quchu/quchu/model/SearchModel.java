@@ -17,9 +17,10 @@ public class SearchModel {
 
     private ArrayList<SearchListEntity> searchList;
 
-    public SearchModel(){
+    public SearchModel() {
 
     }
+
     public void setSearchList(ArrayList<SearchListEntity> searchList) {
         this.searchList = searchList;
     }
@@ -58,25 +59,34 @@ public class SearchModel {
             entity.setSerachStr(str);
             searchList.add(entity);
         } else if (searchList.size() == 10) {
+            int equalsIndex = -1;
             for (int i = 0; i < searchList.size(); i++) {
-                if (!searchList.get(i).getSerachStr().equals(str)) {
-
-                    searchList.remove(0);
-                    SearchListEntity entity = new SearchListEntity();
-                    entity.setSerachStr(str);
-                    searchList.add(entity);
-
+                if (searchList.get(i).getSerachStr().equals(str)) {
+                    equalsIndex = i;
                 }
             }
-        } else {
+            if (equalsIndex != -1) {
+                searchList.remove(equalsIndex);
+            } else {
+                searchList.remove(0);
+            }
+            SearchListEntity entity = new SearchListEntity();
+            entity.setSerachStr(str);
+            searchList.add(entity);
+        } else if (searchList.size() > 0 && searchList.size() < 10) {
+            int equalsIndex = -1;
             for (int i = 0; i < searchList.size(); i++) {
-                if (!searchList.get(i).getSerachStr().equals(str)) {
 
-                    SearchListEntity entity = new SearchListEntity();
-                    entity.setSerachStr(str);
-                    searchList.add(entity);
+                if (searchList.get(i).getSerachStr().equals(str)) {
+                    equalsIndex = i;
                 }
             }
+            if (equalsIndex != -1) {
+                searchList.remove(equalsIndex);
+            }
+            SearchListEntity entity = new SearchListEntity();
+            entity.setSerachStr(str);
+            searchList.add(entity);
         }
 
 
@@ -93,5 +103,15 @@ public class SearchModel {
         public String getSerachStr() {
             return serachStr;
         }
+
+        @Override
+        public String toString() {
+            return "{serachStr=" + serachStr + "}";
+        }
+    }
+
+    @Override
+    public String toString() {
+        return searchList.toString();
     }
 }

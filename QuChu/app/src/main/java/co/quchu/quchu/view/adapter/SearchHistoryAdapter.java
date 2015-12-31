@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.SearchModel;
+import co.quchu.quchu.utils.LogUtils;
 
 /**
  * AtmAdapter
@@ -53,10 +54,11 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
 
     @Override
     public void onBindViewHolder(SearchHolder holder, int position) {
-        if (position<getItemCount()-1) {
+        if (position < getItemCount()-1) {
             holder.itemSearchHistoryStrTv.setText(searchModel.getSearchList().get(position).getSerachStr());
+            LogUtils.json("position==" + position+"///str=="+searchModel.getSearchList().get(position).getSerachStr());
             holder.itemSearchHistoryClearRl.setVisibility(View.GONE);
-        }else {
+        } else {
             holder.itemSearchHistoryStrTv.setVisibility(View.GONE);
             holder.itemSearchHistoryDeleteRl.setVisibility(View.GONE);
             holder.itemSearchHistoryClearRl.setVisibility(View.VISIBLE);
@@ -70,6 +72,12 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         } else {
             return searchModel.getSearchList().size() + 1;
         }
+    }
+
+    public void updateData(SearchModel searchModel) {
+        this.searchModel = null;
+        this.searchModel = searchModel;
+        notifyDataSetChanged();
     }
 
 /*    private int defaultView = 0, buttonView = 1;
@@ -127,6 +135,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         void itemTVClick(int position);
 
         void itemIVClick(int position);
+
         void itemRemoveAllClick();
     }
 }

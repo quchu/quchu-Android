@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -22,12 +24,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.InterestingDetailsActivity;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -40,13 +44,13 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendHolder> {
 
 
-    private Context mContext;
+    private Activity mContext;
     private boolean isFlyme = false;
     private ArrayList<RecommendModel> arrayList;
     private RecommendHolder holder;
     RecommendModel model;
 
-    public SearchAdapter(Context mContext) {
+    public SearchAdapter(Activity mContext) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
 
@@ -98,29 +102,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
     }
 
 
-    @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl})
-    public void searchClick(View v) {
-        switch (v.getId()) {
-            case R.id.root_cv:
-
-                break;
-            case R.id.item_recommend_card_collect_rl:
-            //    setFavorite(getPosition());
-                break;
-        }
-    }
-
     private void setFavorite(final int position) {
-
         String favoUrl = "";
-        if ( arrayList.get(position).isIsf()) {
+        if (arrayList.get(position).isIsf()) {
             favoUrl = String.format(NetApi.userDelFavorite, arrayList.get(position).getPid(), NetApi.FavTypePlace);
         } else {
-            favoUrl = String.format(NetApi.userFavorite,  arrayList.get(position).getPid(), NetApi.FavTypePlace);
+            favoUrl = String.format(NetApi.userFavorite, arrayList.get(position).getPid(), NetApi.FavTypePlace);
         }
         NetService.get(mContext, favoUrl, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
+                if (arrayList.get(position).isIsf()){
+                    Toast.makeText(mContext,"收藏成功!",Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(mContext,"取消收藏!",Toast.LENGTH_SHORT).show();
+                }
                 arrayList.get(position).setIsf(!arrayList.get(position).isIsf());
                 notifyDataSetChanged();
             }
@@ -175,5 +171,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
             ButterKnife.bind(this, itemView);
         }
 
+        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_reply_rl, R.id.item_recommend_card_interest_rl})
+        public void searchClick(View v) {
+            switch (v.getId()) {
+                case R.id.root_cv:
+                case R.id.item_recommend_card_reply_rl:
+                    mContext.startActivity(new Intent(mContext, InterestingDetailsActivity.class).putExtra("pId", arrayList.get(getPosition()).getPid()));
+                    break;
+                case R.id.item_recommend_card_collect_rl:
+                    setFavorite(getPosition());
+                    break;
+                case R.id.item_recommend_card_interest_rl:
+                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(arrayList.get(getPosition()).getPid(), arrayList.get(getPosition()).getName(), true);
+                    shareDialogFg.show(mContext.getFragmentManager(), "share_dialog");
+                    break;
+            }
+        }
     }
 }

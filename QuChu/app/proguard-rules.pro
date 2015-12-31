@@ -27,10 +27,11 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
-
-################## 友盟统计混淆 start ########################
+## -----------------------------------------
+################## 友盟统计混淆 start ######
+## -----------------------------------------
 -keepclassmembers class * {
-   public (org.json.JSONObject);
+  public <init>(org.json.JSONObject);
 }
 -keep public class co.quchu.quchu.R$*{
 public static final int *;
@@ -39,4 +40,78 @@ public static final int *;
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
-################## 友盟统计混淆 end ########################
+
+## ----------------------------------
+##   ########## wecha混淆    ########
+## ----------------------------------
+-keep class com.tencent.mm.sdk.openapi.WXMediaMessage {*;}
+-keep class com.tencent.mm.sdk.openapi.** implements com.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject {*;}
+
+# # -------------------------------------------
+# # ############### volley混淆  ###############
+# # -------------------------------------------
+-keep class com.android.volley.** {*;}
+-keep class com.android.volley.toolbox.** {*;}
+-keep class com.android.volley.Response$* { *; }
+-keep class com.android.volley.Request$* { *; }
+-keep class com.android.volley.RequestQueue$* { *; }
+-keep class com.android.volley.toolbox.HurlStack$* { *; }
+-keep class com.android.volley.toolbox.ImageLoader$* { *; }
+-keep class com.android.volley.*{*; }
+-keep class com.android.volley.toolbox.*{*; }
+-keepattributes Signature
+-keepattributes *Annotation*
+
+## ----------------------------------
+##   ########## OkHttp混淆    #######
+## ----------------------------------
+-dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp.** { *;}
+-dontwarn okio.**
+## ----------------------------------
+##   ########## Fresco混淆    #######
+## ----------------------------------
+#-keep class com.facebook.** {*;}
+#-keep public class * extends com.facebook.**
+
+## ----------------------------------
+##   ########## photoView混淆  ######
+## ----------------------------------
+#-keep class uk.co.senab.**
+#-keep class com.qiniu.**
+
+## ----------------------------------
+##   ########## Gson混淆    #########
+## ----------------------------------
+#-keepattributes Signature
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.examples.android.model.** { *; }
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+-keep public class * implements java.io.Serializable{
+}
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+-keep public class co.quchu.quchu.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep class co.quchu.quchu.model.**{*;}
+-dontwarn **R$*
+-dontwarn android.support.v4.**
+-keepattributes Signature
+-dontskipnonpubliclibraryclasses
+-dontwarn net.poemcode.**
+-ignorewarnings

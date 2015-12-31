@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.Serializable;
 
@@ -58,7 +57,7 @@ public class PostCardImageActivity extends BaseActivity {
         addPostcardImageIgv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(PostCardImageActivity.this, "点击图片" + position, Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(PostCardImageActivity.this, "点击图片" + position, Toast.LENGTH_SHORT).show();
                 View c = addPostcardImageIgv.getChildAt(0);
                 int top = c.getTop();
                 int firstVisiblePosition = addPostcardImageIgv.getFirstVisiblePosition() / 4;
@@ -82,7 +81,8 @@ public class PostCardImageActivity extends BaseActivity {
         getDatas();
 
     }
-
+/*Error:Execution failed for task ':app:transformClassesAndResourcesWithProguardForRelease'.
+> java.io.IOException: Please correct the above warnings first.*/
 
     private void getDatas() {
         defaulModel = (PostCardItemModel) getIntent().getSerializableExtra("pCardModel");
