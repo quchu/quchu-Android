@@ -458,7 +458,8 @@ public class PhoneLoginFragment extends Fragment {
                     public void isUnique(JSONObject msg) {
                         LogUtils.json("user regiest " + msg);
                         UserInfoHelper.saveUserInfo(msg);
-                        ((UserLoginActivity) getActivity()).loginSuccess();
+                        ((UserLoginActivity) getActivity()).userRegiestSuccess();
+
                     }
 
                     @Override

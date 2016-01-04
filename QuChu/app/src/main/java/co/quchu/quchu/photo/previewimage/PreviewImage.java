@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,6 +49,8 @@ import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher.OnViewTapListener;
@@ -64,6 +67,10 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
     ImageView previewCollectIv;
     @Bind(R.id.preview_collect_rl)
     RelativeLayout previewCollectRl;
+    @Bind(R.id.userguide_image_first_index_fl)
+    FrameLayout userguideImageFirstIndexFl;
+    @Bind(R.id.userguide_image_lastindex_fl)
+    FrameLayout userguideImageLastindexFl;
     private int index = 0;
     private ViewPager viewpager;
     private ArrayList<PostCardImageListModel> ImgList;
@@ -136,6 +143,16 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
         previewCreaterNameTv.setText(model.getAutor());
         previewCraeteTimeTv.setText(model.getTime().substring(0, 10));
         setIsfState(ImgList.get(index).isf());
+        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)){
+            if (index ==ImgList.size()-1){
+
+                userguideImageFirstIndexFl.setVisibility(View.GONE);
+                userguideImageLastindexFl.setVisibility(View.VISIBLE);
+            }else {
+                userguideImageFirstIndexFl.setVisibility(View.VISIBLE);
+                userguideImageFirstIndexFl.setVisibility(View.GONE);
+            }
+        }
     }
 
 
@@ -148,7 +165,6 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
     @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -178,6 +194,16 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
             to_x = (b1 - b) * moveheight + (b1 - b) * StringUtils.dip2px(1);
         }
         setIsfState(info.isf());
+        if (SPUtils.getBooleanFromSPMap(PreviewImage.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)) {
+            if (arg0 == ImgList.size() - 1) {
+                userguideImageFirstIndexFl.setVisibility(View.GONE);
+                userguideImageLastindexFl.setVisibility(View.VISIBLE);
+            } else {
+                userguideImageFirstIndexFl.setVisibility(View.VISIBLE);
+                userguideImageLastindexFl.setVisibility(View.GONE);
+            }
+
+        }
     }
 
     class SamplePagerAdapter extends PagerAdapter {
@@ -198,6 +224,9 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
 
                 @Override
                 public void onViewTap(View arg0, float arg1, float arg2) {
+                    SPUtils.putBooleanToSPMap(PreviewImage.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false);
+                    userguideImageFirstIndexFl.setVisibility(View.GONE);
+                    userguideImageLastindexFl.setVisibility(View.GONE);
                     viewpager.setVisibility(View.GONE);
                     showimg.setVisibility(View.VISIBLE);
                     setShowimage();
@@ -318,7 +347,6 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
         set.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-
             }
 
             @Override
@@ -329,16 +357,13 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
 
             @Override
             public void onAnimationCancel(Animator animator) {
-
             }
 
             @Override
             public void onAnimationRepeat(Animator animator) {
-
             }
         });
         set.start();
-
     }
 
     private void MoveBackView() {

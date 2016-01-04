@@ -11,6 +11,7 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +32,9 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PlanetModel;
 import co.quchu.quchu.presenter.PlanetActPresenter;
+import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.PlanetImgGridAdapter;
 import co.quchu.quchu.view.holder.PlanetActHolder;
@@ -90,10 +93,17 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     CounterView planetMyfocusCountCv;
     @Bind(R.id.planet_focusonme_count_cv)
     CounterView planetFocusonmeCountCv;
+    @Bind(R.id.user_guide_bg_view)
+    View userGuideBgView;
+    @Bind(R.id.user_guide_wpoint_iv)
+    ImageView userGuideWpointIv;
+    @Bind(R.id.user_guide_wpoint_desc_tv)
+    TextView userGuideWpointDescTv;
     private int AnimationDuration = 160 * 1000;
     private PlanetActPresenter presenter;
     private PlanetActHolder planetHolder;
     private AnimatorSet animatorSet;
+    PlanetImgGridAdapter imageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +116,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         initActivityViewHolder();
         presenter = new PlanetActPresenter(this);
         presenter.setPlanetGene(planetGeneTv);
-
+        imageAdapter = new PlanetImgGridAdapter(PlanetActivity.this);
+        planetImageGv.setAdapter(imageAdapter);
         ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(this);
 
@@ -114,7 +125,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
             @Override
             public void onNetSuccess(PlanetModel model) {
                 DialogUtil.dismissProgess();
-                planetImageGv.setAdapter(new PlanetImgGridAdapter(PlanetActivity.this, model.getImgs(), model.getImgNum()));
+                imageAdapter.updateDate(model.getImgs(), model.getImgNum());
                 planetImageGv.setOnItemClickListener(PlanetActivity.this);
                 planetAvatarIcon.setImageURI(Uri.parse(AppContext.user.getPhoto()));
 
@@ -161,8 +172,24 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
             }
         });
+        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false)) {
+            initGuideView();
+            mSwipeBackLayout.setEnableGesture(false);
+        }
     }
 
+    private void initGuideView() {
+        userGuideBgView.setVisibility(View.VISIBLE);
+        userGuideWpointIv.setVisibility(View.VISIBLE);
+        userGuideWpointDescTv.setVisibility(View.VISIBLE);
+    }
+
+    private void hintGuideView() {
+        userGuideBgView.setVisibility(View.GONE);
+        userGuideWpointIv.setVisibility(View.GONE);
+        userGuideWpointDescTv.setVisibility(View.GONE);
+        SPUtils.putBooleanToSPMap(this, AppKey.IS_PLANET_GUIDE, false);
+    }
 
     @Override
     protected void onDestroy() {
@@ -302,44 +329,54 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
             R.id.planet_collect_ll, R.id.planet_gene_tv, R.id.planet_myfocus_rl, R.id.planet_focusonme_rl})
     public void click(View v) {
         intent = new Intent();
-        switch (v.getId()) {
-            case R.id.design_rpv: //设计
-                intent.setClass(this, FriendsCircleIntroduceActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.pavilion_rpv://展馆
-                break;
-            case R.id.atmosphere_rpv: //氛围
+        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false)) {
+            switch (v.getId()) {
+                case R.id.planet_postcard_ll: //明信片
+                    hintGuideView();
+                    intent.setClass(this, PostCardActivity.class);
+                    startActivity(intent);
+
+                    break;
+            }
+        } else {
+            switch (v.getId()) {
+                case R.id.design_rpv: //设计
+                    intent.setClass(this, FriendsCircleIntroduceActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.pavilion_rpv://展馆
+                    break;
+                case R.id.atmosphere_rpv: //氛围
                /* intent.setClass(this, AtmosphereActivity.class);
                 startActivity(intent);*/
-                break;
-            case R.id.stroll_rpv://逛店
+                    break;
+                case R.id.stroll_rpv://逛店
 
-                break;
-            case R.id.cate_rpv: //美食
+                    break;
+                case R.id.cate_rpv: //美食
 
-                break;
-            case R.id.planet_postcard_ll: //明信片
-                intent.setClass(this, PostCardActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.planet_discover_ll: //发现
-                intent.setClass(this, DiscoverActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.planet_collect_ll: //收藏
-                intent.setClass(this, FavoriteActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.planet_gene_tv:
-                startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
-                break;
-            case R.id.planet_myfocus_rl://趣星人
-            case R.id.planet_focusonme_rl://趣星人
-                startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class));
-                break;
+                    break;
+                case R.id.planet_postcard_ll: //明信片
+                    intent.setClass(this, PostCardActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.planet_discover_ll: //发现
+                    intent.setClass(this, DiscoverActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.planet_collect_ll: //收藏
+                    intent.setClass(this, FavoriteActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.planet_gene_tv:
+                    startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
+                    break;
+                case R.id.planet_myfocus_rl://趣星人
+                case R.id.planet_focusonme_rl://趣星人
+                    startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class));
+                    break;
+            }
         }
-
     }
 
 

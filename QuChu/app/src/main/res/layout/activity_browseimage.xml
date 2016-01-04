@@ -11,6 +11,71 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <FrameLayout
+        android:id="@+id/userguide_image_first_index_fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/user_guide_bg_blue"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_user_guide_bracket_left" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/quarter_margin"
+                android:layout_marginRight="@dimen/quarter_margin"
+                android:text="滑动浏览图片"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_body" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_user_guide_bracket_right" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/userguide_image_lastindex_fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/user_guide_bg_blue"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_user_guide_ver_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="点击照片退出\r\n并返回照片图集"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_body" />
+        </LinearLayout>
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,6 +95,10 @@
             card_view:roundAsCircle="true"
             card_view:roundingBorderWidth="2dp" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@id/preview_creater_avatar_sdv" />
 
         <TextView
             android:id="@+id/preview_creater_name_tv"

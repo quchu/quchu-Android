@@ -109,6 +109,7 @@ public static final int *;
     public static ** valueOf(java.lang.String);
 }
 -keep class co.quchu.quchu.model.**{*;}
+-keep class co.quchu.quchu.analysis.**{*;}
 -dontwarn **R$*
 -dontwarn android.support.v4.**
 -keepattributes Signature

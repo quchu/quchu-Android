@@ -23,6 +23,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.analysis.GatherCollectModel;
+import co.quchu.quchu.analysis.GatherViewModel;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ShareDialogFg;
@@ -141,6 +144,8 @@ public class InterestingDetailsActivity extends BaseActivity {
     private int pId;
     private float detailButtonGroupLlHeight = 0f;
     public DetailModel dModel;
+    private GatherViewModel gatherViewModel;
+    private long startViewTime = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +153,7 @@ public class InterestingDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_interesting_detail);
         initTitleBar();
         ButterKnife.bind(this);
+        startViewTime = System.currentTimeMillis();
         detailButtonGroupLl.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -185,6 +191,7 @@ public class InterestingDetailsActivity extends BaseActivity {
                 }
             });
         }
+        gatherViewModel = new GatherViewModel(pId + "");
     }
 
     private void bindingDetailData() {
@@ -364,6 +371,7 @@ public class InterestingDetailsActivity extends BaseActivity {
                 changeCollectState(dModel.isIsf());
                 if (dModel.isIsf()) {
                     Toast.makeText(InterestingDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+                    AppContext.gatherDataModel.collectList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid() + ""));
                 } else {
                     Toast.makeText(InterestingDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }
@@ -406,5 +414,12 @@ public class InterestingDetailsActivity extends BaseActivity {
         // listView.getDividerHeight()获取子项间分隔符占用的高度
         // params.height最后得到整个ListView完整显示需要的高度
         listView.setLayoutParams(params);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gatherViewModel.setViewDuration((System.currentTimeMillis() - startViewTime) / 1000);
+        AppContext.gatherDataModel.viewList.add(gatherViewModel);
     }
 }

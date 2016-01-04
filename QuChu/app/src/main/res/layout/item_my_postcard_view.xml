@@ -46,6 +46,7 @@
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/word_subhead_size" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -62,23 +63,54 @@
                 android:id="@+id/item_recommend_card_photo_num_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/half_margin"
                 android:background="@color/menu_wiper_switch_off"
                 android:paddingLeft="@dimen/half_margin"
                 android:paddingRight="@dimen/half_margin"
-                android:visibility="invisible"
                 android:textColor="@color/text_color_white"
-                android:textSize="@dimen/word_size_body" />
+                android:textSize="@dimen/word_size_body"
+                android:visibility="invisible" />
 
+            <RelativeLayout
+                android:id="@+id/item_postcard_user_guide_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
+                android:layout_alignTop="@id/item_recommend_card_photo_sdv"
+                android:background="@color/user_guide_bg_blue"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_user_guide_ver_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/quarter_margin"
+                        android:text="点击查看趣处照片"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/word_size_body" />
+                </LinearLayout>
+
+            </RelativeLayout>
         </RelativeLayout>
-      <!--  <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/item_recommend_card_photo_sdv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/half_margin"
-            card_view:actualImageScaleType="centerCrop" />-->
+        <!--  <com.facebook.drawee.view.SimpleDraweeView
+              android:id="@+id/item_recommend_card_photo_sdv"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/half_margin"
+              card_view:actualImageScaleType="centerCrop" />-->
 
         <RelativeLayout
             android:layout_width="match_parent"

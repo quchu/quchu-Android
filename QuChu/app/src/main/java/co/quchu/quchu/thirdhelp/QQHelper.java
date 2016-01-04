@@ -22,7 +22,7 @@ public class QQHelper {
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         params.putString(QQShare.SHARE_TO_QQ_TITLE, shareTitle);
-        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "←戳\n" + "(*^◎^*)");
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;");
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareUrl);
 /*        if (StringUtils.isEmpty(imageUrl)) {*/
 

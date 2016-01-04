@@ -58,6 +58,16 @@ public class AppKey {
      * 是否需要创建桌面快捷方式
      */
     public static final String IS_NEED_ICON = "is_need_icon";
-
-
+    /**
+     * 我的趣星球界面是否需要弹出引导页
+     */
+    public static final String IS_PLANET_GUIDE = "is_planet_guide";
+    /**
+     * 我的明信片界面是否需要弹出引导页
+     */
+    public static final String IS_POSTCARD_GUIDE = "is_postcard_guide";
+    /**
+     * 我的明信片照片界面是否需要弹出引导页
+     */
+    public static final String IS_POSTCARD_IMAGES_GUIDE = "is_postcard_images_guide";
 }

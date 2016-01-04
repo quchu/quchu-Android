@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -20,6 +21,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.DiscoverAdapter;
 
 /**
@@ -73,20 +75,24 @@ public class DiscoverActivity extends BaseActivity {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("initDiscoverData==" + response);
-                if (response != null) {
-                    Gson gson = new Gson();
-                    DiscoverModel model = gson.fromJson(response.toString(), DiscoverModel.class);
-                    if (model != null && model.getResult().size() > 0) {
-                        atmosphereRv.setAdapter(new DiscoverAdapter(DiscoverActivity.this, model.getResult()));
-                        atmosphereEmptyViewFl.setVisibility(View.GONE);
-                        atmosphereRv.setVisibility(View.VISIBLE);
+                try {
+                    if (response != null && response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
+                        Gson gson = new Gson();
+                        DiscoverModel model = gson.fromJson(response.toString(), DiscoverModel.class);
+                        if (model != null && model.getResult().size() > 0) {
+                            atmosphereRv.setAdapter(new DiscoverAdapter(DiscoverActivity.this, model.getResult()));
+                            atmosphereEmptyViewFl.setVisibility(View.GONE);
+                            atmosphereRv.setVisibility(View.VISIBLE);
+                        } else {
+                            atmosphereEmptyViewFl.setVisibility(View.VISIBLE);
+                            atmosphereRv.setVisibility(View.GONE);
+                        }
                     } else {
                         atmosphereEmptyViewFl.setVisibility(View.VISIBLE);
                         atmosphereRv.setVisibility(View.GONE);
                     }
-                } else {
-                    atmosphereEmptyViewFl.setVisibility(View.VISIBLE);
-                    atmosphereRv.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
 

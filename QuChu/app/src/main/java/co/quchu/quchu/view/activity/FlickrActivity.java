@@ -151,9 +151,9 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 transaction.replace(R.id.flickr_fl, flickrGridFragment);
                /* transaction.addToBackStack(null);*/
                 transaction.commit();
-                scrollViewFlickr.smoothScrollTo(0, 0);
                 break;
         }
+                scrollViewFlickr.smoothScrollTo(0, 0);
     }
 
 

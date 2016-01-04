@@ -37,6 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.analysis.GatherRateModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -302,6 +303,7 @@ public class AddPostCardActivity extends BaseActivity {
             @Override
             public void onSuccess(PostCardModel model) {
                 //   if (Bimp.delImageIdList.size() == 0) {
+                AppContext.gatherDataModel.rateList.add(new GatherRateModel(pId + "", addPostcardSuggestPrb.getRating()));
                 DialogUtil.dismissProgessDirectly();
                 if (Bimp.imglist.size() > 0) {
                     Toast.makeText(AddPostCardActivity.this, "成功修改了趣处!", Toast.LENGTH_SHORT).show();

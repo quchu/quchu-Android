@@ -144,7 +144,7 @@ public class WechatHelper {
         webpage.webpageUrl = shareUrl;
         msg = new WXMediaMessage(webpage);
         if (isShare4Friends) {
-            msg.description = "←戳\n" +"(*^◎^*)";
+            msg.description =  "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;";
         }
         msg.title = title;
 

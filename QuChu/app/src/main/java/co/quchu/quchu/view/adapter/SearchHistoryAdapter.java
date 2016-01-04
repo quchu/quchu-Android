@@ -75,7 +75,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
     }
 
     public void updateData(SearchModel searchModel) {
-        this.searchModel = null;
+       // this.searchModel = null;
         this.searchModel = searchModel;
         notifyDataSetChanged();
     }

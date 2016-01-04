@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +19,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PostCardDetailActivity;
+import co.quchu.quchu.view.activity.PostCardImageActivity;
 import co.quchu.quchu.widget.cardsui.objects.Card;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -64,14 +68,18 @@ public class MyCard extends Card {
     TextView itemMyPostcardCardTiemTv;
     @Bind(R.id.item_recommend_card_photo_num_tv)
     TextView itemRecommendCardPhotoNumTv;
+    @Bind(R.id.item_postcard_user_guide_view)
+    RelativeLayout item_postcard_user_guide_view;
     private PostCardItemModel item;
     private PostCardItemClickListener listener;
     private Context mContext;
+
 
     public MyCard(PostCardItemModel item, PostCardItemClickListener listener, Context activity) {
         this.item = item;
         this.listener = listener;
         this.mContext = activity;
+
     }
 
 
@@ -109,15 +117,45 @@ public class MyCard extends Card {
                     listener.onPostCardItemClick(item);
             }
         });
+        if (SPUtils.getBooleanFromSPMap(mContext, AppKey.IS_POSTCARD_GUIDE, false)) {
+            item_postcard_user_guide_view.setVisibility(View.VISIBLE);
+        }else {
+            item_postcard_user_guide_view.setVisibility(View.GONE);
+        }
         return v;
     }
 
-    @OnClick({R.id.item_recommend_card_reply_rl})
+    @OnClick({R.id.item_recommend_card_reply_rl, R.id.item_recommend_card_photo_sdv})
     public void myCardClick(View view) {
-        switch (view.getId()) {
-            case R.id.item_recommend_card_reply_rl:
-                mContext.startActivity(new Intent(mContext, PostCardDetailActivity.class).putExtra("cId",item.getCardId()));
-                break;
+        if (SPUtils.getBooleanFromSPMap(mContext, AppKey.IS_POSTCARD_GUIDE, false)) {
+            switch (view.getId()) {
+                case R.id.item_recommend_card_photo_sdv:
+                    if (item.getImglist().size() > 0) {
+                        SPUtils.putBooleanToSPMap(mContext, AppKey.IS_POSTCARD_GUIDE, false);
+                        item_postcard_user_guide_view.setVisibility(View.GONE);
+                        Intent intent = new Intent(mContext, PostCardImageActivity.class);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putSerializable("pCardModel", item);
+                        intent.putExtras(mBundle);
+                        mContext.startActivity(intent);
+                    }
+                    break;
+            }
+        } else {
+            switch (view.getId()) {
+                case R.id.item_recommend_card_reply_rl:
+                    mContext.startActivity(new Intent(mContext, PostCardDetailActivity.class).putExtra("cId", item.getCardId()));
+                    break;
+                case R.id.item_recommend_card_photo_sdv:
+                    if (item.getImglist().size() > 0) {
+                        Intent intent = new Intent(mContext, PostCardImageActivity.class);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putSerializable("pCardModel", item);
+                        intent.putExtras(mBundle);
+                        mContext.startActivity(intent);
+                    }
+                    break;
+            }
         }
     }
 

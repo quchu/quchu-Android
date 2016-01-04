@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
+import co.quchu.quchu.analysis.GatherDataModel;
 import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.utils.LogUtils;
@@ -29,9 +30,11 @@ public class AppContext extends Application {
 
     public static PlacePostCardModel ppcModel;//趣处明信片信息 用户返回后刷新
     // 屏幕宽度
-    public static float Width=0;
+    public static float Width = 0;
     // 屏幕高度
-    public static float Height=0;
+    public static float Height = 0;
+    public static GatherDataModel gatherDataModel;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -43,23 +46,23 @@ public class AppContext extends Application {
                 .setFadeDuration(300)
                 .build();
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
-
             if (user == null) {
                 LogUtils.json(SPUtils.getUserInfo(this));
                 user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
-
+                gatherDataModel = new GatherDataModel();
             }
         }
         initImageLoader();
         initWidths();
     }
+
     public void initWidths() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         Width = dm.widthPixels;
         Height = dm.heightPixels;
     }
 
-    private void initImageLoader(){
+    private void initImageLoader() {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 mContext).threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
@@ -72,6 +75,7 @@ public class AppContext extends Application {
                 .build();
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
+        SPUtils.initGuideIndex();
     }
 
 }

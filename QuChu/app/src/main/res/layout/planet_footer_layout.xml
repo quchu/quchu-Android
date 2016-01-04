@@ -183,56 +183,93 @@
 
     <View style="@style/HorizontalLine" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/planet_postcard_ll"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:src="@drawable/ic_planet_postcaard" />
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-            <co.quchu.quchu.widget.textcounter.CounterView
-                android:id="@+id/planet_postcard_num_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/half_margin"
-                android:textColor="@color/text_color_white"
-                android:textSize="@dimen/word_title_body"
-                fresco:autoStart="true"
-                fresco:incrementValue="1"
-                fresco:startValue="0" />
+                <LinearLayout
+                    android:id="@+id/planet_postcard_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/quarter_margin"
-                android:fontFamily="sans-serif-thin"
-                android:text="明信片"
-                android:textColor="@color/planet_text_color_white"
-                android:textSize="@dimen/word_size_body" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/base_margin"
+                        android:src="@drawable/ic_planet_postcaard" />
+
+                    <co.quchu.quchu.widget.textcounter.CounterView
+                        android:id="@+id/planet_postcard_num_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/half_margin"
+                        android:textColor="@color/text_color_white"
+                        android:textSize="@dimen/word_title_body"
+                        fresco:autoStart="true"
+                        fresco:incrementValue="1"
+                        fresco:startValue="0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/quarter_margin"
+                        android:fontFamily="sans-serif-thin"
+                        android:text="明信片"
+                        android:textColor="@color/planet_text_color_white"
+                        android:textSize="@dimen/word_size_body" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/user_guide_bg_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/user_guide_bg_blue"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <View style="@style/VerticalLine" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
         </LinearLayout>
 
-        <View style="@style/VerticalLine" />
+        <ImageView
+            android:id="@+id/user_guide_wpoint_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_user_guide_button_icon"
+            android:visibility="gone" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/user_guide_wpoint_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_toRightOf="@id/user_guide_wpoint_iv"
+            android:text="点击查看\r\n你的明信片"
+            android:textColor="@color/white"
+            android:textSize="@dimen/word_size_body"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <View style="@style/HorizontalLine" />
 </LinearLayout>

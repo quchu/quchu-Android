@@ -4,21 +4,19 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.DateUtils;
 
 /**
- * GatherViewModel
+ * GatherCityModel
  * User: Chenhs
- * Date: 2015-12-29
- * 数据采集 页面浏览记录
+ * Date: 2016-01-04
+ * 城市切换数据采集
  */
-public class GatherViewModel {
+public class GatherCityModel {
 
     /**
-     * entityId :  user的id
+     * entityId : user id  (用户城市切换)
      * entityType : user
-     * event : view
+     * event : $set
      * eventTime : 2015-10-05T21:02:49.228Z（timeStamp）
-     * properties : {"viewDuration":1002}
-     * targetEntityId : 店铺id
-     * targetEntityType : item
+     * properties : {"city":"locationOfUser"}
      */
 
     private String entityId;
@@ -26,25 +24,18 @@ public class GatherViewModel {
     private String event;
     private String eventTime;
     /**
-     * viewDuration : 1002
+     * city : locationOfUser
      */
-    private PropertiesEntity properties;
-    private String targetEntityId;
-    private String targetEntityType;
 
-    public GatherViewModel(String placeId) {
+    private PropertiesEntity properties;
+
+    public GatherCityModel(int cityIndex) {
         entityId = AppContext.user.getUserId() + "";
         entityType = "user";
-        event = "view";
+        event = "$set";
         eventTime = DateUtils.getUTCTime();
-        targetEntityType = "item";
-        targetEntityId = placeId;
-    }
-
-    public void setViewDuration(long vDuration) {
-        if (properties == null)
-            properties = new PropertiesEntity();
-        properties.setViewDuration(vDuration);
+        properties=new PropertiesEntity();
+        properties.setCity(cityIndex);
     }
 
     public void setEntityId(String entityId) {
@@ -67,14 +58,6 @@ public class GatherViewModel {
         this.properties = properties;
     }
 
-    public void setTargetEntityId(String targetEntityId) {
-        this.targetEntityId = targetEntityId;
-    }
-
-    public void setTargetEntityType(String targetEntityType) {
-        this.targetEntityType = targetEntityType;
-    }
-
     public String getEntityId() {
         return entityId;
     }
@@ -95,23 +78,15 @@ public class GatherViewModel {
         return properties;
     }
 
-    public String getTargetEntityId() {
-        return targetEntityId;
-    }
-
-    public String getTargetEntityType() {
-        return targetEntityType;
-    }
-
     public static class PropertiesEntity {
-        private long viewDuration;
+        private int city;
 
-        public void setViewDuration(long viewDuration) {
-            this.viewDuration = viewDuration;
+        public void setCity(int city) {
+            this.city = city;
         }
 
-        public long getViewDuration() {
-            return viewDuration;
+        public int getCity() {
+            return city;
         }
     }
 }

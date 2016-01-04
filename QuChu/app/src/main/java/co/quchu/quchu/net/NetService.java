@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import co.quchu.quchu.analysis.GatherDataModel;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -56,6 +57,16 @@ public class NetService {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             NetErrorDialog.showProgess(cont);
         } else {
+            try {
+                if (AppContext.gatherDataModel != null && (AppContext.gatherDataModel.collectList.size() > 0 || AppContext.gatherDataModel.rateList.size() > 0 || AppContext.gatherDataModel.viewList.size() > 0)) {
+                    if (params == null)
+                        params = new JSONObject();
+                    params.put("user_data", AppContext.gatherDataModel);
+                    AppContext.gatherDataModel = new GatherDataModel();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0);
         }
     }

@@ -1,5 +1,8 @@
 package co.quchu.quchu.analysis;
 
+import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.utils.DateUtils;
+
 /**
  * GatherRateModel
  * User: Chenhs
@@ -7,28 +10,50 @@ package co.quchu.quchu.analysis;
  * 用户评分
  */
 public class GatherRateModel {
+
     /**
-     * entityId : 12
+     * entityId : user的id
      * entityType : user
      * event : rate
-     * eventTime : 2015-10-05T21:02:49.228Z
+     * eventTime : 2015-10-05T21:02:49.228Z（timeStamp）
      * properties : {"rating":3}
-     * targetEntityId : 12
+     * targetEntityId : 店铺id
      * targetEntityType : item
      */
-    private int entityId;
-    public String entityType = "user";
-    public String event = "rate";
+
+    private String entityId;
+    private String entityType;
+    private String event;
     private String eventTime;
     /**
      * rating : 3
      */
-    private PropertiesEntity properties;
-    private int targetEntityId;
-    public String targetEntityType = "item";
 
-    public void setEntityId(int entityId) {
+    private PropertiesEntity properties;
+    private String targetEntityId;
+    private String targetEntityType;
+
+    public GatherRateModel(String placeId, int placeRate) {
+        event = "rate";
+        entityType = "user";
+        entityId = AppContext.user.getUserId() + "";
+        targetEntityType = "item";
+        targetEntityId = placeId;
+        eventTime = DateUtils.getUTCTime();
+        properties=new PropertiesEntity();
+        properties.setRating(placeRate);
+    }
+
+    public void setEntityId(String entityId) {
         this.entityId = entityId;
+    }
+
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 
     public void setEventTime(String eventTime) {
@@ -39,12 +64,24 @@ public class GatherRateModel {
         this.properties = properties;
     }
 
-    public void setTargetEntityId(int targetEntityId) {
+    public void setTargetEntityId(String targetEntityId) {
         this.targetEntityId = targetEntityId;
     }
 
-    public int getEntityId() {
+    public void setTargetEntityType(String targetEntityType) {
+        this.targetEntityType = targetEntityType;
+    }
+
+    public String getEntityId() {
         return entityId;
+    }
+
+    public String getEntityType() {
+        return entityType;
+    }
+
+    public String getEvent() {
+        return event;
     }
 
     public String getEventTime() {
@@ -55,8 +92,12 @@ public class GatherRateModel {
         return properties;
     }
 
-    public int getTargetEntityId() {
+    public String getTargetEntityId() {
         return targetEntityId;
+    }
+
+    public String getTargetEntityType() {
+        return targetEntityType;
     }
 
     public static class PropertiesEntity {

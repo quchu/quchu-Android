@@ -28,10 +28,9 @@ public class PlanetImgGridAdapter extends BaseAdapter {
     List<PlanetModel.ImgsEntity> imgs = new ArrayList<>();
     private int imageCount = 0;
 
-    public PlanetImgGridAdapter(Context context, List<PlanetModel.ImgsEntity> imgs, int imgNum) {
+    public PlanetImgGridAdapter(Context context) {
         this.context = context;
-        imageCount = imgNum;
-        this.imgs = imgs;
+
     }
 
     int count = 1;
@@ -39,7 +38,7 @@ public class PlanetImgGridAdapter extends BaseAdapter {
     @Override
     public int getCount() {
 
-        if (imgs != null) {
+        if (imgs != null && imgs.size() > 0) {
             count = imgs.size() >= 4 ? 4 : imgs.size();
         }
         return count;
@@ -96,6 +95,12 @@ public class PlanetImgGridAdapter extends BaseAdapter {
         return convertView;
     }
 
+
+    public void updateDate(List<PlanetModel.ImgsEntity> imgs, int imgNum) {
+        imageCount = imgNum;
+        this.imgs = imgs;
+        notifyDataSetChanged();
+    }
 
     class PlanetImgItemHolder {
         public SimpleDraweeView sdv;

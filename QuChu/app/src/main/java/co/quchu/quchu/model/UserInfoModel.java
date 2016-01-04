@@ -1,21 +1,25 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
+
 /**
  * UserInfoModel
  * User: Chenhs
  * Date: 2015-11-30
  */
-public class UserInfoModel {
+public class UserInfoModel implements Serializable {
+
 
     /**
-     * fullname : 阿磐aaa
+     * fullname : chslalalala
      * gender : 男
-     * isweibo : false
-     * isweixin : true
-     * photo : http://wx.qlogo.cn/mmopen/icia6NrmNxOsxPzMjNvk1eIHIz5RruwuYEKlJyZPzbzgvkOuC6nlvFCF0uklXbZMAwFcRIgcwK7GeSncPSPRqjoasPWRiaX3NkI/0
-     * token : d7ad802f9df056fd2e03200659f15af88f133237
-     * userId : 113
-     * username : 阿磐aaa
+     * isweibo : true
+     * isweixin : false
+     * photo : http://tp1.sinaimg.cn/5230113944/50/40061324886/1
+     * token : f3579a9a3d31e0075c1eaf50269f536b6c1daa99
+     * type : login
+     * userId : 11
+     * username : chslalalala
      */
 
     private String fullname;
@@ -24,6 +28,7 @@ public class UserInfoModel {
     private boolean isweixin;
     private String photo;
     private String token;
+    private String type;
     private int userId;
     private String username;
 
@@ -49,6 +54,10 @@ public class UserInfoModel {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setUserId(int userId) {
@@ -81,6 +90,10 @@ public class UserInfoModel {
 
     public String getToken() {
         return token;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public int getUserId() {

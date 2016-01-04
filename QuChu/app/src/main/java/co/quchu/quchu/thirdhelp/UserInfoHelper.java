@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import co.quchu.quchu.analysis.GatherDataModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.utils.LogUtils;
@@ -24,6 +25,7 @@ public class UserInfoHelper {
                     SPUtils.setUserToken(AppContext.mContext, userInfo.getString("token"));
                     SPUtils.setUserInfo(AppContext.mContext, userInfo.toString());
                     AppContext.user = new Gson().fromJson(userInfo.toString(), UserInfoModel.class);
+                    AppContext.gatherDataModel=new GatherDataModel();
                     LogUtils.json("user info save success ");
                 } catch (JSONException e) {
                     e.printStackTrace();

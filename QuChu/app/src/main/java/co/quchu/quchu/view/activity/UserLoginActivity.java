@@ -14,11 +14,11 @@ import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.PhoneLoginFragment;
 import co.quchu.quchu.view.fragment.UserEnterAppFragment;
+import co.quchu.quchu.view.fragment.UserGuideFragment;
 import co.quchu.quchu.view.fragment.UserLoginMainFragment;
 
 /**
@@ -46,6 +46,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
             setContentView(R.layout.activity_user_login);
             transaction = getSupportFragmentManager().beginTransaction();
          /*       transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
+            // transaction.replace(R.id.user_login_fl, new UserGuideFragment());
             transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
              /*   transaction.addToBackStack(null);*/
             transaction.commit();
@@ -93,7 +94,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         super.onActivityResult(requestCode, resultCode, data);
         // SSO 授权回调
         // 重要：发起 SSO 登陆的 Activity 必须重写 onActivityResult
-        LogUtils.json("requestCode="+requestCode+"///resultCode="+resultCode+"data="+data);
+        //   LogUtils.json("requestCode=" + requestCode + "///resultCode=" + resultCode + "data=" + data);
         if (WeiboHelper.mSsoHandler != null) {
             WeiboHelper.mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
@@ -101,17 +102,37 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
     @Override
     public void loginSuccess() {
-        LogUtils.json("login success");
+        //   LogUtils.json("login success");
+        if (AppContext.user != null && "login".equals(AppContext.user.getType())) {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.user_login_fl, new UserEnterAppFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+            KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));
+        } else {
+            userRegiestSuccess();
+        }
+    }
+
+    public void userRegiestSuccess() {
         transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.user_login_fl, new UserEnterAppFragment());
+        transaction.replace(R.id.user_login_fl, new UserGuideFragment());
         transaction.addToBackStack(null);
         transaction.commit();
+        SPUtils.initGuideIndex();
         KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));
     }
 
     public void enterApp() {
         startActivity(new Intent(this, RecommendActivity.class));
         this.finish();
+    }
+
+    /**
+     * 进入引导
+     */
+    public void starGuideView() {
+        startActivity(new Intent(this, PlanetActivity.class));
     }
 
 }

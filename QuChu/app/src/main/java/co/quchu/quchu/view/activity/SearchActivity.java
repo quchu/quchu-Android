@@ -290,6 +290,7 @@ public class SearchActivity extends BaseActivity {
         searchHistoryHintFl.setText("历史记录");
         SearchHistoryUtil.saveSearchHistory(searchModel);
         searchModel = SearchHistoryUtil.getSearchHistory();
+
         historyAdapter.updateData(searchModel);
     }
 

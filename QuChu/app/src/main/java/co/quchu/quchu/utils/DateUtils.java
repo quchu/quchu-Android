@@ -49,4 +49,12 @@ public class DateUtils {
         sf.setTimeZone(TimeZone.getTimeZone("UTC"));
         return sf.format(d);
     }
+
+    public static String getUTCTime() {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)));
+        String utcTime = fmt.format(new Date());
+        LogUtils.json("utc Time=" + utcTime);
+        return utcTime;
+    }
 }
