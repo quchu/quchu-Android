@@ -131,7 +131,7 @@ public class PhoneLoginFragment extends Fragment {
             mAuthCounter--;
             handler.sendMessageDelayed(handler.obtainMessage(0x02), 1000);
         } else {
-            getauthcodeLoginTv.setText("获取验证码");
+            getauthcodeLoginTv.setText("再次获取验证码");
             getauthcodeLoginTv.setClickable(true);
             mAuthCounter = 60;
         }
@@ -210,13 +210,15 @@ public class PhoneLoginFragment extends Fragment {
     }
 
     private void stopUserLoginProgress() {
-        if (phoneLoginProgressIv.getVisibility() == View.VISIBLE) {
+        if (phoneLoginProgressIv != null) {
+            //   if (phoneLoginProgressIv.getVisibility() == View.VISIBLE) {
             phoneLoginProgressIv.setImageResource(R.drawable.user_login_progress);
             animationDrawable = (AnimationDrawable) phoneLoginProgressIv.getDrawable();
             if (animationDrawable.isRunning())
                 animationDrawable.stop();
             phoneLoginProgressIv.setVisibility(View.GONE);
         }
+        // }
     }
 
 

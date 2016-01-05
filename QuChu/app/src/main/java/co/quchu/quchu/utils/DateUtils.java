@@ -44,15 +44,15 @@ public class DateUtils {
 
     public static String getDateToString(long time) {
         Date d = new Date(time);
-
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sf.setTimeZone(TimeZone.getTimeZone("UTC"));
         return sf.format(d);
     }
 
     public static String getUTCTime() {
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)));
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sszzz");
+      fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)));
+    //    fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getTimeZone("UTC").getDisplayName(false, TimeZone.LONG)));
         String utcTime = fmt.format(new Date());
         LogUtils.json("utc Time=" + utcTime);
         return utcTime;

@@ -45,6 +45,7 @@ public class NetApi {
     public static final String Seach = HOST + "/search?value=%s&pageno=%d";  //搜索 value=搜索内容  gageno=分页页码
     public static final String getDetail = HOST + "/place/GetPlace?pId=%d";  //获取趣处详情信息 pid=趣处id
     public static final String getUserOutPlace = HOST + "/operate/userOutPlace?pId=%d";  //趣处详情 去过
+    public static final String delUserOutPlace = HOST + "/operate/delUserOutPlace?pId=%d";  //趣处详情 撤销去过
     public static final String FavTypeImg = "image";
     public static final String FavTypeArt = "article";
     public static final String FavTypePlace = "place";

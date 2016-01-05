@@ -163,7 +163,7 @@ public class InterestingDetailsActivity extends BaseActivity {
         detailOutsideSv.setOverScrollListener(new OutSideScrollView.OverScrolledListener() {
             @Override
             public void onOverScrolled(int scrollX, int scrollY) {
-                //         LogUtils.json("scrollY=" + scrollY + "//detailButtonGroupLl==" + detailButtonGroupLlHeight);
+                //LogUtils.json("scrollY=" + scrollY + "//detailButtonGroupLl==" + detailButtonGroupLlHeight);
                 if (scrollY >= detailButtonGroupLlHeight) {
                     detailButtonGroupOutLl.setVisibility(View.VISIBLE);
                 } else {
@@ -171,8 +171,6 @@ public class InterestingDetailsActivity extends BaseActivity {
                 }
             }
         });
-
-
         initData();
     }
 
@@ -350,10 +348,11 @@ public class InterestingDetailsActivity extends BaseActivity {
     }
 
     private void userBeen() {
-        InterestingDetailPresenter.getUserOutPlace(this, pId, new InterestingDetailPresenter.DetailDataListener() {
+        InterestingDetailPresenter.getUserOutPlace(this, pId, dModel.isIsout(), new InterestingDetailPresenter.DetailDataListener() {
             @Override
             public void onSuccessCall(String str) {
-                changeBottomBeenBg(true);
+                dModel.setIsout(!dModel.isIsout());
+                changeBottomBeenBg(dModel.isIsout());
             }
 
             @Override

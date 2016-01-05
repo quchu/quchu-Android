@@ -39,8 +39,15 @@ public class InterestingDetailPresenter {
         void getDetailData(DetailModel model);
     }
 
-    public static void getUserOutPlace(Context context, int pId, final DetailDataListener listener) {
-        NetService.post(context, String.format(NetApi.getUserOutPlace, pId), null, new IRequestListener() {
+    public static void getUserOutPlace(Context context, int pId, boolean isout, final DetailDataListener listener) {
+        String urlStr = "";
+        if (isout) {
+            urlStr = String.format(NetApi.delUserOutPlace, pId);
+        } else {
+            urlStr = String.format(NetApi.getUserOutPlace, pId);
+        }
+
+        NetService.post(context, urlStr, null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 listener.onSuccessCall("");

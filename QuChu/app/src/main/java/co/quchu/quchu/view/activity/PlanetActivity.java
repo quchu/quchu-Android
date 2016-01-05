@@ -175,6 +175,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false)) {
             initGuideView();
             mSwipeBackLayout.setEnableGesture(false);
+        } else {
+            mSwipeBackLayout.setEnableGesture(true);
         }
     }
 

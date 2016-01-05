@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import co.quchu.quchu.analysis.GatherDataModel;
 import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -54,6 +55,7 @@ public class AppContext extends Application {
         }
         initImageLoader();
         initWidths();
+        DateUtils.getUTCTime();
     }
 
     public void initWidths() {
@@ -75,7 +77,7 @@ public class AppContext extends Application {
                 .build();
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
-        SPUtils.initGuideIndex();
+    //    SPUtils.initGuideIndex();
     }
 
 }

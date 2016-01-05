@@ -24,19 +24,6 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/item_recommend_card_name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/half_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/base_margin"
-                android:text="地理位置"
-                android:textColor="@color/text_color_white"
-                android:textSize="@dimen/word_subhead_size"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/item_recommend_card_city_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,6 +34,24 @@
                 android:text="厦门"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/word_subhead_size" />
+
+            <TextView
+                android:id="@+id/item_recommend_card_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="@dimen/half_margin"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginTop="@dimen/base_margin"
+                android:layout_toLeftOf="@id/item_recommend_card_city_tv"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="地理位置"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_subhead_size"
+                android:textStyle="bold" />
+
+
         </RelativeLayout>
 
         <RelativeLayout

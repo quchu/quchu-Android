@@ -2,6 +2,8 @@ package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -172,4 +174,13 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     /**
      * title bar 控制  end
      */
+
+    @Override
+    public Resources getResources() {
+        Resources res = super.getResources();
+        Configuration config=new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config, res.getDisplayMetrics());
+        return res;
+    }
 }

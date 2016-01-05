@@ -1,6 +1,7 @@
 package co.quchu.quchu.net;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -22,8 +23,10 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.NetErrorDialog;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.SearchActivity;
+import co.quchu.quchu.view.activity.UserLoginActivity;
 
 /**
  * NetService
@@ -143,6 +146,11 @@ public class NetService {
                                 } else {
                                     if (response.has("msg") && response.has("exception") && "error".equals(response.getString("msg")) && !StringUtils.isEmpty(response.getString("exception")) && "登录名已存在".equals(response.getString("exception"))) {
                                         pListener.onSuccess(response);
+                                    } else if (response.has("msg") && response.has("exception") && "1077".equals(response.getString("msg"))) {
+                                        ActManager.getAppManager().finishActivitiesAndKeepLastOne();
+                                        SPUtils.clearUserinfo(AppContext.mContext);
+                                        AppContext.user = null;
+                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
                                     } else {
                                         if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
                                             Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), 0).show();

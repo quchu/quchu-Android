@@ -98,11 +98,12 @@ public class UserLoginPresenter {
      * @param authCode 验证码
      * @param listener 回调
      */
-    public static void userRegiest(Context context, String phoneNo, String password, String nickName, String authCode, UserNameUniqueListener listener) {
+    public static void userRegiest(Context context, String phoneNo, String password, String nickName, String authCode, final UserNameUniqueListener listener) {
         NetService.post(context, String.format(NetApi.Regiester, phoneNo, password, authCode, StringUtils.getMyUUID(), nickName), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
+                listener.isUnique(response);
             }
 
             @Override
@@ -136,7 +137,7 @@ public class UserLoginPresenter {
         });
     }
 
-    public static void resetPassword(Context context,String phoneNo,String password,String authCode , final UserNameUniqueListener listener) {
+    public static void resetPassword(Context context, String phoneNo, String password, String authCode, final UserNameUniqueListener listener) {
         NetService.post(context, String.format(NetApi.ResertPsw, phoneNo, password, authCode), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
