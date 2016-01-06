@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.SPUtils;
 
 /**
@@ -26,7 +27,7 @@ public class GatherDataModel implements Serializable {
      * viewList : []
      */
 
-    public static final String platformId = "ANDROID";
+    public String platformId = "ANDROID";
     public GatherCityModel userProperties;
     public String userToken = "";
     public String version = "";
@@ -37,6 +38,8 @@ public class GatherDataModel implements Serializable {
     public GatherDataModel() {
         userProperties = new GatherCityModel(SPUtils.getCityId());
         userToken = SPUtils.getUserToken(AppContext.mContext);
+        version = AppUtil.getVerName(AppContext.mContext);
+        platformId = "ANDROID";
         collectList = new ArrayList<GatherCollectModel>();
         rateList = new ArrayList<GatherRateModel>();
         viewList = new ArrayList<GatherViewModel>();

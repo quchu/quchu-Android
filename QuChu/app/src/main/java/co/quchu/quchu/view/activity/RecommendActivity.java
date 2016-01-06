@@ -3,10 +3,14 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.umeng.update.UmengUpdateAgent;
 
 import java.util.ArrayList;
 
@@ -14,6 +18,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.analysis.UserAnalysisUtils;
+import co.quchu.quchu.base.ActManager;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
@@ -61,7 +68,7 @@ public class RecommendActivity extends BaseActivity {
     @Bind(R.id.title_more_rl)
     MoreButtonView titleMoreRl;*/
 
-
+    public long firstTime = 0;
     private Fragment recoFragment;
     private Fragment classifyFragment;
     private ArrayList<CityModel> list;
@@ -82,6 +89,9 @@ public class RecommendActivity extends BaseActivity {
         });
         recommendTitleMoreRl.setMoreClick(this);
         recommendBodyVp.setOffscreenPageLimit(2);
+
+        UmengUpdateAgent.update(AppContext.mContext);
+        UmengUpdateAgent.setUpdateCheckConfig(true);
     }
 
     @OnClick({R.id.recommend_title_location_rl})
@@ -194,5 +204,30 @@ public class RecommendActivity extends BaseActivity {
 
     public void updateRecommend() {
         ((RecommendFragment) recoFragment).changeDataSetFromServer();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (viewPagerIndex == 2) {
+                viewpagerSelected(1);
+                return true;
+            } else {
+                long secondTime = System.currentTimeMillis();
+                if (secondTime - firstTime > 700) {// 如果两次按键时间间隔大于800毫秒，则不退出
+                    Toast.makeText(RecommendActivity.this, R.string.app_exit_text,
+                            Toast.LENGTH_SHORT).show();
+                    firstTime = secondTime;// 更新firstTime
+
+                    return true;
+                } else {
+                    UserAnalysisUtils.sendUserBehavior(RecommendActivity.this);
+                    ActManager.getAppManager().AppExit();
+                }
+            }
+        }
+
+        return true;
+
     }
 }

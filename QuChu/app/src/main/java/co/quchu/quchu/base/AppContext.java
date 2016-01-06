@@ -40,6 +40,8 @@ public class AppContext extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        LogUtils.json("userinfo=" + SPUtils.getUserInfo(mContext));
+        LogUtils.json("userToken=" + SPUtils.getUserToken(mContext));
         Fresco.initialize(mContext);
         GenericDraweeHierarchyBuilder builder =
                 new GenericDraweeHierarchyBuilder(getResources());
@@ -77,7 +79,7 @@ public class AppContext extends Application {
                 .build();
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
-    //    SPUtils.initGuideIndex();
+        //    SPUtils.initGuideIndex();
     }
 
 }

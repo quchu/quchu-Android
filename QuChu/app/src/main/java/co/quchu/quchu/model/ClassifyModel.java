@@ -9,14 +9,16 @@ package co.quchu.quchu.model;
 public class ClassifyModel {
 
     /**
-     * en : luxury
-     * maxImg : http://7vzrp0.com5.z0.glb.clouddn.com/luxury-max
-     * minImg : http://7vzrp0.com5.z0.glb.clouddn.com/luxury-min
+     * en : architecture
+     * isSend : false
+     * maxImg : http://7vzrp0.com5.z0.glb.clouddn.com/architecture-max
+     * minImg : http://7vzrp0.com5.z0.glb.clouddn.com/architecture-min
      * weight : 0
-     * zh : 轻奢
+     * zh : 砖瓦之间
      */
 
     private String en;
+    private boolean isSend = true;
     private String maxImg;
     private String minImg;
     private double weight;
@@ -24,6 +26,10 @@ public class ClassifyModel {
 
     public void setEn(String en) {
         this.en = en;
+    }
+
+    public void setIsSend(boolean isSend) {
+        this.isSend = isSend;
     }
 
     public void setMaxImg(String maxImg) {
@@ -44,6 +50,10 @@ public class ClassifyModel {
 
     public String getEn() {
         return en;
+    }
+
+    public boolean isIsSend() {
+        return isSend;
     }
 
     public String getMaxImg() {

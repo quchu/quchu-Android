@@ -135,9 +135,11 @@
         <activity
             android:name="co.quchu.quchu.view.activity.PostCardImageActivity"
             android:screenOrientation="portrait" />
-
         <!-- 趣处小图浏览界面-->
-
+        <!--趣处 预定-->
+        <activity
+            android:name="co.quchu.quchu.view.activity.ReserveActivity"
+            android:screenOrientation="portrait" />
         <!-- 趣处详情-->
         <activity
             android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
@@ -185,6 +187,14 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!--友盟-->
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService"></service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
     </application>
 

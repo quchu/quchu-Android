@@ -50,11 +50,15 @@ public class DateUtils {
     }
 
     public static String getUTCTime() {
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sszzz");
-      fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)));
-    //    fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getTimeZone("UTC").getDisplayName(false, TimeZone.LONG)));
+        //  SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSzzz");
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)));
+        //    fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getTimeZone("UTC").getDisplayName(false, TimeZone.LONG)));
         String utcTime = fmt.format(new Date());
         LogUtils.json("utc Time=" + utcTime);
+        String str2 = utcTime.replaceAll("GMT", "");
+        LogUtils.json("last Time=" + str2);
+        LogUtils.json("currentTimeMillis Time=" + System.currentTimeMillis());
         return utcTime;
     }
 }

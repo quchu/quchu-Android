@@ -104,7 +104,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     private PlanetActHolder planetHolder;
     private AnimatorSet animatorSet;
     PlanetImgGridAdapter imageAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -322,7 +321,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        startActivity(new Intent(PlanetActivity.this, FlickrActivity.class));
+        if (!SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false))
+            startActivity(new Intent(PlanetActivity.this, FlickrActivity.class));
     }
 
     Intent intent;

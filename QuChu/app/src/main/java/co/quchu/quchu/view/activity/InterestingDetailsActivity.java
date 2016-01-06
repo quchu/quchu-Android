@@ -29,6 +29,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ShareDialogFg;
+import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.utils.StringUtils;
@@ -311,7 +312,7 @@ public class InterestingDetailsActivity extends BaseActivity {
     }
 
     @OnClick({R.id.detail_store_phone_ll, R.id.detail_been_tv, R.id.detail_button_collect_out_rl, R.id.detail_button_collect_rl,
-            R.id.detail_button_add_postcard_out_rl, R.id.detail_button_add_postcard_rl, R.id.detail_button_share_out_rl, R.id.detail_button_share_rl})
+            R.id.detail_button_add_postcard_out_rl, R.id.detail_button_add_postcard_rl, R.id.detail_button_share_out_rl, R.id.detail_button_share_rl, R.id.detail_want_tv})
     public void detailClick(View v) {
         switch (v.getId()) {
             case R.id.detail_store_phone_ll:
@@ -322,6 +323,8 @@ public class InterestingDetailsActivity extends BaseActivity {
                 break;
             case R.id.detail_want_tv:
                 //用户想去
+                WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
+                lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
                 break;
             case R.id.detail_button_add_postcard_out_rl:
             case R.id.detail_button_add_postcard_rl:
@@ -420,5 +423,27 @@ public class InterestingDetailsActivity extends BaseActivity {
         super.onDestroy();
         gatherViewModel.setViewDuration((System.currentTimeMillis() - startViewTime) / 1000);
         AppContext.gatherDataModel.viewList.add(gatherViewModel);
+    }
+
+    public class Want2GoClickImpl implements WantToGoDialogFg.Wan2GoClickListener {
+
+        @Override
+        public void collectClick() {
+            if (dModel.isIsf()) {
+                Toast.makeText(InterestingDetailsActivity.this, "已经收藏成功了!", Toast.LENGTH_SHORT).show();
+            } else {
+                setFavorite();
+            }
+        }
+
+        @Override
+        public void reserveClick() {
+            if (StringUtils.isEmpty(dModel.getNet())) {
+                Toast.makeText(InterestingDetailsActivity.this, "还没找到去往你心里的路...", Toast.LENGTH_SHORT).show();
+            } else {
+                startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+            }
+
+        }
     }
 }

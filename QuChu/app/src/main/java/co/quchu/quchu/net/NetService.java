@@ -10,6 +10,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
 import org.json.JSONException;
@@ -64,13 +65,15 @@ public class NetService {
                 if (AppContext.gatherDataModel != null && (AppContext.gatherDataModel.collectList.size() > 0 || AppContext.gatherDataModel.rateList.size() > 0 || AppContext.gatherDataModel.viewList.size() > 0)) {
                     if (params == null)
                         params = new JSONObject();
-                    params.put("user_data", AppContext.gatherDataModel);
+                    params.put("userBehavior", new Gson().toJson(AppContext.gatherDataModel));
                     AppContext.gatherDataModel = new GatherDataModel();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0);
+            if (params != null)
+                LogUtils.json("userData==" + params.toString());
         }
     }
 

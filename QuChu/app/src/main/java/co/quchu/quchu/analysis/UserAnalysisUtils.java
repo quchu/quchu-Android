@@ -1,5 +1,13 @@
 package co.quchu.quchu.analysis;
 
+import android.content.Context;
+
+import org.json.JSONObject;
+
+import co.quchu.quchu.net.IRequestListener;
+import co.quchu.quchu.net.NetApi;
+import co.quchu.quchu.net.NetService;
+
 /**
  * UserAnalysisUtils
  * User: Chenhs
@@ -18,5 +26,18 @@ package co.quchu.quchu.analysis;
  */
 public class UserAnalysisUtils {
 
+    public static void sendUserBehavior(Context mContext){
+        NetService.post(mContext, NetApi.userBehavior, null, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+
+            }
+
+            @Override
+            public boolean onError(String error) {
+                return false;
+            }
+        });
+    }
 
 }

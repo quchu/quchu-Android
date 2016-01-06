@@ -9,8 +9,8 @@ public class NetApi {
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
     public static String location_HOST = "http://192.168.1.134:8080/appservices";
     public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
-    public static String DEBUG_TOKEN = "8c6c7322163dc815c3f45c39c9f63dbb16460465";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
+    //  public static final String HOST = location_HOST;
     public static final String HOST = Constants.ISDEBUG ? DEBUG_HOST : DEBUG_HOST;
     /****
      * Get start
@@ -72,6 +72,7 @@ public class NetApi {
 
 
     public static final String getUserGene = HOST + "/personal/getUserGene";  //获取用户基因
+    public static final String userBehavior = HOST + "/push/userBehavior";  //用户数据采集
 
     /****  Get end  ****/
 

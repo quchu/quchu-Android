@@ -82,10 +82,13 @@ public class ClassifyFragment extends Fragment {
                                 cAdapter.setOnItemCliskListener(new ClassifyAdapter.ClasifyClickListener() {
                                     @Override
                                     public void cItemClick(View view, int position) {
-                                        SPUtils.putValueToSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, cList.get(position).getEn());
-                                        SPUtils.putUserSelectedClassify(cList.get(position).getEn());
-                                                ((RecommendActivity) getActivity()).selectedClassify();
-                                        LogUtils.json("分类 被点击  条目==" + position);
+                                        if (cList.get(position).isIsSend()) {
+                                            SPUtils.putValueToSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, cList.get(position).getEn());
+                                            SPUtils.putUserSelectedClassify(cList.get(position).getEn());
+                                            ((RecommendActivity) getActivity()).selectedClassify();
+                                        }
+
+                                        // LogUtils.json("分类 被点击  条目==" + position);
                                     }
                                 });
                             }

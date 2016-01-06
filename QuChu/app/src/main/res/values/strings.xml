@@ -79,4 +79,5 @@
         <item>豆瓣</item>
         <item>手机相册</item>
     </array>
+    <string name="app_exit_text">再按一次退出程序</string>
 </resources>

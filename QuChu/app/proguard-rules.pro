@@ -73,7 +73,7 @@ public static final int *;
 ## ----------------------------------
 #-keep class com.facebook.** {*;}
 #-keep public class * extends com.facebook.**
-
+-keep class com.facebook.** {*;}
 ## ----------------------------------
 ##   ########## photoView混淆  ######
 ## ----------------------------------

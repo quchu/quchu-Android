@@ -83,6 +83,7 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
         mDebug = args.getBoolean(BUNDLE_KEY_DEBUG);*/
 
         cityList = (ArrayList<CityModel>) args.getSerializable(CITY_LIST_MODEL);
+
     }
 
     @Override
@@ -130,11 +131,13 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     }
 
     private void initSelected() {
-        for (int i = 0; i < cityList.size(); i++) {
-            if (cityList.get(i).getCvalue().equals(SPUtils.getCityName())) {
-                cityList.get(i).setIsSelected(true);
-            } else {
-                cityList.get(i).setIsSelected(false);
+        if (cityList != null && cityList.size() > 0) {
+            for (int i = 0; i < cityList.size(); i++) {
+                if (cityList.get(i).getCvalue().equals(SPUtils.getCityName())) {
+                    cityList.get(i).setIsSelected(true);
+                } else {
+                    cityList.get(i).setIsSelected(false);
+                }
             }
         }
     }
