@@ -20,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.analysis.GatherCityModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
@@ -187,7 +188,8 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
                 if (getActivity() instanceof RecommendActivity)
                     ((RecommendActivity) getActivity()).updateRecommend();
 
-                AppContext.gatherDataModel.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
+                //   AppContext.gatherList.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
+                AppContext.gatherList.add(new GatherCityModel(cityList.get(adapter.getSelectedIndex()).getCid()));
             case R.id.dialog_location_cancel_tv:
                 LocationSelectedDialogFg.this.dismiss();
                 break;

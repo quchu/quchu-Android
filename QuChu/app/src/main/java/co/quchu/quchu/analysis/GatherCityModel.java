@@ -1,5 +1,7 @@
 package co.quchu.quchu.analysis;
 
+import java.util.HashMap;
+
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.DateUtils;
 
@@ -18,28 +20,26 @@ public class GatherCityModel {
      * eventTime : 2015-10-05T21:02:49.228Z（timeStamp）
      * properties : {"city":"locationOfUser"}
      */
-
-    private String entityId;
-    private String entityType;
-    private String event;
-    private String eventTime;
+    public String event;
+    public String eventTime;
+    public String entityType;
+    public String entityId;
     /**
      * city : locationOfUser
      */
-
-    private PropertiesEntity properties;
+    public HashMap<String, Integer> properties;
 
     public GatherCityModel(int cityIndex) {
-        entityId = AppContext.user.getUserId() + "";
+        if (AppContext.user != null) {
+            entityId = AppContext.user.getUserId()+"";
+        } else {
+            entityId = 0+"";
+        }
         entityType = "user";
-        event = "$set";
         eventTime = DateUtils.getUTCTime();
-        properties=new PropertiesEntity();
-        properties.setCity(cityIndex);
-    }
-
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
+        event = "$set";
+        properties = new HashMap<>();
+        properties.put("city", cityIndex);
     }
 
     public void setEntityType(String entityType) {
@@ -54,14 +54,6 @@ public class GatherCityModel {
         this.eventTime = eventTime;
     }
 
-    public void setProperties(PropertiesEntity properties) {
-        this.properties = properties;
-    }
-
-    public String getEntityId() {
-        return entityId;
-    }
-
     public String getEntityType() {
         return entityType;
     }
@@ -72,21 +64,5 @@ public class GatherCityModel {
 
     public String getEventTime() {
         return eventTime;
-    }
-
-    public PropertiesEntity getProperties() {
-        return properties;
-    }
-
-    public static class PropertiesEntity {
-        private int city;
-
-        public void setCity(int city) {
-            this.city = city;
-        }
-
-        public int getCity() {
-            return city;
-        }
     }
 }

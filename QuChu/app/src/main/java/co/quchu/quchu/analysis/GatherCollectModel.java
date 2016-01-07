@@ -1,6 +1,7 @@
 package co.quchu.quchu.analysis;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.DateUtils;
@@ -23,19 +24,25 @@ public class GatherCollectModel implements Serializable {
      * properties : {}
      * eventTime : 2015-10-05T21:02:49.228Z（timeStamp）
      */
-
-    private String event;
-    private String entityType;
-    private String entityId;
-    private String targetEntityType;
-    private String targetEntityId;
-    private PropertiesEntity properties;
-    private String eventTime;
+    public String eventTime;
+    public String entityType;
+    public String entityId;
+    public String event;
+    public String targetEntityType;
+    public String targetEntityId;
+    public HashMap<String, Integer> properties;
 
     public static int collectPlace = 0x00;
     public static int collectCard = 0x01;
 
-    public GatherCollectModel(int collectType, String targetId) {
+    public GatherCollectModel(int collectType, int targetId) {
+        if (AppContext.user != null) {
+            entityId = AppContext.user.getUserId() + "";
+        } else {
+            entityId = 0 + "";
+        }
+        entityType = "user";
+        eventTime = DateUtils.getUTCTime();
         if (collectType == collectPlace) {
             event = "storeCollect";
             targetEntityType = "storeItem";
@@ -43,24 +50,14 @@ public class GatherCollectModel implements Serializable {
             event = "cardCollect";
             targetEntityType = "cardItem";
         }
-        entityId = AppContext.user.getUserId() + "";
-        targetEntityId = targetId;
-        entityType = "user";
-        eventTime = DateUtils.getUTCTime();
-        properties=new PropertiesEntity();
+        targetEntityId = targetId + "";
+        properties = new HashMap<>();
     }
 
     public void setEvent(String event) {
         this.event = event;
     }
 
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
-    }
-
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
-    }
 
     public void setTargetEntityType(String targetEntityType) {
         this.targetEntityType = targetEntityType;
@@ -70,24 +67,9 @@ public class GatherCollectModel implements Serializable {
         this.targetEntityId = targetEntityId;
     }
 
-    public void setProperties(PropertiesEntity properties) {
-        this.properties = properties;
-    }
-
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
-    }
 
     public String getEvent() {
         return event;
-    }
-
-    public String getEntityType() {
-        return entityType;
-    }
-
-    public String getEntityId() {
-        return entityId;
     }
 
     public String getTargetEntityType() {
@@ -98,14 +80,4 @@ public class GatherCollectModel implements Serializable {
         return targetEntityId;
     }
 
-    public PropertiesEntity getProperties() {
-        return properties;
-    }
-
-    public String getEventTime() {
-        return eventTime;
-    }
-
-    public static class PropertiesEntity {
-    }
 }

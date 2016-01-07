@@ -1,5 +1,7 @@
 package co.quchu.quchu.analysis;
 
+import java.util.HashMap;
+
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.DateUtils;
 
@@ -9,7 +11,7 @@ import co.quchu.quchu.utils.DateUtils;
  * Date: 2015-12-29
  * 数据采集 页面浏览记录
  */
-public class GatherViewModel {
+public class GatherViewModel{
 
     /**
      * entityId :  user的id
@@ -20,35 +22,34 @@ public class GatherViewModel {
      * targetEntityId : 店铺id
      * targetEntityType : item
      */
-
-    private String entityId;
-    private String entityType;
-    private String event;
-    private String eventTime;
+    public String eventTime;
+    public String entityType;
+    public String entityId;
+    public String event;
     /**
      * viewDuration : 1002
      */
-    private PropertiesEntity properties;
-    private String targetEntityId;
-    private String targetEntityType;
+    public HashMap<String, Long> properties;
+    public String targetEntityId;
+    public String targetEntityType;
 
     public GatherViewModel(String placeId) {
-        entityId = AppContext.user.getUserId() + "";
+        if (AppContext.user != null) {
+            entityId = AppContext.user.getUserId()+"";
+        } else {
+            entityId = 0+"";
+        }
         entityType = "user";
-        event = "view";
         eventTime = DateUtils.getUTCTime();
+        event = "view";
         targetEntityType = "item";
         targetEntityId = placeId;
     }
 
     public void setViewDuration(long vDuration) {
         if (properties == null)
-            properties = new PropertiesEntity();
-        properties.setViewDuration(vDuration);
-    }
-
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
+            properties = new HashMap<>();
+        properties.put("viewDuration", vDuration);
     }
 
     public void setEntityType(String entityType) {
@@ -63,9 +64,6 @@ public class GatherViewModel {
         this.eventTime = eventTime;
     }
 
-    public void setProperties(PropertiesEntity properties) {
-        this.properties = properties;
-    }
 
     public void setTargetEntityId(String targetEntityId) {
         this.targetEntityId = targetEntityId;
@@ -73,10 +71,6 @@ public class GatherViewModel {
 
     public void setTargetEntityType(String targetEntityType) {
         this.targetEntityType = targetEntityType;
-    }
-
-    public String getEntityId() {
-        return entityId;
     }
 
     public String getEntityType() {
@@ -91,27 +85,11 @@ public class GatherViewModel {
         return eventTime;
     }
 
-    public PropertiesEntity getProperties() {
-        return properties;
-    }
-
     public String getTargetEntityId() {
         return targetEntityId;
     }
 
     public String getTargetEntityType() {
         return targetEntityType;
-    }
-
-    public static class PropertiesEntity {
-        private long viewDuration;
-
-        public void setViewDuration(long viewDuration) {
-            this.viewDuration = viewDuration;
-        }
-
-        public long getViewDuration() {
-            return viewDuration;
-        }
     }
 }

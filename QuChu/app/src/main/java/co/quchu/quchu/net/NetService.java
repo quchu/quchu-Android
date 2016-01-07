@@ -16,9 +16,10 @@ import com.squareup.okhttp.OkHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-import co.quchu.quchu.analysis.GatherDataModel;
+import co.quchu.quchu.analysis.GatherSendDataModel;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -62,11 +63,13 @@ public class NetService {
             NetErrorDialog.showProgess(cont);
         } else {
             try {
-                if (AppContext.gatherDataModel != null && (AppContext.gatherDataModel.collectList.size() > 0 || AppContext.gatherDataModel.rateList.size() > 0 || AppContext.gatherDataModel.viewList.size() > 0)) {
+                if (AppContext.gatherList != null && AppContext.gatherList.size() > 0) {
                     if (params == null)
                         params = new JSONObject();
-                    params.put("userBehavior", new Gson().toJson(AppContext.gatherDataModel));
-                    AppContext.gatherDataModel = new GatherDataModel();
+                    GatherSendDataModel model = new GatherSendDataModel(AppContext.gatherList);
+                    params.put("userBehavior", new Gson().toJson(model));
+                    AppContext.gatherList = new ArrayList<>();
+                    model = null;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -81,7 +84,6 @@ public class NetService {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             NetErrorDialog.showProgess(cont);
         } else {
-
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0);
         }
     }

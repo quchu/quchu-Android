@@ -39,4 +39,8 @@
         android:text="关于我们"
         android:textColor="@color/text_color_white"
         android:textSize="@dimen/word_subhead_size" />
+
+    <View
+        android:layout_width="0.1dp"
+        android:layout_height="@dimen/half_margin" />
 </LinearLayout>

@@ -234,7 +234,7 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
                 notifyDataSetChanged();
                 if (arrayList.get(position).isIsf()) {
                     Toast.makeText(mContext, "收藏成功!", Toast.LENGTH_SHORT).show();
-                    AppContext.gatherDataModel.collectList.add(new GatherCollectModel(GatherCollectModel.collectCard, arrayList.get(position).getCardId() + ""));
+                    AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectCard, arrayList.get(position).getCardId()));
                 } else {
                     Toast.makeText(mContext, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }

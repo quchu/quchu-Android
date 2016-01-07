@@ -79,9 +79,9 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
             }
         });
         fRecommendRvp.addOnLayoutChangeListener();
-      //  if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
-            changeDataSetFromServer();
-      //  }
+        //  if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
+        changeDataSetFromServer();
+        //  }
         return view;
     }
 
@@ -100,7 +100,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
 
 
     public void changeDataSetFromServer() {
-        RecommendPresenter.getRecommendList(getActivity(),true, new RecommendPresenter.GetRecommendListener() {
+        RecommendPresenter.getRecommendList(getActivity(), true, new RecommendPresenter.GetRecommendListener() {
             @Override
             public void onSuccess(ArrayList<RecommendModel> arrayList) {
                 adapter.changeDataSet(arrayList);
@@ -140,7 +140,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                 adapter.notifyDataSetChanged();
                 if (cardList.get(position).isIsf()) {
                     Toast.makeText(getActivity(), "收藏成功!", Toast.LENGTH_SHORT).show();
-                    AppContext.gatherDataModel.collectList.add(new GatherCollectModel(GatherCollectModel.collectPlace, cardList.get(position).getPid() + ""));
+                    AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, cardList.get(position).getPid()));
                 } else {
                     Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();
                 }

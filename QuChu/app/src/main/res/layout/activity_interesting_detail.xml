@@ -150,7 +150,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/half_margin"
                     android:layout_marginTop="@dimen/half_margin"
-                    android:text="sds"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_subhead_size" />
 
@@ -231,7 +230,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="地址 "
                         android:textColor="@color/text_color_white"
                         android:textSize="@dimen/word_size_body" />
 
@@ -260,7 +258,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/half_margin"
                         android:layout_weight="1"
-                        android:text="电话号码"
                         android:textColor="@color/text_color_white"
                         android:textSize="@dimen/word_size_body" />
 
@@ -480,7 +477,6 @@
                     android:layout_marginBottom="@dimen/half_margin"
                     android:layout_marginLeft="@dimen/half_margin"
                     android:layout_marginTop="@dimen/half_margin"
-                    android:text="周末"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_size_body" />
             </LinearLayout>

@@ -13,7 +13,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
-import co.quchu.quchu.analysis.GatherDataModel;
+import java.util.ArrayList;
+
+import co.quchu.quchu.analysis.GatherModel;
 import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.utils.DateUtils;
@@ -34,7 +36,7 @@ public class AppContext extends Application {
     public static float Width = 0;
     // 屏幕高度
     public static float Height = 0;
-    public static GatherDataModel gatherDataModel;
+    public static ArrayList<Object> gatherList;
 
     @Override
     public void onCreate() {
@@ -52,12 +54,13 @@ public class AppContext extends Application {
             if (user == null) {
                 LogUtils.json(SPUtils.getUserInfo(this));
                 user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
-                gatherDataModel = new GatherDataModel();
+                gatherList = new ArrayList<>();
             }
         }
         initImageLoader();
         initWidths();
         DateUtils.getUTCTime();
+        LogUtils.json(new Gson().toJson(new GatherModel()));
     }
 
     public void initWidths() {

@@ -143,7 +143,7 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
                 adapter.notifyDataSetChanged();
                 if (dCardList.get(position).isIsf()) {
                     Toast.makeText(getActivity(), "收藏成功!", Toast.LENGTH_SHORT).show();
-                    AppContext.gatherDataModel.collectList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dCardList.get(position).getPid() + ""));
+                    AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dCardList.get(position).getPid()));
                 } else {
                     Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();
                 }

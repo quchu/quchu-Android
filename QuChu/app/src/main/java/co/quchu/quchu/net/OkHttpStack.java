@@ -125,13 +125,14 @@ private final OkHttpClient mClient;
                 }
                 break;
             case Request.Method.GET:
+                LogUtils.json("GET okhttp:=="+request.toString());
                 builder.get();
                 break;
             case Request.Method.DELETE:
                 builder.delete();
                 break;
             case Request.Method.POST:
-                LogUtils.json("okhttp:=="+request.toString());
+                LogUtils.json("POST okhttp:=="+request.toString());
                 builder.post(createRequestBody(request));
                 break;
             case Request.Method.PUT:

@@ -64,7 +64,7 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                 startActivity(new Intent(this, SearchActivity.class));
                 break;
             case R.id.menus_add_topic:
-                Toast.makeText(this, "发现新趣处", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -116,7 +116,7 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                 this.finish();
                 break;
             case PullMenusView.ClickMessage:
-                Toast.makeText(this, " ClickMessage ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
                 break;
             case PullMenusView.ClickSetting:
              /*   Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);

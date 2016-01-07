@@ -1,17 +1,16 @@
 package co.quchu.quchu.net;
 
-import co.quchu.quchu.base.Constants;
-
 /**
  * netApi
  */
 public class NetApi {
+    public static boolean isDebug = true;
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
     public static String location_HOST = "http://192.168.1.134:8080/appservices";
     public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
-    //  public static final String HOST = location_HOST;
-    public static final String HOST = Constants.ISDEBUG ? DEBUG_HOST : DEBUG_HOST;
+    //public static final String HOST = location_HOST;
+    public static final String HOST = true ? DEBUG_HOST : location_HOST;
     /****
      * Get start
      ****/

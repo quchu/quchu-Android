@@ -323,8 +323,12 @@ public class InterestingDetailsActivity extends BaseActivity {
                 break;
             case R.id.detail_want_tv:
                 //用户想去
-                WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
-                lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
+                if (dModel.isIsf()) {
+                    startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+                } else {
+                    WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
+                    lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
+                }
                 break;
             case R.id.detail_button_add_postcard_out_rl:
             case R.id.detail_button_add_postcard_rl:
@@ -373,7 +377,7 @@ public class InterestingDetailsActivity extends BaseActivity {
                 changeCollectState(dModel.isIsf());
                 if (dModel.isIsf()) {
                     Toast.makeText(InterestingDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
-                    AppContext.gatherDataModel.collectList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid() + ""));
+                    AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid()));
                 } else {
                     Toast.makeText(InterestingDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }
@@ -422,7 +426,8 @@ public class InterestingDetailsActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         gatherViewModel.setViewDuration((System.currentTimeMillis() - startViewTime) / 1000);
-        AppContext.gatherDataModel.viewList.add(gatherViewModel);
+        if (gatherViewModel != null)
+            AppContext.gatherList.add(gatherViewModel);
     }
 
     public class Want2GoClickImpl implements WantToGoDialogFg.Wan2GoClickListener {

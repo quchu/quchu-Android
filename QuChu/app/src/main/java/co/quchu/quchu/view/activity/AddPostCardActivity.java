@@ -303,7 +303,7 @@ public class AddPostCardActivity extends BaseActivity {
             @Override
             public void onSuccess(PostCardModel model) {
                 //   if (Bimp.delImageIdList.size() == 0) {
-                AppContext.gatherDataModel.rateList.add(new GatherRateModel(pId + "", addPostcardSuggestPrb.getRating()));
+                AppContext.gatherList.add(new GatherRateModel(pId + "", addPostcardSuggestPrb.getRating()));
                 DialogUtil.dismissProgessDirectly();
                 if (Bimp.imglist.size() > 0) {
                     Toast.makeText(AddPostCardActivity.this, "成功修改了趣处!", Toast.LENGTH_SHORT).show();
