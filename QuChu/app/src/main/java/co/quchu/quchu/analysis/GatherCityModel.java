@@ -38,7 +38,7 @@ public class GatherCityModel {
         entityType = "user";
         eventTime = DateUtils.getUTCTime();
         event = "$set";
-        properties = new HashMap<>();
+        properties = new HashMap<String, Integer>();
         properties.put("city", cityIndex);
     }
 

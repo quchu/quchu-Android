@@ -26,6 +26,7 @@ import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
@@ -79,6 +80,9 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
                         if (!isRunningAnimation)
                             RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, true);
                 }
+                if (newPosition > oldPosition && newPosition == dCardList.size() - 1 && !isLoading) {
+                    loadMoreDateSet();
+                }
             }
         });
         dfRecommendRvp.addOnLayoutChangeListener();
@@ -88,6 +92,7 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
         return view;
     }
 
+    private boolean isLoading = false;
     private RecommendAdapter adapter;
 
     @OnClick(R.id.f_recommend_bottom_rl)
@@ -103,11 +108,13 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
 
 
     public void changeDataSetFromServer() {
-        RecommendPresenter.getRecommendList(getActivity(),false, new RecommendPresenter.GetRecommendListener() {
+        RecommendPresenter.getRecommendList(getActivity(), false, new RecommendPresenter.GetRecommendListener() {
             @Override
-            public void onSuccess(ArrayList<RecommendModel> arrayList) {
-                adapter.changeDataSet(arrayList);
+            public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
+                pageCounts = pageCount;
+                pageNums = pageNum;
                 dCardList = arrayList;
+                adapter.changeDataSet(dCardList);
                 dfRecommendRvp.smoothScrollToPosition(0);
                 if (dfRecommendBottomRl.getVisibility() == View.VISIBLE)
                     RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, false);
@@ -154,5 +161,28 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
 
             }
         });
+    }
+
+    private int pageCounts = 2, pageNums = 1;
+
+    public void loadMoreDateSet() {
+        if (pageNums < pageCounts) {
+            isLoading = true;
+            pageNums++;
+            RecommendPresenter.loadMoreRecommendList(getActivity(), false, pageNums, new RecommendPresenter.GetRecommendListener() {
+                @Override
+                public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
+                    LogUtils.json("pageNums==" + pageNums);
+                    pageCounts = pageCount;
+                    pageNums = pageNum;
+                    if (arrayList != null && arrayList.size() > 0) {
+                        //    adapter.loadMoreDataSet(arrayList);
+                        dCardList.addAll(arrayList);
+                        adapter.notifyDataSetChanged();
+                    }
+                    isLoading = false;
+                }
+            });
+        }
     }
 }

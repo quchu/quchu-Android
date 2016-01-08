@@ -3,48 +3,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
-    android:background="@color/appBackground">
+    android:background="@drawable/ic_splash_bg">
 
 
-    <ImageView
-        android:id="@+id/splash_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="160dp"
-        android:src="@drawable/ic_quchu_app_logo" />
+    <!--  <ImageView
+          android:id="@+id/splash_iv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_marginTop="160dp"
+          android:src="@drawable/ic_quchu_app_logo" />
 
-    <TextView
-        android:id="@+id/splash_app_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/splash_iv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:text="趣处"
-        android:textColor="@color/text_color_white"
-        android:textSize="32sp" />
+      <TextView
+          android:id="@+id/splash_app_name_tv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/splash_iv"
+          android:layout_centerHorizontal="true"
+          android:layout_marginTop="@dimen/quarter_margin"
+          android:text="趣处"
+          android:textColor="@color/text_color_white"
+          android:textSize="32sp" />
 
-    <TextView
-        android:id="@+id/splash_app_version_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/splash_app_name_tv"
-        android:layout_marginLeft="@dimen/tow_dp_margin"
-        android:layout_marginTop="@dimen/tow_dp_margin"
-        android:layout_toRightOf="@id/splash_app_name_tv"
-        android:textColor="@color/text_color_white"
-        android:textSize="@dimen/word_size_time" />
+      <TextView
+          android:id="@+id/splash_app_version_name_tv"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignTop="@id/splash_app_name_tv"
+          android:layout_marginLeft="@dimen/tow_dp_margin"
+          android:layout_marginTop="@dimen/tow_dp_margin"
+          android:layout_toRightOf="@id/splash_app_name_tv"
+          android:textColor="@color/text_color_white"
+          android:textSize="@dimen/word_size_time" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="24dp"
-        android:gravity="center_horizontal"
-        android:text="Copyright &#169; 2015 QUCHU Technologies. \r\nAll rights resvered"
-        android:textColor="@color/text_color_white"
-        android:textSize="@dimen/word_size_body" />
-
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:layout_marginBottom="24dp"
+          android:gravity="center_horizontal"
+          android:text="Copyright &#169; 2015 QUCHU Technologies. \r\nAll rights resvered"
+          android:textColor="@color/text_color_white"
+          android:textSize="@dimen/word_size_body" />
+  -->
 
 </RelativeLayout>

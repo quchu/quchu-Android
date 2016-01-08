@@ -75,8 +75,8 @@ public class NetService {
                 e.printStackTrace();
             }
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0);
-            if (params != null)
-                LogUtils.json("userData==" + params.toString());
+          /*  if (params != null)
+                LogUtils.json("userData==" + params.toString());*/
         }
     }
 

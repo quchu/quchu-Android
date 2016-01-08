@@ -25,6 +25,7 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
 import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
@@ -76,6 +77,10 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                         if (!isRunningAnimation)
                             RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, true);
                 }
+                LogUtils.json("newPosition=" + newPosition + "//oldPosition=" + oldPosition + "//cardList.size() - 1===" + (cardList.size() - 1));
+                if (newPosition > oldPosition && newPosition == cardList.size() - 1 && !isLoading) {
+                    loadMoreDateSet();
+                }
             }
         });
         fRecommendRvp.addOnLayoutChangeListener();
@@ -85,6 +90,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
         return view;
     }
 
+    private boolean isLoading = false;
     private RecommendAdapter adapter;
 
     @OnClick(R.id.f_recommend_bottom_rl)
@@ -102,9 +108,11 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
     public void changeDataSetFromServer() {
         RecommendPresenter.getRecommendList(getActivity(), true, new RecommendPresenter.GetRecommendListener() {
             @Override
-            public void onSuccess(ArrayList<RecommendModel> arrayList) {
-                adapter.changeDataSet(arrayList);
+            public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
                 cardList = arrayList;
+                adapter.changeDataSet(cardList);
+                pageCounts = pageCount;
+                pageNums = pageNum;
                 fRecommendRvp.smoothScrollToPosition(0);
                 if (fRecommendBottomRl.getVisibility() == View.VISIBLE)
                     RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
@@ -112,6 +120,28 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
         });
     }
 
+    public void loadMoreDateSet() {
+        if (pageNums < pageCounts) {
+            isLoading = true;
+            pageNums++;
+            RecommendPresenter.loadMoreRecommendList(getActivity(), true, pageNums, new RecommendPresenter.GetRecommendListener() {
+                @Override
+                public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
+                    LogUtils.json("pageNums==" + pageNums);
+                    pageCounts = pageCount;
+                    pageNums = pageNum;
+                    if (arrayList != null && arrayList.size() > 0) {
+                        //    adapter.loadMoreDataSet(arrayList);
+                        cardList.addAll(arrayList);
+                        adapter.notifyDataSetChanged();
+                    }
+                    isLoading = false;
+                }
+            });
+        }
+    }
+
+    private int pageCounts = 2, pageNums = 1;
     private Intent intent;
 
     @Override

@@ -44,12 +44,11 @@
         android:id="@+id/f_recommend_rvp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/f_recommend_bottom_rl"
         android:clipToPadding="false"
+        android:layout_above="@id/f_recommend_bottom_rl"
         android:overScrollMode="never"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         app:singlePageFling="true"
         app:triggerOffset="0.1" />
-
 </RelativeLayout>

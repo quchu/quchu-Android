@@ -51,16 +51,22 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         notifyDataSetChanged();
     }
 
+    public void loadMoreDataSet(ArrayList<RecommendModel> arrayList) {
+        this.arrayList.addAll(arrayList);
+        notifyDataSetChanged();
+    }
+
 
     @Override
-    public RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecommendAdapter.RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecommendHolder holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview, parent, false), listener);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(RecommendHolder holder, int position) {
+    public void onBindViewHolder(RecommendAdapter.RecommendHolder holder, int position) {
         RecommendModel model = arrayList.get(position);
+
         if (!StringUtils.isEmpty(model.getRgb())) {
             holder.rootCv.setCardBackgroundColor(Color.parseColor("#" + model.getRgb()));
         } else {
@@ -88,8 +94,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         holder.itemRecommendCardProgressTwo.setProgressName(model.getGenes().get(1).getKey());
         holder.itemRecommendCardProgressThree.setProgress(model.getGenes().get(2).getValue());
         holder.itemRecommendCardProgressThree.setProgressName(model.getGenes().get(2).getKey());
-    }
 
+    }
 
     @Override
     public int getItemCount() {

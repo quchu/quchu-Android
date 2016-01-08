@@ -10,15 +10,19 @@ import android.view.View;
  */
 public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
     private RecyclerViewPager mRecyclerView;
-    public HorizontalScrollListener(RecyclerViewPager mRecyclerView){
-        this.mRecyclerView=mRecyclerView;
+
+    public HorizontalScrollListener(RecyclerViewPager mRecyclerView) {
+        this.mRecyclerView = mRecyclerView;
     }
+
     @Override
     public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
+
     }
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int i, int i2) {
+        //    LogUtils.json("onScrolled==i=" + i + "////i2=" + i2);
 //                mPositionText.setText("First: " + mRecyclerView.getFirstVisiblePosition());
         int childCount = mRecyclerView.getChildCount();
         int width = mRecyclerView.getChildAt(0).getWidth();

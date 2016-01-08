@@ -26,7 +26,7 @@ import co.quchu.quchu.utils.StringUtils;
  * @author xiaanming
  */
 public class WiperSwitch extends View {
-    private static final String SWIPE_LOGIN_TEXT = "滑动退出登陆";
+    private static final String SWIPE_LOGIN_TEXT = "滑动退出登录";
 
     private static final int BACK_COLOR = Color.parseColor("#40000000");
     private static final int FRONT_COLOR = Color.parseColor("#d9000000");
@@ -55,18 +55,18 @@ public class WiperSwitch extends View {
     private boolean slideable;
 
     private Bitmap bitmap;
-private Context context;
+    private Context context;
     private StatusListener listener;
 
     public WiperSwitch(Context context) {
         super(context);
-        this.context= context;
+        this.context = context;
         initDrawingVal();
     }
 
     public WiperSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context= context;
+        this.context = context;
         initDrawingVal();
     }
 
@@ -77,7 +77,9 @@ private Context context;
         this.height = h;
         initDrawingVal();
     }
+
     BitmapFactory.Options options;
+
     private void initDrawingVal() {
         this.slideable = true;
 
@@ -86,7 +88,7 @@ private Context context;
 
         this.textPaint = new Paint();
         this.textPaint.setAntiAlias(true);
-        this.textPaint.setTextSize(StringUtils.dip2px(context,16));
+        this.textPaint.setTextSize(StringUtils.dip2px(context, 16));
         this.textPaint.setStyle(Paint.Style.STROKE);
         this.textPaint.setFakeBoldText(true);
 
@@ -151,9 +153,9 @@ private Context context;
         this.frontCircleRect.set(this.frontRect_left, 15, this.frontRect_left + this.backCircleRect.height() - 30, this.backCircleRect.height() - 18);
         this.paint.setColor(Color.YELLOW);
   /*     canvas.drawRoundRect(this.frontCircleRect, (float) radius, (float) radius, this.paint);*/
-      //  canvas.drawBitmap(iconbit, 0,0, this.paint);
+        //  canvas.drawBitmap(iconbit, 0,0, this.paint);
         if (this.bitmap != null) {
-            drawBitmapCenter(canvas, this.bitmap, this.frontCircleRect.centerX()+StringUtils.dip2px(context, 1), this.frontCircleRect.centerY()+StringUtils.dip2px(context,2), 1, this.paint);
+            drawBitmapCenter(canvas, this.bitmap, this.frontCircleRect.centerX() + StringUtils.dip2px(context, 1), this.frontCircleRect.centerY() + StringUtils.dip2px(context, 2), 1, this.paint);
         }
 
     }
@@ -202,7 +204,7 @@ private Context context;
                         break;
                     }
                     this.frontRect_left_begin = this.frontRect_left;
-                    boolean toRight = this.frontRect_left_begin > this.max_left*4 / 5;
+                    boolean toRight = this.frontRect_left_begin > this.max_left * 4 / 5;
                     this.moveToDest(toRight);
                     break;
                 case MotionEvent.ACTION_MOVE:

@@ -22,6 +22,8 @@ public class SearchModel {
     }
 
     public void setSearchList(ArrayList<SearchListEntity> searchList) {
+        if (searchList == null)
+            searchList = new ArrayList<SearchListEntity>();
         this.searchList = searchList;
     }
 
@@ -30,6 +32,8 @@ public class SearchModel {
     }
 
     public boolean removeSearchHistory(int index) {
+        if (searchList == null)
+            searchList = new ArrayList<SearchListEntity>();
         LogUtils.json("start  size=" + searchList.size() + "///index=" + index);
         if (index < searchList.size()) {
             searchList.remove(index);
@@ -43,6 +47,8 @@ public class SearchModel {
     }
 
     public ArrayList<SearchListEntity> removeAllSearchHistory() {
+        if (searchList == null)
+            searchList = new ArrayList<SearchListEntity>();
         int sCount = searchList.size();
         for (int i = 0; i < sCount; i++) {
             searchList.remove(0);
@@ -112,6 +118,8 @@ public class SearchModel {
 
     @Override
     public String toString() {
+        if (searchList == null)
+            searchList = new ArrayList<SearchListEntity>();
         return searchList.toString();
     }
 }

@@ -17,9 +17,11 @@ public class KeyboardUtils {
      * @param mcontext 上下文
      */
     public static void closeBoard(Context mcontext, View view) {
-        InputMethodManager imm = (InputMethodManager) mcontext
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) mcontext
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 

@@ -1,26 +1,19 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.testin.agent.TestinAgent;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.photo.AlbumHelper;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * SplashActivity
@@ -28,12 +21,12 @@ import co.quchu.quchu.utils.StringUtils;
  * Date: 2015-11-10
  */
 public class SplashActivity extends BaseActivity {
-    @Bind(R.id.splash_iv)
-    ImageView splashIv;
-    @Bind(R.id.splash_app_name_tv)
-    TextView splashAppNameTv;
-    @Bind(R.id.splash_app_version_name_tv)
-    TextView splashAppVersionNameTv;
+    /*    @Bind(R.id.splash_iv)
+        ImageView splashIv;
+        @Bind(R.id.splash_app_name_tv)
+        TextView splashAppNameTv;
+        @Bind(R.id.splash_app_version_name_tv)
+        TextView splashAppVersionNameTv;*/
     private long viewDuration = 2 * 1000;
 
     @Override
@@ -43,9 +36,9 @@ public class SplashActivity extends BaseActivity {
         TestinAgent.setLocalDebug(true);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
-        setIcon();
-        PackageManager pm = getPackageManager();//context为当前Activity上下文
+        //      ButterKnife.bind(this);
+        //     setIcon();
+       /* PackageManager pm = getPackageManager();//context为当前Activity上下文
         PackageInfo pi = null;
         String version = "";
         try {
@@ -56,7 +49,7 @@ public class SplashActivity extends BaseActivity {
         }
         if (!StringUtils.isEmpty(version)) {
             splashAppVersionNameTv.setText("V" + version);
-        }
+        }*/
   /*       rippleBackground=(CircleWaveView)findViewById(R.id.content);
         circleIv= (ImageView) findViewById(R.id.splash_circle_iv);*/
 /*        rippleBackground.startRippleAnimation();*/
@@ -154,6 +147,5 @@ public class SplashActivity extends BaseActivity {
             //不允许重复创建
             SPUtils.putBooleanToSPMap(this, AppKey.IS_NEED_ICON, false);
         }
-
     }
 }

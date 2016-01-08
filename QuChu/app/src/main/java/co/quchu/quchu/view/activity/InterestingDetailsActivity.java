@@ -338,7 +338,6 @@ public class InterestingDetailsActivity extends BaseActivity {
                 intent.putExtra("pName", dModel.getName());
                 intent.setClass(this, PlacePostCardActivity.class);
                 startActivity(intent);
-
                 break;
             case R.id.detail_button_collect_out_rl:
             case R.id.detail_button_collect_rl:
@@ -448,7 +447,6 @@ public class InterestingDetailsActivity extends BaseActivity {
             } else {
                 startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
             }
-
         }
     }
 }

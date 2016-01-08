@@ -43,21 +43,26 @@ public class RecommendPresenter {
         String urlStr = "";
         if (isDefaultData) {
             urlStr = String.format(NetApi.getDefaultPlaceList,
-                    SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude()
+                    SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
             );
         } else {
             urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(),
-                    SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude()
+                    SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
             );
         }
         NetService.get(context, urlStr, new IRequestListener() {
 
             @Override
             public void onSuccess(JSONObject response) {
+                int pageCount = 2, pageNum = 1;
 
                 LogUtils.json("getPlaceList==" + response.toString());
                 try {
                     if (response.has("result") && !StringUtils.isEmpty(response.getString("result"))) {
+                        if (response.has("pageCount"))
+                            pageCount = response.getInt("pageCount");
+                        if (response.has("pagesNo"))
+                            pageNum = response.getInt("pagesNo");
                         JSONArray array = response.getJSONArray("result");
                         if (array.length() > 0) {
                             Gson gson = new Gson();
@@ -67,7 +72,7 @@ public class RecommendPresenter {
                                 model = gson.fromJson(array.getString(i), RecommendModel.class);
                                 arrayList.add(model);
                             }
-                            listener.onSuccess(arrayList);
+                            listener.onSuccess(arrayList, pageCount, pageNum);
 
                         }
                     }
@@ -85,8 +90,71 @@ public class RecommendPresenter {
         });
     }
 
+    /**
+     * 加载更多
+     *
+     * @param context
+     * @param isDefaultData
+     * @param listener
+     */
+    public static void loadMoreRecommendList(final Context context, boolean isDefaultData, int pageNumber, final GetRecommendListener listener) {
+        //    DialogUtil.showProgess(context, "数据加载中...");
+        String urlStr = "";
+        if (isDefaultData) {
+            urlStr = String.format(NetApi.getDefaultPlaceList,
+                    SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), pageNumber
+            );
+        } else {
+            urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(),
+                    SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude(), pageNumber
+            );
+        }
+        NetService.get(context, urlStr, new IRequestListener() {
+
+            @Override
+            public void onSuccess(JSONObject response) {
+                int pageCount = 2, pageNum = 1;
+
+                LogUtils.json("getPlaceList==" + response.toString());
+                try {
+                    if (response.has("result") && !StringUtils.isEmpty(response.getString("result"))) {
+                        if (response.has("pageCount"))
+                            pageCount = response.getInt("pageCount");
+                        if (response.has("pagesNo"))
+                            pageNum = response.getInt("pagesNo");
+
+
+                        LogUtils.json("pageCount==" + pageCount + "///pageNum==" + pageNum);
+                        JSONArray array = response.getJSONArray("result");
+                        if (array.length() > 0) {
+                            Gson gson = new Gson();
+                            ArrayList<RecommendModel> arrayList = new ArrayList<RecommendModel>();
+                            RecommendModel model;
+                            for (int i = 0; i < array.length(); i++) {
+                                model = gson.fromJson(array.getString(i), RecommendModel.class);
+                                arrayList.add(model);
+                            }
+                            listener.onSuccess(arrayList, pageCount, pageNum);
+
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //    DialogUtil.dismissProgess();
+            }
+
+            @Override
+            public boolean onError(String error) {
+                //       DialogUtil.dismissProgess();
+                return false;
+            }
+        });
+    }
+
+
     public interface GetRecommendListener {
-        void onSuccess(ArrayList<RecommendModel> arrayList);
+        void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum);
     }
 
 
@@ -116,7 +184,7 @@ public class RecommendPresenter {
                 viewGroup.setVisibility(View.VISIBLE);
                 if (fragment instanceof DefaultRecommendFragment) {
                     ((DefaultRecommendFragment) fragment).isRunningAnimation = true;
-                }else if (fragment instanceof  RecommendFragment){
+                } else if (fragment instanceof RecommendFragment) {
                     ((RecommendFragment) fragment).isRunningAnimation = true;
                 }
             }
@@ -129,7 +197,7 @@ public class RecommendPresenter {
                     viewGroup.setVisibility(View.INVISIBLE);
                 if (fragment instanceof DefaultRecommendFragment) {
                     ((DefaultRecommendFragment) fragment).isRunningAnimation = false;
-                }else if (fragment instanceof  RecommendFragment){
+                } else if (fragment instanceof RecommendFragment) {
                     ((RecommendFragment) fragment).isRunningAnimation = false;
                 }
 

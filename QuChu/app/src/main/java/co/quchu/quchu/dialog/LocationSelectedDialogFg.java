@@ -189,6 +189,8 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
                     ((RecommendActivity) getActivity()).updateRecommend();
 
                 //   AppContext.gatherList.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
+                if (AppContext.gatherList == null)
+                    AppContext.gatherList = new ArrayList<>();
                 AppContext.gatherList.add(new GatherCityModel(cityList.get(adapter.getSelectedIndex()).getCid()));
             case R.id.dialog_location_cancel_tv:
                 LocationSelectedDialogFg.this.dismiss();
