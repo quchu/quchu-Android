@@ -312,7 +312,8 @@ public class InterestingDetailsActivity extends BaseActivity {
     }
 
     @OnClick({R.id.detail_store_phone_ll, R.id.detail_been_tv, R.id.detail_button_collect_out_rl, R.id.detail_button_collect_rl,
-            R.id.detail_button_add_postcard_out_rl, R.id.detail_button_add_postcard_rl, R.id.detail_button_share_out_rl, R.id.detail_button_share_rl, R.id.detail_want_tv})
+            R.id.detail_button_add_postcard_out_rl, R.id.detail_button_add_postcard_rl, R.id.detail_button_share_out_rl,
+            R.id.detail_button_share_rl, R.id.detail_want_tv})
     public void detailClick(View v) {
         switch (v.getId()) {
             case R.id.detail_store_phone_ll:

@@ -53,70 +53,89 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/menus_add_topic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ic_pull_menus_bottom_bg">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_pull_menus_add" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="我发现了一个新趣处"
+                    android:textColor="@color/text_color_white"
+                    android:textSize="@dimen/word_title_body" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/menus_add_topic"
             android:layout_below="@id/menus_search_bar"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/menus_search_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="32dp"
-                android:layout_marginTop="32dp"
-                android:textColor="@color/text_color_white"
-                android:textSize="@dimen/word_subhead_size" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.7">
+
+                <TextView
+                    android:id="@+id/menus_search_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:textColor="@color/text_color_white"
+                    android:textSize="@dimen/word_subhead_size" />
+            </RelativeLayout>
+
 
             <co.quchu.quchu.widget.textcounter.PullMenusView
                 android:id="@+id/menus_pullmenus_pmv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/menus_search_username"
-                android:layout_centerInParent="true" />
-
-            <co.quchu.quchu.widget.WiperSwitch
-                android:id="@+id/menus_logout_ws"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/menus_pullmenus_pmv"
-                android:layout_margin="40dp" />
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/base_margin" />
 
             <RelativeLayout
-                android:id="@+id/menus_add_topic"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/ic_pull_menus_bottom_bg">
+                android:layout_height="0dp"
+                android:layout_below="@id/menus_pullmenus_pmv"
+                android:layout_weight="1">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <co.quchu.quchu.widget.WiperSwitch
+                    android:id="@+id/menus_logout_ws"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
                     android:layout_centerInParent="true"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="8dp"
-                        android:src="@drawable/ic_pull_menus_add" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="我发现了一个新趣处"
-                        android:textColor="@color/text_color_white"
-                        android:textSize="@dimen/word_title_body" />
-                </LinearLayout>
-
+                    android:layout_marginBottom="@dimen/base_margin"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginTop="@dimen/base_margin" />
             </RelativeLayout>
-        </RelativeLayout>
+        </LinearLayout>
+
 
     </RelativeLayout>
 
