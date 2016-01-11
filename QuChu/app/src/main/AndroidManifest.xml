@@ -102,6 +102,10 @@
             android:label="@string/titlebar_word_postcard"
             android:screenOrientation="portrait" />
         <activity
+            android:name="co.quchu.quchu.view.activity.MessageCenterActivity"
+            android:label="@string/titlebar_word_message_center"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="co.quchu.quchu.view.activity.PostCardDetailActivity"
             android:label="@string/titlebar_word_my_postcard"
             android:screenOrientation="portrait" />

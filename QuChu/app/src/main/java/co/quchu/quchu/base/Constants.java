@@ -7,5 +7,5 @@ package co.quchu.quchu.base;
  * 常亮
  */
 public class Constants {
-    public static final boolean ISDEBUG=true;
+    public static final boolean ISDEBUG = true;
 }

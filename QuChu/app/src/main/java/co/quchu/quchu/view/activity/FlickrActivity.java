@@ -153,7 +153,7 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 transaction.commit();
                 break;
         }
-                scrollViewFlickr.smoothScrollTo(0, 0);
+        scrollViewFlickr.smoothScrollTo(0, 0);
     }
 
 
@@ -188,10 +188,16 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                     LogUtils.json("大图 listFragment   我的收藏  hot" + flickrFavoriteHot.getImgs().getResult().size());
                     flickrListFragment.changeDataSet(flickrFavoriteHot.getImgs());
                     showEmptyView(flickrFavoriteHot.getImgs());
+                    if (flickrFavoriteHot.getImgs().getResult().size() < 2) {
+                        flickrTsl.setVisibility(View.INVISIBLE);
+                    }
                 } else {//大图 listFragment  我的收藏  new
                     LogUtils.json("大图 listFragment   我的收藏  new" + flickrFavoriteNew.getImgs().getResult().size());
                     flickrListFragment.changeDataSet(flickrFavoriteNew.getImgs());
                     showEmptyView(flickrFavoriteNew.getImgs());
+                    if (flickrFavoriteNew.getImgs().getResult().size() < 2) {
+                        flickrTsl.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         } else {  //小图 gridFragment
@@ -207,14 +213,21 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                     showEmptyView(flickrImagesNew.getImgs());
                 }
             } else {  //小图 gridFragment  我的收藏
+
                 if (isSelectedHot) {//小图 gridFragment  我的收藏  hot
                     LogUtils.json("小图 gridFragment  我的收藏  hot" + flickrFavoriteHot.getImgs().getResult().size());
                     flickrGridFragment.changeDataSet(flickrFavoriteHot.getImgs());
                     showEmptyView(flickrFavoriteHot.getImgs());
+                    if (flickrFavoriteHot.getImgs().getResult().size() < 2) {
+                        flickrTsl.setVisibility(View.INVISIBLE);
+                    }
                 } else {//小图 gridFragment  我的收藏  new
                     LogUtils.json("小图 gridFragment  我的收藏  new" + flickrFavoriteNew.getImgs().getResult().size());
                     flickrGridFragment.changeDataSet(flickrFavoriteNew.getImgs());
                     showEmptyView(flickrFavoriteNew.getImgs());
+                    if (flickrFavoriteNew.getImgs().getResult().size() < 2) {
+                        flickrTsl.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         }

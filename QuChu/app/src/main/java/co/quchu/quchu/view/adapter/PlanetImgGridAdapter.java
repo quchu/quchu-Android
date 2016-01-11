@@ -86,10 +86,8 @@ public class PlanetImgGridAdapter extends BaseAdapter {
             } else {
                 pvh.planet_gallery_mask_rl.setVisibility(View.INVISIBLE);
             }
-
-      /*  AppContext.picasso.with(context).load("http://imgdn.paimeilv.com/1444721523235").config(Bitmap.Config.RGB_565).resize(StringUtils.dip2px(context,40), StringUtils.dip2px(context,40))
-                .centerCrop().into(pvh.sdv);*/
             pvh.sdv.setImageURI(Uri.parse(imgs.get(position).getPath()));
+            //      pvh.sdv.setImageURI(Uri.parse("http://7xo7et.com1.z0.glb.clouddn.com/11_1450686554749.JPEG?imageMogr2/format/webp"));
             pvh.sdv.setAspectRatio(1.0f);
         }
         return convertView;

@@ -80,7 +80,7 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
                         if (!isRunningAnimation)
                             RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, true);
                 }
-                if (newPosition > oldPosition && newPosition == dCardList.size() - 1 && !isLoading) {
+                if (newPosition > oldPosition && dCardList.size() > 3 && newPosition == dCardList.size() - 1 && !isLoading) {
                     loadMoreDateSet();
                 }
             }
@@ -89,6 +89,8 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
         if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
             changeDataSetFromServer();
         }
+        if (AppContext.dCardList == null)
+            AppContext.dCardList = new ArrayList<>();
         return view;
     }
 
@@ -128,8 +130,10 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
     public void onCardLick(View view, int position) {
         switch (view.getId()) {
             case R.id.root_cv:
+                AppContext.dCardList = dCardList;
                 intent = new Intent(getActivity(), InterestingDetailsActivity.class);
                 intent.putExtra("pId", dCardList.get(position).getPid());
+                intent.putExtra("pPosition", position);
                 getActivity().startActivity(intent);
                 break;
             case R.id.item_recommend_card_collect_rl:
@@ -183,6 +187,21 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
                     isLoading = false;
                 }
             });
+        }
+    }
+
+    public void updateDateSet() {
+        dCardList = AppContext.dCardList;
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+    }
+
+    public void removeDataSet(int removeIndex) {
+        LogUtils.json("removeDataSet==" + removeIndex);
+        if (adapter != null && removeIndex < dCardList.size()) {
+            dCardList.remove(removeIndex);
+            //  adapter.changeDataSet(dCardList);
+            adapter.notifyDataSetChanged();
         }
     }
 }

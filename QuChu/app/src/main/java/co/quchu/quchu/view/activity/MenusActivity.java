@@ -116,7 +116,8 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                 this.finish();
                 break;
             case PullMenusView.ClickMessage:
-                Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MenusActivity.this, MessageCenterActivity.class));
                 break;
             case PullMenusView.ClickSetting:
              /*   Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);

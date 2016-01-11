@@ -78,7 +78,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                             RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, true);
                 }
                 LogUtils.json("newPosition=" + newPosition + "//oldPosition=" + oldPosition + "//cardList.size() - 1===" + (cardList.size() - 1));
-                if (newPosition > oldPosition && newPosition == cardList.size() - 1 && !isLoading) {
+                if (newPosition > oldPosition && cardList.size() > 3 && newPosition == cardList.size() - 1 && !isLoading) {
                     loadMoreDateSet();
                 }
             }
@@ -87,6 +87,8 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
         //  if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
         changeDataSetFromServer();
         //  }
+        if (AppContext.dCardList == null)
+            AppContext.dCardList = new ArrayList<>();
         return view;
     }
 
@@ -148,7 +150,9 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
     public void onCardLick(View view, int position) {
         switch (view.getId()) {
             case R.id.root_cv:
+                AppContext.dCardList = cardList;
                 intent = new Intent(getActivity(), InterestingDetailsActivity.class);
+                intent.putExtra("pPosition", position);
                 intent.putExtra("pId", cardList.get(position).getPid());
                 getActivity().startActivity(intent);
                 break;
@@ -181,5 +185,20 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
 
             }
         });
+    }
+
+    public void updateDateSet() {
+        cardList = AppContext.dCardList;
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
+    }
+
+    public void removeDataSet(int removeIndex) {
+        LogUtils.json("removeDataSet==" + removeIndex);
+        if (adapter != null && removeIndex < cardList.size()) {
+            cardList.remove(removeIndex);
+            //adapter.changeDataSet(cardList);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

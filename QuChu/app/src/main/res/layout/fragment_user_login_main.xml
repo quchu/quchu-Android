@@ -32,12 +32,12 @@
              android:src="@drawable/ic_user_login_logo" />
 
      </co.quchu.quchu.widget.CircleWaveView>-->
-    <View
+    <RelativeLayout
         android:id="@+id/user_login_empty_v"
         android:layout_width="1dp"
-        android:layout_marginTop="@dimen/ImageSubTabLayoutHeight"
+        android:layout_height="36dp"
+        android:layout_marginTop="@dimen/ImageSubTabLayoutHeight" />
 
-        android:layout_height="36dp"/>
     <RelativeLayout
         android:id="@+id/user_login_bg_animators_rl"
         android:layout_width="wrap_content"
@@ -139,8 +139,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_user_login_phone" />
 

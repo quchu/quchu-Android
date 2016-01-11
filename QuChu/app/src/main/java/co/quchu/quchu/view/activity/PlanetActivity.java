@@ -99,9 +99,9 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     ImageView userGuideWpointIv;
     @Bind(R.id.user_guide_wpoint_desc_tv)
     TextView userGuideWpointDescTv;
-    private int AnimationDuration = 160 * 1000;
     private PlanetActPresenter presenter;
     private PlanetActHolder planetHolder;
+    private int AnimationDuration = 160 * 1000;
     private AnimatorSet animatorSet;
     PlanetImgGridAdapter imageAdapter;
     @Override
@@ -324,7 +324,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         if (!SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false))
             startActivity(new Intent(PlanetActivity.this, FlickrActivity.class));
     }
-
     Intent intent;
 
     @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv, R.id.planet_postcard_ll, R.id.planet_discover_ll,
@@ -337,20 +336,15 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                     hintGuideView();
                     intent.setClass(this, PostCardActivity.class);
                     startActivity(intent);
-
                     break;
             }
         } else {
             switch (v.getId()) {
                 case R.id.design_rpv: //设计
-                    intent.setClass(this, FriendsCircleIntroduceActivity.class);
-                    startActivity(intent);
                     break;
                 case R.id.pavilion_rpv://展馆
                     break;
                 case R.id.atmosphere_rpv: //氛围
-               /* intent.setClass(this, AtmosphereActivity.class);
-                startActivity(intent);*/
                     break;
                 case R.id.stroll_rpv://逛店
 
@@ -375,7 +369,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                     break;
                 case R.id.planet_myfocus_rl://趣星人
                 case R.id.planet_focusonme_rl://趣星人
-                    startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class));
+                //    startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class));
                     break;
             }
         }

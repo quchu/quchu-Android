@@ -32,6 +32,7 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.DetailListViewAdapter;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
@@ -142,7 +143,7 @@ public class InterestingDetailsActivity extends BaseActivity {
     LinearLayout detailActivityInfoLl;
     @Bind(R.id.detail_icons_rl)
     RelativeLayout detailIconsRl;
-    private int pId;
+    private int pId, pPosition;
     private float detailButtonGroupLlHeight = 0f;
     public DetailModel dModel;
     private GatherViewModel gatherViewModel;
@@ -177,6 +178,7 @@ public class InterestingDetailsActivity extends BaseActivity {
 
     private void initData() {
         pId = getIntent().getIntExtra("pId", -1);
+        pPosition = getIntent().getIntExtra("pPosition", 0);
         if (-1 == pId) {
             Toast.makeText(this, "该趣处已不存在!", Toast.LENGTH_SHORT).show();
         } else {
@@ -375,6 +377,8 @@ public class InterestingDetailsActivity extends BaseActivity {
             public void onSuccessCall(String str) {
                 dModel.setIsf(!dModel.isIsf());
                 changeCollectState(dModel.isIsf());
+                AppContext.dCardList.get(pPosition).setIsf(dModel.isIsf());
+                AppContext.dCardListNeedUpdate = true;
                 if (dModel.isIsf()) {
                     Toast.makeText(InterestingDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
                     AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid()));
@@ -426,8 +430,15 @@ public class InterestingDetailsActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         gatherViewModel.setViewDuration((System.currentTimeMillis() - startViewTime) / 1000);
+        if (AppContext.gatherList == null)
+            AppContext.gatherList = new ArrayList<>();
         if (gatherViewModel != null)
             AppContext.gatherList.add(gatherViewModel);
+        if (dModel != null && dModel.isIsout()) {
+            //  AppContext.dCardList.remove(pPosition);
+            AppContext.dCardListRemoveIndex = pPosition;
+        }
+        LogUtils.json("dModel.isIsout()=" + dModel.isIsout() + "///==position=" + pPosition);
     }
 
     public class Want2GoClickImpl implements WantToGoDialogFg.Wan2GoClickListener {

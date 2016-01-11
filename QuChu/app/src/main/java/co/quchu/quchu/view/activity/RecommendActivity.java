@@ -69,8 +69,9 @@ public class RecommendActivity extends BaseActivity {
     MoreButtonView titleMoreRl;*/
 
     public long firstTime = 0;
-    private Fragment recoFragment;
+    private RecommendFragment recoFragment;
     private Fragment classifyFragment;
+    DefaultRecommendFragment defaultRecommendFragment;
     private ArrayList<CityModel> list;
 
     private int viewPagerIndex = 1;
@@ -130,7 +131,6 @@ public class RecommendActivity extends BaseActivity {
                 if (flag == 0) {
                     LogUtils.json("selected == right");
                     viewpagerSelected(1);
-
                 } else {
                     viewpagerSelected(0);
                 }
@@ -144,7 +144,6 @@ public class RecommendActivity extends BaseActivity {
         });
     }
 
-    DefaultRecommendFragment defaultRecommendFragment;
 
     /*
    * 初始化ViewPager
@@ -226,8 +225,28 @@ public class RecommendActivity extends BaseActivity {
                 }
             }
         }
-
         return true;
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (AppContext.dCardListRemoveIndex != -1) {
+            if (viewPagerIndex == 0) {
+                recoFragment.removeDataSet(AppContext.dCardListRemoveIndex);
+            } else if (viewPagerIndex == 2) {
+                defaultRecommendFragment.removeDataSet(AppContext.dCardListRemoveIndex);
+            }
+            AppContext.dCardListRemoveIndex = -1;
+        } else {
+            if (AppContext.dCardListNeedUpdate) {
+                if (viewPagerIndex == 0) {
+                    recoFragment.updateDateSet();
+                } else if (viewPagerIndex == 2) {
+                    defaultRecommendFragment.updateDateSet();
+                }
+                AppContext.dCardListNeedUpdate = false;
+            }
+        }
     }
 }

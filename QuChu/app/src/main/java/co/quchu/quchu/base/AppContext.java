@@ -15,10 +15,9 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import java.util.ArrayList;
 
-import co.quchu.quchu.analysis.GatherModel;
 import co.quchu.quchu.model.PlacePostCardModel;
+import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -37,6 +36,9 @@ public class AppContext extends Application {
     // 屏幕高度
     public static float Height = 0;
     public static ArrayList<Object> gatherList;
+    public static ArrayList<RecommendModel> dCardList; //推荐分类 数据源
+    public static boolean dCardListNeedUpdate = false;
+    public static int dCardListRemoveIndex = -1;
 
     @Override
     public void onCreate() {
@@ -59,8 +61,9 @@ public class AppContext extends Application {
         }
         initImageLoader();
         initWidths();
-        DateUtils.getUTCTime();
-        LogUtils.json(new Gson().toJson(new GatherModel()));
+       /* DateUtils.getUTCTime();
+        LogUtils.json(new Gson().toJson(new GatherModel()));*/
+        //  dCardList = new ArrayList<>();
     }
 
     public void initWidths() {

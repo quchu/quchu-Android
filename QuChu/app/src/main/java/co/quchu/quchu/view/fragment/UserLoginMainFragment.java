@@ -53,7 +53,7 @@ public class UserLoginMainFragment extends Fragment {
     @Bind(R.id.user_login_bg_animators_iv)
     ImageView user_login_bg_animators_iv;
     @Bind(R.id.user_login_empty_v)
-    View userLoginEmptyV;
+    RelativeLayout userLoginEmptyV;
     @Bind(R.id.user_login_bg_animators_rl)
     RelativeLayout userLoginBgAnimatorsRl;
     @Bind(R.id.user_login_third_ll)
@@ -65,6 +65,7 @@ public class UserLoginMainFragment extends Fragment {
     private float phoneViewStartY = 0;
     private float phoneViewEndY = 0;
 
+    private float emptyY = 0f, phoneViewY = 0f;
 
     @Nullable
     @Override
@@ -81,10 +82,23 @@ public class UserLoginMainFragment extends Fragment {
                 public void onDraw() {
                     phoneViewStartY = userLoginMainPhoneLl.getY();
                     phoneViewEndY = userLoginEmptyV.getY();
-
                 }
             });
         }
+        userLoginEmptyV.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (userLoginEmptyV != null)
+                    emptyY = userLoginEmptyV.getY();
+            }
+        });
+        userLoginMainPhoneLl.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (userLoginMainPhoneLl != null)
+                    phoneViewY = userLoginMainPhoneLl.getY();
+            }
+        });
         return view;
     }
 
@@ -222,13 +236,20 @@ public class UserLoginMainFragment extends Fragment {
 
         animatorSetTransition = new AnimatorSet();
         float hs = StringUtils.dip2px(96 + 36);
+        float transitionY = 0f;
+        if ((phoneViewY - emptyY) <= 0) {
+            transitionY = -(AppContext.Height - (hs * 1.8f));
+        } else {
+            transitionY = -(phoneViewY - emptyY);
+        }
 
+        LogUtils.json("phoneViewY=" + phoneViewY + "//emptyY=" + emptyY);
 
-        ObjectAnimator rountAx = ObjectAnimator.ofFloat(userLoginMainPhoneLl, "translationY", 0f, -(AppContext.Height - (hs * 1.8f)));
-        rountAx.setDuration(660);
+        ObjectAnimator rountAx = ObjectAnimator.ofFloat(userLoginMainPhoneLl, "translationY", 0f, transitionY);
+        rountAx.setDuration(480);
         //+ StringUtils.dip2px(36)));
-        animatorSetTransition.playTogether(rountAx,rountAalpha,rountAalphas);
-      //  animatorSetTransition.setDuration(1200);
+        animatorSetTransition.playTogether(rountAx, rountAalpha, rountAalphas);
+        //  animatorSetTransition.setDuration(1200);
         animatorSetTransition.setInterpolator(new DecelerateInterpolator());
         animatorSetTransition.addListener(new Animator.AnimatorListener() {
             @Override

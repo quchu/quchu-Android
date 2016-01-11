@@ -4,13 +4,13 @@ package co.quchu.quchu.net;
  * netApi
  */
 public class NetApi {
-    public static boolean isDebug = true;
+    public static boolean isDebug = false;
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
-    public static String location_HOST = "http://192.168.1.134:8080/appservices";
-    public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
+    public static String DEBUG_HOST = "http://192.168.1.134:8080/appservices";
+    public static String RELEASE_HOST = "http://119.29.108.45:8080/appservices";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
     //public static final String HOST = location_HOST;
-    public static final String HOST = true ? DEBUG_HOST : location_HOST;
+    public static final String HOST = isDebug ? DEBUG_HOST : RELEASE_HOST;
     /****
      * Get start
      ****/
@@ -34,6 +34,7 @@ public class NetApi {
 
 
     public static final String UserStar = HOST + "/personal/getUserStar"; //我的趣星球
+    public static final String getMessageList = HOST + "/personal/getMessageList"; //消息中心
 
     public static final String getRootTags = HOST + "/place/getRootTags"; //获取趣处分类列表
 

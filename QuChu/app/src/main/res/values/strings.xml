@@ -21,6 +21,7 @@
     <string name="titlebar_word_place_my_postcard">我留下的明信片</string>
     <string name="titlebar_word_account_setting">账户设置</string>
     <string name="titlebar_word_favorite_place">我收藏的趣处</string>
+    <string name="titlebar_word_message_center">消息中心</string>
     <!-- ********** 趣星球 ********* -->
     <string name="prb_default_symbolic_string">$</string>
     <string name="following">我关注的</string>

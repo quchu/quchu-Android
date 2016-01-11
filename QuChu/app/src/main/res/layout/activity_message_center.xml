@@ -15,15 +15,21 @@
         android:layout_below="@id/title_bar"
         android:background="@drawable/ic_activity_bg">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/atmosphere_rv"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/messages_srl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_activity_bg"
-            android:overScrollMode="never" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/messages_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_activity_bg"
+                android:overScrollMode="never" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <FrameLayout
-            android:id="@+id/atmosphere_empty_view_fl"
+            android:id="@+id/message_empty_view_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone">

@@ -54,9 +54,9 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
 
     @Override
     public void onBindViewHolder(SearchHolder holder, int position) {
-        if (position < getItemCount()-1) {
+        if (position < getItemCount() - 1) {
             holder.itemSearchHistoryStrTv.setText(searchModel.getSearchList().get(position).getSerachStr());
-            LogUtils.json("position==" + position+"///str=="+searchModel.getSearchList().get(position).getSerachStr());
+            LogUtils.json("position==" + position + "///str==" + searchModel.getSearchList().get(position).getSerachStr());
             holder.itemSearchHistoryClearRl.setVisibility(View.GONE);
         } else {
             holder.itemSearchHistoryStrTv.setVisibility(View.GONE);
@@ -75,7 +75,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
     }
 
     public void updateData(SearchModel searchModel) {
-       // this.searchModel = null;
+        // this.searchModel = null;
         this.searchModel = searchModel;
         notifyDataSetChanged();
     }
@@ -110,7 +110,8 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         SearchHolder(View view, SearchHItemClickListener listener) {
             super(view);
             ButterKnife.bind(this, view);
-            this.listener = listener;
+            if (listener != null)
+                this.listener = listener;
         }
 
         @OnClick({R.id.item_search_history_delete_rl, R.id.item_search_history_str_tv, R.id.item_search_history_clear_rl})

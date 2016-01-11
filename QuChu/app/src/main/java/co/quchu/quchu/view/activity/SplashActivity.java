@@ -58,10 +58,6 @@ public class SplashActivity extends BaseActivity {
         AlbumHelper.initAlbumHelper(this);
     }
 
-
-
-
-
  /* public void   initCircleAnimation(){
       animatorList= new ArrayList<Animator>();
       animatorSet = new AnimatorSet();

@@ -153,4 +153,5 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     public interface CardClickListener {
         void onCardLick(View view, int position);
     }
+
 }

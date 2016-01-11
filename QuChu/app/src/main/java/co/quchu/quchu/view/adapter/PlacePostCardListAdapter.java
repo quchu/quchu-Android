@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
@@ -48,12 +50,12 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCardListAdapter.PPCHolder> {
 
 
-    private Context mContext;
+    private Activity mContext;
     private boolean isFlyme = false;
     private List<PostCardItemModel> arrayList;
     private CardClickListener listener;
 
-    public PlacePostCardListAdapter(Context mContext, CardClickListener listener) {
+    public PlacePostCardListAdapter(Activity mContext, CardClickListener listener) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
         this.listener = listener;
@@ -194,6 +196,11 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
                         intent.putExtras(mBundle);
                         mContext.startActivity(intent);
                     }
+                    break;
+
+                case R.id.item_recommend_card_interest_rl:
+                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(arrayList.get(getPosition()).getCardId(), arrayList.get(getPosition()).getPlcaeName(), false);
+                    shareDialogFg.show(mContext.getFragmentManager(), "share_dialog");
                     break;
             }
             if (listener != null)

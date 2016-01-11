@@ -64,6 +64,7 @@
             android:divider="#00000000"
             android:gravity="center"
             android:horizontalSpacing="4dp"
+            android:listSelector="@android:color/transparent"
             android:numColumns="4"
             android:padding="@dimen/base_margin"
             android:stretchMode="columnWidth" />
