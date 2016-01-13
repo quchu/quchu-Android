@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.sina.weibo.sdk.utils.MD5;
 
 import java.util.ArrayList;
 
@@ -61,9 +62,7 @@ public class AppContext extends Application {
         }
         initImageLoader();
         initWidths();
-       /* DateUtils.getUTCTime();
-        LogUtils.json(new Gson().toJson(new GatherModel()));*/
-        //  dCardList = new ArrayList<>();
+
     }
 
     public void initWidths() {

@@ -52,7 +52,7 @@ public class FeedbackActivity extends BaseActivity {
         titleMoreRl.setImage(R.drawable.ic_feed_back_submit);
         titleMoreRl.isNeedAnimation(false);
         feedbackHintTv.setText(String.format(feedBackStr, AppUtil.getVerName(this)));
-        titleBackIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_menus_title_more));
+        //  titleBackIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_menus_title_more));
         titleMoreRl.setMoreClick(new MoreButtonView.MoreClicklistener() {
             @Override
             public void moreClick() {

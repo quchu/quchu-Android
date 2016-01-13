@@ -2,6 +2,8 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +26,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
@@ -73,7 +76,7 @@ public class RecommendActivity extends BaseActivity {
     private Fragment classifyFragment;
     DefaultRecommendFragment defaultRecommendFragment;
     private ArrayList<CityModel> list;
-
+    private boolean isGuide = false;
     private int viewPagerIndex = 1;
 
     @Override
@@ -81,6 +84,11 @@ public class RecommendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
+        isGuide = getIntent().getBooleanExtra("isGuide", false);
+        if (isGuide) {
+            startActivity(new Intent(this, PlanetActivity.class));
+        }
+        reconnection();
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
             @Override
             public void hasCityList(ArrayList<CityModel> list) {
@@ -103,11 +111,27 @@ public class RecommendActivity extends BaseActivity {
                     recommendBodyVp.setCurrentItem(1);
                     viewpagerSelected(1);
                 } else {
-                    LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance(list);
-                    lDialog.show(getFragmentManager(), "blur_sample");
+                    if (list != null) {
+                        showCityDialog();
+                    } else {
+                        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+                            @Override
+                            public void hasCityList(ArrayList<CityModel> list) {
+                                RecommendActivity.this.list = list;
+                                if (RecommendActivity.this.list != null) {
+                                    showCityDialog();
+                                }
+                            }
+                        });
+                    }
                 }
                 break;
         }
+    }
+
+    private void showCityDialog() {
+        LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance(list);
+        lDialog.show(getFragmentManager(), "blur_sample");
     }
 
     private void initView() {
@@ -162,14 +186,18 @@ public class RecommendActivity extends BaseActivity {
     }
 
     private void viewpagerSelected(int index) {
+        LogUtils.json("selected == " + index);
         if (index == 0) {
-            LogUtils.json("selected == left");
             recommendTitleLocationIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_recommed_title_location));
             recommendBodyVp.setCurrentItem(0);//设置当前显示标签页为第一页
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
+            if (recoFragment != null)
+                recoFragment.show();
             if (classifyFragment != null)
                 ((ClassifyFragment) classifyFragment).hintClassify();
+            if (defaultRecommendFragment != null)
+                defaultRecommendFragment.hint();
         } else if (index == 1) {
             recommendTitleLocationIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_recommed_title_location));
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
@@ -177,12 +205,22 @@ public class RecommendActivity extends BaseActivity {
             recommendBodyVp.setCurrentItem(1);//设置当前显示标签页为第二页
             if (classifyFragment != null)
                 ((ClassifyFragment) classifyFragment).showClassify();
+            if (recoFragment != null)
+                recoFragment.hint();
+            if (defaultRecommendFragment != null)
+                defaultRecommendFragment.hint();
         } else if (index == 2) {
             recommendTitleLocationIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_title_back));
             titleContentTv.setText(SPUtils.getValueFromSPMap(this, AppKey.USERSELECTEDCLASSIFY_CHS, ""));
             titleContentTv.setVisibility(View.VISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.INVISIBLE);
             recommendBodyVp.setCurrentItem(2);
+            if (defaultRecommendFragment != null)
+                defaultRecommendFragment.show();
+            if (classifyFragment != null)
+                ((ClassifyFragment) classifyFragment).hintClassify();
+            if (recoFragment != null)
+                recoFragment.hint();
         }
         viewPagerIndex = index;
     }
@@ -195,10 +233,10 @@ public class RecommendActivity extends BaseActivity {
   /*      recommendTitleCenterRtg.selectedLeft();
         recommendTitleCenterRtg.setViewsClickable(true);*/
         //  recommendBodyVp.setCurrentItem(0);
-        viewpagerSelected(2);
         if (defaultRecommendFragment != null) {
-            ((DefaultRecommendFragment) defaultRecommendFragment).changeDataSetFromServer();
+            defaultRecommendFragment.changeDataSetFromServer();
         }
+        viewpagerSelected(2);
     }
 
     public void updateRecommend() {
@@ -231,6 +269,9 @@ public class RecommendActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (isGuide) {
+            initView();
+        }
         if (AppContext.dCardListRemoveIndex != -1) {
             if (viewPagerIndex == 0) {
                 recoFragment.removeDataSet(AppContext.dCardListRemoveIndex);
@@ -247,6 +288,30 @@ public class RecommendActivity extends BaseActivity {
                 }
                 AppContext.dCardListNeedUpdate = false;
             }
+        }
+    }
+
+    private Handler netHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0x00:
+                    break;
+                case 0x01:
+                    reconnection();
+                    break;
+            }
+        }
+    };
+
+    /**
+     * 无网络状态 时开启监听
+     */
+    public void reconnection() {
+        if (NetUtil.isNetworkConnected(this)) {
+            initView();
+        } else {
+            netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 1000);
         }
     }
 }

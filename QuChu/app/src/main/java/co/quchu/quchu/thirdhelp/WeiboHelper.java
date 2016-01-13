@@ -22,7 +22,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.net.IRequestListener;
@@ -83,15 +82,16 @@ public class WeiboHelper {
                 REDIRECT_URL, SCOPE);*/
         mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
         this.listener = listener;
+
     }
 
 
     public void weiboLogin(Activity context) {
         this.activity = context;
-        if (mAuthInfo == null)
-            mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
-        if (mSsoHandler == null)
-            mSsoHandler = new SsoHandler(activity, mAuthInfo);
+        //    if (mAuthInfo == null)
+        mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
+        // if (mSsoHandler == null)
+        mSsoHandler = new SsoHandler(activity, mAuthInfo);
         mSsoHandler.authorize(new AuthListener());
     }
 
@@ -101,8 +101,8 @@ public class WeiboHelper {
         public void onComplete(Bundle values) {
             Oauth2AccessToken accessToken = Oauth2AccessToken.parseAccessToken(values);
             if (accessToken != null && accessToken.isSessionValid()) {
-                String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
-                        new java.util.Date(accessToken.getExpiresTime()));
+              /*  String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
+                        new java.util.Date(accessToken.getExpiresTime()));*/
                 AccessTokenKeeper.writeAccessToken(activity, accessToken);
             }
 
@@ -168,7 +168,7 @@ public class WeiboHelper {
         try {
             os = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
-            System.out.println("kkkkkkk    size  "+ os.toByteArray().length );
+            System.out.println("kkkkkkk    size  " + os.toByteArray().length);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.e("Weibo.BaseMediaObject", "put thumb failed");

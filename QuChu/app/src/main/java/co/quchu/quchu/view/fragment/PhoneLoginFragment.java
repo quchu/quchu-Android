@@ -22,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sina.weibo.sdk.utils.MD5;
+
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -126,14 +128,16 @@ public class PhoneLoginFragment extends Fragment {
     private String mAuthDesc = "%ds后重新获取";
 
     private void counterText() {
-        if (mAuthCounter > 0) {
-            getauthcodeLoginTv.setText(String.format(mAuthDesc, mAuthCounter));
-            mAuthCounter--;
-            handler.sendMessageDelayed(handler.obtainMessage(0x02), 1000);
-        } else {
-            getauthcodeLoginTv.setText("再次获取验证码");
-            getauthcodeLoginTv.setClickable(true);
-            mAuthCounter = 60;
+        if (getauthcodeLoginTv != null) {
+            if (mAuthCounter > 0) {
+                getauthcodeLoginTv.setText(String.format(mAuthDesc, mAuthCounter));
+                mAuthCounter--;
+                handler.sendMessageDelayed(handler.obtainMessage(0x02), 1000);
+            } else {
+                getauthcodeLoginTv.setText("再次获取验证码");
+                getauthcodeLoginTv.setClickable(true);
+                mAuthCounter = 60;
+            }
         }
     }
 
@@ -250,7 +254,6 @@ public class PhoneLoginFragment extends Fragment {
     private void toLogin() {
         hintOtherView();
         isRegiest = 1;
-        LogUtils.json("toLogin");
         phoneLoginPasswordLl.setVisibility(View.VISIBLE);
         phoneLoginEnterTv.setVisibility(View.VISIBLE);
         userLoginForgetTv.setVisibility(View.VISIBLE);
@@ -454,7 +457,7 @@ public class PhoneLoginFragment extends Fragment {
      */
     private void userRegiest() {
         UserLoginPresenter.userRegiest(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
-                phoneLoginPasswordEt.getText().toString().trim(), userLoginNicknameEt.getText().toString().trim(),
+                MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), userLoginNicknameEt.getText().toString().trim(),
                 authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
                     @Override
                     public void isUnique(JSONObject msg) {
@@ -476,7 +479,7 @@ public class PhoneLoginFragment extends Fragment {
      */
     private void userLogin() {
         UserLoginPresenter.userLogin(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
-                phoneLoginPasswordEt.getText().toString().trim(), new UserLoginListener() {
+                MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), new UserLoginListener() {
                     @Override
                     public void loginSuccess() {
                         ((UserLoginActivity) getActivity()).loginSuccess();

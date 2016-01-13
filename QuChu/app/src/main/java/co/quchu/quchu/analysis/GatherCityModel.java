@@ -27,19 +27,19 @@ public class GatherCityModel {
     /**
      * city : locationOfUser
      */
-    public HashMap<String, Integer> properties;
+    public HashMap<String, String> properties;
 
     public GatherCityModel(int cityIndex) {
         if (AppContext.user != null) {
-            entityId = AppContext.user.getUserId()+"";
+            entityId = AppContext.user.getUserId() + "";
         } else {
-            entityId = 0+"";
+            entityId = 0 + "";
         }
         entityType = "user";
         eventTime = DateUtils.getUTCTime();
         event = "$set";
-        properties = new HashMap<String, Integer>();
-        properties.put("city", cityIndex);
+        properties = new HashMap<String, String>();
+        properties.put("city", cityIndex + "");
     }
 
     public void setEntityType(String entityType) {

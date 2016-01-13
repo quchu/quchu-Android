@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -22,6 +23,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.FavoritePlaceAdapter;
 
 /**
@@ -77,19 +79,25 @@ public class FavoritePlaceActivity extends BaseActivity {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("fav=" + response);
-                if (response != null) {
-                    Gson gson = new Gson();
-                    model = gson.fromJson(response.toString(), FavoritePlaceModel.class);
-                    if (model != null && model.getResult().size() > 0) {
-                        adapter.changeDataSet(model.getResult());
-                        favoritePlaceRv.setVisibility(View.VISIBLE);
-                        favoritePlaceEmptyView.setVisibility(View.GONE);
+                try {
+                    if (response != null && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
+                        Gson gson = new Gson();
+                        model = gson.fromJson(response.toString(), FavoritePlaceModel.class);
+                        if (model != null && model.getResult().size() > 0) {
+                            adapter.changeDataSet(model.getResult());
+                            favoritePlaceRv.setVisibility(View.VISIBLE);
+                            favoritePlaceEmptyView.setVisibility(View.GONE);
+                        } else {
+                            favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                            favoritePlaceRv.setVisibility(View.GONE);
+                        }
+
                     } else {
                         favoritePlaceEmptyView.setVisibility(View.VISIBLE);
                         favoritePlaceRv.setVisibility(View.GONE);
                     }
-
-                } else {
+                } catch (JSONException e) {
+                    e.printStackTrace();
                     favoritePlaceEmptyView.setVisibility(View.VISIBLE);
                     favoritePlaceRv.setVisibility(View.GONE);
                 }
@@ -97,6 +105,8 @@ public class FavoritePlaceActivity extends BaseActivity {
 
             @Override
             public boolean onError(String error) {
+                favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                favoritePlaceRv.setVisibility(View.GONE);
                 return false;
             }
         });

@@ -177,23 +177,32 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     }
 
     private int selectedIndex = 0;
+    private boolean submitClickable = true;
 
     @OnClick({R.id.dialog_location_submit_tv, R.id.dialog_location_cancel_tv})
     public void loacationDialogClick(View view) {
+
         switch (view.getId()) {
             case R.id.dialog_location_submit_tv:
                 //保存数据 而后关闭
-                SPUtils.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
-                SPUtils.setCityName(cityList.get(adapter.getSelectedIndex()).getCvalue());
-                if (getActivity() instanceof RecommendActivity)
-                    ((RecommendActivity) getActivity()).updateRecommend();
+                if (submitClickable) {
+                    submitClickable = false;
 
-                //   AppContext.gatherList.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
-                if (AppContext.gatherList == null)
-                    AppContext.gatherList = new ArrayList<>();
-                AppContext.gatherList.add(new GatherCityModel(cityList.get(adapter.getSelectedIndex()).getCid()));
+                    if (cityList != null) {
+                        SPUtils.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
+                        SPUtils.setCityName(cityList.get(adapter.getSelectedIndex()).getCvalue());
+                        if (getActivity() instanceof RecommendActivity)
+                            ((RecommendActivity) getActivity()).updateRecommend();
+
+                        //   AppContext.gatherList.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
+                        if (AppContext.gatherList == null)
+                            AppContext.gatherList = new ArrayList<>();
+                        AppContext.gatherList.add(new GatherCityModel(cityList.get(adapter.getSelectedIndex()).getCid()));
+                    }
+                }
             case R.id.dialog_location_cancel_tv:
                 LocationSelectedDialogFg.this.dismiss();
+                submitClickable = true;
                 break;
         /*    case R.id.dialog_location_xm_cb:
                 if (selectedIndex != 0) {

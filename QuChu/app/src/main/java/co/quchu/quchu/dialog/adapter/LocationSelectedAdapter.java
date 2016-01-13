@@ -64,7 +64,10 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
 
     @Override
     public int getItemCount() {
-        return cityList.size();
+        if (cityList != null)
+            return cityList.size();
+        else
+            return 0;
     }
 
     public class LocationHodler extends RecyclerView.ViewHolder {

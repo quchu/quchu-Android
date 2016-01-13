@@ -247,6 +247,7 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 transaction.replace(R.id.flickr_fl, flickrListFragment);
                 transaction.commit();
                 scrollViewFlickr.smoothScrollTo(0, 0);
+                showEmptyView(flickrImagesHot.getImgs());
                 if (!StringUtils.isEmpty(flickrImagesHot.getPhoto().getCover()))
                     tabBar.setWidgetLeftImage(flickrImagesHot.getPhoto().getCover());
                 if (!StringUtils.isEmpty(flickrImagesHot.getFavorite().getCover()))

@@ -137,7 +137,7 @@ public class AddPostCardGridAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 int positions = (int) v.getTag();
-                Toast.makeText(mContext, "dele" + positions, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.word_delete_image_text, Toast.LENGTH_SHORT).show();
                 if (Bimp.bmp.size() + Bimp.imglist.size() < 9) {
                     if (Bimp.imglist.size() > 0) {
                         if (positions <= Bimp.imglist.size()) {
@@ -171,6 +171,7 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                         if (positions < Bimp.bmp.size()) {
                             Bimp.bmp.remove(positions);
                             Bimp.drr.remove(positions);
+                            //   Bimp.max -= 1;
                             notifyDataSetChanged();
                         }
                     }
@@ -222,8 +223,8 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                         break;
                     } else {
                         try {
+                            LogUtils.json("Bimp.max=" + Bimp.max + "///drrSize=" + Bimp.drr.size());
                             String path = Bimp.drr.get(Bimp.max);
-                            System.out.println(path);
                             Bitmap bm = Bimp.revitionImageSize(path);
                             Bimp.bmp.add(bm);
                             String newStr = path.substring(

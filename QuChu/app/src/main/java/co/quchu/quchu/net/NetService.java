@@ -24,9 +24,11 @@ import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.NetErrorDialog;
+import co.quchu.quchu.dialog.NetErrorDialogUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.SearchActivity;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 
@@ -60,7 +62,9 @@ public class NetService {
                             IRequestListener pListener) {
 
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            NetErrorDialog.showProgess(cont);
+            //     NetErrorDialog.showProgess(cont);
+            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+            NetErrorActionUtil.UpdateRecommendData();
         } else {
             try {
                 if (AppContext.gatherList != null && AppContext.gatherList.size() > 0) {
@@ -68,6 +72,7 @@ public class NetService {
                         params = new JSONObject();
                     GatherSendDataModel model = new GatherSendDataModel(AppContext.gatherList);
                     params.put("userBehavior", new Gson().toJson(model));
+                    //    LogUtils.json("userBehavior" + (new Gson().toJson(model)));
                     AppContext.gatherList = new ArrayList<>();
                     model = null;
                 }
@@ -82,7 +87,9 @@ public class NetService {
 
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            NetErrorDialog.showProgess(cont);
+            //  NetErrorDialog.showProgess(cont);
+            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+            NetErrorActionUtil.UpdateRecommendData();
         } else {
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0);
         }
@@ -90,7 +97,9 @@ public class NetService {
 
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            NetErrorDialog.showProgess(cont);
+            //    NetErrorDialog.showProgess(cont);
+            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+            NetErrorActionUtil.UpdateRecommendData();
         } else {
 //            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
 //                    .theme(Theme.DARK)

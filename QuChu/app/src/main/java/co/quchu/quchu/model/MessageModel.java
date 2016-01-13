@@ -22,7 +22,7 @@ public class MessageModel implements Serializable {
     private String come;
     private String content;
     private String form;
-    private String formId;
+    private int formId;
     private String formPhoto;
     private String time;
     private String type;
@@ -39,7 +39,7 @@ public class MessageModel implements Serializable {
         this.form = form;
     }
 
-    public void setFormId(String formId) {
+    public void setFormId(int formId) {
         this.formId = formId;
     }
 
@@ -67,7 +67,7 @@ public class MessageModel implements Serializable {
         return form;
     }
 
-    public String getFormId() {
+    public int getFormId() {
         return formId;
     }
 

@@ -143,6 +143,8 @@ public class InterestingDetailsActivity extends BaseActivity {
     LinearLayout detailActivityInfoLl;
     @Bind(R.id.detail_icons_rl)
     RelativeLayout detailIconsRl;
+    @Bind(R.id.title_content_tv)
+    TextView titleContentTv;
     private int pId, pPosition;
     private float detailButtonGroupLlHeight = 0f;
     public DetailModel dModel;
@@ -155,6 +157,7 @@ public class InterestingDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_interesting_detail);
         initTitleBar();
         ButterKnife.bind(this);
+        titleContentTv.setText(getTitle());
         startViewTime = System.currentTimeMillis();
         detailButtonGroupLl.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -317,42 +320,44 @@ public class InterestingDetailsActivity extends BaseActivity {
             R.id.detail_button_add_postcard_out_rl, R.id.detail_button_add_postcard_rl, R.id.detail_button_share_out_rl,
             R.id.detail_button_share_rl, R.id.detail_want_tv})
     public void detailClick(View v) {
-        switch (v.getId()) {
-            case R.id.detail_store_phone_ll:
-                callPhone();
-                break;
-            case R.id.detail_been_tv:
-                userBeen();//用户去过
-                break;
-            case R.id.detail_want_tv:
-                //用户想去
-                if (dModel.isIsf()) {
-                    startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
-                } else {
-                    WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
-                    lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
-                }
-                break;
-            case R.id.detail_button_add_postcard_out_rl:
-            case R.id.detail_button_add_postcard_rl:
-                //添加明信片
-                Intent intent = new Intent();
-                intent.putExtra("pId", dModel.getPid());
-                intent.putExtra("pName", dModel.getName());
-                intent.setClass(this, PlacePostCardActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.detail_button_collect_out_rl:
-            case R.id.detail_button_collect_rl:
-                //收藏
-                setFavorite();
-                break;
-            case R.id.detail_button_share_out_rl:
-            case R.id.detail_button_share_rl:
-                //分享
-                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
-                shareDialogFg.show(getFragmentManager(), "share_dialog");
-                break;
+        if (dModel != null) {
+            switch (v.getId()) {
+                case R.id.detail_store_phone_ll:
+                    callPhone();
+                    break;
+                case R.id.detail_been_tv:
+                    userBeen();//用户去过
+                    break;
+                case R.id.detail_want_tv:
+                    //用户想去
+                    if (dModel.isIsf()) {
+                        startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+                    } else {
+                        WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
+                        lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
+                    }
+                    break;
+                case R.id.detail_button_add_postcard_out_rl:
+                case R.id.detail_button_add_postcard_rl:
+                    //添加明信片
+                    Intent intent = new Intent();
+                    intent.putExtra("pId", dModel.getPid());
+                    intent.putExtra("pName", dModel.getName());
+                    intent.setClass(this, PlacePostCardActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.detail_button_collect_out_rl:
+                case R.id.detail_button_collect_rl:
+                    //收藏
+                    setFavorite();
+                    break;
+                case R.id.detail_button_share_out_rl:
+                case R.id.detail_button_share_rl:
+                    //分享
+                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
+                    shareDialogFg.show(getFragmentManager(), "share_dialog");
+                    break;
+            }
         }
     }
 
@@ -457,6 +462,7 @@ public class InterestingDetailsActivity extends BaseActivity {
             if (StringUtils.isEmpty(dModel.getNet())) {
                 Toast.makeText(InterestingDetailsActivity.this, "还没找到去往你心里的路...", Toast.LENGTH_SHORT).show();
             } else {
+                LogUtils.json("webview ==");
                 startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
             }
         }

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -24,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.UserLoginActivity;
@@ -189,11 +191,20 @@ public class UserLoginMainFragment extends Fragment {
                 break;
             case R.id.user_login_main_wechat_ll:
                 LogUtils.json("user_login_main_wechat_ll");
-                ((UserLoginActivity) getActivity()).weixinLogin();
+                if (!NetUtil.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "请检查网络后重试!", Toast.LENGTH_SHORT).show();
+                } else {
+                    ((UserLoginActivity) getActivity()).weixinLogin();
+                }
                 break;
             case R.id.user_login_main_weibo_ll:
                 LogUtils.json("user_login_main_weibo_ll");
-                ((UserLoginActivity) getActivity()).sinaLogin();
+                if (!NetUtil.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "请检查网络后重试!", Toast.LENGTH_SHORT).show();
+                } else {
+                    ((UserLoginActivity) getActivity()).sinaLogin();
+                }
+
                 break;
         }
     }

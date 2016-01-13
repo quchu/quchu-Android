@@ -99,7 +99,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.PlacePostCardActivity"
-            android:label="@string/titlebar_word_postcard"
+            android:label="@string/titlebar_word_place_postcard"
             android:screenOrientation="portrait" />
         <activity
             android:name="co.quchu.quchu.view.activity.MessageCenterActivity"
@@ -108,6 +108,10 @@
         <activity
             android:name="co.quchu.quchu.view.activity.PostCardDetailActivity"
             android:label="@string/titlebar_word_my_postcard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.AboutUsActivity"
+            android:label="@string/titlebar_word_about_us"
             android:screenOrientation="portrait" />
         <activity
             android:name=".photo.ImageBucketActivity"
@@ -120,6 +124,11 @@
         <activity
             android:name=".photo.ImageGridActivity"
             android:label="@string/titlebar_word_imagephoto"
+            android:screenOrientation="portrait" />
+        <!-- 趣处详情-->
+        <activity
+            android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
+            android:label="@string/titlebar_word_place_detail"
             android:screenOrientation="portrait" />
         <!-- 我的趣推荐 -->
         <activity
@@ -144,10 +153,7 @@
         <activity
             android:name="co.quchu.quchu.view.activity.ReserveActivity"
             android:screenOrientation="portrait" />
-        <!-- 趣处详情-->
-        <activity
-            android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
-            android:screenOrientation="portrait" />
+
         <!-- 用户登录-->
         <activity
             android:name="co.quchu.quchu.view.activity.UserLoginActivity"

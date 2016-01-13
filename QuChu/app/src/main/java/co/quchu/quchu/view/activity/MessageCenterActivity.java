@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,6 +16,8 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.MessageModel;
 import co.quchu.quchu.presenter.MessageCenterPresenter;
+import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.view.adapter.MessageCenterAdapter;
 
 /**
  * MessageCenterActivity
@@ -30,21 +33,30 @@ public class MessageCenterActivity extends BaseActivity {
     TextView emptyViewOtherTv;
     @Bind(R.id.message_empty_view_fl)
     FrameLayout messageEmptyViewFl;
-
+    @Bind(R.id.title_content_tv)
+    TextView titleContentTv;
     private ArrayList<MessageModel> messageList;
-
+    private MessageCenterAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_center);
         ButterKnife.bind(this);
+        initTitleBar();
+        titleContentTv.setText(getTitle());
+        messagesRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        messageList = new ArrayList<>();
+        adapter = new MessageCenterAdapter(this, messageList);
+        messagesRv.setAdapter(adapter);
         MessageCenterPresenter.getMessageList(this, new MessageCenterPresenter.MessageGetDataListener() {
             @Override
             public void onSuccess(ArrayList<MessageModel> arrayList) {
+                LogUtils.json("message size ==" + arrayList.size());
                 messageList = arrayList;
                 messagesSrl.setVisibility(View.VISIBLE);
                 messageEmptyViewFl.setVisibility(View.GONE);
+                adapter.changeDateSet(messageList);
             }
 
             @Override

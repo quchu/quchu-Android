@@ -86,9 +86,9 @@ public class MyCard extends Card {
     @Override
     public View getCardContent(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        CardView v = (CardView) inflater.inflate(R.layout.item_my_postcard_view, null);
-        v.setCardBackgroundColor(Color.parseColor("#" + item.getRgb()));
+        RelativeLayout v = (RelativeLayout) inflater.inflate(R.layout.item_my_postcard_view, null);
         ButterKnife.bind(this, v);
+        rootCv.setCardBackgroundColor(Color.parseColor("#" + item.getRgb()));
         itemRecommendCardNameTv.setText(item.getPlcaeName());
         itemRecommendCardCityTv.setText(item.getPlcaeAddress());
         itemMyPostcardCardPrb.setRating(item.getScore());
@@ -119,7 +119,7 @@ public class MyCard extends Card {
         });
         if (SPUtils.getBooleanFromSPMap(mContext, AppKey.IS_POSTCARD_GUIDE, false)) {
             item_postcard_user_guide_view.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             item_postcard_user_guide_view.setVisibility(View.GONE);
         }
         return v;

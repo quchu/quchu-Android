@@ -1,5 +1,6 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * User: Chenhs
  * Date: 2015-12-18
  */
-public class PlacePostCardModel {
+public class PlacePostCardModel implements Serializable {
 
     /**
      * ishave : true
@@ -39,7 +40,7 @@ public class PlacePostCardModel {
         return page;
     }
 
-    public static class PageEntity {
+    public static class PageEntity implements Serializable{
         private int pageCount;
         private int pagesNo;
         /**
@@ -93,7 +94,6 @@ public class PlacePostCardModel {
             return result;
         }
 
-      
 
     }
 }

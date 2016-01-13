@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -20,11 +19,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.PostCardDetailModel;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -69,7 +67,7 @@ public class PostCardDetailActivity extends BaseActivity {
     @Bind(R.id.postcard_comment_tv)
     TextView postcardCommentTv;
     private int cId = 0;//明信片id
-    private PostCardDetailModel model;
+    private PostCardItemModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,22 +76,32 @@ public class PostCardDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitleBar();
         titleContentTv.setText(getTitle());
-        cId = getIntent().getIntExtra("cId", 0);
-        getPostcardDetailData();
+        model = (PostCardItemModel) getIntent().getSerializableExtra("cInfo");
+        //   getPostcardDetailData();
+        if (model != null) {
+            bindingDatas();
+        } else {
+            Toast.makeText(this, "该明信片已被邮到了火星!", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void getPostcardDetailData() {
+   /* private void getPostcardDetailData() {
 
         NetService.get(this, String.format(NetApi.getCardDetail, cId), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("/////" + response.toString());
-                if (response != null) {
-                    Gson gson = new Gson();
-                    model = gson.fromJson(response.toString(), PostCardDetailModel.class);
-                    if (model != null) {
-                        bindingDatas();
+                try {
+                    if (response != null && !"null".equals(response.getString("data")) && !StringUtils.isEmpty(response.getString("data"))) {
+                        Gson gson = new Gson();
+                        model = gson.fromJson(response.toString(), PostCardDetailModel.class);
+                        if (model != null) {
+                            bindingDatas();
+                        }else {
+                        }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -102,12 +110,12 @@ public class PostCardDetailActivity extends BaseActivity {
                 return false;
             }
         });
-    }
+    }*/
 
     private void bindingDatas() {
-        if (model.isIsme()){
+        if (model.isIsme()) {
             postcardDetailDelTv.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             postcardDetailDelTv.setVisibility(View.GONE);
         }
         rootCv.setCardBackgroundColor(Color.parseColor("#" + model.getRgb()));
@@ -136,13 +144,16 @@ public class PostCardDetailActivity extends BaseActivity {
                 delCard();
                 break;
             case R.id.postcard_detail_enter_place_tv:
-                startActivity(new Intent(this, InterestingDetailsActivity.class).putExtra("pId", model.getPlaceId()));
+                if (!model.issys())
+                    startActivity(new Intent(this, InterestingDetailsActivity.class).putExtra("pId", model.getPlaceId()));
+                else
+                    Toast.makeText(PostCardDetailActivity.this, "系统明信片无法进去趣处!", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
     private void delCard() {
-        NetService.post(this, String.format(NetApi.delPostCard, model.getCardId()),null, new IRequestListener() {
+        NetService.post(this, String.format(NetApi.delPostCard, model.getCardId()), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 Toast.makeText(PostCardDetailActivity.this, "明信片删除成功", Toast.LENGTH_SHORT).show();

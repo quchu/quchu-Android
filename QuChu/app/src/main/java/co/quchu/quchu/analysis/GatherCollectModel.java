@@ -45,7 +45,7 @@ public class GatherCollectModel implements Serializable {
         eventTime = DateUtils.getUTCTime();
         if (collectType == collectPlace) {
             event = "storeCollect";
-            targetEntityType = "storeItem";
+            targetEntityType = "item";
         } else {
             event = "cardCollect";
             targetEntityType = "cardItem";

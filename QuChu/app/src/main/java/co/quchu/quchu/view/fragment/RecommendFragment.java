@@ -201,4 +201,14 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
             adapter.notifyDataSetChanged();
         }
     }
+
+    public void hint() {
+        if (fRecommendRvp != null)
+            fRecommendRvp.setVisibility(View.GONE);
+    }
+
+    public void show() {
+        if (fRecommendRvp != null)
+            fRecommendRvp.setVisibility(View.VISIBLE);
+    }
 }

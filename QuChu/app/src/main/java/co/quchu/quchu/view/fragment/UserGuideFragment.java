@@ -13,7 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.view.activity.PlanetActivity;
+import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
  * UserEnterAppFragment
@@ -37,7 +37,8 @@ public class UserGuideFragment extends Fragment {
 
     @OnClick(R.id.userguide_start_button)
     public void startGuide(View view) {
-        getActivity().startActivity(new Intent(getActivity(), PlanetActivity.class));
+        getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra("isGuide", true));
+        getActivity().finish();
     }
 
     @Override

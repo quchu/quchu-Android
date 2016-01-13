@@ -2,7 +2,6 @@ package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -102,7 +101,7 @@ public class GeneProgressAdapter extends BaseAdapter {
             holder = (GeneProgressItemHolder) convertView.getTag();
         }
         holder.gene_progress_item_rpb.setRoundWidth(20);
-        holder.gene_progress_item_rpb.setProgress((int) genes.get(position).getWeight());
+        holder.gene_progress_item_rpb.setProgress((int)( genes.get(position).getWeight()));
         //  holder.gene_progress_item_tv.setText(genes.get(position).getZh());
         holder.gene_progress_item_iv.setImageResource(imagesArray[position]);
         SpannableStringBuilder builder = new SpannableStringBuilder(genes.get(position).getZh() + "基因");
@@ -125,12 +124,11 @@ public class GeneProgressAdapter extends BaseAdapter {
         }
         if (position == 3) {
             pvh.planet_gallery_mask_rl.setVisibility(View.VISIBLE);
-            pvh.planet_gallery_mask_tv.setText(" 88\r\n 照片");
+            pvh.planet_gallery_mask_tv.setText(" \r\n 照片");
         } else {
             pvh.planet_gallery_mask_rl.setVisibility(View.INVISIBLE);
         }
-
-        pvh.sdv.setImageURI(Uri.parse("http://imgdn.paimeilv.com/1444721523235"));
+      //  pvh.sdv.setImageURI(Uri.parse("http://imgdn.paimeilv.com/1444721523235"));
         return convertView;
     }
 

@@ -61,4 +61,26 @@ public class MessageCenterPresenter {
 
         void onError();
     }
+
+    public static void followMessageCenterFriends(Context mContext, int friendsId, boolean isFollowing, final MessageGetDataListener listener) {
+        String urlStr = "";
+        if (isFollowing) {
+            urlStr = String.format(NetApi.delFollowFriends, friendsId);
+        } else {
+            urlStr = String.format(NetApi.followFriends, friendsId);
+        }
+        NetService.get(mContext, urlStr, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("message follow==" + response);
+                listener.onSuccess(null);
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.onError();
+                return false;
+            }
+        });
+    }
 }

@@ -1,9 +1,14 @@
 package co.quchu.quchu.utils;
 
+import android.content.Context;
+
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
+import co.quchu.quchu.R;
 
 /**
  * DateUtils
@@ -55,10 +60,48 @@ public class DateUtils {
         fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)));
         //    fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getTimeZone("UTC").getDisplayName(false, TimeZone.LONG)));
         String utcTime = fmt.format(new Date());
-        LogUtils.json("utc Time=" + utcTime);
+ /*       LogUtils.json("utc Time=" + utcTime);
         String str2 = utcTime.replaceAll("GMT", "");
         LogUtils.json("last Time=" + str2);
-        LogUtils.json("currentTimeMillis Time=" + System.currentTimeMillis());
+        LogUtils.json("currentTimeMillis Time=" + System.currentTimeMillis());*/
         return utcTime;
+    }
+
+    public static long getTimeStamp(String timeStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d = null;
+        long timeStamp = 0L;
+        try {
+            d = sdf.parse(timeStr);
+            timeStamp = d.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return timeStamp;
+    }
+
+    public static String getTimeRange(String timeStr, Context cont) {
+        int s = (int) (System.currentTimeMillis() - getTimeStamp(timeStr)) / 1000;
+        if (s < 60) {
+            return cont.getString(R.string.mypost_timer_now);
+        }
+        if (s < 3600) {
+            int m = (int) (s / 60);
+            return m + cont.getString(R.string.mypost_timer_minutes);
+        }
+        if (s < 86400) {
+            int h = (int) (s / 3600);
+            return h + cont.getString(R.string.mypost_timer_hours);
+        }
+        if (s < 86400 * 30) {
+            int d = (int) (s / 86400);
+            return d + cont.getString(R.string.mypost_timer_days);
+        }
+        if (s < 86400 * 365) {
+            int m = (int) (s / (86400 * 30));
+            return m + cont.getString(R.string.mypost_timer_months);
+        }
+        int y = (int) (s / (86400 * 365));
+        return y + cont.getString(R.string.mypost_timer_years);
     }
 }

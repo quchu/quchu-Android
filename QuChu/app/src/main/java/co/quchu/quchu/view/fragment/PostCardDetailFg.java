@@ -110,7 +110,7 @@ public class PostCardDetailFg extends Fragment {
             itemMyPostcardCardNicknameTv.setText(item.getAutor());
             itemMyPostcardCardTiemTv.setText(StringUtils.isEmpty(item.getTime()) ? "" : item.getTime().substring(0, 10));
             itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
-            itemRecommendCardPhotoSdv.setAspectRatio(1.1f);
+            itemRecommendCardPhotoSdv.setAspectRatio(1.3f);
             itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
             if (item.isIsf()) {
                 itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_collect));

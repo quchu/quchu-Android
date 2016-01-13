@@ -62,6 +62,11 @@ public class WechatHelper {
     }
 
     public void login() {
+        if (api == null && mActivity != null) {
+            api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
+                    false);
+            api.registerApp(WECHAT_APP_ID);
+        }
         if (!api.isWXAppInstalled()) {
             Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
             return;
@@ -144,7 +149,7 @@ public class WechatHelper {
         webpage.webpageUrl = shareUrl;
         msg = new WXMediaMessage(webpage);
         if (isShare4Friends) {
-            msg.description =  "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;";
+            msg.description = "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;";
         }
         msg.title = title;
 

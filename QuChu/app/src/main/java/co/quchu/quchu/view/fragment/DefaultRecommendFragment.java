@@ -204,4 +204,14 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
             adapter.notifyDataSetChanged();
         }
     }
+
+    public void hint() {
+        if (dfRecommendRvp != null)
+            dfRecommendRvp.setVisibility(View.GONE);
+    }
+
+    public void show() {
+        if (dfRecommendRvp != null)
+            dfRecommendRvp.setVisibility(View.VISIBLE);
+    }
 }

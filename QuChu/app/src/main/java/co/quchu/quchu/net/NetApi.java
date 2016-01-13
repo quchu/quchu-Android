@@ -32,7 +32,6 @@ public class NetApi {
     public static final String WechatLogin = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=login"; //微信注册登录   accesstoken=服务器返回的用户token
     public static final String WechatBind = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=bind&accesstoken=%s"; //微信绑定   accesstoken=服务器返回的用户token
 
-
     public static final String UserStar = HOST + "/personal/getUserStar"; //我的趣星球
     public static final String getMessageList = HOST + "/personal/getMessageList"; //消息中心
 
@@ -73,6 +72,9 @@ public class NetApi {
 
     public static final String getUserGene = HOST + "/personal/getUserGene";  //获取用户基因
     public static final String userBehavior = HOST + "/push/userBehavior";  //用户数据采集
+
+    public static final String followFriends = HOST + "/sns/follow?followId=%d";  //关注他人
+    public static final String delFollowFriends = HOST + "/sns/delFollow?followId=%d";  //取消关注
 
     /****  Get end  ****/
 
