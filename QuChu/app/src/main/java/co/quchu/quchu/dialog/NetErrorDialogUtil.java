@@ -68,8 +68,6 @@ public class NetErrorDialogUtil {
         } else {
             return false;
         }
-
-
     }
 
     public static void dismissProgess() {

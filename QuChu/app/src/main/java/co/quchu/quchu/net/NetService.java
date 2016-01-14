@@ -162,9 +162,11 @@ public class NetService {
                                         pListener.onSuccess(response);
                                     } else if (response.has("msg") && response.has("exception") && "1077".equals(response.getString("msg"))) {
                                         ActManager.getAppManager().finishActivitiesAndKeepLastOne();
-                                        SPUtils.clearUserinfo(AppContext.mContext);
-                                        AppContext.user = null;
                                         ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
+                                        ActManager.getAppManager().finishLastOne();
+                                        SPUtils.clearUserinfo(AppContext.mContext);
+
+                                        AppContext.user = null;
                                     } else {
                                         if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
                                             Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), 0).show();

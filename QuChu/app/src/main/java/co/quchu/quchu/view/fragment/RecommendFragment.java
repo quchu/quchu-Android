@@ -112,6 +112,8 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
             @Override
             public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
                 cardList = arrayList;
+                if (adapter == null)
+                    adapter = new RecommendAdapter(getActivity(), RecommendFragment.this);
                 adapter.changeDataSet(cardList);
                 pageCounts = pageCount;
                 pageNums = pageNum;
@@ -194,8 +196,8 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
     }
 
     public void removeDataSet(int removeIndex) {
-        LogUtils.json("removeDataSet==" + removeIndex);
         if (adapter != null && removeIndex < cardList.size()) {
+        LogUtils.json("removeDataSet==" + removeIndex);
             cardList.remove(removeIndex);
             //adapter.changeDataSet(cardList);
             adapter.notifyDataSetChanged();

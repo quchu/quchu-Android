@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -23,7 +22,6 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.FavoritePlaceAdapter;
 
 /**
@@ -79,29 +77,25 @@ public class FavoritePlaceActivity extends BaseActivity {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("fav=" + response);
-                try {
-                    if (response != null && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
-                        Gson gson = new Gson();
-                        model = gson.fromJson(response.toString(), FavoritePlaceModel.class);
-                        if (model != null && model.getResult().size() > 0) {
-                            adapter.changeDataSet(model.getResult());
-                            favoritePlaceRv.setVisibility(View.VISIBLE);
-                            favoritePlaceEmptyView.setVisibility(View.GONE);
-                        } else {
-                            favoritePlaceEmptyView.setVisibility(View.VISIBLE);
-                            favoritePlaceRv.setVisibility(View.GONE);
-                        }
 
+                if (response != null && (!response.has("data") || !response.has("msg"))) {
+                    Gson gson = new Gson();
+                    model = gson.fromJson(response.toString(), FavoritePlaceModel.class);
+                    if (model != null && model.getResult().size() > 0) {
+                        adapter.changeDataSet(model.getResult());
+                        favoritePlaceRv.setVisibility(View.VISIBLE);
+                        favoritePlaceEmptyView.setVisibility(View.GONE);
                     } else {
                         favoritePlaceEmptyView.setVisibility(View.VISIBLE);
                         favoritePlaceRv.setVisibility(View.GONE);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+                } else {
                     favoritePlaceEmptyView.setVisibility(View.VISIBLE);
                     favoritePlaceRv.setVisibility(View.GONE);
                 }
             }
+
 
             @Override
             public boolean onError(String error) {

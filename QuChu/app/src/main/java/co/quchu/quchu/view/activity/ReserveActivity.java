@@ -45,10 +45,7 @@ public class ReserveActivity extends BaseActivity {
             //    placeUrl="http://www.baidu.com";
             reserveWv.loadUrl(placeUrl);
             reserveWv.setWebViewClient(new WebViewClient() {
-                @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    // TODO Auto-generated method stub
-                    //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                     view.loadUrl(url);
                     return true;
                 }
@@ -62,14 +59,12 @@ public class ReserveActivity extends BaseActivity {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
                     LogUtils.json("onPageStarted url=" + url);
-                    if (url.startsWith("http://"))
-                        super.onPageStarted(view, url, favicon);
-                    else
+                    if (url.startsWith("http://")) {
+                        //  onPageStarted(view, url, favicon);
+                    } else
                         reserveWv.loadUrl(placeUrl);
                 }
-
             });
-
         }
     }
 

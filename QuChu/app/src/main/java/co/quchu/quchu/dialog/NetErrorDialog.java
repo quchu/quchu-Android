@@ -35,6 +35,7 @@ public class NetErrorDialog extends Dialog {
         dialog = this;
     }
 
+
     private void init() {
         setContentView(R.layout.dialog_net_error);
         setCancelable(false);

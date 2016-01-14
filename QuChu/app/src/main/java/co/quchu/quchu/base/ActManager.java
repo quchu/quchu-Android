@@ -45,7 +45,7 @@ public class ActManager {
         return activity;
     }
 
-    public void startActivity4N(Class cls){
+    public void startActivity4N(Class cls) {
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
 
@@ -100,7 +100,14 @@ public class ActManager {
      * 结束所有Activity，但保留最后一个
      */
     public void finishActivitiesAndKeepLastOne() {
-        for (int i = 1, size = activityStack.size()-1; i < size; i++) {
+        for (int i = 1, size = activityStack.size() - 1; i < size; i++) {
+            activityStack.get(0).finish();
+            activityStack.remove(0);
+        }
+    }
+
+    public void finishLastOne() {
+        if (activityStack.size() > 0) {
             activityStack.get(0).finish();
             activityStack.remove(0);
         }
@@ -120,6 +127,7 @@ public class ActManager {
         try {
             //finish
             finishAllActivity();
+            System.exit(0);
             //取消消息
 //			NotificationManager mNotificationManager = (NotificationManager)AppContext.mContext.getSystemService(Context.NOTIFICATION_SERVICE) ;
 //			mNotificationManager.cancelAll();

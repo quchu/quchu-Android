@@ -56,7 +56,7 @@ public class ClassifyFragment extends Fragment {
     /**
      * 获取分类信息
      */
-    private void getRootTagsData() {
+    public void getRootTagsData() {
         NetService.get(getActivity(), NetApi.getRootTags, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {

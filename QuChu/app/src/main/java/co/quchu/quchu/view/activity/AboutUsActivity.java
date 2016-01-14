@@ -27,8 +27,8 @@ public class AboutUsActivity extends BaseActivity {
     RelativeLayout aboutUsTitleBackRl;
     @Bind(R.id.about_us_title_bar_ll)
     LinearLayout aboutUsTitleBarLl;
-    @Bind(R.id.about_us_desc_tv)
-    TextView aboutUsDescTv;
+  /*  @Bind(R.id.about_us_desc_tv)
+    TextView aboutUsDescTv;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

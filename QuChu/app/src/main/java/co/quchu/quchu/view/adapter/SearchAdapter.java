@@ -112,10 +112,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         NetService.get(mContext, favoUrl, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                if (arrayList.get(position).isIsf()){
-                    Toast.makeText(mContext,"收藏成功!",Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(mContext,"取消收藏!",Toast.LENGTH_SHORT).show();
+                if (arrayList.get(position).isIsf()) {
+                    Toast.makeText(mContext, "取消收藏!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "收藏成功!", Toast.LENGTH_SHORT).show();
                 }
                 arrayList.get(position).setIsf(!arrayList.get(position).isIsf());
                 notifyDataSetChanged();

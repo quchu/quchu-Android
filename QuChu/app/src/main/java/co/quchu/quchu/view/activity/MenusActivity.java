@@ -91,10 +91,10 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     public void statusOpen() {
         //退出登陆
         Toast.makeText(this, "退出登录", Toast.LENGTH_SHORT).show();
-        ActManager.getAppManager().finishActivitiesAndKeepLastOne();
+        ActManager.getAppManager().finishAllActivity();
+        startActivity(new Intent(this, UserLoginActivity.class));
         SPUtils.clearUserinfo(this);
         AppContext.user = null;
-        startActivity(new Intent(this, UserLoginActivity.class));
         this.finish();
     }
 
@@ -118,6 +118,7 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
             case PullMenusView.ClickMessage:
                 //    Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MenusActivity.this, MessageCenterActivity.class));
+                this.finish();
                 break;
             case PullMenusView.ClickSetting:
              /*   Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);

@@ -22,7 +22,7 @@ public class QQHelper {
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         params.putString(QQShare.SHARE_TO_QQ_TITLE, shareTitle);
-        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;");
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "←点我\n  (*^O^*)");
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareUrl);
 /*        if (StringUtils.isEmpty(imageUrl)) {*/
 
@@ -56,7 +56,7 @@ public class QQHelper {
         Bundle params = new Bundle();
         params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
         params.putString(QzoneShare.SHARE_TO_QQ_TITLE, shareTitle);//必填
-        params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "←戳\n" + "(*^◎^*)");//选填
+        params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "←点我\n" + "(*^O^*)");//选填
         params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, shareUrl);//必填
         params.putString(QzoneShare.SHARE_TO_QQ_APP_NAME, "趣处");//必填
         ArrayList<String> imageList = new ArrayList<>();

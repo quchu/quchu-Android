@@ -93,4 +93,6 @@
     <string name="mypost_timer_months">月前</string>
     <string name="mypost_timer_years">年前</string>
     <string name="word_delete_image_text">删除成功</string>
+    <string name="content_has_emoji">评论内容不能含有表情字符!</string>
+    <string name="search_content_has_emoji">搜索内容不能含有表情字符!</string>
 </resources>

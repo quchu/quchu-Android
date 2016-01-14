@@ -382,8 +382,10 @@ public class InterestingDetailsActivity extends BaseActivity {
             public void onSuccessCall(String str) {
                 dModel.setIsf(!dModel.isIsf());
                 changeCollectState(dModel.isIsf());
-                AppContext.dCardList.get(pPosition).setIsf(dModel.isIsf());
-                AppContext.dCardListNeedUpdate = true;
+                if (AppContext.dCardList != null && AppContext.dCardList.size() > 0) {
+                    AppContext.dCardList.get(pPosition).setIsf(dModel.isIsf());
+                    AppContext.dCardListNeedUpdate = true;
+                }
                 if (dModel.isIsf()) {
                     Toast.makeText(InterestingDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
                     AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid()));
@@ -433,7 +435,8 @@ public class InterestingDetailsActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        if (gatherViewModel == null)
+            gatherViewModel = new GatherViewModel(pId + "");
         gatherViewModel.setViewDuration((System.currentTimeMillis() - startViewTime) / 1000);
         if (AppContext.gatherList == null)
             AppContext.gatherList = new ArrayList<>();
@@ -443,7 +446,8 @@ public class InterestingDetailsActivity extends BaseActivity {
             //  AppContext.dCardList.remove(pPosition);
             AppContext.dCardListRemoveIndex = pPosition;
         }
-        LogUtils.json("dModel.isIsout()=" + dModel.isIsout() + "///==position=" + pPosition);
+        LogUtils.json(" AppContext.dCardListRemoveIndex = pPosition;=="+ AppContext.dCardListRemoveIndex);
+        super.onDestroy();
     }
 
     public class Want2GoClickImpl implements WantToGoDialogFg.Wan2GoClickListener {

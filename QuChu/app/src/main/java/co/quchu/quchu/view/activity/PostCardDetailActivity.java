@@ -23,6 +23,8 @@ import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -157,6 +159,7 @@ public class PostCardDetailActivity extends BaseActivity {
             @Override
             public void onSuccess(JSONObject response) {
                 Toast.makeText(PostCardDetailActivity.this, "明信片删除成功", Toast.LENGTH_SHORT).show();
+                SPUtils.putBooleanToSPMap(PostCardDetailActivity.this, AppKey.IS_POSTCARD_LIST_NEED_REFRESH, true);
                 PostCardDetailActivity.this.finish();
             }
 

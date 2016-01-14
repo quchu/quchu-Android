@@ -104,7 +104,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:layout_marginLeft="64dp"
+                    android:layout_marginRight="64dp"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:lines="2"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_subhead_size" />
             </RelativeLayout>

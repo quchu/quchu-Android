@@ -98,12 +98,12 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
                 //     Toast.makeText(getActivity(), "即将开发，敬请期待", Toast.LENGTH_SHORT).show();
                 getActivity().startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 MenuSettingDialogFg.this.dismiss();
-                getActivity().finish();
+                //      getActivity().finish();
                 break;
             case R.id.dialog_menu_setting_feedback_tv:
                 getActivity().startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 MenuSettingDialogFg.this.dismiss();
-                getActivity().finish();
+                //    getActivity().finish();
                 break;
         }
 

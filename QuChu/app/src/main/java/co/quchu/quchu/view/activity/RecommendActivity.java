@@ -73,11 +73,11 @@ public class RecommendActivity extends BaseActivity {
 
     public long firstTime = 0;
     private RecommendFragment recoFragment;
-    private Fragment classifyFragment;
+    private ClassifyFragment classifyFragment;
     DefaultRecommendFragment defaultRecommendFragment;
     private ArrayList<CityModel> list;
     private boolean isGuide = false;
-    private int viewPagerIndex = 1;
+    private int viewPagerIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +87,9 @@ public class RecommendActivity extends BaseActivity {
         isGuide = getIntent().getBooleanExtra("isGuide", false);
         if (isGuide) {
             startActivity(new Intent(this, PlanetActivity.class));
+        } else {
+            reconnection();
         }
-        reconnection();
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
             @Override
             public void hasCityList(ArrayList<CityModel> list) {
@@ -166,6 +167,7 @@ public class RecommendActivity extends BaseActivity {
                 RecommendActivity.this.startActivity(new Intent(RecommendActivity.this, MenusActivity.class));
             }
         });
+
     }
 
 
@@ -184,7 +186,7 @@ public class RecommendActivity extends BaseActivity {
         recommendBodyVp.setAdapter(new RecommendFragmentAdapter(getSupportFragmentManager(), fragmentList));
         recommendBodyVp.setPageTransformer(true, new ZoomOutPageTransformer());
     }
-
+//http://119.29.108.45:8080/appservices/login/android?j_username=13966682939&j_password=e10adc3949ba59abbe56e057f20f883e&equip=00000000-1e98-8990-03cd-75f30033c587
     private void viewpagerSelected(int index) {
         LogUtils.json("selected == " + index);
         if (index == 0) {
@@ -240,7 +242,9 @@ public class RecommendActivity extends BaseActivity {
     }
 
     public void updateRecommend() {
-        ((RecommendFragment) recoFragment).changeDataSetFromServer();
+        if (recoFragment == null)
+            recoFragment = new RecommendFragment();
+        recoFragment.changeDataSetFromServer();
     }
 
     @Override
@@ -255,7 +259,6 @@ public class RecommendActivity extends BaseActivity {
                     Toast.makeText(RecommendActivity.this, R.string.app_exit_text,
                             Toast.LENGTH_SHORT).show();
                     firstTime = secondTime;// 更新firstTime
-
                     return true;
                 } else {
                     UserAnalysisUtils.sendUserBehavior(RecommendActivity.this);
@@ -268,17 +271,20 @@ public class RecommendActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
+        LogUtils.json("RecommendActivity  onResume");
         if (isGuide) {
-            initView();
+            isGuide = false;
+            //    initView();
         }
         if (AppContext.dCardListRemoveIndex != -1) {
+            LogUtils.json("RecommendActivity onResume==removePosition==" + AppContext.dCardListRemoveIndex);
             if (viewPagerIndex == 0) {
                 recoFragment.removeDataSet(AppContext.dCardListRemoveIndex);
             } else if (viewPagerIndex == 2) {
                 defaultRecommendFragment.removeDataSet(AppContext.dCardListRemoveIndex);
             }
             AppContext.dCardListRemoveIndex = -1;
+            AppContext.dCardListNeedUpdate = false;
         } else {
             if (AppContext.dCardListNeedUpdate) {
                 if (viewPagerIndex == 0) {
@@ -289,6 +295,13 @@ public class RecommendActivity extends BaseActivity {
                 AppContext.dCardListNeedUpdate = false;
             }
         }
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        LogUtils.json("RecommendActivity  onPause");
+        super.onPause();
     }
 
     private Handler netHandler = new Handler() {
@@ -296,6 +309,8 @@ public class RecommendActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0x00:
+                    //    initView();
+                    netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 2000);
                     break;
                 case 0x01:
                     reconnection();
@@ -309,9 +324,20 @@ public class RecommendActivity extends BaseActivity {
      */
     public void reconnection() {
         if (NetUtil.isNetworkConnected(this)) {
-            initView();
+            if (isNetWorkConnected)
+                initView();
+            isNetWorkConnected = false;
         } else {
-            netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 1000);
+            netHandler.sendMessageDelayed(netHandler.obtainMessage(0x00), 6000);
+            isNetWorkConnected = true;
         }
+    }
+
+    private boolean isNetWorkConnected = false;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //  ButterKnife.unbind(this);
     }
 }

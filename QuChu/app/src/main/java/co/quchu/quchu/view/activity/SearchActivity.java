@@ -27,7 +27,6 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchModel;
 import co.quchu.quchu.presenter.SearchPresenter;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SearchHistoryUtil;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
@@ -145,7 +144,7 @@ public class SearchActivity extends BaseActivity {
                 } else {
                   /*  resultList = null;
                     resultAdapter.changeDataSet(resultList);*/
-                    Toast.makeText(SearchActivity.this,"没有搜索到内容!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SearchActivity.this, "没有搜索到内容!", Toast.LENGTH_SHORT).show();
                     updateHistory();
                 }
 
@@ -158,7 +157,7 @@ public class SearchActivity extends BaseActivity {
                 DialogUtil.dismissProgess();
              /*   resultList = null;
                 resultAdapter.changeDataSet(resultList);*/
-                Toast.makeText(SearchActivity.this,"没有搜索到内容!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "没有搜索到内容!", Toast.LENGTH_SHORT).show();
                 updateHistory();
             }
         });
@@ -173,12 +172,13 @@ public class SearchActivity extends BaseActivity {
                         Toast.makeText(SearchActivity.this, "请输入搜索内容!", Toast.LENGTH_SHORT).show();
                         searchInputEt.setFocusable(true);
                     } else {
-                        addHistory();
-                        // 先隐藏键盘
-                        seachStr(searchInputEt.getText().toString(), 1);
-                        LogUtils.json("KEYCODE_ENTER  KEYCODE_ENTER");
-
-
+                        if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
+                            Toast.makeText(SearchActivity.this, getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT).show();
+                        } else {
+                            addHistory();
+                            // 先隐藏键盘
+                            seachStr(searchInputEt.getText().toString(), 1);
+                        }
                     }
                 }
                 return false;

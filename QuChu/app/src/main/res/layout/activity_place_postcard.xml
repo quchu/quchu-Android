@@ -53,6 +53,17 @@
                 android:src="@drawable/ic_place_postcard_bottom_plus" />
         </RelativeLayout>
 
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/place_postcard_center_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/place_postcard_bottom_botton_rl"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+
         <FrameLayout
             android:id="@+id/place_postcard_hint_fl"
             android:layout_width="match_parent"
@@ -82,15 +93,5 @@
                     android:textSize="@dimen/word_subhead_size" />
             </RelativeLayout>
         </FrameLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/place_postcard_center_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/place_postcard_bottom_botton_rl"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:overScrollMode="never"
-            android:scrollbars="none" />
     </RelativeLayout>
 </RelativeLayout>

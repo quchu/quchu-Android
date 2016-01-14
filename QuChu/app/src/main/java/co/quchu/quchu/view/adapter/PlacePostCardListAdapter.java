@@ -274,4 +274,6 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
             }
         });
     }
+
+
 }

@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -124,7 +126,8 @@ public class PalceMyPostCardActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl, R.id.item_my_postcard_heart_rl})
+    @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl,
+            R.id.item_recommend_card_reply_rl, R.id.item_recommend_card_photo_sdv, R.id.item_my_postcard_heart_rl})
     public void cardClick(View view) {
         switch (view.getId()) {
             case R.id.item_recommend_card_collect_rl:
@@ -132,11 +135,30 @@ public class PalceMyPostCardActivity extends BaseActivity {
                 setDetailFavorite();
                 break;
             case R.id.item_my_postcard_heart_rl:
-
+                Intent intent = new Intent(this, AddPostCardActivity.class).putExtra("pName", pPostCardModel.getPlcaeName());
+                intent.putExtra("pId", pPostCardModel.getPlaceId());
+                Bundle mBundle = new Bundle();
+                mBundle.putSerializable("pCardModel", pPostCardModel);
+                intent.putExtras(mBundle);
+                startActivity(intent);
                 break;
             case R.id.item_recommend_card_interest_rl:
-
+                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(pPostCardModel.getCardId(), pPostCardModel.getPlcaeName(), false);
+                shareDialogFg.show(getFragmentManager(), "share_dialog");
                 break;
+            case R.id.item_recommend_card_photo_sdv:
+                if (pPostCardModel.getImglist().size() > 0) {
+                    Intent intents = new Intent(this, PostCardImageActivity.class);
+                    Bundle mBundles = new Bundle();
+                    mBundles.putSerializable("pCardModel", pPostCardModel);
+                    intents.putExtras(mBundles);
+                    startActivity(intents);
+                }
+                break;
+            case R.id.item_recommend_card_reply_rl:
+                startActivity(new Intent(this, PostCardDetailActivity.class).putExtra("cInfo", pPostCardModel));
+                break;
+
         }
     }
 
@@ -144,9 +166,9 @@ public class PalceMyPostCardActivity extends BaseActivity {
     public void setDetailFavorite() {
         String favoUrl = "";
         if (pPostCardModel.isIsf()) {
-            favoUrl = String.format(NetApi.userDelFavorite, pId, NetApi.FavTypeCard);
+            favoUrl = String.format(NetApi.userDelFavorite, pPostCardModel.getCardId(), NetApi.FavTypeCard);
         } else {
-            favoUrl = String.format(NetApi.userFavorite, pId, NetApi.FavTypeCard);
+            favoUrl = String.format(NetApi.userFavorite, pPostCardModel.getCardId(), NetApi.FavTypeCard);
         }
         NetService.get(this, favoUrl, new IRequestListener() {
             @Override

@@ -492,7 +492,7 @@ public class PhoneLoginFragment extends Fragment {
      */
     private void userResetPassword() {
         UserLoginPresenter.resetPassword(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
-                phoneLoginPasswordEt.getText().toString().trim(), authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
+                MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
                     @Override
                     public void isUnique(JSONObject msg) {
                         Toast.makeText(getActivity(), getResources().getString(R.string.text_login_resetpassowrd), Toast.LENGTH_SHORT).show();

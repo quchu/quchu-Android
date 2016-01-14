@@ -49,9 +49,11 @@ import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.photo.Bimp;
 import co.quchu.quchu.photo.ImageBucketActivity;
 import co.quchu.quchu.presenter.PostCardPresenter;
+import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.FileUtils;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.AddPostCardGridAdapter;
 import co.quchu.quchu.widget.InnerGridView;
@@ -274,22 +276,26 @@ public class AddPostCardActivity extends BaseActivity {
         // 完成上传服务器后 .........
         /*FileUtils.deleteDir();*/
         if (addPostcardSuggestPrb.getRating() > 0) {
-            DialogUtil.showProgess(this, "数据上传中...");
-            if (list.size() > 0) {
-                getQiNiuToken();
+            if (StringUtils.containsEmoji(addPostcardAboutPlaceTv.getText().toString())) {
+                Toast.makeText(this, getResources().getString(R.string.content_has_emoji), Toast.LENGTH_SHORT).show();
             } else {
+                DialogUtil.showProgess(this, "数据上传中...");
+                if (list.size() > 0) {
+                    getQiNiuToken();
+                } else {
 
-                String imageStr = "";
-                if (Bimp.imglist.size() > 0) {
-                    for (int j = 0; j < Bimp.imglist.size(); j++) {
-                        if (j == 0) {
-                            imageStr += Bimp.imglist.get(j).getPath();
-                        } else {
-                            imageStr += "%7C" + Bimp.imglist.get(j).getPath();
+                    String imageStr = "";
+                    if (Bimp.imglist.size() > 0) {
+                        for (int j = 0; j < Bimp.imglist.size(); j++) {
+                            if (j == 0) {
+                                imageStr += Bimp.imglist.get(j).getPath();
+                            } else {
+                                imageStr += "%7C" + Bimp.imglist.get(j).getPath();
+                            }
                         }
                     }
+                    saveCard(imageStr);
                 }
-                saveCard(imageStr);
             }
         } else {
             Toast.makeText(this, "请给该趣处评个分", Toast.LENGTH_SHORT).show();
@@ -310,6 +316,7 @@ public class AddPostCardActivity extends BaseActivity {
                 } else {
                     Toast.makeText(AddPostCardActivity.this, "成功添加了趣处!", Toast.LENGTH_SHORT).show();
                 }
+                SPUtils.putBooleanToSPMap(AddPostCardActivity.this, AppKey.IS_POSTCARD_LIST_NEED_REFRESH, true);
                 AddPostCardActivity.this.finish();
               /*  } else {
                     delImageFromServer();

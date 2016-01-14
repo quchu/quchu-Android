@@ -140,7 +140,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/base_margin"
 
-                    android:text="2015"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_size_body" />
 
@@ -154,7 +153,6 @@
                     android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="昵称"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_size_body" />
 

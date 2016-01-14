@@ -12,8 +12,10 @@ import co.quchu.quchu.model.SearchModel;
  */
 public class SearchHistoryUtil {
     public static void saveSearchHistory(SearchModel model) {
-        LogUtils.json("search_Model=" + model.toString());
-        SPUtils.putValueToSPMap(AppContext.mContext, AppKey.SEARCHHISTORY, new Gson().toJson(model));
+        if (model != null) {
+            LogUtils.json("search_Model=" + model.toString());
+            SPUtils.putValueToSPMap(AppContext.mContext, AppKey.SEARCHHISTORY, new Gson().toJson(model));
+        }
     }
 
     public static SearchModel getSearchHistory() {

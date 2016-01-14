@@ -70,4 +70,8 @@ public class AppKey {
      * 我的明信片照片界面是否需要弹出引导页
      */
     public static final String IS_POSTCARD_IMAGES_GUIDE = "is_postcard_images_guide";
+    /**
+     * 趣处明信片列表是否需要刷新
+     */
+    public static final String IS_POSTCARD_LIST_NEED_REFRESH = "is_postcard_list_need_refresh";
 }

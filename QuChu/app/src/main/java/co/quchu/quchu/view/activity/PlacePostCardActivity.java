@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -25,8 +24,9 @@ import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.PlacePostCardListAdapter;
 
 /**
@@ -85,25 +85,25 @@ public class PlacePostCardActivity extends BaseActivity {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(";;;;respone=" + response);
-                try {
-                    if (response.has("data") && (StringUtils.isEmpty(response.getString("data")) || "null".equals(response.getString("data")))) {
-                        placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_new_postcard));
-                        placePostcardHintFl.setVisibility(View.VISIBLE);
+                if ((response.has("data")) || response.has("msg")) {
+                    placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_new_postcard));
+                    placePostcardHintFl.setVisibility(View.VISIBLE);
+                    placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_new_postcard));
+                    placePostcardCenterRv.setVisibility(View.GONE);
+                } else {
+                    Gson gson = new Gson();
+                    model = gson.fromJson(response.toString(), PlacePostCardModel.class);
+                    AppContext.ppcModel = model;
+                    if (model.isIshave()) {
+                        placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_read_my_postcard));
                     } else {
-                        Gson gson = new Gson();
-                        model = gson.fromJson(response.toString(), PlacePostCardModel.class);
-                        AppContext.ppcModel = model;
-                        if (model.isIshave()) {
-                            placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_read_my_postcard));
-                        } else {
-                            placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_new_postcard));
-                        }
-                        placePostcardHintFl.setVisibility(View.INVISIBLE);
-                        adapter.changeDataSet(model.getPage().getResult());
+                        placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_new_postcard));
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    placePostcardCenterRv.setVisibility(View.VISIBLE);
+                    placePostcardHintFl.setVisibility(View.INVISIBLE);
+                    adapter.changeDataSet(model.getPage().getResult());
                 }
+
                 DialogUtil.dismissProgess();
             }
 
@@ -149,6 +149,10 @@ public class PlacePostCardActivity extends BaseActivity {
         if (isNeedRefresh && AppContext.ppcModel != null && AppContext.ppcModel.getPage().getResult().size() >= 0) {
             model = AppContext.ppcModel;
             adapter.changeDataSet(model.getPage().getResult());
+        }
+        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_POSTCARD_LIST_NEED_REFRESH, false)) {
+            initPostCardData(1);
+            SPUtils.putBooleanToSPMap(this, AppKey.IS_POSTCARD_LIST_NEED_REFRESH, false);
         }
     }
 }
