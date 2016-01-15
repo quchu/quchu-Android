@@ -25,6 +25,7 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
@@ -150,6 +151,8 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
 
     @Override
     public void onCardLick(View view, int position) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.root_cv:
                 AppContext.dCardList = cardList;

@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.utils.KeyboardUtils;
 
 /**
  * 什么是趣友圈
@@ -45,6 +46,8 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
 
     @OnClick({R.id.title_back_rl, R.id.gene_introduce})
     public void click(View v) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (v.getId()) {
             case R.id.title_back_rl:
                 this.finish();

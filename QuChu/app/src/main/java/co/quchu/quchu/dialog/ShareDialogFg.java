@@ -24,6 +24,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.thirdhelp.QQHelper;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 
 /**
@@ -108,13 +109,14 @@ public class ShareDialogFg extends BlurDialogFragment implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (position) {
             case 0:
-                new WechatHelper(getActivity()).shareFriends(shareUrl, shareTitle, true);
+                WechatHelper.shareFriends(getActivity(), shareUrl, shareTitle, true);
                 break;
             case 1:
-                new WechatHelper(getActivity()).shareFriends(shareUrl, shareTitle, false);
+                WechatHelper.shareFriends(getActivity(), shareUrl, shareTitle, false);
                 break;
             case 2:
                 QQHelper.share2QQ(getActivity(), mTencent, shareUrl, shareTitle);

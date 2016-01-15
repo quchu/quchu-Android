@@ -26,7 +26,9 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.SearchPresenter;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SearchHistoryUtil;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
@@ -114,6 +116,8 @@ public class SearchActivity extends BaseActivity {
 
     @OnClick({R.id.search_button_rl, R.id.search_history_clear_rl})
     public void buttonClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.search_button_rl:
                 this.finish();
@@ -127,7 +131,8 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void seachStr(String str, int pageNo) {
-        DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        if (NetUtil.isNetworkConnected(this))
+            DialogUtil.showProgess(this, R.string.loading_dialog_text);
         SearchPresenter.searchFromService(this, str, pageNo, new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList) {
@@ -147,7 +152,6 @@ public class SearchActivity extends BaseActivity {
                     Toast.makeText(SearchActivity.this, "没有搜索到内容!", Toast.LENGTH_SHORT).show();
                     updateHistory();
                 }
-
                 DialogUtil.dismissProgess();
             }
 

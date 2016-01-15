@@ -16,6 +16,7 @@ import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.WiperSwitch;
@@ -59,15 +60,22 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
 
     @OnClick({R.id.menus_search_rl, R.id.menus_add_topic})
     public void onViewClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.menus_search_rl:
+              /*  if (isButtonClickable) {
+                    isButtonClickable = false;*/
                 startActivity(new Intent(this, SearchActivity.class));
+                //   mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
+                //   }
                 break;
             case R.id.menus_add_topic:
                 Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
+
 
     @Override
     protected void onDestroy() {
@@ -110,6 +118,8 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
 
     @Override
     public void onItemClick(int itemID) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (itemID) {
             case PullMenusView.ClickAvatar:
                 startActivity(new Intent(MenusActivity.this, PlanetActivity.class));

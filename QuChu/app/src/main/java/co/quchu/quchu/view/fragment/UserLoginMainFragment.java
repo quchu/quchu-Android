@@ -26,6 +26,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.UserLoginActivity;
@@ -184,6 +185,8 @@ public class UserLoginMainFragment extends Fragment {
 
     @OnClick({R.id.user_login_main_phone_ll, R.id.user_login_main_wechat_ll, R.id.user_login_main_weibo_ll})
     public void onLoginClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.user_login_main_phone_ll:
               /* */

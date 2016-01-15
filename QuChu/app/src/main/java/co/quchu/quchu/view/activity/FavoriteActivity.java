@@ -22,6 +22,7 @@ import co.quchu.quchu.model.FavoriteModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.adapter.FavoriteGridAdapter;
 import co.quchu.quchu.widget.textcounter.CounterView;
@@ -116,6 +117,8 @@ public class FavoriteActivity extends BaseActivity {
 
     @OnClick({R.id.favorite_place_cv, R.id.favorite_postcard_cv, R.id.favorite_postcard_gvcv, R.id.favorite_place_name_gvcv})
     public void favoriteClick(View v) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (v.getId()) {
             case R.id.favorite_postcard_cv:
             case R.id.favorite_postcard_gvcv:

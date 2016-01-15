@@ -27,6 +27,7 @@ import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -129,6 +130,8 @@ public class PalceMyPostCardActivity extends BaseActivity {
     @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl,
             R.id.item_recommend_card_reply_rl, R.id.item_recommend_card_photo_sdv, R.id.item_my_postcard_heart_rl})
     public void cardClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.item_recommend_card_collect_rl:
                 itemRecommendCardCollectRl.setClickable(false);

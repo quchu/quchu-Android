@@ -13,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
@@ -37,6 +38,8 @@ public class UserGuideFragment extends Fragment {
 
     @OnClick(R.id.userguide_start_button)
     public void startGuide(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra("isGuide", true));
         getActivity().finish();
     }

@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 import co.quchu.quchu.widget.CircleWaveView;
@@ -50,6 +51,8 @@ public class UserEnterAppFragment extends Fragment {
 
     @OnClick(R.id.user_enter_app_btn)
     public void enterApp(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         ((UserLoginActivity) getActivity()).enterApp();
     }
 

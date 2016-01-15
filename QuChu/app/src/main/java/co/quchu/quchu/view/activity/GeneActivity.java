@@ -34,6 +34,7 @@ import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.GeneProgressAdapter;
@@ -94,6 +95,8 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
 
     @OnClick({R.id.gene_introduce, R.id.atmosphere_rpv})
     public void Click(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.gene_introduce:

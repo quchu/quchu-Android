@@ -25,6 +25,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.PlacePostCardListAdapter;
@@ -118,6 +119,8 @@ public class PlacePostCardActivity extends BaseActivity {
 
     @OnClick({R.id.place_postcard_bottom_botton_rl})
     public void placePostCardClick(View v) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (v.getId()) {
             case R.id.place_postcard_bottom_botton_rl:
                 if (model == null) {

@@ -52,6 +52,7 @@ import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.FileUtils;
 import co.quchu.quchu.utils.ImageUtils;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -161,6 +162,8 @@ public class AddPostCardActivity extends BaseActivity {
 
     @OnClick({R.id.add_postcard_bottom_btn})
     public void btnClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.add_postcard_bottom_btn:
                 addPostcard2Server();

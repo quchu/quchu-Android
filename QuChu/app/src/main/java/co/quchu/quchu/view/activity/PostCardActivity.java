@@ -1,7 +1,11 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -26,7 +30,6 @@ import co.quchu.quchu.widget.cardsui.MyCard;
  */
 public class PostCardActivity extends BaseActivity {
 
-
     @Bind(R.id.title_content_tv)
     TextView mTitleContentTv;
     @Bind(R.id.postcard_fl)
@@ -47,24 +50,23 @@ public class PostCardActivity extends BaseActivity {
         listener = new MyCard.PostCardItemClickListener() {
             @Override
             public void onPostCardItemClick(PostCardItemModel item) {
-                if (SPUtils.getBooleanFromSPMap(PostCardActivity.this, AppKey.IS_POSTCARD_GUIDE, false)){
+                if (SPUtils.getBooleanFromSPMap(PostCardActivity.this, AppKey.IS_POSTCARD_GUIDE, false)) {
 
-                }else {
+                } else {
                     if (postCardListFg != null)
                         transaction = getSupportFragmentManager().beginTransaction();
+                    isFragmentStatOk = false;
                     transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);
                     transaction.replace(R.id.postcard_fl, new PostCardDetailFg(item));
                     transaction.commit();
                     fragmentIndex = 1;
+                    mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
                 }
-
-                //    postCardListFg.setInvisiable(true);
+                //postCardListFg.setInvisiable(true);
             }
         };
         postCardListFg = new PostCardListFg(listener);
         showListFragment();
-
-
     }
 
 
@@ -88,8 +90,6 @@ public class PostCardActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         LogUtils.json("back");
-
-        //   super.onBackPressed();
         fragmentJump();
     }
 
@@ -103,9 +103,41 @@ public class PostCardActivity extends BaseActivity {
 
     public void showListFragment() {
         transaction = getSupportFragmentManager().beginTransaction();
+        isFragmentStatOk = false;
         transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);
         transaction.replace(R.id.postcard_fl, postCardListFg);
         transaction.commit();
         fragmentIndex = 0;
+        mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
     }
+
+
+    private boolean isFragmentStatOk = true;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (!isFragmentStatOk) {
+            return true;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (!isFragmentStatOk) {
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    public Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0x00:
+                    isFragmentStatOk = true;
+                    break;
+            }
+        }
+    };
 }

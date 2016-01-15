@@ -137,27 +137,29 @@ public class WechatHelper {
         });
     }
 
-    public void shareFriends(String shareUrl, String title,
-                             boolean isShare4Friends) {
+    public static void shareFriends(Activity activity, String shareUrl, String title,
+                                    boolean isShare4Friends) {
+        Activity mActivity = activity;
+        IWXAPI api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
+                false);
+        api.registerApp(WECHAT_APP_ID);
         if (!api.isWXAppInstalled()) {
             Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
             return;
         }
+
         WXMediaMessage msg;
 
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = shareUrl;
         msg = new WXMediaMessage(webpage);
-        if (isShare4Friends) {
-            msg.description = "←点我\n (*^O^*)";
-          //  msg.description = "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;";
-        }
+
+        //  msg.description = "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;";
         msg.title = title;
+        msg.description = "←点我\n (*^O^*)";
 
         msg.thumbData = bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
                 R.mipmap.ic_launcher), true);
-
-
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
@@ -167,14 +169,15 @@ public class WechatHelper {
             req.scene = SendMessageToWX.Req.WXSceneTimeline;
         }
         api.sendReq(req);
+
     }
 
-    private String buildTransaction(final String type) {
+    private static String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis())
                 : type + System.currentTimeMillis();
     }
 
-    public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
+    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
         if (needRecycle) {

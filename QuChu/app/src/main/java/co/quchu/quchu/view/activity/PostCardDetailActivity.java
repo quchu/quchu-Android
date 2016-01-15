@@ -24,6 +24,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -86,7 +87,6 @@ public class PostCardDetailActivity extends BaseActivity {
             Toast.makeText(this, "该明信片已被邮到了火星!", Toast.LENGTH_SHORT).show();
         }
     }
-
    /* private void getPostcardDetailData() {
 
         NetService.get(this, String.format(NetApi.getCardDetail, cId), new IRequestListener() {
@@ -120,6 +120,9 @@ public class PostCardDetailActivity extends BaseActivity {
         } else {
             postcardDetailDelTv.setVisibility(View.GONE);
         }
+        if (model.issys()) {
+            postcardDetailDelTv.setVisibility(View.GONE);
+        }
         rootCv.setCardBackgroundColor(Color.parseColor("#" + model.getRgb()));
         itemMyPostcardAvatarSdv.setImageURI(Uri.parse(model.getAutorPhoto()));
         itemMyPostcardAvatarSdv.setAspectRatio(1f);
@@ -138,15 +141,18 @@ public class PostCardDetailActivity extends BaseActivity {
 
     @OnClick({R.id.postcard_detail_del_tv, R.id.postcard_detail_finish_tv, R.id.postcard_detail_enter_place_tv})
     public void cardDetailClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.postcard_detail_finish_tv:
                 this.finish();
                 break;
             case R.id.postcard_detail_del_tv:
-                delCard();
+                if (model != null)
+                    delCard();
                 break;
             case R.id.postcard_detail_enter_place_tv:
-                if (!model.issys())
+                if (model != null && !model.issys())
                     startActivity(new Intent(this, InterestingDetailsActivity.class).putExtra("pId", model.getPlaceId()));
                 else
                     Toast.makeText(PostCardDetailActivity.this, "系统明信片无法进去趣处!", Toast.LENGTH_SHORT).show();

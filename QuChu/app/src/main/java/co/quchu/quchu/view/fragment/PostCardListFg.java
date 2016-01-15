@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.presenter.PostCardPresenter;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.cardsui.MyCard;
 import co.quchu.quchu.widget.cardsui.objects.CardStack;
 import co.quchu.quchu.widget.cardsui.views.CardUI;
@@ -86,7 +87,7 @@ public class PostCardListFg extends Fragment {
         stack = new CardStack(getActivity());
         MyCard card = null;
         for (int i = 0; i < pModel.getResult().size(); i++) {
-            card = new MyCard(pModel.getResult().get(i), listener,getActivity());
+            card = new MyCard(pModel.getResult().get(i), listener, getActivity());
             stack.add(card);
         }
         if (null != postcardCardsui) {
@@ -94,5 +95,11 @@ public class PostCardListFg extends Fragment {
             // draw cards
             postcardCardsui.refresh();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.json("PostCardLIstFg  onResume");
     }
 }

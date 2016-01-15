@@ -24,5 +24,19 @@ public class KeyboardUtils {
         }
     }
 
+    private static long lastClickTime = 0L;
 
+    /**
+     * 防止重复点击
+     *
+     * @return
+     */
+    public static boolean isFastDoubleClick() {
+        long time = System.currentTimeMillis();
+        if (time - lastClickTime < 500) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
+    }
 }

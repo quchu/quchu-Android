@@ -32,6 +32,7 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.DetailListViewAdapter;
@@ -320,6 +321,8 @@ public class InterestingDetailsActivity extends BaseActivity {
             R.id.detail_button_add_postcard_out_rl, R.id.detail_button_add_postcard_rl, R.id.detail_button_share_out_rl,
             R.id.detail_button_share_rl, R.id.detail_want_tv})
     public void detailClick(View v) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         if (dModel != null) {
             switch (v.getId()) {
                 case R.id.detail_store_phone_ll:

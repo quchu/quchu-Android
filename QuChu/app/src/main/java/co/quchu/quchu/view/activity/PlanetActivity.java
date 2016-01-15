@@ -33,6 +33,7 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PlanetModel;
 import co.quchu.quchu.presenter.PlanetActPresenter;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -329,6 +330,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv, R.id.planet_postcard_ll, R.id.planet_discover_ll,
             R.id.planet_collect_ll, R.id.planet_gene_tv, R.id.planet_myfocus_rl, R.id.planet_focusonme_rl})
     public void click(View v) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         intent = new Intent();
         if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false)) {
             switch (v.getId()) {

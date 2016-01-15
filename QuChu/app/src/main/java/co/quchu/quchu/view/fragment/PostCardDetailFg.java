@@ -25,10 +25,15 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.presenter.PostCardPresenter;
+import co.quchu.quchu.utils.KeyboardUtils;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.AddPostCardActivity;
 import co.quchu.quchu.view.activity.PostCardActivity;
 import co.quchu.quchu.view.activity.PostCardDetailActivity;
 import co.quchu.quchu.view.activity.PostCardImageActivity;
@@ -112,10 +117,20 @@ public class PostCardDetailFg extends Fragment {
             itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
             itemRecommendCardPhotoSdv.setAspectRatio(1.3f);
             itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
-            if (item.isIsf()) {
+           /* if (item.isIsf()) {
                 itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_collect));
             } else {
                 itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_uncollect));
+            }*/
+            itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(item.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+            if (item.issys()) {
+                itemMyPostcardCardHeartIv.setImageDrawable(getActivity().getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+            } else {
+                if (item.isIsme()) {
+                    itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_post_card_editer));
+                } else {
+                    itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                }
             }
             if (item.getImglist() != null && item.getImglist().size() > 0) {
                 itemRecommendCardPhotoNumTv.setVisibility(View.VISIBLE);
@@ -129,12 +144,23 @@ public class PostCardDetailFg extends Fragment {
     @OnClick({R.id.item_my_postcard_heart_rl, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl
             , R.id.root_cv, R.id.item_recommend_card_photo_sdv})
     public void cardItemClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.root_cv:
                 ((PostCardActivity) getActivity()).showListFragment();
                 break;
             case R.id.item_my_postcard_heart_rl:
-
+                if (!item.issys() && item.isIsme()) {
+                    Intent intent = new Intent(getActivity(), AddPostCardActivity.class).putExtra("pName", item.getPlcaeName());
+                    intent.putExtra("pId", item.getPlaceId());
+                    Bundle mBundle = new Bundle();
+                    mBundle.putSerializable("pCardModel", item);
+                    intent.putExtras(mBundle);
+                    getActivity().startActivity(intent);
+                } else {
+                    doParise();
+                }
                 break;
             case R.id.item_recommend_card_collect_rl:
                 setFavorite();
@@ -144,7 +170,7 @@ public class PostCardDetailFg extends Fragment {
                 shareDialogFg.show(getActivity().getFragmentManager(), "share_postcard");
                 break;
             case R.id.item_recommend_card_reply_rl:
-                getActivity().startActivity(new Intent(getActivity(), PostCardDetailActivity.class).putExtra("cId", item.getCardId()));
+                getActivity().startActivity(new Intent(getActivity(), PostCardDetailActivity.class).putExtra("cInfo", item));
                 break;
             case R.id.item_recommend_card_photo_sdv:
                 if (item.getImglist().size() > 0) {
@@ -156,6 +182,27 @@ public class PostCardDetailFg extends Fragment {
                 }
                 break;
         }
+    }
+
+    private void doParise() {
+
+        PostCardPresenter.setPraise(getActivity(), item.isIsp(), true, item.getCardId(), new PostCardPresenter.MyPostCardListener() {
+            @Override
+            public void onSuccess(PostCardModel model) {
+                item.setIsp(!item.isIsp());
+                itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                if (item.isIsp()) {
+                    Toast.makeText(getActivity(), "点赞成功!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "取消点赞!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     @Override
@@ -194,5 +241,11 @@ public class PostCardDetailFg extends Fragment {
         } else {
             Toast.makeText(getActivity(), "系统明信片不允许收藏!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.json("PostCardDetailFg  onResume");
     }
 }

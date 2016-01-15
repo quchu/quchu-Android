@@ -33,6 +33,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.UserLoginActivity;
@@ -175,6 +176,8 @@ public class PhoneLoginFragment extends Fragment {
      */
     @OnClick({R.id.getauthcode_login_tv, R.id.phone_login_enter_tv, R.id.user_login_forget_tv})
     public void userLoginClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.getauthcode_login_tv:
 

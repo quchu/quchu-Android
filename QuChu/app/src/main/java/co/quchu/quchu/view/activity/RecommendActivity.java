@@ -29,6 +29,7 @@ import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.RecommendFragmentAdapter;
@@ -106,6 +107,8 @@ public class RecommendActivity extends BaseActivity {
 
     @OnClick({R.id.recommend_title_location_rl})
     public void titleClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         switch (view.getId()) {
             case R.id.recommend_title_location_rl:
                 if (viewPagerIndex == 2) {

@@ -144,13 +144,15 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
 
                 break;
             case FlickrButtonGroup.SelectedCF://选中小图
-                isSelectedLarge = false;
-                changeDataSet();
-                transaction = getSupportFragmentManager().beginTransaction();
+                if (flickrGridFragment != null) {
+                    isSelectedLarge = false;
+                    changeDataSet();
+                    transaction = getSupportFragmentManager().beginTransaction();
           /*      transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
-                transaction.replace(R.id.flickr_fl, flickrGridFragment);
+                    transaction.replace(R.id.flickr_fl, flickrGridFragment);
                /* transaction.addToBackStack(null);*/
-                transaction.commit();
+                    transaction.commit();
+                }
                 break;
         }
         scrollViewFlickr.smoothScrollTo(0, 0);
@@ -175,28 +177,37 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
         if (isSelectedLarge) {      //大图 listFragment
             if (isSelectedImages) {      //大图 listFragment  我的照片
                 if (isSelectedHot) {//大图 listFragment  我的照片  hot
-                    LogUtils.json("大图 listFragment  我的照片  hot" + flickrImagesHot.getImgs().getResult().size());
-                    flickrListFragment.changeDataSet(flickrImagesHot.getImgs());
-                    showEmptyView(flickrImagesHot.getImgs());
+                    if (flickrImagesHot != null && flickrImagesHot.getImgs() != null && flickrImagesHot.getImgs().getResult() != null && flickrImagesHot.getImgs().getResult().size() > 0) {
+                        LogUtils.json("大图 listFragment  我的照片  hot" + flickrImagesHot.getImgs().getResult().size());
+                        flickrListFragment.changeDataSet(flickrImagesHot.getImgs());
+                        showEmptyView(flickrImagesHot.getImgs());
+                    }
                 } else {//大图 listFragment  我的照片  new
-                    LogUtils.json("大图 listFragment  我的照片  new " + flickrImagesNew.getImgs().getResult().size());
-                    flickrListFragment.changeDataSet(flickrImagesNew.getImgs());
-                    showEmptyView(flickrImagesNew.getImgs());
+                    if (flickrImagesNew != null && flickrImagesNew.getImgs() != null && flickrImagesNew.getImgs().getResult() != null && flickrImagesNew.getImgs().getResult().size() > 0) {
+                        LogUtils.json("大图 listFragment  我的照片  new " + flickrImagesNew.getImgs().getResult().size());
+                        flickrListFragment.changeDataSet(flickrImagesNew.getImgs());
+                        showEmptyView(flickrImagesNew.getImgs());
+                    }
                 }
             } else {  //大图 listFragment  我的收藏
+
                 if (isSelectedHot) {//大图 listFragment  我的收藏  hot
-                    LogUtils.json("大图 listFragment   我的收藏  hot" + flickrFavoriteHot.getImgs().getResult().size());
-                    flickrListFragment.changeDataSet(flickrFavoriteHot.getImgs());
-                    showEmptyView(flickrFavoriteHot.getImgs());
-                    if (flickrFavoriteHot.getImgs().getResult().size() < 2) {
-                        flickrTsl.setVisibility(View.INVISIBLE);
+                    if (flickrFavoriteHot != null && flickrFavoriteHot.getImgs() != null && flickrFavoriteHot.getImgs().getResult() != null && flickrFavoriteHot.getImgs().getResult().size() > 0) {
+                        LogUtils.json("大图 listFragment   我的收藏  hot" + flickrFavoriteHot.getImgs().getResult().size());
+                        flickrListFragment.changeDataSet(flickrFavoriteHot.getImgs());
+                        showEmptyView(flickrFavoriteHot.getImgs());
+                        if (flickrFavoriteHot.getImgs().getResult().size() < 2) {
+                            flickrTsl.setVisibility(View.INVISIBLE);
+                        }
                     }
                 } else {//大图 listFragment  我的收藏  new
-                    LogUtils.json("大图 listFragment   我的收藏  new" + flickrFavoriteNew.getImgs().getResult().size());
-                    flickrListFragment.changeDataSet(flickrFavoriteNew.getImgs());
-                    showEmptyView(flickrFavoriteNew.getImgs());
-                    if (flickrFavoriteNew.getImgs().getResult().size() < 2) {
-                        flickrTsl.setVisibility(View.INVISIBLE);
+                    if (flickrFavoriteNew != null && flickrFavoriteNew.getImgs() != null && flickrFavoriteNew.getImgs().getResult() != null && flickrFavoriteNew.getImgs().getResult().size() > 0) {
+                        LogUtils.json("大图 listFragment   我的收藏  new" + flickrFavoriteNew.getImgs().getResult().size());
+                        flickrListFragment.changeDataSet(flickrFavoriteNew.getImgs());
+                        showEmptyView(flickrFavoriteNew.getImgs());
+                        if (flickrFavoriteNew.getImgs().getResult().size() < 2) {
+                            flickrTsl.setVisibility(View.INVISIBLE);
+                        }
                     }
                 }
             }
@@ -204,29 +215,41 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
 
             if (isSelectedImages) {      //小图 gridFragment 我的照片
                 if (isSelectedHot) {//小图 gridFragment  我的照片  hot
-                    LogUtils.json("小图 gridFragment  我的照片  hot" + flickrImagesHot.getImgs().getResult().size());
-                    flickrGridFragment.changeDataSet(flickrImagesHot.getImgs());
-                    showEmptyView(flickrImagesHot.getImgs());
+                    if (flickrImagesHot != null && flickrImagesHot.getImgs() != null && flickrImagesHot.getImgs().getResult() != null && flickrImagesHot.getImgs().getResult().size() > 0) {
+
+                        LogUtils.json("小图 gridFragment  我的照片  hot" + flickrImagesHot.getImgs().getResult().size());
+                        flickrGridFragment.changeDataSet(flickrImagesHot.getImgs());
+                        showEmptyView(flickrImagesHot.getImgs());
+                    }
                 } else {//小图 gridFragment  我的照片  new
-                    LogUtils.json("小图 gridFragment  我的照片  new" + flickrImagesNew.getImgs().getResult().size());
-                    flickrGridFragment.changeDataSet(flickrImagesNew.getImgs());
-                    showEmptyView(flickrImagesNew.getImgs());
+                    if (flickrImagesNew != null && flickrImagesNew.getImgs() != null && flickrImagesNew.getImgs().getResult() != null && flickrImagesNew.getImgs().getResult().size() > 0) {
+
+                        LogUtils.json("小图 gridFragment  我的照片  new" + flickrImagesNew.getImgs().getResult().size());
+                        flickrGridFragment.changeDataSet(flickrImagesNew.getImgs());
+                        showEmptyView(flickrImagesNew.getImgs());
+                    }
                 }
             } else {  //小图 gridFragment  我的收藏
 
                 if (isSelectedHot) {//小图 gridFragment  我的收藏  hot
-                    LogUtils.json("小图 gridFragment  我的收藏  hot" + flickrFavoriteHot.getImgs().getResult().size());
-                    flickrGridFragment.changeDataSet(flickrFavoriteHot.getImgs());
-                    showEmptyView(flickrFavoriteHot.getImgs());
-                    if (flickrFavoriteHot.getImgs().getResult().size() < 2) {
-                        flickrTsl.setVisibility(View.INVISIBLE);
+                    if (flickrFavoriteHot != null && flickrFavoriteHot.getImgs() != null && flickrFavoriteHot.getImgs().getResult() != null && flickrFavoriteHot.getImgs().getResult().size() > 0) {
+
+                        LogUtils.json("小图 gridFragment  我的收藏  hot" + flickrFavoriteHot.getImgs().getResult().size());
+                        flickrGridFragment.changeDataSet(flickrFavoriteHot.getImgs());
+                        showEmptyView(flickrFavoriteHot.getImgs());
+                        if (flickrFavoriteHot.getImgs().getResult().size() < 2) {
+                            flickrTsl.setVisibility(View.INVISIBLE);
+                        }
                     }
                 } else {//小图 gridFragment  我的收藏  new
-                    LogUtils.json("小图 gridFragment  我的收藏  new" + flickrFavoriteNew.getImgs().getResult().size());
-                    flickrGridFragment.changeDataSet(flickrFavoriteNew.getImgs());
-                    showEmptyView(flickrFavoriteNew.getImgs());
-                    if (flickrFavoriteNew.getImgs().getResult().size() < 2) {
-                        flickrTsl.setVisibility(View.INVISIBLE);
+                    if (flickrFavoriteNew != null && flickrFavoriteNew.getImgs() != null && flickrFavoriteNew.getImgs().getResult() != null && flickrFavoriteNew.getImgs().getResult().size() > 0) {
+
+                        LogUtils.json("小图 gridFragment  我的收藏  new" + flickrFavoriteNew.getImgs().getResult().size());
+                        flickrGridFragment.changeDataSet(flickrFavoriteNew.getImgs());
+                        showEmptyView(flickrFavoriteNew.getImgs());
+                        if (flickrFavoriteNew.getImgs().getResult().size() < 2) {
+                            flickrTsl.setVisibility(View.INVISIBLE);
+                        }
                     }
                 }
             }

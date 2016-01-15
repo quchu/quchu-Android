@@ -81,6 +81,41 @@ public static final int *;
 #-keep class com.qiniu.**
 
 ## ----------------------------------
+##   ########## 微博混淆    #########
+## ----------------------------------
+-dontwarn com.weibo.sdk.android.WeiboDialog
+-dontwarn android.net.http.SslError
+-dontwarn android.webkit.WebViewClient
+-keep public class android.net.http.SslError{
+     *;
+}
+-keep public class android.webkit.WebViewClient{
+    *;
+}
+-keep public class android.webkit.WebChromeClient{
+    *;
+}
+-keep public interface android.webkit.WebChromeClient$CustomViewCallback {
+    *;
+}
+-keep public interface android.webkit.ValueCallback {
+    *;
+}
+-keep class * implements android.webkit.WebChromeClient {
+    *;
+}
+## ----------------------------------
+##   ########## 微信混淆    #########
+## ----------------------------------
+-dontwarn com.tencent.mm.**
+-keep class com.tencent.mm.**{*;}
+
+## ----------------------------------
+##   ########## QQ混淆    #########
+## ----------------------------------
+    -dontwarn com.tencent.**
+    -keep class com.tencent.** {*;}
+## ----------------------------------
 ##   ########## Gson混淆    #########
 ## ----------------------------------
 #-keepattributes Signature
