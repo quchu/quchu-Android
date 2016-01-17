@@ -31,6 +31,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PlanetModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.PlanetActPresenter;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.KeyboardUtils;
@@ -105,6 +106,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     private int AnimationDuration = 160 * 1000;
     private AnimatorSet animatorSet;
     PlanetImgGridAdapter imageAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +114,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         ButterKnife.bind(this);
         initTitleBar();
         title_content_tv.setText(getTitle());
-        DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));
+        if (NetUtil.isNetworkConnected(this))
+            DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));
         initActivityViewHolder();
         presenter = new PlanetActPresenter(this);
         presenter.setPlanetGene(planetGeneTv);
@@ -325,6 +328,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         if (!SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false))
             startActivity(new Intent(PlanetActivity.this, FlickrActivity.class));
     }
+
     Intent intent;
 
     @OnClick({R.id.design_rpv, R.id.atmosphere_rpv, R.id.cate_rpv, R.id.pavilion_rpv, R.id.stroll_rpv, R.id.planet_postcard_ll, R.id.planet_discover_ll,
@@ -372,7 +376,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                     break;
                 case R.id.planet_myfocus_rl://趣星人
                 case R.id.planet_focusonme_rl://趣星人
-                //    startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class));
+                    //    startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class));
                     break;
             }
         }

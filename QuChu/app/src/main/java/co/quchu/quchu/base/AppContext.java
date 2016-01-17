@@ -56,9 +56,9 @@ public class AppContext extends Application {
             if (user == null) {
                 LogUtils.json(SPUtils.getUserInfo(this));
                 user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
-                gatherList = new ArrayList<>();
             }
         }
+        gatherList = new ArrayList<>();
         initImageLoader();
         initWidths();
 

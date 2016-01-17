@@ -334,7 +334,10 @@ public class InterestingDetailsActivity extends BaseActivity {
                 case R.id.detail_want_tv:
                     //用户想去
                     if (dModel.isIsf()) {
-                        startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+                       // startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+                        Uri uri = Uri.parse(dModel.getNet());
+                        Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(it);
                     } else {
                         WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
                         lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
@@ -391,6 +394,8 @@ public class InterestingDetailsActivity extends BaseActivity {
                 }
                 if (dModel.isIsf()) {
                     Toast.makeText(InterestingDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+                    if (AppContext.gatherList == null)
+                        AppContext.gatherList = new ArrayList<>();
                     AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid()));
                 } else {
                     Toast.makeText(InterestingDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
@@ -449,7 +454,7 @@ public class InterestingDetailsActivity extends BaseActivity {
             //  AppContext.dCardList.remove(pPosition);
             AppContext.dCardListRemoveIndex = pPosition;
         }
-        LogUtils.json(" AppContext.dCardListRemoveIndex = pPosition;=="+ AppContext.dCardListRemoveIndex);
+        LogUtils.json(" AppContext.dCardListRemoveIndex = pPosition;==" + AppContext.dCardListRemoveIndex);
         super.onDestroy();
     }
 
@@ -470,7 +475,10 @@ public class InterestingDetailsActivity extends BaseActivity {
                 Toast.makeText(InterestingDetailsActivity.this, "还没找到去往你心里的路...", Toast.LENGTH_SHORT).show();
             } else {
                 LogUtils.json("webview ==");
-                startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+                //    startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+                Uri uri = Uri.parse(dModel.getNet());
+                Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(it);
             }
         }
     }

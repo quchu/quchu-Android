@@ -294,8 +294,8 @@ public class SearchActivity extends BaseActivity {
         searchHistoryHintFl.setText("历史记录");
         SearchHistoryUtil.saveSearchHistory(searchModel);
         searchModel = SearchHistoryUtil.getSearchHistory();
-
-        historyAdapter.updateData(searchModel);
+        if (searchModel != null)
+            historyAdapter.updateData(searchModel);
     }
 
     public void showSearchResult() {
