@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.photo.Bimp;
 import co.quchu.quchu.utils.FileUtils;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 
 /**
@@ -136,6 +137,8 @@ public class AddPostCardGridAdapter extends BaseAdapter {
         holder.itemAddpostcardDelIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (KeyboardUtils.isFastDoubleClick())
+                    return;
                 int positions = (int) v.getTag();
                 Toast.makeText(mContext, R.string.word_delete_image_text, Toast.LENGTH_SHORT).show();
                 if (Bimp.bmp.size() + Bimp.imglist.size() < 9) {
@@ -147,12 +150,20 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                         } else if (positions > Bimp.imglist.size()) {
                             Bimp.bmp.remove(positions - Bimp.imglist.size() - 1);
                             Bimp.drr.remove(positions - Bimp.imglist.size() - 1);
+                            if (Bimp.max > 0)
+                                Bimp.max -= 1;
+                            if (0 == Bimp.drr.size())
+                                Bimp.max = 0;
                             notifyDataSetChanged();
                         }
                     } else {
                         if (positions <= Bimp.bmp.size()) {
                             Bimp.bmp.remove(positions - 1);
                             Bimp.drr.remove(positions - 1);
+                            if (Bimp.max > 0)
+                                Bimp.max -= 1;
+                            if (0 == Bimp.drr.size())
+                                Bimp.max = 0;
                             notifyDataSetChanged();
                         }
                     }
@@ -165,6 +176,10 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                         } else if (positions > Bimp.imglist.size() && positions <= (Bimp.bmp.size() + Bimp.imglist.size())) {
                             Bimp.bmp.remove(positions - Bimp.imglist.size());
                             Bimp.drr.remove(positions - Bimp.imglist.size());
+                            if (Bimp.max > 0)
+                                Bimp.max -= 1;
+                            if (0 == Bimp.drr.size())
+                                Bimp.max = 0;
                             notifyDataSetChanged();
                         }
                     } else {
@@ -172,14 +187,16 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                             Bimp.bmp.remove(positions);
                             Bimp.drr.remove(positions);
                             //   Bimp.max -= 1;
+                            if (Bimp.max > 0)
+                                Bimp.max -= 1;
+                            if (0 == Bimp.drr.size())
+                                Bimp.max = 0;
                             notifyDataSetChanged();
                         }
                     }
                 }
-
             }
         });
-
         return convertView;
     }
 
@@ -223,18 +240,20 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                         break;
                     } else {
                         try {
-                            LogUtils.json("Bimp.max=" + Bimp.max + "///drrSize=" + Bimp.drr.size());
-                            String path = Bimp.drr.get(Bimp.max);
-                            Bitmap bm = Bimp.revitionImageSize(path);
-                            Bimp.bmp.add(bm);
-                            String newStr = path.substring(
-                                    path.lastIndexOf("/") + 1,
-                                    path.lastIndexOf("."));
-                            FileUtils.saveBitmap(bm, "" + newStr);
-                            Bimp.max += 1;
-                            Message message = new Message();
-                            message.what = 1;
-                            handler.sendMessage(message);
+                            if (Bimp.max <= Bimp.drr.size()) {
+                                LogUtils.json("Bimp.max=" + Bimp.max + "///drrSize=" + Bimp.drr.size());
+                                String path = Bimp.drr.get(Bimp.max);
+                                Bitmap bm = Bimp.revitionImageSize(path);
+                                Bimp.bmp.add(bm);
+                                String newStr = path.substring(
+                                        path.lastIndexOf("/") + 1,
+                                        path.lastIndexOf("."));
+                                FileUtils.saveBitmap(bm, "" + newStr);
+                                Bimp.max += 1;
+                                Message message = new Message();
+                                message.what = 1;
+                                handler.sendMessage(message);
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

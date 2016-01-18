@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.KeyboardUtils;
 
 /**
  * FriendsAdatper
@@ -73,6 +74,8 @@ public class FriendsAdatper extends RecyclerView.Adapter<FriendsAdatper.FriendsV
         @OnClick(R.id.item_friends_root_rl)
         @Override
         public void onClick(View v) {
+            if (KeyboardUtils.isFastDoubleClick())
+                return;
             if (clickListener != null)
                 clickListener.itemClick(v, getAdapterPosition());
         }

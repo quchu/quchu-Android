@@ -175,9 +175,11 @@
     <TextView
         android:id="@+id/user_login_forget_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="48dp"
+        android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="@dimen/base_margin"
+        android:paddingLeft="@dimen/quarter_margin"
+        android:paddingRight="@dimen/quarter_margin"
         android:text="忘记密码"
         android:textColor="@color/user_login_text_hint_text_color"
         android:textSize="@dimen/word_size_time"

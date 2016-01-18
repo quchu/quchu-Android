@@ -40,7 +40,7 @@ import co.quchu.quchu.widget.VerTextView;
  * User: Chenhs
  * Date: 2015-12-04
  */
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity implements SearchHistoryAdapter.SearchHItemClickListener {
     @Bind(R.id.search_input_et)
     EditText searchInputEt;
     @Bind(R.id.search_button_rl)
@@ -136,7 +136,7 @@ public class SearchActivity extends BaseActivity {
         SearchPresenter.searchFromService(this, str, pageNo, new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList) {
-                if (arrayList.size() > 0) {
+                if (arrayList != null && arrayList.size() > 0) {
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(
                                     SearchActivity.this
@@ -249,26 +249,7 @@ public class SearchActivity extends BaseActivity {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         searchHistoryRv.setLayoutManager(mLayoutManager);
         searchHistoryRv.setItemAnimator(new DefaultItemAnimator());
-        historyAdapter = new SearchHistoryAdapter(this, searchModel, new SearchHistoryAdapter.SearchHItemClickListener() {
-            @Override
-            public void itemTVClick(int position) {
-                searchInputEt.setText(searchModel.getSearchList().get(position).getSerachStr());
-            }
-
-            @Override
-            public void itemIVClick(int position) {
-                if (searchModel.removeSearchHistory(position))
-                    showNoneHistory();
-                historyAdapter.notifyItemRemoved(position);
-            }
-
-            @Override
-            public void itemRemoveAllClick() {
-                searchModel.removeAllSearchHistory();
-                historyAdapter.notifyDataSetChanged();
-                showNoneHistory();
-            }
-        });
+        historyAdapter = new SearchHistoryAdapter(this, searchModel, this);
         searchHistoryRv.setAdapter(historyAdapter);
         searchHistoryRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -294,8 +275,11 @@ public class SearchActivity extends BaseActivity {
         searchHistoryHintFl.setText("历史记录");
         SearchHistoryUtil.saveSearchHistory(searchModel);
         searchModel = SearchHistoryUtil.getSearchHistory();
-        if (searchModel != null)
+        if (searchModel != null) {
+            if (historyAdapter == null)
+                historyAdapter = new SearchHistoryAdapter(this, searchModel, this);
             historyAdapter.updateData(searchModel);
+        }
     }
 
     public void showSearchResult() {
@@ -315,5 +299,24 @@ public class SearchActivity extends BaseActivity {
         resultList = new ArrayList<RecommendModel>();
         resultAdapter = new SearchAdapter(this);
         searchResultRv.setAdapter(resultAdapter);
+    }
+
+    @Override
+    public void itemTVClick(int position) {
+        searchInputEt.setText(searchModel.getSearchList().get(position).getSerachStr());
+    }
+
+    @Override
+    public void itemIVClick(int position) {
+        if (searchModel.removeSearchHistory(position))
+            showNoneHistory();
+        historyAdapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    public void itemRemoveAllClick() {
+        searchModel.removeAllSearchHistory();
+        historyAdapter.notifyDataSetChanged();
+        showNoneHistory();
     }
 }

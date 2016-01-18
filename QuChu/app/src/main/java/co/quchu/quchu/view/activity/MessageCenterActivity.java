@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.MessageModel;
@@ -65,5 +66,10 @@ public class MessageCenterActivity extends BaseActivity {
                 messagesSrl.setVisibility(View.GONE);
             }
         });
+    }
+
+    @OnClick(R.id.empty_view_other_tv)
+    public void emptyClick(View view) {
+        this.finish();
     }
 }

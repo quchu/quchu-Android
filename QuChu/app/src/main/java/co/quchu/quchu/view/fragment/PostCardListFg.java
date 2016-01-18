@@ -26,12 +26,14 @@ import co.quchu.quchu.widget.cardsui.views.CardUI;
 public class PostCardListFg extends Fragment {
     View view;
 
+    private boolean isFavoritePostCard = false;
     @Bind(R.id.postcard_cardsui)
     CardUI postcardCardsui;
     private MyCard.PostCardItemClickListener listener;
 
-    public PostCardListFg(MyCard.PostCardItemClickListener listener) {
+    public PostCardListFg(MyCard.PostCardItemClickListener listener, boolean isFavoritePostCard) {
         this.listener = listener;
+        this.isFavoritePostCard = isFavoritePostCard;
         initPostCardData();
     }
 
@@ -62,7 +64,8 @@ public class PostCardListFg extends Fragment {
     private PostCardModel pModel;
 
     private void initPostCardData() {
-        PostCardPresenter.GetPostCardList(getActivity(), new PostCardPresenter.MyPostCardListener() {
+
+        PostCardPresenter.GetPostCardList(getActivity(), isFavoritePostCard, new PostCardPresenter.MyPostCardListener() {
             @Override
             public void onSuccess(PostCardModel model) {
 
@@ -78,6 +81,7 @@ public class PostCardListFg extends Fragment {
 
             }
         });
+
     }
 
     CardStack stack;

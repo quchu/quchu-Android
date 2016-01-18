@@ -21,6 +21,7 @@ import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 
 public class ImageGridActivity extends BaseActivity {
@@ -64,6 +65,9 @@ public class ImageGridActivity extends BaseActivity {
         bt.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
+                if (KeyboardUtils.isFastDoubleClick()) {
+                    return;
+                }
                 ArrayList<String> list = new ArrayList<String>();
                 Collection<String> c = adapter.map.values();
                 Iterator<String> it = c.iterator();
@@ -111,7 +115,7 @@ public class ImageGridActivity extends BaseActivity {
                 if (count == 0) {
                     bt.setText("完成");
                 } else {
-                    bt.setText("完成" + "(" +  (Bimp.drr.size() + Bimp.imglist.size()+count) + ")");
+                    bt.setText("完成" + "(" + (Bimp.drr.size() + Bimp.imglist.size() + count) + ")");
                 }
             }
         });

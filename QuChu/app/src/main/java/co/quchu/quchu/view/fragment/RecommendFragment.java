@@ -82,23 +82,30 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                 if (newPosition > oldPosition && cardList.size() > 3 && newPosition == cardList.size() - 1 && !isLoading) {
                     loadMoreDateSet();
                 }
+                indexPosition = newPosition;
             }
         });
         fRecommendRvp.addOnLayoutChangeListener();
         //  if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
         changeDataSetFromServer();
         //  }
-        if (AppContext.dCardList == null)
-            AppContext.dCardList = new ArrayList<>();
+   /*     if (AppContext.selectedPlace == null)
+            AppContext.selectedPlace = new ArrayList<>();*/
         return view;
     }
 
     private boolean isLoading = false;
     private RecommendAdapter adapter;
+    private int indexPosition = 0;
 
     @OnClick(R.id.f_recommend_bottom_rl)
     public void bottomClick(View view) {
-        fRecommendRvp.smoothScrollToPosition(0);
+        //fRecommendRvp.smoothScrollToPosition(0);
+        if (indexPosition > 5) {
+            fRecommendRvp.scrollToPosition(0);
+        } else {
+            fRecommendRvp.smoothScrollToPosition(0);
+        }
     }
 
     @Override
@@ -148,6 +155,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
 
     private int pageCounts = 2, pageNums = 1;
     private Intent intent;
+    private int hasChangePosition = 0;
 
     @Override
     public void onCardLick(View view, int position) {
@@ -155,7 +163,8 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
             return;
         switch (view.getId()) {
             case R.id.root_cv:
-                AppContext.dCardList = cardList;
+                AppContext.selectedPlace = cardList.get(position);
+                hasChangePosition = position;
                 intent = new Intent(getActivity(), InterestingDetailsActivity.class);
                 intent.putExtra("pPosition", position);
                 intent.putExtra("pId", cardList.get(position).getPid());
@@ -193,14 +202,14 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
     }
 
     public void updateDateSet() {
-        cardList = AppContext.dCardList;
+        cardList.set(hasChangePosition, AppContext.selectedPlace);
         if (adapter != null)
             adapter.notifyDataSetChanged();
     }
 
     public void removeDataSet(int removeIndex) {
         if (adapter != null && removeIndex < cardList.size()) {
-        LogUtils.json("removeDataSet==" + removeIndex);
+            LogUtils.json("removeDataSet==" + removeIndex);
             cardList.remove(removeIndex);
             //adapter.changeDataSet(cardList);
             adapter.notifyDataSetChanged();
@@ -216,4 +225,23 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
         if (fRecommendRvp != null)
             fRecommendRvp.setVisibility(View.VISIBLE);
     }
+
+   /* @Override
+    public void onResume() {
+        super.onResume();
+        if (((RecommendActivity) getActivity()).viewPagerIndex == 0) {
+            LogUtils.json("RecommendFragment==onResume");
+            if (AppContext.dCardListRemoveIndex != -1) {
+                LogUtils.json("AppContext.dCardListRemoveIndex != -1   true");
+                removeDataSet(AppContext.dCardListRemoveIndex);
+                AppContext.dCardListRemoveIndex = -1;
+                AppContext.dCardListNeedUpdate = false;
+            } else {
+                if (AppContext.dCardListNeedUpdate) {
+                    updateDateSet();
+                    AppContext.dCardListNeedUpdate = false;
+                }
+            }
+        }
+    }*/
 }

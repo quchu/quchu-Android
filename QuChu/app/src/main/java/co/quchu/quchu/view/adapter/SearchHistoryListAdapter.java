@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.SearchModel;
+import co.quchu.quchu.utils.KeyboardUtils;
 
 /**
  * FlickrListAdapter
@@ -76,6 +77,8 @@ public class SearchHistoryListAdapter extends BaseAdapter {
         @OnClick({R.id.item_search_history_delete_rl, R.id.item_search_history_str_tv})
         @Override
         public void onClick(View v) {
+            if (KeyboardUtils.isFastDoubleClick())
+                return;
             if (listener != null)
                 switch (v.getId()) {
                     case R.id.item_search_history_delete_rl:

@@ -15,6 +15,7 @@ import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.utils.KeyboardUtils;
 
 public class ImageBucketActivity extends BaseActivity {
 	// ArrayList<Entity> dataList;//用来装载数据源的列表
@@ -77,6 +78,8 @@ public class ImageBucketActivity extends BaseActivity {
 				 * 通知适配器，绑定的数据发生了改变，应当刷新视图
 				 */
 				// adapter.notifyDataSetChanged();
+				if (KeyboardUtils.isFastDoubleClick())
+					return;
 				Intent intent = new Intent(ImageBucketActivity.this,
 						ImageGridActivity.class);
 				intent.putExtra(ImageBucketActivity.EXTRA_IMAGE_LIST,

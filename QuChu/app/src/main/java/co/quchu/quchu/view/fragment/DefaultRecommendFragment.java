@@ -84,23 +84,29 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
                 if (newPosition > oldPosition && dCardList.size() > 3 && newPosition == dCardList.size() - 1 && !isLoading) {
                     loadMoreDateSet();
                 }
+                indexPosition = newPosition;
             }
         });
         dfRecommendRvp.addOnLayoutChangeListener();
         if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
             changeDataSetFromServer();
         }
-        if (AppContext.dCardList == null)
-            AppContext.dCardList = new ArrayList<>();
+   /*     if (AppContext.dCardList == null)
+            AppContext.dCardList = new ArrayList<>();*/
         return view;
     }
 
     private boolean isLoading = false;
     private RecommendAdapter adapter;
+    private int indexPosition = 0;
 
     @OnClick(R.id.f_recommend_bottom_rl)
     public void bottomClick(View view) {
-        dfRecommendRvp.smoothScrollToPosition(0);
+        if (indexPosition > 5) {
+            dfRecommendRvp.scrollToPosition(0);
+        } else {
+            dfRecommendRvp.smoothScrollToPosition(0);
+        }
     }
 
     @Override
@@ -126,6 +132,7 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
     }
 
     private Intent intent;
+    private int hasChangePosition = 0;
 
     @Override
     public void onCardLick(View view, int position) {
@@ -133,7 +140,8 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
             return;
         switch (view.getId()) {
             case R.id.root_cv:
-                AppContext.dCardList = dCardList;
+                hasChangePosition = position;
+                AppContext.selectedPlace = dCardList.get(position);
                 intent = new Intent(getActivity(), InterestingDetailsActivity.class);
                 intent.putExtra("pId", dCardList.get(position).getPid());
                 intent.putExtra("pPosition", position);
@@ -194,7 +202,7 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
     }
 
     public void updateDateSet() {
-        dCardList = AppContext.dCardList;
+        dCardList.set(hasChangePosition, AppContext.selectedPlace);
         if (adapter != null)
             adapter.notifyDataSetChanged();
     }
@@ -217,4 +225,22 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
         if (dfRecommendRvp != null)
             dfRecommendRvp.setVisibility(View.VISIBLE);
     }
+
+    /*@Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.json("DefaultRecommendFragment==onResume");
+        if (((RecommendActivity) getActivity()).viewPagerIndex == 2) {
+            if (AppContext.dCardListRemoveIndex != -1) {
+                removeDataSet(AppContext.dCardListRemoveIndex);
+                AppContext.dCardListRemoveIndex = -1;
+                AppContext.dCardListNeedUpdate = false;
+            } else {
+                if (AppContext.dCardListNeedUpdate) {
+                    updateDateSet();
+                    AppContext.dCardListNeedUpdate = false;
+                }
+            }
+        }
+    }*/
 }

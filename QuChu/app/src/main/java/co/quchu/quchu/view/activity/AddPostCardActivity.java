@@ -399,6 +399,7 @@ public class AddPostCardActivity extends BaseActivity {
         //    uploadManager = new UploadManager();
         //  }
         LogUtils.json("addImage2QiNiu  addImage2QiNiu  addImage2QiNiu" + list.get(imageIndex));
+        // uploadManager.put(list.get(imageIndex), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
         uploadManager.put(ImageUtils.Bitmap2Bytes(Bimp.bmp.get(imageIndex), 100), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
                 new UpCompletionHandler() {
 
@@ -468,6 +469,7 @@ public class AddPostCardActivity extends BaseActivity {
     private void clearImageSelected() {
         Bimp.bmp = new ArrayList<Bitmap>();
         Bimp.drr = new ArrayList<String>();
+        Bimp.max = 0;
         Bimp.delImageIdList = new ArrayList<>();
         Bimp.imglist = new ArrayList<>();
         list = new ArrayList<String>();

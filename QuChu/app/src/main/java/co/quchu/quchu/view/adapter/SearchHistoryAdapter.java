@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.SearchModel;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 
 /**
@@ -119,6 +120,8 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         @OnClick({R.id.item_search_history_delete_rl, R.id.item_search_history_str_tv, R.id.item_search_history_clear_rl})
         @Override
         public void onClick(View v) {
+            if (KeyboardUtils.isFastDoubleClick())
+                return;
             if (listener != null)
                 switch (v.getId()) {
                     case R.id.item_search_history_delete_rl:

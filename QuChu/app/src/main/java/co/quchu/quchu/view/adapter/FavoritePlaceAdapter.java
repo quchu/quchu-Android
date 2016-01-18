@@ -24,6 +24,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.model.FavoritePlaceModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.utils.FlyMeUtils;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -122,6 +123,8 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
 
         @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl})
         public void cardClick(View view) {
+                if (KeyboardUtils.isFastDoubleClick())
+                    return;
             switch (view.getId()) {
                 case R.id.item_recommend_card_collect_rl:
                     setFavorite(getPosition());

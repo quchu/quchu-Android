@@ -149,7 +149,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
      * title bar 控制  start
      */
     public void initTitleBar() {
-        this.findViewById(R.id.title_back_iv).setOnClickListener(this);
+        this.findViewById(R.id.title_back_rl).setOnClickListener(this);
         MoreButtonView mvv = (MoreButtonView) this.findViewById(R.id.title_more_rl);
         mvv.setMoreClick(this);
     }
@@ -157,7 +157,8 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.title_back_iv:
+            case R.id.title_back_rl:
+
                 this.finish();
                 break;
 

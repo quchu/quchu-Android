@@ -98,24 +98,26 @@ public class PalceMyPostCardActivity extends BaseActivity {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("pMpcA==" + response);
-                Gson gson = new Gson();
-                pPostCardModel = gson.fromJson(response.toString(), PostCardItemModel.class);
-                if (pPostCardModel != null) {
-                    itemRecommendCardNameTv.setText(pPostCardModel.getPlcaeName());
-                    itemRecommendCardCityTv.setText(pPostCardModel.getPlcaeAddress());
-                    itemRecommendCardPhotoSdv.setImageURI(Uri.parse(pPostCardModel.getPlcaeCover()));
-                    itemRecommendCardPhotoSdv.setAspectRatio(1.3f);
-                    itemMyPostcardAvatarSdv.setImageURI(Uri.parse(pPostCardModel.getAutorPhoto()));
-                    itemMyPostcardCardPrb.setRating(pPostCardModel.getScore());
-                    itemMyPostcardCardNicknameTv.setText(pPostCardModel.getAutor());
-                    itemMyPostcardCardTiemTv.setText(pPostCardModel.getTime().substring(0, 10));
-                    itemMyPostcardCardCommentTv.setText(pPostCardModel.getComment());
-                    rootCv.setCardBackgroundColor(Color.parseColor("#" + pPostCardModel.getRgb()));
+                if (!response.has("msg") && !response.has("data")) {
+                    Gson gson = new Gson();
+                    pPostCardModel = gson.fromJson(response.toString(), PostCardItemModel.class);
+                    if (pPostCardModel != null) {
+                        itemRecommendCardNameTv.setText(pPostCardModel.getPlcaeName());
+                        itemRecommendCardCityTv.setText(pPostCardModel.getPlcaeAddress());
+                        itemRecommendCardPhotoSdv.setImageURI(Uri.parse(pPostCardModel.getPlcaeCover()));
+                        itemRecommendCardPhotoSdv.setAspectRatio(1.3f);
+                        itemMyPostcardAvatarSdv.setImageURI(Uri.parse(pPostCardModel.getAutorPhoto()));
+                        itemMyPostcardCardPrb.setRating(pPostCardModel.getScore());
+                        itemMyPostcardCardNicknameTv.setText(pPostCardModel.getAutor());
+                        itemMyPostcardCardTiemTv.setText(pPostCardModel.getTime().substring(0, 10));
+                        itemMyPostcardCardCommentTv.setText(pPostCardModel.getComment());
+                        rootCv.setCardBackgroundColor(Color.parseColor("#" + pPostCardModel.getRgb()));
 
-                    itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
-                    itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_post_card_editer));
-                    rootCv.setVisibility(View.VISIBLE);
-                    DialogUtil.dismissProgess();
+                        itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+                        itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_post_card_editer));
+                        rootCv.setVisibility(View.VISIBLE);
+                        DialogUtil.dismissProgess();
+                    }
                 }
             }
 

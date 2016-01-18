@@ -146,7 +146,7 @@ public class InterestingDetailsActivity extends BaseActivity {
     RelativeLayout detailIconsRl;
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
-    private int pId, pPosition;
+    private int pId, pPosition = 0;
     private float detailButtonGroupLlHeight = 0f;
     public DetailModel dModel;
     private GatherViewModel gatherViewModel;
@@ -334,7 +334,7 @@ public class InterestingDetailsActivity extends BaseActivity {
                 case R.id.detail_want_tv:
                     //用户想去
                     if (dModel.isIsf()) {
-                       // startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+                        // startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
                         Uri uri = Uri.parse(dModel.getNet());
                         Intent it = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(it);
@@ -388,8 +388,8 @@ public class InterestingDetailsActivity extends BaseActivity {
             public void onSuccessCall(String str) {
                 dModel.setIsf(!dModel.isIsf());
                 changeCollectState(dModel.isIsf());
-                if (AppContext.dCardList != null && AppContext.dCardList.size() > 0) {
-                    AppContext.dCardList.get(pPosition).setIsf(dModel.isIsf());
+                if (AppContext.selectedPlace != null) {
+                    AppContext.selectedPlace.setIsf(dModel.isIsf());
                     AppContext.dCardListNeedUpdate = true;
                 }
                 if (dModel.isIsf()) {
@@ -475,10 +475,23 @@ public class InterestingDetailsActivity extends BaseActivity {
                 Toast.makeText(InterestingDetailsActivity.this, "还没找到去往你心里的路...", Toast.LENGTH_SHORT).show();
             } else {
                 LogUtils.json("webview ==");
-                //    startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
-                Uri uri = Uri.parse(dModel.getNet());
+                //startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+              Uri uri = Uri.parse(dModel.getNet());
                 Intent it = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(it);
+
+                /*String keywords = "24740909";
+                try {
+                  //  keywords = URLEncoder.encode("麻辣诱惑", "UTF-8");
+                    Uri url = Uri.parse("dianping://shopinfo?id=" + keywords);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, url);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    // 没有安装应用，默认打开HTML5站
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(dModel.getNet()));
+                    startActivity(intent);
+                }
+*/
             }
         }
     }

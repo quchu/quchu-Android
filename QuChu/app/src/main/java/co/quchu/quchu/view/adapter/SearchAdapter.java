@@ -30,6 +30,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.FlyMeUtils;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
@@ -173,6 +174,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
 
         @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_reply_rl, R.id.item_recommend_card_interest_rl})
         public void searchClick(View v) {
+            if (KeyboardUtils.isFastDoubleClick())
+                return;
             switch (v.getId()) {
                 case R.id.root_cv:
                 case R.id.item_recommend_card_reply_rl:

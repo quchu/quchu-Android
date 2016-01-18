@@ -20,15 +20,23 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class PostCardPresenter {
 
-    public static void GetPostCardList(Context context, final MyPostCardListener listener) {
-        NetService.get(context, NetApi.GetCardList, new IRequestListener() {
+    public static void GetPostCardList(Context context, boolean isFavoritePostCard, final MyPostCardListener listener) {
+        String netUrl = "";
+        if (isFavoritePostCard) {
+            netUrl = String.format(NetApi.getFavoriteList, 1, NetApi.FavTypeCard);
+        } else {
+            netUrl = NetApi.GetCardList;
+        }
+        NetService.get(context, netUrl, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("CardList=" + response);
                 if (response != null) {
-                    Gson gson = new Gson();
-                    PostCardModel model = gson.fromJson(response.toString(), PostCardModel.class);
-                    listener.onSuccess(model);
+                    if (!response.has("msg") && !response.has("data")) {
+                        Gson gson = new Gson();
+                        PostCardModel model = gson.fromJson(response.toString(), PostCardModel.class);
+                        listener.onSuccess(model);
+                    }
                 }
             }
 
@@ -79,7 +87,7 @@ public class PostCardPresenter {
      * @param typeIsCard 点赞或取消点赞 类型  true==当前操作类型为明信片
      * @param praiseId   id  操作对象id
      */
-    public static void setPraise(Context mContext, boolean isPraise, boolean typeIsCard, int praiseId ,final MyPostCardListener listener) {
+    public static void setPraise(Context mContext, boolean isPraise, boolean typeIsCard, int praiseId, final MyPostCardListener listener) {
         String urlStr = "";
         if (isPraise) {
             if (typeIsCard) {
@@ -94,7 +102,7 @@ public class PostCardPresenter {
                 urlStr = String.format(NetApi.doPraise, praiseId, "image");
             }
         }
-        NetService.get(mContext,urlStr, new IRequestListener() {
+        NetService.get(mContext, urlStr, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 listener.onSuccess(null);

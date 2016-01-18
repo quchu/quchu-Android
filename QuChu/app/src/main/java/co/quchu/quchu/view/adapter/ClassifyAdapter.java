@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.ClassifyModel;
+import co.quchu.quchu.utils.KeyboardUtils;
 
 /**
  * ClassifyAdapter
@@ -71,6 +72,8 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Classi
         }
         @OnClick(R.id.item_classify_root_cv)
         public void onCardClick(View v){
+                if (KeyboardUtils.isFastDoubleClick())
+                    return;
             switch (v.getId()){
                 case R.id.item_classify_root_cv:
                     if (listener!=null)

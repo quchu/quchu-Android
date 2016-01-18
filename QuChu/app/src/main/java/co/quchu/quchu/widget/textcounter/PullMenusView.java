@@ -170,6 +170,7 @@ public class PullMenusView extends RelativeLayout implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+
         if (listener != null) {
             switch (v.getId()) {
                 case R.id.widget_menus_avatar_rl:

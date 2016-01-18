@@ -100,17 +100,23 @@ public class GeneProgressAdapter extends BaseAdapter {
         } else {
             holder = (GeneProgressItemHolder) convertView.getTag();
         }
-        holder.gene_progress_item_rpb.setRoundWidth(20);
-        holder.gene_progress_item_rpb.setProgress((int)( genes.get(position).getWeight()));
-        //  holder.gene_progress_item_tv.setText(genes.get(position).getZh());
-        holder.gene_progress_item_iv.setImageResource(imagesArray[position]);
-        SpannableStringBuilder builder = new SpannableStringBuilder(genes.get(position).getZh() + "基因");
-        ForegroundColorSpan redSpan = new ForegroundColorSpan(context.getResources().getColor(R.color.planet_progress_yellow));
-        builder.setSpan(redSpan, 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.gene_progress_item_tv.setText(builder);
+        if (genes != null) {
+            holder.gene_progress_item_rpb.setRoundWidth(20);
+            holder.gene_progress_item_rpb.setProgress((int) (genes.get(position).getWeight()));
+            //  holder.gene_progress_item_tv.setText(genes.get(position).getZh());
+            holder.gene_progress_item_iv.setImageResource(imagesArray[position]);
+            SpannableStringBuilder builder = new SpannableStringBuilder(genes.get(position).getZh() + "基因");
+            ForegroundColorSpan redSpan = new ForegroundColorSpan(context.getResources().getColor(R.color.planet_progress_yellow));
+            builder.setSpan(redSpan, 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.gene_progress_item_tv.setText(builder);
+        }
         return convertView;
     }
 
+    public void updateGeneData(List<MyGeneModel.GenesEntity> genes) {
+        this.genes = genes;
+        notifyDataSetChanged();
+    }
 
     public View getPlanetView(int position, View convertView, ViewGroup parent) {
         PlanetImgItemHolder pvh;
@@ -122,13 +128,14 @@ public class GeneProgressAdapter extends BaseAdapter {
         } else {
             pvh = (PlanetImgItemHolder) convertView.getTag();
         }
+
         if (position == 3) {
             pvh.planet_gallery_mask_rl.setVisibility(View.VISIBLE);
             pvh.planet_gallery_mask_tv.setText(" \r\n 照片");
         } else {
             pvh.planet_gallery_mask_rl.setVisibility(View.INVISIBLE);
         }
-      //  pvh.sdv.setImageURI(Uri.parse("http://imgdn.paimeilv.com/1444721523235"));
+        //  pvh.sdv.setImageURI(Uri.parse("http://imgdn.paimeilv.com/1444721523235"));
         return convertView;
     }
 

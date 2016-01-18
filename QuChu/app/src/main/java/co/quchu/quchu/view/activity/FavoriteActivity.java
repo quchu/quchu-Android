@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -73,28 +74,30 @@ public class FavoriteActivity extends BaseActivity {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("Favorite==" + response);
-                Gson gson = new Gson();
-                model = gson.fromJson(response.toString(), FavoriteModel.class);
-                if (model != null) {
-                    favoritePlaceGv.setAdapter(new FavoriteGridAdapter(FavoriteActivity.this, model, true));
-                    favoritePostcardGv.setAdapter(new FavoriteGridAdapter(FavoriteActivity.this, model, false));
-                    initCountView();
-                    favoritePlaceCounterCv.start();
-                    favoritePostcardCounterCv.start();
-                    favoritePlaceGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            startActivity(new Intent(FavoriteActivity.this, FavoritePlaceActivity.class));
-                        }
-                    });
-                    favoritePostcardGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            //跳转
-                        }
-                    });
+                if (!response.has("msg")) {
+                    Gson gson = new Gson();
+                    model = gson.fromJson(response.toString(), FavoriteModel.class);
+                    if (model != null) {
+                        favoritePlaceGv.setAdapter(new FavoriteGridAdapter(FavoriteActivity.this, model, true));
+                        favoritePostcardGv.setAdapter(new FavoriteGridAdapter(FavoriteActivity.this, model, false));
+                        initCountView();
+                        favoritePlaceCounterCv.start();
+                        favoritePostcardCounterCv.start();
+                        favoritePlaceGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                startActivity(new Intent(FavoriteActivity.this, FavoritePlaceActivity.class));
+                            }
+                        });
+                        favoritePostcardGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                //跳转
+                            }
+                        });
+                    }
+                    DialogUtil.dismissProgess();
                 }
-                DialogUtil.dismissProgess();
             }
 
             @Override
@@ -122,6 +125,10 @@ public class FavoriteActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.favorite_postcard_cv:
             case R.id.favorite_postcard_gvcv:
+                if (model.getCard() != null && model.getCard().getData().size() > 0)
+                    startActivity(new Intent(this, PostCardActivity.class).putExtra("isFavoritePostCard", true));
+                else
+                    Toast.makeText(this, "暂未收藏明信片!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.favorite_place_cv:
             case R.id.favorite_place_name_gvcv:

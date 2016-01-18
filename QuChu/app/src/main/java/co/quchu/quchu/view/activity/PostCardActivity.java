@@ -38,6 +38,7 @@ public class PostCardActivity extends BaseActivity {
     PostCardListFg postCardListFg;
     MyCard.PostCardItemClickListener listener;
     private int fragmentIndex = -1;
+    public boolean isFavoritePostCard = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class PostCardActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitleBar();
         mTitleContentTv.setText(getTitle());
-
+        isFavoritePostCard = getIntent().getBooleanExtra("isFavoritePostCard", false);
         listener = new MyCard.PostCardItemClickListener() {
             @Override
             public void onPostCardItemClick(PostCardItemModel item) {
@@ -65,7 +66,7 @@ public class PostCardActivity extends BaseActivity {
                 //postCardListFg.setInvisiable(true);
             }
         };
-        postCardListFg = new PostCardListFg(listener);
+        postCardListFg = new PostCardListFg(listener, isFavoritePostCard);
         showListFragment();
     }
 

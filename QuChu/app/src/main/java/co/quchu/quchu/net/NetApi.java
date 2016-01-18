@@ -66,8 +66,8 @@ public class NetApi {
     public static final String delPostCardImage = HOST + "/place/delCardImg?imgId=%s";  //删除明信片照片
 
     public static final String getPlaceUserCard = HOST + "/place/getPlaceUserCard?pId=%d";  //获取趣处中我留下的明信片
-    public static final String sharePlace = HOST + "/share/place?pId=%d&token=%s";  //分享趣处
-    public static final String sharePostCard = HOST + "/share/card?cId=%d&token=%s";  //分享明信片
+    public static final String sharePlace = HOST + "/share/place?pId=%d";  //分享趣处
+    public static final String sharePostCard = HOST + "/share/card?cId=%d";  //分享明信片
 
 
     public static final String getUserGene = HOST + "/personal/getUserGene";  //获取用户基因

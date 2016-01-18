@@ -21,6 +21,7 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.MessageModel;
 import co.quchu.quchu.presenter.MessageCenterPresenter;
 import co.quchu.quchu.utils.DateUtils;
+import co.quchu.quchu.utils.KeyboardUtils;
 
 /**
  * MessageCenterAdapter
@@ -116,6 +117,8 @@ public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdap
 
         @OnClick({R.id.item_message_follow_tv})
         public void messageItemClick(View view) {
+            if (KeyboardUtils.isFastDoubleClick())
+                return;
             switch (view.getId()) {
                 case R.id.item_message_follow_tv:
                     DialogUtil.showProgess(mContext, R.string.loading_dialog_text);

@@ -12,7 +12,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -24,6 +23,8 @@ public class ReserveActivity extends BaseActivity {
     String placeUrl = "";
     @Bind(R.id.reserve_wv)
     WebView reserveWv;
+    boolean loadingFinished = true;
+    boolean redirect = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,41 @@ public class ReserveActivity extends BaseActivity {
         } else {
             //    placeUrl="http://www.baidu.com";
             reserveWv.loadUrl(placeUrl);
+
+
             reserveWv.setWebViewClient(new WebViewClient() {
+
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String urlNewString) {
+                    if (!loadingFinished) {
+                        redirect = true;
+                    }
+
+                    loadingFinished = false;
+                    reserveWv.loadUrl(urlNewString);
+                    return true;
+                }
+
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    loadingFinished = false;
+                }
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    if (!redirect) {
+                        loadingFinished = true;
+                    }
+
+                    if (loadingFinished && !redirect) {
+                        //HIDE LOADING IT HAS FINISHED
+                    } else {
+                        redirect = false;
+                    }
+
+                }
+            });
+           /* reserveWv.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     view.loadUrl(url);
                     return true;
@@ -64,7 +99,7 @@ public class ReserveActivity extends BaseActivity {
                     } else
                         reserveWv.loadUrl(placeUrl);
                 }
-            });
+            });*/
         }
     }
 

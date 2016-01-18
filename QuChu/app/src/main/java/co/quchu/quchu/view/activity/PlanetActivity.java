@@ -164,7 +164,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
                 planetCollectNumTv.setEndValue(model.getFovNum());
                 planetDiscoverNumTv.setEndValue(model.getProposalNum());
-                planetPostcardNumTv.setEndValue(model.getCardNum());
+                planetPostcardNumTv.setEndValue(model.getCardNum() + 1);
                 planetMyfocusCountCv.setEndValue(model.getHostNum());
                 planetFocusonmeCountCv.setEndValue(model.getFollowNum());
                 planetCollectNumTv.start();

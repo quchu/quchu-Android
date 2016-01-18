@@ -37,6 +37,7 @@ import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.FlyMeUtils;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.AddPostCardActivity;
 import co.quchu.quchu.view.activity.PostCardImageActivity;
@@ -172,6 +173,8 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
         @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl,
                 R.id.item_recommend_card_photo_sdv, R.id.item_my_postcard_heart_rl})
         public void cardClick(View view) {
+            if (KeyboardUtils.isFastDoubleClick())
+                return;
             switch (view.getId()) {
                 case R.id.item_recommend_card_collect_rl:
                     setFavorite(getPosition());

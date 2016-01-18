@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.FlickrModel;
@@ -390,5 +391,8 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
         }
     }
 
-
+    @OnClick(R.id.empty_view_other_tv)
+    public void flickrClick(View view) {
+        this.finish();
+    }
 }

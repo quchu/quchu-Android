@@ -91,6 +91,7 @@ public class PlacePostCardActivity extends BaseActivity {
                     placePostcardHintFl.setVisibility(View.VISIBLE);
                     placePostcardBottomTextTv.setText(getResources().getString(R.string.place_postcard_add_new_postcard));
                     placePostcardCenterRv.setVisibility(View.GONE);
+                    model = null;
                 } else {
                     Gson gson = new Gson();
                     model = gson.fromJson(response.toString(), PlacePostCardModel.class);
@@ -104,7 +105,6 @@ public class PlacePostCardActivity extends BaseActivity {
                     placePostcardHintFl.setVisibility(View.INVISIBLE);
                     adapter.changeDataSet(model.getPage().getResult());
                 }
-
                 DialogUtil.dismissProgess();
             }
 

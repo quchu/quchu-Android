@@ -86,6 +86,8 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
         title_content_tv.setText(getTitle());
         initTitleBar();
         DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));
+        adapter = new GeneProgressAdapter(GeneActivity.this, GeneProgressAdapter.GENE, null);
+        geneProgressGv.setAdapter(adapter);
         setGeneData();
         planetAvatarIcon.setImageURI(Uri.parse(AppContext.user.getPhoto()));
         ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
@@ -140,6 +142,9 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (animatorSet != null) {
+            animatorSet.cancel();
+        }
         ButterKnife.unbind(this);
     }
 
@@ -153,8 +158,7 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
                     Gson gson = new Gson();
                     MyGeneModel model = gson.fromJson(response.toString(), MyGeneModel.class);
                     if (model != null) {
-                        adapter = new GeneProgressAdapter(GeneActivity.this, GeneProgressAdapter.GENE, model.getGenes());
-                        geneProgressGv.setAdapter(adapter);
+                        adapter.updateGeneData(model.getGenes());
                         DialogUtil.dismissProgess();
                         for (int i = 0; i < model.getStar().size(); i++) {
                             switch (i) {

@@ -102,31 +102,6 @@
                     card_view:roundAsCircle="true"
                     card_view:roundingBorderWidth="2dp" />
 
-                <co.quchu.quchu.widget.ratingbar.ProperRatingBar
-                    android:id="@+id/item_my_postcard_card_prb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/quarter_margin"
-                    android:layout_marginTop="@dimen/quarter_margin"
-                    android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
-                    card_view:prb_clickable="false"
-                    card_view:prb_defaultRating="4"
-                    card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
-                    card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
-                    card_view:prb_tickSpacing="2dp"
-                    card_view:prb_totalTicks="5" />
-
-                <TextView
-                    android:id="@+id/item_my_postcard_card_nickname_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/item_my_postcard_card_prb"
-                    android:layout_marginLeft="@dimen/quarter_margin"
-                    android:layout_marginTop="@dimen/half_margin"
-                    android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
-                    android:textColor="@color/text_color_white"
-                    android:textSize="@dimen/word_size_body" />
-
                 <TextView
                     android:id="@+id/item_my_postcard_card_tiem_tv"
                     android:layout_width="wrap_content"
@@ -136,6 +111,69 @@
                     android:layout_marginRight="@dimen/base_margin"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_size_body" />
+
+                <TextView
+                    android:id="@+id/item_my_postcard_card_nickname_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/quarter_margin"
+                    android:layout_marginTop="@dimen/quarter_margin"
+                    android:layout_toLeftOf="@id/item_my_postcard_card_tiem_tv"
+                    android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/text_color_white"
+                    android:textSize="@dimen/word_size_body" />
+
+                <co.quchu.quchu.widget.ratingbar.ProperRatingBar
+                    android:id="@+id/item_my_postcard_card_prb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/item_my_postcard_card_nickname_tv"
+                    android:layout_marginLeft="@dimen/quarter_margin"
+                    android:layout_marginTop="@dimen/half_margin"
+                    android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
+                    card_view:prb_clickable="false"
+                    card_view:prb_defaultRating="4"
+                    card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
+                    card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
+                    card_view:prb_tickSpacing="2dp"
+                    card_view:prb_totalTicks="5" />
+                <!--
+                                <co.quchu.quchu.widget.ratingbar.ProperRatingBar
+                                    android:id="@+id/item_my_postcard_card_prb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/quarter_margin"
+                                    android:layout_marginTop="@dimen/quarter_margin"
+                                    android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
+                                    card_view:prb_clickable="false"
+                                    card_view:prb_defaultRating="4"
+                                    card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
+                                    card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
+                                    card_view:prb_tickSpacing="2dp"
+                                    card_view:prb_totalTicks="5" />
+
+                                <TextView
+                                    android:id="@+id/item_my_postcard_card_nickname_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/item_my_postcard_card_prb"
+                                    android:layout_marginLeft="@dimen/quarter_margin"
+                                    android:layout_marginTop="@dimen/half_margin"
+                                    android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
+                                    android:textColor="@color/text_color_white"
+                                    android:textSize="@dimen/word_size_body" />
+
+                                <TextView
+                                    android:id="@+id/item_my_postcard_card_tiem_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="@dimen/base_margin"
+                                    android:textColor="@color/text_color_white"
+                                    android:textSize="@dimen/word_size_body" />-->
             </RelativeLayout>
 
 

@@ -78,7 +78,8 @@ public class RecommendActivity extends BaseActivity {
     DefaultRecommendFragment defaultRecommendFragment;
     private ArrayList<CityModel> list;
     private boolean isGuide = false;
-    private int viewPagerIndex = 0;
+    public int viewPagerIndex = 0;
+    public static final int PlaceDetail = 0x11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,7 +190,8 @@ public class RecommendActivity extends BaseActivity {
         recommendBodyVp.setAdapter(new RecommendFragmentAdapter(getSupportFragmentManager(), fragmentList));
         recommendBodyVp.setPageTransformer(true, new ZoomOutPageTransformer());
     }
-//http://119.29.108.45:8080/appservices/login/android?j_username=13966682939&j_password=e10adc3949ba59abbe56e057f20f883e&equip=00000000-1e98-8990-03cd-75f30033c587
+
+    //http://119.29.108.45:8080/appservices/login/android?j_username=13966682939&j_password=e10adc3949ba59abbe56e057f20f883e&equip=00000000-1e98-8990-03cd-75f30033c587
     private void viewpagerSelected(int index) {
         LogUtils.json("selected == " + index);
         if (index == 0) {
@@ -274,30 +276,13 @@ public class RecommendActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        LogUtils.json("RecommendActivity  onResume");
+        LogUtils.json("RecommendActivity  onResume===" + viewPagerIndex);
         if (isGuide) {
             isGuide = false;
             //    initView();
         }
-        if (AppContext.dCardListRemoveIndex != -1) {
-            LogUtils.json("RecommendActivity onResume==removePosition==" + AppContext.dCardListRemoveIndex);
-            if (viewPagerIndex == 0) {
-                recoFragment.removeDataSet(AppContext.dCardListRemoveIndex);
-            } else if (viewPagerIndex == 2) {
-                defaultRecommendFragment.removeDataSet(AppContext.dCardListRemoveIndex);
-            }
-            AppContext.dCardListRemoveIndex = -1;
-            AppContext.dCardListNeedUpdate = false;
-        } else {
-            if (AppContext.dCardListNeedUpdate) {
-                if (viewPagerIndex == 0) {
-                    recoFragment.updateDateSet();
-                } else if (viewPagerIndex == 2) {
-                    defaultRecommendFragment.updateDateSet();
-                }
-                AppContext.dCardListNeedUpdate = false;
-            }
-        }
+        resumeUpdateDataTimes = 0;
+        netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
         super.onResume();
     }
 
@@ -318,9 +303,40 @@ public class RecommendActivity extends BaseActivity {
                 case 0x01:
                     reconnection();
                     break;
+                case 0x02:
+                    resumeUpdateData();
+                    break;
             }
         }
     };
+    private int resumeUpdateDataTimes = 0;
+
+    private void resumeUpdateData() {
+        if (AppContext.dCardListRemoveIndex != -1) {
+            LogUtils.json("RecommendActivity onResume==removePosition==" + AppContext.dCardListRemoveIndex);
+            if (viewPagerIndex == 0) {
+                recoFragment.removeDataSet(AppContext.dCardListRemoveIndex);
+            } else if (viewPagerIndex == 2) {
+                defaultRecommendFragment.removeDataSet(AppContext.dCardListRemoveIndex);
+            }
+            AppContext.dCardListRemoveIndex = -1;
+            AppContext.dCardListNeedUpdate = false;
+            resumeUpdateDataTimes = 0;
+        } else if (AppContext.dCardListNeedUpdate) {
+            if (viewPagerIndex == 0) {
+                recoFragment.updateDateSet();
+            } else if (viewPagerIndex == 2) {
+                defaultRecommendFragment.updateDateSet();
+            }
+            AppContext.dCardListNeedUpdate = false;
+            resumeUpdateDataTimes = 0;
+        } else {
+            if (resumeUpdateDataTimes <= 3) {
+                resumeUpdateDataTimes++;
+                netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
+            }
+        }
+    }
 
     /**
      * 无网络状态 时开启监听
@@ -342,5 +358,14 @@ public class RecommendActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         //  ButterKnife.unbind(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case PlaceDetail:
+
+                break;
+        }
     }
 }

@@ -25,7 +25,6 @@ import co.quchu.quchu.thirdhelp.QQHelper;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.SPUtils;
 
 /**
  * ShareDialogFg
@@ -94,7 +93,7 @@ public class ShareDialogFg extends BlurDialogFragment implements AdapterView.OnI
         ButterKnife.bind(this, view);
         dialogShareGv.setAdapter(new DialogShareAdapter(getActivity()));
         dialogShareGv.setOnItemClickListener(this);
-        shareUrl = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId, SPUtils.getUserToken(AppContext.mContext));
+        shareUrl = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
         builder.setView(view);
         return builder.create();
     }

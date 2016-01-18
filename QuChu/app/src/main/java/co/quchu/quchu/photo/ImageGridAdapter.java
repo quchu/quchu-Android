@@ -13,11 +13,14 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 public class ImageGridAdapter extends BaseAdapter {
@@ -87,7 +90,7 @@ public class ImageGridAdapter extends BaseAdapter {
     }
 
     class Holder {
-        private ImageView iv;
+        private SimpleDraweeView iv;
         private ImageView selected;
         private TextView text;
     }
@@ -99,7 +102,7 @@ public class ImageGridAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new Holder();
             convertView = View.inflate(act, R.layout.item_image_grid, null);
-            holder.iv = (ImageView) convertView.findViewById(R.id.image);
+            holder.iv = (SimpleDraweeView) convertView.findViewById(R.id.image);
             holder.selected = (ImageView) convertView
                     .findViewById(R.id.isselected);
             holder.text = (TextView) convertView
@@ -115,6 +118,7 @@ public class ImageGridAdapter extends BaseAdapter {
         holder.iv.setTag(item.imagePath);
         cache.displayBmp(holder.iv, item.thumbnailPath, item.imagePath,
                 callback);
+        LogUtils.json("item.imagePath=" + item.imagePath);
         if (item.isSelected) {
             holder.selected.setVisibility(View.VISIBLE);
             holder.text.setBackgroundResource(R.color.gene_textcolor_yellow);
@@ -131,11 +135,9 @@ public class ImageGridAdapter extends BaseAdapter {
                 if ((Bimp.drr.size() + Bimp.imglist.size() + selectTotal) < 9) {
                     item.isSelected = !item.isSelected;
                     if (item.isSelected) {
-
                         holder.selected
                                 .setVisibility(View.VISIBLE);
                         holder.text.setBackgroundResource(R.color.gene_textcolor_yellow);
-
                         selectTotal++;
                         if (textcallback != null)
                             textcallback.onListen(selectTotal);
