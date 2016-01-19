@@ -479,7 +479,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     public void refreshSelectCount() {
         mTvChooseCount.setText(getString(R.string.selected, mSelectPhotoMap.size(), mFunctionConfig.getMaxSize()));
-        if ( mSelectPhotoMap.size() > 0 && mFunctionConfig.isMutiSelect() ) {
+       /* if ( mSelectPhotoMap.size() > 0 && mFunctionConfig.isMutiSelect() ) {
             mIvClear.setVisibility(View.VISIBLE);
             if(mFunctionConfig.isEnablePreview()){
                 mIvPreView.setVisibility(View.VISIBLE);
@@ -487,7 +487,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         } else {
             mIvClear.setVisibility(View.GONE);
             mIvPreView.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     @Override
