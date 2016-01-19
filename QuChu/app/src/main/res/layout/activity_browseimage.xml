@@ -100,16 +100,6 @@
             android:layout_height="0dp"
             android:layout_below="@id/preview_creater_avatar_sdv" />
 
-        <TextView
-            android:id="@+id/preview_creater_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/preview_creater_avatar_sdv"
-            android:layout_marginLeft="@dimen/half_margin"
-            android:layout_marginTop="@dimen/tow_dp_margin"
-            android:layout_toRightOf="@id/preview_creater_avatar_sdv"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/word_size_body" />
 
         <TextView
             android:id="@+id/preview_craete_time_tv"
@@ -138,5 +128,21 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_detail_uncollect" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/preview_creater_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/preview_creater_avatar_sdv"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_marginRight="@dimen/half_margin"
+            android:layout_marginTop="@dimen/tow_dp_margin"
+            android:layout_toLeftOf="@id/preview_collect_rl"
+            android:layout_toRightOf="@id/preview_creater_avatar_sdv"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_size_body" />
+
     </RelativeLayout>
 </RelativeLayout>

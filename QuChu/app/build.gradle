@@ -44,6 +44,7 @@ repositories {
 dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    compile project(':galleryfinal')
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:cardview-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
@@ -63,6 +64,8 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.+'
     compile files('libs/volley.jar')
     compile files('libs/gson-2.4.jar')
+  //  compile 'cn.finalteam:toolsfinal:1.1.1'
+  //  compile 'pub.devrel:easypermissions:0.1.0'
     //compile 'com.umeng.analytics:analytics:latest.integration'
     //    compile 'com.squareup.picasso:picasso:2.5.2'
     //    compile 'com.squareup.okio:okio:1.6.0'

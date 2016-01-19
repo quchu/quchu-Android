@@ -40,7 +40,7 @@ public class RecommendModel {
     private String name;
     private int pid;
     private String rgb;
-    private int suggest;
+    private float suggest;
     private int width;
     /**
      * key : 夜生活
@@ -98,7 +98,7 @@ public class RecommendModel {
         this.rgb = rgb;
     }
 
-    public void setSuggest(int suggest) {
+    public void setSuggest(float suggest) {
         this.suggest = suggest;
     }
 
@@ -162,7 +162,7 @@ public class RecommendModel {
         return rgb;
     }
 
-    public int getSuggest() {
+    public float getSuggest() {
         return suggest;
     }
 

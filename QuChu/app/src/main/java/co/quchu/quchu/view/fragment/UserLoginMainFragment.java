@@ -233,6 +233,21 @@ public class UserLoginMainFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        if (animatorSet != null) {
+            animatorSet.cancel();
+            animatorSet.end();
+            animatorSet = null;
+        }
+        if (animatorSets != null) {
+            animatorSets.cancel();
+            animatorSets.end();
+            animatorSets = null;
+        }
+        super.onDestroy();
+    }
+
     AnimatorSet animatorSetTransition, animatorSetTransitionAlpha;
 
     /**

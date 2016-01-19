@@ -189,6 +189,7 @@ public class ProperRatingBar extends LinearLayout {
 
     /**
      * Get the attached {@link RatingListener}
+     *
      * @return listener or null if none was set
      */
     @Nullable
@@ -198,6 +199,7 @@ public class ProperRatingBar extends LinearLayout {
 
     /**
      * Set the {@link RatingListener} to be called when user taps rating bar's ticks
+     *
      * @param listener listener to set
      */
     public void setListener(RatingListener listener) {
@@ -213,6 +215,7 @@ public class ProperRatingBar extends LinearLayout {
 
     /**
      * Get the current rating shown
+     *
      * @return rating
      */
     public int getRating() {
@@ -221,12 +224,21 @@ public class ProperRatingBar extends LinearLayout {
 
     /**
      * Set the rating to show
+     *
      * @param rating new rating value
      */
     public void setRating(int rating) {
-        if (rating  > this.totalTicks) rating = totalTicks;
+        if (rating > this.totalTicks) rating = totalTicks;
         this.rating = rating;
         lastSelectedTickIndex = rating - 1;
+        redrawChildren();
+    }
+
+    public void setRating(float rating) {
+        if (rating > this.totalTicks)
+            rating = totalTicks;
+        this.rating = ((int)(rating+0.5));
+        lastSelectedTickIndex = ((int)(rating+0.5)) - 1;
         redrawChildren();
     }
 }

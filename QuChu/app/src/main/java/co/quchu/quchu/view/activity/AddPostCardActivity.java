@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +34,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import co.quchu.galleryfinal.BuildConfig;
+import co.quchu.galleryfinal.CoreConfig;
+import co.quchu.galleryfinal.FunctionConfig;
+import co.quchu.galleryfinal.GalleryFinal;
+import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherRateModel;
 import co.quchu.quchu.base.AppContext;
@@ -47,7 +50,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.photo.Bimp;
-import co.quchu.quchu.photo.ImageBucketActivity;
+import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.FileUtils;
@@ -68,7 +71,9 @@ import co.quchu.quchu.widget.ratingbar.RatingListener;
  * Date: 2015-12-17
  */
 public class AddPostCardActivity extends BaseActivity {
-
+    private final int REQUEST_CODE_CAMERA = 1000;
+    private final int REQUEST_CODE_GALLERY = 1001;
+    List<String> list;
 
     @Bind(R.id.add_postcard_bottom_btn)
     TextView addPostcardBottomBtn;
@@ -95,6 +100,7 @@ public class AddPostCardActivity extends BaseActivity {
     int pId;
     private String editTextDefaultText = "";
     String[] prbHintText;
+    List<PhotoInfo> mPhotoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,12 +116,13 @@ public class AddPostCardActivity extends BaseActivity {
             addPostcardTopTv.setText(String.format("你对%s印象如何?", pName));
             StringUtils.alterTextColor(addPostcardTopTv, 2, 2 + pName.length(), R.color.gene_textcolor_yellow);
         }
-        adapter = new AddPostCardGridAdapter(this);
+        mPhotoList = new ArrayList<PhotoInfo>();
+        adapter = new AddPostCardGridAdapter(this, mPhotoList);
         addPostcardImageIgv.setAdapter(adapter);
         addPostcardImageIgv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if ((Bimp.imglist.size() + Bimp.drr.size()) < 9) {
+                if ((Bimp.imglist.size() + Bimp.drr.size()) < 5) {
                     if (position == 0) {
                         new PopupWindows(AddPostCardActivity.this, addPostcardImageIgv);
                     }
@@ -124,6 +131,30 @@ public class AddPostCardActivity extends BaseActivity {
                 }
             }
         });
+
+    }
+
+    private FunctionConfig functionConfig;
+
+    private void initGralley() {
+        FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
+        functionConfigBuilder.setMutiSelectMaxSize(mPhotoList.size() >= 5 ? 5 : 5 - mPhotoList.size());
+        functionConfigBuilder.setEnableEdit(false);
+        functionConfigBuilder.setEnableCrop(true);
+        functionConfigBuilder.setEnablePreview(true);
+        functionConfigBuilder.setForceCrop(false);//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
+        functionConfigBuilder.setForceCropEdit(true);
+        functionConfigBuilder.setFilter(mPhotoList);
+        functionConfigBuilder.setRotateReplaceSource(true);
+        functionConfigBuilder.setSelected(mPhotoList);//添加过滤集合
+        functionConfig = functionConfigBuilder.build();
+        CoreConfig coreConfig = new CoreConfig.Builder(AddPostCardActivity.this, new FrescoImageLoader(AddPostCardActivity.this), null)
+                .setDebug(BuildConfig.DEBUG)
+                .setFunctionConfig(functionConfig)
+                .setPauseOnScrollListener(null)
+                .setNoAnimcation(true)
+                .build();
+        GalleryFinal.init(coreConfig);
     }
 
 
@@ -172,7 +203,7 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
     public void photo() {
-        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+  /*      Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File src = new File(FileUtils.SDPATH);
         if (!src.exists()) {
             src.mkdirs();
@@ -183,7 +214,9 @@ public class AddPostCardActivity extends BaseActivity {
         Uri imageUri = Uri.fromFile(file);
 
         openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(openCameraIntent, TAKE_PICTURE);
+        startActivityForResult(openCameraIntent, TAKE_PICTURE);*/
+        initGralley();
+        GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCallback);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -198,7 +231,7 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
     protected void onRestart() {
-        adapter.update();
+        //  adapter.update();
         LogUtils.json("on restart");
         super.onRestart();
     }
@@ -206,11 +239,11 @@ public class AddPostCardActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        if (isNeedUpdate) {
+     /*   if (isNeedUpdate) {
             if (Bimp.drr.size() > 0 && adapter != null)
                 adapter.notifyDataSetChanged();
             isNeedUpdate = false;
-        }
+        }*/
         LogUtils.json("on onResume");
         super.onResume();
     }
@@ -248,10 +281,12 @@ public class AddPostCardActivity extends BaseActivity {
             });
             bt2.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent intent = new Intent(AddPostCardActivity.this,
+                 /*   Intent intent = new Intent(AddPostCardActivity.this,
                             ImageBucketActivity.class);
                     startActivity(intent);
-                    isNeedUpdate = true;
+                    isNeedUpdate = true;*/
+                    initGralley();
+                    GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
                     dismiss();
                 }
             });
@@ -264,7 +299,6 @@ public class AddPostCardActivity extends BaseActivity {
         }
     }
 
-    List<String> list;
 
     private void addPostcard2Server() {
         list = new ArrayList<String>();
@@ -283,7 +317,7 @@ public class AddPostCardActivity extends BaseActivity {
                 Toast.makeText(this, getResources().getString(R.string.content_has_emoji), Toast.LENGTH_SHORT).show();
             } else {
                 DialogUtil.showProgess(this, "数据上传中...");
-                if (list.size() > 0) {
+                if (mPhotoList.size() > 0) {
                     getQiNiuToken();
                 } else {
 
@@ -393,77 +427,82 @@ public class AddPostCardActivity extends BaseActivity {
     private int imageIndex = 0;
     private String defaulQiNiuFileName = "%d-%d.JPEG";
     private ArrayList<String> imageUrlInQiNiu = new ArrayList<String>();
+    private Bitmap uploadBitmap = null;
 
     private void addImage2QiNiu() {
         // if (uploadManager == null) {
         //    uploadManager = new UploadManager();
         //  }
-        LogUtils.json("addImage2QiNiu  addImage2QiNiu  addImage2QiNiu" + list.get(imageIndex));
-        // uploadManager.put(list.get(imageIndex), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
-        uploadManager.put(ImageUtils.Bitmap2Bytes(Bimp.bmp.get(imageIndex), 100), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
-                new UpCompletionHandler() {
+        //   LogUtils.json("addImage2QiNiu  addImage2QiNiu  addImage2QiNiu" + list.get(imageIndex));
+        uploadBitmap = ImageUtils.getimage(mPhotoList.get(imageIndex).getPhotoPath());
+        if (uploadBitmap != null)
+            uploadManager.put(ImageUtils.Bitmap2Bytes(uploadBitmap, 90), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
+                    //    uploadManager.put(ImageUtils.Bitmap2Bytes(Bimp.bmp.get(imageIndex), 100), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
+                    new UpCompletionHandler() {
 
-                    @Override
-                    public void complete(String key, ResponseInfo info, JSONObject response) {
-                        //  res 包含hash、key等信息，具体字段取决于上传策略的设置。
-                        if (null != info) {
-                            try {
-                                if (info.isOK()) {
-                                    String url = response.getString("key");
+                        @Override
+                        public void complete(String key, ResponseInfo info, JSONObject response) {
+                            //  res 包含hash、key等信息，具体字段取决于上传策略的设置。
+                            if (null != info) {
+                                try {
+                                    if (info.isOK()) {
+                                        uploadBitmap.recycle();
+                                        uploadBitmap = null;
+                                        String url = response.getString("key");
 //                                    LogUtils.E("Uploader Time==end=" + System.currentTimeMillis());
 //                                    Log.i("qiniu", "upload sucess. and url: " + url);
-                                    LogUtils.json("upload success =info=" + info);
-                                    LogUtils.json("upload success =response=" + response);
-                                    LogUtils.json("key==" + key);
-                                    imageUrlInQiNiu.add(url);
-                                    imageIndex++;
-                                    if (imageIndex < list.size()) {
-                                        addImage2QiNiu();
-                                    } else {
-                                        File file = new File(FileUtils.SDPATH);
-                                        FileUtils.RecursionDeleteFile(file);
-                                        String imageStr = "";
-                                        if (Bimp.imglist.size() > 0) {
-                                            for (int j = 0; j < Bimp.imglist.size(); j++) {
-                                                if (j == 0) {
-                                                    imageStr += Bimp.imglist.get(j).getPath();
-                                                } else {
-                                                    imageStr += "%7C" + Bimp.imglist.get(j).getPath();
-                                                    //   imageStr += "%7C" + Bimp.imglist.get(j).getPath();
-                                                }
-                                            }
-                                            for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
-                                                imageStr += "%7C" + "http://7xo7ey.com1.z0.glb.clouddn.com/" + imageUrlInQiNiu.get(i).toString();
-                                            }
+                                        LogUtils.json("upload success =info=" + info);
+                                        LogUtils.json("upload success =response=" + response);
+                                        LogUtils.json("key==" + key);
+                                        imageUrlInQiNiu.add(url);
+                                        imageIndex++;
+                                        if (imageIndex < mPhotoList.size()) {
+                                            addImage2QiNiu();
                                         } else {
-                                            for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
-                                                if (i == 0) {
-                                                    imageStr += "http://7xo7ey.com1.z0.glb.clouddn.com/" + imageUrlInQiNiu.get(i).toString();
-                                                } else {
-                                                    //   imageStr += '|' + imageUrlInQiNiu.get(i).toString();
+                                            File file = new File(FileUtils.SDPATH);
+                                            FileUtils.RecursionDeleteFile(file);
+                                            String imageStr = "";
+                                            if (Bimp.imglist.size() > 0) {
+                                                for (int j = 0; j < Bimp.imglist.size(); j++) {
+                                                    if (j == 0) {
+                                                        imageStr += Bimp.imglist.get(j).getPath();
+                                                    } else {
+                                                        imageStr += "%7C" + Bimp.imglist.get(j).getPath();
+                                                        //   imageStr += "%7C" + Bimp.imglist.get(j).getPath();
+                                                    }
+                                                }
+                                                for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
                                                     imageStr += "%7C" + "http://7xo7ey.com1.z0.glb.clouddn.com/" + imageUrlInQiNiu.get(i).toString();
                                                 }
+                                            } else {
+                                                for (int i = 0; i < imageUrlInQiNiu.size(); i++) {
+                                                    if (i == 0) {
+                                                        imageStr += "http://7xo7ey.com1.z0.glb.clouddn.com/" + imageUrlInQiNiu.get(i).toString();
+                                                    } else {
+                                                        //   imageStr += '|' + imageUrlInQiNiu.get(i).toString();
+                                                        imageStr += "%7C" + "http://7xo7ey.com1.z0.glb.clouddn.com/" + imageUrlInQiNiu.get(i).toString();
+                                                    }
+                                                }
                                             }
+                                            saveCard(imageStr);
                                         }
-                                        saveCard(imageStr);
+
+                                    } else {
+
                                     }
-
-                                } else {
-
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+
+
                         }
-
-
-                    }
-                }, new UploadOptions(null, null, false,
-                        new UpProgressHandler() {
-                            public void progress(String key, double percent) {
-                                //     LogUtils.json("upload success ==" + key + ": " + percent);
-                            }
-                        }, null));
+                    }, new UploadOptions(null, null, false,
+                            new UpProgressHandler() {
+                                public void progress(String key, double percent) {
+                                    //     LogUtils.json("upload success ==" + key + ": " + percent);
+                                }
+                            }, null));
     }
 
     private void clearImageSelected() {
@@ -478,8 +517,29 @@ public class AddPostCardActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         LogUtils.json("add Postcard is onDestroy");
+        GalleryFinal.cleanCacheFile();
         clearImageSelected();
         super.onDestroy();
     }
 
+    private GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
+        @Override
+        public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+            if (resultList != null) {
+                mPhotoList.addAll(resultList);
+                //   mPhotoList = resultList;
+                adapter.notifyDataSetChanged();
+                //   mChoosePhotoListAdapter.notifyDataSetChanged();
+                for (int i = 0; i < mPhotoList.size(); i++) {
+                    PhotoInfo infos = mPhotoList.get(i);
+                    LogUtils.json(infos.getPhotoPath() + "//id=" + infos.getPhotoId() + "//width=" + infos.getWidth() + "//height=" + infos.getHeight());
+                }
+            }
+        }
+
+        @Override
+        public void onHanlderFailure(int requestCode, String errorMsg) {
+            Toast.makeText(AddPostCardActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+        }
+    };
 }

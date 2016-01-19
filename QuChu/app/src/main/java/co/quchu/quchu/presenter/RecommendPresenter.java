@@ -58,7 +58,7 @@ public class RecommendPresenter {
 
                 LogUtils.json("getPlaceList==" + response.toString());
                 try {
-                    if (response.has("result") && !StringUtils.isEmpty(response.getString("result"))) {
+                    if (!response.has("msg") &&response.has("result")) {
                         if (response.has("pageCount"))
                             pageCount = response.getInt("pageCount");
                         if (response.has("pagesNo"))

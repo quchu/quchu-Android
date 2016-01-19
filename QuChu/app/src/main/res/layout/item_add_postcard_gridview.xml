@@ -5,21 +5,21 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/item_addpostcard_sdv"
         android:layout_width="64dp"
-        android:background="@color/lineBackground_gray"
+        android:layout_height="64dp"
         android:layout_margin="@dimen/quarter_margin"
-        android:scaleType="fitXY"
-        android:layout_height="64dp" />
+        android:background="@color/lineBackground_gray"
+        android:scaleType="fitXY" />
 
     <ImageView
         android:id="@+id/item_addpostcard_del_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
-        android:src="@drawable/ic_photo_del" />
+        android:src="@drawable/ic_photo_del"
+        android:visibility="gone" />
 </RelativeLayout>
 
 

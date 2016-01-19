@@ -60,7 +60,7 @@ public class DetailModel {
     private String price;
     private String restDay;
     private String rgb;
-    private int suggest;
+    private float suggest;
     private String tel;
     private String traffic;
     private int width;
@@ -170,7 +170,7 @@ public class DetailModel {
         this.rgb = rgb;
     }
 
-    public void setSuggest(int suggest) {
+    public void setSuggest(float suggest) {
         this.suggest = suggest;
     }
 
@@ -282,7 +282,7 @@ public class DetailModel {
         return rgb;
     }
 
-    public int getSuggest() {
+    public float getSuggest() {
         return suggest;
     }
 
