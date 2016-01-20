@@ -145,9 +145,27 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
         @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl})
         public void cardClick(View view) {
+            if ( isFastDoubleClick())
+                return;
             if (listener != null)
                 listener.onCardLick(view, getPosition());
         }
+    }
+
+    private static long lastClickTime = 0L;
+
+    /**
+     * 防止重复点击
+     *
+     * @return
+     */
+    public static boolean isFastDoubleClick() {
+        long time = System.currentTimeMillis();
+        if (time - lastClickTime < 500) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
     }
 
     public interface CardClickListener {

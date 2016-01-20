@@ -159,8 +159,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
 
     @Override
     public void onCardLick(View view, int position) {
-        if (KeyboardUtils.isFastDoubleClick())
-            return;
+
         switch (view.getId()) {
             case R.id.root_cv:
                 AppContext.selectedPlace = cardList.get(position);

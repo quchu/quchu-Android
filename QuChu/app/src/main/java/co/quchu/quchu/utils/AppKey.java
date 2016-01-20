@@ -51,6 +51,14 @@ public class AppKey {
      */
     public static final String LON = "longitude";
     /**
+     * 定位后获得的 城市
+     */
+    public static final String LOCATION_CITY = "location_city";
+    /**
+     * 定位后获得的 省信息
+     */
+    public static final String LOCATION_PROVINCE = "location_Province";
+    /**
      * 搜索历史
      */
     public static final String SEARCHHISTORY = "search_history";

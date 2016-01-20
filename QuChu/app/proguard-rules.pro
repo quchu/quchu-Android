@@ -111,6 +111,14 @@ public static final int *;
 -keep class com.tencent.mm.**{*;}
 
 ## ----------------------------------
+##   ########## 高德地图混淆    #########
+## ----------------------------------
+-keep class com.amap.api.location.**{*;}
+
+-keep class com.amap.api.fence.**{*;}
+
+-keep class com.autonavi.aps.amapapi.model.**{*;}
+## ----------------------------------
 ##   ########## QQ混淆    #########
 ## ----------------------------------
     -dontwarn com.tencent.**

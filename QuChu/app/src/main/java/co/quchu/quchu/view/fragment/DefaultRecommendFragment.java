@@ -26,7 +26,6 @@ import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.utils.AppKey;
-import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -136,8 +135,7 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
 
     @Override
     public void onCardLick(View view, int position) {
-        if (KeyboardUtils.isFastDoubleClick())
-            return;
+   
         switch (view.getId()) {
             case R.id.root_cv:
                 hasChangePosition = position;

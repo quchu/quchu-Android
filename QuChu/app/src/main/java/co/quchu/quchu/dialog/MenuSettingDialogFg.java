@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,6 +18,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.view.activity.AboutUsActivity;
+import co.quchu.quchu.view.activity.AccountSettingActivity;
 import co.quchu.quchu.view.activity.FeedbackActivity;
 
 /**
@@ -90,7 +90,8 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
     public void menuSettingClick(View view) {
         switch (view.getId()) {
             case R.id.dialog_menu_setting_account_setting_tv:
-                Toast.makeText(getActivity(), "即将开发，敬请期待", Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(getActivity(), "即将开发，敬请期待", Toast.LENGTH_SHORT).show();
+                getActivity().startActivity(new Intent(getActivity(), AccountSettingActivity.class));
                 MenuSettingDialogFg.this.dismiss();
                 //   getActivity().startActivity(new Intent(getActivity(), AccountSettingActivity.class));
                 break;

@@ -264,10 +264,12 @@ public class RecommendActivity extends BaseActivity {
                     Toast.makeText(RecommendActivity.this, R.string.app_exit_text,
                             Toast.LENGTH_SHORT).show();
                     firstTime = secondTime;// 更新firstTime
+
                     return true;
                 } else {
                     UserAnalysisUtils.sendUserBehavior(RecommendActivity.this);
                     ActManager.getAppManager().AppExit();
+                    AppContext.stopLocation();
                 }
             }
         }

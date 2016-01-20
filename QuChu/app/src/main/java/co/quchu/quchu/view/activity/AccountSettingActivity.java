@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -18,9 +16,9 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.MoreButtonView;
 
 /**
  * AccountSettingActivity
@@ -28,14 +26,8 @@ import co.quchu.quchu.widget.MoreButtonView;
  * Date: 2015-12-04
  */
 public class AccountSettingActivity extends BaseActivity {
-    @Bind(R.id.title_back_iv)
-    ImageView titleBackIv;
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRl;
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
-    @Bind(R.id.title_more_rl)
-    MoreButtonView titleMoreRl;
     @Bind(R.id.account_setting_avatar_sdv)
     SimpleDraweeView accountSettingAvatarSdv;
     @Bind(R.id.account_setting_avatar_editer_tv)
@@ -52,10 +44,7 @@ public class AccountSettingActivity extends BaseActivity {
     EditText accountSettingNewPwdEt;
     @Bind(R.id.account_setting_new_pwd_again_et)
     EditText accountSettingNewPwdAgainEt;
-    @Bind(R.id.account_setting_bind_weibo_tv)
-    TextView accountSettingBindWeiboTv;
-    @Bind(R.id.account_setting_bind_wechat_tv)
-    TextView accountSettingBindWechatTv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +52,6 @@ public class AccountSettingActivity extends BaseActivity {
         setContentView(R.layout.activity_account_setting);
         ButterKnife.bind(this);
         initTitleBar();
-        titleContentTv.setText(getTitle());
         userInfoBinding();
     }
 
@@ -76,18 +64,20 @@ public class AccountSettingActivity extends BaseActivity {
 
         if (AppContext.user != null) {
             accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
-            accountSettingNicknameEt.setText(AppContext.user.getFullname());
+            accountSettingNicknameEt.setHint(AppContext.user.getFullname());
             accountSettingPhoneTv.setText(AppContext.user.getUsername());
             accountSettingGenderTv.setText(AppContext.user.getGender());
+            accountSettingUserLocation.setText(SPUtils.getValueFromSPMap(this, AppKey.LOCATION_CITY));
         }
     }
 
-    @OnClick({R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv})
+    @OnClick({R.id.account_setting_avatar_sdv,R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv})
     public void accountClick(View v) {
         switch (v.getId()) {
+            case R.id.account_setting_avatar_sdv:
             case R.id.account_setting_avatar_editer_tv:
-                break;
 
+                break;
         }
     }
 }
