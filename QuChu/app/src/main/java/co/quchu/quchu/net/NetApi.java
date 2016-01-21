@@ -75,6 +75,7 @@ public class NetApi {
 
     public static final String followFriends = HOST + "/sns/follow?followId=%d";  //关注他人
     public static final String delFollowFriends = HOST + "/sns/delFollow?followId=%d";  //取消关注
+    public static final String getUserInfo = HOST + "/personal/getUser";  //取消关注
 
     /****  Get end  ****/
 
@@ -87,6 +88,7 @@ public class NetApi {
     public static final String ResertPsw = HOST + "/mregister/resertPsw?resType=tel&tel=%s&newpsw=%s&captcha=%s"; //重置密码  username=PhoneNo  captcha =验证码 newpsw=密码
     public static final String FeedBack = HOST + "/sns/feedback?value=%s"; //意见反馈
     public static final String saveOrUpdateCard = HOST + "/operate/saveOrUpdateCard"; //意见反馈
+    public static final String updateUser = HOST + "/personal/updateUser"; //修改用户设置
 
     /****************** POST *******************/
 }

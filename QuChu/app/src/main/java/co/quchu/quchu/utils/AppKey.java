@@ -82,4 +82,8 @@ public class AppKey {
      * 趣处明信片列表是否需要刷新
      */
     public static final String IS_POSTCARD_LIST_NEED_REFRESH = "is_postcard_list_need_refresh";
+    /**
+     * 菜单页是否需要刷新
+     */
+    public static final String IS_MENU_NEED_REFRESH = "is_menu_need_refresh";
 }

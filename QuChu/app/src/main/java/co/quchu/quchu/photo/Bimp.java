@@ -47,4 +47,28 @@ public class Bimp {
         }
         return bitmap;
     }
+
+    public static Bitmap revitionImageSizes(String path,int sizes) throws IOException {
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream(
+                new File(path)));
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(in, null, options);
+        in.close();
+        int i = 0;
+        Bitmap bitmap = null;
+        while (true) {
+            if ((options.outWidth >> i <= sizes)
+                    && (options.outHeight >> i <= sizes)) {
+                in = new BufferedInputStream(
+                        new FileInputStream(new File(path)));
+                options.inSampleSize = (int) Math.pow(2.0D, i);
+                options.inJustDecodeBounds = false;
+                bitmap = BitmapFactory.decodeStream(in, null, options);
+                break;
+            }
+            i += 1;
+        }
+        return bitmap;
+    }
 }

@@ -9,28 +9,29 @@ import java.io.Serializable;
  */
 public class UserInfoModel implements Serializable {
 
-
     /**
-     * fullname : chslalalala
+     * fullname : 觉得解放军了一下下了了一个月后面
      * gender : 男
-     * isweibo : true
+     * isweibo : false
      * isweixin : false
-     * photo : http://tp1.sinaimg.cn/5230113944/50/40061324886/1
-     * token : f3579a9a3d31e0075c1eaf50269f536b6c1daa99
+     * location : 厦门市
+     * photo : http://7xo7et.com1.z0.glb.clouddn.com/88-app-default-avatar
+     * token : 2175a92d7b88ac984e56d8dbf138a4a1dd0c4e49
+     * userId : 88
+     * username : 17750611071
      * type : login
-     * userId : 11
-     * username : chslalalala
      */
 
     private String fullname;
     private String gender;
     private boolean isweibo;
     private boolean isweixin;
+    private String location;
     private String photo;
     private String token;
-    private String type;
     private int userId;
     private String username;
+    private String type;
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
@@ -48,6 +49,10 @@ public class UserInfoModel implements Serializable {
         this.isweixin = isweixin;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public void setPhoto(String photo) {
         this.photo = photo;
     }
@@ -56,16 +61,16 @@ public class UserInfoModel implements Serializable {
         this.token = token;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getFullname() {
@@ -84,16 +89,16 @@ public class UserInfoModel implements Serializable {
         return isweixin;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
     public String getPhoto() {
-        return photo;
+        return photo + "?" + System.currentTimeMillis();
     }
 
     public String getToken() {
         return token;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public int getUserId() {
@@ -102,5 +107,9 @@ public class UserInfoModel implements Serializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getType() {
+        return type;
     }
 }

@@ -14,9 +14,14 @@ public class CityModel implements Serializable {
      * cvalue : 厦门
      * cid : 5
      */
+    public CityModel(String cityName, int cid, boolean isSelected) {
+        this.cvalue = cityName;
+        this.cid = cid;
+        this.isSelected = isSelected;
+    }
 
-    private String cvalue;
-    private int cid;
+    private String cvalue = "";
+    private int cid = 0;
     private boolean isSelected = false;
 
     public void setCvalue(String cvalue) {

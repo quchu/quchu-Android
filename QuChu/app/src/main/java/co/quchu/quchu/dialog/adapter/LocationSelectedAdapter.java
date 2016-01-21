@@ -28,11 +28,19 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
     private ArrayList<CityModel> cityList;
     private TextView titleText;
     private int selectedIndex = 0;
+    private int dataType = 0;
 
     public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext) {
         cityList = cList;
         this.titleText = titleText;
         this.mContext = mContext;
+    }
+
+    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext, int dataType) {
+        cityList = cList;
+        this.titleText = titleText;
+        this.mContext = mContext;
+        this.dataType = dataType;
     }
 
     @Override
@@ -52,7 +60,11 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
             holder.dialogItemCityCb.setClickable(false);
             selectedIndex = position;
             holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.gene_textcolor_yellow));
-            titleText.setText("所在城市:" + cityList.get(position).getCvalue());
+            if (dataType == 0) {
+                titleText.setText("所在城市:" + cityList.get(position).getCvalue());
+            } else {
+                titleText.setText("设置性别:" + cityList.get(position).getCvalue());
+            }
             StringUtils.alterTextColor(titleText, 5, 5 + cityList.get(position).getCvalue().length(), R.color.gene_textcolor_yellow);
         } else {
             holder.dialogItemCityCb.setChecked(false);
@@ -90,4 +102,5 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
     public int getSelectedIndex() {
         return selectedIndex;
     }
+
 }

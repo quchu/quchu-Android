@@ -5,8 +5,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * ImageUtils
@@ -96,5 +99,37 @@ public class ImageUtils {
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
         return bitmap;
+    }
+
+    //存储进SD卡
+
+    public static void saveFile(Bitmap bm, String fileName) throws Exception {
+        File dirFile = new File(fileName);
+        //检测图片是否存在
+        if (dirFile.exists()) {
+            dirFile.delete();  //删除原图片
+        }
+        File myCaptureFile = new File(fileName);
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        //100表示不进行压缩，70表示压缩率为30%
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        bos.flush();
+        bos.close();
+    }
+
+    public static String saveImage2Sd(String starPath) {
+        String filePath = starPath;
+        Bitmap bitmaps = getimage(starPath);
+        try {
+            saveFile(bitmaps, FileUtils.SDPATH + "userAvatar.jpg");
+            bitmaps.recycle();
+            bitmaps = null;
+            filePath = FileUtils.SDPATH + "userAvatar.jpg";
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return filePath;
     }
 }

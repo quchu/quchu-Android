@@ -16,6 +16,7 @@ import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
+import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.MoreButtonView;
@@ -90,7 +91,13 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     @Override
     protected void onResume() {
         super.onResume();
-
+        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_MENU_NEED_REFRESH, false)) {
+            if (menusSearchUsername != null)
+                menusSearchUsername.setText(AppContext.user.getFullname());
+            if (menusPullmenusPmv != null)
+                menusPullmenusPmv.setAvatar(AppContext.user.getPhoto() + "3");
+            SPUtils.putBooleanToSPMap(this, AppKey.IS_MENU_NEED_REFRESH, false);
+        }
     }
 
     private Bitmap bg;
