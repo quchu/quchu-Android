@@ -39,7 +39,7 @@ public class QAvatarSettingDialogFg extends BlurDialogFragment {
      * @return well instantiated fragment.
      * Serializable cityList
      */
-    public static QAvatarSettingDialogFg newInstance(ArrayList<String> imageList) {
+    public static QAvatarSettingDialogFg newInstance(ArrayList<Integer> imageList) {
         QAvatarSettingDialogFg fragment = new QAvatarSettingDialogFg();
         Bundle args = new Bundle();
         args.putSerializable(CITY_LIST_MODEL, imageList);
@@ -47,13 +47,13 @@ public class QAvatarSettingDialogFg extends BlurDialogFragment {
         return fragment;
     }
 
-    private ArrayList<String> imageList = null;
+    private ArrayList<Integer> imageList = null;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Bundle args = getArguments();
-        imageList = (ArrayList<String>) args.getSerializable(CITY_LIST_MODEL);
+        imageList = (ArrayList<Integer>) args.getSerializable(CITY_LIST_MODEL);
     }
 
     @Override

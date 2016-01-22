@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -23,13 +24,14 @@ import co.quchu.quchu.R;
  */
 public class SettingQAvatarGridAdapter extends BaseAdapter {
     private Activity mContext;
-    List<String> mPhotoList;
+    List<Integer> mPhotoList;
     DisplayImageOptions options;
+    String packName = "/";
 
-    public SettingQAvatarGridAdapter(Activity context, List<String> mPhotoList) {
+    public SettingQAvatarGridAdapter(Activity context, List<Integer> mPhotoList) {
         this.mContext = context;
         this.mPhotoList = mPhotoList;
-
+        packName = mContext.getPackageName() + "/";
     }
 
     @Override
@@ -61,9 +63,9 @@ public class SettingQAvatarGridAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.itemAddpostcardSdv.setImageURI(Uri.parse(mPhotoList.get(position)));
-        holder.itemAddpostcardSdv.setAspectRatio(1.0f);
-
+//        holder.itemAddpostcardSdv.setImageURI(Uri.parse("asset://" + mPhotoList.get(position)));
+        holder.itemAddpostcardSdv.setImageURI(Uri.parse("res://" + packName + mPhotoList.get(position)));
+    holder.itemAddpostcardSdv.setAspectRatio(1.0f);
         return convertView;
     }
 

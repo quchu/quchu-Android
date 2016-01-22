@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -77,7 +78,7 @@ public class AccountSettingActivity extends BaseActivity {
     @Bind(R.id.account_setting_save_tv)
     TextView accountSettingSaveTv;
 
-    private ArrayList<String> imageList;
+    private ArrayList<Integer> imageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +87,8 @@ public class AccountSettingActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitleBar();
         userInfoBinding();
-        imageList = new ArrayList<>();
-        for (int i = 1; i <= 50; i++) {
-            imageList.add("http://7vzrp0.com5.z0.glb.clouddn.com/app-default-avatar-" + i);
-        }
+        imageList = AccountSettingPresenter.getQAvatar();
+
     }
 
     private void userInfoBinding() {
@@ -305,26 +304,27 @@ public class AccountSettingActivity extends BaseActivity {
         }
     }
 
-    public void updateAvatar(int avatarId) {
-        try {
-            ImageUtils.saveFile(BitmapFactory.decodeResource(getResources(), avatarId), FileUtils.SDPATH + "userAvatar.jpg");
-            newUserPhoto = FileUtils.SDPATH + "userAvatar.jpg";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (!StringUtils.isEmpty(newUserPhoto)) {
-            AccountSettingPresenter.getQiNiuToken(this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
-                @Override
-                public void onSuccess(String photoUrl) {
-                    accountSettingAvatarSdv.setImageURI(Uri.parse("file://" + newUserPhoto));
-                }
+    Bitmap bitmaps = null;
 
-                @Override
-                public void onError() {
-                    DialogUtil.dismissProgess();
-                    Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
+    public void updateAvatar(int avatarId) {
+        bitmaps = BitmapFactory.decodeResource(getResources(), avatarId);
+        LogUtils.json("bitmap ==null?=" + (bitmaps == null));
+        AccountSettingPresenter.getQiNiuToken(this, bitmaps, new AccountSettingPresenter.UploadUserPhotoListener() {
+            @Override
+            public void onSuccess(String photoUrl) {
+                newUserPhoto = "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl;
+                accountSettingAvatarSdv.setImageURI(Uri.parse(newUserPhoto));
+                if (bitmaps != null) {
+                    bitmaps.recycle();
+                    bitmaps = null;
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onError() {
+                DialogUtil.dismissProgess();
+                Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
