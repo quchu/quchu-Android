@@ -105,11 +105,9 @@ public class AccountSettingPresenter {
      * @param listener
      */
     public static void postUserInfo2Server(Context mContext, String userName, String userPhoto, String userGender, String userLocation, String userPw, String userRePw, final UploadUserPhotoListener listener) {
-        String netUrl = NetApi.updateUser + "?user.name=" + userName + "&user.gander=" + ("男".equals(userGender) ? "M" : "W");
+        String netUrl = NetApi.updateUser + "?user.name=" + userName + "&user.gander=" + ("男".equals(userGender) ? "M" : "W") + "&user.location=" + userLocation;
         if (!StringUtils.isEmpty(userPhoto))
             netUrl += "&user.photo=" + userPhoto;
-        if (!StringUtils.isEmpty(userLocation))
-            netUrl += "&user.location=" + userLocation;
         if (!StringUtils.isEmpty(userPw))
             netUrl += "&user.password=" + userPw + "&user.restpsw=" + userRePw;
         NetService.post(mContext, netUrl, null, new IRequestListener() {

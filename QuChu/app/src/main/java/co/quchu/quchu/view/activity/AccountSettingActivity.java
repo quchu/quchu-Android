@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -19,17 +20,19 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import co.quchu.galleryfinal.BuildConfig;
 import co.quchu.galleryfinal.CoreConfig;
 import co.quchu.galleryfinal.FunctionConfig;
 import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.GenderSelectedDialogFg;
+import co.quchu.quchu.dialog.LocationSettingDialogFg;
+import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
@@ -39,6 +42,7 @@ import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.FileUtils;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -73,6 +77,7 @@ public class AccountSettingActivity extends BaseActivity {
     @Bind(R.id.account_setting_save_tv)
     TextView accountSettingSaveTv;
 
+    private ArrayList<String> imageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,10 @@ public class AccountSettingActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitleBar();
         userInfoBinding();
+        imageList = new ArrayList<>();
+        for (int i = 1; i <= 50; i++) {
+            imageList.add("http://7vzrp0.com5.z0.glb.clouddn.com/app-default-avatar-" + i);
+        }
     }
 
     private void userInfoBinding() {
@@ -106,14 +115,14 @@ public class AccountSettingActivity extends BaseActivity {
     ArrayList<CityModel> genderList;
 
     @OnClick({R.id.account_setting_avatar_sdv, R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv
-            , R.id.account_setting_save_tv})
+            , R.id.account_setting_save_tv, R.id.account_setting_user_location, R.id.account_setting_location_iv})
     public void accountClick(View v) {
         switch (v.getId()) {
             case R.id.account_setting_avatar_sdv:
             case R.id.account_setting_avatar_editer_tv:
                 ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
                 photoDialogFg.setOnOriginListener(listener);
-                photoDialogFg.show(getFragmentManager(), "location");
+                photoDialogFg.show(getFragmentManager(), "photo");
                 break;
             case R.id.account_setting_save_tv:
                 saveUserChange();
@@ -125,6 +134,12 @@ public class AccountSettingActivity extends BaseActivity {
                 GenderSelectedDialogFg genderDialogFg = GenderSelectedDialogFg.newInstance(genderList);
                 genderDialogFg.show(getFragmentManager(), "gender");
                 break;
+            case R.id.account_setting_user_location:
+            case R.id.account_setting_location_iv:
+                LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
+                locationDIalogFg.show(getFragmentManager(), "location");
+                break;
+
         }
     }
 
@@ -147,7 +162,10 @@ public class AccountSettingActivity extends BaseActivity {
 
         @Override
         public void selectedQuPhtot() {
-
+            if (imageList != null) {
+                QAvatarSettingDialogFg qAvatarDIalogFg = QAvatarSettingDialogFg.newInstance(imageList);
+                qAvatarDIalogFg.show(getFragmentManager(), "qAvatar");
+            }
         }
     };
     private FunctionConfig functionConfig;
@@ -173,10 +191,8 @@ public class AccountSettingActivity extends BaseActivity {
     private GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-            if (resultList != null) {
-                newUserPhoto = ImageUtils.saveImage2Sd(resultList.get(0).getPhotoPath());
-                //  accountSettingAvatarSdv.setImageBitmap(ImageUtils.saveImage2Sd(newUserPhoto));
-                accountSettingAvatarSdv.setImageURI(Uri.parse("file://" + newUserPhoto));
+            if (resultList != null && resultList.size() > 0 && !StringUtils.isEmpty(resultList.get(0).getPhotoPath())) {
+                updateAvatar(resultList.get(0).getPhotoPath());
             }
         }
 
@@ -198,7 +214,6 @@ public class AccountSettingActivity extends BaseActivity {
     }
 
     private String newUserPw = "", newUserPwAgain = "";
-    private String newUserPhotoUrl = "";
 
     //保存修改信息
     public void saveUserChange() {
@@ -209,7 +224,7 @@ public class AccountSettingActivity extends BaseActivity {
         newUserLocation = accountSettingUserLocation.getText().toString();
         if ((StringUtils.isEmpty(newUserPw) && StringUtils.isEmpty(newUserPwAgain)) || (!StringUtils.isEmpty(newUserPw) && !StringUtils.isEmpty(newUserPwAgain) && newUserPwAgain.equals(newUserPw))) {
             DialogUtil.showProgess(this, R.string.loading_dialog_text);
-            if (!StringUtils.isEmpty(newUserPhoto)) {
+            if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
                 AccountSettingPresenter.getQiNiuToken(this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
@@ -223,8 +238,8 @@ public class AccountSettingActivity extends BaseActivity {
                     }
                 });
 
-            } else if (!StringUtils.isEmpty(newUserPhotoUrl)) {
-                putUserInfo(newUserPhotoUrl);
+            } else if (!StringUtils.isEmpty(newUserPhoto) && newUserPhoto.startsWith("http")) {
+                putUserInfo(newUserPhoto);
             } else {
                 putUserInfo("");
             }
@@ -249,10 +264,6 @@ public class AccountSettingActivity extends BaseActivity {
         });
     }
 
-    public void updateGender(String userGender) {
-        newUserGender = userGender;
-        accountSettingGenderTv.setText(newUserGender);
-    }
 
     public void refreshUserInfo() {
         NetService.get(this, NetApi.getUserInfo, new IRequestListener() {
@@ -272,5 +283,48 @@ public class AccountSettingActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+
+    public void updateGender(String userGender) {
+        newUserGender = userGender;
+        accountSettingGenderTv.setText(newUserGender);
+    }
+
+    public void updateLocation(String locationDes) {
+        newUserLocation = locationDes;
+        accountSettingUserLocation.setText(newUserLocation);
+    }
+
+    public void updateAvatar(String avatarUrl) {
+        if (!avatarUrl.startsWith("http")) {
+            newUserPhoto = ImageUtils.saveImage2Sd(avatarUrl);
+            accountSettingAvatarSdv.setImageURI(Uri.parse("file://" + newUserPhoto));
+        } else {
+            newUserPhoto = avatarUrl;
+            accountSettingAvatarSdv.setImageURI(Uri.parse(newUserPhoto));
+        }
+    }
+
+    public void updateAvatar(int avatarId) {
+        try {
+            ImageUtils.saveFile(BitmapFactory.decodeResource(getResources(), avatarId), FileUtils.SDPATH + "userAvatar.jpg");
+            newUserPhoto = FileUtils.SDPATH + "userAvatar.jpg";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!StringUtils.isEmpty(newUserPhoto)) {
+            AccountSettingPresenter.getQiNiuToken(this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
+                @Override
+                public void onSuccess(String photoUrl) {
+                    accountSettingAvatarSdv.setImageURI(Uri.parse("file://" + newUserPhoto));
+                }
+
+                @Override
+                public void onError() {
+                    DialogUtil.dismissProgess();
+                    Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

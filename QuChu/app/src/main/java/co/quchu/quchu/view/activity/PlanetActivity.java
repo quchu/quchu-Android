@@ -201,9 +201,13 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         super.onDestroy();
         if (animatorSet != null) {
             animatorSet.cancel();
+            animatorSet = null;
         }
+        isShowing = false;
         ButterKnife.unbind(this);
     }
+
+    private boolean isShowing = true;
 
     @Override
     protected void onPause() {
@@ -213,29 +217,30 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     @Override
     protected void onResume() {
+        isShowing = true;
         super.onResume();
     }
 
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    if (animatorSet != null) {
-                        animatorSet.start();
-                    } else {
-                        initAnimation();
-                    }
-                    break;
-                case 1:
-                    if (animatorSet != null) {
-                        if (!animatorSet.isRunning())
+            if (isShowing)
+                switch (msg.what) {
+                    case 0:
+                        if (null != animatorSet) {
                             animatorSet.start();
-                    } else {
-                        initAnimation();
-                    }
-                    //   myHandler.sendMessageDelayed(myHandler.obtainMessage(1), 12000);
-                    break;
-            }
+                        } else {
+                            initAnimation();
+                        }
+                        break;
+                    case 1:
+                        if (null!= animatorSet ) {
+                            if (!animatorSet.isRunning())
+                                animatorSet.start();
+                        } else {
+                            initAnimation();
+                        }
+                        break;
+                }
             super.handleMessage(msg);
         }
     };

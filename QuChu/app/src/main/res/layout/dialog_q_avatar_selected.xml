@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/appBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_location_selected_city_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/base_margin"
+        android:text="选择一个趣头像"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
+
+    <GridView
+        android:id="@+id/dialog_location_rv"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_below="@id/dialog_location_selected_city_tv"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        android:background="#555252"
+        android:horizontalSpacing="@dimen/half_margin"
+        android:numColumns="3"
+        android:overScrollMode="never"
+        android:padding="@dimen/quarter_margin"
+        android:scrollbars="none"
+        android:verticalSpacing="@dimen/half_margin" />
+
+    <View
+        android:layout_width="0.1dp"
+        android:layout_height="@dimen/base_margin" />
+    <!-- <RelativeLayout
+         android:id="@+id/dialog_location_bottom_textviews_rl"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="@dimen/quarter_margin">
+
+         <TextView
+             android:id="@+id/dialog_location_submit_tv"
+             android:layout_width="48dp"
+             android:layout_height="48dp"
+             android:layout_alignParentRight="true"
+             android:layout_marginRight="@dimen/base_margin"
+             android:gravity="center_vertical|right"
+             android:text="确定"
+             android:textColor="@color/text_color_white"
+             android:textSize="@dimen/word_size_body" />
+
+         <TextView
+             android:id="@+id/dialog_location_cancel_tv"
+             android:layout_width="48dp"
+             android:layout_height="48dp"
+             android:layout_marginRight="@dimen/base_margin"
+
+             android:layout_toLeftOf="@id/dialog_location_submit_tv"
+             android:gravity="center_vertical|right"
+             android:text="取消"
+             android:textColor="@color/text_color_white"
+             android:textSize="@dimen/word_size_body" />
+     </RelativeLayout>-->
+</LinearLayout>

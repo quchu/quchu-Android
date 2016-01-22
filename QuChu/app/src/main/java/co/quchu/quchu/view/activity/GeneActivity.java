@@ -144,6 +144,7 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
         super.onDestroy();
         if (animatorSet != null) {
             animatorSet.cancel();
+            animatorSet = null;
         }
         ButterKnife.unbind(this);
     }
