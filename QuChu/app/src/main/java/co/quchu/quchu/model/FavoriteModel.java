@@ -148,7 +148,7 @@ public class FavoriteModel {
             private int id;
             private String name;
             private String rgb;
-            private int score;
+            private float score;
 
             public void setCover(String cover) {
                 this.cover = cover;
@@ -166,7 +166,7 @@ public class FavoriteModel {
                 this.rgb = reg;
             }
 
-            public void setScore(int score) {
+            public void setScore(float score) {
                 this.score = score;
             }
 
@@ -186,7 +186,7 @@ public class FavoriteModel {
                 return rgb;
             }
 
-            public int getScore() {
+            public float getScore() {
                 return score;
             }
         }

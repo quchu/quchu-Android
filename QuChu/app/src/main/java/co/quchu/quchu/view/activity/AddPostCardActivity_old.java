@@ -140,8 +140,8 @@ public class AddPostCardActivity_old extends BaseActivity {
             addPostcardSuggestPrb.setRating(defaulModel.getScore());
             addPostcardAboutPlaceTv.setText(defaulModel.getComment());
             addPostcardAboutPlaceTv.setText(defaulModel.getComment());
-            editTextDefaultText = prbHintText[defaulModel.getScore()];
-            addPostcardSuggestTv.setText(prbHintText[defaulModel.getScore()]);
+//            editTextDefaultText = prbHintText[defaulModel.getScore()];
+//            addPostcardSuggestTv.setText(prbHintText[defaulModel.getScore()]);
         }
         pName = getIntent().getStringExtra("pName");
         pId = getIntent().getIntExtra("pId", 2);

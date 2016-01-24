@@ -188,7 +188,7 @@
             android:value="5655121fe0f55a5ee8008dd5" />
         <meta-dataa
             android:name="UMENG_CHANNEL"
-            android:value="ChannelID" />
+            android:value="${UMENG_CHANNEL_VALUE}" />
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"

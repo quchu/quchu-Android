@@ -31,10 +31,17 @@ android {
         }
 
     }
+    productFlavors {
+        Quchu_360 {}
+        Quchu_debug {}
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
 
+    }
     useLibrary 'org.apache.http.legacy'
     sourceSets.main {
-      //  jniLibs.srcDirs "libs"
+        //  jniLibs.srcDirs "libs"
         jniLibs.srcDirs = ['libs']
     }
 }

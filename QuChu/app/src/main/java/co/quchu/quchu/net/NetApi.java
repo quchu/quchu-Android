@@ -4,7 +4,7 @@ package co.quchu.quchu.net;
  * netApi
  */
 public class NetApi {
-    public static boolean isDebug = true;
+    public static boolean isDebug = false;
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
     public static String RELEASE_HOST = "http://www.quchu.co/appservices";
     public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";

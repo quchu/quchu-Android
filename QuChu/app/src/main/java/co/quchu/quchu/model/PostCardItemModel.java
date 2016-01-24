@@ -26,7 +26,7 @@ public class PostCardItemModel implements Serializable {
     private String plcaeName;
     private int praiseNum;
     private String rgb;
-    private int score;
+    private float score;
     private String tel;
     private String time;
     private int width;
@@ -115,7 +115,7 @@ public class PostCardItemModel implements Serializable {
         this.rgb = rgb;
     }
 
-    public void setScore(int score) {
+    public void setScore(float score) {
         this.score = score;
     }
 
@@ -203,7 +203,7 @@ public class PostCardItemModel implements Serializable {
         return rgb;
     }
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
