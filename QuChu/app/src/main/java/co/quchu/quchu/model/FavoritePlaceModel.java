@@ -49,7 +49,7 @@ public class FavoritePlaceModel {
         private String name;
         private int pid;
         private String rgb;
-        private int suggest;
+        private float suggest;
 
         public void setAddress(String address) {
             this.address = address;
@@ -91,7 +91,7 @@ public class FavoritePlaceModel {
             this.rgb = rgb;
         }
 
-        public void setSuggest(int suggest) {
+        public void setSuggest(float suggest) {
             this.suggest = suggest;
         }
 
@@ -135,7 +135,7 @@ public class FavoritePlaceModel {
             return rgb;
         }
 
-        public int getSuggest() {
+        public float getSuggest() {
             return suggest;
         }
     }

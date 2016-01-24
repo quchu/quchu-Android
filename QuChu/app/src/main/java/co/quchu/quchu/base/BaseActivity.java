@@ -14,6 +14,7 @@ import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
 import co.quchu.quchu.photo.previewimage.PreviewImage;
 import co.quchu.quchu.view.activity.MenusActivity;
+import co.quchu.quchu.view.activity.PlaceMapActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.ReserveActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
@@ -55,7 +56,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         ActManager.getAppManager().addActivity(this);
         mSwipeBackLayout = getSwipeBackLayout();
         if (this instanceof MainActivity || this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity
-                || this instanceof PreviewImage || this instanceof ReserveActivity) {
+                || this instanceof PreviewImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
             mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);

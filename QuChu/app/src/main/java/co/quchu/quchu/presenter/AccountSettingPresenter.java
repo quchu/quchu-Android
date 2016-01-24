@@ -28,6 +28,8 @@ import co.quchu.quchu.utils.StringUtils;
  * User: Chenhs
  * Date: 2016-01-21
  * 账户设置
+ *  8336f98e7571483f21b11c13cf603268 正式
+ *  ab3d26f0aa7f5fe92a6032a8837bbf2f debug
  */
 public class AccountSettingPresenter {
 
@@ -226,7 +228,7 @@ public class AccountSettingPresenter {
                             try {
                                 if (response.has("key")) {
                                     String url = response.getString("key");
-                            LogUtils.json("qiniu token==bitmapA " + response + "!= ResponseInfo===" + url);
+                                    LogUtils.json("qiniu token==bitmapA " + response + "!= ResponseInfo===" + url);
                                     listener.onSuccess(url);
                                 } else {
                                     listener.onError();

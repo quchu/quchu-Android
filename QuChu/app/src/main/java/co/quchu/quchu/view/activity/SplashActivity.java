@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import com.testin.agent.TestinAgent;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.photo.AlbumHelper;
 import co.quchu.quchu.utils.AppKey;
@@ -32,10 +33,11 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TestinAgent.init(this, "031712c9e95bb4dae7a581f25afff9e7");
-        TestinAgent.setLocalDebug(true);
+//        TestinAgent.init(this, "031712c9e95bb4dae7a581f25afff9e7");
+//        TestinAgent.setLocalDebug(true);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+        AppContext.initLocation();
         //      ButterKnife.bind(this);
         //     setIcon();
        /* PackageManager pm = getPackageManager();//context为当前Activity上下文

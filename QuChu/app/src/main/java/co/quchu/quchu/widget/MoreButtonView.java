@@ -12,6 +12,7 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.KeyboardUtils;
 
 
 /**
@@ -28,6 +29,7 @@ public class MoreButtonView extends RelativeLayout implements View.OnClickListen
     ObjectAnimator objectAnimator;
     private int menuState = 0x00; //0x00 当前状态为+  0x01 当前状态为X
     private boolean isNeedAnimation = true;
+
     /**
      * 初始化
      *
@@ -68,6 +70,8 @@ public class MoreButtonView extends RelativeLayout implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         if (isNeedAnimation) {
             if (listener != null)
                 listener.onClick(v);

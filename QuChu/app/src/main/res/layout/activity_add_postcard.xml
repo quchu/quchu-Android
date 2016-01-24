@@ -21,14 +21,14 @@
             android:id="@+id/add_postcard_bottom_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/half_margin"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
             android:layout_marginTop="@dimen/half_margin"
-            android:layout_marginBottom="@dimen/half_margin"
-            android:gravity="center"
-            android:textColor="@color/black"
             android:background="@drawable/shape_detail_bottom_full_bg"
+            android:gravity="center"
             android:text="创建我的明信片"
+            android:textColor="@color/black"
             android:textSize="@dimen/word_size_body" />
 
     </RelativeLayout>
@@ -96,7 +96,7 @@
                     android:layout_marginLeft="@dimen/half_margin"
                     android:layout_marginTop="@dimen/half_margin"
                     android:gravity="center"
-                    android:text="请给趣处打分"
+                    android:text="请给该趣处打分"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_subhead_size" />
 
@@ -143,11 +143,11 @@
                     android:id="@+id/add_postcard_about_Place_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="88dp"
                     android:layout_margin="@dimen/half_margin"
                     android:background="@null"
                     android:gravity="left"
                     android:hint="我非常喜欢这里!无论是一个人，还是和最亲密的伴侣、朋友或家人，都能在这里留下一段非同寻常的记忆。"
+                    android:minHeight="88dp"
                     android:textColor="@color/text_color_white"
                     android:textColorHint="@color/user_login_text_hint_text_color"
                     android:textSize="@dimen/word_size_body" />

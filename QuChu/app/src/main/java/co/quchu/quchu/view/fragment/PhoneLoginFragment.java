@@ -459,22 +459,26 @@ public class PhoneLoginFragment extends Fragment {
      * 用户注册
      */
     private void userRegiest() {
-        UserLoginPresenter.userRegiest(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
-                MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), userLoginNicknameEt.getText().toString().trim(),
-                authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
-                    @Override
-                    public void isUnique(JSONObject msg) {
-                        LogUtils.json("user regiest " + msg);
-                        UserInfoHelper.saveUserInfo(msg);
-                        ((UserLoginActivity) getActivity()).userRegiestSuccess();
+        if (phoneLoginPasswordEt.getText().toString().trim().length() >= 6) {
+            UserLoginPresenter.userRegiest(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
+                    MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), userLoginNicknameEt.getText().toString().trim(),
+                    authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
+                        @Override
+                        public void isUnique(JSONObject msg) {
+                            LogUtils.json("user regiest " + msg);
+                            UserInfoHelper.saveUserInfo(msg);
+                            ((UserLoginActivity) getActivity()).userRegiestSuccess();
 
-                    }
+                        }
 
-                    @Override
-                    public void notUnique(String msg) {
+                        @Override
+                        public void notUnique(String msg) {
 
-                    }
-                });
+                        }
+                    });
+        } else {
+            Toast.makeText(getActivity(), "密码长度必须大于6位", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

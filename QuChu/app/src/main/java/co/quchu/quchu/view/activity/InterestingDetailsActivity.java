@@ -319,7 +319,7 @@ public class InterestingDetailsActivity extends BaseActivity {
 
     @OnClick({R.id.detail_store_phone_ll, R.id.detail_been_tv, R.id.detail_button_collect_out_rl, R.id.detail_button_collect_rl,
             R.id.detail_button_add_postcard_out_rl, R.id.detail_button_add_postcard_rl, R.id.detail_button_share_out_rl,
-            R.id.detail_button_share_rl, R.id.detail_want_tv})
+            R.id.detail_button_share_rl, R.id.detail_want_tv, R.id.detail_store_address_tv})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -362,6 +362,10 @@ public class InterestingDetailsActivity extends BaseActivity {
                     //分享
                     ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
                     shareDialogFg.show(getFragmentManager(), "share_dialog");
+                    break;
+
+                case R.id.detail_store_address_tv:
+                    //  startActivity(new Intent(InterestingDetailsActivity.this, PlaceMapActivity.class));
                     break;
             }
         }
@@ -476,7 +480,7 @@ public class InterestingDetailsActivity extends BaseActivity {
             } else {
                 LogUtils.json("webview ==");
                 //startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
-              Uri uri = Uri.parse(dModel.getNet());
+                Uri uri = Uri.parse(dModel.getNet());
                 Intent it = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(it);
 

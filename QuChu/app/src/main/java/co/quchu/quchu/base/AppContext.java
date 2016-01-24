@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -66,7 +67,6 @@ public class AppContext extends Application {
         gatherList = new ArrayList<>();
         initImageLoader();
         initWidths();
-        initLocation();
     }
 
 
@@ -111,6 +111,8 @@ public class AppContext extends Application {
 
     public static void initLocation() {
         //初始化定位
+        if (!AppUtil.isOpen(mContext))
+            AppUtil.openGPS(mContext);
         mLocationClient = new AMapLocationClient(mContext);
         mLocationListener = new AppLocationListener();
         //设置定位回调监听

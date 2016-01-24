@@ -222,6 +222,9 @@ public class AccountSettingActivity extends BaseActivity {
         newUserGender = accountSettingGenderTv.getText().toString();
         newUserLocation = accountSettingUserLocation.getText().toString();
         if ((StringUtils.isEmpty(newUserPw) && StringUtils.isEmpty(newUserPwAgain)) || (!StringUtils.isEmpty(newUserPw) && !StringUtils.isEmpty(newUserPwAgain) && newUserPwAgain.equals(newUserPw))) {
+            if (newUserPw.length() < 6) {
+                Toast.makeText(this, "密码长度必须大于6位", Toast.LENGTH_SHORT).show();
+            }
             DialogUtil.showProgess(this, R.string.loading_dialog_text);
             if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
                 AccountSettingPresenter.getQiNiuToken(this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
