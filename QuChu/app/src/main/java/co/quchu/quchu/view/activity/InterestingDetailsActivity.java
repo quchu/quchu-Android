@@ -365,7 +365,11 @@ public class InterestingDetailsActivity extends BaseActivity {
                     break;
 
                 case R.id.detail_store_address_tv:
-                    //  startActivity(new Intent(InterestingDetailsActivity.this, PlaceMapActivity.class));
+                    Intent mapIntent = new Intent(InterestingDetailsActivity.this, PlaceMapActivity.class);
+                    mapIntent.putExtra("lat", dModel.getLatitude());
+                    mapIntent.putExtra("lon", dModel.getLongitude());
+                    mapIntent.putExtra("title", dModel.getName());
+                    startActivity(mapIntent);
                     break;
             }
         }

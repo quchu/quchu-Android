@@ -247,6 +247,7 @@ public class StringUtils {
 
     /**
      * 判断是否存在emoji 表情符号
+     *
      * @param source
      * @return
      */
@@ -272,5 +273,15 @@ public class StringUtils {
                 (codePoint == 0xD) || ((codePoint >= 0x20) && (codePoint <= 0xD7FF)) ||
                 ((codePoint >= 0xE000) && (codePoint <= 0xFFFD)) || ((codePoint >= 0x10000)
                 && (codePoint <= 0x10FFFF));
+    }
+
+    public static boolean isDouble(String value) {
+        try {
+            Double.parseDouble(value);
+            if (value.contains(".")) return true;
+            return false;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

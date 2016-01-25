@@ -9,17 +9,27 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
+import com.amap.api.maps.model.MarkerOptions;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.utils.KeyboardUtils;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by Administrator on 2016/1/24.
+ * <p/>
+ * 34:94:5B:1E:43:1A:A3:0A:FE:BB:D8:59:B1:2E:73:73:10:16:E8:D1
+ * <p/>
+ * 28:EB:11:F4:F3:47:22:CC:A2:08:DE:8E:75:B5:3D:DD:97:8F:2C:C4正式环境
  */
-public class PlaceMapActivity extends BaseActivity implements View.OnClickListener, LocationSource,
+public class PlaceMapActivity extends BaseActivity implements View.OnClickListener, LocationSource, AMap.OnMapLoadedListener,
         AMapLocationListener {
     MapView mapView;
     RelativeLayout about_us_title_back_rl;
@@ -27,17 +37,44 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     private AMap aMap;
     private AMapLocationClientOption mLocationOption;
     private AMapLocationClient mlocationClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_map);
         mapView = (MapView) findViewById(R.id.place_map_mv);
+        mapView.onCreate(savedInstanceState);// 此方法必须重写
         about_us_title_back_rl = (RelativeLayout) findViewById(R.id.about_us_title_back_rl);
-       about_us_title_back_rl.setOnClickListener(this);
+        about_us_title_back_rl.setOnClickListener(this);
         if (aMap == null) {
             aMap = mapView.getMap();
             setUpMap();
         }
+        initData();
+    }
+
+    double lat = 0, lont = 0;
+    String placeTitle;
+    LatLng placeAddress;
+    LatLng myAddress;
+
+    private void initData() {
+        if (StringUtils.isDouble(getIntent().getStringExtra("lat")))
+            lat = Double.parseDouble(getIntent().getStringExtra("lat"));
+        if (StringUtils.isDouble(getIntent().getStringExtra("lon")))
+            lont = Double.parseDouble(getIntent().getStringExtra("lon"));
+        placeTitle = getIntent().getStringExtra("title");
+        placeAddress = new LatLng(lat, lont);
+        myAddress = new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude());
+
+        MarkerOptions markerOption = new MarkerOptions();
+        markerOption.position(placeAddress);
+        markerOption.title(placeTitle).snippet("西安市：34.341568, 108.940174");
+        markerOption.perspective(true);
+        markerOption.draggable(true);
+        markerOption.setFlat(true);
+        //   markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.avatar_1));
+        aMap.addMarker(markerOption);
     }
 
     @Override
@@ -53,11 +90,17 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         if (mListener != null && amapLocation != null) {
             if (amapLocation != null
                     && amapLocation.getErrorCode() == 0) {
-                mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
+             //   mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
+             /*   if (aMap != null) {
+                    LatLngBounds bounds = new LatLngBounds.Builder()
+                            .include(placeAddress).include(new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude())).build();
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+                }*/
             } else {
             }
         }
     }
+
     private void setUpMap() {
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
@@ -65,6 +108,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
     }
+
     @Override
     public void activate(OnLocationChangedListener onLocationChangedListener) {
         mListener = onLocationChangedListener;
@@ -79,6 +123,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             mlocationClient.setLocationOption(mLocationOption);
             // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
             // 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+            mLocationOption.setInterval(15 * 1000);
             // 在定位结束后，在合适的生命周期调用onDestroy()方法
             // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
             mlocationClient.startLocation();
@@ -122,6 +167,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
     /**
      * 方法必须重写
      */
@@ -129,8 +175,16 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        if(null != mlocationClient){
+        if (null != mlocationClient) {
             mlocationClient.onDestroy();
         }
+    }
+
+    @Override
+    public void onMapLoaded() {
+        // 设置所有maker显示在当前可视区域地图中
+        LatLngBounds bounds = new LatLngBounds.Builder()
+                .include(placeAddress).include(myAddress).build();
+        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
     }
 }

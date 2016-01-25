@@ -3,10 +3,13 @@ package co.quchu.quchu.utils;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.view.WindowManager;
+
+import co.quchu.quchu.base.AppContext;
 
 /**
  * AppUtil
@@ -136,5 +139,21 @@ public class AppUtil {
         }
 
         return false;
+    }
+
+    public static boolean isAppInstall(String pckName) {
+        PackageInfo packageInfo;
+        try {
+            packageInfo = AppContext.mContext.getPackageManager().getPackageInfo(
+                    pckName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if (packageInfo == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

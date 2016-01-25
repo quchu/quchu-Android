@@ -139,8 +139,10 @@ public class AppContext extends Application {
 
     public static void stopLocation() {
         if (null != mLocationClient) {
+            mLocationClient.stopLocation();
             mLocationClient.onDestroy();
             mLocationClient = null;
         }
+        mLocationListener = null;
     }
 }
