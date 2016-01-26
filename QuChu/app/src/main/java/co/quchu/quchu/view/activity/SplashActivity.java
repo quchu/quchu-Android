@@ -6,13 +6,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
-import com.testin.agent.TestinAgent;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.photo.AlbumHelper;
+import co.quchu.quchu.base.Constants;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
 
@@ -22,12 +23,9 @@ import co.quchu.quchu.utils.SPUtils;
  * Date: 2015-11-10
  */
 public class SplashActivity extends BaseActivity {
-    /*    @Bind(R.id.splash_iv)
-        ImageView splashIv;
-        @Bind(R.id.splash_app_name_tv)
-        TextView splashAppNameTv;
-        @Bind(R.id.splash_app_version_name_tv)
-        TextView splashAppVersionNameTv;*/
+
+    @Bind(R.id.splash_root_rl)
+    RelativeLayout splashRootRl;
     private long viewDuration = 2 * 1000;
 
     @Override
@@ -37,7 +35,14 @@ public class SplashActivity extends BaseActivity {
 //        TestinAgent.setLocalDebug(true);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
+        if (Constants.ISSTARTINGPKG) {
+            splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg_360));
+        } else {
+            splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg));
+        }
         AppContext.initLocation();
+        handler.sendMessageDelayed(handler.obtainMessage(0x01), viewDuration);
         //      ButterKnife.bind(this);
         //     setIcon();
        /* PackageManager pm = getPackageManager();//context为当前Activity上下文
@@ -56,8 +61,8 @@ public class SplashActivity extends BaseActivity {
         circleIv= (ImageView) findViewById(R.id.splash_circle_iv);*/
 /*        rippleBackground.startRippleAnimation();*/
         // initCircleAnimation();
-        handler.sendMessageDelayed(handler.obtainMessage(0x01), viewDuration);
-        AlbumHelper.initAlbumHelper(this);
+
+        // AlbumHelper.initAlbumHelper(this);
     }
 
  /* public void   initCircleAnimation(){

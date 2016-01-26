@@ -199,6 +199,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (myHandler != null)
+            myHandler = null;
         if (animatorSet != null) {
             animatorSet.cancel();
             animatorSet = null;
@@ -217,7 +219,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
     @Override
     protected void onResume() {
-        isShowing = true;
         super.onResume();
     }
 
@@ -233,7 +234,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                         }
                         break;
                     case 1:
-                        if (null!= animatorSet ) {
+                        if (null != animatorSet) {
                             if (!animatorSet.isRunning())
                                 animatorSet.start();
                         } else {
@@ -303,7 +304,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
             @Override
             public void onAnimationEnd(Animator animator) {
                 LogUtils.json("planet animation is end");
-                myHandler.sendMessageDelayed(myHandler.obtainMessage(1), 200);
+                if (myHandler != null)
+                    myHandler.sendMessageDelayed(myHandler.obtainMessage(1), 200);
             }
 
             @Override
@@ -316,6 +318,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
             }
         });
+        if (myHandler!=null)
         myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
     }
 

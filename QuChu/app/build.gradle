@@ -32,11 +32,16 @@ android {
 
     }
     productFlavors {
-        Quchu_360 {}
-        Quchu_debug {}
-        productFlavors.all { flavor ->
-            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        Quchu_360 {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Quchu_360"]
         }
+        Quchu_debug {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Quchu_debug"]
+        }
+     /*   Quchu_debug {}*/
+      /*  productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }*/
 
     }
     useLibrary 'org.apache.http.legacy'

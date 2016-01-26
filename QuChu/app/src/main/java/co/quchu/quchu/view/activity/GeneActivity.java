@@ -117,31 +117,36 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    if (animatorSet != null) {
-                        animatorSet.start();
-                    } else {
-                        initAnimation();
-                    }
-                    break;
-                case 1:
-                    if (animatorSet != null) {
-                        if (!animatorSet.isRunning())
+            if (isOnResume) {
+                switch (msg.what) {
+                    case 0:
+                        if (animatorSet != null) {
                             animatorSet.start();
-                    } else {
-                        initAnimation();
-                    }
-                    //   myHandler.sendMessageDelayed(myHandler.obtainMessage(1), 12000);
-                    break;
+                        } else {
+                            initAnimation();
+                        }
+                        break;
+                    case 1:
+                        if (animatorSet != null) {
+                            if (!animatorSet.isRunning())
+                                animatorSet.start();
+                        } else {
+                            initAnimation();
+                        }
+                        //   myHandler.sendMessageDelayed(myHandler.obtainMessage(1), 12000);
+                        break;
+                }
+                super.handleMessage(msg);
             }
-            super.handleMessage(msg);
         }
     };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isOnResume = false;
+        if (handler != null)
+            handler = null;
         if (animatorSet != null) {
             animatorSet.cancel();
             animatorSet = null;
@@ -201,6 +206,7 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
         });
     }
 
+    private boolean isOnResume = false;
 
     @Override
     protected void onPause() {
@@ -210,6 +216,7 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
     @Override
     protected void onResume() {
         super.onResume();
+        isOnResume = true;
      /*   if (adapter != null) {
             adapter.notifyDataSetChanged();
         }*/
@@ -250,6 +257,7 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
             @Override
             public void onAnimationEnd(Animator animator) {
                 LogUtils.json("planet animation is end");
+                if (handler!=null)
                 handler.sendMessageDelayed(handler.obtainMessage(1), 200);
             }
 
@@ -270,4 +278,6 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
     public void onGlobalLayout() {
         initAnimation();
     }
+
+
 }

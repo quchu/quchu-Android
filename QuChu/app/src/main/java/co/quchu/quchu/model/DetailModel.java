@@ -64,6 +64,8 @@ public class DetailModel {
     private String tel;
     private String traffic;
     private int width;
+    public String gdLatitude = "";
+    public String gdLongitude = "";
     /**
      * key : 美食
      * value : 79

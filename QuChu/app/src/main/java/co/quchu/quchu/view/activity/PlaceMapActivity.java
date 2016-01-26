@@ -1,8 +1,12 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -14,10 +18,15 @@ import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
+import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+
+import java.net.URISyntaxException;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.NavigateSelectedDialogFg;
+import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -37,6 +46,12 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     private AMap aMap;
     private AMapLocationClientOption mLocationOption;
     private AMapLocationClient mlocationClient;
+    private TextView title_right_navigate_tv;
+
+    double lat = 0, lont = 0, gdlon = 0, gdlat = 0;
+    String placeTitle, placeAddressStr = "";
+    LatLng placeAddress;
+    LatLng myAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +59,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_place_map);
         mapView = (MapView) findViewById(R.id.place_map_mv);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
+        title_right_navigate_tv = (TextView) findViewById(R.id.title_right_navigate_tv);
         about_us_title_back_rl = (RelativeLayout) findViewById(R.id.about_us_title_back_rl);
         about_us_title_back_rl.setOnClickListener(this);
         if (aMap == null) {
@@ -51,27 +67,51 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             setUpMap();
         }
         initData();
-    }
+        title_right_navigate_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigateSelectedDialogFg navigateDialogFg = NavigateSelectedDialogFg.newInstance();
+                navigateDialogFg.setNavigateClickListener(new NavigateSelectedDialogFg.NavigateClickListener() {
+                    @Override
+                    public void choiceGd() {
+                        jump2Amap();
+                    }
 
-    double lat = 0, lont = 0;
-    String placeTitle;
-    LatLng placeAddress;
-    LatLng myAddress;
+                    @Override
+                    public void choiceBd() {
+                        jump2BaiduMap();
+                    }
+
+                    @Override
+                    public void choiceTx() {
+                        jump2TencentMap();
+                    }
+                });
+                navigateDialogFg.show(getFragmentManager(), "navigate");
+            }
+        });
+    }
 
     private void initData() {
         if (StringUtils.isDouble(getIntent().getStringExtra("lat")))
             lat = Double.parseDouble(getIntent().getStringExtra("lat"));
         if (StringUtils.isDouble(getIntent().getStringExtra("lon")))
             lont = Double.parseDouble(getIntent().getStringExtra("lon"));
+        if (StringUtils.isDouble(getIntent().getStringExtra("gdlon")))
+            gdlon = Double.parseDouble(getIntent().getStringExtra("gdlon"));
+        if (StringUtils.isDouble(getIntent().getStringExtra("gdlat")))
+            gdlat = Double.parseDouble(getIntent().getStringExtra("gdlat"));
         placeTitle = getIntent().getStringExtra("title");
-        placeAddress = new LatLng(lat, lont);
-        myAddress = new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude());
+        placeAddressStr = getIntent().getStringExtra("placeAddress");
+        placeAddress = new LatLng(gdlat, gdlon);
+        //  myAddress = new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude());
 
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(placeAddress);
-        markerOption.title(placeTitle).snippet("西安市：34.341568, 108.940174");
+        markerOption.title(placeTitle).snippet(placeAddressStr);
         markerOption.perspective(true);
         markerOption.draggable(true);
+        markerOption.visible(true);
         markerOption.setFlat(true);
         //   markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.avatar_1));
         aMap.addMarker(markerOption);
@@ -81,7 +121,6 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
-
         PlaceMapActivity.this.finish();
     }
 
@@ -90,12 +129,16 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         if (mListener != null && amapLocation != null) {
             if (amapLocation != null
                     && amapLocation.getErrorCode() == 0) {
-             //   mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
-             /*   if (aMap != null) {
+                mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
+                SPUtils.setLatitude(amapLocation.getLatitude());
+                SPUtils.setLongitude(amapLocation.getLongitude());
+                if (myAddress == null) {
+                    myAddress = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
                     LatLngBounds bounds = new LatLngBounds.Builder()
-                            .include(placeAddress).include(new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude())).build();
+                            .include(placeAddress).include(myAddress).build();
                     aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
-                }*/
+                }
+
             } else {
             }
         }
@@ -107,6 +150,15 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
+        aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                //   jump2BaiduMap();
+                // jump2TencentMap();
+                // jump2Amap();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -184,7 +236,54 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     public void onMapLoaded() {
         // 设置所有maker显示在当前可视区域地图中
         LatLngBounds bounds = new LatLngBounds.Builder()
-                .include(placeAddress).include(myAddress).build();
+                .include(placeAddress).build();
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+    }
+
+    private void jump2BaiduMap() {
+        Intent intent = null;
+        if (AppUtil.isAppInstall("com.baidu.BaiduMap")) {
+            try {
+                intent = Intent.getIntent("intent://map/direction?origin=latlng:" + lat + "," + lont + "|name:我的位置&destination=" + placeTitle + "&mode=walking®ion=&src=厦门趣处网络科技有限公司|趣处#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
+                startActivity(intent);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "请检查是否已安装百度地图", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void jump2TencentMap() {
+        Intent tencentMap;
+        if (AppUtil.isAppInstall("com.tencent.map")) {
+            try {
+                tencentMap = Intent.getIntent("qqmap://map/routeplan?type=walk&from=我的位置&fromcoord=" + SPUtils.getLatitude() + "," + SPUtils.getLongitude() + "&to=" + placeTitle + "&tocoord=" + gdlat + "," + gdlon);
+                startActivity(tencentMap);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } else {
+            //  Toast.makeText(this, "请检查是否已安装腾讯地图", Toast.LENGTH_SHORT).show();
+            tencentMap = new Intent(Intent.ACTION_VIEW, Uri.parse("http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord=" + SPUtils.getLatitude() + "," + SPUtils.getLongitude() + "&to=" + placeTitle + "&tocoord=" + gdlat + "," + gdlon + "&policy=1&referer=趣处"));
+            tencentMap.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
+            startActivity(tencentMap);
+        }
+    }
+
+    private void jump2Amap() {
+        if (AppUtil.isAppInstall("com.autonavi.minimap")) {
+            try {
+                Intent amapIntent = Intent.getIntent("androidamap://route?sourceApplication=趣处&slat=" + SPUtils.getLatitude() + "&slon=" + SPUtils.getLongitude() + "&sname=我的位置&dlat=" + gdlat + "&dlon=" + gdlon + "&dname=" + placeTitle + "&dev=0&m=0&t=4");
+                amapIntent.addCategory("android.intent.category.DEFAULT");
+                amapIntent.setAction("android.intent.action.VIEW");
+                amapIntent.setPackage("com.autonavi.minimap");
+                startActivity(amapIntent);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "请检查是否已安装高德地图", Toast.LENGTH_SHORT).show();
+        }
     }
 }

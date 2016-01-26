@@ -122,12 +122,22 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
 
     public void InData() {
         // TODO Auto-generated method stub
+
         index = getIntent().getIntExtra("index", 0);
         type = getIntent().getIntExtra("type", 0);
         PostCardItemModel model = (PostCardItemModel) getIntent().getSerializableExtra("data");
         ImgList = (ArrayList<PostCardImageListModel>) model.getImglist();
         imageInfo = ImgList.get(index);
         bdInfo = (ImageBDInfo) getIntent().getSerializableExtra("bdinfo");
+        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)) {
+            if (index == ImgList.size() - 1) {
+                userguideImageFirstIndexFl.setVisibility(View.GONE);
+                userguideImageLastindexFl.setVisibility(View.VISIBLE);
+            } else {
+                userguideImageFirstIndexFl.setVisibility(View.VISIBLE);
+                userguideImageFirstIndexFl.setVisibility(View.GONE);
+            }
+        }
         pagerAdapter = new SamplePagerAdapter();
         viewpager.setAdapter(pagerAdapter);
         viewpager.setCurrentItem(index);
@@ -143,16 +153,7 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
         previewCreaterNameTv.setText(model.getAutor());
         previewCraeteTimeTv.setText(model.getTime().substring(0, 10));
         setIsfState(ImgList.get(index).isf());
-        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)){
-            if (index ==ImgList.size()-1){
 
-                userguideImageFirstIndexFl.setVisibility(View.GONE);
-                userguideImageLastindexFl.setVisibility(View.VISIBLE);
-            }else {
-                userguideImageFirstIndexFl.setVisibility(View.VISIBLE);
-                userguideImageFirstIndexFl.setVisibility(View.GONE);
-            }
-        }
     }
 
 
@@ -202,7 +203,6 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
                 userguideImageFirstIndexFl.setVisibility(View.VISIBLE);
                 userguideImageLastindexFl.setVisibility(View.GONE);
             }
-
         }
     }
 
@@ -233,6 +233,9 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
 //                    finish();
                 }
             });
+            if (position == 0 && SPUtils.getBooleanFromSPMap(PreviewImage.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)) {
+                userguideImageFirstIndexFl.setVisibility(View.VISIBLE);
+            }
             container.addView(photoView, LayoutParams.MATCH_PARENT,
                     LayoutParams.MATCH_PARENT);
 

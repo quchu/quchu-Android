@@ -319,7 +319,7 @@ public class InterestingDetailsActivity extends BaseActivity {
 
     @OnClick({R.id.detail_store_phone_ll, R.id.detail_been_tv, R.id.detail_button_collect_out_rl, R.id.detail_button_collect_rl,
             R.id.detail_button_add_postcard_out_rl, R.id.detail_button_add_postcard_rl, R.id.detail_button_share_out_rl,
-            R.id.detail_button_share_rl, R.id.detail_want_tv, R.id.detail_store_address_tv})
+            R.id.detail_button_share_rl, R.id.detail_want_tv, R.id.detail_store_address_ll})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -364,11 +364,14 @@ public class InterestingDetailsActivity extends BaseActivity {
                     shareDialogFg.show(getFragmentManager(), "share_dialog");
                     break;
 
-                case R.id.detail_store_address_tv:
+                case R.id.detail_store_address_ll:
                     Intent mapIntent = new Intent(InterestingDetailsActivity.this, PlaceMapActivity.class);
                     mapIntent.putExtra("lat", dModel.getLatitude());
                     mapIntent.putExtra("lon", dModel.getLongitude());
+                    mapIntent.putExtra("gdlon", dModel.gdLongitude);
+                    mapIntent.putExtra("gdlat", dModel.gdLatitude);
                     mapIntent.putExtra("title", dModel.getName());
+                    mapIntent.putExtra("placeAddress", dModel.getAddress());
                     startActivity(mapIntent);
                     break;
             }

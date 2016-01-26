@@ -73,6 +73,7 @@ public static final int *;
 ## ----------------------------------
 #-keep class com.facebook.** {*;}
 #-keep public class * extends com.facebook.**
+-dontwarn  com.facebook.**
 -keep class com.facebook.** {*;}
 ## ----------------------------------
 ##   ########## photoView混淆  ######
@@ -116,8 +117,12 @@ public static final int *;
 -keep class com.amap.api.location.**{*;}
 
 -keep class com.amap.api.fence.**{*;}
-
+-keep class com.amap.api.maps.overlay.**{*;}
 -keep class com.autonavi.aps.amapapi.model.**{*;}
+## ----------------------------------
+##   ########## photoView    #########
+## ----------------------------------
+-dontwarn uk.co.senab.photoview.**
 ## ----------------------------------
 ##   ########## QQ混淆    #########
 ## ----------------------------------

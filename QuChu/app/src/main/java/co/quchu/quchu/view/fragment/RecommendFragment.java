@@ -25,7 +25,6 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
-import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
@@ -125,7 +124,8 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                 adapter.changeDataSet(cardList);
                 pageCounts = pageCount;
                 pageNums = pageNum;
-                fRecommendRvp.smoothScrollToPosition(0);
+                if (fRecommendRvp != null && cardList.size() > 0)
+                    fRecommendRvp.smoothScrollToPosition(0);
                 if (fRecommendBottomRl.getVisibility() == View.VISIBLE)
                     RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
             }

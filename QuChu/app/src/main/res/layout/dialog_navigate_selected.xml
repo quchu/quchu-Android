@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/base_margin"
+    android:layout_marginLeft="@dimen/half_margin"
+    android:layout_marginRight="@dimen/half_margin"
+    android:layout_marginTop="@dimen/base_margin"
+    android:background="@color/appBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/navigate_gd_tv"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:gravity="center_vertical"
+        android:text="高德地图导航"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_size_body" />
+
+    <View style="@style/NavigateBHl" />
+
+    <TextView
+        android:id="@+id/navigate_bd_tv"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:gravity="center_vertical"
+        android:text="百度地图导航"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_size_body" />
+
+    <View style="@style/NavigateBHl" />
+
+    <TextView
+        android:id="@+id/navigate_tx_tv"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:gravity="center_vertical"
+        android:text="腾讯地图导航"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_size_body" />
+</LinearLayout>

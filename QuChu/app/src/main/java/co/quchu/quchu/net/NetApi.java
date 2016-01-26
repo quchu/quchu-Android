@@ -1,20 +1,22 @@
 package co.quchu.quchu.net;
 
+import co.quchu.quchu.base.Constants;
+
 /**
  * netApi
  */
 public class NetApi {
     public static boolean isDebug = false;
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
-    public static String RELEASE_HOST = "http://www.quchu.co/appservices";
-    public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
+    public static String RELEASE_HOST = "http://www.quchu.co:8080/appservices";
+    public static String DEBUG_HOST = "http://uat.quchu.co:8080/appservices";
+    //  public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
     //public static final String HOST = location_HOST;
-    public static final String HOST = isDebug ? RELEASE_HOST : DEBUG_HOST;
+    public static final String HOST = Constants.ISDEBUG ? DEBUG_HOST : RELEASE_HOST;
     /****
      * Get start
      ****/
-
     public static final String GetCircleList = HOST + "/place/GetCircleList";
     public static final String GetCardList = HOST + "/personal/getCardList"; //获取我的明信片
     /**

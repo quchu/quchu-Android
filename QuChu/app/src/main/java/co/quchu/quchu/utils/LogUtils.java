@@ -16,42 +16,42 @@ public class LogUtils {
     private static String tag = "QuChu";
 
     public static void e(String msg) {
-        if (Constants.ISDEBUG) {
+        if (Constants.ISPRINTLOG) {
 //            Logger.init();
 //            Logger.e(msg);
         }
     }
 
     public static void i(String msg) {
-        if (Constants.ISDEBUG) {
+        if (Constants.ISPRINTLOG) {
 //            Logger.init();
 //            Logger.i(msg);
         }
     }
 
     public static void i(String TAG, String msg) {
-        if (Constants.ISDEBUG) {
+        if (Constants.ISPRINTLOG) {
 //            Logger.init();
 //            Logger.i(msg);
         }
     }
 
     public static void v(String msg) {
-        if (Constants.ISDEBUG) {
+        if (Constants.ISPRINTLOG) {
             Logger.init();
             Logger.v(msg);
         }
     }
 
     public static void d(String msg) {
-        if (Constants.ISDEBUG) {
+        if (Constants.ISPRINTLOG) {
 //            Logger.init();
 //            Logger.d(msg);
         }
     }
 
     public static void w(String msg) {
-        if (Constants.ISDEBUG) {
+        if (Constants.ISPRINTLOG) {
 //            Logger.init();
 //            Logger.w(msg);
         }
@@ -62,13 +62,13 @@ public class LogUtils {
      * @param msg
      */
     public static void json(String msg){
-        if (Constants.ISDEBUG) {
+        if (Constants.ISPRINTLOG) {
            Log.e(tag + "Json=", msg);
         }
     }
 
     public static void netLog(Object msg){
-        if (Constants.ISDEBUG) {
+        if (Constants.ISPRINTLOG) {
             Log.e(tag+"Net=",msg.toString());
         }
     }

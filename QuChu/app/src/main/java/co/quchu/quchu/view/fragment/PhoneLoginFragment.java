@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,8 @@ import com.sina.weibo.sdk.utils.MD5;
 
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,6 +36,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
+import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -275,14 +279,22 @@ public class PhoneLoginFragment extends Fragment {
 
 
     private void hintOtherView() {
-        phoneLoginPasswordLl.setVisibility(View.GONE);
-        authcodeLoginPasswordLl.setVisibility(View.GONE);
-        phoneLoginEnterTv.setVisibility(View.GONE);
-        userLoginForgetTv.setVisibility(View.GONE);
-        userLoginNicknameLl.setVisibility(View.GONE);
-        authcodeLoginPasswordEt.setText("");
-        phoneLoginPasswordEt.setText("");
-        userLoginNicknameEt.setText("");
+        if (phoneLoginPasswordLl != null)
+            phoneLoginPasswordLl.setVisibility(View.GONE);
+        if (authcodeLoginPasswordLl != null)
+            authcodeLoginPasswordLl.setVisibility(View.GONE);
+        if (phoneLoginEnterTv != null)
+            phoneLoginEnterTv.setVisibility(View.GONE);
+        if (userLoginForgetTv != null)
+            userLoginForgetTv.setVisibility(View.GONE);
+        if (userLoginNicknameLl != null)
+            userLoginNicknameLl.setVisibility(View.GONE);
+        if (authcodeLoginPasswordEt != null)
+            authcodeLoginPasswordEt.setText("");
+        if (phoneLoginPasswordEt != null)
+            phoneLoginPasswordEt.setText("");
+        if (userLoginNicknameEt != null)
+            userLoginNicknameEt.setText("");
     }
 
     private void initEditText() {
@@ -512,4 +524,6 @@ public class PhoneLoginFragment extends Fragment {
                     }
                 });
     }
+
+
 }

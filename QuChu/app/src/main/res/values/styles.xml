@@ -58,6 +58,12 @@
         <item name="android:background">@color/user_login_text_hint_text_color</item>
     </style>
 
+    <style name="NavigateBHl" parent="HorizontalLine">
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_marginLeft">@dimen/half_margin</item>
+        <item name="android:layout_marginRight">@dimen/half_margin</item>
+        <item name="android:background">@color/user_login_view_bg_color</item>
+    </style>
     <style name="QuchuRatingBarStyle" parent="android:Widget.RatingBar">
         <!--<item name="progressDrawable">@drawable/ratingbar_full</item>-->
         <!--<item name="indeterminateDrawable">@drawable/ratingbar_full</item>-->
