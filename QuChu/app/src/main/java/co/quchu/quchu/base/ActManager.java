@@ -127,7 +127,7 @@ public class ActManager {
         try {
             //finish
             finishAllActivity();
-            System.exit(0);
+       //    System.exit(0);
             //取消消息
 //			NotificationManager mNotificationManager = (NotificationManager)AppContext.mContext.getSystemService(Context.NOTIFICATION_SERVICE) ;
 //			mNotificationManager.cancelAll();

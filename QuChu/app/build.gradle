@@ -20,7 +20,7 @@ android {
     buildTypes {
         release {
             // 不显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "LOG_DEBUG", "true"
             //混淆
             minifyEnabled true
             //Zipalign优化
@@ -32,11 +32,11 @@ android {
 
     }
     productFlavors {
-        Quchu_360 {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Quchu_360"]
+        quchu_360 {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_360"]
         }
-        Quchu_debug {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Quchu_debug"]
+        quchu_debug {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_debug"]
         }
      /*   Quchu_debug {}*/
       /*  productFlavors.all { flavor ->

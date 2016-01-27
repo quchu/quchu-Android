@@ -6,7 +6,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
+
+import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -14,8 +16,10 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.Constants;
+import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * SplashActivity
@@ -25,7 +29,7 @@ import co.quchu.quchu.utils.SPUtils;
 public class SplashActivity extends BaseActivity {
 
     @Bind(R.id.splash_root_rl)
-    RelativeLayout splashRootRl;
+    ImageView splashRootRl;
     private long viewDuration = 2 * 1000;
 
     @Override
@@ -37,9 +41,11 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         if (Constants.ISSTARTINGPKG) {
-            splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg_360));
+            //splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg_360));
+            splashRootRl.setImageDrawable(getResources().getDrawable(R.drawable.ic_splash_bg_360));
         } else {
-            splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg));
+            //  splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg));
+            splashRootRl.setImageDrawable(getResources().getDrawable(R.drawable.ic_splash_bg));
         }
         AppContext.initLocation();
         handler.sendMessageDelayed(handler.obtainMessage(0x01), viewDuration);
@@ -114,12 +120,23 @@ public class SplashActivity extends BaseActivity {
                     rippleBackground.startRippleAnimation();
                     break;*/
                 case 0x01:
-                    startActivity(new Intent(SplashActivity.this, UserLoginActivity.class));
-                    SplashActivity.this.finish();
+                    if (!StringUtils.isEmpty(SPUtils.getUserInfo(SplashActivity.this))) {
+                        if (AppContext.user == null)
+                            AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(SplashActivity.this), UserInfoModel.class);
+                        enterApp();
+                    } else {
+                        startActivity(new Intent(SplashActivity.this, UserLoginActivity.class));
+                        SplashActivity.this.finish();
+                    }
                     break;
             }
         }
     };
+
+    public void enterApp() {
+        startActivity(new Intent(this, RecommendActivity.class));
+        this.finish();
+    }
 
     @Override
     protected void onResume() {

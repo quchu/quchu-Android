@@ -3,6 +3,8 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -208,8 +211,23 @@ public class InterestingDetailsActivity extends BaseActivity {
         } else if (!StringUtils.isEmpty(dModel.getTraffic())) {
             detailStoreAddressTv.setText(String.format(getResources().getString(R.string.detail_address_hint_text), dModel.getAddress(), dModel.getTraffic()));
         }
-        detailStorePhoneTv.setText(dModel.getTel());
+        if (!StringUtils.isEmpty(dModel.getTel())) {
+            StringTokenizer token = new StringTokenizer(dModel.getTel(), " ");
+            String phoneHtml = "";
+            while (token.hasMoreTokens()) {
+                String phoneNum = token.nextToken();
+                phoneHtml += "<font color=#dcdddd><a href=\"tel:" + phoneNum + "\">" + phoneNum + "</a> </font>  ";
+                LogUtils.json(""+phoneNum+"///////=="+phoneHtml);
+            }
 
+                LogUtils.json("/////html//=="+phoneHtml);
+            detailStorePhoneTv.setText(Html.fromHtml(phoneHtml));
+            detailStorePhoneTv.setMovementMethod(LinkMovementMethod.getInstance());
+           /* detailStorePhoneTv.setText(dModel.getTel());
+            Linkify.addLinks(detailStorePhoneTv, Linkify.PHONE_NUMBERS);*/
+        } else {
+            detailStorePhoneTv.setText(dModel.getTel());
+        }
         detailSuggestPrb.setRating(dModel.getSuggest());
         if (!StringUtils.isEmpty(dModel.getPrice()) && !"0".equals(dModel.getPrice())) {
             detailAvgPriceTv.setText(String.format(getResources().getString(R.string.detail_price_hint_text), dModel.getPrice()));
@@ -325,9 +343,9 @@ public class InterestingDetailsActivity extends BaseActivity {
             return;
         if (dModel != null) {
             switch (v.getId()) {
-                case R.id.detail_store_phone_ll:
+               /* case R.id.detail_store_phone_ll:
                     callPhone();
-                    break;
+                    break;*/
                 case R.id.detail_been_tv:
                     userBeen();//用户去过
                     break;
@@ -464,6 +482,9 @@ public class InterestingDetailsActivity extends BaseActivity {
         if (dModel != null && dModel.isIsout()) {
             //  AppContext.dCardList.remove(pPosition);
             AppContext.dCardListRemoveIndex = pPosition;
+        }
+        if (detailOutsideSv != null) {
+
         }
         LogUtils.json(" AppContext.dCardListRemoveIndex = pPosition;==" + AppContext.dCardListRemoveIndex);
         super.onDestroy();

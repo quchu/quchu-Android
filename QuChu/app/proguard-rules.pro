@@ -40,7 +40,9 @@ public static final int *;
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
-
+# 以下类过滤不混淆
+-keep public class * extends com.umeng.**
+-keep class com.umeng.** { *; }
 ## ----------------------------------
 ##   ########## wecha混淆    ########
 ## ----------------------------------

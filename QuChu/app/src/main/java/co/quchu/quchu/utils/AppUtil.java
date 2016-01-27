@@ -64,12 +64,12 @@ public class AppUtil {
         return wm.getDefaultDisplay().getWidth();
     }
 
-    /**
+  /*  *//**
      * 获取屏幕高度
      *
      * @param context 上下文
      * @return 屏幕宽度
-     */
+     *//*
     public static int getScreenHeight(Context context) {
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -101,7 +101,7 @@ public class AppUtil {
         sb.append("TYPE ").append(android.os.Build.TYPE).append("\n");
         sb.append("USER ").append(android.os.Build.USER).append("\n");
         LogUtils.json(sb.toString());
-    }
+    }*/
 
     /**
      * 强制帮用户打开GPS

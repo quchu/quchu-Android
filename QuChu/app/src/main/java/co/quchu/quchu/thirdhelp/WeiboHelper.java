@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.sina.weibo.sdk.api.WebpageObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
@@ -27,6 +28,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -153,6 +155,10 @@ public class WeiboHelper {
     }
 
     public static void share2Weibo(final Activity activity, String shareUrl, String shareTitle) {
+        if (!AppUtil.isAppInstall("com.sina.weibo")) {
+            Toast.makeText(activity, "请检查是否已安装微博客户端!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         IWeiboShareAPI mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(activity, APP_KEY);
         mWeiboShareAPI.registerApp();
         WeiboMultiMessage weiboMessage = new WeiboMultiMessage();//初始化微博的分享消息
@@ -160,7 +166,7 @@ public class WeiboHelper {
         mediaObject.identify = Utility.generateGUID();
         mediaObject.title = shareTitle;
         mediaObject.description = "←点我\n (*^O^*)";
-       // mediaObject.description = "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;";
+        // mediaObject.description = "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;";
         Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);
         // 设置 Bitmap 类型的图片到视频对象里  设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。
 

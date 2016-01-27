@@ -20,6 +20,7 @@ import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.view.activity.AboutUsActivity;
 import co.quchu.quchu.view.activity.AccountSettingActivity;
 import co.quchu.quchu.view.activity.FeedbackActivity;
+import co.quchu.quchu.view.activity.MenusActivity;
 
 /**
  * LocationSelectedDialogFg
@@ -38,6 +39,8 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
     TextView dialogMenuSettingFeedbackTv;
     @Bind(R.id.dialog_menu_setting_aboutus_tv)
     TextView dialogMenuSettingAboutusTv;
+    @Bind(R.id.dialog_menu_setting_update_tv)
+    TextView dialogMenuSettingUpdateTv;
 
 
     private ArrayList<CityModel> cityList;
@@ -86,7 +89,8 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
         return builder.create();
     }
 
-    @OnClick({R.id.dialog_menu_setting_account_setting_tv, R.id.dialog_menu_setting_aboutus_tv, R.id.dialog_menu_setting_feedback_tv})
+    @OnClick({R.id.dialog_menu_setting_account_setting_tv, R.id.dialog_menu_setting_aboutus_tv,
+            R.id.dialog_menu_setting_feedback_tv, R.id.dialog_menu_setting_update_tv})
     public void menuSettingClick(View view) {
         switch (view.getId()) {
             case R.id.dialog_menu_setting_account_setting_tv:
@@ -106,6 +110,11 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
                 getActivity().startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 MenuSettingDialogFg.this.dismiss();
                 //    getActivity().finish();
+                break;
+            case R.id.dialog_menu_setting_update_tv:
+         if (getActivity() instanceof MenusActivity)
+             ((MenusActivity)getActivity()).checkUpdate();
+                MenuSettingDialogFg.this.dismiss();
                 break;
         }
 

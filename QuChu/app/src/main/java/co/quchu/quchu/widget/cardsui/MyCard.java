@@ -28,6 +28,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -141,6 +142,8 @@ public class MyCard extends Card {
 
     @OnClick({R.id.item_recommend_card_reply_rl, R.id.item_recommend_card_photo_sdv, R.id.item_my_postcard_heart_rl})
     public void myCardClick(View view) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
         if (SPUtils.getBooleanFromSPMap(mContext, AppKey.IS_POSTCARD_GUIDE, false)) {
             switch (view.getId()) {
                 case R.id.item_recommend_card_photo_sdv:

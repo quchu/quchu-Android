@@ -28,6 +28,16 @@
         android:textColor="@color/text_color_white"
         android:textSize="@dimen/word_subhead_size" />
 
+    <TextView
+        android:id="@+id/dialog_menu_setting_update_tv"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:gravity="center_vertical|left"
+        android:text="检查更新"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
 
     <TextView
         android:id="@+id/dialog_menu_setting_aboutus_tv"

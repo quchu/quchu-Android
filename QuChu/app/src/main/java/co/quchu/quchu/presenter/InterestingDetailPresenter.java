@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -30,6 +31,7 @@ public class InterestingDetailPresenter {
 
             @Override
             public boolean onError(String error) {
+                DialogUtil.dismissProgess();
                 return false;
             }
         });

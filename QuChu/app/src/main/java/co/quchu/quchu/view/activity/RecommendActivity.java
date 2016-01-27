@@ -101,7 +101,7 @@ public class RecommendActivity extends BaseActivity {
         });
         recommendTitleMoreRl.setMoreClick(this);
         recommendBodyVp.setOffscreenPageLimit(2);
-
+        UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
     }

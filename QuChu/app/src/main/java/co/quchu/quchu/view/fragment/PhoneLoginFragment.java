@@ -1,7 +1,6 @@
 package co.quchu.quchu.view.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,8 +26,6 @@ import com.sina.weibo.sdk.utils.MD5;
 
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,7 +33,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
-import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -184,9 +180,7 @@ public class PhoneLoginFragment extends Fragment {
             return;
         switch (view.getId()) {
             case R.id.getauthcode_login_tv:
-
                 getAuthCode();
-
                 break;
             case R.id.phone_login_enter_tv:
                 if (isRegiest == 0) {
@@ -199,7 +193,6 @@ public class PhoneLoginFragment extends Fragment {
                 break;
             case R.id.user_login_forget_tv:
                 if (isRegiest == 1) {
-
                     LogUtils.json("user_login_forget_tv");
                     forgetPassword();
                 } else if (isRegiest == 2) {

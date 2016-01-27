@@ -129,6 +129,11 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                 if (fRecommendBottomRl.getVisibility() == View.VISIBLE)
                     RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
             }
+
+            @Override
+            public void onError() {
+
+            }
         });
     }
 
@@ -147,6 +152,11 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                         cardList.addAll(arrayList);
                         adapter.notifyDataSetChanged();
                     }
+                    isLoading = false;
+                }
+
+                @Override
+                public void onError() {
                     isLoading = false;
                 }
             });

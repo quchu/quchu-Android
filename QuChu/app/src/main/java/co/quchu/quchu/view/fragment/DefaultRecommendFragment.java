@@ -127,6 +127,11 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
                 if (dfRecommendBottomRl.getVisibility() == View.VISIBLE)
                     RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, false);
             }
+
+            @Override
+            public void onError() {
+
+            }
         });
     }
 
@@ -135,7 +140,7 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
 
     @Override
     public void onCardLick(View view, int position) {
-   
+
         switch (view.getId()) {
             case R.id.root_cv:
                 hasChangePosition = position;
@@ -194,6 +199,11 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
                         adapter.notifyDataSetChanged();
                     }
                     isLoading = false;
+                }
+
+                @Override
+                public void onError() {
+                    isLoading = true;
                 }
             });
         }

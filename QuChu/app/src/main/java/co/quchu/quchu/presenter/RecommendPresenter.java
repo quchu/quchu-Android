@@ -58,7 +58,7 @@ public class RecommendPresenter {
 
                 LogUtils.json("getPlaceList==" + response.toString());
                 try {
-                    if (!response.has("msg") &&response.has("result")) {
+                    if (!response.has("msg") && response.has("result")) {
                         if (response.has("pageCount"))
                             pageCount = response.getInt("pageCount");
                         if (response.has("pagesNo"))
@@ -136,10 +136,13 @@ public class RecommendPresenter {
                             }
                             listener.onSuccess(arrayList, pageCount, pageNum);
 
+                        }else {
+                            listener.onError();
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    listener.onError();
                 }
                 //    DialogUtil.dismissProgess();
             }
@@ -147,6 +150,7 @@ public class RecommendPresenter {
             @Override
             public boolean onError(String error) {
                 //       DialogUtil.dismissProgess();
+                listener.onError();
                 return false;
             }
         });
@@ -155,6 +159,8 @@ public class RecommendPresenter {
 
     public interface GetRecommendListener {
         void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum);
+
+        void onError();
     }
 
 
