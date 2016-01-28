@@ -56,6 +56,7 @@
     <!--<string name="text_friends_item_address">%1s&#032;,&#032;%2s</string>-->
     <string name="text_login_resetpassowrd">密码重置成功，请重新登录</string>
     <string name="detail_price_hint_text">&#165;%s&#047;人</string>
+    <string name="detail_price_hint_text_activity">门票价格:&#165;%s</string>
     <string name="detail_address_hint_text">%1$s &#040;%2$s &#041;</string>
 
     <string name="loading_dialog_text">数据加载中...</string>

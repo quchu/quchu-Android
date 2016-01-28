@@ -217,10 +217,8 @@ public class InterestingDetailsActivity extends BaseActivity {
             while (token.hasMoreTokens()) {
                 String phoneNum = token.nextToken();
                 phoneHtml += "<font color=#dcdddd><a href=\"tel:" + phoneNum + "\">" + phoneNum + "</a> </font>  ";
-                LogUtils.json(""+phoneNum+"///////=="+phoneHtml);
             }
 
-                LogUtils.json("/////html//=="+phoneHtml);
             detailStorePhoneTv.setText(Html.fromHtml(phoneHtml));
             detailStorePhoneTv.setMovementMethod(LinkMovementMethod.getInstance());
            /* detailStorePhoneTv.setText(dModel.getTel());
@@ -229,11 +227,7 @@ public class InterestingDetailsActivity extends BaseActivity {
             detailStorePhoneTv.setText(dModel.getTel());
         }
         detailSuggestPrb.setRating(dModel.getSuggest());
-        if (!StringUtils.isEmpty(dModel.getPrice()) && !"0".equals(dModel.getPrice())) {
-            detailAvgPriceTv.setText(String.format(getResources().getString(R.string.detail_price_hint_text), dModel.getPrice()));
-        } else {
-            detailAvgPriceTv.setVisibility(View.INVISIBLE);
-        }
+
         /*if (StringUtils.isEmpty(dModel.getNearbySpot())) {
             detailNearbyLl.setVisibility(View.GONE);
         } else {
@@ -260,16 +254,30 @@ public class InterestingDetailsActivity extends BaseActivity {
             detailActivityInfoLl.setVisibility(View.VISIBLE);
             detailActivityInitiatorLl.setVisibility(View.VISIBLE);
             detailIconsRl.setVisibility(View.GONE);
-            detailStoreBusinessHoursLl.setVisibility(View.GONE);
+          //  detailStoreBusinessHoursLl.setVisibility(View.GONE);
+            detailStoreBusinessHoursLl.setVisibility(View.VISIBLE);
+            detailStoreBusinessHoursKeyTv.setText("报名时间");
+            detailStoreBusinessHoursValueTv.setText(dModel.getBusinessHours() + " " + dModel.getRestDay());
             detailActivityInitiatorAvatorSdv.setImageURI(Uri.parse(dModel.getAutorPhoto()));
             detailActivityInitiatorNameTv.setText(dModel.getAutor());
             detailActivityInfoTv.setText(dModel.getActivityInfo());
+            if (!StringUtils.isEmpty(dModel.getPrice()) && !"0".equals(dModel.getPrice())) {
+                detailAvgPriceTv.setText(String.format(getResources().getString(R.string.detail_price_hint_text_activity), dModel.getPrice()));
+            } else {
+                detailAvgPriceTv.setVisibility(View.INVISIBLE);
+            }
         } else {
             detailActivityInfoLl.setVisibility(View.GONE);
             detailActivityInitiatorLl.setVisibility(View.GONE);
             detailIconsRl.setVisibility(View.VISIBLE);
             detailStoreBusinessHoursLl.setVisibility(View.VISIBLE);
+            detailStoreBusinessHoursKeyTv.setText("营业时间");
             detailStoreBusinessHoursValueTv.setText(dModel.getBusinessHours() + " " + dModel.getRestDay());
+            if (!StringUtils.isEmpty(dModel.getPrice()) && !"0".equals(dModel.getPrice())) {
+                detailAvgPriceTv.setText(String.format(getResources().getString(R.string.detail_price_hint_text), dModel.getPrice()));
+            } else {
+                detailAvgPriceTv.setVisibility(View.INVISIBLE);
+            }
             initConvenienceIcons();
         }
 
