@@ -15,7 +15,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-
+## -----------------------------------------
+################## butterknife混淆  ######
+## -----------------------------------------
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
 -keep class **$$ViewBinder { *; }
@@ -108,6 +110,17 @@ public static final int *;
     *;
 }
 ## ----------------------------------
+##   ########## universalimageloader混淆    #########
+## ----------------------------------
+ -dontwarn com.nostra13.universalimageloader.**
+-keep class com.nostra13.universalimageloader.** { *; }
+## ----------------------------------
+##   ########## 七牛混淆    #########
+## ----------------------------------
+-keep class com.qiniu.**{*;}
+-keep class com.qiniu.**{public <init>();}
+-ignorewarnings
+## ----------------------------------
 ##   ########## 微信混淆    #########
 ## ----------------------------------
 -dontwarn com.tencent.mm.**
@@ -117,10 +130,17 @@ public static final int *;
 ##   ########## 高德地图混淆    #########
 ## ----------------------------------
 -keep class com.amap.api.location.**{*;}
-
+-keep class com.autonavi.**{*;}
+-keep class com.loc.**{*;}
 -keep class com.amap.api.fence.**{*;}
 -keep class com.amap.api.maps.overlay.**{*;}
 -keep class com.autonavi.aps.amapapi.model.**{*;}
+## ----------------------------------
+##   ########## nineoldandroids 混淆    #########
+## ----------------------------------
+
+-dontwarn com.nineoldandroids.*
+-keep class com.nineoldandroids.** { *;}
 ## ----------------------------------
 ##   ########## photoView    #########
 ## ----------------------------------
@@ -134,12 +154,13 @@ public static final int *;
 ##   ########## Gson混淆    #########
 ## ----------------------------------
 #-keepattributes Signature
+-keepattributes Signature
 -keep class sun.misc.Unsafe { *; }
 -keep class com.google.gson.examples.android.model.** { *; }
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
-
+-keep class com.google.**{*;}
 -keep public class * implements java.io.Serializable{
 }
 -keepclassmembers class * implements java.io.Serializable {
@@ -150,7 +171,9 @@ public static final int *;
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
 }
-
+## ----------------------------------
+##   ########## 其他混淆    #########
+## ----------------------------------
 -keep public class co.quchu.quchu.R$*{
 public static final int *;
 }

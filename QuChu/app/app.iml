@@ -27,7 +27,7 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/build/intermediates/classes/Quchu_360/debug" />
+    <output url="file://$MODULE_DIR$/build/intermediates/classes/quchu_360/debug" />
     <output-test url="file://$MODULE_DIR$/build/intermediates/classes/androidTest/Quchu_360/debug" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">

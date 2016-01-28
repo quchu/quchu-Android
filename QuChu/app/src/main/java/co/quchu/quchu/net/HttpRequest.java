@@ -87,6 +87,8 @@ public class HttpRequest extends JsonObjectRequest {
                     LogUtils.json(_Body);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } finally {
+                    System.gc();
                 }
             }
         }

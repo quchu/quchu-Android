@@ -186,14 +186,19 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5655121fe0f55a5ee8008dd5" />
+        <!--    android:value="5655121fe0f55a5ee8008dd5" />
+        debug
+        -->
         <meta-dataa
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
+        <!--    android:value="${UMENG_CHANNEL_VALUE}" />-->
+
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
 
 
         <!-- tencent -->
@@ -226,7 +231,8 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="8d635450932036faf3681a8960d884fa" />
-         <!--   android:value="5796ca0f891c43e8eca0a8bc4a1aab09" />-->
+        <!--   android:value="5796ca0f891c43e8eca0a8bc4a1aab09"
+        />-->
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
     </application>

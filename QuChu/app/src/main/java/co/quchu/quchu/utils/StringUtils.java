@@ -276,11 +276,17 @@ public class StringUtils {
     }
 
     public static boolean isDouble(String value) {
-        try {
-            Double.parseDouble(value);
-            if (value.contains(".")) return true;
-            return false;
-        } catch (NumberFormatException e) {
+        if (!StringUtils.isEmpty(value)) {
+            try {
+                Double.parseDouble(value);
+                if (value.contains(".")) return true;
+                return false;
+            } catch (NumberFormatException e) {
+                return false;
+            } finally {
+                System.gc();
+            }
+        } else {
             return false;
         }
     }

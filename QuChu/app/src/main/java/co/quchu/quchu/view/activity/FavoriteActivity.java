@@ -93,6 +93,10 @@ public class FavoriteActivity extends BaseActivity {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 //跳转
+                                if (model.getCard() != null && model.getCard().getData().size() > 0)
+                                    startActivity(new Intent(FavoriteActivity.this, PostCardActivity.class).putExtra("isFavoritePostCard", true));
+                                else
+                                    Toast.makeText(FavoriteActivity.this, "暂未收藏明信片!", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

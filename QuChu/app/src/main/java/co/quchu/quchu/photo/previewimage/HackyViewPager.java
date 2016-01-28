@@ -47,7 +47,9 @@ public class HackyViewPager extends ViewPager {
 	        } catch (IllegalArgumentException e) {
 	            e.printStackTrace();
 	            return false;
-	        }
+	        } finally {
+				System.gc();
+			}
     	}
     	return false;
     }

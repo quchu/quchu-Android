@@ -190,6 +190,8 @@ public class NetService {
                     } catch (JSONException e) {
                         e.printStackTrace();
                         LogUtils.json("NetService JSONException" + e);
+                    } finally {
+                        System.gc();
                     }
                 }
 

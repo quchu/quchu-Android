@@ -41,11 +41,11 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         if (Constants.ISSTARTINGPKG) {
-            //splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg_360));
-            splashRootRl.setImageDrawable(getResources().getDrawable(R.drawable.ic_splash_bg_360));
+            splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg_360));
+            //     splashRootRl.setImageDrawable(getResources().getDrawable(R.drawable.ic_splash_bg_360));
         } else {
-            //  splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg));
-            splashRootRl.setImageDrawable(getResources().getDrawable(R.drawable.ic_splash_bg));
+            splashRootRl.setBackground(getResources().getDrawable(R.drawable.ic_splash_bg));
+            //  splashRootRl.setImageDrawable(getResources().getDrawable(R.drawable.ic_splash_bg));
         }
         AppContext.initLocation();
         handler.sendMessageDelayed(handler.obtainMessage(0x01), viewDuration);
