@@ -88,7 +88,7 @@ public class RoundProgressBar extends View {
     /**
      * 动画监听间隔时间
      */
-    private long AnimationInterval = 60;
+    private long AnimationInterval = 30;
     /**
      * 背景颜色
      */
@@ -340,6 +340,10 @@ public class RoundProgressBar extends View {
 
     public void setStyle(int style) {
         this.style = style;
+    }
+
+    public void setAimationInterval(long durationTime) {
+        this.AnimationInterval = durationTime;
     }
 
     private Handler handler = new Handler() {

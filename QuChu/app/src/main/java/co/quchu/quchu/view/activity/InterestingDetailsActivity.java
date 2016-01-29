@@ -37,6 +37,7 @@ import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.DetailListViewAdapter;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
@@ -150,7 +151,7 @@ public class InterestingDetailsActivity extends BaseActivity {
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
     private int pId, pPosition = 0;
-    private float detailButtonGroupLlHeight = 0f;
+    private float detailButtonGroupLlHeight = 0f, detailButtonGroupOutLlHeight = 0f;
     public DetailModel dModel;
     private GatherViewModel gatherViewModel;
     private long startViewTime = 0L;
@@ -159,14 +160,13 @@ public class InterestingDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interesting_detail);
-        initTitleBar();
         ButterKnife.bind(this);
+        initTitleBar();
         titleContentTv.setText(getTitle());
-        startViewTime = System.currentTimeMillis();
         detailButtonGroupLl.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                detailButtonGroupLlHeight = detailButtonGroupLl.getY() - (detailButtonGroupOutLl.getHeight() - detailButtonGroupLl.getHeight());
+                detailButtonGroupLlHeight = detailButtonGroupLl.getY() - (StringUtils.dip2px(InterestingDetailsActivity.this, 12));
             }
         });
         detailOutsideSv.setOverScrollListener(new OutSideScrollView.OverScrolledListener() {
@@ -181,6 +181,7 @@ public class InterestingDetailsActivity extends BaseActivity {
             }
         });
         initData();
+        startViewTime = System.currentTimeMillis();
     }
 
     private void initData() {
@@ -204,7 +205,7 @@ public class InterestingDetailsActivity extends BaseActivity {
 
     private void bindingDetailData() {
         itemCardImageSdv.setImageURI(Uri.parse(dModel.getCover()));
-        itemCardImageSdv.setAspectRatio(1f);
+        itemCardImageSdv.setAspectRatio(1.2f);
         detailStoreNameTv.setText(dModel.getName());
         if (StringUtils.isEmpty(dModel.getTraffic())) {
             detailStoreAddressTv.setText(dModel.getAddress());
@@ -221,8 +222,7 @@ public class InterestingDetailsActivity extends BaseActivity {
 
             detailStorePhoneTv.setText(Html.fromHtml(phoneHtml));
             detailStorePhoneTv.setMovementMethod(LinkMovementMethod.getInstance());
-           /* detailStorePhoneTv.setText(dModel.getTel());
-            Linkify.addLinks(detailStorePhoneTv, Linkify.PHONE_NUMBERS);*/
+
         } else {
             detailStorePhoneTv.setText(dModel.getTel());
         }
@@ -254,7 +254,7 @@ public class InterestingDetailsActivity extends BaseActivity {
             detailActivityInfoLl.setVisibility(View.VISIBLE);
             detailActivityInitiatorLl.setVisibility(View.VISIBLE);
             detailIconsRl.setVisibility(View.GONE);
-          //  detailStoreBusinessHoursLl.setVisibility(View.GONE);
+            //  detailStoreBusinessHoursLl.setVisibility(View.GONE);
             detailStoreBusinessHoursLl.setVisibility(View.VISIBLE);
             detailStoreBusinessHoursKeyTv.setText("报名时间");
             detailStoreBusinessHoursValueTv.setText(dModel.getBusinessHours() + " " + dModel.getRestDay());
@@ -391,14 +391,21 @@ public class InterestingDetailsActivity extends BaseActivity {
                     break;
 
                 case R.id.detail_store_address_ll:
-                    Intent mapIntent = new Intent(InterestingDetailsActivity.this, PlaceMapActivity.class);
-                    mapIntent.putExtra("lat", dModel.getLatitude());
-                    mapIntent.putExtra("lon", dModel.getLongitude());
-                    mapIntent.putExtra("gdlon", dModel.gdLongitude);
-                    mapIntent.putExtra("gdlat", dModel.gdLatitude);
-                    mapIntent.putExtra("title", dModel.getName());
-                    mapIntent.putExtra("placeAddress", dModel.getAddress());
-                    startActivity(mapIntent);
+
+             /*       if (new CoordinateConverter(this).isAMapDataAvailable(StringUtils.isDouble(dModel.gdLatitude) ? Double.parseDouble(dModel.gdLatitude) : 0,
+                            StringUtils.isDouble(dModel.gdLongitude) ? Double.parseDouble(dModel.gdLongitude) : 0)) {*/
+                    if (!"台北".equals(SPUtils.getCityName())) {
+                        Intent mapIntent = new Intent(InterestingDetailsActivity.this, PlaceMapActivity.class);
+                        mapIntent.putExtra("lat", dModel.getLatitude());
+                        mapIntent.putExtra("lon", dModel.getLongitude());
+                        mapIntent.putExtra("gdlon", dModel.gdLongitude);
+                        mapIntent.putExtra("gdlat", dModel.gdLatitude);
+                        mapIntent.putExtra("title", dModel.getName());
+                        mapIntent.putExtra("placeAddress", dModel.getAddress());
+                        startActivity(mapIntent);
+                    } else {
+                        Toast.makeText(InterestingDetailsActivity.this, "此趣处暂无导航信息!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         }

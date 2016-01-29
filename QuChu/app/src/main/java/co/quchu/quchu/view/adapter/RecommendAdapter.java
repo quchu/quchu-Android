@@ -74,7 +74,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         }
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (isFlyme) {
-            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.6f);
+            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.5f);
         } else {
             holder.itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         }

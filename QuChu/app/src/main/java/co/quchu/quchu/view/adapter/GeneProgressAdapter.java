@@ -20,6 +20,7 @@ import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.MyGeneModel;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.RoundProgressBar;
 
 /**
@@ -101,7 +102,8 @@ public class GeneProgressAdapter extends BaseAdapter {
             holder = (GeneProgressItemHolder) convertView.getTag();
         }
         if (genes != null) {
-            holder.gene_progress_item_rpb.setRoundWidth(20);
+            holder.gene_progress_item_rpb.setAimationInterval(16);
+            holder.gene_progress_item_rpb.setRoundWidth(StringUtils.dip2px(context, 10));
             holder.gene_progress_item_rpb.setProgress((int) (genes.get(position).getWeight()));
             //  holder.gene_progress_item_tv.setText(genes.get(position).getZh());
             holder.gene_progress_item_iv.setImageResource(imagesArray[position]);

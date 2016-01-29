@@ -16,7 +16,7 @@
 #   public *;
 #}
 ## -----------------------------------------
-################## butterknife混淆  ######
+################## butterknife混淆  ########
 ## -----------------------------------------
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
@@ -110,7 +110,7 @@ public static final int *;
     *;
 }
 ## ----------------------------------
-##   ########## universalimageloader混淆    #########
+##   ##### imageloader混淆  #########
 ## ----------------------------------
  -dontwarn com.nostra13.universalimageloader.**
 -keep class com.nostra13.universalimageloader.** { *; }

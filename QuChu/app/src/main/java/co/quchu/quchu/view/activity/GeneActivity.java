@@ -201,6 +201,7 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
 
             @Override
             public boolean onError(String error) {
+                DialogUtil.dismissProgess();
                 return false;
             }
         });

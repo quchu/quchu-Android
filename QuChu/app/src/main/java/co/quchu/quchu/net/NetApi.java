@@ -6,7 +6,7 @@ import co.quchu.quchu.base.Constants;
  * netApi
  */
 public class NetApi {
-    public static boolean isDebug = false;
+   // public static boolean isDebug = false;
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
     public static String RELEASE_HOST = "http://www.quchu.co:8080/appservices";
     public static String DEBUG_HOST = "http://uat.quchu.co:8080/appservices";

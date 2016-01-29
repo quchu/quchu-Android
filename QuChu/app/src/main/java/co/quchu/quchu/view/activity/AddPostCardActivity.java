@@ -513,6 +513,7 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
     private void clearImageSelected() {
+     //   GalleryFinal.cleanCacheFile();
         Bimp.bmp = new ArrayList<Bitmap>();
         Bimp.drr = new ArrayList<String>();
         Bimp.max = 0;
@@ -524,7 +525,7 @@ public class AddPostCardActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         LogUtils.json("add Postcard is onDestroy");
-        GalleryFinal.cleanCacheFile();
+
         clearImageSelected();
         super.onDestroy();
     }

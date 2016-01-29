@@ -96,12 +96,14 @@ public class PhoneLoginFragment extends Fragment {
                     break;
                 case 0x03:
                     view.clearFocus();
-                    phoneLoginPnumEt.setFocusable(true);
-                    phoneLoginPnumEt.setFocusableInTouchMode(true);
-                    phoneLoginPnumEt.requestFocus();
-                    inputManager =
-                            (InputMethodManager) phoneLoginPnumEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputManager.showSoftInput(phoneLoginPnumEt, 0);
+                    if (phoneLoginPnumEt != null) {
+                        phoneLoginPnumEt.setFocusable(true);
+                        phoneLoginPnumEt.setFocusableInTouchMode(true);
+                        phoneLoginPnumEt.requestFocus();
+                        inputManager =
+                                (InputMethodManager) phoneLoginPnumEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputManager.showSoftInput(phoneLoginPnumEt, 0);
+                    }
                     break;
                 case 0x04://用户注册 昵称获取输入框
                     view.clearFocus();
@@ -254,11 +256,17 @@ public class PhoneLoginFragment extends Fragment {
     private void toLogin() {
         hintOtherView();
         isRegiest = 1;
-        phoneLoginPasswordLl.setVisibility(View.VISIBLE);
-        phoneLoginEnterTv.setVisibility(View.VISIBLE);
-        userLoginForgetTv.setVisibility(View.VISIBLE);
-        phoneLoginEnterTv.setText("登录");
-        userLoginForgetTv.setText("忘记密码");
+        if (phoneLoginPasswordLl != null)
+            phoneLoginPasswordLl.setVisibility(View.VISIBLE);
+        if (phoneLoginEnterTv != null) {
+            phoneLoginEnterTv.setVisibility(View.VISIBLE);
+            phoneLoginEnterTv.setText("登录");
+        }
+        if (userLoginForgetTv != null) {
+            userLoginForgetTv.setVisibility(View.VISIBLE);
+            userLoginForgetTv.setText("忘记密码");
+        }
+
         handler.sendMessageDelayed(handler.obtainMessage(0x05), 180);
     }
 

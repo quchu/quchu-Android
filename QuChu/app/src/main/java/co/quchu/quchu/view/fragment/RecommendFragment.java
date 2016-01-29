@@ -126,7 +126,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                 pageNums = pageNum;
                 if (fRecommendRvp != null && cardList.size() > 0)
                     fRecommendRvp.smoothScrollToPosition(0);
-                if (fRecommendBottomRl.getVisibility() == View.VISIBLE)
+                if (fRecommendBottomRl!=null&&fRecommendBottomRl.getVisibility() == View.VISIBLE)
                     RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
             }
 

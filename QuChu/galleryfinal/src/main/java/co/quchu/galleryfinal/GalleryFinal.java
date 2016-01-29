@@ -382,7 +382,7 @@ public class GalleryFinal {
     }
 
     /**
-     * 清楚缓存文件
+     * 缓存文件
      */
     public static void cleanCacheFile() {
         if (mCurrentFunctionConfig != null && mCoreConfig.getEditPhotoCacheFolder() != null) {

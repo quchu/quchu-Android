@@ -39,17 +39,29 @@
 
     </co.quchu.quchu.widget.CircleWaveView>
 
-
+<!--
     <Button
         android:id="@+id/user_enter_app_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+
         android:layout_marginBottom="@dimen/rippleRadius"
         android:background="@drawable/shape_frame_yellow"
         android:text="立即进入"
         android:textColor="@color/gene_textcolor_yellow"
-        android:textSize="@dimen/word_size_body" />
-
+        android:textSize="@dimen/word_size_body" />-->
+    <GridView
+        android:id="@+id/gene_progress_gv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:columnWidth="90dp"
+        android:divider="#00000000"
+        android:gravity="center"
+        android:horizontalSpacing="4dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="4"
+        android:padding="@dimen/base_margin"
+        android:stretchMode="columnWidth" />
 </RelativeLayout>
