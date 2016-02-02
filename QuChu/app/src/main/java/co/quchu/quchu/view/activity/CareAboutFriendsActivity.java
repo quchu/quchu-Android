@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,5 +66,18 @@ public class CareAboutFriendsActivity extends BaseActivity {
             }
         }
         super.onBackPressed();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("CareAboutFriendsActivity");
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("CareAboutFriendsActivity");
+        MobclickAgent.onResume(this);
     }
 }

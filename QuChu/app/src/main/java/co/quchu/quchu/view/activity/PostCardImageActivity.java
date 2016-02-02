@@ -10,6 +10,8 @@ import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.io.Serializable;
 
 import butterknife.Bind;
@@ -105,6 +107,19 @@ public class PostCardImageActivity extends BaseActivity {
                 break;
         }
     }
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("PostCardImageActivity");
+        MobclickAgent.onResume(this);
 
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("PostCardImageActivity");
+        MobclickAgent.onPause(this);
+    }
 
 }

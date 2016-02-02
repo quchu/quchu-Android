@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -80,15 +82,20 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
         ButterKnife.unbind(this);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
 
     @Override
     protected void onResume() {
+        MobclickAgent.onPageStart("FriendsCircleIntroduceActivity");
+        MobclickAgent.onResume(this);
         overridePendingTransition(R.anim.in_push_right_to_left,
                 R.anim.in_stable);
         super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("FriendsCircleIntroduceActivity");
+        MobclickAgent.onPause(this);
     }
 }

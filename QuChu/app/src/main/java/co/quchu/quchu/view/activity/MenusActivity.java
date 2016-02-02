@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -91,6 +92,9 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd("MenusActivity");
+        MobclickAgent.onPause(this);
+
     }
 
     @Override
@@ -103,6 +107,8 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                 menusPullmenusPmv.setAvatar(AppContext.user.getPhoto() + "3");
             SPUtils.putBooleanToSPMap(this, AppKey.IS_MENU_NEED_REFRESH, false);
         }
+        MobclickAgent.onPageStart("MenusActivity");
+        MobclickAgent.onResume(this);
     }
 
     private Bitmap bg;

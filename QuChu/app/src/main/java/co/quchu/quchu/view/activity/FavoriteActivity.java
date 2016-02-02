@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -139,5 +140,20 @@ public class FavoriteActivity extends BaseActivity {
                 startActivity(new Intent(this, FavoritePlaceActivity.class));
                 break;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("FavoriteActivity");
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("FavoriteActivity");
+        MobclickAgent.onResume(this);
     }
 }

@@ -8,6 +8,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -116,5 +118,20 @@ public class ReserveActivity extends BaseActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("ReserveActivity");
+        MobclickAgent.onResume(this);
+
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("ReserveActivity");
+        MobclickAgent.onPause(this);
     }
 }

@@ -7,6 +7,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -394,5 +396,21 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     @OnClick(R.id.empty_view_other_tv)
     public void flickrClick(View view) {
         this.finish();
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("FlickrActivity");
+        MobclickAgent.onPause(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("FlickrActivity");
+        MobclickAgent.onResume(this);
     }
 }

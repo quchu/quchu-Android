@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -194,5 +195,17 @@ public class PalceMyPostCardActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("PlaceMyPostCardActivity");
+        MobclickAgent.onResume(this);
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("PlaceMyPostCardActivity");
+        MobclickAgent.onPause(this);
     }
 }

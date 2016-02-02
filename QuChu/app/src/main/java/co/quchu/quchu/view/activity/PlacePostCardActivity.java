@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -157,5 +158,14 @@ public class PlacePostCardActivity extends BaseActivity {
             initPostCardData(1);
             SPUtils.putBooleanToSPMap(this, AppKey.IS_POSTCARD_LIST_NEED_REFRESH, false);
         }
+        MobclickAgent.onPageStart("PlacePostCardActivity");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("PlacePostCardActivity");
+        MobclickAgent.onPause(this);
     }
 }

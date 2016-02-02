@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,14 +213,18 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     private boolean isShowing = true;
 
     @Override
-    protected void onPause() {
-
-        super.onPause();
-    }
-
-    @Override
     protected void onResume() {
+        MobclickAgent.onPageStart("PlanetActivity");
+        MobclickAgent.onResume(this);
+
         super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("PlanetActivity");
+        MobclickAgent.onPause(this);
     }
 
     Handler myHandler = new Handler() {

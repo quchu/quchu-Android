@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -114,6 +116,20 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         }
     }
 
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("SearchActivity");
+        MobclickAgent.onResume(this);
+
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("SearchActivity");
+        MobclickAgent.onPause(this);
+    }
 
     @OnClick({R.id.search_button_rl, R.id.search_history_clear_rl})
     public void buttonClick(View view) {

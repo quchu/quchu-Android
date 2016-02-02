@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 import java.util.ArrayList;
@@ -286,13 +287,18 @@ public class RecommendActivity extends BaseActivity {
         resumeUpdateDataTimes = 0;
         netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
         super.onResume();
+        MobclickAgent.onPageStart("MainActivity");
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
-        LogUtils.json("RecommendActivity  onPause");
         super.onPause();
+
+        MobclickAgent.onPageEnd("MainActivity");
+        MobclickAgent.onPause(this);
     }
+
 
     private Handler netHandler = new Handler() {
         @Override

@@ -13,7 +13,7 @@ android {
         renderscriptTargetApi RENDERSCRIPT_TARGET_API as int
         renderscriptSupportModeEnabled true
     }
-    lintOptions {
+   lintOptions {
         abortOnError false
         checkReleaseBuilds false
     }
@@ -29,21 +29,31 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
     }
     productFlavors {
+        quchu_wandoujia {}
+        quchu_baidu {}
+        quchu_360 {}
+        quchu_uc {}
+
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
+
+    }
+/*    productFlavors {
         quchu_360 {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_360"]
         }
         quchu_debug {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_debug"]
         }
-     /*   Quchu_debug {}*/
-      /*  productFlavors.all { flavor ->
+      Quchu_debug {}
+       productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
-        }*/
+        }
 
-    }
+    }*/
     useLibrary 'org.apache.http.legacy'
     sourceSets.main {
         //  jniLibs.srcDirs "libs"
@@ -69,7 +79,7 @@ dependencies {
     /** ***************************************************************/
     compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
-    compile 'com.umeng.analytics:analytics:latest.integration'
+    // compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.qiniu:qiniu-android-sdk:7.0.+'
     //七牛
     compile 'com.facebook.rebound:rebound:0.3.8'
@@ -97,4 +107,5 @@ dependencies {
     compile files('libs/umeng-update-v2.6.0.1.jar')
     compile files('libs/AMap_Location_v2.3.0_20160112.jar')
     compile files('libs/Android_Map_V2.7.20151124.jar')
+    compile files('libs/umeng-analytics-v5.6.4.jar')
 }

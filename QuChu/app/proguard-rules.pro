@@ -63,9 +63,13 @@ public static final int *;
 -keep class com.android.volley.toolbox.ImageLoader$* { *; }
 -keep class com.android.volley.*{*; }
 -keep class com.android.volley.toolbox.*{*; }
--keepattributes Signature
 -keepattributes *Annotation*
 
+-dontwarn com.squareup.okhttp.**
+
+-keep class com.squareup.okhttp.** { *;}
+
+-dontwarn okio.**
 ## ----------------------------------
 ##   ########## OkHttp混淆    #######
 ## ----------------------------------
@@ -129,6 +133,19 @@ public static final int *;
 ## ----------------------------------
 ##   ########## 高德地图混淆    #########
 ## ----------------------------------
+-dontwarn com.amap.api.**
+-dontwarn com.aps.**
+#高德相关混淆文件
+#3D 地图
+-keep   class com.amap.api.maps2d.**{*;}
+-keep   class com.amap.api.maps.**{*;}
+-keep   class com.autonavi.amap.mapcore.*{*;}
+#Location
+-keep   class com.amap.api.location.**{*;}
+-keep   class com.aps.**{*;}
+#Service
+-keep   class com.amap.api.services.**{*;}
+
 -keep class com.amap.api.location.**{*;}
 -keep class com.autonavi.**{*;}
 -keep class com.loc.**{*;}
@@ -153,8 +170,6 @@ public static final int *;
 ## ----------------------------------
 ##   ########## Gson混淆    #########
 ## ----------------------------------
-#-keepattributes Signature
--keepattributes Signature
 -keep class sun.misc.Unsafe { *; }
 -keep class com.google.gson.examples.android.model.** { *; }
 -keep class * implements android.os.Parcelable {
@@ -174,19 +189,45 @@ public static final int *;
 ## ----------------------------------
 ##   ########## 其他混淆    #########
 ## ----------------------------------
--keep public class co.quchu.quchu.R$*{
-public static final int *;
-}
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
+
 -keep class co.quchu.quchu.model.**{*;}
 -keep class co.quchu.quchu.analysis.**{*;}
-
+-keep class m.framework.**{*;}
 -dontwarn **R$*
 -dontwarn android.support.v4.**
 -keepattributes Signature
 -dontskipnonpubliclibraryclasses
 -dontwarn net.poemcode.**
 -ignorewarnings
+
+## ----------------------------------
+##   ########## 其他混淆    #########
+## ----------------------------------
+-optimizationpasses 5
+
+-dontusemixedcaseclassnames
+
+-dontskipnonpubliclibraryclasses
+
+-dontpreverify
+
+-verbose
+
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+
+-keep public class * extends android.app.Activity
+
+-keep public class * extends android.app.Application
+
+-keep public class * extends android.app.Service
+
+-keep public class * extends android.content.BroadcastReceiver
+
+-keep public class * extends android.content.ContentProvider
+
+-keep public class * extends android.app.backup.BackupAgentHelper
+
+-keep public class * extends android.preference.Preference
+
+-keep public class com.android.vending.licensing.ILicensingService
+

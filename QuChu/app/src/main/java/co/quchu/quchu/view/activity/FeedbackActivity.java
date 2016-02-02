@@ -8,6 +8,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -86,5 +88,19 @@ public class FeedbackActivity extends BaseActivity {
                 break;
 
         }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("FeedbackActivity");
+        MobclickAgent.onPause(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("FeedbackActivity");
+        MobclickAgent.onResume(this);
     }
 }

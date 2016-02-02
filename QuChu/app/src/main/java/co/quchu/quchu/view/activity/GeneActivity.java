@@ -17,6 +17,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -210,18 +211,22 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
     private boolean isOnResume = false;
 
     @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("GeneActivity");
+        MobclickAgent.onResume(this);
+        isOnResume = true;
+
+        super.onResume();
+    }
+    @Override
     protected void onPause() {
         super.onPause();
+
+        MobclickAgent.onPageEnd("GeneActivity");
+        MobclickAgent.onPause(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        isOnResume = true;
-     /*   if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }*/
-    }
+
 
 
     public void initAnimation() {

@@ -20,6 +20,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.umeng.analytics.MobclickAgent;
 
 import java.net.URISyntaxException;
 
@@ -199,6 +200,9 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         mapView.onResume();
+
+        MobclickAgent.onPageStart("PlaceMapActivity");
+        MobclickAgent.onResume(this);
     }
 
     /**
@@ -209,6 +213,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         super.onPause();
         mapView.onPause();
         deactivate();
+        MobclickAgent.onPageEnd("PlaceMapActivity");
+        MobclickAgent.onPause(this);
     }
 
     /**

@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,15 +57,18 @@ public class DiscoverActivity extends BaseActivity {
 
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("DiscoverActivity");
+        MobclickAgent.onPause(this);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("DiscoverActivity");
+        MobclickAgent.onResume(this);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

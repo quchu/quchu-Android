@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
@@ -61,6 +62,8 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd("LoginActivity");
+        MobclickAgent.onPause(this);
     }
 
     @Override
@@ -68,6 +71,8 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         if (null != AppContext.user)
             loginSuccess();
         super.onResume();
+        MobclickAgent.onPageStart("LoginActivity");
+        MobclickAgent.onResume(this);
     }
 
 

@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -71,5 +73,18 @@ public class MessageCenterActivity extends BaseActivity {
     @OnClick(R.id.empty_view_other_tv)
     public void emptyClick(View view) {
         this.finish();
+    }
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("MessageCenterActivity");
+        MobclickAgent.onResume(this);
+
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("MessageCenterActivity");
+        MobclickAgent.onPause(this);
     }
 }

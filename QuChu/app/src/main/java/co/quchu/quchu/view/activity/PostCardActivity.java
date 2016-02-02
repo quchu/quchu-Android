@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -79,13 +81,18 @@ public class PostCardActivity extends BaseActivity {
 
 
     @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("PostCardActivity");
+        MobclickAgent.onResume(this);
+
+        super.onResume();
+    }
+    @Override
     protected void onPause() {
         super.onPause();
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+        MobclickAgent.onPageEnd("PostCardActivity");
+        MobclickAgent.onPause(this);
     }
 
     @Override

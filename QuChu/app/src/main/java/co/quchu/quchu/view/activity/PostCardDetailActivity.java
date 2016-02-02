@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -174,5 +175,19 @@ public class PostCardDetailActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("PostCardDetailActivity");
+        MobclickAgent.onResume(this);
+
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("PostCardDetailActivity");
+        MobclickAgent.onPause(this);
     }
 }

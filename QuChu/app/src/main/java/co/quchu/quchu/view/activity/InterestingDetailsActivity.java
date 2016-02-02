@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -541,5 +542,19 @@ public class InterestingDetailsActivity extends BaseActivity {
 */
             }
         }
+    }
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("PlaceDetailActivity");
+        MobclickAgent.onResume(this);
+
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("PlaceDetailActivity");
+        MobclickAgent.onPause(this);
     }
 }

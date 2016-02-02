@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -111,7 +112,20 @@ public class SplashActivity extends BaseActivity {
           }
       });
     }*/
+ @Override
+ protected void onResume() {
 
+     MobclickAgent.onPageStart("SplashActivity");
+     MobclickAgent.onResume(this);
+     super.onResume();
+ }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("SplashActivity");
+        MobclickAgent.onPause(this);
+    }
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -138,13 +152,6 @@ public class SplashActivity extends BaseActivity {
         this.finish();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
- /*       if (animatorSet !=null)
-            animatorSet.start();
-        rippleBackground.stopRippleAnimation();*/
-    }
 
     protected void setIcon() {
         if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_NEED_ICON, true)) {

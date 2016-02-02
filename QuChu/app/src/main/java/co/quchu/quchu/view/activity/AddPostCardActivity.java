@@ -23,6 +23,7 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -242,17 +243,20 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
 
+
     @Override
-    protected void onResume() {
-     /*   if (isNeedUpdate) {
-            if (Bimp.drr.size() > 0 && adapter != null)
-                adapter.notifyDataSetChanged();
-            isNeedUpdate = false;
-        }*/
-        LogUtils.json("on onResume");
-        super.onResume();
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("AddPostCardActivity");
+        MobclickAgent.onPause(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("AddPostCardActivity");
+        MobclickAgent.onResume(this);
+    }
     public class PopupWindows extends PopupWindow {
 
         public PopupWindows(Context mContext, View parent) {

@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -48,7 +50,7 @@ public class AtmosphereActivity extends BaseActivity {
         AtmospherePresenter.getAtmData(this, new AtmospherePresenter.AtmosphereListener() {
             @Override
             public void onSuccess(ArrayList<AtmosphereItemModel> arrayList) {
-           AtmAdapter atmAdapter=     new AtmAdapter(AtmosphereActivity.this, arrayList);
+                AtmAdapter atmAdapter = new AtmAdapter(AtmosphereActivity.this, arrayList);
                 atmosphereRv.setAdapter(atmAdapter);
                 atmAdapter.setOnitemClickListener(new AtmAdapter.AtmItemClickListener() {
                     @Override
@@ -73,21 +75,25 @@ public class AtmosphereActivity extends BaseActivity {
         super.onDestroy();
         ButterKnife.unbind(this);
     }
-
-    @Override
-    public void finish() {
-        super.finish();
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd("AtmosphereActivity");
+        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart("AtmosphereActivity");
+        MobclickAgent.onResume(this);
     }
+    @Override
+    public void finish() {
+        super.finish();
+    }
+
+
 
 
 }
