@@ -51,7 +51,7 @@ public class NetErrorDialog extends Dialog {
     @Override
     public void dismiss() {
         //dialog != null &&
-        if (isShowing()) {
+        if (dialog != null && isShowing() || dialog.isShowing()) {
             super.dismiss();
         }
     }

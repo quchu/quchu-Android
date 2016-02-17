@@ -98,9 +98,7 @@ public class ImageGridActivity extends BaseActivity {
         });
     }
 
-    /**
-     * 鍒濆鍖杤iew瑙嗗浘
-     */
+
     private void initView() {
         gridView = (GridView) findViewById(R.id.gridview);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));

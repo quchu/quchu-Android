@@ -67,12 +67,26 @@
             android:src="@drawable/ic_user_loginview_logo" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/user_login_visitor_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="36dp"
+        android:gravity="center"
+        android:paddingLeft="@dimen/base_margin"
+        android:paddingRight="@dimen/base_margin"
+        android:text="访客浏览"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
+
     <LinearLayout
         android:id="@+id/user_login_third_ll"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="36dp"
+        android:layout_above="@id/user_login_visitor_tv"
+        android:layout_marginBottom="@dimen/half_margin"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
         android:orientation="horizontal">

@@ -243,7 +243,6 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -257,6 +256,7 @@ public class AddPostCardActivity extends BaseActivity {
         MobclickAgent.onPageStart("AddPostCardActivity");
         MobclickAgent.onResume(this);
     }
+
     public class PopupWindows extends PopupWindow {
 
         public PopupWindows(Context mContext, View parent) {
@@ -517,7 +517,7 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
     private void clearImageSelected() {
-     //   GalleryFinal.cleanCacheFile();
+        //   GalleryFinal.cleanCacheFile();
         Bimp.bmp = new ArrayList<Bitmap>();
         Bimp.drr = new ArrayList<String>();
         Bimp.max = 0;

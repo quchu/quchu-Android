@@ -6,14 +6,16 @@ import co.quchu.quchu.base.Constants;
  * netApi
  */
 public class NetApi {
-   // public static boolean isDebug = false;
+    // public static boolean isDebug = false;
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
     public static String RELEASE_HOST = "http://www.quchu.co:8080/appservices";
-    public static String DEBUG_HOST = "http://uat.quchu.co:8080/appservices";
+    public static String HOST_UAT = "http://uat.quchu.co:8080/appservices";
+    public static String HOST_SIT = "http://sit.quchu.co:8080/appservices";
+
     //  public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
     //public static final String HOST = location_HOST;
-    public static final String HOST = Constants.ISDEBUG ? DEBUG_HOST : RELEASE_HOST;
+    public static final String HOST = Constants.ISDEBUG == 0 ? RELEASE_HOST : Constants.ISDEBUG == 1 ? HOST_UAT : HOST_SIT;
     /****
      * Get start
      ****/
@@ -91,6 +93,6 @@ public class NetApi {
     public static final String FeedBack = HOST + "/sns/feedback?value=%s"; //意见反馈
     public static final String saveOrUpdateCard = HOST + "/operate/saveOrUpdateCard"; //意见反馈
     public static final String updateUser = HOST + "/personal/updateUser"; //修改用户设置
-
+    public static final String VisitorRegiester = HOST + "/mregister?visitors=1&equip=%s";
     /****************** POST *******************/
 }

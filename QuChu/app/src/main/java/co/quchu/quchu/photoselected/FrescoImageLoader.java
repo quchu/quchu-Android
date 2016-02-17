@@ -47,11 +47,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import co.quchu.galleryfinal.widget.GFImageView;
 
 
-/**
- * Desction:fresco image loader
- * Author:pengjianbo
- * Date:15/12/24 下午9:34
- */
+
 public class FrescoImageLoader implements co.quchu.galleryfinal.ImageLoader {
 
     private Context context;

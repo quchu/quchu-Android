@@ -20,12 +20,16 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -100,6 +104,24 @@ public class UserLoginMainFragment extends Fragment {
             public void onGlobalLayout() {
                 if (userLoginMainPhoneLl != null)
                     phoneViewY = userLoginMainPhoneLl.getY();
+            }
+        });
+        view.findViewById(R.id.user_login_visitor_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+                UserLoginPresenter.visitorRegiest(getActivity(), new UserLoginPresenter.UserNameUniqueListener() {
+                    @Override
+                    public void isUnique(JSONObject msg) {
+                        DialogUtil.dismissProgess();
+                        ((UserLoginActivity) getActivity()).enterApp();
+                    }
+
+                    @Override
+                    public void notUnique(String msg) {
+
+                    }
+                });
             }
         });
         return view;

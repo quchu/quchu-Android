@@ -5,6 +5,7 @@ import android.content.Context;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -99,7 +100,11 @@ public class UserLoginPresenter {
      * @param listener 回调
      */
     public static void userRegiest(Context context, String phoneNo, String password, String nickName, String authCode, final UserNameUniqueListener listener) {
-        NetService.post(context, String.format(NetApi.Regiester, phoneNo, password, authCode, StringUtils.getMyUUID(), nickName), null, new IRequestListener() {
+        String regiestUrl = String.format(NetApi.Regiester, phoneNo, password, authCode, StringUtils.getMyUUID(), nickName);
+        if (AppContext.user != null) {
+            regiestUrl += "&userId=" + AppContext.user.getUserId();
+        }
+        NetService.post(context,regiestUrl , null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
@@ -169,5 +174,21 @@ public class UserLoginPresenter {
         void notUnique(String msg);
     }
 
+
+    public static void visitorRegiest(Context context, final UserNameUniqueListener listener) {
+        NetService.post(context, String.format(NetApi.VisitorRegiester, StringUtils.getMyUUID()), null, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("visitorRegiest=" + response.toString());
+                UserInfoHelper.saveUserInfo(response);
+                listener.isUnique(response);
+            }
+
+            @Override
+            public boolean onError(String error) {
+                return false;
+            }
+        });
+    }
 
 }
