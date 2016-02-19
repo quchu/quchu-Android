@@ -2,7 +2,6 @@ package co.quchu.quchu.base;
 
 import android.app.Application;
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.amap.api.location.AMapLocationClient;
@@ -16,7 +15,6 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.umeng.analytics.AnalyticsConfig;
 
 import java.util.ArrayList;
 
@@ -52,9 +50,9 @@ public class AppContext extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        AnalyticsConfig.setChannel("quchu_360");
+   /*     AnalyticsConfig.setChannel("quchu_360");
         LogUtils.json("userinfo=" + SPUtils.getUserInfo(mContext));
-        LogUtils.json("userToken=" + SPUtils.getUserToken(mContext));
+        LogUtils.json("userToken=" + SPUtils.getUserToken(mContext));*/
         Fresco.initialize(mContext);
         GenericDraweeHierarchyBuilder builder =
                 new GenericDraweeHierarchyBuilder(getResources());

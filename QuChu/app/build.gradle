@@ -13,7 +13,7 @@ android {
         renderscriptTargetApi RENDERSCRIPT_TARGET_API as int
         renderscriptSupportModeEnabled true
     }
-   lintOptions {
+    lintOptions {
         abortOnError false
         checkReleaseBuilds false
     }
@@ -31,29 +31,45 @@ android {
         }
     }
     productFlavors {
-        quchu_wandoujia {}
-        quchu_baidu {}
-        quchu_360 {}
-        quchu_uc {}
-
-        productFlavors.all { flavor ->
-            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        quchu_wandoujia {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wandoujia"]
         }
-
-    }
-/*    productFlavors {
         quchu_360 {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_360"]
         }
-        quchu_debug {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_debug"]
+        quchu_baidu {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_baidu"]
         }
-      Quchu_debug {}
-       productFlavors.all { flavor ->
-            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        quchu_uc {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_uc"]
         }
 
-    }*/
+        quchu_anzhi {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_anzhi"]
+        }
+        quchu_xiaomi {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_xiaomi"]
+        }
+        quchu_huawei {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_huawei"]
+        }
+        quchu_flyme {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_flyme"]
+        }
+        quchu_yingyongbao {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_yingyongbao"]
+        }
+        quchu_wo {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wo"]
+        }
+        quchu_lephone {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_lephone"]
+        }
+        quchu_sit {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_sit"]
+        }
+    }
+
     useLibrary 'org.apache.http.legacy'
     sourceSets.main {
         //  jniLibs.srcDirs "libs"

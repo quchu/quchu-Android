@@ -69,8 +69,10 @@ public class NetErrorDialog extends Dialog {
                 }
             } catch (Exception e) {
                 // TODO: handle exception
-                dialog.dismiss();
-                dialog = null;
+                if (dialog != null) {
+                    dialog.dismiss();
+                    dialog = null;
+                }
                 e.printStackTrace();
             }
         }

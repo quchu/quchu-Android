@@ -224,6 +224,7 @@ public class MyCard extends Card {
     }
 
     private void setFavorite() {
+
         if (!item.issys()) {
             String favoUrl = "";
             if (item.isIsf()) {
@@ -254,4 +255,5 @@ public class MyCard extends Card {
             Toast.makeText(mContext, "系统明信片不允许收藏!", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

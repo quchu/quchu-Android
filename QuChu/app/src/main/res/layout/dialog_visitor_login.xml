@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/appBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_location_selected_city_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/base_margin"
+        android:text="登录提醒！"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
+
+    <TextView
+        android:id="@+id/dialog_location_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_location_selected_city_tv"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        android:minHeight="72dp"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
+
+    <RelativeLayout
+        android:id="@+id/dialog_location_bottom_textviews_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/quarter_margin">
+
+        <TextView
+            android:id="@+id/dialog_location_submit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/base_margin"
+            android:gravity="center_vertical|right"
+            android:text="立即前往"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_size_body" />
+
+        <TextView
+            android:id="@+id/dialog_location_cancel_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginRight="@dimen/base_margin"
+            android:layout_toLeftOf="@id/dialog_location_submit_tv"
+            android:gravity="center_vertical|right"
+            android:text="容我三思"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_size_body" />
+    </RelativeLayout>
+</LinearLayout>

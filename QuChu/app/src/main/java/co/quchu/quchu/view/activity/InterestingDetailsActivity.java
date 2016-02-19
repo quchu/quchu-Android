@@ -33,6 +33,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ShareDialogFg;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
@@ -428,30 +429,35 @@ public class InterestingDetailsActivity extends BaseActivity {
     }
 
     private void setFavorite() {
-        InterestingDetailPresenter.setDetailFavorite(this, pId, dModel.isIsf(), new InterestingDetailPresenter.DetailDataListener() {
-            @Override
-            public void onSuccessCall(String str) {
-                dModel.setIsf(!dModel.isIsf());
-                changeCollectState(dModel.isIsf());
-                if (AppContext.selectedPlace != null) {
-                    AppContext.selectedPlace.setIsf(dModel.isIsf());
-                    AppContext.dCardListNeedUpdate = true;
+        if (AppContext.user.isIsVisitors()) {
+            VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
+            vDialog.show(getFragmentManager(), "visitor");
+        } else {
+            InterestingDetailPresenter.setDetailFavorite(this, pId, dModel.isIsf(), new InterestingDetailPresenter.DetailDataListener() {
+                @Override
+                public void onSuccessCall(String str) {
+                    dModel.setIsf(!dModel.isIsf());
+                    changeCollectState(dModel.isIsf());
+                    if (AppContext.selectedPlace != null) {
+                        AppContext.selectedPlace.setIsf(dModel.isIsf());
+                        AppContext.dCardListNeedUpdate = true;
+                    }
+                    if (dModel.isIsf()) {
+                        Toast.makeText(InterestingDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+                        if (AppContext.gatherList == null)
+                            AppContext.gatherList = new ArrayList<>();
+                        AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid()));
+                    } else {
+                        Toast.makeText(InterestingDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                if (dModel.isIsf()) {
-                    Toast.makeText(InterestingDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
-                    if (AppContext.gatherList == null)
-                        AppContext.gatherList = new ArrayList<>();
-                    AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid()));
-                } else {
-                    Toast.makeText(InterestingDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
+
+                @Override
+                public void onErrorCall(String str) {
+
                 }
-            }
-
-            @Override
-            public void onErrorCall(String str) {
-
-            }
-        });
+            });
+        }
     }
 
     private void callPhone() {
@@ -510,10 +516,15 @@ public class InterestingDetailsActivity extends BaseActivity {
 
         @Override
         public void collectClick() {
-            if (dModel.isIsf()) {
-                Toast.makeText(InterestingDetailsActivity.this, "已经收藏成功了!", Toast.LENGTH_SHORT).show();
+            if (AppContext.user.isIsVisitors()) {
+                VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
+                vDialog.show(getFragmentManager(), "visitor");
             } else {
-                setFavorite();
+                if (dModel.isIsf()) {
+                    Toast.makeText(InterestingDetailsActivity.this, "已经收藏成功了!", Toast.LENGTH_SHORT).show();
+                } else {
+                    setFavorite();
+                }
             }
         }
 
@@ -543,6 +554,7 @@ public class InterestingDetailsActivity extends BaseActivity {
             }
         }
     }
+
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("PlaceDetailActivity");
@@ -550,6 +562,7 @@ public class InterestingDetailsActivity extends BaseActivity {
 
         super.onResume();
     }
+
     @Override
     protected void onPause() {
         super.onPause();

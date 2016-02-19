@@ -22,6 +22,7 @@ import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -140,13 +141,23 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
             return;
         switch (itemID) {
             case PullMenusView.ClickAvatar:
-                startActivity(new Intent(MenusActivity.this, PlanetActivity.class));
-                this.finish();
+                if (AppContext.user.isIsVisitors()) {
+                    VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QAVATAR);
+                    vDialog.show(getFragmentManager(), "visitor");
+                } else {
+                    startActivity(new Intent(MenusActivity.this, PlanetActivity.class));
+                    this.finish();
+                }
                 break;
             case PullMenusView.ClickMessage:
                 //    Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MenusActivity.this, MessageCenterActivity.class));
-                this.finish();
+                if (AppContext.user.isIsVisitors()) {
+                    VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QMESSAGECENTER);
+                    vDialog.show(getFragmentManager(), "visitor");
+                } else {
+                    startActivity(new Intent(MenusActivity.this, MessageCenterActivity.class));
+                    this.finish();
+                }
                 break;
             case PullMenusView.ClickSetting:
              /*   Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);

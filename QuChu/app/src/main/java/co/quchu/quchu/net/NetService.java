@@ -167,7 +167,9 @@ public class NetService {
                                         SPUtils.clearUserinfo(AppContext.mContext);
 
                                         AppContext.user = null;
-                                    } else {
+                                    } else if (response.has("msg") && response.has("exception") && "1080".equals(response.getString("msg"))){
+                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
+                                    } else{
                                         if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
                                             Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), 0).show();
                                             if (response.has("msg") && response.has("exception") && StringUtils.isEmpty(response.getString("exception")) && !StringUtils.isEmpty(response.getString("msg"))) {

@@ -18,7 +18,7 @@ public class UserInfoModel implements Serializable {
      * photo : http://7xo7et.com1.z0.glb.clouddn.com/88-app-default-avatar
      * token : 2175a92d7b88ac984e56d8dbf138a4a1dd0c4e49
      * userId : 88
-     * username : 17750611071
+     * username : 00000000-1e98-8990-03cd
      * type : login
      */
 
@@ -26,7 +26,8 @@ public class UserInfoModel implements Serializable {
     private String gender;
     private boolean isweibo;
     private boolean isweixin;
-    private String location;
+    private boolean isVisitors;
+    private String location="";
     private String photo;
     private String token;
     private int userId;
@@ -43,6 +44,9 @@ public class UserInfoModel implements Serializable {
 
     public void setIsweibo(boolean isweibo) {
         this.isweibo = isweibo;
+    }
+    public void setIsVisitors(boolean isVisitors) {
+        this.isVisitors = isVisitors;
     }
 
     public void setIsweixin(boolean isweixin) {
@@ -87,6 +91,9 @@ public class UserInfoModel implements Serializable {
 
     public boolean isIsweixin() {
         return isweixin;
+    }
+    public boolean isIsVisitors() {
+        return isVisitors;
     }
 
     public String getLocation() {

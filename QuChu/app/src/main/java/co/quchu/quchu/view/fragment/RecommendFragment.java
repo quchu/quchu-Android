@@ -22,6 +22,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.ShareDialogFg;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
@@ -126,7 +127,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                 pageNums = pageNum;
                 if (fRecommendRvp != null && cardList.size() > 0)
                     fRecommendRvp.smoothScrollToPosition(0);
-                if (fRecommendBottomRl!=null&&fRecommendBottomRl.getVisibility() == View.VISIBLE)
+                if (fRecommendBottomRl != null && fRecommendBottomRl.getVisibility() == View.VISIBLE)
                     RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
             }
 
@@ -190,24 +191,29 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
     }
 
     private void setFavorite(final int position) {
-        InterestingDetailPresenter.setDetailFavorite(getActivity(), cardList.get(position).getPid(), cardList.get(position).isIsf(), new InterestingDetailPresenter.DetailDataListener() {
-            @Override
-            public void onSuccessCall(String str) {
-                cardList.get(position).setIsf(!cardList.get(position).isIsf());
-                adapter.notifyDataSetChanged();
-                if (cardList.get(position).isIsf()) {
-                    Toast.makeText(getActivity(), "收藏成功!", Toast.LENGTH_SHORT).show();
-                    AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, cardList.get(position).getPid()));
-                } else {
-                    Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();
+        if (AppContext.user.isIsVisitors()) {
+            VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
+            vDialog.show(getActivity().getFragmentManager(), "visitor");
+        } else {
+            InterestingDetailPresenter.setDetailFavorite(getActivity(), cardList.get(position).getPid(), cardList.get(position).isIsf(), new InterestingDetailPresenter.DetailDataListener() {
+                @Override
+                public void onSuccessCall(String str) {
+                    cardList.get(position).setIsf(!cardList.get(position).isIsf());
+                    adapter.notifyDataSetChanged();
+                    if (cardList.get(position).isIsf()) {
+                        Toast.makeText(getActivity(), "收藏成功!", Toast.LENGTH_SHORT).show();
+                        AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, cardList.get(position).getPid()));
+                    } else {
+                        Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onErrorCall(String str) {
+                @Override
+                public void onErrorCall(String str) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public void updateDateSet() {

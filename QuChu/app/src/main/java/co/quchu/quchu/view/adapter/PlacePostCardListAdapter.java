@@ -29,6 +29,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.ShareDialogFg;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
@@ -177,7 +178,12 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
                 return;
             switch (view.getId()) {
                 case R.id.item_recommend_card_collect_rl:
-                    setFavorite(getPosition());
+                    if (AppContext.user.isIsVisitors()) {
+                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QMESSAGECENTER);
+                        vDialog.show(mContext.getFragmentManager(), "visitor");
+                    } else {
+                        setFavorite(getPosition());
+                    }
                     break;
                 case R.id.item_my_postcard_heart_rl:
                     if (arrayList.get(getPosition()).isIsme()) {

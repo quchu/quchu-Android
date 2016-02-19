@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.view.activity.AboutUsActivity;
@@ -94,11 +95,15 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
     public void menuSettingClick(View view) {
         switch (view.getId()) {
             case R.id.dialog_menu_setting_account_setting_tv:
-                //   Toast.makeText(getActivity(), "即将开发，敬请期待", Toast.LENGTH_SHORT).show();
-                getActivity().startActivity(new Intent(getActivity(), AccountSettingActivity.class));
-                MenuSettingDialogFg.this.dismiss();
-                //   getActivity().startActivity(new Intent(getActivity(), AccountSettingActivity.class));
-                getActivity().finish();
+                if (AppContext.user.isIsVisitors()) {
+                    MenuSettingDialogFg.this.dismiss();
+                    VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
+                    vDialog.show(getActivity().getFragmentManager(), "visitor");
+                } else {
+                    getActivity().startActivity(new Intent(getActivity(), AccountSettingActivity.class));
+                    MenuSettingDialogFg.this.dismiss();
+                    getActivity().finish();
+                }
                 break;
             case R.id.dialog_menu_setting_aboutus_tv:
                 //     Toast.makeText(getActivity(), "即将开发，敬请期待", Toast.LENGTH_SHORT).show();
@@ -112,8 +117,8 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
                 //    getActivity().finish();
                 break;
             case R.id.dialog_menu_setting_update_tv:
-         if (getActivity() instanceof MenusActivity)
-             ((MenusActivity)getActivity()).checkUpdate();
+                if (getActivity() instanceof MenusActivity)
+                    ((MenusActivity) getActivity()).checkUpdate();
                 MenuSettingDialogFg.this.dismiss();
                 break;
         }

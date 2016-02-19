@@ -23,7 +23,7 @@ import co.quchu.quchu.view.adapter.SettingQAvatarGridAdapter;
  * LocationSelectedDialogFg
  * User: Chenhs
  * Date: 2015-12-23
- * 城市选择弹窗
+ * 头像选择弹窗
  */
 public class QAvatarSettingDialogFg extends BlurDialogFragment {
     private static final String CITY_LIST_MODEL = "image_list";

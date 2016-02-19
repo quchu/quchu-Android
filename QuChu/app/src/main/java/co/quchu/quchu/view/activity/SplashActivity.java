@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -18,6 +20,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.Constants;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -32,6 +35,7 @@ public class SplashActivity extends BaseActivity {
     @Bind(R.id.splash_root_rl)
     ImageView splashRootRl;
     private long viewDuration = 2 * 1000;
+    private long visitorStartTime = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,76 +53,37 @@ public class SplashActivity extends BaseActivity {
             //  splashRootRl.setImageDrawable(getResources().getDrawable(R.drawable.ic_splash_bg));
         }
         AppContext.initLocation();
-        handler.sendMessageDelayed(handler.obtainMessage(0x01), viewDuration);
-        //      ButterKnife.bind(this);
-        //     setIcon();
-       /* PackageManager pm = getPackageManager();//context为当前Activity上下文
-        PackageInfo pi = null;
-        String version = "";
-        try {
-            pi = pm.getPackageInfo(getPackageName(), 0);
-            version = pi.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (!StringUtils.isEmpty(version)) {
-            splashAppVersionNameTv.setText("V" + version);
-        }*/
-  /*       rippleBackground=(CircleWaveView)findViewById(R.id.content);
-        circleIv= (ImageView) findViewById(R.id.splash_circle_iv);*/
-/*        rippleBackground.startRippleAnimation();*/
-        // initCircleAnimation();
+        if (AppContext.user != null) {
+            handler.sendMessageDelayed(handler.obtainMessage(0x01), viewDuration);
+        } else {
+            visitorStartTime = System.currentTimeMillis() / 1000;
+            UserLoginPresenter.visitorRegiest(this, new UserLoginPresenter.UserNameUniqueListener() {
+                @Override
+                public void isUnique(JSONObject msg) {
+                    if ((System.currentTimeMillis() / 1000 - visitorStartTime) > viewDuration) {
+                        enterApp();
+                    } else {
+                        handler.sendMessageDelayed(handler.obtainMessage(0x01), viewDuration - (System.currentTimeMillis() / 1000 - visitorStartTime));
+                    }
+                }
 
-        // AlbumHelper.initAlbumHelper(this);
+                @Override
+                public void notUnique(String msg) {
+
+                }
+            });
+        }
+
     }
 
- /* public void   initCircleAnimation(){
-      animatorList= new ArrayList<Animator>();
-      animatorSet = new AnimatorSet();
-      final ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(circleIv, "ScaleX", 0.3f, 1.0f);
-      scaleXAnimator.setDuration(durationTime);
-      animatorList.add(scaleXAnimator);
-      final ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(circleIv, "ScaleY",0.3f, 1.0f);
-      scaleYAnimator.setDuration(durationTime);
-      animatorList.add(scaleYAnimator);
-      final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(circleIv, "Alpha", 0.3f, 1.0f);
-      alphaAnimator.setDuration(durationTime);
-      animatorList.add(alphaAnimator);
+    @Override
+    protected void onResume() {
 
-      animatorSet.playTogether(animatorList);
-      animatorSet.setInterpolator(new DecelerateInterpolator());
-      animatorSet.addListener(new Animator.AnimatorListener() {
-          @Override
-          public void onAnimationStart(Animator animation) {
-              circleIv.setVisibility(View.VISIBLE);
-              Message msgs = handler.obtainMessage(0x00);
-                handler.sendMessageDelayed(msgs,600);
+        MobclickAgent.onPageStart("SplashActivity");
+        MobclickAgent.onResume(this);
+        super.onResume();
+    }
 
-          }
-
-          @Override
-          public void onAnimationEnd(Animator animation) {
-
-          }
-
-          @Override
-          public void onAnimationCancel(Animator animation) {
-
-          }
-
-          @Override
-          public void onAnimationRepeat(Animator animation) {
-
-          }
-      });
-    }*/
- @Override
- protected void onResume() {
-
-     MobclickAgent.onPageStart("SplashActivity");
-     MobclickAgent.onResume(this);
-     super.onResume();
- }
     @Override
     protected void onPause() {
         super.onPause();
@@ -126,6 +91,7 @@ public class SplashActivity extends BaseActivity {
         MobclickAgent.onPageEnd("SplashActivity");
         MobclickAgent.onPause(this);
     }
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -137,11 +103,12 @@ public class SplashActivity extends BaseActivity {
                     if (!StringUtils.isEmpty(SPUtils.getUserInfo(SplashActivity.this))) {
                         if (AppContext.user == null)
                             AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(SplashActivity.this), UserInfoModel.class);
-                        enterApp();
-                    } else {
+                    }
+                    enterApp();
+                    /*else {
                         startActivity(new Intent(SplashActivity.this, UserLoginActivity.class));
                         SplashActivity.this.finish();
-                    }
+                    }*/
                     break;
             }
         }

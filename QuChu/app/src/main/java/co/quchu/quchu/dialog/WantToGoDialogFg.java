@@ -23,7 +23,7 @@ import co.quchu.quchu.utils.LogUtils;
  * LocationSelectedDialogFg
  * User: Chenhs
  * Date: 2015-12-23
- * 城市选择弹窗
+ * “想去”弹窗
  */
 public class WantToGoDialogFg extends BlurDialogFragment {
     /**

@@ -4,21 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
-import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.PhoneLoginFragment;
-import co.quchu.quchu.view.fragment.UserEnterAppFragment;
 import co.quchu.quchu.view.fragment.UserGuideFragment;
 import co.quchu.quchu.view.fragment.UserLoginMainFragment;
 
@@ -39,19 +35,19 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
+       /* if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
             if (AppContext.user == null)
                 AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
             enterApp();
-        } else {
-            setContentView(R.layout.activity_user_login);
-            transaction = getSupportFragmentManager().beginTransaction();
+        } else {*/
+        setContentView(R.layout.activity_user_login);
+        transaction = getSupportFragmentManager().beginTransaction();
          /*       transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
-            // transaction.replace(R.id.user_login_fl, new UserGuideFragment());
-            transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
+        // transaction.replace(R.id.user_login_fl, new UserGuideFragment());
+        transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
              /*   transaction.addToBackStack(null);*/
-            transaction.commit();
-        }
+        transaction.commitAllowingStateLoss();
+     /*   }*/
     }
 
     @Override
@@ -83,7 +79,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.user_login_fl, new PhoneLoginFragment());
         transaction.addToBackStack(null);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     public void sinaLogin() {
@@ -108,14 +104,15 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     @Override
     public void loginSuccess() {
         //   LogUtils.json("login success");
-        if (AppContext.user != null && "login".equals(AppContext.user.getType())) {
-            transaction = getSupportFragmentManager().beginTransaction();
+        if (AppContext.user != null && AppContext.user.isIsVisitors()) {
+      /*      transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.user_login_fl, new UserEnterAppFragment());
             transaction.addToBackStack(null);
-            transaction.commit();
-            KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));
+            transaction.commitAllowingStateLoss();
+            KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));*/
         } else {
-            userRegiestSuccess();
+            //   userRegiestSuccess();
+            enterApp();
         }
     }
 
@@ -123,13 +120,13 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.user_login_fl, new UserGuideFragment());
         transaction.addToBackStack(null);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
         SPUtils.initGuideIndex();
         KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));
     }
 
     public void enterApp() {
-        startActivity(new Intent(this, RecommendActivity.class));
+        //   startActivity(new Intent(this, RecommendActivity.class));
         this.finish();
     }
 
