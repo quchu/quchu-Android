@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.NavigateSelectedDialogFg;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.KeyboardUtils;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -38,6 +40,8 @@ import co.quchu.quchu.utils.StringUtils;
  * 34:94:5B:1E:43:1A:A3:0A:FE:BB:D8:59:B1:2E:73:73:10:16:E8:D1
  * <p/>
  * 28:EB:11:F4:F3:47:22:CC:A2:08:DE:8E:75:B5:3D:DD:97:8F:2C:C4正式环境
+ * <p/>
+ * 地图 点击可以导航界面
  */
 public class PlaceMapActivity extends BaseActivity implements View.OnClickListener, LocationSource, AMap.OnMapLoadedListener,
         AMapLocationListener {
@@ -45,9 +49,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout about_us_title_back_rl;
     private OnLocationChangedListener mListener;
     private AMap aMap;
-    private AMapLocationClientOption mLocationOption;
     private AMapLocationClient mlocationClient;
-    private TextView title_right_navigate_tv;
 
     double lat = 0, lont = 0, gdlon = 0, gdlat = 0;
     String placeTitle, placeAddressStr = "";
@@ -60,7 +62,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_place_map);
         mapView = (MapView) findViewById(R.id.place_map_mv);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
-        title_right_navigate_tv = (TextView) findViewById(R.id.title_right_navigate_tv);
+        TextView title_right_navigate_tv = (TextView) findViewById(R.id.title_right_navigate_tv);
         about_us_title_back_rl = (RelativeLayout) findViewById(R.id.about_us_title_back_rl);
         about_us_title_back_rl.setOnClickListener(this);
         if (aMap == null) {
@@ -102,6 +104,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             gdlon = Double.parseDouble(getIntent().getStringExtra("gdlon"));
         if (StringUtils.isDouble(getIntent().getStringExtra("gdlat")))
             gdlat = Double.parseDouble(getIntent().getStringExtra("gdlat"));
+
         placeTitle = getIntent().getStringExtra("title");
         placeAddressStr = getIntent().getStringExtra("placeAddress");
         placeAddress = new LatLng(gdlat, gdlon);
@@ -114,7 +117,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         markerOption.draggable(true);
         markerOption.visible(true);
         markerOption.setFlat(true);
-        //   markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.avatar_1));
+//        markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.avatar_1));
         aMap.addMarker(markerOption);
     }
 
@@ -122,14 +125,13 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
-        PlaceMapActivity.this.finish();
+        finish();
     }
 
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
-            if (amapLocation != null
-                    && amapLocation.getErrorCode() == 0) {
+            if (amapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
                 SPUtils.setLatitude(amapLocation.getLatitude());
                 SPUtils.setLongitude(amapLocation.getLongitude());
@@ -139,13 +141,16 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                             .include(placeAddress).include(myAddress).build();
                     aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
                 }
-
-            } else {
+            } else if (amapLocation.getErrorCode() == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) {
+                LogUtils.e("定位失败,权限被拒绝");
+                aMap.setOnMapLoadedListener(this);
+                aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
             }
         }
     }
 
     private void setUpMap() {
+
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
@@ -167,7 +172,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         mListener = onLocationChangedListener;
         if (mlocationClient == null) {
             mlocationClient = new AMapLocationClient(this);
-            mLocationOption = new AMapLocationClientOption();
+            AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
             //设置定位监听
             mlocationClient.setLocationListener(this);
             //设置为高精度定位模式
@@ -247,7 +252,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void jump2BaiduMap() {
-        Intent intent = null;
+        Intent intent;
         if (AppUtil.isAppInstall("com.baidu.BaiduMap")) {
             try {
                 intent = Intent.getIntent("intent://map/direction?origin=latlng:" + lat + "," + lont + "|name:我的位置&destination=" + placeTitle + "&mode=walking®ion=&src=厦门趣处网络科技有限公司|趣处#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
