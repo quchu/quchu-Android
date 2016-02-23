@@ -17,22 +17,22 @@ public class LogUtils {
 
     public static void e(String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.e(msg);
+            Logger.init();
+            Logger.e(msg);
         }
     }
 
     public static void i(String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.i(msg);
+            Logger.init();
+            Logger.i(msg);
         }
     }
 
     public static void i(String TAG, String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.i(msg);
+            Logger.init();
+            Logger.i(msg);
         }
     }
 
@@ -45,15 +45,15 @@ public class LogUtils {
 
     public static void d(String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.d(msg);
+            Logger.init();
+            Logger.d(msg);
         }
     }
 
     public static void w(String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.w(msg);
+            Logger.init();
+            Logger.w(msg);
         }
     }
 
