@@ -59,8 +59,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
     @Override
     public RecommendAdapter.RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecommendHolder holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview, parent, false), listener);
-        return holder;
+        return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview, parent, false), listener);
     }
 
     @Override
@@ -87,7 +86,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         holder.itemRecommendCardCityTv.setText(model.getDescribe());
         holder.itemRecommendCardNameTv.setText(model.getName());
         holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
-        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().
+                getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
         holder.itemRecommendCardProgressOne.setProgress(model.getGenes().get(0).getValue());
         holder.itemRecommendCardProgressOne.setProgressName(model.getGenes().get(0).getKey());
         holder.itemRecommendCardProgressTwo.setProgress(model.getGenes().get(1).getValue());
@@ -118,12 +118,12 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         TextView itemRecommendCardAddressTv;
         @Bind(R.id.item_place_event_tv)
         TextView item_place_event_tv;
-        @Bind(R.id.item_recommend_card_collect_rl)
-        RelativeLayout itemRecommendCardCollectRl;
-        @Bind(R.id.item_recommend_card_interest_rl)
-        RelativeLayout itemRecommendCardInterestRl;
-        @Bind(R.id.item_recommend_card_reply_rl)
-        RelativeLayout itemRecommendCardReplyRl;
+//        @Bind(R.id.item_recommend_card_collect_rl)
+//        RelativeLayout itemRecommendCardCollectRl;
+//        @Bind(R.id.item_recommend_card_interest_rl)
+//        RelativeLayout itemRecommendCardInterestRl;
+//        @Bind(R.id.item_recommend_card_reply_rl)
+//        RelativeLayout itemRecommendCardReplyRl;
 
         @Bind(R.id.item_recommend_card_progress_one)
         HorizontalNumProgressBar itemRecommendCardProgressOne;
@@ -145,7 +145,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
         @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl})
         public void cardClick(View view) {
-            if ( isFastDoubleClick())
+            if (isFastDoubleClick())
                 return;
             if (listener != null)
                 listener.onCardLick(view, getPosition());

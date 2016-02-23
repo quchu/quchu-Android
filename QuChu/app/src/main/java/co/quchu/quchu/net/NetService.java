@@ -42,11 +42,9 @@ import co.quchu.quchu.view.activity.UserLoginActivity;
 
 public class NetService {
 
-    //    private static MaterialDialog dialog;
     public static RequestQueue mRequestQueue = Volley
             .newRequestQueue(AppContext.mContext, new OkHttpStack(new OkHttpClient()));
 
-    //    ,new OkHttpStack()
     public static void addRequest(Request request, Object tag) {
         if (tag != null) {
             request.setTag(tag);
@@ -109,7 +107,7 @@ public class NetService {
 //                    .show();
             addToQueue(Request.Method.GET, pUrl, params, pListener, 0);
         }
-        new HashMap<String, String>();
+//        new HashMap<String, String>();
     }
 
 

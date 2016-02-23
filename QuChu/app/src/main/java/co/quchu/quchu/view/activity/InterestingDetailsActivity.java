@@ -59,12 +59,12 @@ public class InterestingDetailsActivity extends BaseActivity {
 
     @Bind(R.id.item_card_image_sdv)
     SimpleDraweeView itemCardImageSdv;
-    @Bind(R.id.detail_button_collect_rl)
-    RelativeLayout detailButtonCollectRl;
-    @Bind(R.id.detail_button_share_rl)
-    RelativeLayout detailButtonShareRl;
-    @Bind(R.id.detail_button_add_postcard_rl)
-    RelativeLayout detailButtonAddPostcardRl;
+    //    @Bind(R.id.detail_button_collect_rl)
+//    RelativeLayout detailButtonCollectRl;
+//    @Bind(R.id.detail_button_share_rl)
+//    RelativeLayout detailButtonShareRl;
+//    @Bind(R.id.detail_button_add_postcard_rl)
+//    RelativeLayout detailButtonAddPostcardRl;
     @Bind(R.id.detail_store_name_tv)
     TextView detailStoreNameTv;
     @Bind(R.id.detail_suggest_prb)
@@ -75,12 +75,12 @@ public class InterestingDetailsActivity extends BaseActivity {
     TagCloudView detailStoreTagcloundTcv;
     @Bind(R.id.detail_store_address_tv)
     TextView detailStoreAddressTv;
-    @Bind(R.id.detail_store_address_ll)
-    LinearLayout detailStoreAddressLl;
+    //    @Bind(R.id.detail_store_address_ll)
+//    LinearLayout detailStoreAddressLl;
     @Bind(R.id.detail_store_phone_tv)
     TextView detailStorePhoneTv;
-    @Bind(R.id.detail_store_phone_ll)
-    LinearLayout detailStorePhoneLl;
+    //    @Bind(R.id.detail_store_phone_ll)
+//    LinearLayout detailStorePhoneLl;
     @Bind(R.id.detail_progress_one)
     HorizontalNumProgressBar detailProgressOne;
     @Bind(R.id.detail_progress_tow)
@@ -112,12 +112,12 @@ public class InterestingDetailsActivity extends BaseActivity {
     LinearLayout detailStoreBusinessHoursLl;
     @Bind(R.id.detail_button_group_ll)
     LinearLayout detailButtonGroupLl;
-    @Bind(R.id.detail_button_collect_out_rl)
-    RelativeLayout detailButtonCollectOutRl;
-    @Bind(R.id.detail_button_share_out_rl)
-    RelativeLayout detailButtonShareOutRl;
-    @Bind(R.id.detail_button_add_postcard_out_rl)
-    RelativeLayout detailButtonAddPostcardOutRl;
+    //    @Bind(R.id.detail_button_collect_out_rl)
+//    RelativeLayout detailButtonCollectOutRl;
+//    @Bind(R.id.detail_button_share_out_rl)
+//    RelativeLayout detailButtonShareOutRl;
+//    @Bind(R.id.detail_button_add_postcard_out_rl)
+//    RelativeLayout detailButtonAddPostcardOutRl;
     @Bind(R.id.detail_button_group_out_ll)
     LinearLayout detailButtonGroupOutLl;
 
@@ -125,25 +125,25 @@ public class InterestingDetailsActivity extends BaseActivity {
     InnerListView detailImageListIlv;
     @Bind(R.id.detail_been_tv)
     TextView detailBeenTv;
-    @Bind(R.id.detail_want_tv)
-    TextView detailWantTv;
+//    @Bind(R.id.detail_want_tv)
+//    TextView detailWantTv;
 
     @Bind(R.id.detail_button_collect_iv)
     ImageView detailButtonCollectIv;
     @Bind(R.id.detail_button_collect_out_iv)
     ImageView detailButtonCollectOutIv;
-    @Bind(R.id.detail_bottom_group_ll)
-    LinearLayout detailBottomGroupLl;
-    @Bind(R.id.detail_activity_initiator_title_tv)
-    TextView detailActivityInitiatorTitleTv;
+    //    @Bind(R.id.detail_bottom_group_ll)
+//    LinearLayout detailBottomGroupLl;
+//    @Bind(R.id.detail_activity_initiator_title_tv)
+//    TextView detailActivityInitiatorTitleTv;
     @Bind(R.id.detail_activity_initiator_avator_sdv)
     SimpleDraweeView detailActivityInitiatorAvatorSdv;
     @Bind(R.id.detail_activity_initiator_name_tv)
     TextView detailActivityInitiatorNameTv;
     @Bind(R.id.detail_activity_initiator_ll)
     LinearLayout detailActivityInitiatorLl;
-    @Bind(R.id.detail_activity_title_tv)
-    TextView detailActivityTitleTv;
+    //    @Bind(R.id.detail_activity_title_tv)
+//    TextView detailActivityTitleTv;
     @Bind(R.id.detail_activity_info_tv)
     TextView detailActivityInfoTv;
     @Bind(R.id.detail_activity_info_ll)
@@ -153,7 +153,7 @@ public class InterestingDetailsActivity extends BaseActivity {
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
     private int pId, pPosition = 0;
-    private float detailButtonGroupLlHeight = 0f, detailButtonGroupOutLlHeight = 0f;
+    private float detailButtonGroupLlHeight = 0f;
     public DetailModel dModel;
     private GatherViewModel gatherViewModel;
     private long startViewTime = 0L;
@@ -174,7 +174,6 @@ public class InterestingDetailsActivity extends BaseActivity {
         detailOutsideSv.setOverScrollListener(new OutSideScrollView.OverScrolledListener() {
             @Override
             public void onOverScrolled(int scrollX, int scrollY) {
-                //LogUtils.json("scrollY=" + scrollY + "//detailButtonGroupLl==" + detailButtonGroupLlHeight);
                 if (scrollY >= detailButtonGroupLlHeight) {
                     detailButtonGroupOutLl.setVisibility(View.VISIBLE);
                 } else {
@@ -293,7 +292,7 @@ public class InterestingDetailsActivity extends BaseActivity {
     }
 
     private void initConvenienceIcons() {
-        String iconStr = "";
+        String iconStr;
         if (dModel.getIcons().size() > 0) {
             for (int i = 0; i < dModel.getIcons().size(); i++) {
                 iconStr = dModel.getIcons().get(i).getZh();
@@ -328,20 +327,20 @@ public class InterestingDetailsActivity extends BaseActivity {
     private void changeBottomBeenBg(boolean isOut) {
         if (isOut) {
             detailBeenTv.setTextColor(getResources().getColor(R.color.black));
-            detailBeenTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_detail_bottom_full_bg));
+            detailBeenTv.setBackgroundResource(R.drawable.shape_detail_bottom_full_bg);
         } else {
             detailBeenTv.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
-            detailBeenTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_detail_bottom_bg));
+            detailBeenTv.setBackgroundResource(R.drawable.shape_detail_bottom_bg);
         }
     }
 
     private void changeCollectState(boolean isCollect) {
         if (isCollect) {
-            detailButtonCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_collect));
-            detailButtonCollectOutIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_collect));
+            detailButtonCollectIv.setImageResource(R.drawable.ic_detail_collect);
+            detailButtonCollectOutIv.setImageResource(R.drawable.ic_detail_collect);
         } else {
-            detailButtonCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_uncollect));
-            detailButtonCollectOutIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_uncollect));
+            detailButtonCollectIv.setImageResource(R.drawable.ic_detail_uncollect);
+            detailButtonCollectOutIv.setImageResource(R.drawable.ic_detail_uncollect);
         }
     }
 
@@ -505,9 +504,7 @@ public class InterestingDetailsActivity extends BaseActivity {
             //  AppContext.dCardList.remove(pPosition);
             AppContext.dCardListRemoveIndex = pPosition;
         }
-        if (detailOutsideSv != null) {
 
-        }
         LogUtils.json(" AppContext.dCardListRemoveIndex = pPosition;==" + AppContext.dCardListRemoveIndex);
         super.onDestroy();
     }

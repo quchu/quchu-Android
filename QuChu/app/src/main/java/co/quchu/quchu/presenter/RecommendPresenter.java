@@ -40,7 +40,7 @@ public class RecommendPresenter {
 
     public static void getRecommendList(final Context context, boolean isDefaultData, final GetRecommendListener listener) {
         DialogUtil.showProgess(context, "数据加载中...");
-        String urlStr = "";
+        String urlStr;
         if (isDefaultData) {
             urlStr = String.format(NetApi.getDefaultPlaceList,
                     SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
@@ -66,7 +66,7 @@ public class RecommendPresenter {
                         JSONArray array = response.getJSONArray("result");
                         if (array.length() > 0) {
                             Gson gson = new Gson();
-                            ArrayList<RecommendModel> arrayList = new ArrayList<RecommendModel>();
+                            ArrayList<RecommendModel> arrayList = new ArrayList<>();
                             RecommendModel model;
                             for (int i = 0; i < array.length(); i++) {
                                 model = gson.fromJson(array.getString(i), RecommendModel.class);
@@ -93,9 +93,9 @@ public class RecommendPresenter {
     /**
      * 加载更多
      *
-     * @param context
-     * @param isDefaultData
-     * @param listener
+     * @param context c
+     * @param isDefaultData s
+     * @param listener s
      */
     public static void loadMoreRecommendList(final Context context, boolean isDefaultData, int pageNumber, final GetRecommendListener listener) {
         //    DialogUtil.showProgess(context, "数据加载中...");
@@ -128,7 +128,7 @@ public class RecommendPresenter {
                         JSONArray array = response.getJSONArray("result");
                         if (array.length() > 0) {
                             Gson gson = new Gson();
-                            ArrayList<RecommendModel> arrayList = new ArrayList<RecommendModel>();
+                            ArrayList<RecommendModel> arrayList = new ArrayList<>();
                             RecommendModel model;
                             for (int i = 0; i < array.length(); i++) {
                                 model = gson.fromJson(array.getString(i), RecommendModel.class);
@@ -136,7 +136,7 @@ public class RecommendPresenter {
                             }
                             listener.onSuccess(arrayList, pageCount, pageNum);
 
-                        }else {
+                        } else {
                             listener.onError();
                         }
                     }
@@ -229,38 +229,38 @@ public class RecommendPresenter {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("city ==" + response.toString());
-                if (response != null) {
-                    try {
-                        Gson gson = new Gson();
-                        if (response.has("default") && !StringUtils.isEmpty(response.getString("default")) && StringUtils.isEmpty(SPUtils.getCityName())) {
-                            CityModel defaultCity = gson.fromJson(response.getString("default"), CityModel.class);
-                            SPUtils.setCityId(defaultCity.getCid());
-                            SPUtils.setCityName(defaultCity.getCvalue());
-                            LogUtils.json("response.has(default)");
-                        }
-                        if (response.has("page") && !StringUtils.isEmpty(response.getString("page"))) {
-                            LogUtils.json("response.has(pages)");
-                            JSONArray pages = response.getJSONObject("page").getJSONArray("result");
 
-                            ArrayList<CityModel> cityList = new ArrayList<CityModel>();
-                            for (int i = 0; i < pages.length(); i++) {
-
-                                CityModel model = gson.fromJson(pages.getString(i), CityModel.class);
-                                if (model.getCvalue().equals(SPUtils.getCityName())) {
-                                    //   SPUtils.setCityId(model.getCid());
-                                    model.setIsSelected(true);
-                                    LogUtils.json("response.has(pages)" + i);
-                                } else {
-                                    model.setIsSelected(false);
-                                }
-                                cityList.add(model);
-                            }
-                            listener.hasCityList(cityList);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                try {
+                    Gson gson = new Gson();
+                    if (response.has("default") && !StringUtils.isEmpty(response.getString("default")) && StringUtils.isEmpty(SPUtils.getCityName())) {
+                        CityModel defaultCity = gson.fromJson(response.getString("default"), CityModel.class);
+                        SPUtils.setCityId(defaultCity.getCid());
+                        SPUtils.setCityName(defaultCity.getCvalue());
+                        LogUtils.json("response.has(default)");
                     }
+                    if (response.has("page") && !StringUtils.isEmpty(response.getString("page"))) {
+                        LogUtils.json("response.has(pages)");
+                        JSONArray pages = response.getJSONObject("page").getJSONArray("result");
+
+                        ArrayList<CityModel> cityList = new ArrayList<>();
+                        for (int i = 0; i < pages.length(); i++) {
+
+                            CityModel model = gson.fromJson(pages.getString(i), CityModel.class);
+                            if (model.getCvalue().equals(SPUtils.getCityName())) {
+                                //   SPUtils.setCityId(model.getCid());
+                                model.setIsSelected(true);
+                                LogUtils.json("response.has(pages)" + i);
+                            } else {
+                                model.setIsSelected(false);
+                            }
+                            cityList.add(model);
+                        }
+                        listener.hasCityList(cityList);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
 
             }
 

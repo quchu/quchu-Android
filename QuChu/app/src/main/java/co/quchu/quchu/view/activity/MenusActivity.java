@@ -45,10 +45,10 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     MoreButtonView menusSearchMoreRl;
     @Bind(R.id.menus_search_username)
     TextView menusSearchUsername;
-    @Bind(R.id.menus_add_topic)
-    RelativeLayout menusAddTopic;
-    @Bind(R.id.menus_search_rl)
-    RelativeLayout menusSearchRl;
+//    @Bind(R.id.menus_add_topic)
+//    RelativeLayout menusAddTopic;
+//    @Bind(R.id.menus_search_rl)
+//    RelativeLayout menusSearchRl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

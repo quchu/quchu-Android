@@ -29,14 +29,14 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
     private static final String VIEW_MODEL = "view_model"; //弹窗界面
-    @Bind(R.id.dialog_location_selected_city_tv)
-    TextView dialogLocationSelectedCityTv;
+//    @Bind(R.id.dialog_location_selected_city_tv)
+//    TextView dialogLocationSelectedCityTv;
     @Bind(R.id.dialog_location_tv)
     TextView dialogLocationTv;
-    @Bind(R.id.dialog_location_submit_tv)
-    TextView dialogLocationSubmitTv;
-    @Bind(R.id.dialog_location_cancel_tv)
-    TextView dialogLocationCancelTv;
+//    @Bind(R.id.dialog_location_submit_tv)
+//    TextView dialogLocationSubmitTv;
+//    @Bind(R.id.dialog_location_cancel_tv)
+//    TextView dialogLocationCancelTv;
 
 
     private int viewModel = 0x00;
