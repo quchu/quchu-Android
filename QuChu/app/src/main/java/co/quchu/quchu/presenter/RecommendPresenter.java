@@ -1,11 +1,14 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -16,13 +19,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -40,7 +46,7 @@ public class RecommendPresenter {
 
     public static void getRecommendList(final Context context, boolean isDefaultData, final GetRecommendListener listener) {
         DialogUtil.showProgess(context, "数据加载中...");
-        String urlStr;
+        final String urlStr;
         if (isDefaultData) {
             urlStr = String.format(NetApi.getDefaultPlaceList,
                     SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
@@ -50,7 +56,9 @@ public class RecommendPresenter {
                     SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
             );
         }
+
         NetService.get(context, urlStr, new IRequestListener() {
+
 
             @Override
             public void onSuccess(JSONObject response) {
@@ -93,9 +101,9 @@ public class RecommendPresenter {
     /**
      * 加载更多
      *
-     * @param context c
+     * @param context       c
      * @param isDefaultData s
-     * @param listener s
+     * @param listener      s
      */
     public static void loadMoreRecommendList(final Context context, boolean isDefaultData, int pageNumber, final GetRecommendListener listener) {
         //    DialogUtil.showProgess(context, "数据加载中...");

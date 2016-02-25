@@ -141,7 +141,7 @@ public class NetService {
                         result = response.getBoolean("result");
                         if (null != pListener) {
                             if (result) {
-                                if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
+                                if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
                                     if (response.has("exception") && "分类列表".equals(response.getString("exception"))) {
                                         pListener.onSuccess(response);
                                     } else {
@@ -168,7 +168,7 @@ public class NetService {
                                     } else if (response.has("msg") && response.has("exception") && "1080".equals(response.getString("msg"))){
                                         ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
                                     } else{
-                                        if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data").toString())) {
+                                        if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
                                             Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), 0).show();
                                             if (response.has("msg") && response.has("exception") && StringUtils.isEmpty(response.getString("exception")) && !StringUtils.isEmpty(response.getString("msg"))) {
                                                 pListener.onError(response.getString("msg"));
