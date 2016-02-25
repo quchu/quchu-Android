@@ -46,6 +46,12 @@ public class GsonRequest<T> extends Request<T> {
     private String paramsJson;
     private boolean result;
 
+    public GsonRequest(String url, @NonNull Class<T> entity, ResponseListener<T> listener) {
+        super(Method.GET, url, listener);
+        this.listener = listener;
+        this.entity = entity;
+    }
+
     public GsonRequest(int method, String url, Map<String, String> params, @NonNull Class<T> entity, ResponseListener<T> listener) {
         super(method, url, listener);
         this.listener = listener;
