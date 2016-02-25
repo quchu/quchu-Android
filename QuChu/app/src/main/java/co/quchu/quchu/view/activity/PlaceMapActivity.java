@@ -1,10 +1,17 @@
 package co.quchu.quchu.view.activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,13 +21,16 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.nostra13.universalimageloader.utils.L;
 import com.umeng.analytics.MobclickAgent;
 
 import java.net.URISyntaxException;
@@ -64,6 +74,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         TextView title_right_navigate_tv = (TextView) findViewById(R.id.title_right_navigate_tv);
         about_us_title_back_rl = (RelativeLayout) findViewById(R.id.about_us_title_back_rl);
+        ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
+        currentPosition.setOnClickListener(this);
         about_us_title_back_rl.setOnClickListener(this);
         if (aMap == null) {
             aMap = mapView.getMap();
@@ -93,6 +105,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                 navigateDialogFg.show(getFragmentManager(), "navigate");
             }
         });
+
+
     }
 
     private void initData() {
@@ -125,7 +139,37 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
-        finish();
+        switch (v.getId()) {
+            case R.id.current_position:
+                //如果没有定位权限,提醒
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission_group.LOCATION) == PackageManager.PERMISSION_DENIED) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(this, R.style.dialog_two_button);
+                        b.setTitle("趣处没有权限获取您的位置!");
+                        b.setMessage("请在设置/应用管理/趣处/权限管理允许获取位置权限");
+                        b.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+                        b.setCancelable(false);
+                        b.show();
+                        return;
+                    }
+                }
+                //有权限
+                CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                        new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude()), mapView.getMap().getCameraPosition().zoom, 0, 0));
+
+                mapView.getMap().animateCamera(update);
+
+                break;
+            default:
+                finish();
+        }
+
     }
 
     @Override
@@ -152,16 +196,14 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     private void setUpMap() {
 
         aMap.setLocationSource(this);// 设置定位监听
-        aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
+//        aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
         aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                //   jump2BaiduMap();
-                // jump2TencentMap();
-                // jump2Amap();
+                LogUtils.e("点击事件");
                 return false;
             }
         });
@@ -246,9 +288,15 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onMapLoaded() {
         // 设置所有maker显示在当前可视区域地图中
-        LatLngBounds bounds = new LatLngBounds.Builder()
-                .include(placeAddress).build();
-        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+//        LatLngBounds bounds = new LatLngBounds.Builder()
+//                .include(placeAddress).build();
+//        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+
+        CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                placeAddress, 14, 0, 0));
+
+        aMap.animateCamera(update);
+
     }
 
     private void jump2BaiduMap() {
