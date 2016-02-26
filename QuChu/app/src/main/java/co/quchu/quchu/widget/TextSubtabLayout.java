@@ -192,7 +192,6 @@ public class TextSubtabLayout extends RelativeLayout implements View.OnClickList
         //    widgetTextIndexIv
         leftX = ((mScreenWidth / 2) - widgetTextIndexIv.getWidth() / 2) / 2;
         rightX = leftX * 3;
-        LogUtils.json("mScreenWidth=initData=" + leftX);
     }
 
 

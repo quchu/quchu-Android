@@ -35,7 +35,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.RecommendFragmentAdapter;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
 import co.quchu.quchu.view.fragment.DefaultRecommendFragment;
-import co.quchu.quchu.view.fragment.RecommendFragment;
+import co.quchu.quchu.view.fragment.RecommendFragment2;
 import co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager;
 import co.quchu.quchu.widget.AnimationViewPager.ZoomOutPageTransformer;
 import co.quchu.quchu.widget.MoreButtonView;
@@ -61,7 +61,7 @@ public class RecommendActivity extends BaseActivity {
     NoScrollViewPager recommendBodyVp;
 
     public long firstTime = 0;
-    private RecommendFragment recoFragment;
+    private RecommendFragment2 recoFragment;
     private ClassifyFragment classifyFragment;
     DefaultRecommendFragment defaultRecommendFragment;
     private ArrayList<CityModel> list;
@@ -158,7 +158,7 @@ public class RecommendActivity extends BaseActivity {
    */
     public void InitViewPager() {
         ArrayList<Fragment> fragmentList = new ArrayList<>();
-        recoFragment = new RecommendFragment();
+        recoFragment = new RecommendFragment2();
         classifyFragment = new ClassifyFragment();
         defaultRecommendFragment = new DefaultRecommendFragment();
         fragmentList.add(recoFragment);
@@ -226,8 +226,8 @@ public class RecommendActivity extends BaseActivity {
 
     public void updateRecommend() {
         if (recoFragment == null)
-            recoFragment = new RecommendFragment();
-        recoFragment.changeDataSetFromServer();
+            recoFragment = new RecommendFragment2();
+//        recoFragment.initTabData("");
     }
 
     @Override

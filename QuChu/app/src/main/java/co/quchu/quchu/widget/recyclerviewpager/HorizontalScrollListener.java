@@ -1,6 +1,7 @@
 package co.quchu.quchu.widget.recyclerviewpager;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -39,9 +40,14 @@ public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
                 } else {
                     rate = 1;
                 }
-                v.setScaleY(1 - rate * 0.1f);
 
+                v.setScaleY(1 - rate * 0.1f);
                 v.setScaleX(1 - rate * 0.1f);
+                if (v.getLeft()==padding){
+                    v.setAlpha(1);
+                }else{
+                    v.setAlpha(1-rate+.5f);
+                }
 
             } else {
                 //往右 从 padding 到 recyclerView.getWidth()-padding 的过程中，由大到小
@@ -50,6 +56,8 @@ public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
                 }
                 v.setScaleY(0.9f + rate * 0.1f);
                 v.setScaleX(0.9f + rate * 0.1f);
+                v.setAlpha(.5f+rate);
+
             }
         }
     }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.m.IRecommendFragModel;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.net.GsonRequest;
@@ -34,6 +35,7 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.DefaultRecommendFragment;
+import co.quchu.quchu.view.fragment.IRecommendFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 
 /**
@@ -43,6 +45,7 @@ import co.quchu.quchu.view.fragment.RecommendFragment;
  * 趣处推荐 逻辑类
  */
 public class RecommendPresenter {
+
 
     public static void getRecommendList(final Context context, boolean isDefaultData, final GetRecommendListener listener) {
         DialogUtil.showProgess(context, "数据加载中...");
@@ -152,12 +155,10 @@ public class RecommendPresenter {
                     e.printStackTrace();
                     listener.onError();
                 }
-                //    DialogUtil.dismissProgess();
             }
 
             @Override
             public boolean onError(String error) {
-                //       DialogUtil.dismissProgess();
                 listener.onError();
                 return false;
             }
