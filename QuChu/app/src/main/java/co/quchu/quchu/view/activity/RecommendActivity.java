@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +48,6 @@ import co.quchu.quchu.widget.RecommendTitleGroup;
  * 趣处分类、推荐
  */
 public class RecommendActivity extends BaseActivity {
-    @Bind(R.id.recommend_title_location_rl)
-    RelativeLayout recommendTitleLocationRl;
     @Bind(R.id.recommend_title_location_iv)
     ImageView recommendTitleLocationIv;
 
@@ -63,16 +60,6 @@ public class RecommendActivity extends BaseActivity {
     @Bind(R.id.recommend_body_vp)
     NoScrollViewPager recommendBodyVp;
 
-
- /*   @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRl;
-    @Bind(R.id.title_back_iv)
-    ImageView titleBackIv;
-    @Bind(R.id.title_more_rl)
-    MoreButtonView titleMoreRl;*/
-
     public long firstTime = 0;
     private RecommendFragment recoFragment;
     private ClassifyFragment classifyFragment;
@@ -80,7 +67,6 @@ public class RecommendActivity extends BaseActivity {
     private ArrayList<CityModel> list;
     private boolean isGuide = false;
     public int viewPagerIndex = 0;
-    public static final int PlaceDetail = 0x11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,19 +128,12 @@ public class RecommendActivity extends BaseActivity {
 
     private void initView() {
         InitViewPager();
-      /*  if (StringUtils.isEmpty(SPUtils.getValueFromSPMap(this, AppKey.USERSELECTEDCLASSIFY, ""))) {
-            recommendTitleCenterRtg.setInitSelected(true);
-            recommendTitleCenterRtg.setViewsClickable(false);
-            recommendBodyVp.setCurrentItem(1);
-            viewpagerSelected(1);
 
-        } else {*/
         recommendTitleCenterRtg.setViewsClickable(true);
         recommendTitleCenterRtg.setInitSelected(false);
         recommendBodyVp.setCurrentItem(0);
         viewpagerSelected(0);
 
-      /*  }*/
         recommendTitleCenterRtg.setSelectedListener(new RecommendTitleGroup.RecoSelectedistener() {
             @Override
             public void onViewsClick(int flag) {
@@ -172,15 +151,13 @@ public class RecommendActivity extends BaseActivity {
                 RecommendActivity.this.startActivity(new Intent(RecommendActivity.this, MenusActivity.class));
             }
         });
-
     }
-
 
     /*
    * 初始化ViewPager
    */
     public void InitViewPager() {
-        ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
+        ArrayList<Fragment> fragmentList = new ArrayList<>();
         recoFragment = new RecommendFragment();
         classifyFragment = new ClassifyFragment();
         defaultRecommendFragment = new DefaultRecommendFragment();
@@ -196,29 +173,29 @@ public class RecommendActivity extends BaseActivity {
     private void viewpagerSelected(int index) {
         LogUtils.json("selected == " + index);
         if (index == 0) {
-            recommendTitleLocationIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_recommed_title_location));
+            recommendTitleLocationIv.setImageResource(R.drawable.ic_recommed_title_location);
             recommendBodyVp.setCurrentItem(0);//设置当前显示标签页为第一页
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             if (recoFragment != null)
                 recoFragment.show();
             if (classifyFragment != null)
-                ((ClassifyFragment) classifyFragment).hintClassify();
+                classifyFragment.hintClassify();
             if (defaultRecommendFragment != null)
                 defaultRecommendFragment.hint();
         } else if (index == 1) {
-            recommendTitleLocationIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_recommed_title_location));
+            recommendTitleLocationIv.setImageResource(R.drawable.ic_recommed_title_location);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendBodyVp.setCurrentItem(1);//设置当前显示标签页为第二页
             if (classifyFragment != null)
-                ((ClassifyFragment) classifyFragment).showClassify();
+                classifyFragment.showClassify();
             if (recoFragment != null)
                 recoFragment.hint();
             if (defaultRecommendFragment != null)
                 defaultRecommendFragment.hint();
         } else if (index == 2) {
-            recommendTitleLocationIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_title_back));
+            recommendTitleLocationIv.setImageResource(R.drawable.ic_title_back);
             titleContentTv.setText(SPUtils.getValueFromSPMap(this, AppKey.USERSELECTEDCLASSIFY_CHS, ""));
             titleContentTv.setVisibility(View.VISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.INVISIBLE);
@@ -226,7 +203,7 @@ public class RecommendActivity extends BaseActivity {
             if (defaultRecommendFragment != null)
                 defaultRecommendFragment.show();
             if (classifyFragment != null)
-                ((ClassifyFragment) classifyFragment).hintClassify();
+                classifyFragment.hintClassify();
             if (recoFragment != null)
                 recoFragment.hint();
         }
@@ -362,18 +339,4 @@ public class RecommendActivity extends BaseActivity {
 
     private boolean isNetWorkConnected = false;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //  ButterKnife.unbind(this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode) {
-            case PlaceDetail:
-
-                break;
-        }
-    }
 }

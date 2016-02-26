@@ -14,8 +14,6 @@ public class LoadingDialog extends Dialog {
 
     private TextView tv_load;
     private String mText;
-    private ImageView loading_iv;
-    private AnimationDrawable animationDrawable;
 
     public LoadingDialog(Context context, String text) {
         super(context, R.style.loading_dialog);
@@ -27,9 +25,9 @@ public class LoadingDialog extends Dialog {
     private void init() {
         setContentView(R.layout.dialog_net_loading);
         setCancelable(false);
-        loading_iv = (ImageView) findViewById(R.id.loading_iv);
+        ImageView loading_iv = (ImageView) findViewById(R.id.loading_iv);
         loading_iv.setImageResource(R.drawable.user_login_progress);
-        animationDrawable = (AnimationDrawable) loading_iv.getDrawable();
+        AnimationDrawable animationDrawable = (AnimationDrawable) loading_iv.getDrawable();
         loading_iv.setVisibility(View.VISIBLE);
         animationDrawable.start();
         tv_load = (TextView) findViewById(R.id.tv_loading);

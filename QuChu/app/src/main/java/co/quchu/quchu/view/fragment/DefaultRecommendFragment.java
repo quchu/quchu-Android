@@ -38,15 +38,13 @@ import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
  * RecommendFragment
  * User: Chenhs
  * Date: 2015-12-07
- * 推荐
+ * 推荐 类别点击进入后的
  */
 public class DefaultRecommendFragment extends Fragment implements RecommendAdapter.CardClickListener {
     @Bind(R.id.f_recommend_rvp)
     RecyclerViewPager dfRecommendRvp;
     @Bind(R.id.f_recommend_bottom_rl)
     ImageView dfRecommendBottomRl;
-    private View view;
-    private float viewStartY = 0f;
     private int dViewHeight = 0;
     public boolean isRunningAnimation = false;
     public ArrayList<RecommendModel> dCardList;
@@ -54,7 +52,7 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_recommend_hvp, null);
+        View view = inflater.inflate(R.layout.fragment_recommend_hvp, container,false);
         ButterKnife.bind(this, view);
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         dfRecommendRvp.setLayoutManager(layout);
@@ -136,7 +134,6 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
         });
     }
 
-    private Intent intent;
     private int hasChangePosition = 0;
 
     @Override
@@ -146,7 +143,7 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
             case R.id.root_cv:
                 hasChangePosition = position;
                 AppContext.selectedPlace = dCardList.get(position);
-                intent = new Intent(getActivity(), InterestingDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), InterestingDetailsActivity.class);
                 intent.putExtra("pId", dCardList.get(position).getPid());
                 intent.putExtra("pPosition", position);
                 getActivity().startActivity(intent);

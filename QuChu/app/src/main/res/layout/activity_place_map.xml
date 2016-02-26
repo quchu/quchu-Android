@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -34,12 +35,7 @@
             android:textColor="@color/planet_text_color_white"
             android:textSize="@dimen/word_title_body" />
 
-        <!--        <RelativeLayout
-                    android:id="@+id/about_us_right_rl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/base_margin"
-                    android:visibility="invisible">-->
+
         <TextView
             android:id="@+id/title_right_navigate_tv"
             android:layout_width="wrap_content"
@@ -51,8 +47,8 @@
             android:text="导航"
             android:textColor="@color/text_color_white"
             android:textSize="@dimen/word_subhead_size" />
-        <!--        </RelativeLayout>-->
     </LinearLayout>
+
 
     <com.amap.api.maps.MapView
         android:id="@+id/place_map_mv"
@@ -60,4 +56,14 @@
         android:layout_height="match_parent"
         android:layout_below="@id/map_title_bar_ll" />
 
+    <ImageView
+        android:id="@+id/current_position"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/map_title_bar_ll"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/icon_current_position"
+        tools:ignore="ContentDescription" />
 </RelativeLayout>

@@ -2,7 +2,6 @@ package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +37,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Classi
 
     @Override
     public ClassifyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ClassifyHolder holder = new ClassifyHolder(LayoutInflater.from(mContext).inflate(R.layout.item_classify_card, parent, false), listener);
-        return holder;
+        return new ClassifyHolder(LayoutInflater.from(mContext).inflate(R.layout.item_classify_card, parent, false), listener);
     }
 
     public void setOnItemCliskListener(ClasifyClickListener listener) {
@@ -61,8 +59,8 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Classi
     public class ClassifyHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.item_classify_image_sdv)
         SimpleDraweeView itemClassifyImageSdv;
-        @Bind(R.id.item_classify_root_cv)
-        CardView itemClassifyRootCv;
+        //        @Bind(R.id.item_classify_root_cv)
+//        CardView itemClassifyRootCv;
         private ClasifyClickListener listener;
 
         public ClassifyHolder(View itemView, ClasifyClickListener listener) {
@@ -70,14 +68,15 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Classi
             ButterKnife.bind(this, itemView);
             this.listener = listener;
         }
+
         @OnClick(R.id.item_classify_root_cv)
-        public void onCardClick(View v){
-                if (KeyboardUtils.isFastDoubleClick())
-                    return;
-            switch (v.getId()){
+        public void onCardClick(View v) {
+            if (KeyboardUtils.isFastDoubleClick())
+                return;
+            switch (v.getId()) {
                 case R.id.item_classify_root_cv:
-                    if (listener!=null)
-                        listener.cItemClick(v,getAdapterPosition());
+                    if (listener != null)
+                        listener.cItemClick(v, getAdapterPosition());
                     break;
             }
         }

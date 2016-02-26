@@ -40,14 +40,13 @@ import co.quchu.quchu.view.adapter.ClassifyDecoration;
 public class ClassifyFragment extends Fragment {
     @Bind(R.id.fragment_firends_rv)
     RecyclerView fragmentFirendsRv;
-    private View view;
     private ClassifyAdapter cAdapter;
     private ArrayList<ClassifyModel> cList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_friends_rv_view, null);
+        View view = inflater.inflate(R.layout.fragment_friends_rv_view, container,false);
         ButterKnife.bind(this, view);
         getRootTagsData();
         return view;
@@ -61,40 +60,36 @@ public class ClassifyFragment extends Fragment {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
-                if (response != null) {
-                    if (response.has("data")) {
-                        try {
-                            JSONArray datas = response.getJSONArray("data");
-                            if (datas.length() > 0) {
-                                cList = new ArrayList<ClassifyModel>();
-                                Gson gson = new Gson();
-                                for (int i = 0; i < datas.length(); i++) {
-                                    ClassifyModel classifyModel = gson.fromJson(datas.getString(i), ClassifyModel.class);
-                                    cList.add(classifyModel);
-                                    LogUtils.json(datas.getString(i));
-                                }
-                                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-                                fragmentFirendsRv.setLayoutManager(mLayoutManager);
-                                fragmentFirendsRv.addItemDecoration(new ClassifyDecoration(getActivity()));
-
-                                cAdapter = new ClassifyAdapter(getActivity(), cList);
-                                fragmentFirendsRv.setAdapter(cAdapter);
-                                cAdapter.setOnItemCliskListener(new ClassifyAdapter.ClasifyClickListener() {
-                                    @Override
-                                    public void cItemClick(View view, int position) {
-                                        if (cList.get(position).isIsSend()) {
-                                            SPUtils.putValueToSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, cList.get(position).getEn());
-                                            SPUtils.putUserSelectedClassify(cList.get(position).getEn());
-                                            ((RecommendActivity) getActivity()).selectedClassify();
-                                        }
-
-                                        // LogUtils.json("分类 被点击  条目==" + position);
-                                    }
-                                });
+                if (response.has("data")) {
+                    try {
+                        JSONArray datas = response.getJSONArray("data");
+                        if (datas.length() > 0) {
+                            cList = new ArrayList<>();
+                            Gson gson = new Gson();
+                            for (int i = 0; i < datas.length(); i++) {
+                                ClassifyModel classifyModel = gson.fromJson(datas.getString(i), ClassifyModel.class);
+                                cList.add(classifyModel);
+                                LogUtils.json(datas.getString(i));
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                            fragmentFirendsRv.setLayoutManager(mLayoutManager);
+                            fragmentFirendsRv.addItemDecoration(new ClassifyDecoration(getActivity()));
+
+                            cAdapter = new ClassifyAdapter(getActivity(), cList);
+                            fragmentFirendsRv.setAdapter(cAdapter);
+                            cAdapter.setOnItemCliskListener(new ClassifyAdapter.ClasifyClickListener() {
+                                @Override
+                                public void cItemClick(View view, int position) {
+                                    if (cList.get(position).isIsSend()) {
+                                        SPUtils.putValueToSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, cList.get(position).getEn());
+                                        SPUtils.putUserSelectedClassify(cList.get(position).getEn());
+                                        ((RecommendActivity) getActivity()).selectedClassify();
+                                    }
+                                }
+                            });
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             }

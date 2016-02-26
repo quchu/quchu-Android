@@ -42,8 +42,6 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
     RecyclerViewPager fRecommendRvp;
     @Bind(R.id.f_recommend_bottom_rl)
     ImageView fRecommendBottomRl;
-    private View view;
-    private float viewStartY = 0f;
     private int viewHeight = 0;
     public boolean isRunningAnimation = false;
     public ArrayList<RecommendModel> cardList;
@@ -51,7 +49,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_recommend_hvp, null);
+        View view = inflater.inflate(R.layout.fragment_recommend_hvp, container, false);
         ButterKnife.bind(this, view);
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         fRecommendRvp.setLayoutManager(layout);
@@ -61,6 +59,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
         fRecommendBottomRl.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                fRecommendBottomRl.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 viewHeight = fRecommendBottomRl.getHeight();
             }
         });
@@ -70,13 +69,11 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
             public void OnPageChanged(int oldPosition, int newPosition) {
                 Log.d("test", "oldPosition:" + oldPosition + " newPosition:" + newPosition);
                 if (newPosition <= 2) {
-                    if (fRecommendBottomRl.getVisibility() == View.VISIBLE)
-                        if (!isRunningAnimation)
-                            RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
+                    if (fRecommendBottomRl.getVisibility() == View.VISIBLE && !isRunningAnimation)
+                        RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, false);
                 } else if (newPosition >= 3) {
-                    if (fRecommendBottomRl.getVisibility() == View.INVISIBLE)
-                        if (!isRunningAnimation)
-                            RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, true);
+                    if (fRecommendBottomRl.getVisibility() == View.INVISIBLE && !isRunningAnimation)
+                        RecommendPresenter.showBottomAnimation(RecommendFragment.this, fRecommendBottomRl, viewHeight, true);
                 }
                 LogUtils.json("newPosition=" + newPosition + "//oldPosition=" + oldPosition + "//cardList.size() - 1===" + (cardList.size() - 1));
                 if (newPosition > oldPosition && cardList.size() > 3 && newPosition == cardList.size() - 1 && !isLoading) {
@@ -86,11 +83,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
             }
         });
         fRecommendRvp.addOnLayoutChangeListener();
-        //  if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
         changeDataSetFromServer();
-        //  }
-   /*     if (AppContext.selectedPlace == null)
-            AppContext.selectedPlace = new ArrayList<>();*/
         return view;
     }
 
@@ -100,7 +93,6 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
 
     @OnClick(R.id.f_recommend_bottom_rl)
     public void bottomClick(View view) {
-        //fRecommendRvp.smoothScrollToPosition(0);
         if (indexPosition > 5) {
             fRecommendRvp.scrollToPosition(0);
         } else {
@@ -155,7 +147,6 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
                     }
                     isLoading = false;
                 }
-
                 @Override
                 public void onError() {
                     isLoading = false;
@@ -165,7 +156,6 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
     }
 
     private int pageCounts = 2, pageNums = 1;
-    private Intent intent;
     private int hasChangePosition = 0;
 
     @Override
@@ -175,10 +165,10 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
             case R.id.root_cv:
                 AppContext.selectedPlace = cardList.get(position);
                 hasChangePosition = position;
-                intent = new Intent(getActivity(), InterestingDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), InterestingDetailsActivity.class);
                 intent.putExtra("pPosition", position);
                 intent.putExtra("pId", cardList.get(position).getPid());
-                getActivity().startActivity(intent);
+                startActivity(intent);
                 break;
             case R.id.item_recommend_card_collect_rl:
                 setFavorite(position);
