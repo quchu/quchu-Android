@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="bottom">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/user_center_user_icon_sdv"
+            android:layout_width="@dimen/item_usercenter_icon_size"
+            android:layout_height="@dimen/item_usercenter_icon_size"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            fresco:actualImageScaleType="focusCrop"
+            fresco:retryImage="@drawable/ic_care_friends_avatar"
+            fresco:roundAsCircle="true"
+            fresco:roundBottomLeft="true"
+            fresco:roundBottomRight="true"
+            fresco:roundTopLeft="true"
+            fresco:roundTopRight="true"
+            fresco:roundedCornerRadius="180dp"
+            fresco:roundingBorderColor="@color/planet_progress_yellow"
+            fresco:roundingBorderWidth="2dp" />
+
+
+        <TextView
+            android:id="@+id/user_center_nickname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:layout_marginTop="@dimen/half_margin"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:maxEms="8"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_subhead_size" />
+
+        <TextView
+            android:id="@+id/user_center_desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/half_margin"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:maxEms="8"
+            android:text="男,江苏-台州"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_size_body" />
+
+
+        <TextView
+            android:id="@+id/user_center_foucsable_tv"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/half_margin"
+            android:background="@drawable/shape_usercenter_unfoucs"
+            android:gravity="center"
+            android:text="已关注"
+            android:textColor="@color/transparent" />
+    </LinearLayout>
+</RelativeLayout>

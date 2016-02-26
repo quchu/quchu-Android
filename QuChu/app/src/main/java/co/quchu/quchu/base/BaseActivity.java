@@ -159,10 +159,8 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.title_back_rl:
-
                 this.finish();
                 break;
-
         }
     }
 

@@ -101,6 +101,8 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
     @Override
     protected void onResume() {
         super.onResume();
+        if (null != AppContext.user)
+            menusSearchUsername.setText(AppContext.user.getFullname());
         if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_MENU_NEED_REFRESH, false)) {
             if (menusSearchUsername != null)
                 menusSearchUsername.setText(AppContext.user.getFullname());

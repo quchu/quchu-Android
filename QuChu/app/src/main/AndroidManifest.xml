@@ -144,6 +144,14 @@
             android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
             android:label="@string/titlebar_word_place_detail"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.UserPostCardActivity"
+            android:label="@string/titlebar_word_user_postcard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="co.quchu.quchu.view.activity.UserCenterActivity"
+            android:label="@string/titlebar_word_user_center"
+            android:screenOrientation="portrait" />
         <!-- 我的趣推荐 -->
         <activity
             android:name="co.quchu.quchu.view.activity.RecommendActivity"
@@ -182,6 +190,7 @@
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name" />
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="56abaf9be0f55a4757000e39" />

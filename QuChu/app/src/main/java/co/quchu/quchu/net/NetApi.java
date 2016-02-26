@@ -79,7 +79,10 @@ public class NetApi {
 
     public static final String followFriends = HOST + "/sns/follow?followId=%d";  //关注他人
     public static final String delFollowFriends = HOST + "/sns/delFollow?followId=%d";  //取消关注
-    public static final String getUserInfo = HOST + "/personal/getUser";  //取消关注
+    public static final String getMyUserInfo = HOST + "/personal/getUser";  //获取自己用户信息
+    public static final String getUserInfo = HOST + "/personal/getUserInfo?userId=%d";  //获取自己用户信息
+    public static final String getUserCardList = HOST + "/place/getUserCardList?userId=%d&pageno=%d";  //获取某个用户的明信片
+    public static final String getUsercenterFavoriteList = HOST + "/place/getFavoriteList?userId=%d&pageno=%d";  //获取某个用户收藏的趣处列表
 
     /****  Get end  ****/
 

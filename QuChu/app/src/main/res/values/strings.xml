@@ -25,6 +25,8 @@
     <string name="titlebar_word_message_center">消息中心</string>
     <string name="titlebar_word_about_us">关于我们</string>
     <string name="titlebar_word_place_detail">趣处详情</string>
+    <string name="titlebar_word_user_center">个人主页</string>
+    <string name="titlebar_word_user_postcard">用户明信片</string>
     <!-- ********** 趣星球 ********* -->
     <string name="prb_default_symbolic_string">$</string>
     <string name="following">我关注的</string>
@@ -97,6 +99,11 @@
     <string name="content_has_emoji">评论内容不能含有表情字符!</string>
     <string name="search_content_has_emoji">搜索内容不能含有表情字符!</string>
     <string name="visitor_login_prompt_text">%1$s之前需要进行登录 \r\n是否现在前往?</string>
+    <string name="usercenter_foucs_text">关注</string>
+    <string name="usercenter_foucsed_text">已关注</string>
+    <string name="usercenter_follow_text">%d 关注TA的</string>
+    <string name="usercenter_host_text">%d TA关注的</string>
+    <string name="usercenter_desc_text">%1$s,%2$s</string>
 
 
 </resources>

@@ -119,7 +119,7 @@ dependencies {
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.2.jar')
     compile files('libs/open_sdk_r5509.jar')
-    compile files('libs/testinagent.jar')
+    //  compile files('libs/testinagent.jar') //testin测试日志sdk
     compile files('libs/umeng-update-v2.6.0.1.jar')
     compile files('libs/AMap_Location_v2.3.0_20160112.jar')
     compile files('libs/Android_Map_V2.7.20151124.jar')

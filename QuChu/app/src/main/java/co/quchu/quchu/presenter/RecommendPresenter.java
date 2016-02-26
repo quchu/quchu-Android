@@ -74,7 +74,7 @@ public class RecommendPresenter {
                             }
                             listener.onSuccess(arrayList, pageCount, pageNum);
 
-                        }
+                          }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

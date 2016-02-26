@@ -40,6 +40,7 @@ public class FavoritePlaceActivity extends BaseActivity {
     FrameLayout favoritePlaceEmptyView;
     private FavoritePlaceModel model;
     private FavoritePlaceAdapter adapter;
+    int userId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +48,13 @@ public class FavoritePlaceActivity extends BaseActivity {
         setContentView(R.layout.activity_favorite_place);
         ButterKnife.bind(this);
         initTitleBar();
-        title_content_tv.setText(getTitle());
-        initData(1);
+        userId = getIntent().getIntExtra("userId", -1);
+        if (-1 == userId) {
+            title_content_tv.setText(getTitle());
+            initData(1);
+        } else {
+            getUserFavoritePlaseFromeUserId(1);
+        }
         favoritePlaceRv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new FavoritePlaceAdapter(FavoritePlaceActivity.this, new FavoritePlaceAdapter.CardClickListener() {
             @Override
@@ -119,5 +125,39 @@ public class FavoritePlaceActivity extends BaseActivity {
         super.onResume();
         MobclickAgent.onPageStart("FavoritePlaceActivity");
         MobclickAgent.onResume(this);
+    }
+
+    private void getUserFavoritePlaseFromeUserId(int pageNum) {
+        NetService.get(this, String.format(NetApi.getUsercenterFavoriteList, userId, pageNum), new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("fav=" + response);
+
+                if (response != null && (!response.has("data") || !response.has("msg"))) {
+                    Gson gson = new Gson();
+                    model = gson.fromJson(response.toString(), FavoritePlaceModel.class);
+                    if (model != null && model.getResult().size() > 0) {
+                        adapter.changeDataSet(model.getResult());
+                        favoritePlaceRv.setVisibility(View.VISIBLE);
+                        favoritePlaceEmptyView.setVisibility(View.GONE);
+                    } else {
+                        favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                        favoritePlaceRv.setVisibility(View.GONE);
+                    }
+
+                } else {
+                    favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                    favoritePlaceRv.setVisibility(View.GONE);
+                }
+            }
+
+
+            @Override
+            public boolean onError(String error) {
+                favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                favoritePlaceRv.setVisibility(View.GONE);
+                return false;
+            }
+        });
     }
 }
