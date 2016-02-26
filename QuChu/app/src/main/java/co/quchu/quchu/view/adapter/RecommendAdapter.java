@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,7 +38,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
     private Activity mContext;
     private boolean isFlyme = false;
-    private ArrayList<RecommendModel> arrayList;
+    private List<RecommendModel> arrayList;
     private CardClickListener listener;
 
     public RecommendAdapter(Activity mContext, CardClickListener listener) {
@@ -46,7 +47,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         this.listener = listener;
     }
 
-    public void changeDataSet(ArrayList<RecommendModel> arrayList) {
+    public void changeDataSet(List<RecommendModel> arrayList) {
         this.arrayList = arrayList;
         notifyDataSetChanged();
     }
