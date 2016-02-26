@@ -6,6 +6,18 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/f_recommend_bimg_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/backabb" />
+
+    <ImageView
+        android:id="@+id/f_recommend_bimg_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/backaaaaa" />
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
@@ -15,6 +27,12 @@
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorAccent"
         app:tabTextColor="#FFFFFF" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@id/tabLayout"
+        android:layout_height="4dp"
+        android:background="@drawable/shadow_bottom" />
 
     <co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager
         android:id="@+id/f_recommend_rvp"

@@ -9,7 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +48,10 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter.Car
     public List<RecommendModel> cardList;
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
+    @Bind(R.id.f_recommend_bimg_bottom)
+    ImageView fRecommendBimgBottom;
+    @Bind(R.id.f_recommend_bimg_top)
+    ImageView fRecommendBimgTop;
     private boolean isLoading = false;
     private RecommendAdapter adapter;
 
@@ -62,7 +72,8 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter.Car
         recyclerView.addOnPageChangedListener(this);
         recyclerView.addOnLayoutChangeListener();
 
-presenter.init();
+        presenter.init();
+
         return view;
     }
 
@@ -157,7 +168,7 @@ presenter.init();
             tabLayout.addTab(tabLayout.newTab().setText("兴趣1"));
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 // TODO: 2016/2/26  参数第一个tab
-        presenter.initTabData(true);
+        startAnimation();
     }
 
     @Override
@@ -209,4 +220,46 @@ presenter.init();
         ButterKnife.unbind(this);
     }
 
+
+
+    /**
+     * animation start
+     */
+    private long animationDuration = 3 * 1000;
+
+    private void startAnimation() {
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(fRecommendBimgTop, "alpha", 1f, 0.2f);
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(fRecommendBimgBottom, "alpha", 0.2f, 1f);
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        animatorSet.setDuration(animationDuration);
+        animatorSet.setInterpolator(new LinearInterpolator());
+        animatorSet.playTogether(objectAnimator, objectAnimator2);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                fRecommendBimgTop.setVisibility(View.INVISIBLE);
+                presenter.initTabData(true);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+        animatorSet.start();
+    }
+    /**
+     * animation end
+     */
 }
