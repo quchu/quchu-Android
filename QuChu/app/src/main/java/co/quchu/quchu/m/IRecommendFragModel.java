@@ -13,4 +13,6 @@ public interface IRecommendFragModel {
     void getTab();
 
     void getTabData(boolean isDefaultData, CommonListener<RecommendModelNew> listener);
+
+    void loadMore(boolean isDefaultData, int pageNumber, CommonListener<RecommendModelNew> listener);
 }

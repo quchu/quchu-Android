@@ -17,7 +17,6 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,7 +28,6 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
-import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
@@ -55,7 +53,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     private boolean isLoading = false;
     private RecommendAdapter2 adapter;
 
-    RecommentFragPresenter presenter;
+    private RecommentFragPresenter presenter;
 
     @Nullable
     @Override
@@ -81,7 +79,10 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     public void OnPageChanged(int oldPosition, int newPosition) {
         LogUtils.json("newPosition=" + newPosition + "//oldPosition=" + oldPosition + "//cardList.size() - 1===" + (cardList.size() - 1));
         if (newPosition > oldPosition && cardList.size() > 3 && newPosition == cardList.size() - 1 && !isLoading) {
-            loadMore("");
+            if (pageNums < pageCounts) {
+                isLoading = true;
+                presenter.loadMore("", true);
+            }
         }
     }
 
@@ -167,47 +168,57 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
         for (int i = 0; i < 10; i++)
             tabLayout.addTab(tabLayout.newTab().setText("兴趣1"));
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-// TODO: 2016/2/26  参数第一个tab
-        startAnimation();
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                presenter.initTabData(true);
+                recyclerView.setVisibility(View.INVISIBLE);
+                startAnimation();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        presenter.initTabData(true);
     }
 
     @Override
-    public void initTabData(List<RecommendModel> arrayList, int pageCount, int pageNum) {
-        cardList = arrayList;
-        if (adapter == null)
-            adapter = new RecommendAdapter2(getActivity(), RecommendFragment2.this);
-        adapter.changeDataSet(cardList);
-        pageCounts = pageCount;
-        pageNums = pageNum;
-        if (recyclerView != null && cardList.size() > 0)
-            recyclerView.smoothScrollToPosition(0);
-    }
-
-    @Override
-    public void loadMore(String type) {
-        if (pageNums < pageCounts) {
-            isLoading = true;
-            pageNums++;
-            RecommendPresenter.loadMoreRecommendList(getActivity(), true, pageNums, new RecommendPresenter.GetRecommendListener() {
-                @Override
-                public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
-                    LogUtils.json("pageNums==" + pageNums);
-                    pageCounts = pageCount;
-                    pageNums = pageNum;
-                    if (arrayList != null && arrayList.size() > 0) {
-                        cardList.addAll(arrayList);
-                        adapter.notifyDataSetChanged();
-                    }
-                    isLoading = false;
-                }
-
-                @Override
-                public void onError() {
-                    isLoading = false;
-                }
-            });
+    public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
+        if (isError) {
+            Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
+        } else {
+            cardList = arrayList;
+            adapter.changeDataSet(cardList);
+            pageCounts = pageCount;
+            pageNums = pageNum;
+            if (cardList.size() > 0)
+                recyclerView.smoothScrollToPosition(0);
+            recyclerView.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void loadMore(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
+        isLoading = false;
+        if (isError) {
+            Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
+        } else {
+            pageCounts = pageCount;
+            pageNums = pageNum;
+            if (arrayList != null && arrayList.size() > 0) {
+                cardList.addAll(arrayList);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
 
     @Override
     public void tabChangeAnimaton() {
@@ -221,15 +232,15 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     }
 
 
-
     /**
      * animation start
      */
-    private long animationDuration = 3 * 1000;
+    private long animationDuration = 500;
 
     private void startAnimation() {
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(fRecommendBimgTop, "alpha", 1f, 0.2f);
         ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(fRecommendBimgBottom, "alpha", 0.2f, 1f);
+        fRecommendBimgTop.setVisibility(View.INVISIBLE);
         AnimatorSet animatorSet = new AnimatorSet();
 
         animatorSet.setDuration(animationDuration);
@@ -243,8 +254,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                fRecommendBimgTop.setVisibility(View.INVISIBLE);
-                presenter.initTabData(true);
+
             }
 
             @Override

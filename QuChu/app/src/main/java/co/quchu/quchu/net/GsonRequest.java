@@ -10,8 +10,10 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -45,6 +47,11 @@ public class GsonRequest<T> extends Request<T> {
     private Map<String, String> params;
     private String paramsJson;
     private boolean result;
+    private static RequestQueue queue;
+
+    static {
+        queue = Volley.newRequestQueue(AppContext.mContext);
+    }
 
     public GsonRequest(String url, @NonNull Class<T> entity, ResponseListener<T> listener) {
         super(Method.GET, url, listener);
@@ -102,16 +109,18 @@ public class GsonRequest<T> extends Request<T> {
                     } else {
                         t = (T) data;
                     }
+                    LogUtils.e("网络返回result为true");
                     return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
                 } else {
                     msg = jsonObject.getString("msg");
                     exception = jsonObject.getString("exception");
-                    LogUtils.e("网络返回的结果有异常:" + json);
+                    LogUtils.e("网络返回Result为false:" + json);
                 }
             } catch (UnsupportedEncodingException | JSONException e) {
                 e.printStackTrace();
             }
         }
+        LogUtils.e("网络异常");
         return Response.error(new NetworkError());
     }
 
@@ -162,8 +171,8 @@ public class GsonRequest<T> extends Request<T> {
                 setTag(tag);
             }
             setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
-            NetService.mRequestQueue.add(this);
-            NetService.mRequestQueue.start();
+            queue.add(this);
+            queue.start();
         }
     }
 

@@ -55,4 +55,31 @@ public class RecommendFragModel implements IRecommendFragModel {
         });
         request.start(context, null);
     }
+
+    @Override
+    public void loadMore(boolean isDefaultData, int pageNumber, final CommonListener<RecommendModelNew> listener) {
+        String urlStr = "";
+        if (isDefaultData) {
+            urlStr = String.format(NetApi.getDefaultPlaceList,
+                    SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), pageNumber
+            );
+        } else {
+            urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(),
+                    SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude(), pageNumber
+            );
+        }
+
+        GsonRequest<RecommendModelNew> request = new GsonRequest<>(urlStr, RecommendModelNew.class, new ResponseListener<RecommendModelNew>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                listener.errorListener(error, null, null);
+            }
+
+            @Override
+            public void onResponse(RecommendModelNew response, boolean result, @Nullable String exception, @Nullable String msg) {
+                listener.successListener(response);
+            }
+        });
+        request.start(context, null);
+    }
 }

@@ -20,13 +20,13 @@ public interface IRecommendFragment {
     /**
      * 初始化tab对应的数据
      */
-    void initTabData(List<RecommendModel> arrayList, int pageCount, int pageNum);
+    void initTabData(boolean isError,List<RecommendModel> arrayList, int pageCount, int pageNum);
 
     /**
      * 加载更多
      */
 
-    void loadMore(String type);
+    void loadMore(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum);
 
     void tabChangeAnimaton();
 }

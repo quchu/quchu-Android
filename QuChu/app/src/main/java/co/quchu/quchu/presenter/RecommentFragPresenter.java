@@ -33,21 +33,36 @@ public class RecommentFragPresenter {
     }
 
     public void initTabData(boolean isDefaultData) {
-        DialogUtil.showProgess(context, "数据加载中...");
+//        DialogUtil.showProgess(context, "数据加载中...");
         model.getTabData(isDefaultData, new CommonListener<RecommendModelNew>() {
             @Override
             public void successListener(RecommendModelNew response) {
                 DialogUtil.dismissProgess();
-                view.initTabData(response.getResult(), response.getPageCount(), response.getPagesNo());
+                view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo());
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
                 DialogUtil.dismissProgess();
+                view.initTabData(true, null, 0, 0);
 
             }
         });
     }
 
+    public void loadMore(String type, boolean isDefaultData) {
+        model.getTabData(isDefaultData, new CommonListener<RecommendModelNew>() {
+            @Override
+            public void successListener(RecommendModelNew response) {
+                view.loadMore(false, response.getResult(), response.getPageCount(), response.getPagesNo());
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                view.loadMore(true, null, 0, 0);
+
+            }
+        });
+    }
 
 }
