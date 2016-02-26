@@ -161,6 +161,7 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
         switch (view.getId()) {
             case R.id.dialog_location_submit_tv:
                 startActivity(new Intent(getActivity(), UserLoginActivity.class));
+
             case R.id.dialog_location_cancel_tv:
                 VisitorLoginDialogFg.this.dismiss();
                 break;

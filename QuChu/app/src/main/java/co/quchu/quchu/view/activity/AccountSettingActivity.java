@@ -44,7 +44,6 @@ import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.AppKey;
-import co.quchu.quchu.utils.FileUtils;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -139,7 +138,6 @@ public class AccountSettingActivity extends BaseActivity {
                 LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
                 locationDIalogFg.show(getFragmentManager(), "location");
                 break;
-
         }
     }
 
@@ -269,7 +267,7 @@ public class AccountSettingActivity extends BaseActivity {
 
 
     public void refreshUserInfo() {
-        NetService.get(this, NetApi.getUserInfo, new IRequestListener() {
+        NetService.get(this, NetApi.getMyUserInfo, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("==" + response);

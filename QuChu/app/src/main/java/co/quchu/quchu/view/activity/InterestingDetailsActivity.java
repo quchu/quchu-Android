@@ -29,6 +29,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.analysis.GatherViewModel;
+import co.quchu.quchu.analysis.GatherWantGoModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -334,6 +335,7 @@ public class InterestingDetailsActivity extends BaseActivity {
         }
     }
 
+
     private void changeCollectState(boolean isCollect) {
         if (isCollect) {
             detailButtonCollectIv.setImageResource(R.drawable.ic_detail_collect);
@@ -369,6 +371,10 @@ public class InterestingDetailsActivity extends BaseActivity {
                         WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
                         lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
                     }
+                    if (AppContext.gatherList == null)
+                        AppContext.gatherList = new ArrayList<>();
+                    if (AppContext.user != null && dModel != null)
+                        AppContext.gatherList.add(new GatherWantGoModel(AppContext.user.getUserId(), dModel.getPid()));
                     break;
                 case R.id.detail_button_add_postcard_out_rl:
                 case R.id.detail_button_add_postcard_rl:

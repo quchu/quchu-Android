@@ -9,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -58,7 +59,6 @@ public class NetService {
 
     public static void post(Context cont, String pUrl, JSONObject params,
                             IRequestListener pListener) {
-
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //     NetErrorDialog.showProgess(cont);
             NetErrorDialogUtil.showProgess(cont, "请检查网络");
@@ -137,7 +137,7 @@ public class NetService {
                     pListener.onSuccess(response);
                 } else if (response.has("result")) {
                     try {
-                        //   LogUtils.json("Response-Listener===" + response.getString("data").toString() + "//isnull==" + StringUtils.isEmpty(response.getString("data").toString()) + "//isnull==" + response.getString("data").equals("null"));
+                        //LogUtils.json("Response-Listener===" + response.getString("data").toString() + "//isnull==" + StringUtils.isEmpty(response.getString("data").toString()) + "//isnull==" + response.getString("data").equals("null"));
                         result = response.getBoolean("result");
                         if (null != pListener) {
                             if (result) {

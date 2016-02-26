@@ -42,6 +42,7 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.AddPostCardActivity;
 import co.quchu.quchu.view.activity.PostCardImageActivity;
+import co.quchu.quchu.view.activity.UserCenterActivity;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -172,7 +173,7 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
         }
 
         @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl, R.id.item_recommend_card_reply_rl,
-                R.id.item_recommend_card_photo_sdv, R.id.item_my_postcard_heart_rl})
+                R.id.item_recommend_card_photo_sdv, R.id.item_my_postcard_heart_rl,R.id.item_my_postcard_avatar_sdv})
         public void cardClick(View view) {
             if (KeyboardUtils.isFastDoubleClick())
                 return;
@@ -210,6 +211,9 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
                 case R.id.item_recommend_card_interest_rl:
                     ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(arrayList.get(getPosition()).getCardId(), arrayList.get(getPosition()).getPlcaeName(), false);
                     shareDialogFg.show(mContext.getFragmentManager(), "share_dialog");
+                    break;
+                case R.id.item_my_postcard_avatar_sdv:
+                    mContext.startActivity(new Intent(mContext, UserCenterActivity.class).putExtra("USERID", arrayList.get(getPosition()).getAutorId()));
                     break;
             }
             if (listener != null)
