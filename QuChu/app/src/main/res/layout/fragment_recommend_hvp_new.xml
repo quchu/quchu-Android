@@ -22,11 +22,11 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/colorPrimary"
+        app:tabBackground="@color/appBackground"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/colorAccent"
-        app:tabTextColor="#FFFFFF" />
+        app:tabSelectedTextColor="#FEFEFE"
+        app:tabTextColor="#80FFFFFF" />
 
     <View
         android:layout_width="match_parent"

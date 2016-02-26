@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class RecommendFragment extends Fragment implements RecommendAdapter.Card
     private int viewHeight = 0;
     public boolean isRunningAnimation = false;
     public ArrayList<RecommendModel> cardList;
-
+RelativeLayout itemback;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

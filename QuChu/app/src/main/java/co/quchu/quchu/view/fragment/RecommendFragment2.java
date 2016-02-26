@@ -33,7 +33,7 @@ import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
-import co.quchu.quchu.view.adapter.RecommendAdapter;
+import co.quchu.quchu.view.adapter.RecommendAdapter2;
 import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
 
 /**
@@ -42,7 +42,7 @@ import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment2 extends Fragment implements RecommendAdapter.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
+public class RecommendFragment2 extends Fragment implements RecommendAdapter2.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
     @Bind(R.id.f_recommend_rvp)
     RecyclerViewPager recyclerView;
     public List<RecommendModel> cardList;
@@ -53,7 +53,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter.Car
     @Bind(R.id.f_recommend_bimg_top)
     ImageView fRecommendBimgTop;
     private boolean isLoading = false;
-    private RecommendAdapter adapter;
+    private RecommendAdapter2 adapter;
 
     RecommentFragPresenter presenter;
 
@@ -65,7 +65,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter.Car
         presenter = new RecommentFragPresenter(getContext(), this);
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layout);
-        adapter = new RecommendAdapter(getActivity(), this);
+        adapter = new RecommendAdapter2(getActivity(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener();
@@ -175,7 +175,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter.Car
     public void initTabData(List<RecommendModel> arrayList, int pageCount, int pageNum) {
         cardList = arrayList;
         if (adapter == null)
-            adapter = new RecommendAdapter(getActivity(), RecommendFragment2.this);
+            adapter = new RecommendAdapter2(getActivity(), RecommendFragment2.this);
         adapter.changeDataSet(cardList);
         pageCounts = pageCount;
         pageNums = pageNum;
