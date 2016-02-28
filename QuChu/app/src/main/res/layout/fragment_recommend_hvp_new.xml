@@ -23,9 +23,7 @@
         android:layout_height="wrap_content"
         app:tabBackground="@color/appBackground"
         app:tabIndicatorHeight="0dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="#FEFEFE"
-        app:tabTextColor="#80FFFFFF" />
+        app:tabMode="fixed" />
 
     <View
         android:layout_width="match_parent"

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nineoldandroids.animation.Animator;
@@ -165,12 +166,25 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
     @Override
     public void initTab() {
-        for (int i = 0; i < 10; i++)
-            tabLayout.addTab(tabLayout.newTab().setText("兴趣1"));
+        for (int i = 0; i < 10; i++) {
+            TextView textView = (TextView) View.inflate(getActivity(), R.layout.text_view, null);
+            textView.setText("兴趣45");
+            if (i == 0) {
+                textView.setTextSize(15);
+            } else {
+                textView.setTextSize(13);
+            }
+//            tabLayout.addTab(tabLayout.newTab().setText("兴趣1"));
+            tabLayout.addTab(tabLayout.newTab().setCustomView(textView));
+        }
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                TextView view = (TextView) tab.getCustomView();
+                if (view != null) {
+                    view.setTextSize(15);
+                }
                 presenter.initTabData(true);
                 recyclerView.setVisibility(View.INVISIBLE);
                 startAnimation();
@@ -178,7 +192,10 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                TextView view = (TextView) tab.getCustomView();
+                if (view != null) {
+                    view.setTextSize(13);
+                }
             }
 
             @Override
