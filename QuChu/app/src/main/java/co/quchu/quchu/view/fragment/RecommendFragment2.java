@@ -242,10 +242,12 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
                 intent.putExtra("pId", cardList.get(position).getPid());
                 startActivity(intent);
                 break;
-            case R.id.item_recommend_card_collect_rl:
+            case R.id.item_recommend_card_collect_iv:
+                //收藏
                 setFavorite(position);
                 break;
-            case R.id.item_recommend_card_interest_rl:
+            case R.id.item_recommend_card_interest_iv:
+                //分享
                 ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(cardList.get(position).getPid(), cardList.get(position).getName(), true);
                 shareDialogFg.show(getActivity().getFragmentManager(), "share_place");
                 break;

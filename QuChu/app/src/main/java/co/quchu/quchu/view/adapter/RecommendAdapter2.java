@@ -77,9 +77,16 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         }
         holder.itemRecommendCardAddressTv.setText(model.getAddress());
         holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
-        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().
-                getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        holder.itemRecommendCardCollectIv.setImageResource(
+                model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect);
         holder.item_recommend_card_name_tv.setText(model.getName());
+
+        List<RecommendModel.GenesEntity> genes = model.getGenes();
+        holder.tag1.setText(genes.get(0).getKey());
+        holder.tag2.setText(genes.get(1).getKey());
+        holder.tag3.setText(genes.get(2).getKey());
+
+
     }
 
     @Override
@@ -102,6 +109,13 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         @Bind(R.id.item_recommend_card_name_tv)
         TextView item_recommend_card_name_tv;
 
+        @Bind(R.id.recommend_action_tag1)
+        TextView tag1;
+        @Bind(R.id.recommend_action_tag2)
+        TextView tag2;
+        @Bind(R.id.recommend_action_tag3)
+        TextView tag3;
+
         @Bind(R.id.root_cv)
         CardView rootCv;
         @Bind(R.id.item_recommend_card_collect_iv)
@@ -114,7 +128,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
             this.listener = listener;
         }
 
-        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_interest_rl})
+        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_iv, R.id.item_recommend_card_interest_iv})
         public void cardClick(View view) {
             if (isFastDoubleClick())
                 return;

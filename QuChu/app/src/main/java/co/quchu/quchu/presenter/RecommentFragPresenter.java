@@ -51,7 +51,7 @@ public class RecommentFragPresenter {
             message.what = 0;
             handle.removeMessages(0);
         }
-        handle.sendMessageDelayed(message, 1000);
+        handle.sendMessageDelayed(message, 500);
     }
 
     class MyHandle extends Handler {
