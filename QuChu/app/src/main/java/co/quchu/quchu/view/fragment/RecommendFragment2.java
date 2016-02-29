@@ -1,19 +1,33 @@
 package co.quchu.quchu.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.cache.common.CacheKey;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.facebook.imagepipeline.request.Postprocessor;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -25,6 +39,8 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.blurdialogfragment.FastBlurHelper;
+import co.quchu.quchu.blurdialogfragment.RenderScriptBlurHelper;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
@@ -56,6 +72,127 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
     private RecommentFragPresenter presenter;
 
+    private final int MESSAGE_FLAG_DELAY_TRIGGER = 0x0001;
+    private final int MESSAGE_FLAG_BLUR_RENDERING_FINISH = 0x0002;
+    public static final String MESSAGE_KEY_URI = "MESSAGE_KEY_URI";
+    public static final String MESSAGE_KEY_BITMAP = "MESSAGE_KEY_BITMAP";
+
+    private int currentIndex = -1;
+    private int currentBGIndex = -1;
+
+    private class BlurEffectRunnable implements Runnable {
+
+        private final int index;
+
+        public BlurEffectRunnable(int postIndex){
+            index = postIndex;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(1000l);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (-1!=currentIndex && index == currentIndex && currentBGIndex != currentIndex){
+                if (null!=cardList&&cardList.size()>currentIndex){
+                    String strUri = cardList.get(currentIndex).getCover();
+                    Uri imgUri;
+                    if (null!=strUri){
+                        imgUri = Uri.parse(strUri);
+                        Message message = new Message();
+                        message.what = MESSAGE_FLAG_DELAY_TRIGGER;
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(MESSAGE_KEY_URI,imgUri);
+                        message.setData(bundle);
+                        mBlurEffectAnimationHandler.sendMessage(message);
+                    }
+                }
+            }
+        }
+    }
+
+    private ObjectAnimator animFadeIn;
+    private ObjectAnimator animFadeOut;
+    private Handler mBlurEffectAnimationHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+
+                case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
+                    Bitmap sourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
+                    Log.e("BITMAP SIZE",sourceBitmap.getWidth()+"|"+sourceBitmap.getHeight());
+//                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+//                                        sourceBitmap = RenderScriptBlurHelper.doBlur(sourceBitmap,60,false,getActivity());
+//                                    }else{
+                    sourceBitmap = Bitmap.createScaledBitmap(sourceBitmap,fRecommendBimgBottom.getWidth()/4,fRecommendBimgBottom.getHeight()/4,false);
+                    long tsCur = System.currentTimeMillis();
+                    sourceBitmap = FastBlurHelper.doBlur(sourceBitmap,10,false);
+//                                    }
+                    Log.e("Rendering time spend",String.valueOf(System.currentTimeMillis() - tsCur));
+
+
+                    if (fRecommendBimgBottom.getVisibility()==View.VISIBLE){
+                        fRecommendBimgBottom.setImageBitmap(sourceBitmap);
+                    }else {
+                        fRecommendBimgTop.setImageBitmap(sourceBitmap);
+                    }
+
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animFadeIn  = ObjectAnimator.ofFloat(fRecommendBimgBottom, "alpha", .2f, 1f);
+                    animFadeOut = ObjectAnimator.ofFloat(fRecommendBimgTop, "alpha", 1f, 0.2f);
+                    animatorSet.setDuration(animationDuration);
+                    animatorSet.setInterpolator(new LinearInterpolator());
+                    animatorSet.playTogether(animFadeOut, animFadeIn);
+                    animatorSet.start();
+                    currentBGIndex = currentIndex;
+
+                    break;
+
+
+                case MESSAGE_FLAG_DELAY_TRIGGER:
+                    Uri imageUri = msg.getData().getParcelable(MESSAGE_KEY_URI);
+
+                    //if true > both of views are invisible
+                    //boolean fact = fRecommendBimgBottom.getVisibility()==fRecommendBimgTop.getVisibility()&&fRecommendBimgTop.getVisibility()!=View.VISIBLE;
+                    if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)){
+                        ImageRequest request = ImageRequestBuilder
+                            .newBuilderWithSource(imageUri)
+                            .setImageType(ImageRequest.ImageType.SMALL)
+                            .setPostprocessor(new Postprocessor() {
+                                @Override
+                                public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
+                                    Message msg = new Message();
+                                    msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
+                                    Bundle bundle = new Bundle();
+                                    bundle.putParcelable(MESSAGE_KEY_BITMAP,sourceBitmap);
+                                    msg.setData(bundle);
+                                    mBlurEffectAnimationHandler.sendMessage(msg);
+                                    return null;
+                                }
+
+                                @Override
+                                public String getName() {
+                                    return null;
+                                }
+
+                                @Override
+                                public CacheKey getPostprocessorCacheKey() {
+                                    return null;
+                                }
+                            })
+                            .build();
+
+                        Fresco.getImagePipeline().fetchImageFromBitmapCache(request,getActivity());
+                    }
+
+                    break;
+            }
+        }
+    };
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,6 +222,8 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
                 presenter.loadMore("", true);
             }
         }
+        currentIndex = newPosition;
+        new Thread(new BlurEffectRunnable(newPosition)).start();
     }
 
 
