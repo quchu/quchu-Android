@@ -68,7 +68,8 @@
 
     <color name="user_guide_text_color">#d8b07e</color>
     <color name="user_guide_bg_blue">#400000FF</color>
-<!--  1.1版本颜色值 start-->
+    <!--  1.1版本颜色值 start-->
     <color name="new_recommend_line_color">#3E3A39</color>
-<!--  1.1版本颜色值 end-->
+    <color name="new_recommend_tablayout_color">#f2454545</color>
+    <!--  1.1版本颜色值 end-->
 </resources>

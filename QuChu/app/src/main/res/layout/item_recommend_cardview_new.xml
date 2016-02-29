@@ -26,7 +26,7 @@
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/item_recommend_card_photo_sdv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 card_view:actualImageScaleType="centerCrop"
                 card_view:roundBottomLeft="false"
                 card_view:roundBottomRight="false"
@@ -46,138 +46,147 @@
 
         </RelativeLayout>
 
+
+        <TextView
+            android:id="@+id/item_recommend_card_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/dialog_margin"
+            android:layout_marginTop="@dimen/dialog_margin"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="2dp"
+            android:maxEms="10"
+            android:singleLine="false"
+            android:textColor="@color/new_recommend_line_color"
+            android:textSize="@dimen/word_subhead_size" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/dialog_margin"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:background="@color/new_recommend_line_color" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/item_recommend_card_name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/dialog_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/dialog_margin"
-                android:textColor="@color/new_recommend_line_color"
-                android:textSize="@dimen/word_subhead_size" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/dialog_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:background="@color/new_recommend_line_color" />
-
-            <co.quchu.quchu.widget.ratingbar.ProperRatingBar
-                android:id="@+id/item_recommend_card_prb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/half_margin"
-                android:layout_marginTop="@dimen/half_margin"
-                card_view:prb_clickable="false"
-                card_view:prb_defaultRating="4"
-                card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
-                card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
-                card_view:prb_tickSpacing="2dp"
-                card_view:prb_totalTicks="5" />
-
-            <TextView
-                android:id="@+id/item_recommend_card_address_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/dialog_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:textColor="@color/new_recommend_line_color"
-                android:textSize="@dimen/word_size_body" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom">
-
-                <RelativeLayout
-                    android:id="@+id/item_recommend_card_collect_rl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true">
-
-                    <ImageView
-                        android:id="@+id/item_recommend_card_collect_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/base_margin"
-                        android:src="@drawable/ic_atmophere_unselected" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_below="@id/item_recommend_card_collect_iv" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_toRightOf="@id/item_recommend_card_collect_iv" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/item_recommend_card_interest_rl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true">
-
-                    <ImageView
-                        android:id="@+id/item_recommend_card_interest_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/base_margin"
-                        android:src="@drawable/ic_recommend_bc_right" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_below="@id/item_recommend_card_interest_iv" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_toRightOf="@id/item_recommend_card_interest_iv" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/item_recommend_card_reply_rl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true">
-
-                    <ImageView
-                        android:id="@+id/item_recommend_card_reply_Iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/base_margin"
-                        android:src="@drawable/ic_atmosphere_more" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_below="@id/item_recommend_card_reply_Iv" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_toRightOf="@id/item_recommend_card_reply_Iv" />
-                </RelativeLayout>
-            </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:orientation="horizontal">
 
         </LinearLayout>
+
+        <co.quchu.quchu.widget.ratingbar.ProperRatingBar
+            android:id="@+id/item_recommend_card_prb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            card_view:prb_clickable="false"
+            card_view:prb_defaultRating="4"
+            card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
+            card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
+            card_view:prb_tickSpacing="2dp"
+            card_view:prb_totalTicks="5" />
+
+        <TextView
+            android:id="@+id/item_recommend_card_address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/dialog_margin"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="@color/new_recommend_line_color"
+            android:textSize="@dimen/word_size_body" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <RelativeLayout
+                android:id="@+id/item_recommend_card_collect_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/item_recommend_card_collect_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/base_margin"
+                    android:src="@drawable/ic_atmophere_unselected" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/item_recommend_card_collect_iv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_toRightOf="@id/item_recommend_card_collect_iv" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/item_recommend_card_interest_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/item_recommend_card_interest_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/base_margin"
+                    android:src="@drawable/ic_recommend_bc_right" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/item_recommend_card_interest_iv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_toRightOf="@id/item_recommend_card_interest_iv" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/item_recommend_card_reply_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/item_recommend_card_reply_Iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/base_margin"
+                    android:src="@drawable/ic_atmosphere_more" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/item_recommend_card_reply_Iv" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_toRightOf="@id/item_recommend_card_reply_Iv" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
     </LinearLayout>
 </android.support.v7.widget.CardView>

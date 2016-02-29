@@ -67,7 +67,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="8dp"
+        android:layout_height="6dp"
         android:layout_below="@id/recommend_title_bar_rl"
-        android:background="@drawable/shape_shadow_toptobottom" />
+        android:background="@drawable/shadow_bottom" />
 </RelativeLayout>
