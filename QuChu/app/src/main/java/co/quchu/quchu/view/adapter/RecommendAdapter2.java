@@ -2,9 +2,13 @@ package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.DynamicDrawableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +26,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -63,12 +68,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
     @Override
     public void onBindViewHolder(RecommendAdapter2.RecommendHolder holder, int position) {
         RecommendModel model = arrayList.get(position);
-        holder.rootCv.setCardBackgroundColor(Color.parseColor("#B3EEEFEF"));
-        if (isFlyme) {
-            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.7f);
-        } else {
-            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.5f);
-        }
+        holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (model.isIsActivity()) {
             holder.item_place_event_tv.setVisibility(View.VISIBLE);
@@ -86,6 +86,28 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         holder.tag2.setText(genes.get(1).getKey());
         holder.tag3.setText(genes.get(2).getKey());
 
+        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().
+                getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+
+        if (true) {//用户去过该趣处
+            //去过标签 start
+            SpannableString spanText = new SpannableString(model.getName() + "，");
+            DynamicDrawableSpan drawableSpan2 = new DynamicDrawableSpan(
+                    DynamicDrawableSpan.ALIGN_BOTTOM) {
+                @Override
+                public Drawable getDrawable() {
+                    Drawable d = mContext.getResources().getDrawable(R.drawable.shape_usercenter_foucsed);
+                    d.setBounds(StringUtils.dip2px(8), -StringUtils.dip2px(16), StringUtils.dip2px(40), 0);
+                    return d;
+                }
+            };
+            spanText.setSpan(drawableSpan2, model.getName().length(), model.getName().length() + 1
+                    , Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            holder.item_recommend_card_name_tv.setText(spanText);
+            //去过标签 end
+        } else {
+            holder.item_recommend_card_name_tv.setText(model.getName());
+        }
 
     }
 
@@ -126,6 +148,11 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.listener = listener;
+            if (isFlyme) {
+                itemRecommendCardPhotoSdv.setAspectRatio(1.7f);
+            } else {
+                itemRecommendCardPhotoSdv.setAspectRatio(1.5f);
+            }
         }
 
         @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_iv, R.id.item_recommend_card_interest_iv})

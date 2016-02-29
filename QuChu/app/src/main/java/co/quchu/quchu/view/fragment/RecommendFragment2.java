@@ -412,7 +412,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
             @Override
             public void onAnimationEnd(Animator animator) {
-
+                fRecommendBimgTop.setVisibility(View.INVISIBLE);
             }
 
             @Override
