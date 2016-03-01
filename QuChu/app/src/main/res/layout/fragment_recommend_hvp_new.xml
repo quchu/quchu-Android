@@ -9,12 +9,15 @@
         android:id="@+id/f_recommend_bimg_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="fitXY"
         android:visibility="visible"/>
 
     <ImageView
         android:id="@+id/f_recommend_bimg_top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
