@@ -122,7 +122,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
                 case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
                     Bitmap sourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
-                    executeSwitchAnimation(ImageUtils.doBlur(sourceBitmap,fRecommendBimgBottom.getWidth()/4,fRecommendBimgBottom.getHeight()/4),-1);
+                    executeSwitchAnimation(ImageUtils.doBlur(sourceBitmap,fRecommendBimgBottom.getWidth()/4,fRecommendBimgBottom.getHeight()/4));
                     currentBGIndex = currentIndex;
 
                 break;
@@ -304,18 +304,15 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
                 if (view != null) {
                     view.setTextSize(15);
                 }
+
                 presenter.initTabData(true);
                 recyclerView.setVisibility(View.INVISIBLE);
                 //TODO execute background switch Animation
                 int index = tab.getPosition();
-                if (index %2 ==0){
-
-                }else if(index %3 ==0){
-
-                }else{
-
-                }
-                executeSwitchAnimation(null,-1);
+                int resIdTop = R.drawable.bg_tablayout_landscape;
+                int resIdBottom = R.drawable.bg_tablayout_landscape_blr;
+                Toast.makeText(getActivity(),"TABCHANGED",Toast.LENGTH_SHORT).show();
+                executeTabSelectAnimation(resIdTop,resIdBottom);
 
             }
 
@@ -346,6 +343,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
             pageNums = pageNum;
             if (cardList.size() > 0)
                 recyclerView.smoothScrollToPosition(0);
+            currentIndex = 0;
             recyclerView.setVisibility(View.VISIBLE);
         }
     }
@@ -389,34 +387,25 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     }
 
     /**
-     * 执行切换动画
-     * @param bm
-     * @param imgResId
+     * 执行TAB切换动画
      */
-    private void executeSwitchAnimation(Bitmap bm,int imgResId){
-
-        if (null!=bm){
-            if (mBackgroundTopVisible){
-                fRecommendBimgBottom.setImageBitmap(bm);
-                mAnimFadeIn.setTarget(fRecommendBimgBottom);
-                mAnimFadeOut.setTarget(fRecommendBimgTop);
-            }else{
-                fRecommendBimgTop.setImageBitmap(bm);
-                mAnimFadeIn.setTarget(fRecommendBimgTop);
-                mAnimFadeOut.setTarget(fRecommendBimgBottom);
-
-            }
-        }else if(imgResId != -1){
-            //TODO 这里处理切换TAB时的图片加载
+    private void executeTabSelectAnimation(final int resIdTop, final int resIdBottom){
+        if (mBackgroundTopVisible){
+            fRecommendBimgBottom.setImageResource(resIdTop);
+            mAnimFadeIn.setTarget(fRecommendBimgBottom);
+            mAnimFadeOut.setTarget(fRecommendBimgTop);
+        }else{
+            fRecommendBimgTop.setImageResource(resIdTop);
+            mAnimFadeIn.setTarget(fRecommendBimgTop);
+            mAnimFadeOut.setTarget(fRecommendBimgBottom);
         }
         mBackgroundSwitchAnimatorSet = new AnimatorSet();
-        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration);
+        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration/2);
         mBackgroundSwitchAnimatorSet.setInterpolator(new LinearInterpolator());
         mBackgroundSwitchAnimatorSet.playTogether(mAnimFadeOut, mAnimFadeIn);
         mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                Log.e("OAS","STR "+fRecommendBimgBottom.getVisibility()+"|"+fRecommendBimgTop.getVisibility()+"   "+View.VISIBLE+","+View.INVISIBLE);
                 if (mBackgroundTopVisible){
                     fRecommendBimgBottom.setVisibility(View.VISIBLE);
                 }else {
@@ -426,13 +415,69 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                Log.e("OAS","ING "+fRecommendBimgBottom.getVisibility()+"|"+fRecommendBimgTop.getVisibility()+"   "+View.VISIBLE+","+View.INVISIBLE);
                 if (mBackgroundTopVisible){
                     fRecommendBimgTop.setVisibility(View.INVISIBLE);
                 }else {
                     fRecommendBimgBottom.setVisibility(View.INVISIBLE);
                 }
-                Log.e("OAS","END "+fRecommendBimgBottom.getVisibility()+"|"+fRecommendBimgTop.getVisibility()+"   "+View.VISIBLE+","+View.INVISIBLE);
+                mBackgroundTopVisible = fRecommendBimgTop.getVisibility()==View.VISIBLE;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+        mBackgroundSwitchAnimatorSet.start();
+
+    }
+
+    /**
+     * 执行切换动画
+     * @param bm
+     */
+    private void executeSwitchAnimation(Bitmap bm){
+
+        if (null==bm){
+            return;
+        }
+
+        if (mBackgroundTopVisible){
+            fRecommendBimgBottom.setImageBitmap(bm);
+            mAnimFadeIn.setTarget(fRecommendBimgBottom);
+            mAnimFadeOut.setTarget(fRecommendBimgTop);
+        }else{
+            fRecommendBimgTop.setImageBitmap(bm);
+            mAnimFadeIn.setTarget(fRecommendBimgTop);
+            mAnimFadeOut.setTarget(fRecommendBimgBottom);
+
+        }
+        mBackgroundSwitchAnimatorSet = new AnimatorSet();
+        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration);
+        mBackgroundSwitchAnimatorSet.setInterpolator(new LinearInterpolator());
+        mBackgroundSwitchAnimatorSet.playTogether(mAnimFadeOut, mAnimFadeIn);
+        mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                if (mBackgroundTopVisible){
+                    fRecommendBimgBottom.setVisibility(View.VISIBLE);
+                }else {
+                    fRecommendBimgTop.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                if (mBackgroundTopVisible){
+                    fRecommendBimgTop.setVisibility(View.INVISIBLE);
+                }else {
+                    fRecommendBimgBottom.setVisibility(View.INVISIBLE);
+                }
                 mBackgroundTopVisible = fRecommendBimgTop.getVisibility()==View.VISIBLE;
             }
 
