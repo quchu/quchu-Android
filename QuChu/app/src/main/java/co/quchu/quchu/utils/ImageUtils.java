@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Build;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -11,12 +12,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import co.quchu.quchu.blurdialogfragment.FastBlurHelper;
+
 /**
  * ImageUtils
  * User: Chenhs
  * Date: 2015-12-18
  */
 public class ImageUtils {
+
+    public static Bitmap doBlur(Bitmap bitmap,int scaleToWith,int scaleToHeight){
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                        sourceBitmap = RenderScriptBlurHelper.doBlur(sourceBitmap,60,false,getActivity());
+//                    }else{
+            bitmap = Bitmap.createScaledBitmap(bitmap, scaleToWith, scaleToHeight, false);
+            bitmap = FastBlurHelper.doBlur(bitmap, 10, false);
+//                    }
+//        }
+        return bitmap;
+    }
+
     public static byte[] Bitmap2Bytes(Bitmap bmp, int types) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         if (null == bmp) {

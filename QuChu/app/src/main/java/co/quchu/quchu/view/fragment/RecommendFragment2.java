@@ -3,7 +3,6 @@ package co.quchu.quchu.view.fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,12 +38,12 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.blurdialogfragment.FastBlurHelper;
-import co.quchu.quchu.blurdialogfragment.RenderScriptBlurHelper;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
+import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter2;
@@ -60,25 +58,30 @@ import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
 public class RecommendFragment2 extends Fragment implements RecommendAdapter2.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
     @Bind(R.id.f_recommend_rvp)
     RecyclerViewPager recyclerView;
-    public List<RecommendModel> cardList;
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
     @Bind(R.id.f_recommend_bimg_bottom)
     ImageView fRecommendBimgBottom;
     @Bind(R.id.f_recommend_bimg_top)
     ImageView fRecommendBimgTop;
+
+
     private boolean isLoading = false;
+    public List<RecommendModel> cardList;
     private RecommendAdapter2 adapter;
-
     private RecommentFragPresenter presenter;
-
+    private int currentIndex = -1;
+    private int currentBGIndex = -1;
     private final int MESSAGE_FLAG_DELAY_TRIGGER = 0x0001;
     private final int MESSAGE_FLAG_BLUR_RENDERING_FINISH = 0x0002;
     public static final String MESSAGE_KEY_URI = "MESSAGE_KEY_URI";
     public static final String MESSAGE_KEY_BITMAP = "MESSAGE_KEY_BITMAP";
-
-    private int currentIndex = -1;
-    private int currentBGIndex = -1;
+    private ObjectAnimator mAnimFadeIn;
+    private ObjectAnimator mAnimFadeOut;
+    private AnimatorSet mBackgroundSwitchAnimatorSet;
+    private long mBackgroundSwitchAnimationDuration = 500;
+    private final long mBackgroundSwitchDelay = 1000l;
+    private boolean mBackgroundTopVisible = true;
 
     private class BlurEffectRunnable implements Runnable {
 
@@ -91,7 +94,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
         @Override
         public void run() {
             try {
-                Thread.sleep(1000l);
+                Thread.sleep(mBackgroundSwitchDelay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -112,9 +115,6 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
             }
         }
     }
-
-    private ObjectAnimator animFadeIn;
-    private ObjectAnimator animFadeOut;
     private Handler mBlurEffectAnimationHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -123,34 +123,10 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
                 case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
                     Bitmap sourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
-                    Log.e("BITMAP SIZE",sourceBitmap.getWidth()+"|"+sourceBitmap.getHeight());
-//                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
-//                                        sourceBitmap = RenderScriptBlurHelper.doBlur(sourceBitmap,60,false,getActivity());
-//                                    }else{
-                    sourceBitmap = Bitmap.createScaledBitmap(sourceBitmap,fRecommendBimgBottom.getWidth()/4,fRecommendBimgBottom.getHeight()/4,false);
-                    long tsCur = System.currentTimeMillis();
-                    sourceBitmap = FastBlurHelper.doBlur(sourceBitmap,10,false);
-//                                    }
-                    Log.e("Rendering time spend",String.valueOf(System.currentTimeMillis() - tsCur));
-
-
-                    if (fRecommendBimgBottom.getVisibility()==View.VISIBLE){
-                        fRecommendBimgBottom.setImageBitmap(sourceBitmap);
-                    }else {
-                        fRecommendBimgTop.setImageBitmap(sourceBitmap);
-                    }
-
-                    AnimatorSet animatorSet = new AnimatorSet();
-                    animFadeIn  = ObjectAnimator.ofFloat(fRecommendBimgBottom, "alpha", .2f, 1f);
-                    animFadeOut = ObjectAnimator.ofFloat(fRecommendBimgTop, "alpha", 1f, 0.2f);
-                    animatorSet.setDuration(animationDuration);
-                    animatorSet.setInterpolator(new LinearInterpolator());
-                    animatorSet.playTogether(animFadeOut, animFadeIn);
-                    animatorSet.start();
+                    executeSwitchAnimation(ImageUtils.doBlur(sourceBitmap,fRecommendBimgBottom.getWidth()/4,fRecommendBimgBottom.getHeight()/4),-1);
                     currentBGIndex = currentIndex;
 
-                    break;
-
+                break;
 
                 case MESSAGE_FLAG_DELAY_TRIGGER:
                     Uri imageUri = msg.getData().getParcelable(MESSAGE_KEY_URI);
@@ -164,12 +140,14 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
                             .setPostprocessor(new Postprocessor() {
                                 @Override
                                 public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
-                                    Message msg = new Message();
-                                    msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
-                                    Bundle bundle = new Bundle();
-                                    bundle.putParcelable(MESSAGE_KEY_BITMAP,sourceBitmap);
-                                    msg.setData(bundle);
-                                    mBlurEffectAnimationHandler.sendMessage(msg);
+                                    if (null!=sourceBitmap){
+                                        Message msg = new Message();
+                                        msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
+                                        Bundle bundle = new Bundle();
+                                        bundle.putParcelable(MESSAGE_KEY_BITMAP,sourceBitmap);
+                                        msg.setData(bundle);
+                                        mBlurEffectAnimationHandler.sendMessage(msg);
+                                    }
                                     return null;
                                 }
 
@@ -184,11 +162,9 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
                                 }
                             })
                             .build();
-
                         Fresco.getImagePipeline().fetchImageFromBitmapCache(request,getActivity());
                     }
-
-                    break;
+                break;
             }
         }
     };
@@ -210,8 +186,11 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
         presenter.init();
 
+        initBackgroundSwitchAnimations();
         return view;
     }
+
+
 
     @Override
     public void OnPageChanged(int oldPosition, int newPosition) {
@@ -326,7 +305,17 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
                 }
                 presenter.initTabData(true);
                 recyclerView.setVisibility(View.INVISIBLE);
-                startAnimation();
+                //TODO execute background switch Animation
+                int index = tab.getPosition();
+                if (index %2 ==0){
+
+                }else if(index %3 ==0){
+
+                }else{
+
+                }
+                executeSwitchAnimation(null,-1);
+
             }
 
             @Override
@@ -389,28 +378,61 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
 
     /**
-     * animation start
+     * 初始化切换动画
      */
-    private long animationDuration = 500;
+    private void initBackgroundSwitchAnimations() {
 
-    private void startAnimation() {
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(fRecommendBimgTop, "alpha", 1f, 0.2f);
-        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(fRecommendBimgBottom, "alpha", 0.2f, 1f);
-        fRecommendBimgTop.setVisibility(View.INVISIBLE);
-        AnimatorSet animatorSet = new AnimatorSet();
+        mAnimFadeIn = ObjectAnimator.ofFloat(fRecommendBimgTop, "alpha", 0f, 1f);
+        mAnimFadeOut = ObjectAnimator.ofFloat(fRecommendBimgBottom, "alpha", 1f, 0f);
 
-        animatorSet.setDuration(animationDuration);
-        animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.playTogether(objectAnimator, objectAnimator2);
-        animatorSet.addListener(new Animator.AnimatorListener() {
+    }
+
+    /**
+     * 执行切换动画
+     * @param bm
+     * @param imgResId
+     */
+    private void executeSwitchAnimation(Bitmap bm,int imgResId){
+
+        if (null!=bm){
+            if (mBackgroundTopVisible){
+                fRecommendBimgBottom.setImageBitmap(bm);
+                mAnimFadeIn.setTarget(fRecommendBimgBottom);
+                mAnimFadeOut.setTarget(fRecommendBimgTop);
+            }else{
+                fRecommendBimgTop.setImageBitmap(bm);
+                mAnimFadeIn.setTarget(fRecommendBimgTop);
+                mAnimFadeOut.setTarget(fRecommendBimgBottom);
+
+            }
+        }else if(imgResId != -1){
+            //TODO 这里处理切换TAB时的图片加载
+        }
+        mBackgroundSwitchAnimatorSet = new AnimatorSet();
+        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration);
+        mBackgroundSwitchAnimatorSet.setInterpolator(new LinearInterpolator());
+        mBackgroundSwitchAnimatorSet.playTogether(mAnimFadeOut, mAnimFadeIn);
+        mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-
+                Log.e("OAS","STR "+fRecommendBimgBottom.getVisibility()+"|"+fRecommendBimgTop.getVisibility()+"   "+View.VISIBLE+","+View.INVISIBLE);
+                if (mBackgroundTopVisible){
+                    fRecommendBimgBottom.setVisibility(View.VISIBLE);
+                }else {
+                    fRecommendBimgTop.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-
+                Log.e("OAS","ING "+fRecommendBimgBottom.getVisibility()+"|"+fRecommendBimgTop.getVisibility()+"   "+View.VISIBLE+","+View.INVISIBLE);
+                if (mBackgroundTopVisible){
+                    fRecommendBimgTop.setVisibility(View.INVISIBLE);
+                }else {
+                    fRecommendBimgBottom.setVisibility(View.INVISIBLE);
+                }
+                Log.e("OAS","END "+fRecommendBimgBottom.getVisibility()+"|"+fRecommendBimgTop.getVisibility()+"   "+View.VISIBLE+","+View.INVISIBLE);
+                mBackgroundTopVisible = fRecommendBimgTop.getVisibility()==View.VISIBLE;
             }
 
             @Override
@@ -423,9 +445,6 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
             }
         });
-        animatorSet.start();
+        mBackgroundSwitchAnimatorSet.start();
     }
-    /**
-     * animation end
-     */
 }
