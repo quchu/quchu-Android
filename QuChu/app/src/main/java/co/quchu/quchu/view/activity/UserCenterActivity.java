@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.StringUtils;
@@ -158,17 +160,22 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     }
 
     private void followSomebody() {
-        UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userInfo.userId, new UserCenterPresenter.UserCenterInfoCallBack() {
-            @Override
-            public void onSuccess(UserCenterInfo userCenterInfo) {
-                userInfo.setIsFollow(!userInfo.isIsFollow());
-                updateIsFollow();
-            }
+        if (AppContext.user.isIsVisitors()) {
+            VisitorLoginDialogFg fg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFOCUS);
+            fg.show(getFragmentManager(), "QFocus");
+        } else {
+            UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userInfo.userId, new UserCenterPresenter.UserCenterInfoCallBack() {
+                @Override
+                public void onSuccess(UserCenterInfo userCenterInfo) {
+                    userInfo.setIsFollow(!userInfo.isIsFollow());
+                    updateIsFollow();
+                }
 
-            @Override
-            public void onError() {
+                @Override
+                public void onError() {
 
-            }
-        });
+                }
+            });
+        }
     }
 }
