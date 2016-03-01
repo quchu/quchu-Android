@@ -26,6 +26,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
+import co.quchu.quchu.utils.MIUIUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -39,13 +40,14 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
 
 
     private Activity mContext;
-    private boolean isFlyme = false;
+    private boolean isFlyme = false,isMIUI=false;
     private List<RecommendModel> arrayList;
     private CardClickListener listener;
 
     public RecommendAdapter2(Activity mContext, CardClickListener listener) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
+        isMIUI= MIUIUtils.isMIUI();
         this.listener = listener;
     }
 
@@ -62,7 +64,11 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
 
     @Override
     public RecommendAdapter2.RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new, parent, false), listener);
+        if (isMIUI) {
+            return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, parent, false), listener);
+        }else {
+            return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_other, parent, false), listener);
+        }
     }
 
     @Override
@@ -96,7 +102,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
                     DynamicDrawableSpan.ALIGN_BOTTOM) {
                 @Override
                 public Drawable getDrawable() {
-                    Drawable d = mContext.getResources().getDrawable(R.drawable.shape_usercenter_foucsed);
+                    Drawable d = mContext.getResources().getDrawable(R.drawable.recommend_actiion_tag);
                     d.setBounds(StringUtils.dip2px(8), -StringUtils.dip2px(16), StringUtils.dip2px(40), 0);
                     return d;
                 }
@@ -149,9 +155,9 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
             ButterKnife.bind(this, itemView);
             this.listener = listener;
             if (isFlyme) {
-                itemRecommendCardPhotoSdv.setAspectRatio(1.7f);
-            } else {
                 itemRecommendCardPhotoSdv.setAspectRatio(1.5f);
+            } else {
+                itemRecommendCardPhotoSdv.setAspectRatio(1.3f);
             }
         }
 

@@ -27,6 +27,11 @@
                 android:id="@+id/item_recommend_card_photo_sdv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                card_view:roundTopLeft="true"
+                card_view:roundTopRight="true"
+                card_view:roundBottomRight="false"
+                card_view:roundBottomLeft="false"
+                card_view:roundedCornerRadius="8dp"
                 card_view:actualImageScaleType="centerCrop"  />
 
             <TextView
