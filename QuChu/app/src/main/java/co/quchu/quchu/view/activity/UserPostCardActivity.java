@@ -66,7 +66,10 @@ public class UserPostCardActivity extends BaseActivity {
             public void onCardLick(View view, int position) {
                 switch (view.getId()) {
                     case R.id.item_recommend_card_reply_rl:
-                        startActivity(new Intent(UserPostCardActivity.this, PostCardDetailActivity.class).putExtra("cInfo", model.getPage().getResult().get(position)));
+                        if (null!=model && null!=model.getPage().getResult() && model.getPage().getResult().size()>position){
+                            startActivity(new Intent(UserPostCardActivity.this, PostCardDetailActivity.class).putExtra("cInfo", model.getPage().getResult().get(position)));
+                        }
+
                         break;
                 }
             }

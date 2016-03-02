@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
@@ -36,7 +37,7 @@ import co.quchu.quchu.view.activity.UserLoginActivity;
  * User: Chenhs
  * Date: 2015-11-25
  */
-public class UserLoginMainFragment extends Fragment implements View.OnClickListener {
+public class UserLoginMainFragment extends BaseFragment implements View.OnClickListener {
     /*   @Bind(R.id.user_login_main_circle_iv)
        ImageView userLoginMainCircleIv;
        @Bind(R.id.user_login_main_cwv)

@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FlickrModel;
 import co.quchu.quchu.photo.previewimage.ImageBDInfo;
 import co.quchu.quchu.view.adapter.FlickrListAdapter;
@@ -22,7 +23,7 @@ import co.quchu.quchu.widget.InnerListView;
  * User: Chenhs
  * Date: 2015-11-18
  */
-public class FlickrListFragment extends Fragment {
+public class FlickrListFragment extends BaseFragment {
     @Bind(R.id.fragment_flickr_lv)
     InnerListView fragmentFlickrLv;
 

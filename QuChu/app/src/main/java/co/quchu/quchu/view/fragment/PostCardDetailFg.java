@@ -23,6 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
@@ -45,7 +46,7 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
  * User: Chenhs
  * Date: 2015-11-09
  */
-public class PostCardDetailFg extends Fragment {
+public class PostCardDetailFg extends BaseFragment {
     View view;
 
 

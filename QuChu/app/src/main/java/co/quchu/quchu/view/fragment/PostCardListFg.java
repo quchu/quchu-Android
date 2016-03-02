@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.LogUtils;
@@ -23,7 +24,7 @@ import co.quchu.quchu.widget.cardsui.views.CardUI;
  * Date: 2015-11-09
  * 获取我的明信片
  */
-public class PostCardListFg extends Fragment {
+public class PostCardListFg extends BaseFragment {
     View view;
 
     private boolean isFavoritePostCard = false;

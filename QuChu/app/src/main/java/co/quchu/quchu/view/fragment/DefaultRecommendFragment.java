@@ -22,6 +22,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
@@ -32,6 +33,7 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.InterestingDetailsActivity;
+import co.quchu.quchu.view.adapter.ClassifyDecoration;
 import co.quchu.quchu.view.adapter.RecommendAdapterLite;
 
 /**
@@ -40,7 +42,7 @@ import co.quchu.quchu.view.adapter.RecommendAdapterLite;
  * Date: 2015-12-07
  * 推荐 类别点击进入后的
  */
-public class DefaultRecommendFragment extends Fragment implements RecommendAdapterLite.CardClickListener {
+public class DefaultRecommendFragment extends BaseFragment implements RecommendAdapterLite.CardClickListener {
     @Bind(R.id.f_recommend_rvp)
     RecyclerView dfRecommendRvp;
 
@@ -53,8 +55,9 @@ public class DefaultRecommendFragment extends Fragment implements RecommendAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recommend, container,false);
         ButterKnife.bind(this, view);
-        LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        dfRecommendRvp.setLayoutManager(layout);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        dfRecommendRvp.setLayoutManager(mLayoutManager);
+        dfRecommendRvp.addItemDecoration(new ClassifyDecoration(getActivity()));
         adapter = new RecommendAdapterLite(getActivity(), this);
         dfRecommendRvp.setAdapter(adapter);
         dfRecommendRvp.setHasFixedSize(true);

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.ClassifyModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -37,7 +38,7 @@ import co.quchu.quchu.view.adapter.ClassifyDecoration;
  * Date: 2015-12-07
  * 分类
  */
-public class ClassifyFragment extends Fragment {
+public class ClassifyFragment extends BaseFragment {
     @Bind(R.id.fragment_firends_rv)
     RecyclerView fragmentFirendsRv;
     private ClassifyAdapter cAdapter;

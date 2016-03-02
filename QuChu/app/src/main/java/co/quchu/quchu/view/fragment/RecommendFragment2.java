@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +27,7 @@ import com.facebook.imagepipeline.request.Postprocessor;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -36,6 +36,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
@@ -53,7 +54,7 @@ import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment2 extends Fragment implements RecommendAdapter2.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
+public class RecommendFragment2 extends BaseFragment implements RecommendAdapter2.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
     @Bind(R.id.f_recommend_rvp)
     RecyclerViewPager recyclerView;
     @Bind(R.id.tabLayout)
@@ -78,7 +79,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     private ObjectAnimator mAnimFadeOut;
     private AnimatorSet mBackgroundSwitchAnimatorSet;
     private long mBackgroundSwitchAnimationDuration = 500;
-    private final long mBackgroundSwitchDelay = 1000l;
+    private final long mBackgroundSwitchDelay = 300l;
     private boolean mBackgroundTopVisible = true;
 
     private class BlurEffectRunnable implements Runnable {
@@ -259,9 +260,11 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     }
 
     public void updateDateSet() {
-        cardList.set(hasChangePosition, AppContext.selectedPlace);
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
+        if (null != cardList && cardList.size() > hasChangePosition) {
+            cardList.set(hasChangePosition, AppContext.selectedPlace);
+            if (adapter != null)
+                adapter.notifyDataSetChanged();
+        }
     }
 
     public void removeDataSet(int removeIndex) {
@@ -307,13 +310,6 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
                 presenter.initTabData(true);
                 recyclerView.setVisibility(View.INVISIBLE);
-                //TODO execute background switch Animation
-                int index = tab.getPosition();
-                int resIdTop = R.drawable.bg_tablayout_landscape;
-                int resIdBottom = R.drawable.bg_tablayout_landscape_blr;
-                Toast.makeText(getActivity(), "TABCHANGED", Toast.LENGTH_SHORT).show();
-                executeTabSelectAnimation(resIdTop, resIdBottom);
-
             }
 
             @Override
@@ -497,5 +493,13 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
             }
         });
         mBackgroundSwitchAnimatorSet.start();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }
