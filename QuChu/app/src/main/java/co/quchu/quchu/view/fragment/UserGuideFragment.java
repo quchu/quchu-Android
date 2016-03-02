@@ -13,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
@@ -21,7 +22,7 @@ import co.quchu.quchu.view.activity.RecommendActivity;
  * User: Chenhs
  * Date: 2015-11-30
  */
-public class UserGuideFragment extends Fragment {
+public class UserGuideFragment extends BaseFragment {
 
     @Bind(R.id.userguide_start_button)
     TextView userguideStartButton;

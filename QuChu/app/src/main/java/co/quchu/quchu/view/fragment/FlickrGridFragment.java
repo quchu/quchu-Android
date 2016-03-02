@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FlickrModel;
 import co.quchu.quchu.view.adapter.FlickrGridAdapter;
 import co.quchu.quchu.widget.InnerGridView;
@@ -20,7 +21,7 @@ import co.quchu.quchu.widget.InnerGridView;
  * User: Chenhs
  * Date: 2015-11-18
  */
-public class FlickrGridFragment extends Fragment {
+public class FlickrGridFragment extends BaseFragment {
 
     @Bind(R.id.fragment_flickr_gv)
     InnerGridView fragmentFlickrGv;

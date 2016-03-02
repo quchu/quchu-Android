@@ -22,6 +22,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
@@ -41,7 +42,7 @@ import co.quchu.quchu.view.adapter.RecommendAdapterLite;
  * Date: 2015-12-07
  * 推荐 类别点击进入后的
  */
-public class DefaultRecommendFragment extends Fragment implements RecommendAdapterLite.CardClickListener {
+public class DefaultRecommendFragment extends BaseFragment implements RecommendAdapterLite.CardClickListener {
     @Bind(R.id.f_recommend_rvp)
     RecyclerView dfRecommendRvp;
 

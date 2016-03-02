@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.view.adapter.FriendsAdatper;
 
 /**
@@ -19,7 +20,7 @@ import co.quchu.quchu.view.adapter.FriendsAdatper;
  * User: Chenhs
  * Date: 2015-11-09
  */
-public class FriendsFollowerFg extends Fragment {
+public class FriendsFollowerFg extends BaseFragment {
     View view;
     @Bind(R.id.fragment_firends_rv)
     RecyclerView fragmentFirendsRv;

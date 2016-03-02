@@ -29,6 +29,7 @@ import com.facebook.imagepipeline.request.Postprocessor;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
@@ -54,7 +56,7 @@ import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment2 extends Fragment implements RecommendAdapter2.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
+public class RecommendFragment2 extends BaseFragment implements RecommendAdapter2.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
     @Bind(R.id.f_recommend_rvp)
     RecyclerViewPager recyclerView;
     @Bind(R.id.tabLayout)
@@ -79,7 +81,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     private ObjectAnimator mAnimFadeOut;
     private AnimatorSet mBackgroundSwitchAnimatorSet;
     private long mBackgroundSwitchAnimationDuration = 500;
-    private final long mBackgroundSwitchDelay = 1000l;
+    private final long mBackgroundSwitchDelay = 300l;
     private boolean mBackgroundTopVisible = true;
 
     private class BlurEffectRunnable implements Runnable {
@@ -259,9 +261,11 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     }
 
     public void updateDateSet() {
-        cardList.set(hasChangePosition, AppContext.selectedPlace);
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
+        if (null!=cardList && cardList.size()>hasChangePosition){
+            cardList.set(hasChangePosition, AppContext.selectedPlace);
+            if (adapter != null)
+                adapter.notifyDataSetChanged();
+        }
     }
 
     public void removeDataSet(int removeIndex) {
@@ -307,13 +311,6 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
                 presenter.initTabData(true);
                 recyclerView.setVisibility(View.INVISIBLE);
-                //TODO execute background switch Animation
-                int index = tab.getPosition();
-                int resIdTop = R.drawable.bg_tablayout_landscape;
-                int resIdBottom = R.drawable.bg_tablayout_landscape_blr;
-                Toast.makeText(getActivity(),"TABCHANGED",Toast.LENGTH_SHORT).show();
-                executeTabSelectAnimation(resIdTop,resIdBottom);
-
             }
 
             @Override
@@ -389,53 +386,53 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     /**
      * 执行TAB切换动画
      */
-    private void executeTabSelectAnimation(final int resIdTop, final int resIdBottom){
-        if (mBackgroundTopVisible){
-            fRecommendBimgBottom.setImageResource(resIdTop);
-            mAnimFadeIn.setTarget(fRecommendBimgBottom);
-            mAnimFadeOut.setTarget(fRecommendBimgTop);
-        }else{
-            fRecommendBimgTop.setImageResource(resIdTop);
-            mAnimFadeIn.setTarget(fRecommendBimgTop);
-            mAnimFadeOut.setTarget(fRecommendBimgBottom);
-        }
-        mBackgroundSwitchAnimatorSet = new AnimatorSet();
-        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration/2);
-        mBackgroundSwitchAnimatorSet.setInterpolator(new LinearInterpolator());
-        mBackgroundSwitchAnimatorSet.playTogether(mAnimFadeOut, mAnimFadeIn);
-        mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-                if (mBackgroundTopVisible){
-                    fRecommendBimgBottom.setVisibility(View.VISIBLE);
-                }else {
-                    fRecommendBimgTop.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                if (mBackgroundTopVisible){
-                    fRecommendBimgTop.setVisibility(View.INVISIBLE);
-                }else {
-                    fRecommendBimgBottom.setVisibility(View.INVISIBLE);
-                }
-                mBackgroundTopVisible = fRecommendBimgTop.getVisibility()==View.VISIBLE;
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
-        mBackgroundSwitchAnimatorSet.start();
-
-    }
+//    private void executeTabSelectAnimation(final int resIdTop, final int resIdBottom){
+//        if (mBackgroundTopVisible){
+//            fRecommendBimgBottom.setImageResource(resIdTop);
+//            mAnimFadeIn.setTarget(fRecommendBimgBottom);
+//            mAnimFadeOut.setTarget(fRecommendBimgTop);
+//        }else{
+//            fRecommendBimgTop.setImageResource(resIdTop);
+//            mAnimFadeIn.setTarget(fRecommendBimgTop);
+//            mAnimFadeOut.setTarget(fRecommendBimgBottom);
+//        }
+//        mBackgroundSwitchAnimatorSet = new AnimatorSet();
+//        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration/2);
+//        mBackgroundSwitchAnimatorSet.setInterpolator(new LinearInterpolator());
+//        mBackgroundSwitchAnimatorSet.playTogether(mAnimFadeOut, mAnimFadeIn);
+//        mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animator) {
+//                if (mBackgroundTopVisible){
+//                    fRecommendBimgBottom.setVisibility(View.VISIBLE);
+//                }else {
+//                    fRecommendBimgTop.setVisibility(View.VISIBLE);
+//                }
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animator) {
+//                if (mBackgroundTopVisible){
+//                    fRecommendBimgTop.setVisibility(View.INVISIBLE);
+//                }else {
+//                    fRecommendBimgBottom.setVisibility(View.INVISIBLE);
+//                }
+//                mBackgroundTopVisible = fRecommendBimgTop.getVisibility()==View.VISIBLE;
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animator) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animator) {
+//
+//            }
+//        });
+//        mBackgroundSwitchAnimatorSet.start();
+//
+//    }
 
     /**
      * 执行切换动画
@@ -492,5 +489,13 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
             }
         });
         mBackgroundSwitchAnimatorSet.start();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }
