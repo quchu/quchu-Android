@@ -48,6 +48,10 @@ public class FriendsAdatper extends RecyclerView.Adapter<FriendsAdatper.FriendsV
         this.clickListener = clickListener;
         this.userList = userList;
     }
+    public FriendsAdatper(Context mContext, ArrayList<FollowUserModel> userList) {
+        this.mContext = mContext;
+        this.userList = userList;
+    }
 
     @Override
     public FriendsAdatper.FriendsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,10 +62,8 @@ public class FriendsAdatper extends RecyclerView.Adapter<FriendsAdatper.FriendsV
     @Override
     public void onBindViewHolder(FriendsViewHolder holder, int position) {
         FollowUserModel model = userList.get(position);
-        holder.itemFirendsIconSdv.setImageURI(Uri.parse("http://imgdn.paimeilv.com/1444721523235"));
+        holder.itemFirendsIconSdv.setImageURI(Uri.parse(model.getPhoto()));
         holder.itemFriendsNameTv.setText(model.getName());
-
-        holder.itemFirendsAddressTv.setText(String.format("%1s , %2s", "女", "福建-厦门"));
     }
 
     @Override
@@ -77,8 +79,7 @@ public class FriendsAdatper extends RecyclerView.Adapter<FriendsAdatper.FriendsV
         SimpleDraweeView itemFirendsIconSdv;
         @Bind(R.id.item_friends_name_tv)
         TextView itemFriendsNameTv;
-        @Bind(R.id.item_firends_address_tv)
-        TextView itemFirendsAddressTv;
+
         @Bind(R.id.item_friends_root_rl)
         RelativeLayout itemFriendsRootRl;
         private FriendsItemClickListener clickListener;

@@ -38,10 +38,10 @@ public class FollowPresenter {
     public static void getFollowsList(Context mContext, final int userID, int followType, int pageNo, final GetFollowCallBack callBack) {
         String followUrl = "";
         switch (followType) {
-            case TAFOLLOWING:
+            case TAFOLLOWING://TA关注的
                 followUrl = String.format(NetApi.getFollow, userID, pageNo, "host");
                 break;
-            case TAFOLLOWERS:
+            case TAFOLLOWERS://关注TA的
                 followUrl = String.format(NetApi.getFollow, userID, pageNo, "follow");
                 break;
         }

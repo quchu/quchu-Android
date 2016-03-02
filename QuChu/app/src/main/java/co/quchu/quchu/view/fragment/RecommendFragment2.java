@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +85,7 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
         private final int index;
 
-        public BlurEffectRunnable(int postIndex){
+        public BlurEffectRunnable(int postIndex) {
             index = postIndex;
         }
 
@@ -97,16 +96,16 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (-1!=currentIndex && index == currentIndex && currentBGIndex != currentIndex){
-                if (null!=cardList&&cardList.size()>currentIndex){
+            if (-1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
+                if (null != cardList && cardList.size() > currentIndex) {
                     String strUri = cardList.get(currentIndex).getCover();
                     Uri imgUri;
-                    if (null!=strUri){
+                    if (null != strUri) {
                         imgUri = Uri.parse(strUri);
                         Message message = new Message();
                         message.what = MESSAGE_FLAG_DELAY_TRIGGER;
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable(MESSAGE_KEY_URI,imgUri);
+                        bundle.putParcelable(MESSAGE_KEY_URI, imgUri);
                         message.setData(bundle);
                         mBlurEffectAnimationHandler.sendMessage(message);
                     }
@@ -114,56 +113,58 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
             }
         }
     }
-    private Handler mBlurEffectAnimationHandler = new Handler(){
+
+    Bitmap sourceBitmap;
+    private Handler mBlurEffectAnimationHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
 
                 case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
-                    Bitmap sourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
-                    executeSwitchAnimation(ImageUtils.doBlur(sourceBitmap,fRecommendBimgBottom.getWidth()/4,fRecommendBimgBottom.getHeight()/4));
+                    sourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
+                    executeSwitchAnimation(ImageUtils.doBlur(sourceBitmap, fRecommendBimgBottom.getWidth() / 4, fRecommendBimgBottom.getHeight() / 4));
                     currentBGIndex = currentIndex;
 
-                break;
+                    break;
 
                 case MESSAGE_FLAG_DELAY_TRIGGER:
                     Uri imageUri = msg.getData().getParcelable(MESSAGE_KEY_URI);
 
                     //if true > both of views are invisible
                     //boolean fact = fRecommendBimgBottom.getVisibility()==fRecommendBimgTop.getVisibility()&&fRecommendBimgTop.getVisibility()!=View.VISIBLE;
-                    if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)){
+                    if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)) {
                         ImageRequest request = ImageRequestBuilder
-                            .newBuilderWithSource(imageUri)
-                            .setImageType(ImageRequest.ImageType.SMALL)
-                            .setPostprocessor(new Postprocessor() {
-                                @Override
-                                public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
-                                    if (null!=sourceBitmap){
-                                        Message msg = new Message();
-                                        msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
-                                        Bundle bundle = new Bundle();
-                                        bundle.putParcelable(MESSAGE_KEY_BITMAP,sourceBitmap);
-                                        msg.setData(bundle);
-                                        mBlurEffectAnimationHandler.sendMessage(msg);
+                                .newBuilderWithSource(imageUri)
+                                .setImageType(ImageRequest.ImageType.SMALL)
+                                .setPostprocessor(new Postprocessor() {
+                                    @Override
+                                    public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
+                                        if (null != sourceBitmap) {
+                                            Message msg = new Message();
+                                            msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
+                                            Bundle bundle = new Bundle();
+                                            bundle.putParcelable(MESSAGE_KEY_BITMAP, sourceBitmap);
+                                            msg.setData(bundle);
+                                            mBlurEffectAnimationHandler.sendMessage(msg);
+                                        }
+                                        return null;
                                     }
-                                    return null;
-                                }
 
-                                @Override
-                                public String getName() {
-                                    return null;
-                                }
+                                    @Override
+                                    public String getName() {
+                                        return null;
+                                    }
 
-                                @Override
-                                public CacheKey getPostprocessorCacheKey() {
-                                    return null;
-                                }
-                            })
-                            .build();
-                        Fresco.getImagePipeline().fetchImageFromBitmapCache(request,getActivity());
+                                    @Override
+                                    public CacheKey getPostprocessorCacheKey() {
+                                        return null;
+                                    }
+                                })
+                                .build();
+                        Fresco.getImagePipeline().fetchImageFromBitmapCache(request, getActivity());
                     }
-                break;
+                    break;
             }
         }
     };
@@ -188,7 +189,6 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
         initBackgroundSwitchAnimations();
         return view;
     }
-
 
 
     @Override
@@ -311,8 +311,8 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
                 int index = tab.getPosition();
                 int resIdTop = R.drawable.bg_tablayout_landscape;
                 int resIdBottom = R.drawable.bg_tablayout_landscape_blr;
-                Toast.makeText(getActivity(),"TABCHANGED",Toast.LENGTH_SHORT).show();
-                executeTabSelectAnimation(resIdTop,resIdBottom);
+                Toast.makeText(getActivity(), "TABCHANGED", Toast.LENGTH_SHORT).show();
+                executeTabSelectAnimation(resIdTop, resIdBottom);
 
             }
 
@@ -389,38 +389,42 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
     /**
      * 执行TAB切换动画
      */
-    private void executeTabSelectAnimation(final int resIdTop, final int resIdBottom){
-        if (mBackgroundTopVisible){
+    private void executeTabSelectAnimation(final int resIdTop, final int resIdBottom) {
+        if (mBackgroundTopVisible) {
             fRecommendBimgBottom.setImageResource(resIdTop);
             mAnimFadeIn.setTarget(fRecommendBimgBottom);
             mAnimFadeOut.setTarget(fRecommendBimgTop);
-        }else{
+        } else {
             fRecommendBimgTop.setImageResource(resIdTop);
             mAnimFadeIn.setTarget(fRecommendBimgTop);
             mAnimFadeOut.setTarget(fRecommendBimgBottom);
         }
         mBackgroundSwitchAnimatorSet = new AnimatorSet();
-        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration/2);
+        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration / 2);
         mBackgroundSwitchAnimatorSet.setInterpolator(new LinearInterpolator());
         mBackgroundSwitchAnimatorSet.playTogether(mAnimFadeOut, mAnimFadeIn);
         mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                if (mBackgroundTopVisible){
+                if (mBackgroundTopVisible) {
                     fRecommendBimgBottom.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     fRecommendBimgTop.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                if (mBackgroundTopVisible){
+                if (mBackgroundTopVisible) {
                     fRecommendBimgTop.setVisibility(View.INVISIBLE);
-                }else {
+                } else {
                     fRecommendBimgBottom.setVisibility(View.INVISIBLE);
                 }
-                mBackgroundTopVisible = fRecommendBimgTop.getVisibility()==View.VISIBLE;
+                mBackgroundTopVisible = fRecommendBimgTop.getVisibility() == View.VISIBLE;
+                if (null != sourceBitmap && !sourceBitmap.isRecycled())
+                    sourceBitmap.recycle();
+                if (sourceBitmap != null)
+                    sourceBitmap = null;
             }
 
             @Override
@@ -439,19 +443,20 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
 
     /**
      * 执行切换动画
+     *
      * @param bm
      */
-    private void executeSwitchAnimation(Bitmap bm){
+    private void executeSwitchAnimation(Bitmap bm) {
 
-        if (null==bm){
+        if (null == bm) {
             return;
         }
 
-        if (mBackgroundTopVisible){
+        if (mBackgroundTopVisible) {
             fRecommendBimgBottom.setImageBitmap(bm);
             mAnimFadeIn.setTarget(fRecommendBimgBottom);
             mAnimFadeOut.setTarget(fRecommendBimgTop);
-        }else{
+        } else {
             fRecommendBimgTop.setImageBitmap(bm);
             mAnimFadeIn.setTarget(fRecommendBimgTop);
             mAnimFadeOut.setTarget(fRecommendBimgBottom);
@@ -464,21 +469,21 @@ public class RecommendFragment2 extends Fragment implements RecommendAdapter2.Ca
         mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                if (mBackgroundTopVisible){
+                if (mBackgroundTopVisible) {
                     fRecommendBimgBottom.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     fRecommendBimgTop.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                if (mBackgroundTopVisible){
+                if (mBackgroundTopVisible) {
                     fRecommendBimgTop.setVisibility(View.INVISIBLE);
-                }else {
+                } else {
                     fRecommendBimgBottom.setVisibility(View.INVISIBLE);
                 }
-                mBackgroundTopVisible = fRecommendBimgTop.getVisibility()==View.VISIBLE;
+                mBackgroundTopVisible = fRecommendBimgTop.getVisibility() == View.VISIBLE;
             }
 
             @Override

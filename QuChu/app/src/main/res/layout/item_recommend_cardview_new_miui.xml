@@ -26,7 +26,12 @@
                 android:id="@+id/item_recommend_card_photo_sdv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                card_view:actualImageScaleType="centerCrop" />
+                card_view:actualImageScaleType="centerCrop"
+                card_view:roundBottomLeft="false"
+                card_view:roundBottomRight="false"
+                card_view:roundTopLeft="true"
+                card_view:roundTopRight="true"
+                card_view:roundedCornerRadius="8dp"/>
 
             <TextView
                 android:id="@+id/item_place_event_tv"
@@ -42,22 +47,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
-                android:layout_marginBottom="@dimen/base_margin"
-                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginBottom="@dimen/half_margin"
+                android:layout_marginLeft="@dimen/half_margin"
                 android:background="@drawable/recommend_actiion_tag"
                 android:text="未知"
-                android:textSize="@dimen/word_size_body" />
+                android:textSize="@dimen/word_size_time" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginBottom="@dimen/half_margin"
+                android:layout_marginRight="@dimen/half_margin"
                 android:background="@drawable/recommend_actiion_tag"
                 android:text="和你当前未知距离：100km"
-                android:textSize="@dimen/word_size_body" />
+                android:textSize="@dimen/word_size_time" />
         </RelativeLayout>
 
 
@@ -76,7 +81,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/dialog_margin"
+            android:layout_marginBottom="@dimen/base_margin"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
             android:background="@color/new_recommend_line_color" />
@@ -153,7 +158,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="@dimen/base_margin"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginBottom="@dimen/quarter_margin"
+                android:layout_marginTop="@dimen/quarter_margin"
                 android:clickable="true"
                 android:padding="10dp"
                 android:src="@drawable/ic_atmophere_unselected" />
@@ -165,7 +173,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="@dimen/base_margin"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginBottom="@dimen/quarter_margin"
+                android:layout_marginTop="@dimen/quarter_margin"
                 android:padding="10dp"
                 android:src="@drawable/ic_recommend_bc_right" />
 
@@ -176,7 +187,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="@dimen/base_margin"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginBottom="@dimen/quarter_margin"
+                android:layout_marginTop="@dimen/quarter_margin"
                 android:padding="10dp"
                 android:src="@drawable/ic_atmosphere_more" />
 

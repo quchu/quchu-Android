@@ -152,6 +152,11 @@
             android:name="co.quchu.quchu.view.activity.UserCenterActivity"
             android:label="@string/titlebar_word_user_center"
             android:screenOrientation="portrait" />
+        <!-- 关注的 -->
+        <activity
+            android:name="co.quchu.quchu.view.activity.FollowingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar_top" />
         <!-- 我的趣推荐 -->
         <activity
             android:name="co.quchu.quchu.view.activity.RecommendActivity"

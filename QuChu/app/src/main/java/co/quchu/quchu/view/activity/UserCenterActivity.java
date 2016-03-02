@@ -99,9 +99,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 startActivity(new Intent(UserCenterActivity.this, UserPostCardActivity.class).putExtra("userId", userInfo.userId));
                 break;
             case R.id.user_center_following_tv:
-
+                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class).putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWING));
                 break;
             case R.id.user_center_followed_tv:
+                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class).putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWERS));
 
                 break;
             case R.id.user_center_foucsable_tv:
@@ -126,8 +127,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         } else {
             userCenterDescTv.setText(userInfo.getGender());
         }
-        userCenterFollowingTv.setText(String.format(getResources().getString(R.string.usercenter_follow_text), userInfo.getFollowNum()));
-        userCenterFollowedTv.setText(String.format(getResources().getString(R.string.usercenter_host_text), userInfo.getHostNum()));
+        userCenterFollowedTv.setText(String.format(getResources().getString(R.string.usercenter_follow_text), userInfo.getFollowNum()));
+        userCenterFollowingTv.setText(String.format(getResources().getString(R.string.usercenter_host_text), userInfo.getHostNum()));
         scrollView.getRootView().findViewById(R.id.user_center_postcard_ll).setOnClickListener(this);
         scrollView.getRootView().findViewById(R.id.user_center_favorite_ll).setOnClickListener(this);
         userCenterFollowingTv.setOnClickListener(this);

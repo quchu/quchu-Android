@@ -64,11 +64,11 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
 
     @Override
     public RecommendAdapter2.RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (isMIUI) {
+      /*  if (isMIUI) {*/
             return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, parent, false), listener);
-        }else {
+       /* }else {
             return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_other, parent, false), listener);
-        }
+        }*/
     }
 
     @Override
@@ -155,9 +155,9 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
             ButterKnife.bind(this, itemView);
             this.listener = listener;
             if (isFlyme) {
-                itemRecommendCardPhotoSdv.setAspectRatio(1.5f);
+                itemRecommendCardPhotoSdv.setAspectRatio(1.6f);
             } else {
-                itemRecommendCardPhotoSdv.setAspectRatio(1.3f);
+                itemRecommendCardPhotoSdv.setAspectRatio(1.4f);
             }
         }
 
