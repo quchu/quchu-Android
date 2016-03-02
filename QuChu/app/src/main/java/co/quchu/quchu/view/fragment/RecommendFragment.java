@@ -84,7 +84,7 @@ RelativeLayout itemback;
                 indexPosition = newPosition;
             }
         });
-        fRecommendRvp.addOnLayoutChangeListener();
+//        fRecommendRvp.addOnLayoutChangeListener();
         changeDataSetFromServer();
         return view;
     }

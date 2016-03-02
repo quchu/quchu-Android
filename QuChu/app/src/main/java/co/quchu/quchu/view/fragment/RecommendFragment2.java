@@ -183,7 +183,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener();
         recyclerView.addOnPageChangedListener(this);
-        recyclerView.addOnLayoutChangeListener();
+        //recyclerView.addOnLayoutChangeListener();
 
         presenter.init();
 
