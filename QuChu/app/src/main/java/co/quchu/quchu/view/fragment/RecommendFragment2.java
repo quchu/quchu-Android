@@ -123,7 +123,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (mFragmentStoped){
+            if (mFragmentStoped) {
                 return;
             }
             switch (msg.what) {
@@ -184,7 +184,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layout);
-        adapter = new RecommendAdapter2(getActivity(), cardList,this);
+        adapter = new RecommendAdapter2(getActivity(), cardList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener();
@@ -205,7 +205,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         if (newPosition > oldPosition && cardList.size() > 3 && newPosition == cardList.size() - 1 && !isLoading) {
             if (pageNums < pageCounts) {
                 isLoading = true;
-                presenter.loadMore("", true);
+                presenter.loadMore("", selectedTag);
             }
         }
         currentIndex = newPosition;
@@ -292,9 +292,11 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             recyclerView.setVisibility(View.VISIBLE);
     }
 
+    private List<RecommendTagsModel.TagsModel> tagList;
 
     @Override
     public void initTab(List<RecommendTagsModel.TagsModel> list) {
+        tagList = list;
         for (int i = 0; i < list.size(); i++) {
             TextView textView = (TextView) View.inflate(getActivity(), R.layout.text_view, null);
             textView.setText(list.get(i).getZh());
@@ -314,8 +316,9 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                 if (view != null) {
                     view.setTextSize(15);
                 }
-
-                presenter.initTabData(true);
+                selectedTag = tagList.get(tab.getPosition()).getEn();
+                LogUtils.json("selectedTag="+selectedTag);
+                presenter.initTabData(selectedTag);
                 recyclerView.setVisibility(View.INVISIBLE);
             }
 
@@ -332,8 +335,13 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
             }
         });
-        presenter.initTabData(true);
+        if (tagList.size() > 0) {
+            selectedTag = tagList.get(0).getEn();
+            presenter.initTabData(selectedTag);
+        }
     }
+
+    private String selectedTag = "";
 
     @Override
     public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
@@ -483,12 +491,12 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                    if (mBackgroundTopVisible) {
-                        fRecommendBimgTop.setVisibility(View.INVISIBLE);
-                    } else {
-                        fRecommendBimgBottom.setVisibility(View.INVISIBLE);
-                    }
-                    mBackgroundTopVisible = fRecommendBimgTop.getVisibility() == View.VISIBLE;
+                if (mBackgroundTopVisible) {
+                    fRecommendBimgTop.setVisibility(View.INVISIBLE);
+                } else {
+                    fRecommendBimgBottom.setVisibility(View.INVISIBLE);
+                }
+                mBackgroundTopVisible = fRecommendBimgTop.getVisibility() == View.VISIBLE;
             }
 
             @Override
@@ -507,7 +515,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     @Override
     public void onStop() {
         mFragmentStoped = true;
-        if (null!=mBackgroundSwitchAnimatorSet){
+        if (null != mBackgroundSwitchAnimatorSet) {
             mBackgroundSwitchAnimatorSet.removeAllListeners();
         }
         super.onStop();

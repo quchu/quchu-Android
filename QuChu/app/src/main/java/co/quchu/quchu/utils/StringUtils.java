@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -289,5 +290,16 @@ public class StringUtils {
         } else {
             return false;
         }
+    }
+    /**
+     * 格式化成小数点后两位
+     *
+     * @param price
+     * @return
+     */
+    public static Double formatDouble(double price) {
+        BigDecimal b3 = new BigDecimal(price);
+        double f3 = b3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return new Double(f3);
     }
 }

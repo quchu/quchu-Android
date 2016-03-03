@@ -56,19 +56,21 @@ public class RecommentFragPresenter {
         this.selectedTag = selectedTag;
     }
 
-    public void initTabData(final boolean isDefaultData) {
+    public void initTabData( String isDefaultData) {
 //        DialogUtil.showProgess(context, "数据加载中...");
         //延时一秒，避免用户快速切换tab造成网络异常
         Message message;
         Bundle bundle = new Bundle();
-        bundle.putBoolean("isDefaultData", isDefaultData);
+        bundle.putString("isDefaultData", isDefaultData);
         if (handle == null) {
             message = new Message();
             message.what = 0;
+            message.setData(bundle);
             handle = new MyHandle();
         } else {
             message = handle.obtainMessage();
             message.what = 0;
+            message.setData(bundle);
             handle.removeMessages(0);
         }
         handle.sendMessageDelayed(message, 500);
@@ -78,7 +80,7 @@ public class RecommentFragPresenter {
         @Override
         public void handleMessage(Message msg) {
             DialogUtil.showProgess(context, R.string.loading_dialog_text);
-            model.getTabData(msg.getData().getBoolean("isDefaultData"), new CommonListener<RecommendModelNew>() {
+            model.getTabData(msg.getData().getString("isDefaultData", ""), new CommonListener<RecommendModelNew>() {
                 @Override
                 public void successListener(RecommendModelNew response) {
                     DialogUtil.dismissProgess();
@@ -93,7 +95,7 @@ public class RecommentFragPresenter {
         }
     }
 
-    public void loadMore(String type, boolean isDefaultData) {
+    public void loadMore(String type, String isDefaultData) {
         model.getTabData(isDefaultData, new CommonListener<RecommendModelNew>() {
             @Override
             public void successListener(RecommendModelNew response) {

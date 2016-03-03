@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -27,6 +26,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.MIUIUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -40,14 +40,14 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
 
 
     private Activity mContext;
-    private boolean isFlyme = false,isMIUI=false;
+    private boolean isFlyme = false, isMIUI = false;
     private List<RecommendModel> dataSet;
     private CardClickListener listener;
 
-    public RecommendAdapter2(Activity mContext, List<RecommendModel> arrayList,CardClickListener listener) {
+    public RecommendAdapter2(Activity mContext, List<RecommendModel> arrayList, CardClickListener listener) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
-        isMIUI= MIUIUtils.isMIUI();
+        isMIUI = MIUIUtils.isMIUI();
         dataSet = arrayList;
         this.listener = listener;
     }
@@ -66,7 +66,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
     @Override
     public RecommendAdapter2.RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
       /*  if (isMIUI) {*/
-            return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, parent, false), listener);
+        return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, parent, false), listener);
        /* }else {
             return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_other, parent, false), listener);
         }*/
@@ -77,7 +77,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         RecommendModel model = dataSet.get(position);
         holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
-        if (!model.isIsActivity()) {
+        if (model.isIsActivity()) {
             holder.item_place_event_tv.setVisibility(View.VISIBLE);
         } else {
             holder.item_place_event_tv.setVisibility(View.GONE);
@@ -96,7 +96,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().
                 getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
 
-        if (true) {//用户去过该趣处
+        if (model.isout) {//用户去过该趣处
             //去过标签 start
             SpannableString spanText = new SpannableString(model.getName() + "，");
             DynamicDrawableSpan drawableSpan2 = new DynamicDrawableSpan(
@@ -114,6 +114,17 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
             //去过标签 end
         } else {
             holder.item_recommend_card_name_tv.setText(model.getName());
+        }
+
+        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
+            holder.item_recommend_card_distance_tv.setText("距您:未知");
+            StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 3, 5, R.color.white);
+        } else {
+            if (StringUtils.isDouble(model.getDistance())) {
+                String distance = StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
+                holder.item_recommend_card_distance_tv.setText("距您:" + distance);
+                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 3, 3 + distance.length(), R.color.white);
+            }
         }
 
     }
@@ -149,6 +160,10 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         CardView rootCv;
         @Bind(R.id.item_recommend_card_collect_iv)
         ImageView itemRecommendCardCollectIv;
+        @Bind(R.id.item_recommend_card_tag_tv)
+        TextView item_recommend_card_tag_tv;
+        @Bind(R.id.item_recommend_card_distance_tv)
+        TextView item_recommend_card_distance_tv;
         private CardClickListener listener;
 
         public RecommendHolder(View itemView, CardClickListener listener) {

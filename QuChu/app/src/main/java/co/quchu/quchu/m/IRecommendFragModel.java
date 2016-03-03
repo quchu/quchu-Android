@@ -13,7 +13,7 @@ public interface IRecommendFragModel {
 
     void getTab( CommonListener<RecommendTagsModel> listener);
 
-    void getTabData(boolean isDefaultData, CommonListener<RecommendModelNew> listener);
+    void getTabData(String isDefaultData, CommonListener<RecommendModelNew> listener);
 
-    void loadMore(boolean isDefaultData, int pageNumber, CommonListener<RecommendModelNew> listener);
+    void loadMore(String isDefaultData, int pageNumber, CommonListener<RecommendModelNew> listener);
 }

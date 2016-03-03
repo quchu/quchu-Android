@@ -18,6 +18,7 @@ public class RecommendModel {
      * height : 683
      * isActivity : false
      * isf : false
+     * isout :false  是否去过
      * latitude : 24.497263415041
      * longitude : 118.09703816664
      * name : 迷待音乐会所
@@ -42,6 +43,7 @@ public class RecommendModel {
     private String rgb;
     private float suggest;
     private int width;
+    public boolean isout;  //是否去过
     /**
      * key : 夜生活
      * value : 90
