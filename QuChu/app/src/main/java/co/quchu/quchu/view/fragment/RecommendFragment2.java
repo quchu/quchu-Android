@@ -82,6 +82,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     private long mBackgroundSwitchAnimationDuration = 500;
     private final long mBackgroundSwitchDelay = 300l;
     private boolean mBackgroundTopVisible = true;
+    private boolean mFragmentStoped = false;
 
     private class BlurEffectRunnable implements Runnable {
 
@@ -98,7 +99,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (-1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
+            if (!mFragmentStoped && -1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
                 if (null != cardList && cardList.size() > currentIndex) {
                     String strUri = cardList.get(currentIndex).getCover();
                     Uri imgUri;
@@ -121,6 +122,9 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if (mFragmentStoped){
+                return;
+            }
             switch (msg.what) {
 
                 case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
@@ -478,12 +482,12 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                if (mBackgroundTopVisible) {
-                    fRecommendBimgTop.setVisibility(View.INVISIBLE);
-                } else {
-                    fRecommendBimgBottom.setVisibility(View.INVISIBLE);
-                }
-                mBackgroundTopVisible = fRecommendBimgTop.getVisibility() == View.VISIBLE;
+                    if (mBackgroundTopVisible) {
+                        fRecommendBimgTop.setVisibility(View.INVISIBLE);
+                    } else {
+                        fRecommendBimgBottom.setVisibility(View.INVISIBLE);
+                    }
+                    mBackgroundTopVisible = fRecommendBimgTop.getVisibility() == View.VISIBLE;
             }
 
             @Override
@@ -499,6 +503,14 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         mBackgroundSwitchAnimatorSet.start();
     }
 
+    @Override
+    public void onStop() {
+        mFragmentStoped = true;
+        if (null!=mBackgroundSwitchAnimatorSet){
+            mBackgroundSwitchAnimatorSet.removeAllListeners();
+        }
+        super.onStop();
+    }
 
     @Override
     public void onDestroy() {
