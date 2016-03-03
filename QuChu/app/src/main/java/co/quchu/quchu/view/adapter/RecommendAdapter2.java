@@ -41,25 +41,26 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
 
     private Activity mContext;
     private boolean isFlyme = false,isMIUI=false;
-    private List<RecommendModel> arrayList;
+    private List<RecommendModel> dataSet;
     private CardClickListener listener;
 
-    public RecommendAdapter2(Activity mContext, CardClickListener listener) {
+    public RecommendAdapter2(Activity mContext, List<RecommendModel> arrayList,CardClickListener listener) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
         isMIUI= MIUIUtils.isMIUI();
+        dataSet = arrayList;
         this.listener = listener;
     }
 
-    public void changeDataSet(List<RecommendModel> arrayList) {
-        this.arrayList = arrayList;
-        notifyDataSetChanged();
-    }
+//    public void changeDataSet(List<RecommendModel> arrayList) {
+//        this.arrayList = arrayList;
+//        notifyDataSetChanged();
+//    }
 
-    public void loadMoreDataSet(ArrayList<RecommendModel> arrayList) {
-        this.arrayList.addAll(arrayList);
-        notifyDataSetChanged();
-    }
+//    public void loadMoreDataSet(ArrayList<RecommendModel> arrayList) {
+//        this.arrayList.addAll(arrayList);
+//        notifyDataSetChanged();
+//    }
 
 
     @Override
@@ -73,7 +74,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
 
     @Override
     public void onBindViewHolder(RecommendAdapter2.RecommendHolder holder, int position) {
-        RecommendModel model = arrayList.get(position);
+        RecommendModel model = dataSet.get(position);
         holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (model.isIsActivity()) {
@@ -119,10 +120,10 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
 
     @Override
     public int getItemCount() {
-        if (arrayList == null)
+        if (dataSet == null)
             return 0;
         else
-            return arrayList.size();
+            return dataSet.size();
     }
 
     class RecommendHolder extends RecyclerView.ViewHolder {

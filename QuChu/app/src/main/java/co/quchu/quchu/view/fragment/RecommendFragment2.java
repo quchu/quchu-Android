@@ -29,6 +29,7 @@ import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -66,7 +67,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
 
     private boolean isLoading = false;
-    public List<RecommendModel> cardList;
+    public List<RecommendModel> cardList = new ArrayList<>();
     private RecommendAdapter2 adapter;
     private RecommentFragPresenter presenter;
     private int currentIndex = -1;
@@ -178,7 +179,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         presenter = new RecommentFragPresenter(getContext(), this);
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layout);
-        adapter = new RecommendAdapter2(getActivity(), this);
+        adapter = new RecommendAdapter2(getActivity(), cardList,this);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener();
@@ -275,12 +276,12 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         }
     }
 
-    public void hint() {
+    public void hintRecyclerView() {
         if (recyclerView != null)
             recyclerView.setVisibility(View.GONE);
     }
 
-    public void show() {
+    public void showRecyclerView() {
         if (recyclerView != null)
             recyclerView.setVisibility(View.VISIBLE);
     }
@@ -333,13 +334,16 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         if (isError) {
             Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
         } else {
-            cardList = arrayList;
-            adapter.changeDataSet(cardList);
+            cardList.clear();
+            cardList.addAll(arrayList);
+            adapter.notifyDataSetChanged();
             pageCounts = pageCount;
             pageNums = pageNum;
             if (cardList.size() > 0)
                 recyclerView.smoothScrollToPosition(0);
+
             currentIndex = 0;
+            new Thread(new BlurEffectRunnable(currentIndex)).start();
             recyclerView.setVisibility(View.VISIBLE);
         }
     }
@@ -385,57 +389,57 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     /**
      * 执行TAB切换动画
      */
-    private void executeTabSelectAnimation(final int resIdTop, final int resIdBottom) {
-        if (mBackgroundTopVisible) {
-            fRecommendBimgBottom.setImageResource(resIdTop);
-            mAnimFadeIn.setTarget(fRecommendBimgBottom);
-            mAnimFadeOut.setTarget(fRecommendBimgTop);
-        } else {
-            fRecommendBimgTop.setImageResource(resIdTop);
-            mAnimFadeIn.setTarget(fRecommendBimgTop);
-            mAnimFadeOut.setTarget(fRecommendBimgBottom);
-        }
-        mBackgroundSwitchAnimatorSet = new AnimatorSet();
-        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration / 2);
-        mBackgroundSwitchAnimatorSet.setInterpolator(new LinearInterpolator());
-        mBackgroundSwitchAnimatorSet.playTogether(mAnimFadeOut, mAnimFadeIn);
-        mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-                if (mBackgroundTopVisible) {
-                    fRecommendBimgBottom.setVisibility(View.VISIBLE);
-                } else {
-                    fRecommendBimgTop.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                if (mBackgroundTopVisible) {
-                    fRecommendBimgTop.setVisibility(View.INVISIBLE);
-                } else {
-                    fRecommendBimgBottom.setVisibility(View.INVISIBLE);
-                }
-                mBackgroundTopVisible = fRecommendBimgTop.getVisibility() == View.VISIBLE;
-                if (null != sourceBitmap && !sourceBitmap.isRecycled())
-                    sourceBitmap.recycle();
-                if (sourceBitmap != null)
-                    sourceBitmap = null;
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
-        mBackgroundSwitchAnimatorSet.start();
-
-    }
+//    private void executeTabSelectAnimation(final int resIdTop, final int resIdBottom) {
+//        if (mBackgroundTopVisible) {
+//            fRecommendBimgBottom.setImageResource(resIdTop);
+//            mAnimFadeIn.setTarget(fRecommendBimgBottom);
+//            mAnimFadeOut.setTarget(fRecommendBimgTop);
+//        } else {
+//            fRecommendBimgTop.setImageResource(resIdTop);
+//            mAnimFadeIn.setTarget(fRecommendBimgTop);
+//            mAnimFadeOut.setTarget(fRecommendBimgBottom);
+//        }
+//        mBackgroundSwitchAnimatorSet = new AnimatorSet();
+//        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration / 2);
+//        mBackgroundSwitchAnimatorSet.setInterpolator(new LinearInterpolator());
+//        mBackgroundSwitchAnimatorSet.playTogether(mAnimFadeOut, mAnimFadeIn);
+//        mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animator) {
+//                if (mBackgroundTopVisible) {
+//                    fRecommendBimgBottom.setVisibility(View.VISIBLE);
+//                } else {
+//                    fRecommendBimgTop.setVisibility(View.VISIBLE);
+//                }
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animator) {
+//                if (mBackgroundTopVisible) {
+//                    fRecommendBimgTop.setVisibility(View.INVISIBLE);
+//                } else {
+//                    fRecommendBimgBottom.setVisibility(View.INVISIBLE);
+//                }
+//                mBackgroundTopVisible = fRecommendBimgTop.getVisibility() == View.VISIBLE;
+//                if (null != sourceBitmap && !sourceBitmap.isRecycled())
+//                    sourceBitmap.recycle();
+//                if (sourceBitmap != null)
+//                    sourceBitmap = null;
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animator) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animator) {
+//
+//            }
+//        });
+//        mBackgroundSwitchAnimatorSet.start();
+//
+//    }
 
     /**
      * 执行切换动画

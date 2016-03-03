@@ -178,7 +178,7 @@ public class RecommendActivity extends BaseActivity {
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             if (recoFragment != null)
-                recoFragment.show();
+                recoFragment.showRecyclerView();
             if (classifyFragment != null)
                 classifyFragment.hintClassify();
             if (defaultRecommendFragment != null)
@@ -191,7 +191,7 @@ public class RecommendActivity extends BaseActivity {
             if (classifyFragment != null)
                 classifyFragment.showClassify();
             if (recoFragment != null)
-                recoFragment.hint();
+                recoFragment.hintRecyclerView();
             if (defaultRecommendFragment != null)
                 defaultRecommendFragment.hint();
         } else if (index == 2) {
@@ -205,7 +205,7 @@ public class RecommendActivity extends BaseActivity {
             if (classifyFragment != null)
                 classifyFragment.hintClassify();
             if (recoFragment != null)
-                recoFragment.hint();
+                recoFragment.hintRecyclerView();
         }
         viewPagerIndex = index;
     }
