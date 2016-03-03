@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
+        card_view:cardPreventCornerOverlap="false"
         android:fitsSystemWindows="true"
         android:foreground="?attr/selectableItemBackground"
         card_view:cardCornerRadius="@dimen/card_view_radius_dp"

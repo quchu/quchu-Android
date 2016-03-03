@@ -85,6 +85,9 @@ public class NetApi {
     public static final String getUsercenterFavoriteList = HOST + "/place/getFavoriteList?userId=%d&pageno=%d";  //获取某个用户收藏的趣处列表
     public static final String getFollow = HOST + "/place/getFollow?userId=%d&pageno=%d&head=no&type=%s";  //获取某个用户收藏的趣处列表
 
+
+    public static final String getCategoryTags = HOST + "/place/getCategoryTags";  //获取tag 列表
+
     /****  Get end  ****/
 
     /******************

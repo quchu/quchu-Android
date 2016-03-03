@@ -57,6 +57,7 @@
         android:layout_margin="@dimen/base_margin"
         card_view:cardBackgroundColor="@color/white"
         card_view:cardCornerRadius="8dp"
+        card_view:cardPreventCornerOverlap="false"
         card_view:cardElevation="8dp">
 
         <ScrollView

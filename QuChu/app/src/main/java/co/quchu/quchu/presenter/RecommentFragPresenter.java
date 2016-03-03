@@ -7,10 +7,12 @@ import android.os.Message;
 
 import com.android.volley.VolleyError;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.m.IRecommendFragModel;
 import co.quchu.quchu.m.RecommendFragModel;
 import co.quchu.quchu.model.RecommendModelNew;
+import co.quchu.quchu.model.RecommendTagsModel;
 import co.quchu.quchu.view.fragment.IRecommendFragment;
 
 /**
@@ -25,6 +27,8 @@ public class RecommentFragPresenter {
     private Context context;
     private MyHandle handle;
 
+    private String selectedTag = "";
+
     public RecommentFragPresenter(Context context, IRecommendFragment view) {
         this.context = context;
         this.view = view;
@@ -33,7 +37,23 @@ public class RecommentFragPresenter {
 
     public void init() {
         // TODO: 2016/2/26  服务器获取tab数据
-        view.initTab();
+        DialogUtil.showProgess(context, R.string.loading_dialog_text);
+        model.getTab(new CommonListener<RecommendTagsModel>() {
+            @Override
+            public void successListener(RecommendTagsModel response) {
+                view.initTab(response.getData());
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+
+            }
+        });
+
+    }
+
+    public void setSelectedTag(String selectedTag) {
+        this.selectedTag = selectedTag;
     }
 
     public void initTabData(final boolean isDefaultData) {
@@ -57,6 +77,7 @@ public class RecommentFragPresenter {
     class MyHandle extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            DialogUtil.showProgess(context, R.string.loading_dialog_text);
             model.getTabData(msg.getData().getBoolean("isDefaultData"), new CommonListener<RecommendModelNew>() {
                 @Override
                 public void successListener(RecommendModelNew response) {
@@ -86,5 +107,6 @@ public class RecommentFragPresenter {
             }
         });
     }
+
 
 }

@@ -3,6 +3,7 @@ package co.quchu.quchu.view.fragment;
 import java.util.List;
 
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.model.RecommendTagsModel;
 
 /**
  * Created by linqipeng on 2016/2/26 10:27
@@ -15,7 +16,7 @@ public interface IRecommendFragment {
     /**
      * 加载顶部tab
      */
-    void initTab();
+    void initTab( List<RecommendTagsModel.TagsModel> list);
 
     /**
      * 初始化tab对应的数据

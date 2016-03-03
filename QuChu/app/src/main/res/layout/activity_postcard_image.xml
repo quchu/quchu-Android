@@ -22,6 +22,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/base_margin"
             android:clickable="true"
+            card_view:cardPreventCornerOverlap="false"
             android:fitsSystemWindows="true"
             card_view:cardCornerRadius="8dp"
             card_view:cardElevation="@dimen/cardview_elevation">

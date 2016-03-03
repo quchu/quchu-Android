@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.android.volley.VolleyError;
 
 import co.quchu.quchu.model.RecommendModelNew;
+import co.quchu.quchu.model.RecommendTagsModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
@@ -26,8 +27,19 @@ public class RecommendFragModel implements IRecommendFragModel {
     }
 
     @Override
-    public void getTab() {
+    public void getTab(final CommonListener<RecommendTagsModel> listener) {
+        GsonRequest<RecommendTagsModel> request = new GsonRequest<>(NetApi.getCategoryTags, RecommendTagsModel.class, new ResponseListener<RecommendTagsModel>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                listener.errorListener(error, "", "");
+            }
 
+            @Override
+            public void onResponse(RecommendTagsModel response, boolean result, @Nullable String exception, @Nullable String msg) {
+                listener.successListener(response);
+            }
+        });
+        request.start(context, null);
     }
 
     @Override
@@ -82,4 +94,6 @@ public class RecommendFragModel implements IRecommendFragModel {
         });
         request.start(context, null);
     }
+
+
 }

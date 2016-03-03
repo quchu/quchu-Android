@@ -1,6 +1,7 @@
 package co.quchu.quchu.m;
 
 import co.quchu.quchu.model.RecommendModelNew;
+import co.quchu.quchu.model.RecommendTagsModel;
 import co.quchu.quchu.presenter.CommonListener;
 
 /**
@@ -10,7 +11,7 @@ import co.quchu.quchu.presenter.CommonListener;
  */
 public interface IRecommendFragModel {
 
-    void getTab();
+    void getTab( CommonListener<RecommendTagsModel> listener);
 
     void getTabData(boolean isDefaultData, CommonListener<RecommendModelNew> listener);
 

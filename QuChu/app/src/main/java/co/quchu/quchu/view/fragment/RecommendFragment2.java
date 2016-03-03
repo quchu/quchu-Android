@@ -40,6 +40,7 @@ import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.model.RecommendTagsModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.ImageUtils;
@@ -175,7 +176,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
-        presenter = new RecommentFragPresenter(getContext(), this);
+
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layout);
         adapter = new RecommendAdapter2(getActivity(), this);
@@ -183,6 +184,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener();
         recyclerView.addOnPageChangedListener(this);
+        presenter = new RecommentFragPresenter(getContext(), this);
         //recyclerView.addOnLayoutChangeListener();
 
         presenter.init();
@@ -287,10 +289,10 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
 
     @Override
-    public void initTab() {
-        for (int i = 0; i < 10; i++) {
+    public void initTab(List<RecommendTagsModel.TagsModel> list) {
+        for (int i = 0; i < list.size(); i++) {
             TextView textView = (TextView) View.inflate(getActivity(), R.layout.text_view, null);
-            textView.setText("兴趣45");
+            textView.setText(list.get(i).getZh());
             if (i == 0) {
                 textView.setTextSize(15);
             } else {
@@ -338,7 +340,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             pageCounts = pageCount;
             pageNums = pageNum;
             if (cardList.size() > 0)
-                recyclerView.smoothScrollToPosition(0);
+                recyclerView.scrollToPosition(0);
             currentIndex = 0;
             recyclerView.setVisibility(View.VISIBLE);
         }

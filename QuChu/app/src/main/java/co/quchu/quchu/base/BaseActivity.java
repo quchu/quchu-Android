@@ -11,7 +11,6 @@ import android.view.View;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
-import co.quchu.quchu.MainActivity;
 import co.quchu.quchu.R;
 import co.quchu.quchu.photo.previewimage.PreviewImage;
 import co.quchu.quchu.view.activity.MenusActivity;
@@ -56,7 +55,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         //压栈
         ActManager.getAppManager().addActivity(this);
         mSwipeBackLayout = getSwipeBackLayout();
-        if (this instanceof MainActivity || this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity
+        if ( this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity
                 || this instanceof PreviewImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
             mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {

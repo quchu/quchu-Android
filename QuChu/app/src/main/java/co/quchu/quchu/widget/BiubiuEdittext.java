@@ -23,7 +23,6 @@ import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.util.Random;
 
-import co.quchu.quchu.MainActivity;
 
 /**
  * BiubiuEdittext
@@ -150,7 +149,6 @@ public class BiubiuEdittext extends EditText {
 
 
     private void init() {
-        contentContainer = (ViewGroup) ((MainActivity) getContext()).findViewById(android.R.id.content);
         WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         height = windowManager.getDefaultDisplay().getHeight();
     }

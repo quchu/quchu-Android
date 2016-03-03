@@ -1,6 +1,5 @@
 package co.quchu.quchu.widget.recyclerviewpager;
 
-import android.util.Log;
 import android.view.View;
 
 /**

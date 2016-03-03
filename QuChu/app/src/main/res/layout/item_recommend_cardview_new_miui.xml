@@ -49,7 +49,8 @@
                 android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
                 android:layout_marginBottom="@dimen/half_margin"
                 android:layout_marginLeft="@dimen/half_margin"
-                android:background="@drawable/recommend_actiion_tag"
+                android:background="@drawable/shape_recommend_card_tag_bg"
+                android:textColor="@color/text_color_white"
                 android:text="未知"
                 android:textSize="@dimen/word_size_time" />
 
@@ -60,7 +61,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="@dimen/half_margin"
                 android:layout_marginRight="@dimen/half_margin"
-                android:background="@drawable/recommend_actiion_tag"
+                android:textColor="@color/text_color_white"
+                android:background="@drawable/shape_recommend_card_tag_bg"
                 android:text="和你当前未知距离：100km"
                 android:textSize="@dimen/word_size_time" />
         </RelativeLayout>

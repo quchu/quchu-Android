@@ -103,7 +103,12 @@ public class GsonRequest<T> extends Request<T> {
                 result = jsonObject.getBoolean("result");
                 if (result) {
                     //结果正确
-                    String data = jsonObject.getString("data");
+                        String data;
+                    if (jsonObject.has("exception") && "二级分类列表".equals(jsonObject.getString("exception"))) {
+                        data = jsonObject.toString();
+                    } else {
+                         data = jsonObject.getString("data");
+                    }
                     if (entity != null || type != null) {
                         t = gson.fromJson(data, entity != null ? entity : type);
                     } else {

@@ -76,7 +76,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         RecommendModel model = arrayList.get(position);
         holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
-        if (model.isIsActivity()) {
+        if (!model.isIsActivity()) {
             holder.item_place_event_tv.setVisibility(View.VISIBLE);
         } else {
             holder.item_place_event_tv.setVisibility(View.GONE);

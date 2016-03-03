@@ -9,6 +9,7 @@
     android:layout_marginRight="16dp"
     android:layout_marginTop="@dimen/cardview_margintop"
     android:clickable="true"
+    card_view:cardPreventCornerOverlap="false"
     android:fitsSystemWindows="true"
     android:foreground="?attr/selectableItemBackground"
     card_view:cardElevation="@dimen/cardview_elevation">

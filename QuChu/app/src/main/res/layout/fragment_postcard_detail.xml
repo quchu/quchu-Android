@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/base_margin"
         android:clickable="true"
+        card_view:cardPreventCornerOverlap="false"
         android:foreground="?attr/selectableItemBackground"
         card_view:cardCornerRadius="@dimen/card_view_radius_dp"
         card_view:cardElevation="@dimen/cardview_elevation">

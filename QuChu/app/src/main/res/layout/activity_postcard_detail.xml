@@ -24,6 +24,7 @@
             android:clickable="true"
             android:fitsSystemWindows="true"
             card_view:cardCornerRadius="8dp"
+        card_view:cardPreventCornerOverlap="false"
             card_view:cardElevation="@dimen/cardview_elevation">
 
             <LinearLayout

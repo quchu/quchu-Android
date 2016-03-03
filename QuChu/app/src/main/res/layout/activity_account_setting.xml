@@ -22,6 +22,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/base_margin"
             card_view:cardCornerRadius="8dp"
+            card_view:cardPreventCornerOverlap="false"
             card_view:cardElevation="8dp">
 
             <ScrollView
