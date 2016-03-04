@@ -3,6 +3,9 @@ package co.quchu.quchu.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
 
@@ -20,6 +23,16 @@ import co.quchu.quchu.blurdialogfragment.FastBlurHelper;
  * Date: 2015-12-18
  */
 public class ImageUtils {
+
+    public static Bitmap setSaturation(Bitmap bmp, float fact){
+        ColorMatrix cMatrix = new ColorMatrix();
+        cMatrix.setSaturation(fact);
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cMatrix));
+        Canvas canvas = new Canvas(bmp);
+        canvas.drawBitmap(bmp, 0, 0, paint);
+        return bmp;
+    }
 
     public static Bitmap doBlur(Bitmap bitmap,int scaleToWith,int scaleToHeight){
 //        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
