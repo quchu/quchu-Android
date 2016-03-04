@@ -542,10 +542,10 @@ public class AddPostCardActivity extends BaseActivity {
                 //   mPhotoList = resultList;
                 adapter.notifyDataSetChanged();
                 //   mChoosePhotoListAdapter.notifyDataSetChanged();
-                for (int i = 0; i < mPhotoList.size(); i++) {
+              /*  for (int i = 0; i < mPhotoList.size(); i++) {
                     PhotoInfo infos = mPhotoList.get(i);
                     LogUtils.json(infos.getPhotoPath() + "//id=" + infos.getPhotoId() + "//width=" + infos.getWidth() + "//height=" + infos.getHeight());
-                }
+                }*/
             }
         }
 
