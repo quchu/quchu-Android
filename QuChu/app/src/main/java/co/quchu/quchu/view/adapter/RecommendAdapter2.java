@@ -132,7 +132,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
             if (StringUtils.isDouble(model.getDistance())) {
                 String distance = StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
                 holder.item_recommend_card_distance_tv.setText("距您" + distance);
-                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 3, 3 + distance.length(), R.color.white);
+                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + distance.length(), R.color.white);
             }
         }
 
