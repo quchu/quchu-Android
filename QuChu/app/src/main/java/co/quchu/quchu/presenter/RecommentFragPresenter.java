@@ -4,15 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+
+import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.m.IRecommendFragModel;
 import co.quchu.quchu.m.RecommendFragModel;
 import co.quchu.quchu.model.RecommendModelNew;
-import co.quchu.quchu.model.RecommendTagsModel;
+import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.view.fragment.IRecommendFragment;
 
 /**
@@ -27,7 +30,6 @@ public class RecommentFragPresenter {
     private Context context;
     private MyHandle handle;
 
-    private String selectedTag = "";
 
     public RecommentFragPresenter(Context context, IRecommendFragment view) {
         this.context = context;
@@ -36,32 +38,27 @@ public class RecommentFragPresenter {
     }
 
     public void init() {
-        // TODO: 2016/2/26  服务器获取tab数据
         DialogUtil.showProgess(context, R.string.loading_dialog_text);
-        model.getTab(new CommonListener<RecommendTagsModel>() {
+        model.getTab(new CommonListener<List<TagsModel>>() {
             @Override
-            public void successListener(RecommendTagsModel response) {
-                view.initTab(response.getData());
+            public void successListener(List<TagsModel> response) {
+                view.initTab(response);
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-
+                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    public void setSelectedTag(String selectedTag) {
-        this.selectedTag = selectedTag;
-    }
 
-    public void initTabData( String isDefaultData) {
-//        DialogUtil.showProgess(context, "数据加载中...");
+    public void initTabData(String selectedTag) {
         //延时一秒，避免用户快速切换tab造成网络异常
         Message message;
         Bundle bundle = new Bundle();
-        bundle.putString("isDefaultData", isDefaultData);
+        bundle.putString("selectedTag", selectedTag);
         if (handle == null) {
             message = new Message();
             message.what = 0;
@@ -80,7 +77,7 @@ public class RecommentFragPresenter {
         @Override
         public void handleMessage(Message msg) {
             DialogUtil.showProgess(context, R.string.loading_dialog_text);
-            model.getTabData(msg.getData().getString("isDefaultData", ""), new CommonListener<RecommendModelNew>() {
+            model.getTabData(msg.getData().getString("selectedTag", ""), new CommonListener<RecommendModelNew>() {
                 @Override
                 public void successListener(RecommendModelNew response) {
                     DialogUtil.dismissProgess();
@@ -95,8 +92,9 @@ public class RecommentFragPresenter {
         }
     }
 
-    public void loadMore(String type, String isDefaultData) {
-        model.getTabData(isDefaultData, new CommonListener<RecommendModelNew>() {
+    public void loadMore(String type, int pageNumber) {
+
+        model.loadMore(type, pageNumber, new CommonListener<RecommendModelNew>() {
             @Override
             public void successListener(RecommendModelNew response) {
                 view.loadMore(false, response.getResult(), response.getPageCount(), response.getPagesNo());
@@ -109,6 +107,4 @@ public class RecommentFragPresenter {
             }
         });
     }
-
-
 }

@@ -66,6 +66,12 @@ public class GsonRequest<T> extends Request<T> {
         this.params = params;
     }
 
+    public GsonRequest(int method, String url, @NonNull Type type, ResponseListener<T> listener) {
+        super(method, url, listener);
+        this.listener = listener;
+        this.type = type;
+    }
+
     public GsonRequest(int method, String url, Map<String, String> params, @NonNull Type type, ResponseListener<T> listener) {
         super(method, url, listener);
         this.listener = listener;
@@ -103,12 +109,8 @@ public class GsonRequest<T> extends Request<T> {
                 result = jsonObject.getBoolean("result");
                 if (result) {
                     //结果正确
-                        String data;
-                    if (jsonObject.has("exception") && "二级分类列表".equals(jsonObject.getString("exception"))) {
-                        data = jsonObject.toString();
-                    } else {
-                         data = jsonObject.getString("data");
-                    }
+                    String data;
+                    data = jsonObject.getString("data");
                     if (entity != null || type != null) {
                         t = gson.fromJson(data, entity != null ? entity : type);
                     } else {

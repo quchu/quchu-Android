@@ -3,10 +3,15 @@ package co.quchu.quchu.m;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
+import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 import co.quchu.quchu.model.RecommendModelNew;
 import co.quchu.quchu.model.RecommendTagsModel;
+import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
@@ -27,34 +32,31 @@ public class RecommendFragModel implements IRecommendFragModel {
     }
 
     @Override
-    public void getTab(final CommonListener<RecommendTagsModel> listener) {
-        GsonRequest<RecommendTagsModel> request = new GsonRequest<>(NetApi.getCategoryTags, RecommendTagsModel.class, new ResponseListener<RecommendTagsModel>() {
+    public void getTab(final CommonListener<List<TagsModel>> listener) {
+        GsonRequest<List<TagsModel>> request = new GsonRequest<>(Request.Method.GET, NetApi.getCategoryTags, new TypeToken<List<TagsModel>>() {
+        }.getType(), new ResponseListener<List<TagsModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 listener.errorListener(error, "", "");
             }
 
             @Override
-            public void onResponse(RecommendTagsModel response, boolean result, @Nullable String exception, @Nullable String msg) {
+            public void onResponse(@Nullable List<TagsModel> response, boolean result, @Nullable String exception, @Nullable String msg) {
                 listener.successListener(response);
             }
         });
+
         request.start(context, null);
     }
 
     @Override
     public void getTabData(String isDefaultData, final CommonListener<RecommendModelNew> listener) {
-        String urlStr = "";
-        //  if (isDefaultData) {
+        String urlStr;
         urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(), isDefaultData,
                 SPUtils.getLatitude(), SPUtils.getLongitude(), 1
         );
         LogUtils.json(urlStr);
-      /*  } else {
-            urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(),
-                    SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
-            );
-        }*/
+
         GsonRequest<RecommendModelNew> request = new GsonRequest<>(urlStr, RecommendModelNew.class, new ResponseListener<RecommendModelNew>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
@@ -70,18 +72,10 @@ public class RecommendFragModel implements IRecommendFragModel {
     }
 
     @Override
-    public void loadMore(String isDefaultData, int pageNumber, final CommonListener<RecommendModelNew> listener) {
-        String urlStr = "";
-        // if (isDefaultData) {
-        urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(), isDefaultData,
-                SPUtils.getLatitude(), SPUtils.getLongitude(), pageNumber
-        );
+    public void loadMore(String type, int pageNumber, final CommonListener<RecommendModelNew> listener) {
+        String urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(), type,
+                SPUtils.getLatitude(), SPUtils.getLongitude(), pageNumber);
         LogUtils.json(urlStr);
-      /*  } else {
-            urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(),
-                    SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude(), pageNumber
-            );
-        }*/
 
         GsonRequest<RecommendModelNew> request = new GsonRequest<>(urlStr, RecommendModelNew.class, new ResponseListener<RecommendModelNew>() {
             @Override
@@ -96,6 +90,4 @@ public class RecommendFragModel implements IRecommendFragModel {
         });
         request.start(context, null);
     }
-
-
 }

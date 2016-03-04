@@ -1,7 +1,9 @@
 package co.quchu.quchu.m;
 
+import java.util.List;
+
 import co.quchu.quchu.model.RecommendModelNew;
-import co.quchu.quchu.model.RecommendTagsModel;
+import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.CommonListener;
 
 /**
@@ -11,7 +13,7 @@ import co.quchu.quchu.presenter.CommonListener;
  */
 public interface IRecommendFragModel {
 
-    void getTab( CommonListener<RecommendTagsModel> listener);
+    void getTab(CommonListener<List<TagsModel>> listener);
 
     void getTabData(String isDefaultData, CommonListener<RecommendModelNew> listener);
 
