@@ -50,7 +50,7 @@ public class RecommendModel {
      */
 
     private List<GenesEntity> genes;
-    private List<?> tags;
+    private List<TagsEntity> tags;
 
     public void setAddress(String address) {
         this.address = address;
@@ -112,7 +112,7 @@ public class RecommendModel {
         this.genes = genes;
     }
 
-    public void setTags(List<?> tags) {
+    public void setTags(List<TagsEntity> tags) {
         this.tags = tags;
     }
 
@@ -176,7 +176,7 @@ public class RecommendModel {
         return genes;
     }
 
-    public List<?> getTags() {
+    public List<TagsEntity> getTags() {
         return tags;
     }
 
@@ -198,6 +198,18 @@ public class RecommendModel {
 
         public String getValue() {
             return value;
+        }
+    }
+
+    public static class TagsEntity {
+        private String zh;
+
+        public void setZh(String zh) {
+            this.zh = zh;
+        }
+
+        public String getZh() {
+            return zh;
         }
     }
 }

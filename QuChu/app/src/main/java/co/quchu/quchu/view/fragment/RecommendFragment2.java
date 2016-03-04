@@ -408,6 +408,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         if (null == bm) {
             return;
         }
+        bm = ImageUtils.setSaturation(bm,.5f);
 
         if (mBackgroundTopVisible) {
             fRecommendBimgBottom.setImageBitmap(bm);
@@ -475,6 +476,10 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (null != sourceBitmap && !sourceBitmap.isRecycled())
+                    sourceBitmap.recycle();
+                if (sourceBitmap != null)
+                    sourceBitmap = null;
         RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
