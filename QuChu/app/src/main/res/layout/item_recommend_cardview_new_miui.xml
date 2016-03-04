@@ -46,8 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
-                android:layout_marginBottom="@dimen/half_margin"
-                android:layout_marginLeft="@dimen/half_margin"
+                android:layout_marginBottom="@dimen/quarter_margin"
                 android:layout_marginRight="@dimen/half_margin"
                 android:orientation="horizontal"
                 >
@@ -60,6 +59,7 @@
                     card_view:tcvCanTagClick="false"
                     card_view:tcvItemBorderHorizontal="1dp"
                     card_view:tcvItemBorderVertical="4dp"
+                    card_view:tcvBackground="@drawable/shape_recommend_card_tag_bg"
                     card_view:tcvRightResId="@null"
                     card_view:tcvSingleLine="false"
                     card_view:tcvTextColor="@color/text_color_white" />
@@ -69,8 +69,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
                     android:layout_alignParentRight="true"
-                    android:layout_marginBottom="@dimen/half_margin"
-                    android:layout_marginRight="@dimen/half_margin"
+                    android:layout_marginBottom="@dimen/quarter_margin"
+                    android:layout_gravity="bottom"
                     android:textColor="@color/text_color_white"
                     android:background="@drawable/shape_recommend_card_tag_bg"
                     android:text="距您100km"

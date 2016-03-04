@@ -117,14 +117,15 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         } else {
             holder.item_recommend_card_name_tv.setText(model.getName());
         }
-        if (model.getTags().size() > 0) {
+        if (null != model.getTags() && model.getTags().size() > 0) {
             ArrayList<String> tags = new ArrayList<String>();
             for (int i = 0; i < model.getTags().size(); i++) {
                 tags.add(model.getTags().get(i).getZh());
             }
+            holder.detailStoreTagcloundTcv.setVisibility(View.VISIBLE);
             holder.detailStoreTagcloundTcv.setTags(tags);
         } else {
-            holder.detailStoreTagcloundTcv.setVisibility(View.GONE);
+            holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
         }
         if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
             holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
