@@ -492,16 +492,16 @@ public class RecyclerViewPager extends RecyclerView {
         addOnScrollListener(new HorizontalScrollListener(this));
     }
 
-//    @Override
-//    public void addOnLayoutChangeListener(OnLayoutChangeListener listener) {
-//        if (listener ==null){
-//            super.addOnLayoutChangeListener(new HorizontalLayoutChangeListener(this));
-//        }else {
-//            super.addOnLayoutChangeListener(listener);
-//        }
-//    }
-//    public void addOnLayoutChangeListener(){
-//        addOnLayoutChangeListener(new HorizontalLayoutChangeListener(this));
-//    }
+    @Override
+    public void addOnLayoutChangeListener(OnLayoutChangeListener listener) {
+        if (listener ==null){
+            super.addOnLayoutChangeListener(new HorizontalLayoutChangeListener(this));
+        }else {
+            super.addOnLayoutChangeListener(listener);
+        }
+    }
+    public void addOnLayoutChangeListener(){
+        addOnLayoutChangeListener(new HorizontalLayoutChangeListener(this));
+    }
 
 }

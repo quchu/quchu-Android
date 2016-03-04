@@ -190,7 +190,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         recyclerView.addOnScrollListener();
         recyclerView.addOnPageChangedListener(this);
         presenter = new RecommentFragPresenter(getContext(), this);
-        //recyclerView.addOnLayoutChangeListener();
+        recyclerView.addOnLayoutChangeListener();
 
         presenter.init();
 
