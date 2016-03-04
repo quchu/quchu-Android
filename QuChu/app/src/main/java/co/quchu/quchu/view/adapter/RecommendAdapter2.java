@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -28,6 +29,7 @@ import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.MIUIUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -115,14 +117,21 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         } else {
             holder.item_recommend_card_name_tv.setText(model.getName());
         }
-
+        if (model.getTags().size() > 0) {
+            ArrayList<String> tags = new ArrayList<String>();
+            for (int i = 0; i < model.getTags().size(); i++) {
+                tags.add(model.getTags().get(i).getZh());
+            }
+            holder.detailStoreTagcloundTcv.setTags(tags);
+        } else {
+            holder.detailStoreTagcloundTcv.setVisibility(View.GONE);
+        }
         if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
-            holder.item_recommend_card_distance_tv.setText("距您:未知");
-            StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 3, 5, R.color.white);
+            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
         } else {
             if (StringUtils.isDouble(model.getDistance())) {
                 String distance = StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
-                holder.item_recommend_card_distance_tv.setText("距您:" + distance);
+                holder.item_recommend_card_distance_tv.setText("距您" + distance);
                 StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 3, 3 + distance.length(), R.color.white);
             }
         }
@@ -160,8 +169,8 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         CardView rootCv;
         @Bind(R.id.item_recommend_card_collect_iv)
         ImageView itemRecommendCardCollectIv;
-        @Bind(R.id.item_recommend_card_tag_tv)
-        TextView item_recommend_card_tag_tv;
+        @Bind(R.id.detail_store_tagclound_tcv)
+        TagCloudView detailStoreTagcloundTcv;
         @Bind(R.id.item_recommend_card_distance_tv)
         TextView item_recommend_card_distance_tv;
         private CardClickListener listener;
