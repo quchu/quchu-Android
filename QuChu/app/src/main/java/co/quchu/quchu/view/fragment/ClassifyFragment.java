@@ -103,17 +103,7 @@ public class ClassifyFragment extends BaseFragment {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtils.json("classify is onresume");
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        LogUtils.json("classify is onpause");
-    }
 
     public void hintClassify() {
         if (fragmentFirendsRv != null)

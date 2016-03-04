@@ -59,10 +59,7 @@ public class MoreButtonView extends RelativeLayout implements View.OnClickListen
         listener = l;
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
+
 
     public void setImage(int imagedraw) {
         mTitleMore.setImageDrawable(getResources().getDrawable(imagedraw));

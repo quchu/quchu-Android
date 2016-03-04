@@ -169,7 +169,7 @@ public class NetService {
                                         ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
                                     } else{
                                         if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
-                                            Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), 0).show();
+                                            Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), Toast.LENGTH_SHORT).show();
                                             if (response.has("msg") && response.has("exception") && StringUtils.isEmpty(response.getString("exception")) && !StringUtils.isEmpty(response.getString("msg"))) {
                                                 pListener.onError(response.getString("msg"));
                                             }
@@ -178,7 +178,7 @@ public class NetService {
                                                 Toast.makeText(AppContext.mContext, "已有记录", Toast.LENGTH_SHORT).show();
                                             } else {
 
-                                                Toast.makeText(AppContext.mContext, "网络出错", 0).show();
+                                                Toast.makeText(AppContext.mContext, "网络出错", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                         pListener.onError(response.toString());

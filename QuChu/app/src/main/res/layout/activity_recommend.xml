@@ -54,9 +54,6 @@
             android:paddingRight="16dp"
             android:src="@drawable/ic_title_more" />
     </RelativeLayout>
-    <!--   <include layout="@layout/title_bar"
-           android:id="@+id/recommend_title_bar_rl"
-           />-->
 
     <co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager
         android:id="@+id/recommend_body_vp"

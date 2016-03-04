@@ -46,14 +46,13 @@ public class DefaultRecommendFragment extends BaseFragment implements RecommendA
     @Bind(R.id.f_recommend_rvp)
     RecyclerView dfRecommendRvp;
 
-    private int dViewHeight = 0;
     public boolean isRunningAnimation = false;
     public ArrayList<RecommendModel> dCardList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recommend, container,false);
+        View view = inflater.inflate(R.layout.fragment_recommend, container, false);
         ButterKnife.bind(this, view);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         dfRecommendRvp.setLayoutManager(mLayoutManager);
@@ -61,52 +60,15 @@ public class DefaultRecommendFragment extends BaseFragment implements RecommendA
         adapter = new RecommendAdapterLite(getActivity(), this);
         dfRecommendRvp.setAdapter(adapter);
         dfRecommendRvp.setHasFixedSize(true);
-//        dfRecommendBottomRl.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {c
-//                dViewHeight = dfRecommendBottomRl.getHeight();
-//            }
-//        });
-//        dfRecommendRvp.addOnScrollListener();
-//        dfRecommendRvp.addOnPageChangedListener(new RecyclerViewPager.OnPageChangedListener() {
-//            @Override
-//            public void OnPageChanged(int oldPosition, int newPosition) {
-//                Log.d("test", "oldPosition:" + oldPosition + " newPosition:" + newPosition);
-//                if (newPosition <= 2) {
-//                    if (dfRecommendBottomRl.getVisibility() == View.VISIBLE)
-//                        if (!isRunningAnimation)
-//                            RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, false);
-//                } else if (newPosition >= 3) {
-//                    if (dfRecommendBottomRl.getVisibility() == View.INVISIBLE)
-//                        if (!isRunningAnimation)
-//                            RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, true);
-//                }
-//                if (newPosition > oldPosition && dCardList.size() > 3 && newPosition == dCardList.size() - 1 && !isLoading) {
-//                    loadMoreDateSet();
-//                }
-//                indexPosition = newPosition;
-//            }
-//        });
+
         if (!StringUtils.isEmpty(SPUtils.getValueFromSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, ""))) {
             changeDataSetFromServer();
         }
-   /*     if (AppContext.dCardList == null)
-            AppContext.dCardList = new ArrayList<>();*/
         return view;
     }
 
-    private boolean isLoading = false;
     private RecommendAdapterLite adapter;
-    private int indexPosition = 0;
 
-//    @OnClick(R.id.f_recommend_bottom_rl)
-//    public void bottomClick(View view) {
-//        if (indexPosition > 5) {
-//            dfRecommendRvp.scrollToPosition(0);
-//        } else {
-//            dfRecommendRvp.smoothScrollToPosition(0);
-//        }
-//    }
 
     @Override
     public void onDestroyView() {
@@ -119,13 +81,9 @@ public class DefaultRecommendFragment extends BaseFragment implements RecommendA
         RecommendPresenter.getRecommendList(getActivity(), false, new RecommendPresenter.GetRecommendListener() {
             @Override
             public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
-                pageCounts = pageCount;
-                pageNums = pageNum;
                 dCardList = arrayList;
                 adapter.changeDataSet(dCardList);
                 dfRecommendRvp.smoothScrollToPosition(0);
-//                if (dfRecommendBottomRl.getVisibility() == View.VISIBLE)
-//                    RecommendPresenter.showBottomAnimation(DefaultRecommendFragment.this, dfRecommendBottomRl, dViewHeight, false);
             }
 
             @Override
@@ -185,33 +143,6 @@ public class DefaultRecommendFragment extends BaseFragment implements RecommendA
         }
     }
 
-    private int pageCounts = 2, pageNums = 1;
-
-    public void loadMoreDateSet() {
-        if (pageNums < pageCounts) {
-            isLoading = true;
-            pageNums++;
-            RecommendPresenter.loadMoreRecommendList(getActivity(), false, pageNums, new RecommendPresenter.GetRecommendListener() {
-                @Override
-                public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
-                    LogUtils.json("pageNums==" + pageNums);
-                    pageCounts = pageCount;
-                    pageNums = pageNum;
-                    if (arrayList != null && arrayList.size() > 0) {
-                        //    adapter.loadMoreDataSet(arrayList);
-                        dCardList.addAll(arrayList);
-                        adapter.notifyDataSetChanged();
-                    }
-                    isLoading = false;
-                }
-
-                @Override
-                public void onError() {
-                    isLoading = true;
-                }
-            });
-        }
-    }
 
     public void updateDateSet() {
         dCardList.set(hasChangePosition, AppContext.selectedPlace);
@@ -223,7 +154,6 @@ public class DefaultRecommendFragment extends BaseFragment implements RecommendA
         LogUtils.json("removeDataSet==" + removeIndex);
         if (adapter != null && removeIndex < dCardList.size()) {
             dCardList.remove(removeIndex);
-            //  adapter.changeDataSet(dCardList);
             adapter.notifyDataSetChanged();
         }
     }
@@ -237,22 +167,4 @@ public class DefaultRecommendFragment extends BaseFragment implements RecommendA
         if (dfRecommendRvp != null)
             dfRecommendRvp.setVisibility(View.VISIBLE);
     }
-
-    /*@Override
-    public void onResume() {
-        super.onResume();
-        LogUtils.json("DefaultRecommendFragment==onResume");
-        if (((RecommendActivity) getActivity()).viewPagerIndex == 2) {
-            if (AppContext.dCardListRemoveIndex != -1) {
-                removeDataSet(AppContext.dCardListRemoveIndex);
-                AppContext.dCardListRemoveIndex = -1;
-                AppContext.dCardListNeedUpdate = false;
-            } else {
-                if (AppContext.dCardListNeedUpdate) {
-                    updateDateSet();
-                    AppContext.dCardListNeedUpdate = false;
-                }
-            }
-        }
-    }*/
 }

@@ -52,40 +52,36 @@
                 android:paddingRight="16dp" />
         </RelativeLayout>
 
-        <RelativeLayout
+
+        <LinearLayout
             android:id="@+id/menus_add_topic"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/ic_pull_menus_bottom_bg">
+            android:background="@drawable/ic_pull_menus_bottom_bg"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="horizontal">
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_pull_menus_add" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:src="@drawable/ic_pull_menus_add" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="我发现了一个新趣处"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_title_body" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="我发现了一个新趣处"
-                    android:textColor="@color/text_color_white"
-                    android:textSize="@dimen/word_title_body" />
-            </LinearLayout>
-
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

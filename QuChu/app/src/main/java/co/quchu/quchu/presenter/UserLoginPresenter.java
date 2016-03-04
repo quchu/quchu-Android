@@ -174,7 +174,9 @@ public class UserLoginPresenter {
         void notUnique(String msg);
     }
 
-
+    /**
+     * 游客注册
+     */
     public static void visitorRegiest(Context context, final UserNameUniqueListener listener) {
         NetService.post(context, String.format(NetApi.VisitorRegiester, StringUtils.getMyUUID()), null, new IRequestListener() {
             @Override
