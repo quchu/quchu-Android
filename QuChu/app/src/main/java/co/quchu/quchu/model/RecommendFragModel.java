@@ -1,4 +1,4 @@
-package co.quchu.quchu.m;
+package co.quchu.quchu.model;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -9,8 +9,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
+import co.quchu.quchu.model.IRecommendFragModel;
 import co.quchu.quchu.model.RecommendModelNew;
-import co.quchu.quchu.model.RecommendTagsModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;

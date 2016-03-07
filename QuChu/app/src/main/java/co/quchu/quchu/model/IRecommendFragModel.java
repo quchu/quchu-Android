@@ -1,4 +1,4 @@
-package co.quchu.quchu.m;
+package co.quchu.quchu.model;
 
 import java.util.List;
 

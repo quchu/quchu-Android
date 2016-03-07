@@ -12,8 +12,8 @@ import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.m.IRecommendFragModel;
-import co.quchu.quchu.m.RecommendFragModel;
+import co.quchu.quchu.model.IRecommendFragModel;
+import co.quchu.quchu.model.RecommendFragModel;
 import co.quchu.quchu.model.RecommendModelNew;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.view.fragment.IRecommendFragment;

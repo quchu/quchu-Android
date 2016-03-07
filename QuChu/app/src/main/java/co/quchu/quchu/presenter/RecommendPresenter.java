@@ -1,14 +1,11 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -19,23 +16,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.m.IRecommendFragModel;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
-import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.DefaultRecommendFragment;
-import co.quchu.quchu.view.fragment.IRecommendFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 
 /**
