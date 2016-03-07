@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detail_activity_initiator_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/half_margin"
+    android:background="@drawable/ic_card_shadow_bg"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <TextView
+        android:id="@+id/detail_activity_initiator_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:text="发起人"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
+
+    <View style="@style/DetailHorizontalLine" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/detail_activity_initiator_avator_sdv"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            card_view:actualImageScaleType="centerCrop"
+            card_view:roundAsCircle="true" />
+
+        <TextView
+            android:id="@+id/detail_activity_initiator_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_size_body" />
+    </LinearLayout>
+
+</LinearLayout>

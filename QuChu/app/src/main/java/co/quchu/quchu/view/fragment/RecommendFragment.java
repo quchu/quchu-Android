@@ -28,7 +28,7 @@ import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.view.activity.InterestingDetailsActivity;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
 import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
 
@@ -166,7 +166,7 @@ RelativeLayout itemback;
             case R.id.root_cv:
                 AppContext.selectedPlace = cardList.get(position);
                 hasChangePosition = position;
-                Intent intent = new Intent(getActivity(), InterestingDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                 intent.putExtra("pPosition", position);
                 intent.putExtra("pId", cardList.get(position).getPid());
                 startActivity(intent);

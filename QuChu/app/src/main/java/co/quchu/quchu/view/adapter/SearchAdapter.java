@@ -32,7 +32,7 @@ import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.InterestingDetailsActivity;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -179,7 +179,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
             switch (v.getId()) {
                 case R.id.root_cv:
                 case R.id.item_recommend_card_reply_rl:
-                    mContext.startActivity(new Intent(mContext, InterestingDetailsActivity.class).putExtra("pId", arrayList.get(getPosition()).getPid()));
+                    mContext.startActivity(new Intent(mContext, QuchuDetailsActivity.class).putExtra("pId", arrayList.get(getPosition()).getPid()));
                     break;
                 case R.id.item_recommend_card_collect_rl:
                     setFavorite(getPosition());

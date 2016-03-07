@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detail_button_group_ll"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/detail_button_group_height"
+    android:gravity="center_vertical"
+    android:layout_marginTop="@dimen/half_margin"
+    android:background="@drawable/ic_card_shadow_bg"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/detail_button_collect_rl"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/detail_button_collect_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_detail_uncollect" />
+    </RelativeLayout>
+
+    <View
+        style="@style/DetailVerticalLine"
+        android:layout_marginBottom="@dimen/tow_dp_margin"
+        android:layout_marginTop="@dimen/quarter_margin" />
+
+
+    <RelativeLayout
+        android:id="@+id/detail_button_share_rl"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_detail_share" />
+    </RelativeLayout>
+
+    <View
+        style="@style/DetailVerticalLine"
+        android:layout_marginBottom="@dimen/tow_dp_margin"
+        android:layout_marginTop="@dimen/quarter_margin" />
+
+    <RelativeLayout
+        android:id="@+id/detail_button_add_postcard_rl"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_detail_add_postcard" />
+    </RelativeLayout>
+</LinearLayout>

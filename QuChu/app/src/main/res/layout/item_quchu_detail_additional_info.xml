@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detail_icons_rl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/half_margin"
+    android:background="@drawable/ic_card_shadow_bg">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <RadioButton
+                    android:id="@+id/detail_box_rb"
+                    style="@style/DetailRadioButton"
+                    android:drawableTop="@drawable/rb_detail_box"
+                    android:text="包厢" />
+            </RelativeLayout>
+
+            <View style="@style/DetailVerticalLine" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <RadioButton
+                    android:id="@+id/detail_mess_rb"
+                    style="@style/DetailRadioButton"
+                    android:drawableTop="@drawable/rb_detail_mess"
+                    android:text="堂食" />
+            </RelativeLayout>
+
+            <View style="@style/DetailVerticalLine" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <RadioButton
+                    android:id="@+id/detail_takeout_rb"
+                    style="@style/DetailRadioButton"
+                    android:drawableTop="@drawable/rb_detail_takeout"
+                    android:text="外送" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View style="@style/DetailHorizontalLine" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="@dimen/half_margin"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <RadioButton
+                    android:id="@+id/detail_cash_rb"
+                    style="@style/DetailRadioButton"
+                    android:drawableTop="@drawable/rb_detail_cash"
+                    android:text="现金" />
+            </RelativeLayout>
+
+            <View style="@style/DetailVerticalLine" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <RadioButton
+                    android:id="@+id/detail_cardpay_rb"
+                    style="@style/DetailRadioButton"
+                    android:drawableTop="@drawable/rb_detail_cardpay"
+                    android:text="银行卡" />
+            </RelativeLayout>
+
+            <View style="@style/DetailVerticalLine" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <RadioButton
+                    android:id="@+id/detail_zfb_rb"
+                    style="@style/DetailRadioButton"
+                    android:drawableTop="@drawable/rb_detail_zfb"
+                    android:text="支付宝" />
+            </RelativeLayout>
+
+            <View style="@style/DetailVerticalLine" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <RadioButton
+                    android:id="@+id/detail_wechat_rb"
+                    style="@style/DetailRadioButton"
+                    android:drawableTop="@drawable/rb_detail_wechat"
+                    android:text="微信支付" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

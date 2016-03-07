@@ -27,7 +27,7 @@ import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.InterestingDetailsActivity;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.ClassifyDecoration;
 import co.quchu.quchu.view.adapter.RecommendAdapterLite;
 
@@ -97,7 +97,7 @@ public class DefaultRecommendFragment extends BaseFragment implements RecommendA
             case R.id.root_cv:
                 hasChangePosition = position;
                 AppContext.selectedPlace = dCardList.get(position);
-                Intent intent = new Intent(getActivity(), InterestingDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                 intent.putExtra("pId", dCardList.get(position).getPid());
                 intent.putExtra("pPosition", position);
                 getActivity().startActivity(intent);

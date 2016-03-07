@@ -146,6 +146,11 @@
             android:name=".view.activity.InterestingDetailsActivity"
             android:label="@string/titlebar_word_place_detail"
             android:screenOrientation="portrait" />
+        <!-- 趣处详情-->
+        <activity
+            android:name="co.quchu.quchu.view.activity.QuchuDetailsActivity"
+            android:label="@string/titlebar_word_place_detail"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.UserPostCardActivity"
             android:label="@string/titlebar_word_user_postcard"

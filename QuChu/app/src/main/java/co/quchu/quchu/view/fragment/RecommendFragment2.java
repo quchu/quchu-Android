@@ -48,7 +48,7 @@ import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.view.activity.InterestingDetailsActivity;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter2;
 import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
 
@@ -222,7 +222,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             case R.id.root_cv:
                 AppContext.selectedPlace = cardList.get(position);
                 hasChangePosition = position;
-                Intent intent = new Intent(getActivity(), InterestingDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                 intent.putExtra("pPosition", position);
                 intent.putExtra("pId", cardList.get(position).getPid());
                 startActivity(intent);

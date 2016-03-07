@@ -63,7 +63,7 @@ public class FavoritePlaceActivity extends BaseActivity {
                     case R.id.item_recommend_card_reply_rl:
                         Intent intent = new Intent();
                         intent.putExtra("pId", model.getResult().get(position).getPid());
-                        intent.setClass(FavoritePlaceActivity.this, InterestingDetailsActivity.class);
+                        intent.setClass(FavoritePlaceActivity.this, QuchuDetailsActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.root_cv:
