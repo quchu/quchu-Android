@@ -1,10 +1,13 @@
 package co.quchu.quchu.widget.cardsui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +38,7 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.AddPostCardActivity;
 import co.quchu.quchu.view.activity.PostCardDetailActivity;
 import co.quchu.quchu.view.activity.PostCardImageActivity;
+import co.quchu.quchu.view.activity.PostcarDetailActivity;
 import co.quchu.quchu.widget.cardsui.objects.Card;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -128,8 +132,20 @@ public class MyCard extends Card {
             @Override
             public void onClick(View v) {
                 LogUtils.json("view is click");
-                if (listener != null)
-                    listener.onPostCardItemClick(item);
+                if (listener != null) {
+//                    listener.onPostCardItemClick(item);
+
+                    // TODO: 2016/3/7
+                    Intent intent = new Intent(v.getContext(), PostcarDetailActivity.class);
+                    intent.putExtra(PostcarDetailActivity.REQUEST_PARAMATER_ENTITY,item);
+                    Bundle bundle = null;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                (Activity) v.getContext(), v, PostcarDetailActivity.SHARE_ELEMENT_NAME).toBundle();
+                    }
+                    v.getContext().startActivity(intent, bundle);
+
+                }
             }
         });
         if (SPUtils.getBooleanFromSPMap(mContext, AppKey.IS_POSTCARD_GUIDE, false)) {

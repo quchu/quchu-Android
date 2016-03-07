@@ -2,8 +2,6 @@ package co.quchu.quchu.model;
 
 import java.util.List;
 
-import co.quchu.quchu.model.RecommendModelNew;
-import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.CommonListener;
 
 /**

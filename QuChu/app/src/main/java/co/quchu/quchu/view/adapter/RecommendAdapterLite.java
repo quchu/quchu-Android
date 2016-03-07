@@ -23,7 +23,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.HorizontalNumProgressBar;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**

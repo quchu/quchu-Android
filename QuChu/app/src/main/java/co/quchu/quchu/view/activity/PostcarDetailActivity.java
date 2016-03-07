@@ -1,15 +1,12 @@
-package co.quchu.quchu.view.fragment;
+package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,7 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
@@ -32,30 +29,20 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.AddPostCardActivity;
-import co.quchu.quchu.view.activity.PostCardActivity;
-import co.quchu.quchu.view.activity.PostCardDetailActivity;
-import co.quchu.quchu.view.activity.PostCardImageActivity;
-import co.quchu.quchu.widget.cardsui.MyCard;
+import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
-/**
- * FriendsFollowerFg
- * User: Chenhs
- * Date: 2015-11-09
- */
-public class PostCardDetailFg extends BaseFragment {
-    View view;
+public class PostcarDetailActivity extends AppCompatActivity {
+
+    public static final String REQUEST_PARAMATER_ENTITY = "entity";
+    public static final String SHARE_ELEMENT_NAME = "animation_1";
 
 
     @Bind(R.id.item_recommend_card_name_tv)
     TextView itemRecommendCardNameTv;
     @Bind(R.id.item_recommend_card_city_tv)
     TextView itemRecommendCardCityTv;
-    @Bind(R.id.item_recommend_card_title_textrl)
-    RelativeLayout itemRecommendCardTitleTextrl;
     @Bind(R.id.item_recommend_card_photo_sdv)
     SimpleDraweeView itemRecommendCardPhotoSdv;
     @Bind(R.id.item_my_postcard_avatar_sdv)
@@ -70,45 +57,46 @@ public class PostCardDetailFg extends BaseFragment {
     TextView itemMyPostcardCardCommentTv;
     @Bind(R.id.item_my_postcard_card_heart_iv)
     ImageView itemMyPostcardCardHeartIv;
-    @Bind(R.id.item_my_postcard_heart_rl)
-    RelativeLayout itemMyPostcardHeartRl;
     @Bind(R.id.item_recommend_card_collect_iv)
     ImageView itemRecommendCardCollectIv;
-    @Bind(R.id.item_recommend_card_collect_rl)
-    RelativeLayout itemRecommendCardCollectRl;
-    @Bind(R.id.item_recommend_card_interest_iv)
-    ImageView itemRecommendCardInterestIv;
-    @Bind(R.id.item_recommend_card_interest_rl)
-    RelativeLayout itemRecommendCardInterestRl;
-    @Bind(R.id.item_recommend_card_reply_Iv)
-    ImageView itemRecommendCardReplyIv;
-    @Bind(R.id.item_recommend_card_reply_rl)
-    RelativeLayout itemRecommendCardReplyRl;
     @Bind(R.id.item_recommend_card_photo_num_tv)
     TextView itemRecommendCardPhotoNumTv;
     @Bind(R.id.root_cv)
     CardView rootCv;
-    private MyCard.PostCardItemClickListener listener;
+    @Bind(R.id.title_back_rl)
+    RelativeLayout titleBackRl;
+    @Bind(R.id.title_content_tv)
+    TextView titleContentTv;
+    @Bind(R.id.title_more_rl)
+    MoreButtonView moreButtonView;
     private PostCardItemModel item;
 
-    public PostCardDetailFg(PostCardItemModel item) {
-        this.item = item;
-    }
-
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_postcard_detail, null);
-        ButterKnife.bind(this, view);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_postcar_detail);
+        ButterKnife.bind(this);
+        titleContentTv.setText("我的明信片");
+        item = (PostCardItemModel) getIntent().getSerializableExtra(REQUEST_PARAMATER_ENTITY);
         initPostCardDetailData();
-        return view;
+        titleBackRl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        moreButtonView.setMoreClick(new MoreButtonView.MoreClicklistener() {
+            @Override
+            public void moreClick() {
+                startActivity(new Intent(PostcarDetailActivity.this, MenusActivity.class));
+            }
+        });
     }
 
     private void initPostCardDetailData() {
         if (item != null) {
             rootCv.setCardBackgroundColor(Color.parseColor("#" + item.getRgb()));
-           /*     revealLayoutShow();*/
             itemRecommendCardNameTv.setText(item.getPlcaeName());
             itemRecommendCardCityTv.setText(item.getPlcaeAddress());
             itemMyPostcardCardPrb.setRating(item.getScore());
@@ -118,14 +106,10 @@ public class PostCardDetailFg extends BaseFragment {
             itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
             itemRecommendCardPhotoSdv.setAspectRatio(1.3f);
             itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
-           /* if (item.isIsf()) {
-                itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_collect));
-            } else {
-                itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_uncollect));
-            }*/
+
             itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(item.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
             if (item.issys()) {
-                itemMyPostcardCardHeartIv.setImageDrawable(getActivity().getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
             } else {
                 if (item.isIsme()) {
                     itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_post_card_editer));
@@ -149,16 +133,16 @@ public class PostCardDetailFg extends BaseFragment {
             return;
         switch (view.getId()) {
             case R.id.root_cv:
-                ((PostCardActivity) getActivity()).showListFragment();
+                finish();
                 break;
             case R.id.item_my_postcard_heart_rl:
                 if (!item.issys() && item.isIsme()) {
-                    Intent intent = new Intent(getActivity(), AddPostCardActivity.class).putExtra("pName", item.getPlcaeName());
+                    Intent intent = new Intent(this, AddPostCardActivity.class).putExtra("pName", item.getPlcaeName());
                     intent.putExtra("pId", item.getPlaceId());
                     Bundle mBundle = new Bundle();
                     mBundle.putSerializable("pCardModel", item);
                     intent.putExtras(mBundle);
-                    getActivity().startActivity(intent);
+                    startActivity(intent);
                 } else {
                     doParise();
                 }
@@ -168,18 +152,18 @@ public class PostCardDetailFg extends BaseFragment {
                 break;
             case R.id.item_recommend_card_interest_rl:
                 ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(item.getCardId(), item.getPlcaeName(), false);
-                shareDialogFg.show(getActivity().getFragmentManager(), "share_postcard");
+                shareDialogFg.show(getFragmentManager(), "share_postcard");
                 break;
             case R.id.item_recommend_card_reply_rl:
-                getActivity().startActivity(new Intent(getActivity(), PostCardDetailActivity.class).putExtra("cInfo", item));
+                startActivity(new Intent(this, PostCardDetailActivity.class).putExtra("cInfo", item));
                 break;
             case R.id.item_recommend_card_photo_sdv:
                 if (item.getImglist().size() > 0) {
-                    Intent intent = new Intent(getActivity(), PostCardImageActivity.class);
+                    Intent intent = new Intent(this, PostCardImageActivity.class);
                     Bundle mBundle = new Bundle();
                     mBundle.putSerializable("pCardModel", item);
                     intent.putExtras(mBundle);
-                    getActivity().startActivity(intent);
+                    startActivity(intent);
                 }
                 break;
         }
@@ -187,15 +171,15 @@ public class PostCardDetailFg extends BaseFragment {
 
     private void doParise() {
 
-        PostCardPresenter.setPraise(getActivity(), item.isIsp(), true, item.getCardId(), new PostCardPresenter.MyPostCardListener() {
+        PostCardPresenter.setPraise(this, item.isIsp(), true, item.getCardId(), new PostCardPresenter.MyPostCardListener() {
             @Override
             public void onSuccess(PostCardModel model) {
                 item.setIsp(!item.isIsp());
                 itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
                 if (item.isIsp()) {
-                    Toast.makeText(getActivity(), "点赞成功!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostcarDetailActivity.this, "点赞成功!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "取消点赞!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostcarDetailActivity.this, "取消点赞!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -206,29 +190,24 @@ public class PostCardDetailFg extends BaseFragment {
         });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 
     private void setFavorite() {
         if (!item.issys()) {
-            String favoUrl = "";
+            String favoUrl;
             if (item.isIsf()) {
                 favoUrl = String.format(NetApi.userDelFavorite, item.getCardId(), NetApi.FavTypeCard);
             } else {
                 favoUrl = String.format(NetApi.userFavorite, item.getCardId(), NetApi.FavTypeCard);
             }
-            NetService.get(getActivity(), favoUrl, new IRequestListener() {
+            NetService.get(this, favoUrl, new IRequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
                     item.setIsf(!item.isIsf());
                     if (item.isIsf()) {
-                        Toast.makeText(getActivity(), "收藏成功!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostcarDetailActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
                         itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_collect));
                     } else {
-                        Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostcarDetailActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                         itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_uncollect));
                     }
                 }
@@ -240,13 +219,9 @@ public class PostCardDetailFg extends BaseFragment {
                 }
             });
         } else {
-            Toast.makeText(getActivity(), "系统明信片不允许收藏!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "系统明信片不允许收藏!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtils.json("PostCardDetailFg  onResume");
-    }
+
 }

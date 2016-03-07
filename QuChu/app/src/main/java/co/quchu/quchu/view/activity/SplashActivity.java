@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -21,7 +20,6 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.Constants;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 

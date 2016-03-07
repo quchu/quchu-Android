@@ -12,8 +12,7 @@
         android:overScrollMode="never"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
-        android:scrollbars="none" >
-    </co.quchu.quchu.widget.cardsui.views.QuickReturnListView>
+        android:scrollbars="none" />
 
 
 </FrameLayout>

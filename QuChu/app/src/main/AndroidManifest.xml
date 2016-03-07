@@ -2,35 +2,35 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="co.quchu.quchu">
 
-    <!--腾讯 所需权限-->
+    <!-- 腾讯 所需权限 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <!--在SDCard中创建与删除文件权限-->
+    <!-- 在SDCard中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <!--往SDCard写入数据权限-->
-    <!--从SDCard读取数据权限-->
+    <!-- 往SDCard写入数据权限 -->
+    <!-- 从SDCard读取数据权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--testing-->
+    <!-- testing -->
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <!--用于进行网络定位-->
+    <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--用于访问GPS定位-->
+    <!-- 用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--获取运营商信息，用于支持提供运营商信息相关的接口-->
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!--用于访问网络，网络定位需要上网-->
+    <!-- 用于访问网络，网络定位需要上网 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--用于读取手机当前的状态-->
+    <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据-->
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -40,91 +40,93 @@
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme.NoActionBar">
-        <!--android:name="co.quchu.quchu.view.activity.PlanetActivity" -->
+
+        <!-- android:name="co.quchu.quchu.view.activity.PlanetActivity" -->
 
         <activity
-            android:name="co.quchu.quchu.view.activity.SplashActivity"
+            android:name=".view.activity.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="co.quchu.quchu.view.activity.PlanetActivity"
+            android:name=".view.activity.PlanetActivity"
             android:label="@string/titlebar_word_planet"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.GeneActivity"
+            android:name=".view.activity.GeneActivity"
             android:label="@string/titlebar_word_gene"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.GeneIntroduceActivity"
+            android:name=".view.activity.GeneIntroduceActivity"
             android:label="@string/titlebar_word_gene_introduce"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.FriendsCircleIntroduceActivity"
+            android:name=".view.activity.FriendsCircleIntroduceActivity"
             android:label="@string/titlebar_word_friends_introduce"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.AtmosphereActivity"
+            android:name=".view.activity.AtmosphereActivity"
             android:label="@string/titlebar_word_atmosphere"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.DiscoverActivity"
+            android:name=".view.activity.DiscoverActivity"
             android:label="@string/titlebar_word_discover"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.QuFriendsActivity"
+            android:name=".view.activity.QuFriendsActivity"
             android:label="@string/titlebar_word_qu_friends"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.FlickrActivity"
+            android:name=".view.activity.FlickrActivity"
             android:label="@string/titlebar_word_flickr"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.FeedbackActivity"
+            android:name=".view.activity.FeedbackActivity"
             android:label="@string/titlebar_word_feedback"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.PostCardActivity"
+            android:name=".view.activity.PostCardActivity"
             android:label="@string/titlebar_word_postcard"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.AddPostCardActivity"
+            android:name=".view.activity.AddPostCardActivity"
             android:label="@string/titlebar_word_add_postcard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="co.quchu.quchu.view.activity.FavoriteActivity"
+            android:name=".view.activity.FavoriteActivity"
             android:label="@string/titlebar_word_favorite"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.PalceMyPostCardActivity"
+            android:name=".view.activity.PalceMyPostCardActivity"
             android:label="@string/titlebar_word_place_my_postcard"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.FavoritePlaceActivity"
+            android:name=".view.activity.FavoritePlaceActivity"
             android:label="@string/titlebar_word_favorite_place"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.PlacePostCardActivity"
+            android:name=".view.activity.PlacePostCardActivity"
             android:label="@string/titlebar_word_place_postcard"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.MessageCenterActivity"
+            android:name=".view.activity.MessageCenterActivity"
             android:label="@string/titlebar_word_message_center"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.PostCardDetailActivity"
+            android:name=".view.activity.PostCardDetailActivity"
             android:label="@string/titlebar_word_my_postcard"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.AboutUsActivity"
+            android:name=".view.activity.AboutUsActivity"
             android:label="@string/titlebar_word_about_us"
             android:screenOrientation="portrait" />
         <activity
@@ -132,64 +134,64 @@
             android:label="@string/titlebar_word_imagebucket"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.AccountSettingActivity"
+            android:name=".view.activity.AccountSettingActivity"
             android:label="@string/titlebar_word_account_setting"
             android:screenOrientation="portrait" />
         <activity
             android:name=".photo.ImageGridActivity"
             android:label="@string/titlebar_word_imagephoto"
             android:screenOrientation="portrait" />
-        <!-- 趣处详情-->
+        <!-- 趣处详情 -->
         <activity
-            android:name="co.quchu.quchu.view.activity.InterestingDetailsActivity"
+            android:name=".view.activity.InterestingDetailsActivity"
             android:label="@string/titlebar_word_place_detail"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.UserPostCardActivity"
+            android:name=".view.activity.UserPostCardActivity"
             android:label="@string/titlebar_word_user_postcard"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.UserCenterActivity"
+            android:name=".view.activity.UserCenterActivity"
             android:label="@string/titlebar_word_user_center"
             android:screenOrientation="portrait" />
         <!-- 关注的 -->
         <activity
-            android:name="co.quchu.quchu.view.activity.FollowingActivity"
+            android:name=".view.activity.FollowingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar_top" />
         <!-- 我的趣推荐 -->
         <activity
-            android:name="co.quchu.quchu.view.activity.RecommendActivity"
+            android:name=".view.activity.RecommendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar_top" />
-        <!--下拉菜单-->
+        <!-- 下拉菜单 -->
         <activity
-            android:name="co.quchu.quchu.view.activity.MenusActivity"
+            android:name=".view.activity.MenusActivity"
             android:screenOrientation="portrait" />
-        <!--搜索-->
+        <!-- 搜索 -->
         <activity
-            android:name="co.quchu.quchu.view.activity.SearchActivity"
+            android:name=".view.activity.SearchActivity"
             android:screenOrientation="portrait" />
-        <!-- 账户设置-->
-        <!-- 趣处小图浏览界面-->
+        <!-- 账户设置 -->
+        <!-- 趣处小图浏览界面 -->
         <activity
-            android:name="co.quchu.quchu.view.activity.PostCardImageActivity"
+            android:name=".view.activity.PostCardImageActivity"
             android:screenOrientation="portrait" />
-        <!-- 趣处小图浏览界面-->
-        <!--趣处 预定-->
+        <!-- 趣处小图浏览界面 -->
+        <!-- 趣处 预定 -->
         <activity
-            android:name="co.quchu.quchu.view.activity.ReserveActivity"
+            android:name=".view.activity.ReserveActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.view.activity.PlaceMapActivity"
+            android:name=".view.activity.PlaceMapActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 用户登录-->
+        <!-- 用户登录 -->
         <activity
-            android:name="co.quchu.quchu.view.activity.UserLoginActivity"
+            android:name=".view.activity.UserLoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="co.quchu.quchu.photo.previewimage.PreviewImage"
+            android:name=".photo.previewimage.PreviewImage"
             android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -199,7 +201,8 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="56abaf9be0f55a4757000e39" />
-        <!--    android:value="5655121fe0f55a5ee8008dd5" />
+        <!--
+        android:value="5655121fe0f55a5ee8008dd5" />
         debug
         -->
         <meta-dataa
@@ -211,7 +214,6 @@
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-
 
         <!-- tencent -->
         <activity
@@ -232,22 +234,27 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!--友盟-->
+        <!-- 友盟 -->
         <service
             android:name="com.umeng.update.net.DownloadingService"
             android:process=":DownloadingService" />
+
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--高德地图-->
+        <!-- 高德地图 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="b60847e00e5cc92cc6239b4a664cd872" />
-        <!--   android:value="5796ca0f891c43e8eca0a8bc4a1aab09"
-        />-->
-        <!-- 地图key_林启鹏debug:b60847e00e5cc92cc6239b4a664cd872  -->
+        <!--
+        android:value="5796ca0f891c43e8eca0a8bc4a1aab09"
+        />
+        -->
+        <!-- 地图key_林启鹏debug:b60847e00e5cc92cc6239b4a664cd872 -->
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
+
+        <activity android:name=".view.activity.PostcarDetailActivity"></activity>
     </application>
 
 </manifest>

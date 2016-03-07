@@ -9,9 +9,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
-import co.quchu.quchu.model.IRecommendFragModel;
-import co.quchu.quchu.model.RecommendModelNew;
-import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;

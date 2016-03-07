@@ -9,7 +9,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -18,18 +17,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import co.quchu.quchu.analysis.GatherSendDataModel;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.NetErrorDialog;
 import co.quchu.quchu.dialog.NetErrorDialogUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.SearchActivity;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 

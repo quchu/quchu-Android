@@ -7,7 +7,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;

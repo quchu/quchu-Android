@@ -1,11 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -16,10 +12,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.PostCardItemModel;
-import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.fragment.PostCardDetailFg;
 import co.quchu.quchu.view.fragment.PostCardListFg;
 import co.quchu.quchu.widget.cardsui.MyCard;
 
@@ -53,19 +46,19 @@ public class PostCardActivity extends BaseActivity {
         listener = new MyCard.PostCardItemClickListener() {
             @Override
             public void onPostCardItemClick(PostCardItemModel item) {
-                if (SPUtils.getBooleanFromSPMap(PostCardActivity.this, AppKey.IS_POSTCARD_GUIDE, false)) {
-
-                } else {
-                    if (postCardListFg != null)
-                        transaction = getSupportFragmentManager().beginTransaction();
-                    isFragmentStatOk = false;
-                    transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);
-                    transaction.replace(R.id.postcard_fl, new PostCardDetailFg(item));
-                    transaction.commit();
-                    fragmentIndex = 1;
-                    mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
-                }
-                //postCardListFg.setInvisiable(true);
+//                if (SPUtils.getBooleanFromSPMap(PostCardActivity.this, AppKey.IS_POSTCARD_GUIDE, false)) {
+//
+//                } else {
+//                    if (postCardListFg != null)
+//                        transaction = getSupportFragmentManager().beginTransaction();
+//                    isFragmentStatOk = false;
+//                    transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);
+//                    transaction.replace(R.id.postcard_fl, new PostCardDetailFg(item));
+//                    transaction.commit();
+//                    fragmentIndex = 1;
+//                    mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
+//                }
+                // TODO: 2016/3/7 跳转界面放在回调执行的地方
             }
         };
         postCardListFg = new PostCardListFg(listener, isFavoritePostCard);
@@ -87,6 +80,7 @@ public class PostCardActivity extends BaseActivity {
 
         super.onResume();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -111,41 +105,35 @@ public class PostCardActivity extends BaseActivity {
 
     public void showListFragment() {
         transaction = getSupportFragmentManager().beginTransaction();
-        isFragmentStatOk = false;
-        transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);
+//        isFragmentStatOk = false;
+//        transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);
         transaction.replace(R.id.postcard_fl, postCardListFg);
         transaction.commit();
         fragmentIndex = 0;
-        mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
+//        mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
     }
 
 
-    private boolean isFragmentStatOk = true;
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (!isFragmentStatOk) {
-            return true;
-        }
-        return super.dispatchTouchEvent(ev);
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (!isFragmentStatOk) {
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
-    }
-
-    public Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0x00:
-                    isFragmentStatOk = true;
-                    break;
-            }
-        }
-    };
+//    private boolean isFragmentStatOk = true;
+//
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        return !isFragmentStatOk || super.dispatchTouchEvent(ev);
+//    }
+//
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//        return !isFragmentStatOk || super.dispatchKeyEvent(event);
+//    }
+//
+//    public Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case 0x00:
+//                    isFragmentStatOk = true;
+//                    break;
+//            }
+//        }
+//    };
 }

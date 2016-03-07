@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:overScrollMode="never"
-    android:scrollbars="none">
+    android:layout_height="match_parent">
 
 
     <android.support.v7.widget.CardView
-
         android:id="@+id/root_cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/base_margin"
         android:clickable="true"
-        card_view:cardPreventCornerOverlap="false"
         android:foreground="?attr/selectableItemBackground"
+        android:transitionName="animation_1"
         card_view:cardCornerRadius="@dimen/card_view_radius_dp"
-        card_view:cardElevation="@dimen/cardview_elevation">
+        card_view:cardElevation="@dimen/cardview_elevation"
+        card_view:cardPreventCornerOverlap="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,6 +26,7 @@
                 android:id="@+id/item_recommend_card_title_textrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/item_recommend_card_city_tv"
                     android:layout_width="wrap_content"
@@ -38,6 +37,7 @@
                     android:layout_marginTop="@dimen/base_margin"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_subhead_size" />
+
                 <TextView
                     android:id="@+id/item_recommend_card_name_tv"
                     android:layout_width="match_parent"
@@ -45,11 +45,11 @@
                     android:layout_marginBottom="@dimen/half_margin"
                     android:layout_marginLeft="@dimen/base_margin"
                     android:layout_marginRight="@dimen/half_margin"
-                    android:gravity="left|center_vertical"
-                    android:layout_toLeftOf="@id/item_recommend_card_city_tv"
-                    android:singleLine="true"
-                    android:ellipsize="end"
                     android:layout_marginTop="@dimen/base_margin"
+                    android:layout_toLeftOf="@id/item_recommend_card_city_tv"
+                    android:ellipsize="end"
+                    android:gravity="left|center_vertical"
+                    android:singleLine="true"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_subhead_size"
                     android:textStyle="bold" />
@@ -57,13 +57,7 @@
 
             </RelativeLayout>
 
-            <!--   <com.facebook.drawee.view.SimpleDraweeView
-                   android:id="@+id/item_recommend_card_photo_sdv"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
 
-                   android:layout_marginTop="@dimen/half_margin"
-                   card_view:actualImageScaleType="centerCrop" />-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -144,41 +138,7 @@
                     card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
                     card_view:prb_tickSpacing="2dp"
                     card_view:prb_totalTicks="5" />
-                <!--
-                                <co.quchu.quchu.widget.ratingbar.ProperRatingBar
-                                    android:id="@+id/item_my_postcard_card_prb"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/quarter_margin"
-                                    android:layout_marginTop="@dimen/quarter_margin"
-                                    android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
-                                    card_view:prb_clickable="false"
-                                    card_view:prb_defaultRating="4"
-                                    card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
-                                    card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
-                                    card_view:prb_tickSpacing="2dp"
-                                    card_view:prb_totalTicks="5" />
 
-                                <TextView
-                                    android:id="@+id/item_my_postcard_card_nickname_tv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/item_my_postcard_card_prb"
-                                    android:layout_marginLeft="@dimen/quarter_margin"
-                                    android:layout_marginTop="@dimen/half_margin"
-                                    android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
-                                    android:textColor="@color/text_color_white"
-                                    android:textSize="@dimen/word_size_body" />
-
-                                <TextView
-                                    android:id="@+id/item_my_postcard_card_tiem_tv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="@dimen/base_margin"
-                                    android:textColor="@color/text_color_white"
-                                    android:textSize="@dimen/word_size_body" />-->
             </RelativeLayout>
 
 
@@ -268,4 +228,4 @@
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
-</ScrollView>
+</FrameLayout>

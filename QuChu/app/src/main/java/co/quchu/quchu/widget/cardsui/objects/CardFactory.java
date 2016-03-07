@@ -1,9 +1,9 @@
 package co.quchu.quchu.widget.cardsui.objects;
 
+import android.util.Log;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
-
-import android.util.Log;
 
 /**
  * Contains method(s) to create a {@link Card}-family object from its
