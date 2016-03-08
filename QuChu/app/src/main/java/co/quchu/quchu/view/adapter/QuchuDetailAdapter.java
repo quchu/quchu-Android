@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -35,22 +36,23 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     private LayoutInflater mLayoutInflater;
-    private Context mContext;
+    private Activity mAnchorActivity;
     private DetailModel mData;
     private OnItemClickListener mOnItemClickListener;
+    public static final int BLOCK_INDEX = 8;
 
-    public QuchuDetailAdapter(Context context, DetailModel dModel, OnItemClickListener onClickListener) {
+    public QuchuDetailAdapter(Activity activity, DetailModel dModel, OnItemClickListener onClickListener) {
         if (null == onClickListener){
             throw new IllegalArgumentException("OnClickListener Cannot be null");
         }
-        mContext = context;
+        mAnchorActivity = activity;
         mData = dModel;
-        mLayoutInflater = LayoutInflater.from(context);
+        mLayoutInflater = LayoutInflater.from(activity);
         mOnItemClickListener = onClickListener;
     }
 
-    public static enum LAYOUT_TYPE {
-        LAYOUT_TYPE_IMAGE,
+    public enum LAYOUT_TYPE {
+        LAYOUT_TYPE_INTRO_IMAGE,
         LAYOUT_TYPE_ACTIONBAR,
         LAYOUT_TYPE_SIMPLE_INFO,
         LAYOUT_TYPE_CONTACT_INFO,
@@ -58,10 +60,12 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         LAYOUT_TYPE_ADDITIONAL_INFO,
         LAYOUT_TYPE_OPENING_INFO,
         LAYOUT_TYPE_PARTY_STARTER_INFO,
-        LAYOUT_TYPE_PARTY_INFO
+        LAYOUT_TYPE_PARTY_INFO,
+        LAYOUT_TYPE_IMAGE,
+        LAYOUT_TYPE_NEARBY
     }
 
-    public static final LAYOUT_TYPE VIEW_TYPES[] = new LAYOUT_TYPE[]{LAYOUT_TYPE.LAYOUT_TYPE_IMAGE,
+    public static final LAYOUT_TYPE VIEW_TYPES[] = new LAYOUT_TYPE[]{LAYOUT_TYPE.LAYOUT_TYPE_INTRO_IMAGE,
             LAYOUT_TYPE.LAYOUT_TYPE_ACTIONBAR,
             LAYOUT_TYPE.LAYOUT_TYPE_SIMPLE_INFO,
             LAYOUT_TYPE.LAYOUT_TYPE_CONTACT_INFO,
@@ -69,12 +73,14 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             LAYOUT_TYPE.LAYOUT_TYPE_ADDITIONAL_INFO,
             LAYOUT_TYPE.LAYOUT_TYPE_OPENING_INFO,
             LAYOUT_TYPE.LAYOUT_TYPE_PARTY_STARTER_INFO,
-            LAYOUT_TYPE.LAYOUT_TYPE_PARTY_INFO};
+            LAYOUT_TYPE.LAYOUT_TYPE_PARTY_INFO,
+            LAYOUT_TYPE.LAYOUT_TYPE_IMAGE,
+            LAYOUT_TYPE.LAYOUT_TYPE_NEARBY};
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal()) {
-            return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_image, parent, false));
+        if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_INTRO_IMAGE.ordinal()) {
+            return new IntroImageViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_image, parent, false));
         } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_ACTIONBAR.ordinal()) {
             return new ActionViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_actionbar, parent, false));
         } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_SIMPLE_INFO.ordinal()) {
@@ -84,17 +90,34 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_RATING_INFO.ordinal()) {
             return new RatingInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
         } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_ADDITIONAL_INFO.ordinal()) {
-            return new AdditionalInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
+            if (null!=mData && mData.isIsActivity()){
+                return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank,parent,false));
+            }else{
+                return new AdditionalInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
+            }
         } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_OPENING_INFO.ordinal()) {
             return new OpeningInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_opening_info, parent, false));
         } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_PARTY_STARTER_INFO.ordinal()) {
-            return new StarterInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_starter_info, parent, false));
+            if (null!=mData && mData.isIsActivity()){
+                return new StarterInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_starter_info, parent, false));
+            }else{
+                return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank,parent,false));
+            }
         } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_PARTY_INFO.ordinal()) {
-            return new PartyInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_info, parent, false));
-        } else {
+            if (null!=mData && mData.isIsActivity()){
+                return new PartyInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_info, parent, false));
+            }else{
+                return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank,parent,false));
+            }
+        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal()){
+            return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image,parent,false));
+        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_NEARBY.ordinal()){
+            //TODO 图片
+            //TODO 1.1横向图
             return null;
         }
-
+        //Impossible
+        return null;
     }
 
     @Override
@@ -102,10 +125,10 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (null == mData) {
             return;
         }
-        if (holder instanceof ImageViewHolder) {
+        if (holder instanceof IntroImageViewHolder) {
             if (null != mData.getCover()) {
-                ((ImageViewHolder) holder).simpleDraweeView.setImageURI(Uri.parse(mData.getCover()));
-                ((ImageViewHolder) holder).simpleDraweeView.setAspectRatio(1.2f);
+                ((IntroImageViewHolder) holder).simpleDraweeView.setImageURI(Uri.parse(mData.getCover()));
+                ((IntroImageViewHolder) holder).simpleDraweeView.setAspectRatio(1.2f);
             }
         } else if (holder instanceof ActionViewHolder) {
             ((ActionViewHolder) holder).detail_button_collect_iv.setImageResource(mData.isIsf()?R.drawable.ic_detail_collect:R.drawable.ic_detail_uncollect);
@@ -116,7 +139,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((SimpleInfoViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
             ((SimpleInfoViewHolder) holder).detail_suggest_prb.setRating(mData.getSuggest());
             if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
-                ((SimpleInfoViewHolder) holder).detail_avg_price_tv.setText(String.format(mContext.getResources().getString(mData.isIsActivity()?R.string.detail_price_hint_text_activity:R.string.detail_price_hint_text), mData.getPrice()));
+                ((SimpleInfoViewHolder) holder).detail_avg_price_tv.setText(String.format(mAnchorActivity.getResources().getString(mData.isIsActivity()?R.string.detail_price_hint_text_activity:R.string.detail_price_hint_text), mData.getPrice()));
                 ((SimpleInfoViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
             } else {
                 ((SimpleInfoViewHolder) holder).detail_avg_price_tv.setVisibility(View.INVISIBLE);
@@ -135,7 +158,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (null==mData.getTraffic()|| StringUtils.isEmpty(mData.getTraffic())) {
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(mData.getAddress());
             } else if (!StringUtils.isEmpty(mData.getTraffic())) {
-                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(String.format(mContext.getResources().getString(R.string.detail_address_hint_text), mData.getAddress(), mData.getTraffic()));
+                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(String.format(mAnchorActivity.getResources().getString(R.string.detail_address_hint_text), mData.getAddress(), mData.getTraffic()));
                 ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(onClickListener);
             }
             if (null!=mData && !StringUtils.isEmpty(mData.getTel())) {
@@ -223,24 +246,45 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             ((PartyInfoViewHolder) holder).detail_activity_info_ll.setVisibility(mData.isIsActivity()?View.VISIBLE:View.GONE);
             ((PartyInfoViewHolder) holder).detail_activity_info_tv.setText(mData.isIsActivity() && null!=mData.getActivityInfo()?mData.getActivityInfo():"");
+        } else if (holder instanceof ImageViewHolder) {
+            int imgIndex = position - BLOCK_INDEX;
+            if (null!=mData.getImglist()&&mData.getImglist().size()>imgIndex){
+                if (null!=mData.getImglist().get(imgIndex).getImgpath()){
+                    String strUri = mData.getImglist().get(imgIndex).getImgpath();
+                    ((ImageViewHolder) holder).item_card_image_sdv.setImageURI(Uri.parse("http://7xodsq.com1.z0.glb.clouddn.com/14-default-app-place-cover?imageMogr2/thumbnail/800x/format/webp\n"));
+                }
+            }
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position <= 9 ? VIEW_TYPES[position].ordinal() : -1;
+        if (position<=9){
+            return  VIEW_TYPES[position].ordinal();
+        }else if(position>=9 && position <(mData.getImglist().size()+position)){
+            return LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal();
+        }else if (position>=(mData.getImglist().size()+position)){
+            return LAYOUT_TYPE.LAYOUT_TYPE_NEARBY.ordinal();
+        }
+        return LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal();
     }
 
     @Override
     public int getItemCount() {
-        return 9;
+        int basicCount = 9;
+        if (null!=mData && null!=mData.getImglist()){
+            basicCount += mData.getImglist().size();
+        }else if(null!=mData && null!=mData.getNearbyShit()){
+            basicCount += mData.getNearbyShit().size();
+        }
+        return basicCount;
     }
 
-    public static class ImageViewHolder extends RecyclerView.ViewHolder {
+    public static class IntroImageViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.item_card_image_sdv)
         SimpleDraweeView simpleDraweeView;
 
-        ImageViewHolder(View view) {
+        IntroImageViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
@@ -375,6 +419,34 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ButterKnife.bind(this, view);
         }
     }
+
+    public static class ImageViewHolder extends RecyclerView.ViewHolder{
+        @Bind(R.id.item_card_image_sdv)
+        SimpleDraweeView item_card_image_sdv;
+
+        ImageViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+//    public static class NearByViewHolder extends RecyclerView.ViewHolder{
+//        @Bind(R.id.item_card_image_sdv)
+//        SimpleDraweeView item_card_image_sdv;
+//
+//        NearByViewHolder(View view) {
+//            super(view);
+//            ButterKnife.bind(this, itemView);
+//        }
+//    }
+
+
+    public static class BlankViewHolder extends RecyclerView.ViewHolder{
+        BlankViewHolder(View view){
+            super(view);
+        }
+    }
+
 
     public View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override

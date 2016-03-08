@@ -89,6 +89,16 @@ public class DetailModel {
      */
     private List<TagsEntity> tags;
 
+    public List<String> getNearbyShit() {
+        return nearbyShit;
+    }
+
+    public void setNearbyShit(List<String> nearbyShit) {
+        this.nearbyShit = nearbyShit;
+    }
+
+    private List<String> nearbyShit;
+
 
     public void copyFrom(DetailModel objTarget){
         setActivityInfo(objTarget.getActivityInfo());

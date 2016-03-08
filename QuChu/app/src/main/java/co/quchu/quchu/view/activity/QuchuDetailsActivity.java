@@ -86,11 +86,10 @@ public class QuchuDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitleBar();
         initData();
-        mQuchuDetailAdapter = new QuchuDetailAdapter(getApplicationContext(), dModel, new QuchuDetailAdapter.OnItemClickListener() {
+        mQuchuDetailAdapter = new QuchuDetailAdapter(this, dModel, new QuchuDetailAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v) {
                 detailClick(v);
-                Log.d("Click",String.valueOf(v.getId()));
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
@@ -121,7 +120,6 @@ public class QuchuDetailsActivity extends BaseActivity {
     private void bindingDetailData() {
         changeBottomBeenBg(dModel.isIsout());
         changeCollectState(dModel.isIsf());
-        DetailListViewAdapter dlvAdapter = new DetailListViewAdapter(this, dModel.getImglist());
         //TODO DETAIL IMAGE LIST
         //detailImageListIlv.setAdapter(dlvAdapter);
 
