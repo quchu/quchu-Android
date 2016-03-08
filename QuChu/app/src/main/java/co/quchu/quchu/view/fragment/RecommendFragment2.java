@@ -107,7 +107,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             if (!mFragmentStoped && -1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
                 if (null != cardList && cardList.size() > currentIndex) {
                     String strUri = cardList.get(currentIndex).getCover();
-                    Log.d("RF2",strUri);
+                    Log.d("RF2", strUri);
                     Uri imgUri;
                     if (!TextUtils.isEmpty(strUri)) {
                         imgUri = Uri.parse(strUri);
@@ -192,6 +192,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         recyclerView.addOnPageChangedListener(this);
         presenter = new RecommentFragPresenter(getContext(), this);
         recyclerView.addOnLayoutChangeListener();
+        refreshLayout.setColorSchemeResources(R.color.planet_progress_yellow);
 
         presenter.init();
         initBackgroundSwitchAnimations();
