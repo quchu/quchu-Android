@@ -312,7 +312,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                 LogUtils.json("selectedTag=" + selectedTag);
                 presenter.initTabData(false, selectedTag);
                 refreshLayout.setRefreshing(false);
-                recyclerView.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -351,7 +350,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                 recyclerView.scrollToPosition(0);
             currentIndex = 0;
             new Thread(new BlurEffectRunnable(currentIndex)).start();
-            recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
