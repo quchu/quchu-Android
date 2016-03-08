@@ -1,9 +1,6 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -28,7 +25,6 @@ public class RecommentFragPresenter {
     private IRecommendFragment view;
     private IRecommendFragModel model;
     private Context context;
-    private MyHandle handle;
 
 
     public RecommentFragPresenter(Context context, IRecommendFragment view) {
@@ -55,43 +51,26 @@ public class RecommentFragPresenter {
 
 
     public void initTabData(boolean isRefresh, String selectedTag) {
-        //延时一秒，避免用户快速切换tab造成网络异常
-        Message message;
-        Bundle bundle = new Bundle();
-        bundle.putString("selectedTag", selectedTag);
-        bundle.putBoolean("isRefresh", isRefresh);
-        if (handle == null) {
-            handle = new MyHandle();
-        }
-        handle.removeMessages(0);
-        message = handle.obtainMessage();
-        message.what = 0;
-        message.setData(bundle);
-        handle.sendMessageDelayed(message, 500);
-    }
 
-    class MyHandle extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            Bundle data = msg.getData();
-            if (!data.getBoolean("isRefresh")) {
-                DialogUtil.showProgess(context, R.string.loading_dialog_text);
+
+        if (!isRefresh) {
+            DialogUtil.showProgess(context, R.string.loading_dialog_text);
+        }
+        model.getTabData(selectedTag, new CommonListener<RecommendModelNew>() {
+            @Override
+            public void successListener(RecommendModelNew response) {
+                DialogUtil.dismissProgess();
+                view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo());
             }
 
-            model.getTabData(data.getString("selectedTag", ""), new CommonListener<RecommendModelNew>() {
-                @Override
-                public void successListener(RecommendModelNew response) {
-                    DialogUtil.dismissProgess();
-                    view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo());
-                }
-
-                @Override
-                public void errorListener(VolleyError error, String exception, String msg) {
-                    DialogUtil.dismissProgess();
-                }
-            });
-        }
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                view.initTabData(true,null,0,0);
+                DialogUtil.dismissProgess();
+            }
+        });
     }
+
 
     public void loadMore(String type, int pageNumber) {
 
