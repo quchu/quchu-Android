@@ -166,7 +166,7 @@ public class HorizontalSwipeRefLayout extends ViewGroup implements NestedScrolli
                             true /* requires update */);
                 }
             }
-            mCurrentTargetOffsetTop = mCircleView.getTop();
+            mCurrentTargetOffsetTop = mCircleView.getLeft();
         }
     };
 
@@ -616,10 +616,10 @@ public class HorizontalSwipeRefLayout extends ViewGroup implements NestedScrolli
                         && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
                         .getTop() < absListView.getPaddingTop());
             } else {
-                return ViewCompat.canScrollVertically(mTarget, -1) || mTarget.getScrollY() > 0;
+                return ViewCompat.canScrollVertically(mTarget, -1) || mTarget.getScaleX() > 0;
             }
         } else {
-            return ViewCompat.canScrollVertically(mTarget, -1);
+            return ViewCompat.canScrollHorizontally(mTarget, -1);
         }
     }
 

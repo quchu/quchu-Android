@@ -54,30 +54,31 @@ public class RecommentFragPresenter {
     }
 
 
-    public void initTabData(String selectedTag) {
+    public void initTabData(boolean isRefresh, String selectedTag) {
         //延时一秒，避免用户快速切换tab造成网络异常
         Message message;
         Bundle bundle = new Bundle();
         bundle.putString("selectedTag", selectedTag);
+        bundle.putBoolean("isRefresh", isRefresh);
         if (handle == null) {
-            message = new Message();
-            message.what = 0;
-            message.setData(bundle);
             handle = new MyHandle();
-        } else {
-            message = handle.obtainMessage();
-            message.what = 0;
-            message.setData(bundle);
-            handle.removeMessages(0);
         }
+        handle.removeMessages(0);
+        message = handle.obtainMessage();
+        message.what = 0;
+        message.setData(bundle);
         handle.sendMessageDelayed(message, 500);
     }
 
     class MyHandle extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            DialogUtil.showProgess(context, R.string.loading_dialog_text);
-            model.getTabData(msg.getData().getString("selectedTag", ""), new CommonListener<RecommendModelNew>() {
+            Bundle data = msg.getData();
+            if (!data.getBoolean("isRefresh")) {
+                DialogUtil.showProgess(context, R.string.loading_dialog_text);
+            }
+
+            model.getTabData(data.getString("selectedTag", ""), new CommonListener<RecommendModelNew>() {
                 @Override
                 public void successListener(RecommendModelNew response) {
                     DialogUtil.dismissProgess();

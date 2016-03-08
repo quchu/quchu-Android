@@ -5,30 +5,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.analysis.GatherViewModel;
@@ -45,13 +33,7 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.adapter.DetailListViewAdapter;
 import co.quchu.quchu.view.adapter.QuchuDetailAdapter;
-import co.quchu.quchu.widget.HorizontalNumProgressBar;
-import co.quchu.quchu.widget.InnerListView;
-import co.quchu.quchu.widget.OutSideScrollView;
-import co.quchu.quchu.widget.TagCloudView;
-import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 
 /**
@@ -92,7 +74,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                 detailClick(v);
             }
         });
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mQuchuDetailAdapter);
         startViewTime = System.currentTimeMillis();
     }
@@ -267,8 +249,6 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-
-
     @Override
     protected void onDestroy() {
         if (gatherViewModel == null)
@@ -278,11 +258,8 @@ public class QuchuDetailsActivity extends BaseActivity {
             AppContext.gatherList = new ArrayList<>();
         if (gatherViewModel != null)
             AppContext.gatherList.add(gatherViewModel);
-        if (dModel != null && dModel.isIsout()) {
-            AppContext.dCardListRemoveIndex = pPosition;
-        }
 
-        LogUtils.json(" AppContext.dCardListRemoveIndex = pPosition;==" + AppContext.dCardListRemoveIndex);
+
         super.onDestroy();
     }
 

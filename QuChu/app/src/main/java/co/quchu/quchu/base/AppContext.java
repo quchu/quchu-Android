@@ -45,7 +45,6 @@ public class AppContext extends Application {
     // public static ArrayList<RecommendModel> dCardList; //推荐分类 数据源
     public static RecommendModel selectedPlace; //推荐分类 数据源
     public static boolean dCardListNeedUpdate = false;
-    public static int dCardListRemoveIndex = -1;
 
     private RefWatcher refWatcher;
     public static RefWatcher getRefWatcher(Context context) {

@@ -50,6 +50,7 @@ import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter2;
+import co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout;
 import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
 
 /**
@@ -67,7 +68,8 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     ImageView fRecommendBimgBottom;
     @Bind(R.id.f_recommend_bimg_top)
     ImageView fRecommendBimgTop;
-
+    @Bind(R.id.refreshLayout)
+    HorizontalSwipeRefLayout refreshLayout;
 
     private boolean isLoading = false;
     public List<RecommendModel> cardList = new ArrayList<>();
@@ -192,6 +194,14 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
         presenter.init();
         initBackgroundSwitchAnimations();
+
+        refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.initTabData(true, selectedTag);
+            }
+        });
+
         return view;
     }
 
@@ -273,23 +283,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         }
     }
 
-    public void removeDataSet(int removeIndex) {
-        if (adapter != null && removeIndex < cardList.size()) {
-            LogUtils.json("removeDataSet==" + removeIndex);
-            cardList.remove(removeIndex);
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    public void hintRecyclerView() {
-        if (recyclerView != null)
-            recyclerView.setVisibility(View.GONE);
-    }
-
-    public void showRecyclerView() {
-        if (recyclerView != null)
-            recyclerView.setVisibility(View.VISIBLE);
-    }
 
     private List<TagsModel> tagList;
 
@@ -316,7 +309,8 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                 }
                 selectedTag = tagList.get(tab.getPosition()).getEn();
                 LogUtils.json("selectedTag=" + selectedTag);
-                presenter.initTabData(selectedTag);
+                presenter.initTabData(false, selectedTag);
+                refreshLayout.setRefreshing(false);
                 recyclerView.setVisibility(View.INVISIBLE);
             }
 
@@ -335,7 +329,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         });
         if (tagList.size() > 0) {
             selectedTag = tagList.get(0).getEn();
-            presenter.initTabData(selectedTag);
+            presenter.initTabData(false, selectedTag);
         }
     }
 
@@ -343,6 +337,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
     @Override
     public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
+        refreshLayout.setRefreshing(false);
         if (isError) {
             Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
         } else {
@@ -409,7 +404,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         if (null == bm) {
             return;
         }
-        bm = ImageUtils.setSaturation(bm,.5f);
+        bm = ImageUtils.setSaturation(bm, .5f);
 
         if (mBackgroundTopVisible) {
             fRecommendBimgBottom.setImageBitmap(bm);
@@ -478,9 +473,9 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     public void onDestroy() {
         super.onDestroy();
         if (null != sourceBitmap && !sourceBitmap.isRecycled())
-                    sourceBitmap.recycle();
-                if (sourceBitmap != null)
-                    sourceBitmap = null;
+            sourceBitmap.recycle();
+        if (sourceBitmap != null)
+            sourceBitmap = null;
         RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }

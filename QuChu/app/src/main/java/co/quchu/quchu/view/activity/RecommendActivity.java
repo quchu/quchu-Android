@@ -177,35 +177,35 @@ public class RecommendActivity extends BaseActivity {
             recommendBodyVp.setCurrentItem(0);//设置当前显示标签页为第一页
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
-            if (recoFragment != null)
-                recoFragment.showRecyclerView();
-            if (classifyFragment != null)
-                classifyFragment.hintClassify();
-            if (defaultRecommendFragment != null)
-                defaultRecommendFragment.hint();
+//            if (recoFragment != null)
+//                recoFragment.showRecyclerView();
+//            if (classifyFragment != null)
+//                classifyFragment.hintClassify();
+//            if (defaultRecommendFragment != null)
+//                defaultRecommendFragment.hint();
         } else if (index == 1) {
             recommendTitleLocationIv.setImageResource(R.drawable.ic_recommed_title_location);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendBodyVp.setCurrentItem(1);//设置当前显示标签页为第二页
-            if (classifyFragment != null)
-                classifyFragment.showClassify();
-            if (recoFragment != null)
-                recoFragment.hintRecyclerView();
-            if (defaultRecommendFragment != null)
-                defaultRecommendFragment.hint();
+//            if (classifyFragment != null)
+//                classifyFragment.showClassify();
+//            if (recoFragment != null)
+//                recoFragment.hintRecyclerView();
+//            if (defaultRecommendFragment != null)
+//                defaultRecommendFragment.hint();
         } else if (index == 2) {
             recommendTitleLocationIv.setImageResource(R.drawable.ic_title_back);
             titleContentTv.setText(SPUtils.getValueFromSPMap(this, AppKey.USERSELECTEDCLASSIFY_CHS, ""));
             titleContentTv.setVisibility(View.VISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.INVISIBLE);
             recommendBodyVp.setCurrentItem(2);
-            if (defaultRecommendFragment != null)
-                defaultRecommendFragment.show();
-            if (classifyFragment != null)
-                classifyFragment.hintClassify();
-            if (recoFragment != null)
-                recoFragment.hintRecyclerView();
+//            if (defaultRecommendFragment != null)
+//                defaultRecommendFragment.show();
+//            if (classifyFragment != null)
+//                classifyFragment.hintClassify();
+//            if (recoFragment != null)
+//                recoFragment.hintRecyclerView();
         }
         viewPagerIndex = index;
     }
@@ -297,17 +297,7 @@ public class RecommendActivity extends BaseActivity {
     private int resumeUpdateDataTimes = 0;
 
     private void resumeUpdateData() {
-        if (AppContext.dCardListRemoveIndex != -1) {
-            LogUtils.json("RecommendActivity onResume==removePosition==" + AppContext.dCardListRemoveIndex);
-            if (viewPagerIndex == 0) {
-                recoFragment.removeDataSet(AppContext.dCardListRemoveIndex);
-            } else if (viewPagerIndex == 2) {
-                defaultRecommendFragment.removeDataSet(AppContext.dCardListRemoveIndex);
-            }
-            AppContext.dCardListRemoveIndex = -1;
-            AppContext.dCardListNeedUpdate = false;
-            resumeUpdateDataTimes = 0;
-        } else if (AppContext.dCardListNeedUpdate) {
+        if (AppContext.dCardListNeedUpdate) {
             if (viewPagerIndex == 0) {
                 recoFragment.updateDateSet();
             } else if (viewPagerIndex == 2) {
