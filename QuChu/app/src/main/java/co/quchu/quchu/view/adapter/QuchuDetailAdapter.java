@@ -3,10 +3,13 @@ package co.quchu.quchu.view.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,14 +21,19 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
+import co.quchu.quchu.widget.NestedLinearLayoutManager;
+import co.quchu.quchu.widget.SpacesItemDecoration;
 import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -38,7 +46,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private LayoutInflater mLayoutInflater;
     private Activity mAnchorActivity;
     private DetailModel mData;
-    private OnItemClickListener mOnItemClickListener;
+    private static OnItemClickListener mOnItemClickListener;
     public static final int BLOCK_INDEX = 8;
 
     public QuchuDetailAdapter(Activity activity, DetailModel dModel, OnItemClickListener onClickListener) {
@@ -112,9 +120,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal()){
             return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image,parent,false));
         } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_NEARBY.ordinal()){
-            //TODO 图片
-            //TODO 1.1横向图
-            return null;
+            return new NearByViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_nearby,parent,false));
         }
         //Impossible
         return null;
@@ -249,21 +255,56 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (holder instanceof ImageViewHolder) {
             int imgIndex = position - BLOCK_INDEX;
             if (null!=mData.getImglist()&&mData.getImglist().size()>imgIndex){
+
                 if (null!=mData.getImglist().get(imgIndex).getImgpath()){
                     String strUri = mData.getImglist().get(imgIndex).getImgpath();
-                    ((ImageViewHolder) holder).item_card_image_sdv.setImageURI(Uri.parse("http://7xodsq.com1.z0.glb.clouddn.com/14-default-app-place-cover?imageMogr2/thumbnail/800x/format/webp\n"));
+                    ((ImageViewHolder) holder).item_card_image_sdv.setImageURI(Uri.parse(strUri));
+
+                    ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio((float)mData.getImglist().get(imgIndex).getWidth() /(float) mData.getImglist().get(imgIndex).getHeight());
                 }
+            }else{
+                ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
+            }
+
+        } else if (holder instanceof  NearByViewHolder){
+            if (null!=mData.getNearPlace()){
+                int imgIndex = position - BLOCK_INDEX;
+                if (null!=mData.getImglist()){
+                    imgIndex -= mData.getImglist().size();
+                }
+
+                ((NearByViewHolder) holder).textView.setText(mData.getNearPlace().get(imgIndex-1).getTag());
+                ((NearByViewHolder) holder).recyclerview.setLayoutManager(new NestedLinearLayoutManager(mAnchorActivity,LinearLayoutManager.HORIZONTAL,false));
+                ((NearByViewHolder) holder).recyclerview.setAdapter(new NearbySpotAdapter(mData.getNearPlace().get(imgIndex-1).getPlaces()));
+                ((NearByViewHolder) holder).recyclerview.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.quarter_margin)));
+                ((NearByViewHolder) holder).recyclerview.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (((RecyclerView)v).getChildCount()>=0){
+                            if (((RecyclerView)v).getChildAt(0).getLeft()==0){
+                                ((QuchuDetailsActivity)mAnchorActivity).getSwipeBackLayout().setEnableGesture(true);
+                            }else{
+                                ((QuchuDetailsActivity)mAnchorActivity).getSwipeBackLayout().setEnableGesture(false);
+                            }
+                        }
+                        return false;
+                    }
+                });
+
             }
         }
     }
 
+
+
     @Override
     public int getItemViewType(int position) {
-        if (position<=9){
+
+        if (position<=(BLOCK_INDEX+1)){
             return  VIEW_TYPES[position].ordinal();
-        }else if(position>=9 && position <(mData.getImglist().size()+position)){
+        }else if(position>=(BLOCK_INDEX+1) && position <(mData.getImglist().size()+(BLOCK_INDEX+1))){
             return LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal();
-        }else if (position>=(mData.getImglist().size()+position)){
+        }else if (position>=(mData.getImglist().size()+(BLOCK_INDEX+1))){
             return LAYOUT_TYPE.LAYOUT_TYPE_NEARBY.ordinal();
         }
         return LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal();
@@ -271,11 +312,12 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        int basicCount = 9;
+        int basicCount = (BLOCK_INDEX+1);
         if (null!=mData && null!=mData.getImglist()){
             basicCount += mData.getImglist().size();
-        }else if(null!=mData && null!=mData.getNearbyShit()){
-            basicCount += mData.getNearbyShit().size();
+        }
+        if(null!=mData && null!=mData.getNearPlace() ){
+            basicCount += mData.getNearPlace().size();
         }
         return basicCount;
     }
@@ -426,20 +468,32 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ImageViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, itemView);
+            ButterKnife.bind(this, view);
         }
     }
 
-//    public static class NearByViewHolder extends RecyclerView.ViewHolder{
-//        @Bind(R.id.item_card_image_sdv)
-//        SimpleDraweeView item_card_image_sdv;
-//
-//        NearByViewHolder(View view) {
-//            super(view);
-//            ButterKnife.bind(this, itemView);
-//        }
-//    }
+    public static class NearByViewHolder extends RecyclerView.ViewHolder{
+        @Bind(R.id.recyclerview)
+        RecyclerView recyclerview;
+        @Bind(R.id.tvTagName)
+        TextView textView;
+        NearByViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
 
+    public static class NearbyItemViewHolder extends RecyclerView.ViewHolder{
+        @Bind(R.id.ivImage)
+        SimpleDraweeView ivImage;
+        @Bind(R.id.tvName)
+        TextView tvName;
+
+        NearbyItemViewHolder(View view){
+            super(view);
+            ButterKnife.bind(this,view);
+        }
+    }
 
     public static class BlankViewHolder extends RecyclerView.ViewHolder{
         BlankViewHolder(View view){
@@ -448,7 +502,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-    public View.OnClickListener onClickListener = new View.OnClickListener() {
+    private static View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             mOnItemClickListener.onClick(v);
@@ -458,4 +512,39 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public interface OnItemClickListener {
         void onClick(View v);
     }
+
+
+    class NearbySpotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        List<DetailModel.Places> mData;
+
+        public NearbySpotAdapter(List<DetailModel.Places> data) {
+            this.mData = data;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new NearbyItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_detail_nearby_item,parent,false));
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            ((NearbyItemViewHolder)holder).tvName.setText(mData.get(position).getName());
+            if (null!=mData.get(position).getCover()){
+                ((NearbyItemViewHolder)holder).ivImage.setImageURI(Uri.parse(mData.get(position).getCover()));
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            if (null!=mData){
+                return mData.size();
+            }else{
+                return 0;
+            }
+        }
+
+    }
+
+
 }

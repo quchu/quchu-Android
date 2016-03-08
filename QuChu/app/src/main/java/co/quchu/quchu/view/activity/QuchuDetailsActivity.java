@@ -120,8 +120,6 @@ public class QuchuDetailsActivity extends BaseActivity {
     private void bindingDetailData() {
         changeBottomBeenBg(dModel.isIsout());
         changeCollectState(dModel.isIsf());
-        //TODO DETAIL IMAGE LIST
-        //detailImageListIlv.setAdapter(dlvAdapter);
 
     }
 
