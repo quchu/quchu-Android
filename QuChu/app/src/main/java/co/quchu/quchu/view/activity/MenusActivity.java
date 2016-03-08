@@ -1,9 +1,9 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +26,6 @@ import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.MoreButtonView;
-import co.quchu.quchu.widget.WiperSwitch;
 import co.quchu.quchu.widget.textcounter.PullMenusView;
 
 /**
@@ -35,15 +34,17 @@ import co.quchu.quchu.widget.textcounter.PullMenusView;
  * Date: 2015-12-01
  * 下拉菜单
  */
-public class MenusActivity extends BaseActivity implements WiperSwitch.StatusListener, MoreButtonView.MoreClicklistener, PullMenusView.PullMenusClickListener {
+public class MenusActivity extends BaseActivity implements MoreButtonView.MoreClicklistener, PullMenusView.PullMenusClickListener {
     @Bind(R.id.menus_pullmenus_pmv)
     PullMenusView menusPullmenusPmv;
-    @Bind(R.id.menus_logout_ws)
-    WiperSwitch menusLogoutWs;
     @Bind(R.id.menus_search_more_rl)
     MoreButtonView menusSearchMoreRl;
     @Bind(R.id.menus_search_username)
     TextView menusSearchUsername;
+    @Bind(R.id.menu_visitor_login_iv)
+    ImageView menuVisitorLoginIv;
+    @Bind(R.id.menu_user_logout_tv)
+    TextView menuUserLogoutTv;
 
 
     @Override
@@ -55,27 +56,39 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
         if (AppContext.user != null) {
             menusSearchUsername.setText(AppContext.user.getFullname());
             menusPullmenusPmv.setAvatar(AppContext.user.getPhoto());
-            menusLogoutWs.setStatusListener(this);
             menusSearchMoreRl.setMoreClick(this);
             menusPullmenusPmv.setItemClickListener(this);
+            if (AppContext.user.isIsVisitors()) {
+                menuVisitorLoginIv.setVisibility(View.VISIBLE);
+                menuUserLogoutTv.setVisibility(View.GONE);
+            } else {
+                menuVisitorLoginIv.setVisibility(View.GONE);
+                menuUserLogoutTv.setVisibility(View.VISIBLE);
+            }
         }
 
     }
 
-    @OnClick({R.id.menus_search_rl, R.id.menus_add_topic})
+    @OnClick({R.id.menus_search_rl, R.id.menus_add_topic, R.id.menu_visitor_login_iv, R.id.menu_user_logout_tv})
     public void onViewClick(View view) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         switch (view.getId()) {
             case R.id.menus_search_rl:
-              /*  if (isButtonClickable) {
-                    isButtonClickable = false;*/
                 startActivity(new Intent(this, SearchActivity.class));
-                //   mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
-                //   }
                 break;
             case R.id.menus_add_topic:
                 Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_visitor_login_iv:
+                startActivity(new Intent(this, UserLoginActivity.class));
+                this.finish();
+                break;
+            case R.id.menu_user_logout_tv:
+                SPUtils.clearUserinfo(AppContext.mContext);
+                AppContext.user=null;
+                startActivity(new Intent(this, UserLoginActivity.class).putExtra("IsVisitorLogin", true));
+                this.finish();
                 break;
         }
     }
@@ -110,10 +123,8 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
         MobclickAgent.onResume(this);
     }
 
-    private Bitmap bg;
 
-    @Override
-    public void statusOpen() {
+    public void userLogout() {
         //退出登陆
         Toast.makeText(this, "退出登录", Toast.LENGTH_SHORT).show();
         ActManager.getAppManager().finishAllActivity();
@@ -123,10 +134,6 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
         this.finish();
     }
 
-    @Override
-    public void statusClose() {
-
-    }
 
     @Override
     public void moreClick() {
@@ -148,7 +155,6 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                 }
                 break;
             case PullMenusView.ClickMessage:
-                //    Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
                 if (AppContext.user.isIsVisitors()) {
                     VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QMESSAGECENTER);
                     vDialog.show(getFragmentManager(), "visitor");
@@ -158,12 +164,6 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                 }
                 break;
             case PullMenusView.ClickSetting:
-             /*   Bitmap screens = ShotScreenUtils.screenshot(MenusActivity.this);
-                int startWidth = screens.getWidth() - 50;
-                int startHeight = screens.getHeight() - 50;
-        *//*        bg=Bitmap.createBitmap(screens,startWidth,startWidth,450,450);*//*
-                bg = BlurUtils.BoxBlurFilter(Bitmap.createBitmap(screens, startWidth, startWidth, 250, 250));
-                PopupWindowUtils.initPopupWindow(menusPullmenusPmv, this, bg);*/
                 MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;
             case PullMenusView.ClickHome:
@@ -185,9 +185,6 @@ public class MenusActivity extends BaseActivity implements WiperSwitch.StatusLis
                     case UpdateStatus.No: // has no update
                         Toast.makeText(MenusActivity.this, "当前已是最新版本!", Toast.LENGTH_SHORT).show();
                         break;
-              /*      case UpdateStatus.NoneWifi: // none wifi
-                        Toast.makeText(MenusActivity.this, "没有wifi连接， 只在wifi下更新", Toast.LENGTH_SHORT).show();
-                        break;*/
                     case UpdateStatus.Timeout: // time out
                         Toast.makeText(MenusActivity.this, "网络超时,请稍后重试!", Toast.LENGTH_SHORT).show();
                         break;

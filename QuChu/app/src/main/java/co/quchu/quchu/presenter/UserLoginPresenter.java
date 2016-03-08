@@ -104,7 +104,7 @@ public class UserLoginPresenter {
         if (AppContext.user != null) {
             regiestUrl += "&userId=" + AppContext.user.getUserId();
         }
-        NetService.post(context,regiestUrl , null, new IRequestListener() {
+        NetService.post(context, regiestUrl, null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
@@ -130,7 +130,6 @@ public class UserLoginPresenter {
         NetService.post(context, String.format(NetApi.Mlogin, phoneNo, password, StringUtils.getMyUUID()), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                LogUtils.json(response.toString());
                 UserInfoHelper.saveUserInfo(response);
                 listener.loginSuccess();
             }
@@ -183,7 +182,8 @@ public class UserLoginPresenter {
             public void onSuccess(JSONObject response) {
                 LogUtils.json("visitorRegiest=" + response.toString());
                 UserInfoHelper.saveUserInfo(response);
-                listener.isUnique(response);
+                if (null != listener)
+                    listener.isUnique(response);
             }
 
             @Override

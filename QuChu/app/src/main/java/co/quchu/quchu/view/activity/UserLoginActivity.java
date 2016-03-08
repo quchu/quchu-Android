@@ -9,6 +9,7 @@ import com.umeng.analytics.MobclickAgent;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
@@ -41,14 +42,18 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
             enterApp();
         } else {*/
         setContentView(R.layout.activity_user_login);
+        IsVisitorLogin = getIntent().getBooleanExtra("IsVisitorLogin", false);
         transaction = getSupportFragmentManager().beginTransaction();
          /*       transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
         // transaction.replace(R.id.user_login_fl, new UserGuideFragment());
+
         transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
              /*   transaction.addToBackStack(null);*/
         transaction.commitAllowingStateLoss();
      /*   }*/
     }
+
+    private boolean IsVisitorLogin = false;
 
     @Override
     protected void onDestroy() {
@@ -64,8 +69,13 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
     @Override
     protected void onResume() {
-        if (null != AppContext.user)
-            loginSuccess();
+
+        if (null != AppContext.user) {
+            if (!IsVisitorLogin)
+                loginSuccess();
+        } else {
+            UserLoginPresenter.visitorRegiest(this, null);
+        }
         super.onResume();
         MobclickAgent.onPageStart("LoginActivity");
         MobclickAgent.onResume(this);
@@ -103,15 +113,8 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
     @Override
     public void loginSuccess() {
-        //   LogUtils.json("login success");
         if (AppContext.user != null && AppContext.user.isIsVisitors()) {
-      /*      transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.user_login_fl, new UserEnterAppFragment());
-            transaction.addToBackStack(null);
-            transaction.commitAllowingStateLoss();
-            KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));*/
         } else {
-            //   userRegiestSuccess();
             enterApp();
         }
     }

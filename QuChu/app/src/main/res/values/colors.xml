@@ -71,5 +71,6 @@
     <!--  1.1版本颜色值 start-->
     <color name="new_recommend_line_color">#3E3A39</color>
     <color name="new_recommend_tablayout_color">#f2454545</color>
+    <color name="menu_logout_textcolor">#a5a5a5</color>
     <!--  1.1版本颜色值 end-->
 </resources>
