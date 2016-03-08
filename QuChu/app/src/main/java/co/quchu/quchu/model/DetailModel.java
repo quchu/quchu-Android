@@ -89,15 +89,17 @@ public class DetailModel {
      */
     private List<TagsEntity> tags;
 
-    public List<String> getNearbyShit() {
-        return nearbyShit;
+
+    public List<NearPlace> getNearPlace() {
+        return nearPlace;
     }
 
-    public void setNearbyShit(List<String> nearbyShit) {
-        this.nearbyShit = nearbyShit;
+    public void setNearPlace(List<NearPlace> nearPlace) {
+        this.nearPlace = nearPlace;
     }
 
-    private List<String> nearbyShit;
+    private List<NearPlace>nearPlace;
+
 
 
     public void copyFrom(DetailModel objTarget){
@@ -156,6 +158,14 @@ public class DetailModel {
             tags.clear();
         }
         tags.addAll(objTarget.getTags());
+
+
+        if (null==nearPlace){
+            nearPlace = new ArrayList<>();
+        }else{
+            nearPlace.clear();
+        }
+        nearPlace.addAll(objTarget.getNearPlace());
 
 
     }
@@ -476,6 +486,58 @@ public class DetailModel {
 
         public String getZh() {
             return zh;
+        }
+    }
+
+    public static class NearPlace{
+        private List<Places> places;
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+
+        private String tag;
+
+        public List<Places> getPlaces() {
+            return places;
+        }
+
+        public void setPlaces(List<Places> places) {
+            this.places = places;
+        }
+    }
+
+    public static class Places {
+        private String cover;
+        private String name;
+        private int pid;
+
+        public String getCover() {
+            return cover;
+        }
+
+        public void setCover(String cover) {
+            this.cover = cover;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getPid() {
+            return pid;
+        }
+
+        public void setPid(int pid) {
+            this.pid = pid;
         }
     }
 }
