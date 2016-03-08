@@ -27,8 +27,6 @@ public class PostCardActivity extends BaseActivity {
 
     @Bind(R.id.title_content_tv)
     TextView mTitleContentTv;
-    @Bind(R.id.postcard_fl)
-    FrameLayout postcardFl;
     FragmentTransaction transaction;
     PostCardListFg postCardListFg;
     MyCard.PostCardItemClickListener listener;

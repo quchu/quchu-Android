@@ -10,14 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <ImageView
         android:id="@+id/f_recommend_bimg_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        />
+        android:scaleType="fitXY" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
@@ -27,20 +26,25 @@
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed" />
 
-
-
-    <co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager
-        android:id="@+id/f_recommend_rvp"
+    <co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/f_recommend_bottom_rl"
-        android:layout_below="@id/tabLayout"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        app:singlePageFling="true"
-        app:triggerOffset="0.1" />
+        android:layout_below="@id/tabLayout">
+
+
+        <co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager
+            android:id="@+id/f_recommend_rvp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/f_recommend_bottom_rl"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            app:singlePageFling="true"
+            app:triggerOffset="0.1" />
+    </co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"

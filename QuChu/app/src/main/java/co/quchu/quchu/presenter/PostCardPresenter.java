@@ -88,7 +88,7 @@ public class PostCardPresenter {
      * @param praiseId   id  操作对象id
      */
     public static void setPraise(Context mContext, boolean isPraise, boolean typeIsCard, int praiseId, final MyPostCardListener listener) {
-        String urlStr = "";
+        String urlStr;
         if (isPraise) {
             if (typeIsCard) {
                 urlStr = String.format(NetApi.delPraise, praiseId, "card");

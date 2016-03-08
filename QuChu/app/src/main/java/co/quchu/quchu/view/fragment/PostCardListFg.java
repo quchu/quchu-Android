@@ -50,13 +50,7 @@ public class PostCardListFg extends BaseFragment {
         return view;
     }
 
-    public void setInvisiable(boolean isInvisiable) {
-        if (isInvisiable) {
-            view.setVisibility(View.GONE);
-        } else {
-            view.setVisibility(View.VISIBLE);
-        }
-    }
+
 
     @Override
     public void onDestroyView() {
@@ -104,9 +98,4 @@ public class PostCardListFg extends BaseFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtils.json("PostCardLIstFg  onResume");
-    }
 }

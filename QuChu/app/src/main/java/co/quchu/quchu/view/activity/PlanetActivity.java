@@ -327,11 +327,9 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
     }
 
-    private int heigh = 0;
-
     @Override
     public void onGlobalLayout() {
-        heigh = midLuncher.getHeight() / 2;
+//        int heigh = midLuncher.getHeight() / 2;
         midLuncher.getViewTreeObserver().removeGlobalOnLayoutListener(this);
         initAnimation();
     }

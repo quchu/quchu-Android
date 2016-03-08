@@ -170,7 +170,6 @@ public class PostcarDetailActivity extends AppCompatActivity {
     }
 
     private void doParise() {
-
         PostCardPresenter.setPraise(this, item.isIsp(), true, item.getCardId(), new PostCardPresenter.MyPostCardListener() {
             @Override
             public void onSuccess(PostCardModel model) {
