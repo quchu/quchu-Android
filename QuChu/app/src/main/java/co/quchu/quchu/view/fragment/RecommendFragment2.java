@@ -48,6 +48,7 @@ import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.ImageUtils;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter2;
@@ -233,10 +234,12 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             case R.id.root_cv:
                 AppContext.selectedPlace = cardList.get(position);
                 hasChangePosition = position;
-                Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
-                intent.putExtra("pPosition", position);
-                intent.putExtra("pId", cardList.get(position).getPid());
-                startActivity(intent);
+                if (!KeyboardUtils.isFastDoubleClick()){
+                    Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
+                    intent.putExtra("pPosition", position);
+                    intent.putExtra("pId", cardList.get(position).getPid());
+                    startActivity(intent);
+                }
                 break;
             case R.id.item_recommend_card_collect_iv:
                 //收藏

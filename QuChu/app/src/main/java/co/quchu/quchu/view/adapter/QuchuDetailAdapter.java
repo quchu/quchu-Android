@@ -73,7 +73,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         LAYOUT_TYPE_NEARBY
     }
 
-    public static final LAYOUT_TYPE VIEW_TYPES[] = new LAYOUT_TYPE[]{LAYOUT_TYPE.LAYOUT_TYPE_INTRO_IMAGE,
+    protected static final LAYOUT_TYPE VIEW_TYPES[] = new LAYOUT_TYPE[]{LAYOUT_TYPE.LAYOUT_TYPE_INTRO_IMAGE,
             LAYOUT_TYPE.LAYOUT_TYPE_ACTIONBAR,
             LAYOUT_TYPE.LAYOUT_TYPE_SIMPLE_INFO,
             LAYOUT_TYPE.LAYOUT_TYPE_CONTACT_INFO,
@@ -169,12 +169,12 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             if (null!=mData && !StringUtils.isEmpty(mData.getTel())) {
                 StringTokenizer token = new StringTokenizer(mData.getTel(), " ");
-                String phoneHtml = "";
+                StringBuffer phoneHtml = new StringBuffer();
                 while (token.hasMoreTokens()) {
                     String phoneNum = token.nextToken();
-                    phoneHtml += "<font color=#dcdddd><a href=\"tel:" + phoneNum + "\">" + phoneNum + "</a> </font>  ";
+                    phoneHtml.append("<font color=#dcdddd><a href=\"tel:").append(phoneNum ).append("\">").append(phoneNum).append("</a> </font>  ");
                 }
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText(Html.fromHtml(phoneHtml));
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText(Html.fromHtml(phoneHtml.toString()));
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setMovementMethod(LinkMovementMethod.getInstance());
             } else {
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.clearComposingText();
@@ -277,25 +277,26 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((NearByViewHolder) holder).recyclerview.setLayoutManager(new NestedLinearLayoutManager(mAnchorActivity,LinearLayoutManager.HORIZONTAL,false));
                 ((NearByViewHolder) holder).recyclerview.setAdapter(new NearbySpotAdapter(mData.getNearPlace().get(imgIndex-1).getPlaces()));
                 ((NearByViewHolder) holder).recyclerview.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.quarter_margin)));
-                ((NearByViewHolder) holder).recyclerview.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (((RecyclerView)v).getChildCount()>=0){
-                            if (((RecyclerView)v).getChildAt(0).getLeft()==0){
-                                ((QuchuDetailsActivity)mAnchorActivity).getSwipeBackLayout().setEnableGesture(true);
-                            }else{
-                                ((QuchuDetailsActivity)mAnchorActivity).getSwipeBackLayout().setEnableGesture(false);
-                            }
-                        }
-                        return false;
-                    }
-                });
+                ((NearByViewHolder) holder).recyclerview.setOnTouchListener(listener);
 
             }
         }
     }
 
 
+    private View.OnTouchListener listener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (((RecyclerView)v).getChildCount()>=0){
+                if (((RecyclerView)v).getChildAt(0).getLeft()==0){
+                    ((QuchuDetailsActivity)mAnchorActivity).getSwipeBackLayout().setEnableGesture(true);
+                }else{
+                    ((QuchuDetailsActivity)mAnchorActivity).getSwipeBackLayout().setEnableGesture(false);
+                }
+            }
+            return false;
+        }
+    };
 
     @Override
     public int getItemViewType(int position) {
