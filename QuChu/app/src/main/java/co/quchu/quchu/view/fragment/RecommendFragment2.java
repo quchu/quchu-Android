@@ -469,12 +469,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mFragmentStoped = false;
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (null != sourceBitmap && !sourceBitmap.isRecycled())
