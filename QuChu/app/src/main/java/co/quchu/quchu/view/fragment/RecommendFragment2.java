@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,6 +105,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             if (!mFragmentStoped && -1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
                 if (null != cardList && cardList.size() > currentIndex) {
                     String strUri = cardList.get(currentIndex).getCover();
+                    Log.d("RF2",strUri);
                     Uri imgUri;
                     if (!TextUtils.isEmpty(strUri)) {
                         imgUri = Uri.parse(strUri);
@@ -145,7 +147,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                                     @Override
                                     public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
                                         if (null != sourceBitmap) {
-                                            Toast.makeText(getActivity(), "hahahahahhah", Toast.LENGTH_SHORT).show();
                                             Message msg = new Message();
                                             msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
                                             Bundle bundle = new Bundle();
