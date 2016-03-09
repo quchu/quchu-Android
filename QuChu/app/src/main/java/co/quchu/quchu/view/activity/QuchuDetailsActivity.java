@@ -214,9 +214,13 @@ public class QuchuDetailsActivity extends BaseActivity {
     private void userBeen() {
 
         Intent intent = new Intent(this,AddPostCardActivity.class);
+        intent.putExtra("pName",dModel.getName());
+        intent.putExtra("pId",dModel.getPid());
         if (dModel.isIsout()){
+
             //Edit post card
         }else{
+
             //Create new one
         }
         startActivity(intent);

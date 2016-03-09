@@ -1,11 +1,13 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -19,6 +21,7 @@ import co.quchu.quchu.utils.StringUtils;
  * Date: 2015-11-12
  */
 public class PostCardPresenter {
+
 
     public static void GetPostCardList(Context context, boolean isFavoritePostCard, final MyPostCardListener listener) {
         String netUrl = "";
@@ -35,6 +38,34 @@ public class PostCardPresenter {
                     if (!response.has("msg") && !response.has("data")) {
                         Gson gson = new Gson();
                         PostCardModel model = gson.fromJson(response.toString(), PostCardModel.class);
+                        listener.onSuccess(model);
+                    }
+                }
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.onError(error);
+                return false;
+            }
+        });
+    }
+
+    /**
+     * Get postcard info via pid
+     * @param context
+     * @param pId
+     * @param listener
+     */
+    public static void getPostCardByPid(Context context,int pId, final MyPostCardItemListener listener) {
+        NetService.get(context, String.format(NetApi.getPlaceUserCard, pId), new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("CardList=" + response);
+                if (response != null) {
+                    if (!response.has("msg") && !response.has("data")) {
+                        Gson gson = new Gson();
+                        PostCardItemModel model = gson.fromJson(response.toString(), PostCardItemModel.class);
                         listener.onSuccess(model);
                     }
                 }
@@ -76,6 +107,13 @@ public class PostCardPresenter {
 
     public interface MyPostCardListener {
         void onSuccess(PostCardModel model);
+
+        void onError(String error);
+    }
+
+
+    public interface MyPostCardItemListener {
+        void onSuccess(PostCardItemModel model);
 
         void onError(String error);
     }

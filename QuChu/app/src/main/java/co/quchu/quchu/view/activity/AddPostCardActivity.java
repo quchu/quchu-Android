@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -158,8 +159,19 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
 
+
     private void initData() {
         defaulModel = (PostCardItemModel) getIntent().getSerializableExtra("pCardModel");
+        pName = getIntent().getStringExtra("pName");
+        pId = getIntent().getIntExtra("pId", 2);
+        if (null!=defaulModel){
+            fillUI();
+        }else{
+            getFromSetver(pId);
+        }
+    }
+
+    private void fillUI(){
         if (defaulModel != null) {
             Bimp.imglist = defaulModel.getImglist();
             addPostcardSuggestPrb.setRating(defaulModel.getScore());
@@ -173,9 +185,28 @@ public class AddPostCardActivity extends BaseActivity {
                 addPostcardSuggestTv.setText(prbHintText[(int) (defaulModel.getScore() + 0.5f)]);
             }
         }
-        pName = getIntent().getStringExtra("pName");
-        pId = getIntent().getIntExtra("pId", 2);
     }
+
+    private void getFromSetver(int pid){
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        PostCardPresenter.getPostCardByPid(this, pid, new PostCardPresenter.MyPostCardItemListener() {
+            @Override
+            public void onSuccess(PostCardItemModel model) {
+                defaulModel = model;
+                if (null!=defaulModel){
+                    Log.d("ISNULL",""+(null==defaulModel));
+                    fillUI();
+                }
+                DialogUtil.dismissProgess();
+            }
+
+            @Override
+            public void onError(String error) {
+                DialogUtil.dismissProgess();
+            }
+        });
+    }
+
 
     private void setPRBlistener() {
         addPostcardSuggestPrb.setListener(new RatingListener() {
@@ -349,6 +380,7 @@ public class AddPostCardActivity extends BaseActivity {
 
     }
 
+
     private void saveCard(String imageStr) {
         PostCardPresenter.sacePostCard(this, pId, addPostcardSuggestPrb.getRating(), addPostcardAboutPlaceTv.getText().toString(), imageStr, new PostCardPresenter.MyPostCardListener() {
             @Override
@@ -443,6 +475,8 @@ public class AddPostCardActivity extends BaseActivity {
         //  }
         //   LogUtils.json("addImage2QiNiu  addImage2QiNiu  addImage2QiNiu" + list.get(imageIndex));
         if (imageIndex>=mPhotoList.size()){
+            
+            DialogUtil.dismissProgessDirectly();
             return;
         }
         uploadBitmap = ImageUtils.getimage(mPhotoList.get(imageIndex).getPhotoPath());
