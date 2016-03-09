@@ -170,10 +170,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     public void moreClick() {
         this.startActivity(new Intent(this, MenusActivity.class));
-        if (this instanceof RecommendActivity) {
-        } else {
-            this.finish();
-        }
+
     }
 
     /**

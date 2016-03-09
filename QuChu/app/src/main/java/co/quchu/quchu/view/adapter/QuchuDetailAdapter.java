@@ -1,11 +1,13 @@
 package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +29,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
@@ -273,9 +276,15 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
                 ((NearByViewHolder) holder).textView.setText(mData.getNearPlace().get(imgIndex - 1).getTag());
-                ((NearByViewHolder) holder).recyclerview.setLayoutManager(new NestedLinearLayoutManager(mAnchorActivity, LinearLayoutManager.HORIZONTAL, false));
+                ((NearByViewHolder) holder).recyclerview.setLayoutManager(new LinearLayoutManager(mAnchorActivity, LinearLayoutManager.HORIZONTAL, false));
                 ((NearByViewHolder) holder).recyclerview.setAdapter(new NearbySpotAdapter(mData.getNearPlace().get(imgIndex - 1).getPlaces()));
-                ((NearByViewHolder) holder).recyclerview.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.quarter_margin)));
+                if (null!=((NearByViewHolder) holder).recyclerview.getTag() && ((boolean)((NearByViewHolder) holder).recyclerview.getTag())){
+
+                }else{
+                    ((NearByViewHolder) holder).recyclerview.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin)));
+                    ((NearByViewHolder) holder).recyclerview.setTag(true);
+                }
+
                 ((NearByViewHolder) holder).recyclerview.setOnTouchListener(listener);
 
             }
@@ -287,7 +296,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (((RecyclerView) v).getChildCount() >= 0) {
-                if (((RecyclerView) v).getChildAt(0).getLeft() == 0) {
+                if (((RecyclerView) v).getChildAt(0).getLeft()-mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin) == 0) {
                     ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(true);
                 } else {
                     ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(false);
@@ -493,7 +502,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         NearbyItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setLayoutParams(new ViewGroup.LayoutParams((int)(AppContext.Width/2.5), (int)(AppContext.Width/2.5)));
+            view.setLayoutParams(new ViewGroup.LayoutParams((int)(AppContext.Width/3.5f), (int)(AppContext.Width/3.5f)));
         }
     }
 
@@ -530,13 +539,17 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ((NearbyItemViewHolder) holder).tvName.setText(mData.get(position).getName());
-            if (null != mData.get(position).getCover()) {
-                ((NearbyItemViewHolder) holder).ivImage.setImageURI(Uri.parse(mData.get(position).getCover()));
-                LogUtils.json("NearbyItemView URl=" + mData.get(position).getCover());
-                ((NearbyItemViewHolder) holder).ivImage.setAspectRatio(1.3f);
+            if (null != mData.get(position).getCover() && !KeyboardUtils.isFastDoubleClick()) {
 
+                ((NearbyItemViewHolder) holder).ivImage.setImageURI(Uri.parse(mData.get(position).getCover()));
+                ((NearbyItemViewHolder) holder).ivImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAnchorActivity.startActivity(new Intent(mAnchorActivity, QuchuDetailsActivity.class).putExtra("pId", mData.get(position).getPid()));
+                    }
+                });
             }
         }
 

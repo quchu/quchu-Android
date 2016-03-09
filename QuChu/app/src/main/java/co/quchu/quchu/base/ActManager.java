@@ -76,7 +76,7 @@ public class ActManager {
      *
      * @param cls Activity的类名
      */
-    public void finishActivity(Class<?> cls) {
+    public void finishActivity(Class<? extends BaseActivity> cls) {
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
                 finishActivity(activity);
