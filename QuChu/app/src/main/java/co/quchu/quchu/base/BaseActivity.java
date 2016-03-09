@@ -1,7 +1,6 @@
 package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -55,7 +54,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         //压栈
         ActManager.getAppManager().addActivity(this);
         mSwipeBackLayout = getSwipeBackLayout();
-        if ( this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity
+        if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity
                 || this instanceof PreviewImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
             mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {
@@ -169,8 +168,8 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
 
     @Override
     public void moreClick() {
-        this.startActivity(new Intent(this, MenusActivity.class));
-
+       //   this.startActivity(new Intent(this, MenusActivity.class));
+        ActManager.getAppManager().Back2MenusAct();
     }
 
     /**
