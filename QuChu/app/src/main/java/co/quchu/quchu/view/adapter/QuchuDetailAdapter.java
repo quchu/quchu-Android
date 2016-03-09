@@ -273,9 +273,15 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
                 ((NearByViewHolder) holder).textView.setText(mData.getNearPlace().get(imgIndex - 1).getTag());
-                ((NearByViewHolder) holder).recyclerview.setLayoutManager(new NestedLinearLayoutManager(mAnchorActivity, LinearLayoutManager.HORIZONTAL, false));
+                ((NearByViewHolder) holder).recyclerview.setLayoutManager(new LinearLayoutManager(mAnchorActivity, LinearLayoutManager.HORIZONTAL, false));
                 ((NearByViewHolder) holder).recyclerview.setAdapter(new NearbySpotAdapter(mData.getNearPlace().get(imgIndex - 1).getPlaces()));
-                ((NearByViewHolder) holder).recyclerview.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.quarter_margin)));
+                if (null!=((NearByViewHolder) holder).recyclerview.getTag() && ((boolean)((NearByViewHolder) holder).recyclerview.getTag())){
+
+                }else{
+                    ((NearByViewHolder) holder).recyclerview.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin)));
+                    ((NearByViewHolder) holder).recyclerview.setTag(true);
+                }
+
                 ((NearByViewHolder) holder).recyclerview.setOnTouchListener(listener);
 
             }
@@ -493,7 +499,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         NearbyItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setLayoutParams(new ViewGroup.LayoutParams((int)(AppContext.Width/2.5), (int)(AppContext.Width/2.5)));
+            view.setLayoutParams(new ViewGroup.LayoutParams((int)(AppContext.Width/3.5f), (int)(AppContext.Width/3.5f)));
         }
     }
 
@@ -534,9 +540,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((NearbyItemViewHolder) holder).tvName.setText(mData.get(position).getName());
             if (null != mData.get(position).getCover()) {
                 ((NearbyItemViewHolder) holder).ivImage.setImageURI(Uri.parse(mData.get(position).getCover()));
-                LogUtils.json("NearbyItemView URl=" + mData.get(position).getCover());
                 ((NearbyItemViewHolder) holder).ivImage.setAspectRatio(1.3f);
-
             }
         }
 
