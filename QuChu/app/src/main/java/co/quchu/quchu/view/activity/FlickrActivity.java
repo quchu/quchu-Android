@@ -62,7 +62,7 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     public FlickrModel flickrFavoriteNew = new FlickrModel();//我的收藏 new
     @Bind(R.id.flickr_act_swipe_refresh_layout)
     SwipeRefreshLayout flickrActSwipeRefreshLayout;
-    @Bind(R.id.empty_view_other_tv)
+    @Bind(R.id.action_buttton)
     TextView emptyViewOtherTv;
     @Bind(R.id.empty_view_fl)
     FrameLayout emptyViewFl;
@@ -393,7 +393,7 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
         }
     }
 
-    @OnClick(R.id.empty_view_other_tv)
+    @OnClick(R.id.action_buttton)
     public void flickrClick(View view) {
         this.finish();
     }

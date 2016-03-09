@@ -26,7 +26,6 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
-import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.KeyboardUtils;
@@ -62,7 +61,6 @@ public class RecommendActivity extends BaseActivity {
 
     public long firstTime = 0;
     private RecommendFragment2 recoFragment;
-    private ClassifyFragment classifyFragment;
     DefaultRecommendFragment defaultRecommendFragment;
     private ArrayList<CityModel> list;
     private boolean isGuide = false;
@@ -76,14 +74,17 @@ public class RecommendActivity extends BaseActivity {
         isGuide = getIntent().getBooleanExtra("isGuide", false);
         if (isGuide) {
             startActivity(new Intent(this, PlanetActivity.class));
-        } else {
-            reconnection();
+            return;
         }
+//            reconnection();
+        initView();
+
+
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
             @Override
             public void hasCityList(ArrayList<CityModel> list) {
                 RecommendActivity.this.list = list;
-                initView();
+//                initView();
             }
         });
         recommendTitleMoreRl.setMoreClick(this);
@@ -159,7 +160,7 @@ public class RecommendActivity extends BaseActivity {
     public void InitViewPager() {
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         recoFragment = new RecommendFragment2();
-        classifyFragment = new ClassifyFragment();
+        ClassifyFragment classifyFragment = new ClassifyFragment();
         defaultRecommendFragment = new DefaultRecommendFragment();
         fragmentList.add(recoFragment);
         fragmentList.add(classifyFragment);
@@ -169,7 +170,6 @@ public class RecommendActivity extends BaseActivity {
         recommendBodyVp.setPageTransformer(true, new ZoomOutPageTransformer());
     }
 
-    //http://119.29.108.45:8080/appservices/login/android?j_username=13966682939&j_password=e10adc3949ba59abbe56e057f20f883e&equip=00000000-1e98-8990-03cd-75f30033c587
     private void viewpagerSelected(int index) {
         LogUtils.json("selected == " + index);
         if (index == 0) {
@@ -177,35 +177,17 @@ public class RecommendActivity extends BaseActivity {
             recommendBodyVp.setCurrentItem(0);//设置当前显示标签页为第一页
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
-//            if (recoFragment != null)
-//                recoFragment.showRecyclerView();
-//            if (classifyFragment != null)
-//                classifyFragment.hintClassify();
-//            if (defaultRecommendFragment != null)
-//                defaultRecommendFragment.hint();
         } else if (index == 1) {
             recommendTitleLocationIv.setImageResource(R.drawable.ic_recommed_title_location);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendBodyVp.setCurrentItem(1);//设置当前显示标签页为第二页
-//            if (classifyFragment != null)
-//                classifyFragment.showClassify();
-//            if (recoFragment != null)
-//                recoFragment.hintRecyclerView();
-//            if (defaultRecommendFragment != null)
-//                defaultRecommendFragment.hint();
         } else if (index == 2) {
             recommendTitleLocationIv.setImageResource(R.drawable.ic_title_back);
             titleContentTv.setText(SPUtils.getValueFromSPMap(this, AppKey.USERSELECTEDCLASSIFY_CHS, ""));
             titleContentTv.setVisibility(View.VISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.INVISIBLE);
             recommendBodyVp.setCurrentItem(2);
-//            if (defaultRecommendFragment != null)
-//                defaultRecommendFragment.show();
-//            if (classifyFragment != null)
-//                classifyFragment.hintClassify();
-//            if (recoFragment != null)
-//                recoFragment.hintRecyclerView();
         }
         viewPagerIndex = index;
     }
@@ -227,7 +209,6 @@ public class RecommendActivity extends BaseActivity {
     public void updateRecommend() {
         if (recoFragment == null)
             recoFragment = new RecommendFragment2();
-//        recoFragment.initTabData("");
     }
 
     @Override
@@ -282,12 +263,11 @@ public class RecommendActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0x00:
-                    //    initView();
                     netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 2000);
                     break;
-                case 0x01:
-                    reconnection();
-                    break;
+//                case 0x01:
+//                    reconnection();
+//                    break;
                 case 0x02:
                     resumeUpdateData();
                     break;
@@ -313,20 +293,20 @@ public class RecommendActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 无网络状态 时开启监听
-     */
-    public void reconnection() {
-        if (NetUtil.isNetworkConnected(this)) {
-            if (isNetWorkConnected)
-                initView();
-            isNetWorkConnected = false;
-        } else {
-            netHandler.sendMessageDelayed(netHandler.obtainMessage(0x00), 6000);
-            isNetWorkConnected = true;
-        }
-    }
-
-    private boolean isNetWorkConnected = false;
+//    /**
+//     * 无网络状态 时开启监听
+//     */
+//    public void reconnection() {
+//        if (NetUtil.isNetworkConnected(this)) {
+//            if (isNetWorkConnected)
+//                initView();
+//            isNetWorkConnected = false;
+//        } else {
+//            netHandler.sendMessageDelayed(netHandler.obtainMessage(0x00), 6000);
+//            isNetWorkConnected = true;
+//        }
+//    }
+//
+//    private boolean isNetWorkConnected = false;
 
 }

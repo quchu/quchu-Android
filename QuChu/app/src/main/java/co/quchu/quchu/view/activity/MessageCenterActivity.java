@@ -32,7 +32,7 @@ public class MessageCenterActivity extends BaseActivity {
     RecyclerView messagesRv;
     @Bind(R.id.messages_srl)
     SwipeRefreshLayout messagesSrl;
-    @Bind(R.id.empty_view_other_tv)
+    @Bind(R.id.action_buttton)
     TextView emptyViewOtherTv;
     @Bind(R.id.message_empty_view_fl)
     FrameLayout messageEmptyViewFl;
@@ -70,7 +70,7 @@ public class MessageCenterActivity extends BaseActivity {
         });
     }
 
-    @OnClick(R.id.empty_view_other_tv)
+    @OnClick(R.id.action_buttton)
     public void emptyClick(View view) {
         this.finish();
     }

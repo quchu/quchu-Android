@@ -26,7 +26,6 @@ import java.util.Map;
 
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.dialog.NetErrorDialogUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -105,6 +104,8 @@ public class GsonRequest<T> extends Request<T> {
         if (networkResponse.statusCode == 200) {
             try {
                 String json = new String(networkResponse.data, "utf-8");
+
+                LogUtils.e("原始数据为" + json);
                 JSONObject jsonObject = new JSONObject(json);
                 result = jsonObject.getBoolean("result");
                 if (result) {
@@ -117,7 +118,12 @@ public class GsonRequest<T> extends Request<T> {
                         t = (T) data;
                     }
                     LogUtils.e("网络返回result为true");
-                    return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
+                    if (t != null) {
+                        return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
+                    } else {
+                        return Response.error(new NetworkError());
+                    }
+
                 } else {
                     msg = jsonObject.getString("msg");
                     exception = jsonObject.getString("exception");
@@ -170,17 +176,10 @@ public class GsonRequest<T> extends Request<T> {
     }
 
     public void start(Context context, Object tag) {
-        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            NetErrorDialogUtil.showProgess(context, "请检查网络");
-            NetErrorActionUtil.UpdateRecommendData();
-        } else {
-            if (tag != null) {
-                setTag(tag);
-            }
-            setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
-            queue.add(this);
-            queue.start();
-        }
+        setTag(tag);
+        setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
+        queue.add(this);
+        queue.start();
     }
 
     @Override

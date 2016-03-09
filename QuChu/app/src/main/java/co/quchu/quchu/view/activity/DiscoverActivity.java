@@ -110,7 +110,7 @@ public class DiscoverActivity extends BaseActivity {
         });
     }
 
-    @OnClick(R.id.empty_view_other_tv)
+    @OnClick(R.id.action_buttton)
     public void flickrClick(View view) {
         this.finish();
     }

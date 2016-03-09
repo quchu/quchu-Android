@@ -38,12 +38,14 @@ public class RecommentFragPresenter {
         model.getTab(new CommonListener<List<TagsModel>>() {
             @Override
             public void successListener(List<TagsModel> response) {
-                view.initTab(response);
+                DialogUtil.dismissProgess();
+                view.initTab(false, response);
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                DialogUtil.dismissProgess();
+                view.initTab(true, null);
             }
         });
 
@@ -65,8 +67,8 @@ public class RecommentFragPresenter {
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                view.initTabData(true,null,0,0);
                 DialogUtil.dismissProgess();
+                view.initTabData(true, null, 0, 0);
             }
         });
     }

@@ -16,7 +16,7 @@ public interface IRecommendFragment {
     /**
      * 加载顶部tab
      */
-    void initTab(List<TagsModel> list);
+    void initTab(boolean isError,List<TagsModel> list);
 
     /**
      * 初始化tab对应的数据
@@ -29,5 +29,4 @@ public interface IRecommendFragment {
 
     void loadMore(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum);
 
-    void tabChangeAnimaton();
 }

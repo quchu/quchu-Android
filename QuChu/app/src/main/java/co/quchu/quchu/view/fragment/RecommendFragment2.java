@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +51,7 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter2;
+import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout;
 import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
 
@@ -72,6 +72,8 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     ImageView fRecommendBimgTop;
     @Bind(R.id.refreshLayout)
     HorizontalSwipeRefLayout refreshLayout;
+    @Bind(R.id.errorView)
+    ErrorView errorView;
 
     private boolean isLoading = false;
     public List<RecommendModel> cardList = new ArrayList<>();
@@ -81,7 +83,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     private int currentBGIndex = -1;
     private final int MESSAGE_FLAG_DELAY_TRIGGER = 0x0001;
     private final int MESSAGE_FLAG_BLUR_RENDERING_FINISH = 0x0002;
-    public static final String MESSAGE_KEY_URI = "MESSAGE_KEY_URI";
     public static final String MESSAGE_KEY_BITMAP = "MESSAGE_KEY_BITMAP";
     private ObjectAnimator mAnimFadeIn;
     private ObjectAnimator mAnimFadeOut;
@@ -89,43 +90,9 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     private boolean mBackgroundTopVisible = true;
     private boolean mFragmentStoped;
 
-    private class BlurEffectRunnable implements Runnable {
-
-        private final int index;
-
-        public BlurEffectRunnable(int postIndex) {
-            index = postIndex;
-        }
-
-        @Override
-        public void run() {
-            try {
-                long mBackgroundSwitchDelay = 300L;
-                Thread.sleep(mBackgroundSwitchDelay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (!mFragmentStoped && -1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
-                if (null != cardList && cardList.size() > currentIndex) {
-                    String strUri = cardList.get(currentIndex).getCover();
-                    Log.d("RF2", strUri);
-                    Uri imgUri;
-                    if (!TextUtils.isEmpty(strUri)) {
-                        imgUri = Uri.parse(strUri);
-                        Message message = new Message();
-                        message.what = MESSAGE_FLAG_DELAY_TRIGGER;
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(MESSAGE_KEY_URI, imgUri);
-                        message.setData(bundle);
-                        mBlurEffectAnimationHandler.sendMessage(message);
-                    }
-                }
-            }
-        }
-    }
-
 
     Bitmap sourceBitmap;
+    private int index;
     private Handler mBlurEffectAnimationHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -141,37 +108,44 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                     break;
 
                 case MESSAGE_FLAG_DELAY_TRIGGER:
-                    Uri imageUri = msg.getData().getParcelable(MESSAGE_KEY_URI);
-                    if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)) {
-                        ImageRequest request = ImageRequestBuilder
-                                .newBuilderWithSource(imageUri)
-                                .setImageType(ImageRequest.ImageType.SMALL)
-                                .setPostprocessor(new Postprocessor() {
-                                    @Override
-                                    public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
-                                        if (null != sourceBitmap) {
-                                            Message msg = new Message();
-                                            msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
-                                            Bundle bundle = new Bundle();
-                                            bundle.putParcelable(MESSAGE_KEY_BITMAP, sourceBitmap);
-                                            msg.setData(bundle);
-                                            mBlurEffectAnimationHandler.sendMessage(msg);
-                                        }
-                                        return null;
-                                    }
+                    if (-1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
+                        String strUri = cardList.get(currentIndex).getCover();
+                        if (!TextUtils.isEmpty(strUri)) {
+                            Uri imageUri = Uri.parse(strUri);
+                            if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)) {
 
-                                    @Override
-                                    public String getName() {
-                                        return null;
-                                    }
 
-                                    @Override
-                                    public CacheKey getPostprocessorCacheKey() {
-                                        return null;
-                                    }
-                                })
-                                .build();
-                        Fresco.getImagePipeline().fetchImageFromBitmapCache(request, getActivity());
+                                ImageRequest request = ImageRequestBuilder
+                                        .newBuilderWithSource(imageUri)
+                                        .setImageType(ImageRequest.ImageType.SMALL)
+                                        .setPostprocessor(new Postprocessor() {
+                                            @Override
+                                            public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
+                                                if (null != sourceBitmap) {
+                                                    Message msg = new Message();
+                                                    msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putParcelable(MESSAGE_KEY_BITMAP, sourceBitmap);
+                                                    msg.setData(bundle);
+                                                    mBlurEffectAnimationHandler.sendMessage(msg);
+                                                }
+                                                return null;
+                                            }
+
+                                            @Override
+                                            public String getName() {
+                                                return null;
+                                            }
+
+                                            @Override
+                                            public CacheKey getPostprocessorCacheKey() {
+                                                return null;
+                                            }
+                                        })
+                                        .build();
+                                Fresco.getImagePipeline().fetchImageFromBitmapCache(request, getActivity());
+                            }
+                        }
                     }
                     break;
             }
@@ -221,7 +195,8 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             }
         }
         currentIndex = newPosition;
-        new Thread(new BlurEffectRunnable(newPosition)).start();
+        index = newPosition;
+        mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
     }
 
 
@@ -235,7 +210,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             case R.id.root_cv:
                 AppContext.selectedPlace = cardList.get(position);
                 hasChangePosition = position;
-                if (!KeyboardUtils.isFastDoubleClick()){
+                if (!KeyboardUtils.isFastDoubleClick()) {
                     Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                     intent.putExtra("pPosition", position);
                     intent.putExtra("pId", cardList.get(position).getPid());
@@ -292,7 +267,21 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     private List<TagsModel> tagList;
 
     @Override
-    public void initTab(List<TagsModel> list) {
+    public void initTab(boolean isError, List<TagsModel> list) {
+
+        if (isError) {
+            errorView.showViewDefault(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.init();
+                }
+            });
+            recyclerView.setVisibility(View.GONE);
+            return;
+        }
+        recyclerView.setVisibility(View.VISIBLE);
+        errorView.himeView();
+
         tagList = list;
         for (int i = 0; i < list.size(); i++) {
             TextView textView = (TextView) View.inflate(getActivity(), R.layout.text_view, null);
@@ -343,8 +332,16 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
         refreshLayout.setRefreshing(false);
         if (isError) {
-            Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
+            errorView.showViewDefault( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.initTabData(false, selectedTag);
+                }
+            });
+            recyclerView.setVisibility(View.GONE);
         } else {
+            errorView.himeView();
+            recyclerView.setVisibility(View.VISIBLE);
             cardList.clear();
             cardList.addAll(arrayList);
             adapter.notifyDataSetChanged();
@@ -352,8 +349,8 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             pageNums = pageNum;
             if (cardList.size() > 0)
                 recyclerView.scrollToPosition(0);
-            currentIndex = 0;
-            new Thread(new BlurEffectRunnable(currentIndex)).start();
+            index = currentIndex = 0;
+            mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
         }
     }
 
@@ -375,11 +372,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
 
     @Override
-    public void tabChangeAnimaton() {
-
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
@@ -399,8 +391,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
     /**
      * 执行切换动画
-     *
-     * @param bm
      */
     private void executeSwitchAnimation(Bitmap bm) {
 
@@ -476,58 +466,4 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
-    /**
-     * 执行TAB切换动画
-     */
-//    private void executeTabSelectAnimation(final int resIdTop, final int resIdBottom) {
-//        if (mBackgroundTopVisible) {
-//            fRecommendBimgBottom.setImageResource(resIdTop);
-//            mAnimFadeIn.setTarget(fRecommendBimgBottom);
-//            mAnimFadeOut.setTarget(fRecommendBimgTop);
-//        } else {
-//            fRecommendBimgTop.setImageResource(resIdTop);
-//            mAnimFadeIn.setTarget(fRecommendBimgTop);
-//            mAnimFadeOut.setTarget(fRecommendBimgBottom);
-//        }
-//        mBackgroundSwitchAnimatorSet = new AnimatorSet();
-//        mBackgroundSwitchAnimatorSet.setDuration(mBackgroundSwitchAnimationDuration / 2);
-//        mBackgroundSwitchAnimatorSet.setInterpolator(new LinearInterpolator());
-//        mBackgroundSwitchAnimatorSet.playTogether(mAnimFadeOut, mAnimFadeIn);
-//        mBackgroundSwitchAnimatorSet.addListener(new Animator.AnimatorListener() {
-//            @Override
-//            public void onAnimationStart(Animator animator) {
-//                if (mBackgroundTopVisible) {
-//                    fRecommendBimgBottom.setVisibility(View.VISIBLE);
-//                } else {
-//                    fRecommendBimgTop.setVisibility(View.VISIBLE);
-//                }
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animator animator) {
-//                if (mBackgroundTopVisible) {
-//                    fRecommendBimgTop.setVisibility(View.INVISIBLE);
-//                } else {
-//                    fRecommendBimgBottom.setVisibility(View.INVISIBLE);
-//                }
-//                mBackgroundTopVisible = fRecommendBimgTop.getVisibility() == View.VISIBLE;
-//                if (null != sourceBitmap && !sourceBitmap.isRecycled())
-//                    sourceBitmap.recycle();
-//                if (sourceBitmap != null)
-//                    sourceBitmap = null;
-//            }
-//
-//            @Override
-//            public void onAnimationCancel(Animator animator) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animator animator) {
-//
-//            }
-//        });
-//        mBackgroundSwitchAnimatorSet.start();
-//
-//    }
 }

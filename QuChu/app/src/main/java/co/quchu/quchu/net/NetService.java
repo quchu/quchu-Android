@@ -22,7 +22,6 @@ import co.quchu.quchu.analysis.GatherSendDataModel;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.NetErrorDialogUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -57,7 +56,9 @@ public class NetService {
                             IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //     NetErrorDialog.showProgess(cont);
-            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+//            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+            DialogUtil.dismissProgess();
+            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
             NetErrorActionUtil.UpdateRecommendData();
         } else {
             try {
@@ -82,8 +83,10 @@ public class NetService {
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //  NetErrorDialog.showProgess(cont);
-            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+//            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
             NetErrorActionUtil.UpdateRecommendData();
+            DialogUtil.dismissProgess();
         } else {
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0);
         }
@@ -92,8 +95,10 @@ public class NetService {
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //    NetErrorDialog.showProgess(cont);
-            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+//            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
             NetErrorActionUtil.UpdateRecommendData();
+            DialogUtil.dismissProgess();
         } else {
 //            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
 //                    .theme(Theme.DARK)
@@ -161,9 +166,9 @@ public class NetService {
                                         SPUtils.clearUserinfo(AppContext.mContext);
 
                                         AppContext.user = null;
-                                    } else if (response.has("msg") && response.has("exception") && "1080".equals(response.getString("msg"))){
+                                    } else if (response.has("msg") && response.has("exception") && "1080".equals(response.getString("msg"))) {
                                         ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
-                                    } else{
+                                    } else {
                                         if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
                                             Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), Toast.LENGTH_SHORT).show();
                                             if (response.has("msg") && response.has("exception") && StringUtils.isEmpty(response.getString("exception")) && !StringUtils.isEmpty(response.getString("msg"))) {
