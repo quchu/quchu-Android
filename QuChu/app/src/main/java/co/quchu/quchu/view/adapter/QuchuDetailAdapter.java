@@ -1,11 +1,13 @@
 package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +29,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
@@ -293,7 +296,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (((RecyclerView) v).getChildCount() >= 0) {
-                if (((RecyclerView) v).getChildAt(0).getLeft() == 0) {
+                if (((RecyclerView) v).getChildAt(0).getLeft()-mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin) == 0) {
                     ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(true);
                 } else {
                     ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(false);
@@ -536,11 +539,17 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ((NearbyItemViewHolder) holder).tvName.setText(mData.get(position).getName());
-            if (null != mData.get(position).getCover()) {
+            if (null != mData.get(position).getCover() && !KeyboardUtils.isFastDoubleClick()) {
+
                 ((NearbyItemViewHolder) holder).ivImage.setImageURI(Uri.parse(mData.get(position).getCover()));
-                ((NearbyItemViewHolder) holder).ivImage.setAspectRatio(1.3f);
+                ((NearbyItemViewHolder) holder).ivImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAnchorActivity.startActivity(new Intent(mAnchorActivity, QuchuDetailsActivity.class).putExtra("pId", mData.get(position).getPid()));
+                    }
+                });
             }
         }
 
