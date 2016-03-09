@@ -44,7 +44,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/detail_button_group_height"
+            android:layout_height="60dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="@dimen/quarter_margin"
             android:layout_marginLeft="@dimen/base_margin"

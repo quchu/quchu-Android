@@ -128,6 +128,8 @@ public class QuchuDetailsActivity extends BaseActivity {
         } else {
             detailButtonCollectOutIv.setImageResource(R.drawable.ic_detail_uncollect);
         }
+        dModel.setIsf(isCollect);
+        mQuchuDetailAdapter.notifyDataSetChanged();
     }
 
 
@@ -141,7 +143,14 @@ public class QuchuDetailsActivity extends BaseActivity {
                     callPhone();
                     break;*/
                 case R.id.detail_been_tv:
-                    userBeen();//用户去过
+
+                    if (AppContext.user.isIsVisitors()) {
+                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
+                        vDialog.show(getFragmentManager(), "visitor");
+                    } else {
+                        userBeen();//用户去过
+                    }
+
                     break;
                 case R.id.detail_want_tv:
                     //用户想去
@@ -203,6 +212,14 @@ public class QuchuDetailsActivity extends BaseActivity {
      * 是否去过
      */
     private void userBeen() {
+
+        Intent intent = new Intent(this,AddPostCardActivity.class);
+        if (dModel.isIsout()){
+            //Edit post card
+        }else{
+            //Create new one
+        }
+        startActivity(intent);
         InterestingDetailPresenter.getUserOutPlace(this, pId, dModel.isIsout(), new InterestingDetailPresenter.DetailDataListener() {
             @Override
             public void onSuccessCall(String str) {

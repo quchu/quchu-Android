@@ -97,7 +97,6 @@ public class AddPostCardActivity extends BaseActivity {
     private String pName = "";
     AddPostCardGridAdapter adapter;
     PostCardItemModel defaulModel;
-    private boolean isNeedUpdate = false;
     int pId;
     private String editTextDefaultText = "";
     String[] prbHintText;
@@ -443,6 +442,9 @@ public class AddPostCardActivity extends BaseActivity {
         //    uploadManager = new UploadManager();
         //  }
         //   LogUtils.json("addImage2QiNiu  addImage2QiNiu  addImage2QiNiu" + list.get(imageIndex));
+        if (imageIndex>=mPhotoList.size()){
+            return;
+        }
         uploadBitmap = ImageUtils.getimage(mPhotoList.get(imageIndex).getPhotoPath());
         if (uploadBitmap != null)
             uploadManager.put(ImageUtils.Bitmap2Bytes(uploadBitmap, 90), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,

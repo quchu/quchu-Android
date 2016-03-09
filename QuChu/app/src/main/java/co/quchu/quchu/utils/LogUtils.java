@@ -73,6 +73,18 @@ public class LogUtils {
         }
     }
 
+    public static void jsonLong(String s, String msg) {
+        int chunkCount = msg.length() / 4000;     // integer division
+        for (int i = 0; i <= chunkCount; i++) {
+            int max = 4000 * (i + 1);
+            if (max >= msg.length()) {
+                Log.d(tag,s+"NetService== (" + i + "/" + chunkCount + "): " + msg.substring(4000 * i));
+            } else {
+                Log.d(tag,s+"NetService== (" + i + "/" + chunkCount + "): " + msg.substring(4000 * i, max));
+            }
+        }
+    }
+
 
     /*
     *Error:Execution failed for task ':app:dexDebug'.
