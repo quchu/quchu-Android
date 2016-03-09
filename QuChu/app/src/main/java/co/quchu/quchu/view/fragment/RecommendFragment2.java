@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -343,17 +343,18 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             });
             recyclerView.setVisibility(View.GONE);
         } else {
-            errorView.himeView();
-//            if (recyclerView.getVisibility() == View.GONE) {
+            if (recyclerView.getVisibility() == View.GONE) {
+                errorView.himeView();
                 recyclerView.setVisibility(View.VISIBLE);
-//            }
+            }
             cardList.clear();
             cardList.addAll(arrayList);
             adapter.notifyDataSetChanged();
             pageCounts = pageCount;
             pageNums = pageNum;
             if (cardList.size() > 0)
-                recyclerView.scrollToPosition(0);
+                recyclerView.smoothScrollToPosition(0);
+
             index = currentIndex = 0;
             mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
         }
