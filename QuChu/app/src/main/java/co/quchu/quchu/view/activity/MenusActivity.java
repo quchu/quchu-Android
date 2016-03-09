@@ -86,7 +86,7 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                 break;
             case R.id.menu_user_logout_tv:
                 SPUtils.clearUserinfo(AppContext.mContext);
-                AppContext.user=null;
+                AppContext.user = null;
                 startActivity(new Intent(this, UserLoginActivity.class).putExtra("IsVisitorLogin", true));
                 this.finish();
                 break;
@@ -110,8 +110,18 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
     @Override
     protected void onResume() {
         super.onResume();
-        if (null != AppContext.user)
-            menusSearchUsername.setText(AppContext.user.getFullname());
+        if (null != AppContext.user) {
+            if (null != menusSearchUsername)
+                menusSearchUsername.setText(AppContext.user.getFullname());
+            if (null != menuVisitorLoginIv && null != menuUserLogoutTv)
+                if (AppContext.user.isIsVisitors()) {
+                    menuVisitorLoginIv.setVisibility(View.VISIBLE);
+                    menuUserLogoutTv.setVisibility(View.GONE);
+                } else {
+                    menuVisitorLoginIv.setVisibility(View.GONE);
+                    menuUserLogoutTv.setVisibility(View.VISIBLE);
+                }
+        }
         if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_MENU_NEED_REFRESH, false)) {
             if (menusSearchUsername != null)
                 menusSearchUsername.setText(AppContext.user.getFullname());
@@ -151,7 +161,6 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                     vDialog.show(getFragmentManager(), "visitor");
                 } else {
                     startActivity(new Intent(MenusActivity.this, PlanetActivity.class));
-                    this.finish();
                 }
                 break;
             case PullMenusView.ClickMessage:
@@ -160,7 +169,6 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                     vDialog.show(getFragmentManager(), "visitor");
                 } else {
                     startActivity(new Intent(MenusActivity.this, MessageCenterActivity.class));
-                    this.finish();
                 }
                 break;
             case PullMenusView.ClickSetting:
