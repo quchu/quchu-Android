@@ -62,7 +62,10 @@ public class RecommentFragPresenter {
             @Override
             public void successListener(RecommendModelNew response) {
                 DialogUtil.dismissProgess();
-                view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo());
+                if (null!=response){
+                    view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo());
+                }
+
             }
 
             @Override

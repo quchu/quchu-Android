@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.analysis.GatherViewModel;
@@ -55,6 +56,9 @@ public class QuchuDetailsActivity extends BaseActivity {
     TextView titleContentTv;
     @Bind(R.id.detail_recyclerview)
     RecyclerView mRecyclerView;
+    @Bind(R.id.detail_want_tv)
+    TextView detail_want_tv;
+
     private int pId, pPosition = 0;
     public DetailModel dModel = new DetailModel();
     private GatherViewModel gatherViewModel;
@@ -67,6 +71,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_quchu_details);
         ButterKnife.bind(this);
         initTitleBar();
+        titleContentTv.setText(getTitle());
         initData();
         mQuchuDetailAdapter = new QuchuDetailAdapter(this, dModel, new QuchuDetailAdapter.OnItemClickListener() {
             @Override
@@ -126,6 +131,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
+    @OnClick({R.id.detail_want_tv,R.id.detail_been_tv})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
