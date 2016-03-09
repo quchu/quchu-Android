@@ -38,13 +38,13 @@ public class RecommentFragPresenter {
         model.getTab(new CommonListener<List<TagsModel>>() {
             @Override
             public void successListener(List<TagsModel> response) {
-                DialogUtil.dismissProgess();
+                DialogUtil.dismissProgessDirectly();
                 view.initTab(false, response);
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                DialogUtil.dismissProgess();
+                DialogUtil.dismissProgessDirectly();
                 view.initTab(true, null);
             }
         });
@@ -61,16 +61,15 @@ public class RecommentFragPresenter {
         model.getTabData(selectedTag, new CommonListener<RecommendModelNew>() {
             @Override
             public void successListener(RecommendModelNew response) {
-                DialogUtil.dismissProgess();
-                if (null!=response){
-                    view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo());
-                }
+                DialogUtil.dismissProgessDirectly();
+                view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo());
+
 
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                DialogUtil.dismissProgess();
+                DialogUtil.dismissProgessDirectly();
                 view.initTabData(true, null, 0, 0);
             }
         });

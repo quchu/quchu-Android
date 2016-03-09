@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -276,9 +277,11 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                     presenter.init();
                 }
             });
+            tabLayout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
             return;
         }
+        tabLayout.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
         errorView.himeView();
 
@@ -332,7 +335,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
         refreshLayout.setRefreshing(false);
         if (isError) {
-            errorView.showViewDefault( new View.OnClickListener() {
+            errorView.showViewDefault(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     presenter.initTabData(false, selectedTag);
@@ -341,7 +344,9 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             recyclerView.setVisibility(View.GONE);
         } else {
             errorView.himeView();
-            recyclerView.setVisibility(View.VISIBLE);
+//            if (recyclerView.getVisibility() == View.GONE) {
+                recyclerView.setVisibility(View.VISIBLE);
+//            }
             cardList.clear();
             cardList.addAll(arrayList);
             adapter.notifyDataSetChanged();
@@ -357,7 +362,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     @Override
     public void loadMore(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
         isLoading = false;
-        DialogUtil.dismissProgess();
+        DialogUtil.dismissProgessDirectly();
         if (isError) {
             Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
         } else {
@@ -394,7 +399,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
      */
     private void executeSwitchAnimation(Bitmap bm) {
 
-        if (null == bm) {
+        if (null == bm || bm.isRecycled()) {
             return;
         }
         bm = ImageUtils.setSaturation(bm, .5f);

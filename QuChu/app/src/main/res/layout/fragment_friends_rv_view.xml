@@ -9,5 +9,11 @@
         android:layout_height="match_parent"
         android:overScrollMode="never" />
 
+    <co.quchu.quchu.widget.ErrorView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/errorView"
+        android:visibility="gone" />
+
 </RelativeLayout>
 

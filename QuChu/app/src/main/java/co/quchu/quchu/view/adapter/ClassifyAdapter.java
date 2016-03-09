@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,11 +27,11 @@ import co.quchu.quchu.utils.KeyboardUtils;
 public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ClassifyHolder> {
 
     private Context mContext;
-    private ArrayList<ClassifyModel> arrayList;
+    private List<ClassifyModel> arrayList;
 
     private ClasifyClickListener listener;
 
-    public ClassifyAdapter(Context context, ArrayList<ClassifyModel> arrayList) {
+    public ClassifyAdapter(Context context, List<ClassifyModel> arrayList) {
         this.mContext = context;
         this.arrayList = arrayList;
     }
