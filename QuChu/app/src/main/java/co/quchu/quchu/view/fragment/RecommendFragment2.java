@@ -9,7 +9,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,7 +92,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     private boolean mFragmentStoped;
 
 
-    Bitmap sourceBitmap;
+    Bitmap mSourceBitmap;
     private int index;
     private Handler mBlurEffectAnimationHandler = new Handler() {
         @Override
@@ -104,9 +103,9 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             }
             switch (msg.what) {
                 case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
-                    sourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
-                    if (null!=sourceBitmap){
-                        executeSwitchAnimation(ImageUtils.doBlur(sourceBitmap, fRecommendBimgBottom.getWidth() / 4, fRecommendBimgBottom.getHeight() / 4));
+                    mSourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
+                    if (null!= mSourceBitmap || !mSourceBitmap.isRecycled()){
+                        executeSwitchAnimation(ImageUtils.doBlur(mSourceBitmap, fRecommendBimgBottom.getWidth() / 4, fRecommendBimgBottom.getHeight() / 4));
                     }
                     currentBGIndex = currentIndex;
                     break;
@@ -309,6 +308,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                 LogUtils.json("selectedTag=" + selectedTag);
                 presenter.initTabData(false, selectedTag);
                 refreshLayout.setRefreshing(false);
+                mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 500L);
             }
 
             @Override
@@ -321,7 +321,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
         if (tagList.size() > 0) {
@@ -465,9 +464,9 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (null != sourceBitmap && !sourceBitmap.isRecycled())
-            sourceBitmap.recycle();
-        if (sourceBitmap != null)
-            sourceBitmap = null;
+        if (null != mSourceBitmap && !mSourceBitmap.isRecycled())
+            mSourceBitmap.recycle();
+        if (mSourceBitmap != null)
+            mSourceBitmap = null;
     }
 }

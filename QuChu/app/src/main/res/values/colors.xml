@@ -9,7 +9,7 @@
     <color name="transparent">#00000000</color>
 
     <color name="translucent_white">#7fffffff</color>
-    <color name="planet_progress_yellow">#f2e725</color>
+    <color name="planet_progress_yellow">#E4DB11</color>
     <color name="planet_progress_white">#dcdddd</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
