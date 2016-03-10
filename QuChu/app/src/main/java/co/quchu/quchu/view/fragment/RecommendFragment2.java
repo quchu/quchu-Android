@@ -104,7 +104,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             switch (msg.what) {
                 case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
                     mSourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
-                    if (null!= mSourceBitmap || !mSourceBitmap.isRecycled()){
+                    if (null != mSourceBitmap || !mSourceBitmap.isRecycled()) {
                         executeSwitchAnimation(ImageUtils.doBlur(mSourceBitmap, fRecommendBimgBottom.getWidth() / 4, fRecommendBimgBottom.getHeight() / 4));
                     }
                     currentBGIndex = currentIndex;
@@ -169,8 +169,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         presenter = new RecommentFragPresenter(getContext(), this);
         recyclerView.addOnLayoutChangeListener();
         refreshLayout.setColorSchemeResources(R.color.planet_progress_yellow);
-
-        presenter.init();
+        initData();
         initBackgroundSwitchAnimations();
 
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
@@ -183,6 +182,10 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
         return view;
     }
 
+    public void initData() {
+        presenter.init();
+
+    }
 
     @Override
     public void OnPageChanged(int oldPosition, int newPosition) {

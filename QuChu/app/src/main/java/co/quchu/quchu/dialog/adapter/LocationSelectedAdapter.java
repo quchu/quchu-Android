@@ -45,10 +45,7 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
 
     @Override
     public LocationHodler onCreateViewHolder(ViewGroup parent, int viewType) {
-        LocationHodler holder = new LocationHodler((LayoutInflater.from(
-                mContext).inflate(R.layout.dialog_item_city, parent,
-                false)));
-        return holder;
+        return new LocationHodler(View.inflate(parent.getContext(), R.layout.dialog_item_city, null));
     }
 
 

@@ -26,7 +26,6 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
-import co.quchu.quchu.utils.MIUIUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.TagCloudView;
@@ -42,36 +41,21 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
 
 
     private Activity mContext;
-    private boolean isFlyme = false, isMIUI = false;
+    private boolean isFlyme = false;
     private List<RecommendModel> dataSet;
     private CardClickListener listener;
 
     public RecommendAdapter2(Activity mContext, List<RecommendModel> arrayList, CardClickListener listener) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
-        isMIUI = MIUIUtils.isMIUI();
         dataSet = arrayList;
         this.listener = listener;
     }
 
-//    public void changeDataSet(List<RecommendModel> arrayList) {
-//        this.arrayList = arrayList;
-//        notifyDataSetChanged();
-//    }
-
-//    public void loadMoreDataSet(ArrayList<RecommendModel> arrayList) {
-//        this.arrayList.addAll(arrayList);
-//        notifyDataSetChanged();
-//    }
-
 
     @Override
     public RecommendAdapter2.RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      /*  if (isMIUI) {*/
         return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, parent, false), listener);
-       /* }else {
-            return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_other, parent, false), listener);
-        }*/
     }
 
     @Override

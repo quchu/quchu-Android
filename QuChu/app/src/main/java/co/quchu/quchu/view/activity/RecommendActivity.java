@@ -197,18 +197,17 @@ public class RecommendActivity extends BaseActivity {
      * 选中分类后处理跳转及数据刷新
      */
     public void selectedClassify() {
-  /*      recommendTitleCenterRtg.selectedLeft();
-        recommendTitleCenterRtg.setViewsClickable(true);*/
-        //  recommendBodyVp.setCurrentItem(0);
         if (defaultRecommendFragment != null) {
             defaultRecommendFragment.changeDataSetFromServer();
         }
         viewpagerSelected(2);
     }
 
+    /**
+     * 城市切换后调用
+     */
     public void updateRecommend() {
-        if (recoFragment == null)
-            recoFragment = new RecommendFragment2();
+        recoFragment.initData();
     }
 
     @Override
@@ -223,7 +222,6 @@ public class RecommendActivity extends BaseActivity {
                     Toast.makeText(RecommendActivity.this, R.string.app_exit_text,
                             Toast.LENGTH_SHORT).show();
                     firstTime = secondTime;// 更新firstTime
-
                     return true;
                 } else {
                     UserAnalysisUtils.sendUserBehavior(RecommendActivity.this);
@@ -240,7 +238,6 @@ public class RecommendActivity extends BaseActivity {
         LogUtils.json("RecommendActivity  onResume===" + viewPagerIndex);
         if (isGuide) {
             isGuide = false;
-            //    initView();
         }
         resumeUpdateDataTimes = 0;
         netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
@@ -252,7 +249,6 @@ public class RecommendActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
         MobclickAgent.onPageEnd("MainActivity");
         MobclickAgent.onPause(this);
     }
@@ -265,9 +261,6 @@ public class RecommendActivity extends BaseActivity {
                 case 0x00:
                     netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 2000);
                     break;
-//                case 0x01:
-//                    reconnection();
-//                    break;
                 case 0x02:
                     resumeUpdateData();
                     break;
@@ -293,20 +286,5 @@ public class RecommendActivity extends BaseActivity {
         }
     }
 
-//    /**
-//     * 无网络状态 时开启监听
-//     */
-//    public void reconnection() {
-//        if (NetUtil.isNetworkConnected(this)) {
-//            if (isNetWorkConnected)
-//                initView();
-//            isNetWorkConnected = false;
-//        } else {
-//            netHandler.sendMessageDelayed(netHandler.obtainMessage(0x00), 6000);
-//            isNetWorkConnected = true;
-//        }
-//    }
-//
-//    private boolean isNetWorkConnected = false;
 
 }
