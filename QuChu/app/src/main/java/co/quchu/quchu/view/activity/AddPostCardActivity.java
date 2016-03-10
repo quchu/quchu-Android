@@ -26,6 +26,7 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,6 +49,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -164,7 +166,8 @@ public class AddPostCardActivity extends BaseActivity {
         defaulModel = (PostCardItemModel) getIntent().getSerializableExtra("pCardModel");
         pName = getIntent().getStringExtra("pName");
         pId = getIntent().getIntExtra("pId", 2);
-        if (null!=defaulModel){
+
+        if (null!=defaulModel && pId!=-1){
             fillUI();
         }else{
             getFromSetver(pId);
@@ -172,7 +175,6 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
     private void fillUI(){
-        if (defaulModel != null) {
             Bimp.imglist = defaulModel.getImglist();
             addPostcardSuggestPrb.setRating(defaulModel.getScore());
             addPostcardAboutPlaceTv.setText(defaulModel.getComment());
@@ -184,17 +186,18 @@ public class AddPostCardActivity extends BaseActivity {
                 editTextDefaultText = prbHintText[(int) (defaulModel.getScore() + 0.5f)];
                 addPostcardSuggestTv.setText(prbHintText[(int) (defaulModel.getScore() + 0.5f)]);
             }
-        }
     }
 
     private void getFromSetver(int pid){
+        if (-1==pId){
+            return;
+        }
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
         PostCardPresenter.getPostCardByPid(this, pid, new PostCardPresenter.MyPostCardItemListener() {
             @Override
             public void onSuccess(PostCardItemModel model) {
-                defaulModel = model;
-                if (null!=defaulModel){
-                    Log.d("ISNULL",""+(null==defaulModel));
+                if (null!=model){
+                    defaulModel = model;
                     fillUI();
                 }
                 DialogUtil.dismissProgess();
@@ -202,6 +205,10 @@ public class AddPostCardActivity extends BaseActivity {
 
             @Override
             public void onError(String error) {
+                if (null!=error){
+                    Toast.makeText(getApplicationContext(),error,Toast.LENGTH_SHORT).show();
+                }
+
                 DialogUtil.dismissProgess();
             }
         });
@@ -386,6 +393,7 @@ public class AddPostCardActivity extends BaseActivity {
             @Override
             public void onSuccess(PostCardModel model) {
                 //   if (Bimp.delImageIdList.size() == 0) {
+                EventBus.getDefault().post(new QuchuEventModel(QuchuDetailsActivity.EVENT_KEY_DATA_MODEL_UPDATED,defaulModel));
                 AppContext.gatherList.add(new GatherRateModel(pId + "", addPostcardSuggestPrb.getRating()));
                 DialogUtil.dismissProgessDirectly();
                 if (Bimp.imglist.size() > 0) {
