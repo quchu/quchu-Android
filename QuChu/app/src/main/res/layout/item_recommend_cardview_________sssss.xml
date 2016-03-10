@@ -18,7 +18,7 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/item_recommend_card_title_textrl"
+            android:id="@+id/animation1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -47,7 +47,7 @@
             android:id="@+id/item_recommend_card_photo_sdv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_recommend_card_title_textrl"
+            android:layout_below="@id/animation1"
             card_view:actualImageScaleType="centerCrop" />
 
         <co.quchu.quchu.widget.ratingbar.ProperRatingBar

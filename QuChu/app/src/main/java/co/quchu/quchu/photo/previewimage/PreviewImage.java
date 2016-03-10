@@ -17,7 +17,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.cache.common.CacheKey;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.facebook.imagepipeline.request.Postprocessor;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringConfig;
 import com.facebook.rebound.SpringListener;
@@ -26,21 +33,15 @@ import com.facebook.rebound.SpringUtil;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import co.quchu.galleryfinal.ImageLoader;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
@@ -75,8 +76,8 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
     private ViewPager viewpager;
     private ArrayList<PostCardImageListModel> ImgList;
 
-    private DisplayImageOptions options;
-    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+    //    private DisplayImageOptions options;
+//    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private SamplePagerAdapter pagerAdapter;
     private final Spring mSpring = SpringSystem
             .create()
@@ -175,7 +176,8 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
             return;
         }
         PostCardImageListModel info = ImgList.get(arg0);
-        ImageLoaders.setsendimg(info.getPath(), showimg);
+//        ImageLoaders.setsendimg(info.getPath(), showimg);
+        showimg.setImageURI(Uri.parse(info.getPath()));
         if (type == 1) {
             int move_index = arg0 - index;
             to_y = move_index * moveheight;
@@ -215,10 +217,36 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
 
         @Override
         public View instantiateItem(ViewGroup container, int position) {
-            PhotoView photoView = new PhotoView(container.getContext());
+            final PhotoView photoView = new PhotoView(container.getContext());
             String path = ImgList.get(position).getPath();
-            ImageLoader.getInstance().displayImage(path, photoView, options,
-                    animateFirstListener);
+
+//            ImageLoader.getInstance().displayImage(path, photoView, options,
+//                    animateFirstListener);
+
+            ImageRequest request = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse(path))
+                    .setImageType(ImageRequest.ImageType.SMALL)
+                    .setPostprocessor(new Postprocessor() {
+                        @Override
+                        public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
+                            photoView.setImageBitmap(sourceBitmap);
+                            return null;
+                        }
+
+                        @Override
+                        public String getName() {
+                            return null;
+                        }
+
+                        @Override
+                        public CacheKey getPostprocessorCacheKey() {
+                            return null;
+                        }
+                    })
+                    .build();
+            Fresco.getImagePipeline().fetchImageFromBitmapCache(request, PreviewImage.this);
+
+
             // Now just add PhotoView to ViewPager and return it
             photoView.setOnViewTapListener(new OnViewTapListener() {
 
@@ -253,26 +281,27 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
         }
     }
 
-    private class AnimateFirstDisplayListener extends
-            SimpleImageLoadingListener {
 
-        final List<String> displayedImages = Collections
-                .synchronizedList(new LinkedList<String>());
-
-        @Override
-        public void onLoadingComplete(String imageUri, View view,
-                                      Bitmap loadedImage) {
-            if (loadedImage != null) {
-                ImageView imageView = (ImageView) view;
-                imageView.setImageBitmap(loadedImage);
-                boolean firstDisplay = !displayedImages.contains(imageUri);
-                if (firstDisplay) {
-//					FadeInBitmapDisplayer.animate(imageView, 500);
-                    displayedImages.add(imageUri);
-                }
-            }
-        }
-    }
+//    private class AnimateFirstDisplayListener extends
+//            SimpleImageLoadingListener {
+//
+//        final List<String> displayedImages = Collections
+//                .synchronizedList(new LinkedList<String>());
+//
+//        @Override
+//        public void onLoadingComplete(String imageUri, View view,
+//                                      Bitmap loadedImage) {
+//            if (loadedImage != null) {
+//                ImageView imageView = (ImageView) view;
+//                imageView.setImageBitmap(loadedImage);
+//                boolean firstDisplay = !displayedImages.contains(imageUri);
+//                if (firstDisplay) {
+////					FadeInBitmapDisplayer.animate(imageView, 500);
+//                    displayedImages.add(imageUri);
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -293,12 +322,14 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
         finish();
     }
 
-    protected ImageView showimg;
+    protected SimpleDraweeView showimg;
 
     protected void getValue() {
-        showimg = new ImageView(this);
+        showimg = new SimpleDraweeView(this);
         showimg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        ImageLoaders.setsendimg(imageInfo.getPath(), showimg);
+//        ImageLoaders.setsendimg(imageInfo.getPath(), showimg);
+        showimg.setImageURI(Uri.parse(imageInfo.getPath()));
+
         img_w = bdInfo.width;
         img_h = bdInfo.height;
         size = AppContext.Width / img_w;

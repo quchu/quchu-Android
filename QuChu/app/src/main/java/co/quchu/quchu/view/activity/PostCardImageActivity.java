@@ -36,7 +36,7 @@ public class PostCardImageActivity extends BaseActivity {
 
     @Bind(R.id.postcard_detail_finish_tv)
     TextView postcardDetailFinishTv;
-    @Bind(R.id.item_recommend_card_title_textrl)
+    @Bind(R.id.animation1)
     RelativeLayout itemRecommendCardTitleTextrl;
     @Bind(R.id.add_postcard_image_igv)
     GridView addPostcardImageIgv;
