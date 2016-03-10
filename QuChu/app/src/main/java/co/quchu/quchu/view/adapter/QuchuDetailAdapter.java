@@ -152,6 +152,8 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 ((SimpleInfoViewHolder) holder).detail_avg_price_tv.setVisibility(View.INVISIBLE);
             }
+
+            ((SimpleInfoViewHolder) holder).TagCloudView.setVisibility(View.VISIBLE);
             if (null != mData.getTags() && mData.getTags().size() > 0) {
                 ArrayList<String> tags = new ArrayList<>();
                 for (int i = 0; i < mData.getTags().size(); i++) {
@@ -262,7 +264,11 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     String strUri = mData.getImglist().get(imgIndex).getImgpath();
                     ((ImageViewHolder) holder).item_card_image_sdv.setImageURI(Uri.parse(strUri));
 
-                    ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio((float) mData.getImglist().get(imgIndex).getWidth() / (float) mData.getImglist().get(imgIndex).getHeight());
+                    if(0==mData.getImglist().get(imgIndex).getWidth()||0==mData.getImglist().get(imgIndex).getHeight()){
+                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
+                    }else{
+                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio((float) mData.getImglist().get(imgIndex).getWidth() / (float) mData.getImglist().get(imgIndex).getHeight());
+                    }
                 }
             } else {
                 ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);

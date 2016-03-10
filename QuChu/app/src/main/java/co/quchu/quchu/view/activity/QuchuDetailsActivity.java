@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -29,6 +33,8 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
@@ -64,6 +70,9 @@ public class QuchuDetailsActivity extends BaseActivity {
     private GatherViewModel gatherViewModel;
     private long startViewTime = 0L;
     private QuchuDetailAdapter mQuchuDetailAdapter;
+    public static final int EVENT_KEY_DATA_MODEL_UPDATED = 0x0001;
+
+    int detailButtonGroupLlHeight = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +90,21 @@ public class QuchuDetailsActivity extends BaseActivity {
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mQuchuDetailAdapter);
+        detailButtonGroupLlHeight = (int) ((AppContext.Width-StringUtils.dip2px(this,28))/1.2f+StringUtils.dip2px(this,16));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int scrollTotal = 0;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                scrollTotal += dy;
+                if (scrollTotal!=0&&detailButtonGroupLlHeight<=scrollTotal){
+                    detailButtonGroupOutLl.setVisibility(View.VISIBLE);
+                } else {
+                    detailButtonGroupOutLl.setVisibility(View.GONE);
+                }
+            }
+        });
         startViewTime = System.currentTimeMillis();
     }
 
@@ -105,7 +129,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
     private void bindingDetailData() {
-        changeBottomBeenBg(dModel.isIsout());
+        changeBottomBeenBg(dModel.getMyCardId()>0);
         changeCollectState(dModel.isIsf());
 
     }
@@ -133,7 +157,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.detail_want_tv,R.id.detail_been_tv})
+    @OnClick({R.id.detail_want_tv,R.id.detail_been_tv,R.id.detail_button_collect_out_rl,R.id.detail_button_share_out_rl,R.id.detail_button_add_postcard_out_rl})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -185,8 +209,12 @@ public class QuchuDetailsActivity extends BaseActivity {
                 case R.id.detail_button_share_out_rl:
                 case R.id.detail_button_share_rl:
                     //分享
-                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
-                    shareDialogFg.show(getFragmentManager(), "share_dialog");
+                    try{
+                        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
+                        shareDialogFg.show(getFragmentManager(), "share_dialog");
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
                     break;
 
                 case R.id.detail_store_address_ll:
@@ -224,18 +252,18 @@ public class QuchuDetailsActivity extends BaseActivity {
             //Create new one
         }
         startActivity(intent);
-        InterestingDetailPresenter.getUserOutPlace(this, pId, dModel.isIsout(), new InterestingDetailPresenter.DetailDataListener() {
-            @Override
-            public void onSuccessCall(String str) {
-                dModel.setIsout(!dModel.isIsout());
-                changeBottomBeenBg(dModel.isIsout());
-            }
-
-            @Override
-            public void onErrorCall(String str) {
-
-            }
-        });
+//        InterestingDetailPresenter.getUserOutPlace(this, pId, dModel.isIsout(), new InterestingDetailPresenter.DetailDataListener() {
+//            @Override
+//            public void onSuccessCall(String str) {
+//                dModel.setIsout(!dModel.isIsout());
+//                changeBottomBeenBg(dModel.isIsout());
+//            }
+//
+//            @Override
+//            public void onErrorCall(String str) {
+//
+//            }
+//        });
     }
 
     /**
@@ -331,5 +359,29 @@ public class QuchuDetailsActivity extends BaseActivity {
 
         MobclickAgent.onPageEnd("PlaceDetailActivity");
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event){
+
+        if (event.getFlag()==EVENT_KEY_DATA_MODEL_UPDATED && null!= dModel){
+            if (((PostCardItemModel)event.getContent()).getPlaceId()==dModel.getPid()){
+                Log.d("WTF key",((PostCardItemModel)event.getContent()).getPlaceId()+"|"+dModel.getPid());
+                dModel.setMyCardId(((PostCardItemModel)event.getContent()).getCardId());
+                changeBottomBeenBg(true);
+            }
+        }
     }
 }

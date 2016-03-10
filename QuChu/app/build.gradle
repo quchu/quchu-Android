@@ -83,8 +83,8 @@ dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':galleryfinal')
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:cardview-v7:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:design:23.2.0'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.github.orhanobut:logger:1.12'
@@ -96,7 +96,8 @@ dependencies {
     //七牛
     compile 'com.facebook.rebound:rebound:0.3.8'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
-//    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.+'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.+'
+    compile 'org.greenrobot:eventbus:3.0.0'
 //    compile 'com.squareup.leakcanary:leakcanary-android:1.3.1' // or 1.4-beta1
 //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     compile files('libs/weibosdkcore.jar')
@@ -107,7 +108,8 @@ dependencies {
     compile files('libs/AMap_Location_v2.3.0_20160112.jar')
     compile files('libs/Android_Map_V2.7.20151124.jar')
     compile files('libs/umeng-analytics-v5.6.4.jar')
-    compile 'com.android.support:recyclerview-v7:23.2.0'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.google.code.gson:gson:2.6'
+    compile 'com.facebook.fresco:webpsupport:0.9.0+'
 }

@@ -67,6 +67,8 @@ public class PostCardPresenter {
                         Gson gson = new Gson();
                         PostCardItemModel model = gson.fromJson(response.toString(), PostCardItemModel.class);
                         listener.onSuccess(model);
+                    }else{
+                        listener.onError(null);
                     }
                 }
             }
