@@ -553,7 +553,10 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((NearbyItemViewHolder) holder).ivImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mAnchorActivity.startActivity(new Intent(mAnchorActivity, QuchuDetailsActivity.class).putExtra("pId", mData.get(position).getPid()));
+                        if (!KeyboardUtils.isFastDoubleClick()){
+                            mAnchorActivity.startActivity(new Intent(mAnchorActivity, QuchuDetailsActivity.class).putExtra("pId", mData.get(position).getPid()));
+                        }
+
                     }
                 });
             }

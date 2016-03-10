@@ -69,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/title_bar"
         android:orientation="vertical"
+        android:background="@color/appBackground"
         android:visibility="visible">
 
         <LinearLayout
@@ -79,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/detail_button_group_height"
                 android:layout_gravity="center_vertical"
+                android:layout_marginTop="2px"
                 android:layout_marginBottom="@dimen/quarter_margin"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/detail_marginright"
