@@ -82,7 +82,6 @@
                 android:layout_marginBottom="@dimen/quarter_margin"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/detail_marginright"
-                android:layout_marginTop="@dimen/half_margin"
                 android:background="@drawable/ic_card_shadow_bg"
                 android:orientation="horizontal">
 

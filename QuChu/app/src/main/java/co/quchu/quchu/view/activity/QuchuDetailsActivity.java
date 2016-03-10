@@ -90,7 +90,10 @@ public class QuchuDetailsActivity extends BaseActivity {
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mQuchuDetailAdapter);
-        detailButtonGroupLlHeight = (int) ((AppContext.Width-StringUtils.dip2px(this,28))/1.2f+StringUtils.dip2px(this,16));
+        /**
+         *buttonGroup 控件位置计算 =图片高度+图片marginTop值16+图片上下view 高度8（各4）+ buttonGroup 的marginTop值８+阴影高度２
+         */
+        detailButtonGroupLlHeight = (int) ((AppContext.Width-StringUtils.dip2px(this,28))/1.2f+StringUtils.dip2px(this,34));
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             private int scrollTotal = 0;
 
