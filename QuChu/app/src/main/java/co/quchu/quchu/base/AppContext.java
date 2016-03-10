@@ -11,10 +11,6 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.google.gson.Gson;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -47,6 +43,7 @@ public class AppContext extends Application {
     public static boolean dCardListNeedUpdate = false;
 
     private RefWatcher refWatcher;
+
     public static RefWatcher getRefWatcher(Context context) {
         AppContext application = (AppContext) context.getApplicationContext();
         return application.refWatcher;
@@ -74,7 +71,7 @@ public class AppContext extends Application {
             }
         }
         gatherList = new ArrayList<>();
-        initImageLoader();
+//        initImageLoader();
         initWidths();
     }
 
@@ -85,21 +82,21 @@ public class AppContext extends Application {
         Height = dm.heightPixels;
     }
 
-    private void initImageLoader() {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                mContext).threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .memoryCacheSize(2 * 1024 * 1024) //缓存到内存的最大数据
-                .memoryCacheSize(50 * 1024 * 1024) //设置内存缓存的大小
-                .diskCacheFileCount(200)
-                .writeDebugLogs() // Remove for release app
-                .build();
-        // Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(config);
-        //    SPUtils.initGuideIndex();
-    }
+//    private void initImageLoader() {
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//                mContext).threadPriority(Thread.NORM_PRIORITY - 2)
+//                .denyCacheImageMultipleSizesInMemory()
+//                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+//                .tasksProcessingOrder(QueueProcessingType.LIFO)
+//                .memoryCacheSize(2 * 1024 * 1024) //缓存到内存的最大数据
+//                .memoryCacheSize(50 * 1024 * 1024) //设置内存缓存的大小
+//                .diskCacheFileCount(200)
+//                .writeDebugLogs() // Remove for release app
+//                .build();
+//        // Initialize ImageLoader with configuration.
+//        ImageLoader.getInstance().init(config);
+//        //    SPUtils.initGuideIndex();
+//    }
 
     @Override
     public void onTerminate() {
@@ -108,7 +105,7 @@ public class AppContext extends Application {
             mLocationClient.onDestroy();
             mLocationClient = null;
         }
-     //   System.exit(0);
+        //   System.exit(0);
     }
 
     //声明AMapLocationClient类对象

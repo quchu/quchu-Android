@@ -1,7 +1,10 @@
 package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Animatable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +13,23 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.DraweeHolder;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.image.CloseableStaticBitmap;
+import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.util.List;
 
@@ -33,15 +51,15 @@ public class AddPostCardGridAdapter extends BaseAdapter {
     private Activity mContext;
     List<PhotoInfo> mPhotoList;
     private FrescoImageLoader imageLoader;
-    DisplayImageOptions options;
+//    DisplayImageOptions options;
 
     public AddPostCardGridAdapter(Activity context, List<PhotoInfo> mPhotoList) {
         this.mContext = context;
         this.mPhotoList = mPhotoList;
-        options = new DisplayImageOptions.Builder()
-                .showImageOnFail(R.drawable.ic_gf_default_photo)
-                .showImageForEmptyUri(R.drawable.ic_gf_default_photo)
-                .showImageOnLoading(R.drawable.ic_gf_default_photo).build();
+//        options = new DisplayImageOptions.Builder()
+//                .showImageOnFail(R.drawable.ic_gf_default_photo)
+//                .showImageForEmptyUri(R.drawable.ic_gf_default_photo)
+//                .showImageOnLoading(R.drawable.ic_gf_default_photo).build();
     }
 
     @Override
@@ -81,7 +99,11 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                 if (Bimp.imglist.size() > 0) {
                     if (position <= Bimp.imglist.size()) {
                         //    holder.itemAddpostcardSdv.setImageURI(Uri.parse(Bimp.imglist.get(position - 1).getPath()));
-                        ImageLoader.getInstance().displayImage(Bimp.imglist.get(position - 1).getPath(), holder.itemAddpostcardSdv, options);
+//                        ImageLoader.getInstance().displayImage(Bimp.imglist.get(position - 1).getPath(), holder.itemAddpostcardSdv, options);
+
+                        ShowImage(Bimp.imglist.get(position - 1).getPath(), holder.itemAddpostcardSdv);
+
+
                         //   imageLoader.displayImage(mContext, Bimp.imglist.get(position - 1).getPath()), holder.itemAddpostcardSdv, null, mRowWidth, mRowWidth);
                         holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
                         //     holder.itemAddpostcardSdv.setAspectRatio(1f);
@@ -89,7 +111,10 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                         if (mPhotoList.size() > 0) {
                             if ((position - Bimp.imglist.size()) <= mPhotoList.size()) {
                                 //        holder.itemAddpostcardSdv.setImageURI(Uri.parse("file://" + mPhotoList.get(position - Bimp.imglist.size() - 1).getPhotoPath()));
-                                ImageLoader.getInstance().displayImage("file:/" + mPhotoList.get(position - Bimp.imglist.size() - 1).getPhotoPath(), holder.itemAddpostcardSdv, options);
+//                                ImageLoader.getInstance().displayImage("file:/" + mPhotoList.get(position - Bimp.imglist.size() - 1).getPhotoPath(), holder.itemAddpostcardSdv, options);
+
+                                ShowImage("file://" + mPhotoList.get(position - Bimp.imglist.size() - 1).getPhotoPath(), holder.itemAddpostcardSdv);
+
                                 holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
                                 //       holder.itemAddpostcardSdv.setAspectRatio(1f);
                             }
@@ -98,7 +123,11 @@ public class AddPostCardGridAdapter extends BaseAdapter {
                 } else {
                     if (mPhotoList.size() > 0) {
                         //     holder.itemAddpostcardSdv.setImageURI(Uri.parse("file://" + ));
-                        ImageLoader.getInstance().displayImage("file:/" + mPhotoList.get(position - Bimp.imglist.size() - 1).getPhotoPath(), holder.itemAddpostcardSdv, options);
+//                        ImageLoader.getInstance().displayImage("file:/" + mPhotoList.get(position - Bimp.imglist.size() - 1).getPhotoPath(), holder.itemAddpostcardSdv, options);
+
+                        ShowImage("file://" + mPhotoList.get(position - Bimp.imglist.size() - 1).getPhotoPath(), holder.itemAddpostcardSdv);
+
+
                         holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
                         //     holder.itemAddpostcardSdv.setAspectRatio(1f);
                     }
@@ -124,13 +153,18 @@ public class AddPostCardGridAdapter extends BaseAdapter {
             if (Bimp.imglist.size() > 0) {
                 if (position < Bimp.imglist.size()) {
                     //     holder.itemAddpostcardSdv.setImageURI(Uri.parse(Bimp.imglist.get(position).getPath()));
-                    ImageLoader.getInstance().displayImage(Bimp.imglist.get(position).getPath(), holder.itemAddpostcardSdv, options);
+//                    ImageLoader.getInstance().displayImage(Bimp.imglist.get(position).getPath(), holder.itemAddpostcardSdv, options);
+
+                    ShowImage(Bimp.imglist.get(position).getPath(), holder.itemAddpostcardSdv);
+
                     holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
                     //   holder.itemAddpostcardSdv.setAspectRatio(1f);
                 } else {
                     if (mPhotoList.size() > 0) {
                         //        holder.itemAddpostcardSdv.setImageURI(Uri.parse("file://" + mPhotoList.get(position - Bimp.imglist.size()).getPhotoPath()));
-                        ImageLoader.getInstance().displayImage("file:/" + mPhotoList.get(position - Bimp.imglist.size()).getPhotoPath(), holder.itemAddpostcardSdv, options);
+//                        ImageLoader.getInstance().displayImage("file:/" + mPhotoList.get(position - Bimp.imglist.size()).getPhotoPath(), holder.itemAddpostcardSdv, options);
+                        ShowImage("file://" + mPhotoList.get(position - Bimp.imglist.size()).getPhotoPath(), holder.itemAddpostcardSdv);
+
                         holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
                         //   holder.itemAddpostcardSdv.setAspectRatio(1f);
                     }
@@ -138,7 +172,9 @@ public class AddPostCardGridAdapter extends BaseAdapter {
             } else {
                 if (mPhotoList.size() > 0) {
                     //   holder.itemAddpostcardSdv.setImageURI(Uri.parse("file://" + mPhotoList.get(position - Bimp.imglist.size()).getPhotoPath()));
-                    ImageLoader.getInstance().displayImage("file:/" + mPhotoList.get(position - Bimp.imglist.size()).getPhotoPath(), holder.itemAddpostcardSdv, options);
+//                    ImageLoader.getInstance().displayImage("file:/" + mPhotoList.get(position - Bimp.imglist.size()).getPhotoPath(), holder.itemAddpostcardSdv, options);
+
+                    ShowImage("file://" + mPhotoList.get(position - Bimp.imglist.size()).getPhotoPath(), holder.itemAddpostcardSdv);
                     holder.itemAddpostcardDelIv.setVisibility(View.VISIBLE);
 
                     // holder.itemAddpostcardSdv.setAspectRatio(1f);
@@ -219,7 +255,7 @@ public class AddPostCardGridAdapter extends BaseAdapter {
   */
     class ViewHolder {
         @Bind(R.id.item_addpostcard_sdv)
-        ImageView itemAddpostcardSdv;
+        SimpleDraweeView itemAddpostcardSdv;
         @Bind(R.id.item_addpostcard_del_iv)
         ImageView itemAddpostcardDelIv;
         @Bind(R.id.item_addpostcard_root_rl)
@@ -231,48 +267,56 @@ public class AddPostCardGridAdapter extends BaseAdapter {
         }
     }
 
-  /*  Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    notifyDataSetChanged();
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-    };*/
+    private void ShowImage(String uri, final SimpleDraweeView view) {
 
-  /*  public void loading() {
-        new Thread(new Runnable() {
-            public void run() {
-                while (true) {
-                    if (Bimp.max == Bimp.drr.size()) {
-                        Message message = new Message();
-                        message.what = 1;
-                        handler.sendMessage(message);
-                        break;
-                    } else {
-                        try {
-                            if (Bimp.max <= Bimp.drr.size()) {
-                                LogUtils.json("Bimp.max=" + Bimp.max + "///drrSize=" + Bimp.drr.size());
-                                String path = Bimp.drr.get(Bimp.max);
-                                Bitmap bm = Bimp.revitionImageSize(path);
-                                Bimp.bmp.add(bm);
-                                String newStr = path.substring(
-                                        path.lastIndexOf("/") + 1,
-                                        path.lastIndexOf("."));
-                                FileUtils.saveBitmap(bm, "" + newStr);
-                                Bimp.max += 1;
-                                Message message = new Message();
-                                message.what = 1;
-                                handler.sendMessage(message);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }).start();
-    }*/
+//        if (uri.contains("http://")) {
+//            view.setImageURI(Uri.parse(uri));
+//            return;
+//        }
+
+//        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(view.getResources())
+//                .setFadeDuration(300)
+//                .setProgressBarImage(new ProgressBarDrawable())
+//                .build();
+//        final DraweeHolder<GenericDraweeHierarchy> draweeHolder = DraweeHolder.create(hierarchy, view.getContext());
+
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse(uri))
+                .setResizeOptions(new ResizeOptions(150, 150))//图片目标大小
+                .build();
+//        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+//
+//        final DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, this);
+
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setOldController(view.getController())
+                .setImageRequest(imageRequest)
+                .build();
+        view.setController(controller);
+//                .setControllerListener(new BaseControllerListener<ImageInfo>() {
+//                    @Override
+//                    public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
+//                        CloseableReference<CloseableImage> imageReference = null;
+//                        try {
+//                            imageReference = dataSource.getResult();
+//                            if (imageReference != null) {
+//                                CloseableImage image = imageReference.get();
+//                                if (image != null && image instanceof CloseableStaticBitmap) {
+//                                    CloseableStaticBitmap closeableStaticBitmap = (CloseableStaticBitmap) image;
+//                                    Bitmap bitmap = closeableStaticBitmap.getUnderlyingBitmap();
+//                                    if (bitmap != null && view != null) {
+//                                        view.setImageBitmap(bitmap);
+//                                    }
+//                                }
+//                            }
+//                        } finally {
+//                            dataSource.close();
+//                            CloseableReference.closeSafely(imageReference);
+//                        }
+//                    }
+//                })
+//                .setTapToRetryEnabled(true)
+//                .build();
+//        draweeHolder.setController(controller);
+    }
 }
