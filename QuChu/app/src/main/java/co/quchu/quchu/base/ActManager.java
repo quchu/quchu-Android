@@ -1,8 +1,11 @@
 package co.quchu.quchu.base;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import java.util.LinkedList;
+
+import co.quchu.quchu.view.activity.MenusActivity;
 
 //import com.orhanobut.logger.Logger;
 
@@ -127,7 +130,7 @@ public class ActManager {
         try {
             //finish
             finishAllActivity();
-       //    System.exit(0);
+            //    System.exit(0);
             //取消消息
 //			NotificationManager mNotificationManager = (NotificationManager)AppContext.mContext.getSystemService(Context.NOTIFICATION_SERVICE) ;
 //			mNotificationManager.cancelAll();
@@ -141,4 +144,33 @@ public class ActManager {
             return activityStack.size() > 0;
         else return false;
     }
+
+    /**
+     * 清楚 menusactivity 之后入栈
+     */
+    public void Back2MenusAct() {
+        int size = activityStack.size() - 1;
+        boolean isMenu = false;
+        for (Activity activity : activityStack) {
+            if (isMenu) {
+                activity.finish();
+            }
+            if (activity instanceof MenusActivity) {
+                isMenu = true;
+            }
+        }
+
+        if (!isMenu) {
+            currentActivity().startActivity(new Intent(currentActivity(), MenusActivity.class));
+        }
+    }
+    /**
+     * 结束所有Activity，但保留最后一个
+     */
+   /* public void KeepMenus() {
+        for (int i = 1, size = activityStack.size() - 2; i < size; i++) {
+            activityStack.get(0).finish();
+            activityStack.remove(0);
+        }
+    }*/
 }

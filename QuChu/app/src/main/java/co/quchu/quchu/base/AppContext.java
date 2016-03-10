@@ -11,8 +11,6 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.google.gson.Gson;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 
@@ -42,18 +40,18 @@ public class AppContext extends Application {
     public static RecommendModel selectedPlace; //推荐分类 数据源
     public static boolean dCardListNeedUpdate = false;
 
-    private RefWatcher refWatcher;
-
-    public static RefWatcher getRefWatcher(Context context) {
-        AppContext application = (AppContext) context.getApplicationContext();
-        return application.refWatcher;
-    }
+//    private RefWatcher refWatcher;
+//
+//    public static RefWatcher getRefWatcher(Context context) {
+//        AppContext application = (AppContext) context.getApplicationContext();
+//        return application.refWatcher;
+//    }
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        refWatcher = LeakCanary.install(this);
+        //refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
    /*     AnalyticsConfig.setChannel("quchu_360");
         LogUtils.json("userinfo=" + SPUtils.getUserInfo(mContext));

@@ -67,6 +67,7 @@ public class DetailModel {
     private int autorId;
     private int height;
     private float suggest;
+    private int myCardId;                   //明信片ID -1为未创建明信片
     /**
      * key : 美食
      * value : 79
@@ -128,6 +129,7 @@ public class DetailModel {
         setAutorId(objTarget.getAutorId());
         setHeight(objTarget.getHeight());
         setSuggest(objTarget.getSuggest());
+        setMyCardId(objTarget.getMyCardId());
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;
 
@@ -539,5 +541,14 @@ public class DetailModel {
         public void setPid(int pid) {
             this.pid = pid;
         }
+
+    }
+
+    public int getMyCardId() {
+        return myCardId;
+    }
+
+    public void setMyCardId(int myCardId) {
+        this.myCardId = myCardId;
     }
 }

@@ -46,6 +46,7 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
     public static final int QAVATAR = 0x03; //头像 趣星球
     public static final int QACCOUNTSETTING = 0x04; //账户设置
     public static final int QMESSAGECENTER = 0x05; // 消息中心
+    public static final int QBEEN = 0x06;//quguo
 
     /**
      * Retrieve a new instance of the sample fragment.
@@ -106,6 +107,10 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
                 break;
             case QMESSAGECENTER:
                 dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入消息中心")));
+                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.gene_textcolor_yellow);
+                break;
+            case QBEEN:
+                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "明信片操作")));
                 StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.gene_textcolor_yellow);
                 break;
         }

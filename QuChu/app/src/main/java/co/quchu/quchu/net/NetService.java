@@ -2,6 +2,7 @@ package co.quchu.quchu.net;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -133,7 +134,13 @@ public class NetService {
 //                    dialog.dismiss();
 //                }
                 boolean result = false;
-                LogUtils.json("NetService==" + response.toString());
+
+                if (response.toString().length() > 4000) {
+                    LogUtils.jsonLong("NetService==",response.toString());
+                } else {
+                    LogUtils.json("NetService==" + response.toString());
+                }
+
                 if (response.has("access_token") && response.has("openid")) {
                     pListener.onSuccess(response);
                 } else if (response.has("result")) {

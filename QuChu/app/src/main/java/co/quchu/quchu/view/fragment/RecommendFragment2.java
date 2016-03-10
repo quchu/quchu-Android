@@ -29,7 +29,7 @@ import com.facebook.imagepipeline.request.Postprocessor;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -469,7 +469,5 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
             sourceBitmap.recycle();
         if (sourceBitmap != null)
             sourceBitmap = null;
-        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
-        refWatcher.watch(this);
     }
 }

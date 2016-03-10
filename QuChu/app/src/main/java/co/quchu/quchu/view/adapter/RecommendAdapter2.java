@@ -105,7 +105,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
                     DynamicDrawableSpan.ALIGN_BOTTOM) {
                 @Override
                 public Drawable getDrawable() {
-                    Drawable d = mContext.getResources().getDrawable(R.drawable.recommend_actiion_tag);
+                    Drawable d = mContext.getResources().getDrawable(R.drawable.ic_span_been);
                     d.setBounds(StringUtils.dip2px(8), -StringUtils.dip2px(16), StringUtils.dip2px(40), 0);
                     return d;
                 }
