@@ -87,9 +87,9 @@ public class ActManager {
      * 结束所有Activity，但保留最后一个
      */
     public void finishActivitiesAndKeepLastOne() {
-        for (int i = 1, size = activityStack.size() - 1; i < size; i++) {
-            activityStack.get(0).finish();
-            activityStack.remove(0);
+        for (int i = 1, size = activityStack.size() ; i < size; i++) {
+            activityStack.get(1).finish();
+            activityStack.remove(1);
         }
     }
 
