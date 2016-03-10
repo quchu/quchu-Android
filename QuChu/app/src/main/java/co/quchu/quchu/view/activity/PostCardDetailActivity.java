@@ -41,7 +41,7 @@ public class PostCardDetailActivity extends BaseActivity {
     TextView postcardDetailDelTv;
     @Bind(R.id.postcard_detail_finish_tv)
     TextView postcardDetailFinishTv;
-    @Bind(R.id.item_recommend_card_title_textrl)
+    @Bind(R.id.animation1)
     RelativeLayout itemRecommendCardTitleTextrl;
     @Bind(R.id.postcard_detail_photo_sdv)
     SimpleDraweeView postcardDetailPhotoSdv;

@@ -20,7 +20,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/item_recommend_card_title_textrl"
+            android:id="@+id/animation1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -55,7 +55,7 @@
             android:id="@+id/item_recommend_card_photo_sdv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_below="@id/item_recommend_card_title_textrl"
+            android:layout_below="@id/animation1"
             android:layout_weight="1"
             card_view:actualImageScaleType="centerCrop" />
 

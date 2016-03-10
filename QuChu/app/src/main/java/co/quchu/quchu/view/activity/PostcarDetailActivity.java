@@ -20,7 +20,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
@@ -94,6 +93,7 @@ public class PostcarDetailActivity extends AppCompatActivity {
         });
     }
 
+
     private void initPostCardDetailData() {
         if (item != null) {
             rootCv.setCardBackgroundColor(Color.parseColor("#" + item.getRgb()));
@@ -103,9 +103,9 @@ public class PostcarDetailActivity extends AppCompatActivity {
             itemMyPostcardCardCommentTv.setText(item.getComment());
             itemMyPostcardCardNicknameTv.setText(item.getAutor());
             itemMyPostcardCardTiemTv.setText(StringUtils.isEmpty(item.getTime()) ? "" : item.getTime().substring(0, 10));
-            itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
             itemRecommendCardPhotoSdv.setAspectRatio(1.3f);
             itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
+            itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
 
             itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(item.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
             if (item.issys()) {

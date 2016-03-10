@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,7 @@ public class MyCard extends Card {
     TextView itemRecommendCardNameTv;
     @Bind(R.id.item_recommend_card_city_tv)
     TextView itemRecommendCardCityTv;
-    @Bind(R.id.item_recommend_card_title_textrl)
+    @Bind(R.id.animation1)
     RelativeLayout itemRecommendCardTitleTextrl;
     @Bind(R.id.item_recommend_card_photo_sdv)
     SimpleDraweeView itemRecommendCardPhotoSdv;
@@ -137,11 +138,21 @@ public class MyCard extends Card {
 
                     // TODO: 2016/3/7
                     Intent intent = new Intent(v.getContext(), PostcarDetailActivity.class);
-                    intent.putExtra(PostcarDetailActivity.REQUEST_PARAMATER_ENTITY,item);
+                    intent.putExtra(PostcarDetailActivity.REQUEST_PARAMATER_ENTITY, item);
                     Bundle bundle = null;
+
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+                        Pair<View, String> pair = Pair.create(v.findViewById(R.id.animation1), "animation1");
+                        Pair<View, String> pair1 = Pair.create(v.findViewById(R.id.animation2), "animation2");
+                        Pair<View, String> pair2 = Pair.create(v.findViewById(R.id.animation3), "animation3");
+
+//                        bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                                (Activity) v.getContext(), v, PostcarDetailActivity.SHARE_ELEMENT_NAME).toBundle();
                         bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                (Activity) v.getContext(), v, PostcarDetailActivity.SHARE_ELEMENT_NAME).toBundle();
+                                (Activity) v.getContext(), pair, pair1, pair2).toBundle();
                     }
                     v.getContext().startActivity(intent, bundle);
 

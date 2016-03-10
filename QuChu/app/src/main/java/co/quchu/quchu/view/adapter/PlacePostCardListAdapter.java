@@ -129,7 +129,7 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
         TextView itemRecommendCardNameTv;
         @Bind(R.id.item_recommend_card_city_tv)
         TextView itemRecommendCardCityTv;
-        @Bind(R.id.item_recommend_card_title_textrl)
+        @Bind(R.id.animation1)
         RelativeLayout itemRecommendCardTitleTextrl;
         @Bind(R.id.item_recommend_card_photo_sdv)
         SimpleDraweeView itemRecommendCardPhotoSdv;

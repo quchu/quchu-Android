@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,7 +13,7 @@
         android:layout_margin="@dimen/base_margin"
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:transitionName="animation_1"
+
         card_view:cardCornerRadius="@dimen/card_view_radius_dp"
         card_view:cardElevation="@dimen/cardview_elevation"
         card_view:cardPreventCornerOverlap="false">
@@ -23,9 +24,10 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/item_recommend_card_title_textrl"
+                android:id="@+id/animation1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:transitionName="animation1">
 
                 <TextView
                     android:id="@+id/item_recommend_card_city_tv"
@@ -68,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/half_margin"
                     card_view:actualImageScaleType="centerCrop" />
+                <!--fresco:viewAspectRatio="1.33"-->
 
 
                 <TextView
@@ -87,11 +90,13 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/animation2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/half_margin"
                 android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginTop="@dimen/half_margin">
+                android:layout_marginTop="@dimen/half_margin"
+                android:transitionName="animation2">
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/item_my_postcard_avatar_sdv"
@@ -154,11 +159,13 @@
 
 
             <LinearLayout
+                android:id="@+id/animation3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="@dimen/half_margin"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:transitionName="animation3">
 
                 <RelativeLayout
                     android:id="@+id/item_my_postcard_heart_rl"
