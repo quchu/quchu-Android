@@ -83,8 +83,8 @@ dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':galleryfinal')
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:cardview-v7:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:design:23.2.0'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.github.orhanobut:logger:1.12'
@@ -107,7 +107,7 @@ dependencies {
     compile files('libs/AMap_Location_v2.3.0_20160112.jar')
     compile files('libs/Android_Map_V2.7.20151124.jar')
     compile files('libs/umeng-analytics-v5.6.4.jar')
-    compile 'com.android.support:recyclerview-v7:23.2.0'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.google.code.gson:gson:2.6'
 }
