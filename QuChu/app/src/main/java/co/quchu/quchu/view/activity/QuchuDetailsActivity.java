@@ -40,7 +40,7 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.adapter.QuchuDetailAdapter;
+import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
 
 
 /**
@@ -69,7 +69,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     public DetailModel dModel = new DetailModel();
     private GatherViewModel gatherViewModel;
     private long startViewTime = 0L;
-    private QuchuDetailAdapter mQuchuDetailAdapter;
+    private QuchuDetailsAdapter mQuchuDetailAdapter;
     public static final int EVENT_KEY_DATA_MODEL_UPDATED = 0x0001;
 
     int detailButtonGroupLlHeight = -1;
@@ -82,7 +82,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         initTitleBar();
         titleContentTv.setText(getTitle());
         initData();
-        mQuchuDetailAdapter = new QuchuDetailAdapter(this, dModel, new QuchuDetailAdapter.OnItemClickListener() {
+        mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, new QuchuDetailsAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v) {
                 detailClick(v);

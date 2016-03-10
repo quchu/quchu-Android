@@ -26,7 +26,7 @@
         android:layout_margin="@dimen/half_margin"
         android:fitsSystemWindows="true"
         android:orientation="vertical"
-        app:cardBackgroundColor="@color/lineBackground_gray"
+        app:cardBackgroundColor="@color/appBackground_dark"
         app:cardCornerRadius="4dp"
         app:cardPreventCornerOverlap="false">
 

@@ -18,6 +18,8 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 /**
  * Created by admin on 2016/3/7.
  */
-public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private LayoutInflater mLayoutInflater;
@@ -51,7 +53,7 @@ public class QuchuDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static OnItemClickListener mOnItemClickListener;
     public static final int BLOCK_INDEX = 8;
 
-    public QuchuDetailAdapter(Activity activity, DetailModel dModel, OnItemClickListener onClickListener) {
+    public QuchuDetailsAdapter(Activity activity, DetailModel dModel, OnItemClickListener onClickListener) {
         if (null == onClickListener) {
             throw new IllegalArgumentException("OnClickListener Cannot be null");
         }

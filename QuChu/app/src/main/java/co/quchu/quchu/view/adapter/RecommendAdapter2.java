@@ -70,8 +70,6 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         }
         holder.itemRecommendCardAddressTv.setText(model.getAddress());
         holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
-        holder.itemRecommendCardCollectIv.setImageResource(
-                model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect);
         holder.item_recommend_card_name_tv.setText(model.getName());
 
         List<RecommendModel.GenesEntity> genes = model.getGenes();
@@ -79,8 +77,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
         holder.tag2.setText(genes.get(1).getKey());
         holder.tag3.setText(genes.get(2).getKey());
 
-        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().
-                getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.drawable.ic_detail_collect_dark : R.drawable.ic_atmophere_unselected_dark));
 
         if (model.isout) {//用户去过该趣处
             //去过标签 start

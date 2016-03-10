@@ -190,7 +190,7 @@
                 android:layout_marginTop="@dimen/quarter_margin"
                 android:clickable="true"
                 android:padding="10dp"
-                android:src="@drawable/ic_atmophere_unselected" />
+                android:src="@drawable/ic_atmophere_unselected_dark" />
 
 
             <ImageView
@@ -204,7 +204,7 @@
                 android:layout_marginBottom="@dimen/quarter_margin"
                 android:layout_marginTop="@dimen/quarter_margin"
                 android:padding="10dp"
-                android:src="@drawable/ic_recommend_bc_right" />
+                android:src="@drawable/ic_recommend_bc_right_dark" />
 
 
             <ImageView
@@ -218,7 +218,7 @@
                 android:layout_marginBottom="@dimen/quarter_margin"
                 android:layout_marginTop="@dimen/quarter_margin"
                 android:padding="10dp"
-                android:src="@drawable/ic_atmosphere_more" />
+                android:src="@drawable/ic_atmosphere_more_dark" />
 
         </RelativeLayout>
 

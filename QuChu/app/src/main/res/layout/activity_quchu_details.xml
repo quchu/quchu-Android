@@ -2,18 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground">
+    android:background="@color/appBackground_dark">
 
     <include
         android:id="@+id/title_bar"
         layout="@layout/title_bar" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@+id/title_bar"
+        android:background="@drawable/shadow_bottom" />
 
     <LinearLayout
         android:id="@+id/detail_bottom_group_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/appBackground"
+        android:background="@color/appBackground_dark"
         android:orientation="horizontal">
 
         <TextView
@@ -51,6 +57,7 @@
 
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="@dimen/quarter_margin"
         android:id="@+id/detail_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -69,8 +76,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/title_bar"
         android:orientation="vertical"
-        android:background="@color/appBackground"
-        android:visibility="visible">
+        android:layout_marginTop="@dimen/quarter_margin"
+        android:background="@color/appBackground_dark"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
