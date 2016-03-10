@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import co.quchu.galleryfinal.ImageLoader;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
@@ -51,6 +50,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import uk.co.senab.photoview.PhotoView;
@@ -107,7 +107,6 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
         ButterKnife.bind(this);
         MainView = (RelativeLayout) findViewById(R.id.MainView);
         viewpager = (HackyViewPager) findViewById(R.id.bi_viewpager);
-
         Listener();
         InData();
         getValue();
@@ -206,6 +205,8 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
                 userguideImageLastindexFl.setVisibility(View.GONE);
             }
         }
+        showingIndex=arg0;
+        LogUtils.json("onPageSelected=" + showingIndex);
     }
 
     class SamplePagerAdapter extends PagerAdapter {
@@ -336,7 +337,7 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
         // Wait for layout.
         y_img_h = imageInfo.getHeight() * AppContext.Width / imageInfo.getWidth();
         size_h = y_img_h / img_h;
-        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams((int) bdInfo.width, (int) bdInfo.height);
+        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams((int) bdInfo.width, (int) (bdInfo.height));
         showimg.setLayoutParams(p);
         p.setMargins((int) bdInfo.x, (int) bdInfo.y, (int) (AppContext.Width - (bdInfo.x + bdInfo.width)), (int) (AppContext.Height - (bdInfo.y + bdInfo.height)));
         MainView.addView(showimg);

@@ -1,17 +1,20 @@
 package co.quchu.quchu.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FlickrModel;
+import co.quchu.quchu.photo.previewimage.PreviewImage;
 import co.quchu.quchu.view.adapter.FlickrGridAdapter;
 import co.quchu.quchu.widget.InnerGridView;
 
@@ -20,7 +23,7 @@ import co.quchu.quchu.widget.InnerGridView;
  * User: Chenhs
  * Date: 2015-11-18
  */
-public class FlickrGridFragment extends BaseFragment {
+public class FlickrGridFragment extends Fragment {
 
     @Bind(R.id.fragment_flickr_gv)
     InnerGridView fragmentFlickrGv;
@@ -45,6 +48,17 @@ public class FlickrGridFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         gridAdapter = new FlickrGridAdapter(getActivity(), images);
         fragmentFlickrGv.setAdapter(gridAdapter);
+        fragmentFlickrGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getActivity(), PreviewImage.class);
+              //  intent.putExtra("data", (Serializable) defaulModel);
+                intent.putExtra("index", position);
+                intent.putExtra("type", 2);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

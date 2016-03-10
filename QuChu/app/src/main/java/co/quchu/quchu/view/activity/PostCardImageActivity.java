@@ -66,9 +66,9 @@ public class PostCardImageActivity extends BaseActivity {
                 int a, b;
                 a = position / 4;
                 b = position % 4;
-                bdInfo.width = (AppContext.Width - (2 * StringUtils.dip2px(24)) - 4 * StringUtils.dip2px(2)) / 4;
+                bdInfo.width = (AppContext.Width - (2 * StringUtils.dip2px(34))) / 4;
                 bdInfo.height = bdInfo.width;
-                bdInfo.x = StringUtils.dip2px(8) + b * bdInfo.width + b * StringUtils.dip2px(4);
+                bdInfo.x = StringUtils.dip2px(32) + b * bdInfo.width + b * StringUtils.dip2px(4);
                 bdInfo.y = StringUtils.dip2px(1) + bdInfo.height * (a - firstVisiblePosition) + top + (a - firstVisiblePosition) * StringUtils.dip2px(2) + addPostcardImageIgv.getTop() - StringUtils.dip2px(1)
                         + StringUtils.dip2px(128);
 
