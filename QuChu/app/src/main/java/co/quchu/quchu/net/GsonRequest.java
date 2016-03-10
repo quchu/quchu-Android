@@ -123,7 +123,6 @@ public class GsonRequest<T> extends Request<T> {
                     } else {
                         t = (T) data;
                     }
-                    LogUtils.e("网络返回result为true");
                     if (t != null) {
                         return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
                     } else {

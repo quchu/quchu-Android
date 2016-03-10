@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,7 +39,7 @@ public class MessageCenterActivity extends BaseActivity {
     FrameLayout messageEmptyViewFl;
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
-    private ArrayList<MessageModel> messageList;
+    private List<MessageModel> messageList;
     private MessageCenterAdapter adapter;
 
     @Override
@@ -54,7 +55,7 @@ public class MessageCenterActivity extends BaseActivity {
         messagesRv.setAdapter(adapter);
         MessageCenterPresenter.getMessageList(this, new MessageCenterPresenter.MessageGetDataListener() {
             @Override
-            public void onSuccess(ArrayList<MessageModel> arrayList) {
+            public void onSuccess(List<MessageModel> arrayList) {
                 LogUtils.json("message size ==" + arrayList.size());
                 messageList = arrayList;
                 messagesSrl.setVisibility(View.VISIBLE);

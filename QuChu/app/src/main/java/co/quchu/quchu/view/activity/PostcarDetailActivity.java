@@ -20,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
@@ -32,7 +33,7 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
-public class PostcarDetailActivity extends AppCompatActivity {
+public class PostcarDetailActivity extends BaseActivity {
 
     public static final String REQUEST_PARAMATER_ENTITY = "entity";
     public static final String SHARE_ELEMENT_NAME = "animation_1";
@@ -222,5 +223,9 @@ public class PostcarDetailActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        finish();
+    }
 }

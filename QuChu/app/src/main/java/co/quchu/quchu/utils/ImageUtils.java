@@ -23,7 +23,7 @@ import co.quchu.quchu.blurdialogfragment.FastBlurHelper;
  */
 public class ImageUtils {
 
-    public static Bitmap setSaturation(Bitmap bmp, float fact){
+    public static Bitmap setSaturation(Bitmap bmp, float fact) {
         ColorMatrix cMatrix = new ColorMatrix();
         cMatrix.setSaturation(fact);
         Paint paint = new Paint();
@@ -33,15 +33,18 @@ public class ImageUtils {
         return bmp;
     }
 
-    public static Bitmap doBlur(Bitmap bitmap,int scaleToWith,int scaleToHeight){
+    public static Bitmap doBlur(Bitmap bitmap, int scaleToWith, int scaleToHeight) {
 //        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
 //                        sourceBitmap = RenderScriptBlurHelper.doBlur(sourceBitmap,60,false,getActivity());
 //                    }else{
+        if (bitmap != null && !bitmap.isRecycled()) {
             bitmap = Bitmap.createScaledBitmap(bitmap, scaleToWith, scaleToHeight, false);
             bitmap = FastBlurHelper.doBlur(bitmap, 10, false);
+            return bitmap;
 //                    }
+        }
+        return null;
 //        }
-        return bitmap;
     }
 
     public static byte[] Bitmap2Bytes(Bitmap bmp, int types) {
@@ -79,7 +82,7 @@ public class ImageUtils {
                 localByteArrayOutputStream.close();
                 return arrayOfByte;
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
             i = bitmap.getHeight();
             j = bitmap.getHeight();
@@ -120,12 +123,11 @@ public class ImageUtils {
         int options = 100;
         while (baos.toByteArray().length / 1024 > 100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
             options -= 10;//每次都减少10
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
         }
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
-        return bitmap;
+        return BitmapFactory.decodeStream(isBm);
     }
 
     //存储进SD卡

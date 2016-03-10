@@ -175,7 +175,7 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                 MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;
             case PullMenusView.ClickHome:
-                MenusActivity.this.finish();
+               ActManager.getAppManager().finishActivitiesAndKeepLastOne();
                 break;
         }
     }

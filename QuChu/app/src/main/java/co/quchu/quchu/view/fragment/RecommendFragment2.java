@@ -29,6 +29,7 @@ import com.facebook.imagepipeline.request.Postprocessor;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.util.Property;
 //import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -114,8 +115,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                         if (!TextUtils.isEmpty(strUri)) {
                             Uri imageUri = Uri.parse(strUri);
                             if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)) {
-
-
                                 ImageRequest request = ImageRequestBuilder
                                         .newBuilderWithSource(imageUri)
                                         .setImageType(ImageRequest.ImageType.SMALL)
@@ -388,7 +387,6 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
      * 初始化切换动画
      */
     private void initBackgroundSwitchAnimations() {
-
         mAnimFadeIn = ObjectAnimator.ofFloat(fRecommendBimgTop, "alpha", 0f, 1f);
         mAnimFadeOut = ObjectAnimator.ofFloat(fRecommendBimgBottom, "alpha", 1f, 0f);
 

@@ -21,7 +21,7 @@ public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, int i, int i2) {
+    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         //    LogUtils.json("onScrolled==i=" + i + "////i2=" + i2);
 //                mPositionText.setText("First: " + mRecyclerView.getFirstVisiblePosition());
         int childCount = mRecyclerView.getChildCount();

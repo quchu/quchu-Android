@@ -14,6 +14,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.photo.previewimage.PreviewImage;
 import co.quchu.quchu.view.activity.MenusActivity;
 import co.quchu.quchu.view.activity.PlaceMapActivity;
+import co.quchu.quchu.view.activity.PostcarDetailActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.ReserveActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
@@ -42,14 +43,15 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         super.onCreate(savedInstanceState);
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
-        if (this instanceof MenusActivity) {
 
-        } else if (this instanceof PreviewImage) {
-            overridePendingTransition(R.anim.in_alpha,
-                    R.anim.out_alpha);
-        } else {
-            overridePendingTransition(R.anim.in_push_right_to_left,
-                    R.anim.in_stable);
+        if (!(this instanceof PostcarDetailActivity)) {
+            if (this instanceof PreviewImage) {
+                overridePendingTransition(R.anim.in_alpha,
+                        R.anim.out_alpha);
+            } else {
+                overridePendingTransition(R.anim.in_push_right_to_left,
+                        R.anim.in_stable);
+            }
         }
         //压栈
         ActManager.getAppManager().addActivity(this);
@@ -86,15 +88,19 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     public void finish() {
         super.finish();
-        if (this instanceof MenusActivity) {
-            overridePendingTransition(R.anim.out_bottom_to_top,
-                    R.anim.out_bottom_to_top);
-        } else if (this instanceof PreviewImage) {
-            overridePendingTransition(R.anim.in_alpha,
-                    R.anim.out_alpha);
-        } else {
-            overridePendingTransition(R.anim.in_stable,
-                    R.anim.out_push_left_to_right);
+
+        if (!(this instanceof PostcarDetailActivity)) {
+
+            if (this instanceof MenusActivity) {
+                overridePendingTransition(R.anim.out_bottom_to_top,
+                        R.anim.out_bottom_to_top);
+            } else if (this instanceof PreviewImage) {
+                overridePendingTransition(R.anim.in_alpha,
+                        R.anim.out_alpha);
+            } else {
+                overridePendingTransition(R.anim.in_stable,
+                        R.anim.out_push_left_to_right);
+            }
         }
 
     }
@@ -168,7 +174,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
 
     @Override
     public void moreClick() {
-       //   this.startActivity(new Intent(this, MenusActivity.class));
+        //   this.startActivity(new Intent(this, MenusActivity.class));
         ActManager.getAppManager().Back2MenusAct();
     }
 
