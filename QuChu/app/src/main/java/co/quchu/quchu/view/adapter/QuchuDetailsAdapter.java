@@ -549,7 +549,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             ((NearbyItemViewHolder) holder).tvName.setText(mData.get(position).getName());
-            if (null != mData.get(position).getCover() && !KeyboardUtils.isFastDoubleClick()) {
+            if (null != mData.get(position).getCover() ) {
 
                 ((NearbyItemViewHolder) holder).ivImage.setImageURI(Uri.parse(mData.get(position).getCover()));
                 ((NearbyItemViewHolder) holder).ivImage.setOnClickListener(new View.OnClickListener() {
