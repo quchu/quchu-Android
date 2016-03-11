@@ -43,7 +43,9 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mHelper = new SwipeBackActivityHelper(this);
+        mHelper.onActivityCreate();
+        mSwipeBackLayout = getSwipeBackLayout();
         if (!(this instanceof PostcarDetailActivity)) {
             if (this instanceof PreviewImage || this instanceof PreviewAlbumImage) {
                 overridePendingTransition(R.anim.in_alpha,
@@ -55,23 +57,14 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         }
         //压栈
         ActManager.getAppManager().addActivity(this);
-        mSwipeBackLayout = getSwipeBackLayout();
         if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity
                 || this instanceof PreviewImage || this instanceof PreviewAlbumImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
             mSwipeBackLayout.setEnableGesture(false);
-
         } else if (this instanceof MenusActivity) {
-            mHelper = new SwipeBackActivityHelper(this);
-            mHelper.onActivityCreate();
-            mSwipeBackLayout = getSwipeBackLayout();
-
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
             mSwipeBackLayout.setEdgeSize(360);
         } else {
-            mHelper = new SwipeBackActivityHelper(this);
-            mHelper.onActivityCreate();
             mSwipeBackLayout = getSwipeBackLayout();
-
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
             mSwipeBackLayout.setEdgeSize(360);
         }
