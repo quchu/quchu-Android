@@ -62,14 +62,12 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
             mHelper = new SwipeBackActivityHelper(this);
             mHelper.onActivityCreate();
             mSwipeBackLayout = getSwipeBackLayout();
-
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
             mSwipeBackLayout.setEdgeSize(360);
         } else {
             mHelper = new SwipeBackActivityHelper(this);
             mHelper.onActivityCreate();
             mSwipeBackLayout = getSwipeBackLayout();
-
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
             mSwipeBackLayout.setEdgeSize(360);
         }
