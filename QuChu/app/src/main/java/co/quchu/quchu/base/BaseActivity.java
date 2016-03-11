@@ -10,6 +10,7 @@ import android.view.View;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.photo.previewimage.PreviewAlbumImage;
 import co.quchu.quchu.photo.previewimage.PreviewImage;
 import co.quchu.quchu.view.activity.MenusActivity;
 import co.quchu.quchu.view.activity.PlaceMapActivity;
@@ -44,7 +45,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         super.onCreate(savedInstanceState);
 
         if (!(this instanceof PostcarDetailActivity)) {
-            if (this instanceof PreviewImage) {
+            if (this instanceof PreviewImage || this instanceof PreviewAlbumImage) {
                 overridePendingTransition(R.anim.in_alpha,
                         R.anim.out_alpha);
             } else {
@@ -54,11 +55,11 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         }
         //压栈
         ActManager.getAppManager().addActivity(this);
+        mSwipeBackLayout = getSwipeBackLayout();
+        if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity
+                || this instanceof PreviewImage || this instanceof PreviewAlbumImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
+            mSwipeBackLayout.setEnableGesture(false);
 
-
-        if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity || this instanceof PostcarDetailActivity
-                || this instanceof PreviewImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
-//            mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {
             mHelper = new SwipeBackActivityHelper(this);
             mHelper.onActivityCreate();
@@ -93,7 +94,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
             if (this instanceof MenusActivity) {
                 overridePendingTransition(R.anim.out_bottom_to_top,
                         R.anim.out_bottom_to_top);
-            } else if (this instanceof PreviewImage) {
+            } else if (this instanceof PreviewImage || this instanceof PreviewAlbumImage) {
                 overridePendingTransition(R.anim.in_alpha,
                         R.anim.out_alpha);
             } else {

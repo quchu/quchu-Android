@@ -122,7 +122,7 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
     private ObjectAnimator objectAnimator, objectAnimator1, objectAnimator2;
     private AnimatorSet animatorSet;
     private static long TranslationDuration = -1;
-    private static long ScaleDuration = 400;
+    private static long ScaleDuration = 300;
 
 
     /**

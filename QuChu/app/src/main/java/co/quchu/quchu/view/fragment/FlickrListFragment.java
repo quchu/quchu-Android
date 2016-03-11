@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import java.io.Serializable;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FlickrModel;
 import co.quchu.quchu.photo.previewimage.ImageBDInfo;
+import co.quchu.quchu.photo.previewimage.PreviewAlbumImage;
 import co.quchu.quchu.view.adapter.FlickrListAdapter;
 import co.quchu.quchu.widget.InnerListView;
 
@@ -60,6 +64,11 @@ public class FlickrListFragment extends BaseFragment {
                 intent.putExtra("index", position);
                 intent.putExtra("type", 2);
                 startActivity(intent);*/
+                Intent intent = new Intent(getActivity(), PreviewAlbumImage.class);
+                intent.putExtra("data", (Serializable) images.getResult());
+                intent.putExtra("index", position);
+                intent.putExtra("type", 2);
+                startActivity(intent);
             }
         });
         return view;

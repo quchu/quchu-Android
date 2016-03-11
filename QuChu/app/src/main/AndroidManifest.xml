@@ -73,10 +73,6 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.AtmosphereActivity"
-            android:label="@string/titlebar_word_atmosphere"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.DiscoverActivity"
             android:label="@string/titlebar_word_discover"
             android:screenOrientation="portrait" />
@@ -143,11 +139,6 @@
             android:screenOrientation="portrait" />
         <!-- 趣处详情 -->
         <activity
-            android:name=".view.activity.InterestingDetailsActivity"
-            android:label="@string/titlebar_word_place_detail"
-            android:screenOrientation="portrait" />
-        <!-- 趣处详情-->
-        <activity
             android:name="co.quchu.quchu.view.activity.QuchuDetailsActivity"
             android:label="@string/titlebar_word_place_detail"
             android:screenOrientation="portrait" />
@@ -197,6 +188,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".photo.previewimage.PreviewImage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".photo.previewimage.PreviewAlbumImage"
             android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
