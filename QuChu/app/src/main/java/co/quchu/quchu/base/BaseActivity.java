@@ -36,7 +36,7 @@ import co.quchu.quchu.widget.swipbacklayout.Utils;
 public class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase, View.OnClickListener, MoreButtonView.MoreClicklistener {
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
-    protected String TAG = getClass().getName();
+//    protected String TAG = getClass().getName();
 
 
     @SuppressLint("InlinedApi")
@@ -106,7 +106,6 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
 
@@ -117,7 +116,6 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
             overridePendingTransition(R.anim.in_top_to_bottom,
                     R.anim.in_stable);
         }
-        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);
     }
 

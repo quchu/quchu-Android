@@ -52,31 +52,8 @@ public class AppUtil {
         return verName;
     }
 
-    /**
-     * 获取屏幕宽度
-     *
-     * @param context 上下文
-     * @return 屏幕宽度
-     */
-    public static int getScreenWidth(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        return wm.getDefaultDisplay().getWidth();
-    }
 
-  /*  *//**
-     * 获取屏幕高度
-     *
-     * @param context 上下文
-     * @return 屏幕宽度
-     *//*
-    public static int getScreenHeight(Context context) {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-
-        return wm.getDefaultDisplay().getHeight();
-    }
-
+  /*
     public static void printDeviceInf() {
         StringBuilder sb = new StringBuilder();
         sb.append("PRODUCT ").append(android.os.Build.PRODUCT).append("\n");
@@ -134,11 +111,8 @@ public class AppUtil {
         boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
         boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        if (gps || network) {
-            return true;
-        }
+        return gps || network;
 
-        return false;
     }
 
     public static boolean isAppInstall(String pckName) {
@@ -150,10 +124,6 @@ public class AppUtil {
             packageInfo = null;
             e.printStackTrace();
         }
-        if (packageInfo == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return packageInfo != null;
     }
 }
