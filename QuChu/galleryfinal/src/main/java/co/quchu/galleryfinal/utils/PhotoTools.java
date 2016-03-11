@@ -142,6 +142,7 @@ public class PhotoTools {
             if (null!= cursorThumbnails){
                 cursorThumbnails.close();
             }
+            thumbnailsList.clear();
         }
         allFolderList.addAll(allPhotoFolderList);
         if (selectedList != null) {
