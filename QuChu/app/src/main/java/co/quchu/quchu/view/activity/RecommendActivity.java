@@ -76,15 +76,11 @@ public class RecommendActivity extends BaseActivity {
             startActivity(new Intent(this, PlanetActivity.class));
             return;
         }
-//            reconnection();
         initView();
-
-
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
             @Override
             public void hasCityList(ArrayList<CityModel> list) {
                 RecommendActivity.this.list = list;
-//                initView();
             }
         });
         recommendTitleMoreRl.setMoreClick(this);

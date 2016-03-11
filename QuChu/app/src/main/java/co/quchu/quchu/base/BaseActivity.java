@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-//import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
@@ -25,6 +24,8 @@ import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
 import co.quchu.quchu.widget.swipbacklayout.Utils;
 
+//import com.squareup.leakcanary.RefWatcher;
+
 /**
  * BaseActivity
  * User: Chenhs
@@ -41,8 +42,6 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mHelper = new SwipeBackActivityHelper(this);
-        mHelper.onActivityCreate();
 
         if (!(this instanceof PostcarDetailActivity)) {
             if (this instanceof PreviewImage) {
@@ -55,14 +54,23 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         }
         //压栈
         ActManager.getAppManager().addActivity(this);
-        mSwipeBackLayout = getSwipeBackLayout();
-        if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity
+
+
+        if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity || this instanceof PostcarDetailActivity
                 || this instanceof PreviewImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
-            mSwipeBackLayout.setEnableGesture(false);
+//            mSwipeBackLayout.setEnableGesture(false);
         } else if (this instanceof MenusActivity) {
+            mHelper = new SwipeBackActivityHelper(this);
+            mHelper.onActivityCreate();
+            mSwipeBackLayout = getSwipeBackLayout();
+
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
             mSwipeBackLayout.setEdgeSize(360);
         } else {
+            mHelper = new SwipeBackActivityHelper(this);
+            mHelper.onActivityCreate();
+            mSwipeBackLayout = getSwipeBackLayout();
+
             mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
             mSwipeBackLayout.setEdgeSize(360);
         }
@@ -73,16 +81,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        RefWatcher refWatcher = AppContext.getRefWatcher(getApplicationContext());
-//        refWatcher.watch(this);
-        // 结束Activity&从堆栈中移除
-   /*     if (this instanceof PlanetActivity) {
-            ActManager.getAppManager().AppExit();
-        } else {*/
-
         ActManager.getAppManager().finishActivity(this);
-        /*}*/
-
     }
 
     @Override
@@ -127,7 +126,8 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mHelper.onPostCreate();
+        if (mHelper != null)
+            mHelper.onPostCreate();
     }
 
     @Override
