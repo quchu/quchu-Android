@@ -55,10 +55,8 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         }
         //压栈
         ActManager.getAppManager().addActivity(this);
-        mSwipeBackLayout = getSwipeBackLayout();
-        if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity
+        if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity||this instanceof PostcarDetailActivity
                 || this instanceof PreviewImage || this instanceof PreviewAlbumImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
-            mSwipeBackLayout.setEnableGesture(false);
 
         } else if (this instanceof MenusActivity) {
             mHelper = new SwipeBackActivityHelper(this);
