@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.textcounter.CounterView;
@@ -187,7 +188,7 @@ public class ImageSubtabLayout extends RelativeLayout {
 
     private void initData() {
         //    widgetTextIndexIv
-        leftX = ((AppUtil.getScreenWidth(context) / 2) - widgetAnimationIndexIv.getWidth() / 2) / 2;
+        leftX = ((AppContext.Width / 2) - widgetAnimationIndexIv.getWidth() / 2) / 2;
         rightX = leftX * 3;
         widgetAnimationIndexIv.setX(leftX);
         initIndexView(0);

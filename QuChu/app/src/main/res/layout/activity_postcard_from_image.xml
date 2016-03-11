@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:fitsSystemWindows="true">
+
+    <include
+        android:id="@+id/title_bar_rl"
+        layout="@layout/title_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar_rl">
+
+    <co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager
+        android:id="@+id/recommend_body_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dialog_margin"
+        android:background="@drawable/ic_activity_bg" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@id/title_bar_rl"
+        android:background="@drawable/shadow_bottom" />
+</RelativeLayout>
