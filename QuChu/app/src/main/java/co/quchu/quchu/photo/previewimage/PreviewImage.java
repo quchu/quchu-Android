@@ -119,13 +119,14 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
     }
 
     PostCardImageListModel imageInfo;
+    PostCardItemModel model;
 
     public void InData() {
         // TODO Auto-generated method stub
 
         index = getIntent().getIntExtra("index", 0);
         type = getIntent().getIntExtra("type", 0);
-        PostCardItemModel model = (PostCardItemModel) getIntent().getSerializableExtra("data");
+        model = (PostCardItemModel) getIntent().getSerializableExtra("data");
         ImgList = (ArrayList<PostCardImageListModel>) model.getImglist();
         imageInfo = ImgList.get(index);
         bdInfo = (ImageBDInfo) getIntent().getSerializableExtra("bdinfo");
@@ -152,7 +153,12 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
         previewCreaterAvatarSdv.setAspectRatio(1f);
         previewCreaterNameTv.setText(model.getAutor());
         previewCraeteTimeTv.setText(model.getTime().substring(0, 10));
-        setIsfState(ImgList.get(index).isf());
+        if (AppContext.user.getUserId() == model.getAutorId()) {
+            previewCollectIv.setVisibility(View.GONE);
+        } else {
+            previewCollectIv.setVisibility(View.VISIBLE);
+            setIsfState(ImgList.get(index).isf());
+        }
 
     }
 
@@ -195,7 +201,12 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
             to_y = (a1 - a) * moveheight + (a1 - a) * StringUtils.dip2px(1);
             to_x = (b1 - b) * moveheight + (b1 - b) * StringUtils.dip2px(1);
         }
-        setIsfState(info.isf());
+        if (AppContext.user.getUserId() == model.getAutorId()) {
+            previewCollectIv.setVisibility(View.GONE);
+        } else {
+            previewCollectIv.setVisibility(View.VISIBLE);
+            setIsfState(info.isf());
+        }
         if (SPUtils.getBooleanFromSPMap(PreviewImage.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)) {
             if (arg0 == ImgList.size() - 1) {
                 userguideImageFirstIndexFl.setVisibility(View.GONE);
@@ -205,7 +216,7 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
                 userguideImageLastindexFl.setVisibility(View.GONE);
             }
         }
-        showingIndex=arg0;
+        showingIndex = arg0;
         LogUtils.json("onPageSelected=" + showingIndex);
     }
 

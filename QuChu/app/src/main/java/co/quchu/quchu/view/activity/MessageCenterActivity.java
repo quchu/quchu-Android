@@ -78,7 +78,6 @@ public class MessageCenterActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("MessageCenterActivity");
-        MobclickAgent.onResume(this);
 
         super.onResume();
     }
@@ -86,6 +85,5 @@ public class MessageCenterActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("MessageCenterActivity");
-        MobclickAgent.onPause(this);
     }
 }

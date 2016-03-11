@@ -76,15 +76,11 @@ public class RecommendActivity extends BaseActivity {
             startActivity(new Intent(this, PlanetActivity.class));
             return;
         }
-//            reconnection();
         initView();
-
-
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
             @Override
             public void hasCityList(ArrayList<CityModel> list) {
                 RecommendActivity.this.list = list;
-//                initView();
             }
         });
         recommendTitleMoreRl.setMoreClick(this);
@@ -243,14 +239,12 @@ public class RecommendActivity extends BaseActivity {
         netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
         super.onResume();
         MobclickAgent.onPageStart("MainActivity");
-        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("MainActivity");
-        MobclickAgent.onPause(this);
     }
 
 

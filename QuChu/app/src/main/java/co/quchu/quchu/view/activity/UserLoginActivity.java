@@ -55,16 +55,11 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
     private boolean IsVisitorLogin = false;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("LoginActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
@@ -78,7 +73,6 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         }
         super.onResume();
         MobclickAgent.onPageStart("LoginActivity");
-        MobclickAgent.onResume(this);
     }
 
 

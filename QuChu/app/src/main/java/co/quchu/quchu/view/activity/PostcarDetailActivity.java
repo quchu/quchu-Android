@@ -36,7 +36,6 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 public class PostcarDetailActivity extends BaseActivity {
 
     public static final String REQUEST_PARAMATER_ENTITY = "entity";
-    public static final String SHARE_ELEMENT_NAME = "animation_1";
 
 
     @Bind(R.id.item_recommend_card_name_tv)
@@ -79,19 +78,19 @@ public class PostcarDetailActivity extends BaseActivity {
         titleContentTv.setText("我的明信片");
         item = (PostCardItemModel) getIntent().getSerializableExtra(REQUEST_PARAMATER_ENTITY);
         initPostCardDetailData();
-        titleBackRl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        moreButtonView.setMoreClick(new MoreButtonView.MoreClicklistener() {
-            @Override
-            public void moreClick() {
-                startActivity(new Intent(PostcarDetailActivity.this, MenusActivity.class));
-            }
-        });
+//        titleBackRl.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+//
+//        moreButtonView.setMoreClick(new MoreButtonView.MoreClicklistener() {
+//            @Override
+//            public void moreClick() {
+//                startActivity(new Intent(PostcarDetailActivity.this, MenusActivity.class));
+//            }
+//        });
     }
 
 
@@ -223,9 +222,9 @@ public class PostcarDetailActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
-        finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+////        super.onBackPressed();
+//        finish();
+//    }
 }

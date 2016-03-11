@@ -199,13 +199,11 @@ public class PalceMyPostCardActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("PlaceMyPostCardActivity");
-        MobclickAgent.onResume(this);
         super.onResume();
     }
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("PlaceMyPostCardActivity");
-        MobclickAgent.onPause(this);
     }
 }

@@ -215,7 +215,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("PlanetActivity");
-        MobclickAgent.onResume(this);
 
         super.onResume();
     }
@@ -224,7 +223,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         super.onPause();
 
         MobclickAgent.onPageEnd("PlanetActivity");
-        MobclickAgent.onPause(this);
     }
 
     Handler myHandler = new Handler() {

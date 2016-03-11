@@ -403,7 +403,6 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("FlickrActivity");
-        MobclickAgent.onPause(this);
 
     }
 
@@ -411,6 +410,5 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("FlickrActivity");
-        MobclickAgent.onResume(this);
     }
 }

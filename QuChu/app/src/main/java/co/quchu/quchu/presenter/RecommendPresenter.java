@@ -1,7 +1,9 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -11,11 +13,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -157,51 +162,27 @@ public class RecommendPresenter {
 
 
     public static void getCityList(Context context, final CityListListener listener) {
-        //  NetService.get(context,String.format( NetApi.GetCityList, SPUtils.getCityName()), new IRequestListener() {
-        NetService.get(context, NetApi.GetCityList, new IRequestListener() {
+        GsonRequest<CityEntity> request = new GsonRequest<>(NetApi.GetCityList, CityEntity.class, new ResponseListener<CityEntity>() {
             @Override
-            public void onSuccess(JSONObject response) {
-                LogUtils.json("city ==" + response.toString());
-
-                try {
-                    Gson gson = new Gson();
-                    if (response.has("default") && !StringUtils.isEmpty(response.getString("default")) && StringUtils.isEmpty(SPUtils.getCityName())) {
-                        CityModel defaultCity = gson.fromJson(response.getString("default"), CityModel.class);
-                        SPUtils.setCityId(defaultCity.getCid());
-                        SPUtils.setCityName(defaultCity.getCvalue());
-                        LogUtils.json("response.has(default)");
-                    }
-                    if (response.has("page") && !StringUtils.isEmpty(response.getString("page"))) {
-                        LogUtils.json("response.has(pages)");
-                        JSONArray pages = response.getJSONObject("page").getJSONArray("result");
-
-                        ArrayList<CityModel> cityList = new ArrayList<>();
-                        for (int i = 0; i < pages.length(); i++) {
-
-                            CityModel model = gson.fromJson(pages.getString(i), CityModel.class);
-                            if (model.getCvalue().equals(SPUtils.getCityName())) {
-                                //   SPUtils.setCityId(model.getCid());
-                                model.setIsSelected(true);
-                                LogUtils.json("response.has(pages)" + i);
-                            } else {
-                                model.setIsSelected(false);
-                            }
-                            cityList.add(model);
-                        }
-                        listener.hasCityList(cityList);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+            public void onErrorResponse(@Nullable VolleyError error) {
 
             }
 
             @Override
-            public boolean onError(String error) {
-                return false;
+            public void onResponse(CityEntity response, boolean result, @Nullable String exception, @Nullable String msg) {
+                SPUtils.setCityId(response.getDefaultX().getCid());
+                SPUtils.setCityName(response.getDefaultX().getCvalue());
+                ArrayList<CityModel> list = response.getPage().getResult();
+                for (CityModel item : list) {
+                    if (item.getCid() == response.getDefaultX().getCid()) {
+                        item.setIsSelected(true);
+                        break;
+                    }
+                }
+                listener.hasCityList(list);
             }
         });
+        request.start(context, null);
     }
 
     public interface CityListListener {

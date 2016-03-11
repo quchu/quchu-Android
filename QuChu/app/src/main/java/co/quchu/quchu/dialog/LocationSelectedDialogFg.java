@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -76,21 +74,10 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         Bundle args = getArguments();
-    /*    mRadius = args.getInt(BUNDLE_KEY_BLUR_RADIUS);
-        mDownScaleFactor = args.getFloat(BUNDLE_KEY_DOWN_SCALE_FACTOR);
-        mDimming = args.getBoolean(BUNDLE_KEY_DIMMING);
-        mDebug = args.getBoolean(BUNDLE_KEY_DEBUG);*/
-
         cityList = (ArrayList<CityModel>) args.getSerializable(CITY_LIST_MODEL);
-
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     private LocationSelectedAdapter adapter;
 
@@ -144,13 +131,6 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     }
 
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            LocationSelectedDialogFg.this.dismiss();
-        }
-    };
-
     @Override
     protected boolean isDebugEnable() {
         return false;
@@ -176,7 +156,6 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
         return 8;
     }
 
-    private int selectedIndex = 0;
     private boolean submitClickable = true;
 
     @OnClick({R.id.dialog_location_submit_tv, R.id.dialog_location_cancel_tv})
@@ -193,8 +172,6 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
                         SPUtils.setCityName(cityList.get(adapter.getSelectedIndex()).getCvalue());
                         if (getActivity() instanceof RecommendActivity)
                             ((RecommendActivity) getActivity()).updateRecommend();
-
-                        //   AppContext.gatherList.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
                         if (AppContext.gatherList == null)
                             AppContext.gatherList = new ArrayList<>();
                         AppContext.gatherList.add(new GatherCityModel(cityList.get(adapter.getSelectedIndex()).getCid()));
@@ -204,32 +181,6 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
                 LocationSelectedDialogFg.this.dismiss();
                 submitClickable = true;
                 break;
-        /*    case R.id.dialog_location_xm_cb:
-                if (selectedIndex != 0) {
-                    selectedIndex = 0;
-                    dialogLocationXmCb.setChecked(true);
-                    dialogLocationXmCb.setClickable(false);
-                    dialogLocationHzCb.setClickable(true);
-                    dialogLocationHzCb.setChecked(false);
-                    dialogLocationXmCb.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
-                    dialogLocationHzCb.setTextColor(getResources().getColor(R.color.text_color_white));
-                    dialogLocationSelectedCityTv.setText("所在城市:厦门");
-                    StringUtils.alterTextColor(dialogLocationSelectedCityTv,5,7, R.color.gene_textcolor_yellow);
-                }
-                break;
-            case R.id.dialog_location_hz_cb:
-                if (selectedIndex != 1) {
-                    selectedIndex = 1;
-                    dialogLocationHzCb.setChecked(true);
-                    dialogLocationXmCb.setChecked(false);
-                    dialogLocationHzCb.setClickable(false);
-                    dialogLocationXmCb.setClickable(true);
-                    dialogLocationHzCb.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
-                    dialogLocationXmCb.setTextColor(getResources().getColor(R.color.text_color_white));
-                    dialogLocationSelectedCityTv.setText("所在城市:杭州");
-                    StringUtils.alterTextColor(dialogLocationSelectedCityTv,5,7, R.color.gene_textcolor_yellow);
-                }
-                break;*/
         }
     }
 

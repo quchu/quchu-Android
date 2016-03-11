@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,7 +124,7 @@ public class AddPostCardActivity extends BaseActivity {
         addPostcardImageIgv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if ((Bimp.imglist.size() + Bimp.drr.size()) < 5) {
+                if ((Bimp.imglist.size() + Bimp.drr.size() + mPhotoList.size()) < 5) {
                     if (position == 0) {
                         new PopupWindows(AddPostCardActivity.this, addPostcardImageIgv);
                     }
@@ -161,42 +160,41 @@ public class AddPostCardActivity extends BaseActivity {
     }
 
 
-
     private void initData() {
         defaulModel = (PostCardItemModel) getIntent().getSerializableExtra("pCardModel");
         pName = getIntent().getStringExtra("pName");
         pId = getIntent().getIntExtra("pId", 2);
 
-        if (null!=defaulModel && pId!=-1){
+        if (null != defaulModel && pId != -1) {
             fillUI();
-        }else{
+        } else {
             getFromSetver(pId);
         }
     }
 
-    private void fillUI(){
-            Bimp.imglist = defaulModel.getImglist();
-            addPostcardSuggestPrb.setRating(defaulModel.getScore());
-            addPostcardAboutPlaceTv.setText(defaulModel.getComment());
-            addPostcardAboutPlaceTv.setText(defaulModel.getComment());
-            if ((int) (defaulModel.getScore() + 0.5f) > prbHintText.length) {
-                editTextDefaultText = prbHintText[prbHintText.length - 1];
-                addPostcardSuggestTv.setText(prbHintText[prbHintText.length - 1]);
-            } else {
-                editTextDefaultText = prbHintText[(int) (defaulModel.getScore() + 0.5f)];
-                addPostcardSuggestTv.setText(prbHintText[(int) (defaulModel.getScore() + 0.5f)]);
-            }
+    private void fillUI() {
+        Bimp.imglist = defaulModel.getImglist();
+        addPostcardSuggestPrb.setRating(defaulModel.getScore());
+        addPostcardAboutPlaceTv.setText(defaulModel.getComment());
+        addPostcardAboutPlaceTv.setText(defaulModel.getComment());
+        if ((int) (defaulModel.getScore() + 0.5f) > prbHintText.length) {
+            editTextDefaultText = prbHintText[prbHintText.length - 1];
+            addPostcardSuggestTv.setText(prbHintText[prbHintText.length - 1]);
+        } else {
+            editTextDefaultText = prbHintText[(int) (defaulModel.getScore() + 0.5f)];
+            addPostcardSuggestTv.setText(prbHintText[(int) (defaulModel.getScore() + 0.5f)]);
+        }
     }
 
-    private void getFromSetver(int pid){
-        if (-1==pId){
+    private void getFromSetver(int pid) {
+        if (-1 == pId) {
             return;
         }
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
         PostCardPresenter.getPostCardByPid(this, pid, new PostCardPresenter.MyPostCardItemListener() {
             @Override
             public void onSuccess(PostCardItemModel model) {
-                if (null!=model){
+                if (null != model) {
                     defaulModel = model;
                     fillUI();
                 }
@@ -205,8 +203,8 @@ public class AddPostCardActivity extends BaseActivity {
 
             @Override
             public void onError(String error) {
-                if (null!=error){
-                    Toast.makeText(getApplicationContext(),error,Toast.LENGTH_SHORT).show();
+                if (null != error) {
+                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                 }
 
                 DialogUtil.dismissProgess();
@@ -284,14 +282,12 @@ public class AddPostCardActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("AddPostCardActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("AddPostCardActivity");
-        MobclickAgent.onResume(this);
     }
 
     public class PopupWindows extends PopupWindow {
@@ -393,7 +389,7 @@ public class AddPostCardActivity extends BaseActivity {
             @Override
             public void onSuccess(PostCardModel model) {
                 //   if (Bimp.delImageIdList.size() == 0) {
-                EventBus.getDefault().post(new QuchuEventModel(QuchuDetailsActivity.EVENT_KEY_DATA_MODEL_UPDATED,defaulModel));
+                EventBus.getDefault().post(new QuchuEventModel(QuchuDetailsActivity.EVENT_KEY_DATA_MODEL_UPDATED, defaulModel));
                 AppContext.gatherList.add(new GatherRateModel(pId + "", addPostcardSuggestPrb.getRating()));
                 DialogUtil.dismissProgessDirectly();
                 if (Bimp.imglist.size() > 0) {
@@ -482,8 +478,8 @@ public class AddPostCardActivity extends BaseActivity {
         //    uploadManager = new UploadManager();
         //  }
         //   LogUtils.json("addImage2QiNiu  addImage2QiNiu  addImage2QiNiu" + list.get(imageIndex));
-        if (imageIndex>=mPhotoList.size()){
-            
+        if (imageIndex >= mPhotoList.size()) {
+
             DialogUtil.dismissProgessDirectly();
             return;
         }

@@ -94,16 +94,11 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("MenusActivity");
-        MobclickAgent.onPause(this);
 
     }
 
@@ -130,7 +125,6 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
             SPUtils.putBooleanToSPMap(this, AppKey.IS_MENU_NEED_REFRESH, false);
         }
         MobclickAgent.onPageStart("MenusActivity");
-        MobclickAgent.onResume(this);
     }
 
 

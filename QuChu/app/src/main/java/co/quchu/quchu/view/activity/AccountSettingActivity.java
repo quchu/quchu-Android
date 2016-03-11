@@ -334,13 +334,11 @@ public class AccountSettingActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("AccountSettingActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("AccountSettingActivity");
-        MobclickAgent.onResume(this);
     }
 }

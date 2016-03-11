@@ -93,7 +93,6 @@ public class FeedbackActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("FeedbackActivity");
-        MobclickAgent.onPause(this);
 
     }
 
@@ -101,6 +100,5 @@ public class FeedbackActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("FeedbackActivity");
-        MobclickAgent.onResume(this);
     }
 }

@@ -17,6 +17,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.FriendsFollowerFg;
+import co.quchu.quchu.widget.AnimationViewPager.RotatePageTransformer;
 import co.quchu.quchu.widget.RoundProgressView;
 
 /**
@@ -75,6 +76,7 @@ public class QuFriendsActivity extends BaseActivity {
 
         quFriendsVp.setAdapter(adapter);
         quFriendsTabStl.setViewPager(quFriendsVp);
+        quFriendsVp.setPageTransformer(true, new RotatePageTransformer());
         quFriendsTabStl.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

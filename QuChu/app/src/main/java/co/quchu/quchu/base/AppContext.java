@@ -38,7 +38,6 @@ public class AppContext extends Application {
     // 屏幕高度
     public static float Height = 0;
     public static ArrayList<Object> gatherList;//用户行为采集list
-    // public static ArrayList<RecommendModel> dCardList; //推荐分类 数据源
     public static RecommendModel selectedPlace; //推荐分类 数据源
     public static boolean dCardListNeedUpdate = false;
 

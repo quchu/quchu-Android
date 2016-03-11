@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import java.io.Serializable;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.FlickrModel;
-import co.quchu.quchu.photo.previewimage.PreviewImage;
+import co.quchu.quchu.photo.previewimage.PreviewAlbumImage;
 import co.quchu.quchu.view.adapter.FlickrGridAdapter;
 import co.quchu.quchu.widget.InnerGridView;
 
@@ -37,10 +39,12 @@ public class FlickrGridFragment extends Fragment {
         this.context = context;
         this.images = imgs;
     }
+
     public FlickrGridFragment() {
         this.context = getActivity();
         this.images = new FlickrModel.ImgsEntity();
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,8 +56,8 @@ public class FlickrGridFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(getActivity(), PreviewImage.class);
-              //  intent.putExtra("data", (Serializable) defaulModel);
+                Intent intent = new Intent(getActivity(), PreviewAlbumImage.class);
+                intent.putExtra("data", (Serializable) images.getResult());
                 intent.putExtra("index", position);
                 intent.putExtra("type", 2);
                 startActivity(intent);
@@ -75,7 +79,7 @@ public class FlickrGridFragment extends Fragment {
 
     /**
      * 分页显示， 添加数据后刷新
-
+     *
      * @param images imgsEntity
      */
     public void updateDataSet(FlickrModel.ImgsEntity images) {
@@ -90,7 +94,7 @@ public class FlickrGridFragment extends Fragment {
      */
     public void changeDataSet(FlickrModel.ImgsEntity images) {
         if (null != gridAdapter) {
-            this.images=images;
+            this.images = images;
             gridAdapter.updateDataSet(images);
         }
 
