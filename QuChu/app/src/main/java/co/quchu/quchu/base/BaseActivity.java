@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-//import com.squareup.leakcanary.RefWatcher;
+import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
@@ -73,8 +73,8 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        RefWatcher refWatcher = AppContext.getRefWatcher(getApplicationContext());
-//        refWatcher.watch(this);
+        RefWatcher refWatcher = AppContext.getRefWatcher(getApplicationContext());
+        refWatcher.watch(this);
         // 结束Activity&从堆栈中移除
    /*     if (this instanceof PlanetActivity) {
             ActManager.getAppManager().AppExit();

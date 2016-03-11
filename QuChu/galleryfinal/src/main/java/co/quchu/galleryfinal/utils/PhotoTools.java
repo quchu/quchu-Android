@@ -19,6 +19,7 @@ package co.quchu.galleryfinal.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,9 +53,23 @@ public class PhotoTools {
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
                 MediaStore.Images.Media.DATA,
                 MediaStore.Images.Media.DATE_TAKEN,
-                MediaStore.Images.Media.ORIENTATION,
-                MediaStore.Images.Thumbnails.DATA
+                MediaStore.Images.Media.ORIENTATION
         };
+
+        HashMap thumbnailsList = new HashMap();
+        final String[] projectionPhotoThumbnails = {MediaStore.Images.Thumbnails.IMAGE_ID,MediaStore.Images.Thumbnails.DATA};
+        Cursor cursorThumbnails = MediaStore.Images.Thumbnails.query(context.getContentResolver(), MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI
+                , projectionPhotoThumbnails);
+        int columnId = cursorThumbnails.getColumnIndex(MediaStore.Images.Thumbnails.IMAGE_ID);
+        int columnThumbnailData = cursorThumbnails.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+        while (cursorThumbnails.moveToNext()){
+            if (null!=cursorThumbnails.getString(columnThumbnailData)){
+                thumbnailsList.put(cursorThumbnails.getInt(columnId),cursorThumbnails.getString(columnThumbnailData));
+            }
+        }
+
+
+
         final ArrayList<PhotoFolderInfo> allPhotoFolderList = new ArrayList<>();
         HashMap<Integer, PhotoFolderInfo> bucketMap = new HashMap<>();
         Cursor cursor = null;
@@ -86,7 +101,11 @@ public class PhotoTools {
                         final PhotoInfo photoInfo = new PhotoInfo();
                         photoInfo.setPhotoId(imageId);
                         photoInfo.setPhotoPath(path);
-                        //photoInfo.setThumbPath(thumb);
+                        if (thumbnailsList.containsKey(photoInfo.getPhotoId())){
+                            photoInfo.setThumbPath((String) thumbnailsList.get(photoInfo.getPhotoId()));
+                        }
+
+
                         if (allPhotoFolderInfo.getCoverPhoto() == null) {
                             allPhotoFolderInfo.setCoverPhoto(photoInfo);
                         }
@@ -114,10 +133,14 @@ public class PhotoTools {
                 }
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             Logger.e(ex);
         } finally {
             if (cursor != null) {
                 cursor.close();
+            }
+            if (null!= cursorThumbnails){
+                cursorThumbnails.close();
             }
         }
         allFolderList.addAll(allPhotoFolderList);

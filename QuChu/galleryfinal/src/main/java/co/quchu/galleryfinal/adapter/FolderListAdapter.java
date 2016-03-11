@@ -69,7 +69,11 @@ public class FolderListAdapter extends ViewHolderAdapter<FolderListAdapter.Folde
         }
         holder.mIvCover.setImageResource(R.drawable.ic_gf_default_photo);
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
-        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvCover, defaultDrawable, 200, 200);
+        if (null!=photoInfo.getThumbPath()){
+            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, photoInfo.getThumbPath(), holder.mIvCover, defaultDrawable, 200, 200);
+        }else{
+            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvCover, defaultDrawable, 200, 200);
+        }
 
         holder.mTvFolderName.setText(photoFolderInfo.getFolderName());
         int size = 0;
