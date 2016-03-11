@@ -60,14 +60,12 @@ public class DiscoverActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("DiscoverActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("DiscoverActivity");
-        MobclickAgent.onResume(this);
     }
     @Override
     protected void onDestroy() {

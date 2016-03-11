@@ -213,7 +213,6 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("GeneActivity");
-        MobclickAgent.onResume(this);
         isOnResume = true;
 
         super.onResume();
@@ -223,7 +222,6 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
         super.onPause();
 
         MobclickAgent.onPageEnd("GeneActivity");
-        MobclickAgent.onPause(this);
     }
 
 

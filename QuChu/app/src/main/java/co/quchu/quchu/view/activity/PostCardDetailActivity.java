@@ -179,7 +179,6 @@ public class PostCardDetailActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("PostCardDetailActivity");
-        MobclickAgent.onResume(this);
 
         super.onResume();
     }
@@ -188,6 +187,5 @@ public class PostCardDetailActivity extends BaseActivity {
         super.onPause();
 
         MobclickAgent.onPageEnd("PostCardDetailActivity");
-        MobclickAgent.onPause(this);
     }
 }

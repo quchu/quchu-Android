@@ -86,7 +86,6 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("FriendsCircleIntroduceActivity");
-        MobclickAgent.onResume(this);
         overridePendingTransition(R.anim.in_push_right_to_left,
                 R.anim.in_stable);
         super.onResume();
@@ -96,6 +95,5 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
         super.onPause();
 
         MobclickAgent.onPageEnd("FriendsCircleIntroduceActivity");
-        MobclickAgent.onPause(this);
     }
 }

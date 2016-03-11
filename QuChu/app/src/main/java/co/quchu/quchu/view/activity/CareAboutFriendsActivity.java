@@ -71,13 +71,11 @@ public class CareAboutFriendsActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("CareAboutFriendsActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("CareAboutFriendsActivity");
-        MobclickAgent.onResume(this);
     }
 }

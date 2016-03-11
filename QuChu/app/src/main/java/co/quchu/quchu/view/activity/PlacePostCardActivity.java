@@ -159,13 +159,11 @@ public class PlacePostCardActivity extends BaseActivity {
             SPUtils.putBooleanToSPMap(this, AppKey.IS_POSTCARD_LIST_NEED_REFRESH, false);
         }
         MobclickAgent.onPageStart("PlacePostCardActivity");
-        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("PlacePostCardActivity");
-        MobclickAgent.onPause(this);
     }
 }

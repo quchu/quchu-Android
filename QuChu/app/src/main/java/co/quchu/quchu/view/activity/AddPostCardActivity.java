@@ -284,14 +284,12 @@ public class AddPostCardActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("AddPostCardActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("AddPostCardActivity");
-        MobclickAgent.onResume(this);
     }
 
     public class PopupWindows extends PopupWindow {

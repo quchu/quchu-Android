@@ -147,13 +147,11 @@ public class FavoriteActivity extends BaseActivity {
         super.onPause();
 
         MobclickAgent.onPageEnd("FavoriteActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("FavoriteActivity");
-        MobclickAgent.onResume(this);
     }
 }
