@@ -118,7 +118,6 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("SearchActivity");
-        MobclickAgent.onResume(this);
 
         super.onResume();
     }
@@ -127,7 +126,6 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         super.onPause();
 
         MobclickAgent.onPageEnd("SearchActivity");
-        MobclickAgent.onPause(this);
     }
 
     @OnClick({R.id.search_button_rl, R.id.search_history_clear_rl})

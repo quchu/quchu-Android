@@ -80,7 +80,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("SplashActivity");
-        MobclickAgent.onResume(this);
         super.onResume();
     }
 
@@ -88,7 +87,6 @@ public class SplashActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("SplashActivity");
-        MobclickAgent.onPause(this);
     }
 
     public void enterApp() {

@@ -351,7 +351,6 @@ public class QuchuDetailsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("PlaceDetailActivity");
-        MobclickAgent.onResume(this);
 
         super.onResume();
     }
@@ -361,7 +360,6 @@ public class QuchuDetailsActivity extends BaseActivity {
         super.onPause();
 
         MobclickAgent.onPageEnd("PlaceDetailActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override

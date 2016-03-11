@@ -246,7 +246,6 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         mapView.onResume();
 
         MobclickAgent.onPageStart("PlaceMapActivity");
-        MobclickAgent.onResume(this);
     }
 
     /**
@@ -258,7 +257,6 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         mapView.onPause();
         deactivate();
         MobclickAgent.onPageEnd("PlaceMapActivity");
-        MobclickAgent.onPause(this);
     }
 
     /**

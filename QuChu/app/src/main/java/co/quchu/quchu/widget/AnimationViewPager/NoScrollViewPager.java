@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.animation.AccelerateInterpolator;
+
+import java.lang.reflect.Field;
 
 /**
  * NoScrollViewPager
@@ -37,4 +40,15 @@ public class NoScrollViewPager extends ViewPager {
     }
 
 
+    public void setSlowAnimation(ViewPager viewPager) {
+        try {
+            Field field = ViewPager.class.getDeclaredField("mScroller");
+            field.setAccessible(true);
+            FixedSpeedScroller scroller = new FixedSpeedScroller(viewPager.getContext(),
+                    new AccelerateInterpolator());
+            field.set(viewPager, scroller);
+            scroller.setmDuration(400);
+        } catch (Exception e) {
+        }
+    }
 }

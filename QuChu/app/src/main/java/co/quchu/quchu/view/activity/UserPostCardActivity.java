@@ -124,13 +124,11 @@ public class UserPostCardActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("PlacePostCardActivity");
-        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("PlacePostCardActivity");
-        MobclickAgent.onPause(this);
     }
 }

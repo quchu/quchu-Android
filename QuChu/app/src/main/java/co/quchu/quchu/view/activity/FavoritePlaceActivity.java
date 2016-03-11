@@ -117,14 +117,12 @@ public class FavoritePlaceActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("FavoritePlaceActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("FavoritePlaceActivity");
-        MobclickAgent.onResume(this);
     }
 
     private void getUserFavoritePlaseFromeUserId(int pageNum) {
