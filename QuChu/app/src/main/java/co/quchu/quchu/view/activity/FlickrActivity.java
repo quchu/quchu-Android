@@ -267,11 +267,11 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
             @Override
             public void onSuccess(FlickrModel flickrModel) {
                 flickrImagesHot = flickrModel;
-                flickrListFragment = new FlickrListFragment(FlickrActivity.this, flickrImagesHot.getImgs());
-                flickrGridFragment = new FlickrGridFragment(FlickrActivity.this, flickrImagesHot.getImgs());
+                flickrListFragment = FlickrListFragment.newInstance(flickrImagesHot.getImgs());
+                flickrGridFragment = FlickrGridFragment.newInstance(flickrImagesHot.getImgs());
                 transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.flickr_fl, flickrListFragment);
-                transaction.commit();
+                transaction.commitAllowingStateLoss();
                 scrollViewFlickr.smoothScrollTo(0, 0);
                 showEmptyView(flickrImagesHot.getImgs());
                 if (!StringUtils.isEmpty(flickrImagesHot.getPhoto().getCover()))

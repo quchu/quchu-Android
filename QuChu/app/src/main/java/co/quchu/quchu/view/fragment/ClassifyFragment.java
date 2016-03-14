@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +25,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.activity.RecommendActivity;
+import co.quchu.quchu.view.activity.ClassifyDetailActivity;
 import co.quchu.quchu.view.adapter.ClassifyAdapter;
 import co.quchu.quchu.view.adapter.ClassifyDecoration;
 import co.quchu.quchu.widget.ErrorView;
@@ -85,10 +86,35 @@ public class ClassifyFragment extends BaseFragment {
                 cAdapter.setOnItemCliskListener(new ClassifyAdapter.ClasifyClickListener() {
                     @Override
                     public void cItemClick(View view, int position) {
-                        if (response.get(position).isIsSend()) {
-                            SPUtils.putValueToSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, response.get(position).getEn());
-                            SPUtils.putUserSelectedClassify(response.get(position).getEn());
-                            ((RecommendActivity) getActivity()).selectedClassify();
+                        ClassifyModel model = response.get(position);
+                        if (model.isIsSend()) {
+                            SPUtils.putValueToSPMap(getActivity(), AppKey.USERSELECTEDCLASSIFY, model.getEn());
+                            String title;
+                            switch (model.getEn()) {
+                                case "creative":
+                                    title = "灵感之源";
+                                    break;
+                                case "luxury":
+                                    title = "轻奢格调";
+                                    break;
+                                case "discover":
+                                    title = "探索世界";
+                                    break;
+                                case "social":
+                                    title = "有朋自远方来";
+                                    break;
+                                case "local":
+                                    title = "闲来无事";
+                                    break;
+                                case "culture":
+                                    title = "学而不倦";
+                                    break;
+                                default:
+                                    title = model.getZh();
+                            }
+                            Intent intent = new Intent(getActivity(), ClassifyDetailActivity.class);
+                            intent.putExtra(ClassifyDetailActivity.PARAMETER_TITLE, title);
+                            startActivity(intent);
                         }
                     }
                 });

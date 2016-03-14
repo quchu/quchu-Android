@@ -41,7 +41,6 @@ public class GsonRequest<T> extends Request<T> {
     private Type type;
     private String msg;
     private String exception;
-    private static Gson gson = new Gson();
     private ResponseListener<T> listener;
     private Map<String, String> params;
     private String paramsJson;
@@ -119,6 +118,7 @@ public class GsonRequest<T> extends Request<T> {
                     String data;
                     data = jsonObject.getString("data");
                     if (entity != null || type != null) {
+                        Gson gson = new Gson();
                         t = gson.fromJson(data, entity != null ? entity : type);
                     } else {
                         t = (T) data;
@@ -128,7 +128,6 @@ public class GsonRequest<T> extends Request<T> {
                     } else {
                         return Response.error(new NetworkError());
                     }
-
                 } else {
                     msg = jsonObject.getString("msg");
                     exception = jsonObject.getString("exception");
@@ -174,8 +173,9 @@ public class GsonRequest<T> extends Request<T> {
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> headers = new HashMap<>();
         headers.put("Charset", "UTF-8");
-        if (!StringUtils.isEmpty(SPUtils.getUserInfo(AppContext.mContext))) {
-            headers.put("quchu-token", SPUtils.getUserToken(AppContext.mContext));
+        String userInfo = SPUtils.getUserToken(AppContext.mContext);
+        if (!TextUtils.isEmpty(userInfo)) {
+            headers.put("quchu-token", userInfo);
         }
         return headers;
     }

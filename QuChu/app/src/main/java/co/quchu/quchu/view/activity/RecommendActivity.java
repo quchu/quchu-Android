@@ -33,8 +33,7 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.RecommendFragmentAdapter;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
-import co.quchu.quchu.view.fragment.DefaultRecommendFragment;
-import co.quchu.quchu.view.fragment.RecommendFragment2;
+import co.quchu.quchu.view.fragment.RecommendFragment;
 import co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager;
 import co.quchu.quchu.widget.AnimationViewPager.ZoomOutPageTransformer;
 import co.quchu.quchu.widget.MoreButtonView;
@@ -60,8 +59,7 @@ public class RecommendActivity extends BaseActivity {
     NoScrollViewPager recommendBodyVp;
 
     public long firstTime = 0;
-    private RecommendFragment2 recoFragment;
-    DefaultRecommendFragment defaultRecommendFragment;
+    private RecommendFragment recoFragment;
     private ArrayList<CityModel> list;
     private boolean isGuide = false;
     public int viewPagerIndex = 0;
@@ -96,24 +94,20 @@ public class RecommendActivity extends BaseActivity {
             return;
         switch (view.getId()) {
             case R.id.recommend_title_location_rl:
-                if (viewPagerIndex == 2) {
-                    recommendBodyVp.setCurrentItem(1);
-                    viewpagerSelected(1);
+                if (list != null) {
+                    showCityDialog();
                 } else {
-                    if (list != null) {
-                        showCityDialog();
-                    } else {
-                        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-                            @Override
-                            public void hasCityList(ArrayList<CityModel> list) {
-                                RecommendActivity.this.list = list;
-                                if (RecommendActivity.this.list != null) {
-                                    showCityDialog();
-                                }
+                    RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+                        @Override
+                        public void hasCityList(ArrayList<CityModel> list) {
+                            RecommendActivity.this.list = list;
+                            if (RecommendActivity.this.list != null) {
+                                showCityDialog();
                             }
-                        });
-                    }
+                        }
+                    });
                 }
+
                 break;
         }
     }
@@ -154,13 +148,11 @@ public class RecommendActivity extends BaseActivity {
    * 初始化ViewPager
    */
     public void InitViewPager() {
-        ArrayList<Fragment> fragmentList = new ArrayList<>();
-        recoFragment = new RecommendFragment2();
+        ArrayList<Fragment> fragmentList = new ArrayList<>(2);
+        recoFragment = new RecommendFragment();
         ClassifyFragment classifyFragment = new ClassifyFragment();
-        defaultRecommendFragment = new DefaultRecommendFragment();
         fragmentList.add(recoFragment);
         fragmentList.add(classifyFragment);
-        fragmentList.add(defaultRecommendFragment);
         //给ViewPager设置适配器
         recommendBodyVp.setAdapter(new RecommendFragmentAdapter(getSupportFragmentManager(), fragmentList));
         recommendBodyVp.setPageTransformer(true, new ZoomOutPageTransformer());
@@ -178,26 +170,10 @@ public class RecommendActivity extends BaseActivity {
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendBodyVp.setCurrentItem(1);//设置当前显示标签页为第二页
-        } else if (index == 2) {
-            recommendTitleLocationIv.setImageResource(R.drawable.ic_title_back);
-            titleContentTv.setText(SPUtils.getValueFromSPMap(this, AppKey.USERSELECTEDCLASSIFY_CHS, ""));
-            titleContentTv.setVisibility(View.VISIBLE);
-            recommendTitleCenterRtg.setViewVisibility(View.INVISIBLE);
-            recommendBodyVp.setCurrentItem(2);
         }
         viewPagerIndex = index;
     }
 
-
-    /**
-     * 选中分类后处理跳转及数据刷新
-     */
-    public void selectedClassify() {
-        if (defaultRecommendFragment != null) {
-            defaultRecommendFragment.changeDataSetFromServer();
-        }
-        viewpagerSelected(2);
-    }
 
     /**
      * 城市切换后调用
@@ -267,8 +243,6 @@ public class RecommendActivity extends BaseActivity {
         if (AppContext.dCardListNeedUpdate) {
             if (viewPagerIndex == 0) {
                 recoFragment.updateDateSet();
-            } else if (viewPagerIndex == 2) {
-                defaultRecommendFragment.updateDateSet();
             }
             AppContext.dCardListNeedUpdate = false;
             resumeUpdateDataTimes = 0;

@@ -26,6 +26,7 @@
     <string name="titlebar_word_about_us">关于我们</string>
     <string name="titlebar_word_place_detail">趣处详情</string>
     <string name="titlebar_word_user_center">个人主页</string>
+    <string name="titlebar_word_pcfromimage">明信片</string>
     <string name="titlebar_word_user_postcard">用户明信片</string>
     <!-- ********** 趣星球 ********* -->
     <string name="prb_default_symbolic_string">$</string>

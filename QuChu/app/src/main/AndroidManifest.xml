@@ -139,7 +139,7 @@
             android:screenOrientation="portrait" />
         <!-- 趣处详情 -->
         <activity
-            android:name="co.quchu.quchu.view.activity.QuchuDetailsActivity"
+            android:name=".view.activity.QuchuDetailsActivity"
             android:label="@string/titlebar_word_place_detail"
             android:screenOrientation="portrait" />
         <activity
@@ -149,6 +149,10 @@
         <activity
             android:name=".view.activity.UserCenterActivity"
             android:label="@string/titlebar_word_user_center"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.PostCardFromImageActivity"
+            android:label="@string/titlebar_word_pcfromimage"
             android:screenOrientation="portrait" />
         <!-- 关注的 -->
         <activity
@@ -253,7 +257,8 @@
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity android:name=".view.activity.PostcarDetailActivity"></activity>
+        <activity android:name=".view.activity.PostcarDetailActivity" />
+        <activity android:name=".view.activity.ClassifyDetailActivity"></activity>
     </application>
 
 </manifest>

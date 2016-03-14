@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -60,8 +59,6 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Classi
     public class ClassifyHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.item_classify_image_sdv)
         SimpleDraweeView itemClassifyImageSdv;
-        //        @Bind(R.id.item_classify_root_cv)
-//        CardView itemClassifyRootCv;
         private ClasifyClickListener listener;
 
         public ClassifyHolder(View itemView, ClasifyClickListener listener) {
