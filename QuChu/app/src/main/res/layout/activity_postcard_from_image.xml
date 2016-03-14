@@ -10,23 +10,26 @@
         layout="@layout/title_bar" />
 
     <RelativeLayout
+        android:id="@+id/animation_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_activity_bg"
-        android:layout_below="@id/title_bar_rl">
-<Button
-    android:id="@+id/buttonPanel"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="翻页"
-    android:layout_centerHorizontal="true"/>
-    <co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager
-        android:id="@+id/recommend_body_vp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/dialog_margin"
-    />
+        android:layout_below="@id/title_bar_rl"
+       >
+
+        <FrameLayout
+            android:id="@+id/recommend_body_fl_one"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dialog_margin" />
+
+        <FrameLayout
+            android:id="@+id/recommend_body_fl_two"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dialog_margin"
+            android:visibility="gone" />
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="6dp"

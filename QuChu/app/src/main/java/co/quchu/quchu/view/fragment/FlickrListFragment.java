@@ -31,16 +31,16 @@ public class FlickrListFragment extends BaseFragment {
     InnerListView fragmentFlickrLv;
 
     private View view;
-    private Context mContext;
     private FlickrModel.ImgsEntity images;
     private FlickrListAdapter listAdapter;
     ImageBDInfo bdInfo;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_flickr_list, null);
         ButterKnife.bind(this, view);
-        listAdapter = new FlickrListAdapter(mContext, images);
+        listAdapter = new FlickrListAdapter(getActivity(), images);
         fragmentFlickrLv.setAdapter(listAdapter);
         bdInfo = new ImageBDInfo();
         fragmentFlickrLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -84,9 +84,19 @@ public class FlickrListFragment extends BaseFragment {
         super.onDestroy();
     }
 
-    public FlickrListFragment(Context context, FlickrModel.ImgsEntity images) {
-        this.mContext = context;
-        this.images = images;
+    public static FlickrListFragment newInstance(FlickrModel.ImgsEntity images) {
+
+        Bundle args = new Bundle();
+        FlickrListFragment fragment = new FlickrListFragment();
+        args.putSerializable("images", images);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.images = (FlickrModel.ImgsEntity) getArguments().getSerializable("images");
     }
 
     public void updateDataSet(FlickrModel.ImgsEntity images) {

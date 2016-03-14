@@ -33,18 +33,24 @@ public class FlickrGridFragment extends Fragment {
 
     private FlickrModel.ImgsEntity images;
     private FlickrGridAdapter gridAdapter;
-    private Context context;
 
-    public FlickrGridFragment(Context context, FlickrModel.ImgsEntity imgs) {
-        this.context = context;
-        this.images = imgs;
+    public static FlickrGridFragment newInstance(FlickrModel.ImgsEntity images) {
+
+        Bundle args = new Bundle();
+        FlickrGridFragment fragment = new FlickrGridFragment();
+        args.putSerializable("images", images);
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    public FlickrGridFragment() {
-        this.context = getActivity();
-        this.images = new FlickrModel.ImgsEntity();
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.images = (FlickrModel.ImgsEntity) getArguments().getSerializable("images");
+        if (null==images){
+            this.images = new FlickrModel.ImgsEntity();
+        }
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

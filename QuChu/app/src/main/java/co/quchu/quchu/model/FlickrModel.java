@@ -77,7 +77,7 @@ public class FlickrModel implements Serializable{
         }
     }
 
-    public static class ImgsEntity {
+    public static class ImgsEntity implements Serializable {
         private int pageCount;
         private int pageSize;
         private int pagesNo;
