@@ -456,6 +456,12 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mFragmentStoped = false;
+    }
+
+    @Override
     public void onStop() {
         mFragmentStoped = true;
         if (null != mBackgroundSwitchAnimatorSet) {
