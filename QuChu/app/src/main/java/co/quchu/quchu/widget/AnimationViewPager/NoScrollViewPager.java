@@ -40,15 +40,19 @@ public class NoScrollViewPager extends ViewPager {
     }
 
 
-    public void setSlowAnimation(ViewPager viewPager) {
+    public void setSlowAnimation(ViewPager viewPager,int animationDuration) {
         try {
-            Field field = ViewPager.class.getDeclaredField("mScroller");
+            Field field = viewPager.getClass().getDeclaredField("mScroller");
             field.setAccessible(true);
             FixedSpeedScroller scroller = new FixedSpeedScroller(viewPager.getContext(),
                     new AccelerateInterpolator());
             field.set(viewPager, scroller);
-            scroller.setmDuration(400);
+            scroller.setmDuration(animationDuration);
         } catch (Exception e) {
         }
+    }
+
+    public void setSlowAnimation(ViewPager viewPager) {
+        setSlowAnimation(viewPager,2000);
     }
 }
