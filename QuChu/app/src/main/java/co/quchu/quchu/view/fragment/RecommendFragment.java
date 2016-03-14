@@ -103,7 +103,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
             switch (msg.what) {
                 case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
                     mSourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
-                    if (null != mSourceBitmap || !mSourceBitmap.isRecycled()) {
+                    if (null != mSourceBitmap && !mSourceBitmap.isRecycled()) {
                         executeSwitchAnimation(ImageUtils.doBlur(mSourceBitmap, fRecommendBimgBottom.getWidth() / 4, fRecommendBimgBottom.getHeight() / 4));
                     }
                     currentBGIndex = currentIndex;
@@ -353,7 +353,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
             cardList.addAll(arrayList);
             adapter.notifyDataSetChanged();
             pageCounts = pageCount;
-            pageNums = pageNum;
+            pageNums = ++pageNum;
             if (cardList.size() > 0)
                 recyclerView.smoothScrollToPosition(0);
 
@@ -370,7 +370,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
             Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
         } else {
             pageCounts = pageCount;
-            pageNums = pageNum;
+            pageNums = ++pageNum;
             if (arrayList != null && arrayList.size() > 0) {
                 cardList.addAll(arrayList);
                 adapter.notifyDataSetChanged();
