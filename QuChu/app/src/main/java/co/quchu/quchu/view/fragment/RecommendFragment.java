@@ -103,7 +103,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
             switch (msg.what) {
                 case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
                     mSourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
-                    if (null != mSourceBitmap || !mSourceBitmap.isRecycled()) {
+                    if (null != mSourceBitmap && !mSourceBitmap.isRecycled()) {
                         executeSwitchAnimation(ImageUtils.doBlur(mSourceBitmap, fRecommendBimgBottom.getWidth() / 4, fRecommendBimgBottom.getHeight() / 4));
                     }
                     currentBGIndex = currentIndex;
