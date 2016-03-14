@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
@@ -78,19 +77,7 @@ public class PostcarDetailActivity extends BaseActivity {
         titleContentTv.setText("我的明信片");
         item = (PostCardItemModel) getIntent().getSerializableExtra(REQUEST_PARAMATER_ENTITY);
         initPostCardDetailData();
-//        titleBackRl.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//
-//        moreButtonView.setMoreClick(new MoreButtonView.MoreClicklistener() {
-//            @Override
-//            public void moreClick() {
-//                startActivity(new Intent(PostcarDetailActivity.this, MenusActivity.class));
-//            }
-//        });
+        initTitleBar();
     }
 
 
@@ -222,9 +209,5 @@ public class PostcarDetailActivity extends BaseActivity {
         }
     }
 
-//    @Override
-//    public void onBackPressed() {
-////        super.onBackPressed();
-//        finish();
-//    }
+
 }

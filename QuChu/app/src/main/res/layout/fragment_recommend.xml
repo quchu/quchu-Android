@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/itemback"
     android:layout_width="match_parent"
+    android:background="@color/appBackground"
     android:layout_height="match_parent">
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/f_recommend_rvp"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never" />

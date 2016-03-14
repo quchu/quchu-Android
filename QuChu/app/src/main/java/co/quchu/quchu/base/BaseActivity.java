@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.photo.previewimage.PreviewAlbumImage;
 import co.quchu.quchu.photo.previewimage.PreviewImage;
 import co.quchu.quchu.view.activity.MenusActivity;
 import co.quchu.quchu.view.activity.PlaceMapActivity;
@@ -25,8 +25,6 @@ import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
 import co.quchu.quchu.widget.swipbacklayout.Utils;
 
-//import com.squareup.leakcanary.RefWatcher;
-
 /**
  * BaseActivity
  * User: Chenhs
@@ -36,7 +34,7 @@ import co.quchu.quchu.widget.swipbacklayout.Utils;
 public class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase, View.OnClickListener, MoreButtonView.MoreClicklistener {
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
-//    protected String TAG = getClass().getName();
+    protected String TAG = getClass().getName();
 
 
     @SuppressLint("InlinedApi")
@@ -44,8 +42,9 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         if (!(this instanceof PostcarDetailActivity)) {
-            if (this instanceof PreviewImage || this instanceof PreviewAlbumImage) {
+            if (this instanceof PreviewImage) {
                 overridePendingTransition(R.anim.in_alpha,
                         R.anim.out_alpha);
             } else {
@@ -55,9 +54,9 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         }
         //压栈
         ActManager.getAppManager().addActivity(this);
-        if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof SplashActivity||this instanceof PostcarDetailActivity
-                || this instanceof PreviewImage || this instanceof PreviewAlbumImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
 
+        if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof PostcarDetailActivity || this instanceof SplashActivity
+                || this instanceof PreviewImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
         } else if (this instanceof MenusActivity) {
             mHelper = new SwipeBackActivityHelper(this);
             mHelper.onActivityCreate();
@@ -78,7 +77,16 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        RefWatcher refWatcher = AppContext.getRefWatcher(getApplicationContext());
+        refWatcher.watch(this);
+        // 结束Activity&从堆栈中移除
+   /*     if (this instanceof PlanetActivity) {
+            ActManager.getAppManager().AppExit();
+        } else {*/
+
         ActManager.getAppManager().finishActivity(this);
+        /*}*/
+
     }
 
     @Override
@@ -90,7 +98,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
             if (this instanceof MenusActivity) {
                 overridePendingTransition(R.anim.out_bottom_to_top,
                         R.anim.out_bottom_to_top);
-            } else if (this instanceof PreviewImage || this instanceof PreviewAlbumImage) {
+            } else if (this instanceof PreviewImage) {
                 overridePendingTransition(R.anim.in_alpha,
                         R.anim.out_alpha);
             } else {
@@ -104,6 +112,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
 
@@ -114,6 +123,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
             overridePendingTransition(R.anim.in_top_to_bottom,
                     R.anim.in_stable);
         }
+        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);
     }
 

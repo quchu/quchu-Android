@@ -58,11 +58,11 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         if (position < getItemCount() - 1) {
             holder.itemSearchHistoryStrTv.setText(searchModel.getSearchList().get(position).getSerachStr());
             LogUtils.json("position==" + position + "///str==" + searchModel.getSearchList().get(position).getSerachStr());
-            holder.itemSearchHistoryClearRl.setVisibility(View.GONE);
+            //holder.itemSearchHistoryClearRl.setVisibility(View.GONE);
         } else {
             holder.itemSearchHistoryStrTv.setVisibility(View.GONE);
             holder.itemSearchHistoryDeleteRl.setVisibility(View.GONE);
-            holder.itemSearchHistoryClearRl.setVisibility(View.VISIBLE);
+            //holder.itemSearchHistoryClearRl.setVisibility(View.VISIBLE);
         }
     }
 
@@ -106,8 +106,8 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         RelativeLayout itemSearchHistoryDeleteRl;
         @Bind(R.id.item_search_history_str_tv)
         TextView itemSearchHistoryStrTv;
-        @Bind(R.id.item_search_history_clear_rl)
-        RelativeLayout itemSearchHistoryClearRl;
+//        @Bind(R.id.item_search_history_clear_rl)
+//        RelativeLayout itemSearchHistoryClearRl;
         private SearchHItemClickListener listener;
 
         SearchHolder(View view, SearchHItemClickListener listener) {
@@ -117,7 +117,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
                 this.listener = listener;
         }
 
-        @OnClick({R.id.item_search_history_delete_rl, R.id.item_search_history_str_tv, R.id.item_search_history_clear_rl})
+        @OnClick({R.id.item_search_history_delete_rl, R.id.item_search_history_str_tv})
         @Override
         public void onClick(View v) {
             if (KeyboardUtils.isFastDoubleClick())
@@ -130,9 +130,9 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
                     case R.id.item_search_history_str_tv:
                         listener.itemTVClick(getPosition());
                         break;
-                    case R.id.item_search_history_clear_rl:
-                        listener.itemRemoveAllClick();
-                        break;
+//                    case R.id.item_search_history_clear_rl:
+//                        listener.itemRemoveAllClick();
+//                        break;
                 }
         }
     }

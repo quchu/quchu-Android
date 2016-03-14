@@ -5,10 +5,20 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/new_recommend_tablayout_color"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="fixed" />
+
     <ImageView
         android:id="@+id/f_recommend_bimg_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/tabLayout"
         android:scaleType="fitXY"
         android:visibility="visible" />
 
@@ -16,15 +26,9 @@
         android:id="@+id/f_recommend_bimg_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabBackground="@color/new_recommend_tablayout_color"
-        app:tabIndicatorHeight="0dp"
-        app:tabMode="fixed" />
+        android:layout_below="@id/tabLayout"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_user_guide" />
 
     <co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout
         android:id="@+id/refreshLayout"
@@ -34,10 +38,9 @@
 
 
         <co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager
-            android:id="@+id/f_recommend_rvp"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/f_recommend_bottom_rl"
             android:clipToPadding="false"
             android:overScrollMode="never"
             android:paddingLeft="32dp"

@@ -11,6 +11,8 @@ import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.google.gson.Gson;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 
@@ -39,28 +41,41 @@ public class AppContext extends Application {
     public static RecommendModel selectedPlace; //推荐分类 数据源
     public static boolean dCardListNeedUpdate = false;
 
-//    private RefWatcher refWatcher;
-//    public static RefWatcher getRefWatcher(Context context) {
-//        AppContext application = (AppContext) context.getApplicationContext();
-//        return application.refWatcher;
-//    }
+    private RefWatcher refWatcher;
+
+    public static RefWatcher getRefWatcher(Context context) {
+        AppContext application = (AppContext) context.getApplicationContext();
+        return application.refWatcher;
+    }
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        //refWatcher = LeakCanary.install(this);
+        refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
+   /*     AnalyticsConfig.setChannel("quchu_360");
+        LogUtils.json("userinfo=" + SPUtils.getUserInfo(mContext));
+        LogUtils.json("userToken=" + SPUtils.getUserToken(mContext));*/
+
+
         ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
                 .build();
         Fresco.initialize(getApplicationContext(), imagePipelineConfig);
+//        GenericDraweeHierarchyBuilder builder =
+//                new GenericDraweeHierarchyBuilder(getResources());
+//        GenericDraweeHierarchy hierarchy = builder
+//                .setFadeDuration(300)
+//                .build();
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
-            LogUtils.json(SPUtils.getUserInfo(this));
-            user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
-
+            if (user == null) {
+                LogUtils.json(SPUtils.getUserInfo(this));
+                user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
+            }
         }
         gatherList = new ArrayList<>();
+//        initImageLoader();
         initWidths();
     }
 
@@ -71,6 +86,21 @@ public class AppContext extends Application {
         Height = dm.heightPixels;
     }
 
+//    private void initImageLoader() {
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//                mContext).threadPriority(Thread.NORM_PRIORITY - 2)
+//                .denyCacheImageMultipleSizesInMemory()
+//                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+//                .tasksProcessingOrder(QueueProcessingType.LIFO)
+//                .memoryCacheSize(2 * 1024 * 1024) //缓存到内存的最大数据
+//                .memoryCacheSize(50 * 1024 * 1024) //设置内存缓存的大小
+//                .diskCacheFileCount(200)
+//                .writeDebugLogs() // Remove for release app
+//                .build();
+//        // Initialize ImageLoader with configuration.
+//        ImageLoader.getInstance().init(config);
+//        //    SPUtils.initGuideIndex();
+//    }
 
     @Override
     public void onTerminate() {
@@ -79,12 +109,15 @@ public class AppContext extends Application {
             mLocationClient.onDestroy();
             mLocationClient = null;
         }
+        //   System.exit(0);
     }
 
     //声明AMapLocationClient类对象
     private static AMapLocationClient mLocationClient = null;
     //声明定位回调监听器
     private static AMapLocationListener mLocationListener = null;
+    //声明mLocationOption对象
+    private static AMapLocationClientOption mLocationOption = null;
 
     public static void initLocation() {
         //初始化定位
@@ -95,7 +128,7 @@ public class AppContext extends Application {
         //设置定位回调监听
         mLocationClient.setLocationListener(mLocationListener);
         //初始化定位参数
-        AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
+        mLocationOption = new AMapLocationClientOption();
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置是否返回地址信息（默认返回地址信息）
@@ -122,4 +155,5 @@ public class AppContext extends Application {
         }
         mLocationListener = null;
     }
+
 }

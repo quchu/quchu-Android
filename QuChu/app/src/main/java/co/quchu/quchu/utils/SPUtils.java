@@ -19,55 +19,39 @@ public class SPUtils {
 
     /**
      * 存储布尔值
-     *
-     * @param mContext
-     * @param key
-     * @param value
      */
     public static void putBooleanToSPMap(Context mContext, String key, boolean value) {
         preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.putBoolean(key, value);
-        edit.commit();
+        edit.apply();
     }
 
     /**
      * 获取布尔值
-     *
-     * @param mContext
-     * @param key
-     * @return
      */
     public static Boolean getBooleanFromSPMap(Context mContext, String key) {
         preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        boolean value = preferences.getBoolean(key, false);
-        return value;
+        return preferences.getBoolean(key, false);
     }
 
     public static Boolean getBooleanFromSPMap(Context mContext, String key, boolean def) {
         preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        boolean value = preferences.getBoolean(key, def);
-        return value;
+        return preferences.getBoolean(key, def);
     }
 
     /**
      * 存储String
-     *
-     * @param mContext
-     * @param key
-     * @param value
      */
     public static void putValueToSPMap(Context mContext, String key, String value) {
         preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.putString(key, value);
-        edit.commit();
+        edit.apply();
     }
 
     /**
      * 存储多个String
-     *
-     * @param mContext
      */
     public static void putValueToSPMap(Context mContext, Map<String, String> map) {
         preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
@@ -77,21 +61,16 @@ public class SPUtils {
             value = map.get(key);
             edit.putString(key, value);
         }
-        edit.commit();
+        edit.apply();
     }
 
     /**
      * 获取String
-     *
-     * @param mContext
-     * @param key
-     * @return value
      */
     public static String getValueFromSPMap(Context mContext, String key) {
         if (null != mContext) {
             preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-            String value = preferences.getString(key, "");
-            return value;
+            return preferences.getString(key, "");
         } else {
             return null;
         }
@@ -106,18 +85,12 @@ public class SPUtils {
 
     /**
      * 获取String
-     *
-     * @param mContext
-     * @param key
-     * @param defaults 无值时取defaults
-     * @return
      */
 
     public static String getValueFromSPMap(Context mContext, String key, String defaults) {
         if (null != mContext) {
             preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-            String value = preferences.getString(key, defaults);
-            return value;
+            return preferences.getString(key, defaults);
         } else {
             return null;
         }
@@ -125,29 +98,21 @@ public class SPUtils {
 
     /**
      * 保存int
-     *
-     * @param mContext
      */
     public static void putIntToSPMap(Context mContext, String key, int value) {
         preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.putInt(key, value);
-        edit.commit();
+        edit.apply();
     }
 
     /**
      * 取 int
-     *
-     * @param mContext
-     * @param key
-     * @param defaults
-     * @return
      */
     public static int getIntFromSPMap(Context mContext, String key, int defaults) {
         if (null != mContext) {
             preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-            int value = preferences.getInt(key, defaults);
-            return value;
+            return preferences.getInt(key, defaults);
         } else {
             return 0;
         }
@@ -155,21 +120,16 @@ public class SPUtils {
 
     /**
      * 清除全部
-     *
-     * @param mContext
      */
     public static void clearSPMap(Context mContext) {
         preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.clear();
-        edit.commit();
+        edit.apply();
     }
 
     /**
      * 指定key清除
-     *
-     * @param mContext
-     * @param key
      */
     public static void clearSpMap(Context mContext, String key) {
         putValueToSPMap(mContext, key, "");
@@ -228,29 +188,6 @@ public class SPUtils {
         return Double.parseDouble(getValueFromSPMap(AppContext.mContext, AppKey.LAT, "0"));
     }
 
-
-    public static void putUserSelectedClassify(String enStr) {
-        switch (enStr) {
-            case "creative":
-                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "灵感之源");
-                break;
-            case "luxury":
-                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "轻奢格调");
-                break;
-            case "discover":
-                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "探索世界");
-                break;
-            case "social":
-                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, " 有朋自远方来");
-                break;
-            case "local":
-                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "闲来无事");
-                break;
-            case "culture":
-                SPUtils.putValueToSPMap(AppContext.mContext, AppKey.USERSELECTEDCLASSIFY_CHS, "学而不倦");
-                break;
-        }
-    }
 
     /**
      * 初始化 引导页 标志
