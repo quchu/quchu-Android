@@ -14,7 +14,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.view.adapter.RecommendFragmentAdapter;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
-import co.quchu.quchu.view.fragment.RecommendFragment2;
+import co.quchu.quchu.view.fragment.RecommendFragment;
 import co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager;
 import co.quchu.quchu.widget.AnimationViewPager.RotatePageTransformer;
 
@@ -64,7 +64,7 @@ public class PostCardFromImageActivity extends BaseActivity {
    */
     public void InitViewPager() {
         ArrayList<Fragment> fragmentList = new ArrayList<>();
-        RecommendFragment2 recoFragment = new RecommendFragment2();
+        RecommendFragment recoFragment = new RecommendFragment();
         ClassifyFragment classifyFragment = new ClassifyFragment();
         fragmentList.add(recoFragment);
         fragmentList.add(classifyFragment);

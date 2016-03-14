@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="co.quchu.quchu.view.activity.ClassifyDetailActivity">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/title_bar" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title"
+        android:background="@color/appBackground"
+        android:overScrollMode="never" />
+
+    <co.quchu.quchu.widget.ErrorView
+        android:id="@+id/errorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@id/title"
+        android:background="@drawable/shadow_bottom" />
+</RelativeLayout>

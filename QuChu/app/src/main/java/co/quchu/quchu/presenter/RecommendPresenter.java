@@ -47,6 +47,7 @@ public class RecommendPresenter {
                     SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
             );
         }
+        DialogUtil.showProgess(context,"加载中!!");
 
         NetService.get(context, urlStr, new IRequestListener() {
 
