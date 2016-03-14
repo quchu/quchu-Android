@@ -353,7 +353,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
             cardList.addAll(arrayList);
             adapter.notifyDataSetChanged();
             pageCounts = pageCount;
-            pageNums = pageNum;
+            pageNums = ++pageNum;
             if (cardList.size() > 0)
                 recyclerView.smoothScrollToPosition(0);
 
@@ -370,7 +370,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
             Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
         } else {
             pageCounts = pageCount;
-            pageNums = pageNum;
+            pageNums = ++pageNum;
             if (arrayList != null && arrayList.size() > 0) {
                 cardList.addAll(arrayList);
                 adapter.notifyDataSetChanged();
