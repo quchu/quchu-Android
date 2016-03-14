@@ -27,10 +27,8 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.presenter.RecommendPresenter;
-import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.RecommendFragmentAdapter;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
@@ -81,8 +79,8 @@ public class RecommendActivity extends BaseActivity {
                 RecommendActivity.this.list = list;
             }
         });
+
         recommendTitleMoreRl.setMoreClick(this);
-        recommendBodyVp.setOffscreenPageLimit(2);
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
