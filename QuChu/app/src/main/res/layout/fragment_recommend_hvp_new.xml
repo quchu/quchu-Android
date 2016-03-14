@@ -5,18 +5,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <ImageView
-        android:id="@+id/f_recommend_bimg_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/f_recommend_bimg_top"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
@@ -25,6 +13,22 @@
         app:tabBackground="@color/new_recommend_tablayout_color"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed" />
+
+    <ImageView
+        android:id="@+id/f_recommend_bimg_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabLayout"
+        android:scaleType="fitXY"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/f_recommend_bimg_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabLayout"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_user_guide" />
 
     <co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout
         android:id="@+id/refreshLayout"
