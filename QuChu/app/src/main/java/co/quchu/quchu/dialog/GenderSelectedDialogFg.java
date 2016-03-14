@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -84,14 +87,30 @@ public class GenderSelectedDialogFg extends BlurDialogFragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_location_selected, null);
         ButterKnife.bind(this, view);
         dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new LocationSelectedAdapter(cityList, dialogLocationSelectedCityTv, getActivity(), 1);
+        adapter = new LocationSelectedAdapter(cityList, dialogLocationSelectedCityTv, getActivity(), 1, new LocationSelectedAdapter.OnItemSelectedListener() {
+            @Override
+            public void onSelected() {
+                dialogLocationSubmitTv.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogLocationSubmitTv.performClick();
+                    }
+                });
+            }
+        });
         dialogLocationRv.setAdapter(adapter);
         if (cityList != null && cityList.size() >= 2) {
             dialogLocationSelectedCityTv.setText("设置性别:" + (cityList.get(0).isSelected() ? cityList.get(0).getCvalue() : cityList.get(1).getCvalue()));
             StringUtils.alterTextColor(dialogLocationSelectedCityTv, 5, 6, R.color.gene_textcolor_yellow);
         }
         builder.setView(view);
-        return builder.create();
+
+        //去掉背景&将其居中
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.gravity = Gravity.CENTER;
+        return dialog;
     }
 
     @Override

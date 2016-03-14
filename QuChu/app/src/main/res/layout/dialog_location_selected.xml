@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/appBackground"
+
     android:orientation="vertical">
+    <!-- android:background="@color/appBackground"-->
 
     <TextView
         android:id="@+id/dialog_location_selected_city_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/base_margin"
+        android:visibility="gone"
         android:textColor="@color/text_color_white"
         android:textSize="@dimen/word_subhead_size" />
     <!--
@@ -55,10 +57,22 @@
         android:overScrollMode="never"
         android:scrollbars="none" />
 
+    <TextView
+        android:id="@+id/tv_bottom_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/more_cities_coming_soon"
+        android:textColor="@color/white"
+        android:textSize="@dimen/word_size_minimum"
+        />
+
     <RelativeLayout
         android:id="@+id/dialog_location_bottom_textviews_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/quarter_margin">
 
         <TextView

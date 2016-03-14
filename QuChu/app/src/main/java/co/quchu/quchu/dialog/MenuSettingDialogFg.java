@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -87,7 +90,12 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
         ButterKnife.bind(this, view);
         builder.setView(view);
 
-        return builder.create();
+        //去掉背景&将其居中
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.gravity = Gravity.CENTER;
+        return dialog;
     }
 
     @OnClick({R.id.dialog_menu_setting_account_setting_tv, R.id.dialog_menu_setting_aboutus_tv,

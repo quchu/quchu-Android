@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -53,6 +57,8 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     RelativeLayout dialogLocationBottomTextviewsRl;
     @Bind(R.id.dialog_location_rv)
     RecyclerView dialogLocationRv;
+    @Bind(R.id.tv_bottom_tips)
+    TextView tvBottomTips;
 
     private ArrayList<CityModel> cityList;
 
@@ -89,13 +95,29 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
         ButterKnife.bind(this, view);
         initSelected();
         dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new LocationSelectedAdapter(cityList, dialogLocationSelectedCityTv, getActivity());
+        adapter = new LocationSelectedAdapter(cityList, dialogLocationSelectedCityTv, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
+            @Override
+            public void onSelected() {
+                dialogLocationSubmitTv.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogLocationSubmitTv.performClick();
+                    }
+                });
+            }
+        });
         dialogLocationRv.setAdapter(adapter);
         builder.setView(view);
+        tvBottomTips.setVisibility(View.VISIBLE);
         dialogLocationSelectedCityTv.setText("所在城市:" + SPUtils.getCityName());
         StringUtils.alterTextColor(dialogLocationSelectedCityTv, 5, 5 + SPUtils.getCityName().length(), R.color.gene_textcolor_yellow);
 
-        return builder.create();
+        //去掉背景&将其居中
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.gravity = Gravity.CENTER;
+        return dialog;
     }
 
     @Override

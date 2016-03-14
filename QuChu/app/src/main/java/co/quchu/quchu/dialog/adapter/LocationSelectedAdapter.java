@@ -2,6 +2,7 @@ package co.quchu.quchu.dialog.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,23 +30,26 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
     private TextView titleText;
     private int selectedIndex = 0;
     private int dataType = 0;
+    private OnItemSelectedListener mListener;
 
-    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext) {
+    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext,OnItemSelectedListener listener) {
         cityList = cList;
         this.titleText = titleText;
         this.mContext = mContext;
+        this.mListener = listener;
     }
 
-    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext, int dataType) {
+    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext, int dataType,OnItemSelectedListener listener) {
         cityList = cList;
         this.titleText = titleText;
         this.mContext = mContext;
         this.dataType = dataType;
+        this.mListener = listener;
     }
 
     @Override
     public LocationHodler onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new LocationHodler(View.inflate(parent.getContext(), R.layout.dialog_item_city, null));
+        return new LocationHodler(LayoutInflater.from(parent.getContext()).inflate(R.layout.dialog_item_city,parent,false));
     }
 
 
@@ -93,7 +97,14 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
             cityList.get(selectedIndex).setIsSelected(false);
             cityList.get(getPosition()).setIsSelected(true);
             notifyDataSetChanged();
+            if (null!=mListener){
+                mListener.onSelected();
+            }
         }
+    }
+
+    public interface OnItemSelectedListener {
+        void onSelected();
     }
 
     public int getSelectedIndex() {
