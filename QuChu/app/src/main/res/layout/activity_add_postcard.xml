@@ -70,7 +70,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/add_postcard_group_ll"
         android:layout_below="@id/add_postcard_top_ll"
-        android:background="@drawable/ic_activity_bg"
+        android:background="@drawable/shape_activity_bg"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:scrollbars="none">

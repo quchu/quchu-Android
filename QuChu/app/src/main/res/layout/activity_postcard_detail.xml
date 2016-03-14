@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/postcard_detail_titlebar"
-        android:background="@drawable/ic_activity_bg">
+        android:background="@drawable/shape_activity_bg">
 
         <android.support.v7.widget.CardView
             android:id="@+id/root_cv"

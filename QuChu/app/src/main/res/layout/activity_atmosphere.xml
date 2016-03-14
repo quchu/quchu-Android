@@ -13,13 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title_bar"
-        android:background="@drawable/ic_activity_bg">
+        android:background="@drawable/shape_activity_bg">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/atmosphere_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_activity_bg"
+            android:background="@drawable/shape_activity_bg"
             android:overScrollMode="never" />
 
         <FrameLayout

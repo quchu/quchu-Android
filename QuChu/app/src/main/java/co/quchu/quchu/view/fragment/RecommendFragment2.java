@@ -307,6 +307,7 @@ public class RecommendFragment2 extends BaseFragment implements RecommendAdapter
                 if (view != null) {
                     view.setTextSize(15);
                 }
+                currentIndex=-1;
                 selectedTag = tagList.get(tab.getPosition()).getEn();
                 LogUtils.json("selectedTag=" + selectedTag);
                 presenter.initTabData(false, selectedTag);

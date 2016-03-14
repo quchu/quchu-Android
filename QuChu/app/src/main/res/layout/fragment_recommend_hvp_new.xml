@@ -28,7 +28,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tabLayout"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_user_guide" />
+        android:src="@color/appBackground" />
 
     <co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout
         android:id="@+id/refreshLayout"
