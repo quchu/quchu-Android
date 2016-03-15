@@ -90,9 +90,13 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_location_selected, null);
         ButterKnife.bind(this, view);
+        Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setContentView(view);
+
         initSelected();
         dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         adapter = new LocationSelectedAdapter(cityList, dialogLocationSelectedCityTv, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
@@ -107,16 +111,10 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
             }
         });
         dialogLocationRv.setAdapter(adapter);
-        builder.setView(view);
         tvBottomTips.setVisibility(View.VISIBLE);
         dialogLocationSelectedCityTv.setText("所在城市:" + SPUtils.getCityName());
         StringUtils.alterTextColor(dialogLocationSelectedCityTv, 5, 5 + SPUtils.getCityName().length(), R.color.gene_textcolor_yellow);
 
-        //去掉背景&将其居中
-        AlertDialog dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.gravity = Gravity.CENTER;
         return dialog;
     }
 

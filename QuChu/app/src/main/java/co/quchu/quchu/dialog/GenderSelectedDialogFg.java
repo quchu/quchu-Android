@@ -83,9 +83,16 @@ public class GenderSelectedDialogFg extends BlurDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_location_selected, null);
         ButterKnife.bind(this, view);
+        Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setContentView(view);
+
+
+
+
         dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         adapter = new LocationSelectedAdapter(cityList, dialogLocationSelectedCityTv, getActivity(), 1, new LocationSelectedAdapter.OnItemSelectedListener() {
             @Override
@@ -103,13 +110,7 @@ public class GenderSelectedDialogFg extends BlurDialogFragment {
             dialogLocationSelectedCityTv.setText("设置性别:" + (cityList.get(0).isSelected() ? cityList.get(0).getCvalue() : cityList.get(1).getCvalue()));
             StringUtils.alterTextColor(dialogLocationSelectedCityTv, 5, 6, R.color.gene_textcolor_yellow);
         }
-        builder.setView(view);
 
-        //去掉背景&将其居中
-        AlertDialog dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.gravity = Gravity.CENTER;
         return dialog;
     }
 
