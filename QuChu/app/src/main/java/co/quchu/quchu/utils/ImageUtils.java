@@ -7,6 +7,14 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -160,5 +168,20 @@ public class ImageUtils {
         }
 
         return filePath;
+    }
+
+    public static void ShowImage(String uri, final SimpleDraweeView view) {
+
+
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse(uri))
+                .setResizeOptions(new ResizeOptions(150, 150))//图片目标大小
+                .build();
+
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setOldController(view.getController())
+                .setImageRequest(imageRequest)
+                .build();
+        view.setController(controller);
     }
 }

@@ -78,7 +78,10 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                 startActivity(new Intent(this, SearchActivity.class));
                 break;
             case R.id.menus_add_topic:
-                Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, " 即将开放，敬请期待 ", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, FindPositionActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.menu_visitor_login_iv:
                 startActivity(new Intent(this, UserLoginActivity.class));
@@ -92,7 +95,6 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                 break;
         }
     }
-
 
 
     @Override
@@ -169,7 +171,7 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                 MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;
             case PullMenusView.ClickHome:
-               ActManager.getAppManager().finishActivitiesAndKeepLastOne();
+                ActManager.getAppManager().finishActivitiesAndKeepLastOne();
                 break;
         }
     }

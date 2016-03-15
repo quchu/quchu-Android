@@ -257,8 +257,16 @@
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity android:name=".view.activity.PostcarDetailActivity" />
-        <activity android:name=".view.activity.ClassifyDetailActivity"></activity>
+        <activity
+            android:name=".view.activity.PostcarDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ClassifyDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.FindPositionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
