@@ -99,7 +99,7 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected final Map<String, String> getParams() throws AuthFailureError {
-        return params;
+                                         return params;
     }
 
     @Override

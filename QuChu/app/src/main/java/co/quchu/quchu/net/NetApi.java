@@ -11,6 +11,7 @@ public class NetApi {
     public static String RELEASE_HOST = "http://www.quchu.co/appservices";
     public static String HOST_UAT = "http://uat.quchu.co:8080/appservices";
     public static String HOST_SIT = "http://sit.quchu.co:8080/appservices";
+//    public static String HOST_SIT = "http://192.168.1.134:8080/appservices";
 
     //  public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";

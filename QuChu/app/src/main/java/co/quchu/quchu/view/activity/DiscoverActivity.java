@@ -131,7 +131,7 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
             String path = item.getImgpath();
             PhotoInfo info = new PhotoInfo();
             info.setPhotoPath(path);
-            photos.add(info);
+             photos.add(info);
         }
         Intent intent = new Intent(this, FindPositionActivity.class);
         intent.putExtra(FindPositionActivity.REQUEST_KEY_NAME, name);

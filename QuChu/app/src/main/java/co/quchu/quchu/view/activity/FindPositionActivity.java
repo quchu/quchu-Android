@@ -134,8 +134,10 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                 if (photoInfos.size() > 0 && !photoInfos.get(0).getPhotoPath().contains("res:///") || photoInfos.size() > 2) {
                     List<String> im = new ArrayList<String>();
                     for (PhotoInfo item : photoInfos) {
-                        if (!item.getPhotoPath().contains("res:///")) {
+                        if (item.getPhotoPath().contains("file://")) {
                             im.add(Uri.parse(item.getPhotoPath()).getPath());
+                        } else if (item.getPhotoPath().contains("http://")) {
+                            im.add(item.getPhotoPath());
                         }
                     }
                     if (im.size() > 0) {
@@ -169,9 +171,9 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private void sendToServer(String name, String position, String desc, String Images) {
         String url;
         if (id != -1) {
-            url = String.format(NetApi.findPosition, id+"", name, position, desc, Images);
+            url = String.format(NetApi.findPosition, id + "", name, position, desc, Images);
         } else {
-            url = String.format(NetApi.findPosition, "",name, position, desc, Images);
+            url = String.format(NetApi.findPosition, "", name, position, desc, Images);
         }
 
 

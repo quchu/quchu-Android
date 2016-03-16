@@ -2,6 +2,7 @@ package co.quchu.quchu.net;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.qiniu.android.http.ResponseInfo;
@@ -55,9 +56,10 @@ public class ImageUpload {
         final int totalSize = files.size();
         UploadManager uploadManager = new UploadManager();
         String defaulQiNiuFileName = "%d-%d.JPEG";
-        for (String item : files) {
+        for (int i = 0, s = files.size(); i < s; i++) {
+            String item = files.get(i);
             if (item.contains("http://")) {
-                buffer.append(item);
+                buffer.append(Uri.parse(item).getPath());
                 buffer.append("|");
                 continue;
             }
@@ -96,7 +98,8 @@ public class ImageUpload {
         @Override
         protected List<String> doInBackground(Void... params) {
             List<String> result = new ArrayList<>();
-            for (String item : path) {
+            for (int i = 0, s = path.size(); i < s; i++) {
+                String item = path.get(i);
                 try {
                     if (item.contains("http://")) {
                         result.add(item);
