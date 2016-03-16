@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.net.ImageUpload;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;

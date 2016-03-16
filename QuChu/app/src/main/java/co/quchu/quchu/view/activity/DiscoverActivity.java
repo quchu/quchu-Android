@@ -67,6 +67,7 @@ public class DiscoverActivity extends BaseActivity {
         super.onResume();
         MobclickAgent.onPageStart("DiscoverActivity");
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -79,7 +80,7 @@ public class DiscoverActivity extends BaseActivity {
             public void onSuccess(JSONObject response) {
                 LogUtils.json("initDiscoverData==" + response);
                 try {
-                    if (response != null && response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
+                    if (response != null && response.has("result") && !StringUtils.isEmpty(response.getString("result")) && !"null".equals(response.getString("result"))) {
                         Gson gson = new Gson();
                         DiscoverModel model = gson.fromJson(response.toString(), DiscoverModel.class);
                         if (model != null && model.getResult().size() > 0) {
@@ -97,8 +98,6 @@ public class DiscoverActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
 
             @Override

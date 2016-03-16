@@ -80,6 +80,12 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/line_color" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -103,10 +109,17 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/line_color" />
+
                 <EditText
                     android:id="@+id/detail"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
+                    android:layout_marginTop="5dp"
                     android:background="@null"
                     android:gravity="top"
                     android:hint="写两行以上的内容,更容易被我们采纳~"

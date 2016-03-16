@@ -1,6 +1,9 @@
 package co.quchu.quchu.net;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
@@ -9,6 +12,14 @@ import com.qiniu.android.storage.UploadManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
 
@@ -18,79 +29,127 @@ import co.quchu.quchu.utils.LogUtils;
  * desc:
  */
 public class ImageUpload {
+    private Context context;
+    private UploadResponseListener listener;
+    private List<String> path;
+    private File cacheDir;
+    private String qiniuToken;
 
-    private String[] paths;
-
-    public ImageUpload(String[] paths) {
-        this.paths = paths;
+    public ImageUpload(Context context, List<String> path, UploadResponseListener listener) {
+        this.context = context;
+        this.path = path;
+        this.listener = listener;
+        cacheDir = context.getCacheDir();
+        getToken(context);
     }
 
-
-    public void upLoad(String[] path, String token) {
-        // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
-        UploadManager uploadManager = new UploadManager();
-        for (String item : path) {
-            uploadManager.put(item, null, token,
-                    new UpCompletionHandler() {
-                        @Override
-                        public void complete(String key, ResponseInfo info, JSONObject res) {
-
-                        }
-                    }, null);
-        }
-    }
+    int faild;
+    int succeed;
+    StringBuffer buffer = new StringBuffer();
 
     /**
-     * 压缩上传
+     * @param files 压缩后的图片
+     * @param token 骑牛token
      */
-    public void upLoadCompress(String[] path, String token) {
+    private void upLoad(List<String> files, String token) {
         // 重用 uploadManager。一般地，只需要创建一个 uploadManager 对象
-
-
+        final int totalSize = files.size();
         UploadManager uploadManager = new UploadManager();
-        for (String item : path) {
-            try {
-                ImageUtils.saveFile(ImageUtils.getimage(item), "");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        String defaulQiNiuFileName = "%d-%d.JPEG";
+        for (String item : files) {
+            String key = String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis());
 
-            uploadManager.put(item, null, token,
+            uploadManager.put(item, key, token,
                     new UpCompletionHandler() {
                         @Override
                         public void complete(String key, ResponseInfo info, JSONObject res) {
+                            if (info.isOK()) {
+                                succeed++;
+                                buffer.append(key);
+                                buffer.append("|");
+                            } else {
+                                faild++;
+                            }
+                            if (succeed + faild == totalSize) {
+                                listener.finish(buffer.toString());
+                            }
 
                         }
                     }, null);
         }
     }
 
-    public interface UploadResponse {
-        void finish();
+
+    /**
+     * 压缩图片
+     */
+    class MyAsyncTask extends AsyncTask<Void, Void, List<String>> {
+        List<String> path;
+
+        public MyAsyncTask(List<String> path) {
+            this.path = path;
+        }
+
+        @Override
+        protected List<String> doInBackground(Void... params) {
+            List<String> result = new ArrayList<>();
+            for (String item : path) {
+                try {
+                    Bitmap bm = ImageUtils.getimage(item);
+                    File file = new File(cacheDir, getRondom());
+                    ImageUtils.saveFile(bm, file.getAbsolutePath());
+                    result.add(file.getAbsolutePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> strings) {
+            upLoad(strings, qiniuToken);
+        }
+    }
+
+    public interface UploadResponseListener {
+        void finish(String result);
 
         void error();
     }
 
     public void getToken(Context context) {
         NetService.get(context, NetApi.getQiniuToken, new IRequestListener() {
+
+
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("qiniu token==" + response);
 
                 if (response != null && response.has("token")) {
                     try {
-                        String qiniuToken = response.getString("token");
-
+                        qiniuToken = response.getString("token");
+                        new MyAsyncTask(path).execute();
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        listener.error();
                     }
+                } else {
+                    listener.error();
                 }
             }
 
             @Override
             public boolean onError(String error) {
-                return false;
+                listener.error();
+                return true;
             }
         });
     }
+
+    public String getRondom() {
+        SimpleDateFormat format = new SimpleDateFormat("yyMMdd-HHmmssSSS", Locale.CHINA);
+        return format.format(new Date()) + ".jpg";
+    }
+
 }

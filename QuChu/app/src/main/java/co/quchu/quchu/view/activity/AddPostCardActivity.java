@@ -485,7 +485,8 @@ public class AddPostCardActivity extends BaseActivity {
         }
         uploadBitmap = ImageUtils.getimage(mPhotoList.get(imageIndex).getPhotoPath());
         if (uploadBitmap != null)
-            uploadManager.put(ImageUtils.Bitmap2Bytes(uploadBitmap, 90), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
+            uploadManager.put(ImageUtils.Bitmap2Bytes(uploadBitmap, 90), String.format(defaulQiNiuFileName,
+                    AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
                     //    uploadManager.put(ImageUtils.Bitmap2Bytes(Bimp.bmp.get(imageIndex), 100), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
                     new UpCompletionHandler() {
 

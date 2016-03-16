@@ -102,5 +102,8 @@ public class NetApi {
     public static final String saveOrUpdateCard = HOST + "/operate/saveOrUpdateCard"; //意见反馈
     public static final String updateUser = HOST + "/personal/updateUser"; //修改用户设置
     public static final String VisitorRegiester = HOST + "/mregister?visitors=1&equip=%s";
+    public static final String findPosition = HOST + "/operate/proposalPlace?place.pname=%s&place.paddress=%s&place.profile=%s&place.pimage=%s";//发现趣处
+
+
     /****************** POST *******************/
 }
