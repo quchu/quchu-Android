@@ -61,6 +61,7 @@ public class ImageUpload {
             if (item.contains("http://")) {
                 buffer.append(Uri.parse(item).getPath());
                 buffer.append("|");
+                succeed++;
                 continue;
             }
             String key = String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis());
