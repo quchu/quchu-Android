@@ -21,6 +21,9 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +35,11 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PlanetModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.PlanetActPresenter;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -115,6 +120,16 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         ButterKnife.bind(this);
         initTitleBar();
         title_content_tv.setText(getTitle());
+        fetchData();
+        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false)) {
+            initGuideView();
+            mSwipeBackLayout.setEnableGesture(false);
+        } else {
+            mSwipeBackLayout.setEnableGesture(true);
+        }
+    }
+
+    private void fetchData() {
         if (NetUtil.isNetworkConnected(this))
             DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));
         initActivityViewHolder();
@@ -176,12 +191,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
             }
         });
-        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false)) {
-            initGuideView();
-            mSwipeBackLayout.setEnableGesture(false);
-        } else {
-            mSwipeBackLayout.setEnableGesture(true);
-        }
     }
 
     private void initGuideView() {
@@ -391,5 +400,24 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         }
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event){
+        if (event.getFlag()== EventFlags.EVENT_POST_CARD_DELETED){
+            fetchData();
+        }
+    }
 
 }

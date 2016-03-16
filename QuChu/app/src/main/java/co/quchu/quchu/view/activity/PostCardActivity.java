@@ -7,11 +7,16 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.fragment.PostCardListFg;
 import co.quchu.quchu.widget.cardsui.MyCard;
@@ -21,7 +26,7 @@ import co.quchu.quchu.widget.cardsui.MyCard;
  * PostCardActivity
  * User: Chenhs
  * Date: 2015-11-03
- * 明信片
+ * 明信片列表页
  */
 public class PostCardActivity extends BaseActivity {
 
@@ -108,6 +113,7 @@ public class PostCardActivity extends BaseActivity {
         fragmentIndex = 0;
 //        mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
     }
+
 
 
 //    private boolean isFragmentStatOk = true;

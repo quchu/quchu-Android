@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -22,10 +24,12 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PlacePostCardModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -165,5 +169,25 @@ public class PlacePostCardActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("PlacePostCardActivity");
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event){
+        if (event.getFlag()== EventFlags.EVENT_QUCHU_DETAIL_UPDATED ){
+            initPostCardData(1);
+        }
     }
 }

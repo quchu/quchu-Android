@@ -36,6 +36,7 @@ import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -70,7 +71,6 @@ public class QuchuDetailsActivity extends BaseActivity {
     private GatherViewModel gatherViewModel;
     private long startViewTime = 0L;
     private QuchuDetailsAdapter mQuchuDetailAdapter;
-    public static final int EVENT_KEY_DATA_MODEL_UPDATED = 0x0001;
 
     int detailButtonGroupLlHeight = -1;
 
@@ -377,10 +377,9 @@ public class QuchuDetailsActivity extends BaseActivity {
     @Subscribe
     public void onMessageEvent(QuchuEventModel event){
 
-        if (event.getFlag()==EVENT_KEY_DATA_MODEL_UPDATED && null!= dModel){
-            if (((PostCardItemModel)event.getContent()).getPlaceId()==dModel.getPid()){
-                Log.d("WTF key",((PostCardItemModel)event.getContent()).getPlaceId()+"|"+dModel.getPid());
-                dModel.setMyCardId(((PostCardItemModel)event.getContent()).getCardId());
+        if (event.getFlag()== EventFlags.EVENT_QUCHU_DETAIL_UPDATED && null!= dModel){
+            if ((Integer) event.getContent()==dModel.getPid()){
+                dModel.setMyCardId((Integer) event.getContent());
                 changeBottomBeenBg(true);
             }
         }

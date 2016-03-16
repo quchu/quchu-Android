@@ -56,6 +56,7 @@ import co.quchu.quchu.photo.Bimp;
 import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.FileUtils;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.KeyboardUtils;
@@ -389,7 +390,7 @@ public class AddPostCardActivity extends BaseActivity {
             @Override
             public void onSuccess(PostCardModel model) {
                 //   if (Bimp.delImageIdList.size() == 0) {
-                EventBus.getDefault().post(new QuchuEventModel(QuchuDetailsActivity.EVENT_KEY_DATA_MODEL_UPDATED, defaulModel));
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_QUCHU_DETAIL_UPDATED, pId));
                 AppContext.gatherList.add(new GatherRateModel(pId + "", addPostcardSuggestPrb.getRating()));
                 DialogUtil.dismissProgessDirectly();
                 if (Bimp.imglist.size() > 0) {
