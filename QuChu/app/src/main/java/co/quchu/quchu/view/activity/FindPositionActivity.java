@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,9 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,6 +54,16 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private FindPositionAdapter adapter;
     private PhotoInfo tackImage;
 
+    public static final String REQUEST_KEY_NAME = "name";
+    public static final String REQUEST_KEY_DESC = "desc";
+    public static final String REQUEST_KEY_ID = "id";
+    public static final String REQUEST_KEY_POSITION = "position";
+    public static final String REQUEST_KEY_IMAGE_LIST = "imageList";
+    private String positionText;
+    private String descText;
+    private String nameText;
+    private int id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +79,35 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             }
         });
         init();
+
+        restore();
+    }
+
+    /**
+     * 修改的时候恢复文件
+     */
+    private void restore() {
+        Intent intent = getIntent();
+        id = intent.getIntExtra(REQUEST_KEY_ID, -1);
+        ArrayList<PhotoInfo> imageList = intent.getParcelableArrayListExtra(REQUEST_KEY_IMAGE_LIST);
+        nameText = intent.getStringExtra(REQUEST_KEY_NAME);
+        descText = intent.getStringExtra(REQUEST_KEY_DESC);
+        positionText = intent.getStringExtra(REQUEST_KEY_POSITION);
+
+        name.setText(nameText);
+        detail.setText(descText);
+        position.setText(positionText);
+        if (imageList != null) {
+            photoInfos.addAll(imageList);
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     private void init() {
+        name.setText("");
+        detail.setText("");
+        position.setText("");
         photoInfos = new ArrayList<>();
         tackImage = new PhotoInfo();
         tackImage.setPhotoPath("res:///" + R.drawable.ic_add_photo_image);
@@ -88,10 +123,10 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String name = FindPositionActivity.this.name.getText().toString().trim();
-                final String position = FindPositionActivity.this.position.getText().toString().trim();
-                final String desc = detail.getText().toString().trim();
-                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(position)) {
+                nameText = FindPositionActivity.this.name.getText().toString().trim();
+                positionText = FindPositionActivity.this.position.getText().toString().trim();
+                descText = detail.getText().toString().trim();
+                if (TextUtils.isEmpty(nameText) || TextUtils.isEmpty(positionText)) {
                     Toast.makeText(FindPositionActivity.this, "名称和地址不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -108,24 +143,23 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                         new ImageUpload(FindPositionActivity.this, im, new ImageUpload.UploadResponseListener() {
                             @Override
                             public void finish(String result) {
-
-                                sendToServer(name, position, desc, result);
+                                init();
+                                sendToServer(nameText, positionText, descText, result);
                             }
 
                             @Override
                             public void error() {
                                 DialogUtil.dismissProgessDirectly();
+                                Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {
                         DialogUtil.showProgess(FindPositionActivity.this, "上传中");
-//                        Toast.makeText(FindPositionActivity.this, "至少上传一张照片", Toast.LENGTH_SHORT).show();
-                        sendToServer(name, position, desc, "");
+                        sendToServer(nameText, positionText, descText, "");
                     }
                 } else {
                     DialogUtil.showProgess(FindPositionActivity.this, "上传中");
-                    sendToServer(name, position, desc, "");
-//                    Toast.makeText(FindPositionActivity.this, "至少上传一张照片", Toast.LENGTH_SHORT).show();
+                    sendToServer(nameText, positionText, descText, "");
                 }
 
             }
@@ -133,13 +167,12 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     }
 
     private void sendToServer(String name, String position, String desc, String Images) {
-//        Map<String, String> params = new HashMap<>();
-//        params.put("place.pname", name);
-//        params.put("Place.paddress", position);
-//        params.put("Place.profile", desc);
-//        params.put("Place.pimage", "");
-//        params.put("Place.pId", "");
-        String url = String.format(NetApi.findPosition, name, position, desc, Images);
+        String url;
+        if (id != -1) {
+            url = String.format(NetApi.findPosition, id+"", name, position, desc, Images);
+        } else {
+            url = String.format(NetApi.findPosition, "",name, position, desc, Images);
+        }
 
 
         GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url, null, new ResponseListener<Object>() {
@@ -153,6 +186,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
                 Toast.makeText(FindPositionActivity.this, "增加趣处成功", Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgessDirectly();
+                init();
             }
         });
         request.start(this, null);

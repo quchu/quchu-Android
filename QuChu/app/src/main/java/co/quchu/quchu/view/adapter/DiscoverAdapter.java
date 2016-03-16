@@ -28,6 +28,11 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHol
 
     private Context mContext;
     private List<DiscoverModel.ResultEntity> resultList;
+    private OnItenClickListener listener;
+
+    public void setListener(OnItenClickListener listener) {
+        this.listener = listener;
+    }
 
     public DiscoverAdapter(Context mContext, List<DiscoverModel.ResultEntity> result) {
         this.mContext = mContext;
@@ -36,20 +41,27 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHol
 
     @Override
     public DisHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        DisHolder disHolder = new DisHolder(LayoutInflater.from(mContext).inflate(R.layout.item_my_discover, parent, false));
-        return disHolder;
+        return new DisHolder(LayoutInflater.from(mContext).inflate(R.layout.item_my_discover, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(DisHolder holder, int position) {
+    public void onBindViewHolder(DisHolder holder, final int position) {
+        final DiscoverModel.ResultEntity entity = resultList.get(position);
         if (resultList.get(position).getImage().size() > 0) {
             holder.itemDiscoverIv.setImageURI(Uri.parse(resultList.get(position).getImage().get(0).getImgpath()));
         } else {
             holder.itemDiscoverIv.setImageURI(Uri.parse("http://7xo7et.com1.z0.glb.clouddn.com/default-place-cover?imageMogr2/format/webp"));
         }
-        holder.itemDiscoverIv.setAspectRatio(0.86f);
         holder.itemDiscoverAddressTv.setText(resultList.get(position).getAddress());
         holder.itemDiscoverTitleTv.setText(resultList.get(position).getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.itemClick(position, entity);
+                }
+            }
+        });
     }
 
     @Override
@@ -73,9 +85,9 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHol
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
 
-        @OnClick(R.id.item_discover_root_ll)
-        public void MyClick(View view) {
-        }
+    public interface OnItenClickListener {
+        void itemClick(int position, DiscoverModel.ResultEntity entity);
     }
 }

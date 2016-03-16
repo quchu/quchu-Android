@@ -51,7 +51,7 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/item_discover_iv"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             fresco:actualImageScaleType="focusCrop" />

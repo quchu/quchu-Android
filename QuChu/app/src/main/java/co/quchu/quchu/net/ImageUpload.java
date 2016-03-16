@@ -1,6 +1,5 @@
 package co.quchu.quchu.net;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -26,7 +25,7 @@ import co.quchu.quchu.utils.LogUtils;
 /**
  * Created by linqipeng on 2016/3/15 17:21
  * email:437943145@qq.com
- * desc:
+ * desc: 压缩图片上传, 对于传入的图片地址是网络地址的不压缩直接原样返回
  */
 public class ImageUpload {
     private Context context;
@@ -57,8 +56,12 @@ public class ImageUpload {
         UploadManager uploadManager = new UploadManager();
         String defaulQiNiuFileName = "%d-%d.JPEG";
         for (String item : files) {
+            if (item.contains("http://")) {
+                buffer.append(item);
+                buffer.append("|");
+                continue;
+            }
             String key = String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis());
-
             uploadManager.put(item, key, token,
                     new UpCompletionHandler() {
                         @Override
@@ -95,12 +98,17 @@ public class ImageUpload {
             List<String> result = new ArrayList<>();
             for (String item : path) {
                 try {
+                    if (item.contains("http://")) {
+                        result.add(item);
+                        continue;
+                    }
                     Bitmap bm = ImageUtils.getimage(item);
                     File file = new File(cacheDir, getRondom());
                     ImageUtils.saveFile(bm, file.getAbsolutePath());
                     result.add(file.getAbsolutePath());
                 } catch (Exception e) {
                     e.printStackTrace();
+
                 }
             }
             return result;
@@ -125,7 +133,6 @@ public class ImageUpload {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("qiniu token==" + response);
-
                 if (response != null && response.has("token")) {
                     try {
                         qiniuToken = response.getString("token");
