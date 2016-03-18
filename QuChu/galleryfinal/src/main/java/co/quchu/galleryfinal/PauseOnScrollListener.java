@@ -10,9 +10,9 @@ import android.widget.AbsListView;
  */
 public abstract class PauseOnScrollListener implements AbsListView.OnScrollListener {
 
-    public Activity getActivity(){
-        return Global.mPhotoSelectActivity;
-    }
+//    public Activity getActivity(){
+//        return Global.mPhotoSelectActivity;
+//    }
 
     private final boolean pauseOnScroll;
     private final boolean pauseOnFling;

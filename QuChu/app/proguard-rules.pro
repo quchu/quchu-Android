@@ -27,6 +27,11 @@
 }
 
 ## -----------------------------------------
+################## leakcanary混淆  ########
+## -----------------------------------------
+-keep class org.eclipse.mat.** { *; }
+-keep class com.squareup.leakcanary.** { *; }
+## -----------------------------------------
 ################## butterknife混淆  ########
 ## -----------------------------------------
 -keep class butterknife.** { *; }
@@ -128,8 +133,8 @@ public static final int *;
 ## ----------------------------------
 ##   ##### imageloader混淆  #########
 ## ----------------------------------
- -dontwarn com.nostra13.universalimageloader.**
--keep class com.nostra13.universalimageloader.** { *; }
+# -dontwarn com.nostra13.universalimageloader.**
+#-keep class com.nostra13.universalimageloader.** { *; }
 ## ----------------------------------
 ##   ########## 七牛混淆    #########
 ## ----------------------------------

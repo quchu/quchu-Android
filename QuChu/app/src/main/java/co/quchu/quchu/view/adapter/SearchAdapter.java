@@ -31,9 +31,11 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.KeyboardUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
+import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -99,6 +101,27 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
             holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_collect));
         } else {
             holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_uncollect));
+        }
+
+
+        if (null != model.getTags() && model.getTags().size() > 0) {
+            ArrayList<String> tags = new ArrayList<String>();
+            for (int i = 0; i < model.getTags().size(); i++) {
+                tags.add(model.getTags().get(i).getZh());
+            }
+            holder.detailStoreTagcloundTcv.setVisibility(View.VISIBLE);
+            holder.detailStoreTagcloundTcv.setTags(tags);
+        } else {
+            holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
+        }
+        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
+            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
+        } else {
+            if (StringUtils.isDouble(model.getDistance())) {
+                String distance = StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
+                holder.item_recommend_card_distance_tv.setText("距您" + distance);
+                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + distance.length(), R.color.white);
+            }
         }
     }
 
@@ -166,6 +189,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         HorizontalNumProgressBar itemRecommendCardProgressThree;
         @Bind(R.id.root_cv)
         CardView rootCv;
+        @Bind(R.id.detail_store_tagclound_tcv)
+        TagCloudView detailStoreTagcloundTcv;
+        @Bind(R.id.item_recommend_card_distance_tv)
+        TextView item_recommend_card_distance_tv;
 
         public RecommendHolder(View itemView) {
             super(itemView);

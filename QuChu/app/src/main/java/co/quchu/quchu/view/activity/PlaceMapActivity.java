@@ -232,6 +232,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     public void deactivate() {
         mListener = null;
         if (mlocationClient != null) {
+            mlocationClient.unRegisterLocationListener(this);
             mlocationClient.stopLocation();
             mlocationClient.onDestroy();
         }
