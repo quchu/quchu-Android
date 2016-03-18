@@ -33,7 +33,6 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -74,6 +73,15 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     int detailButtonGroupLlHeight = -1;
 
+
+    private View.OnClickListener mOnClickListener= new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            detailClick(v);
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,12 +90,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         initTitleBar();
         titleContentTv.setText(getTitle());
         initData();
-        mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, new QuchuDetailsAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(View v) {
-                detailClick(v);
-            }
-        });
+        mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mQuchuDetailAdapter);
         /**
@@ -363,13 +366,13 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }

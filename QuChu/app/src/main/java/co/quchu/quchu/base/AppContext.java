@@ -11,8 +11,8 @@ import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.google.gson.Gson;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,8 @@ import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 
 /**
@@ -151,6 +153,7 @@ public class AppContext extends Application {
     public static void stopLocation() {
         if (null != mLocationClient) {
             mLocationClient.stopLocation();
+            mLocationClient.unRegisterLocationListener(mLocationListener);
             mLocationClient.onDestroy();
             mLocationClient = null;
         }

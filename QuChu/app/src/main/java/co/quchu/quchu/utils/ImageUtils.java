@@ -172,6 +172,9 @@ public class ImageUtils {
 
     public static void ShowImage(String uri, final SimpleDraweeView view) {
 
+        if (null==uri){
+            return;
+        }
 
         ImageRequest imageRequest = ImageRequestBuilder
                 .newBuilderWithSource(Uri.parse(uri))

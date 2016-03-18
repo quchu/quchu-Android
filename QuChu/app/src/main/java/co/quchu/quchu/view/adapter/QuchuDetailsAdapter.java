@@ -50,10 +50,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private LayoutInflater mLayoutInflater;
     private Activity mAnchorActivity;
     private DetailModel mData;
-    private static OnItemClickListener mOnItemClickListener;
+    private View.OnClickListener mOnItemClickListener;
     public static final int BLOCK_INDEX = 8;
 
-    public QuchuDetailsAdapter(Activity activity, DetailModel dModel, OnItemClickListener onClickListener) {
+    public QuchuDetailsAdapter(Activity activity, DetailModel dModel, View.OnClickListener onClickListener) {
         if (null == onClickListener) {
             throw new IllegalArgumentException("OnClickListener Cannot be null");
         }
@@ -142,9 +142,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else if (holder instanceof ActionViewHolder) {
             ((ActionViewHolder) holder).detail_button_collect_iv.setImageResource(mData.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect);
-            ((ActionViewHolder) holder).detail_button_add_postcard_rl.setOnClickListener(onClickListener);
-            ((ActionViewHolder) holder).detail_button_collect_rl.setOnClickListener(onClickListener);
-            ((ActionViewHolder) holder).detail_button_share_rl.setOnClickListener(onClickListener);
+            ((ActionViewHolder) holder).detail_button_add_postcard_rl.setOnClickListener(mOnItemClickListener);
+            ((ActionViewHolder) holder).detail_button_collect_rl.setOnClickListener(mOnItemClickListener);
+            ((ActionViewHolder) holder).detail_button_share_rl.setOnClickListener(mOnItemClickListener);
         } else if (holder instanceof SimpleInfoViewHolder) {
             ((SimpleInfoViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
             ((SimpleInfoViewHolder) holder).detail_suggest_prb.setRating(mData.getSuggest());
@@ -171,7 +171,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(mData.getAddress());
             } else if (!StringUtils.isEmpty(mData.getTraffic())) {
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(String.format(mAnchorActivity.getResources().getString(R.string.detail_address_hint_text), mData.getAddress(), mData.getTraffic()));
-                ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(onClickListener);
+                ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(mOnItemClickListener);
             }
             if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
                 StringTokenizer token = new StringTokenizer(mData.getTel(), " ");
@@ -521,16 +521,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    private static View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mOnItemClickListener.onClick(v);
-        }
-    };
-
-    public interface OnItemClickListener {
-        void onClick(View v);
-    }
 
 
     class NearbySpotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

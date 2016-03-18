@@ -106,6 +106,7 @@
     <string name="usercenter_host_text">%d TA关注的</string>
     <string name="usercenter_desc_text">%1$s,%2$s</string>
     <string name="more_cities_coming_soon">更多城市将陆续登陆</string>
+    <string name="spot">发现</string>
 
 
 </resources>

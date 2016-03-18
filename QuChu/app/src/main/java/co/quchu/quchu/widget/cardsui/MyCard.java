@@ -180,7 +180,6 @@ public class MyCard extends Card {
             switch (view.getId()) {
                 case R.id.item_recommend_card_photo_sdv:
                     if (item.getImglist().size() > 0) {
-                        Log.d("Switch","A1");
                         SPUtils.putBooleanToSPMap(mContext, AppKey.IS_POSTCARD_GUIDE, false);
                         item_postcard_user_guide_view.setVisibility(View.GONE);
                         Intent intent = new Intent(mContext, PostCardImageActivity.class);
@@ -195,11 +194,9 @@ public class MyCard extends Card {
             switch (view.getId()) {
                 case R.id.item_recommend_card_reply_rl:
                     mContext.startActivity(new Intent(mContext, PostCardDetailActivity.class).putExtra("cInfo", item));
-                    Log.d("Switch","A2");
                     break;
                 case R.id.item_recommend_card_photo_sdv:
                     if (item.getImglist().size() > 0) {
-                        Log.d("Switch","A3");
                         Intent intent = new Intent(mContext, PostCardImageActivity.class);
                         Bundle mBundle = new Bundle();
                         mBundle.putSerializable("pCardModel", item);
@@ -209,7 +206,6 @@ public class MyCard extends Card {
                     break;
                 case R.id.item_my_postcard_heart_rl:
                     if (!item.issys() && item.isIsme()) {
-                        Log.d("Switch","A4");
                         Intent intent = new Intent(mContext, AddPostCardActivity.class).putExtra("pName", item.getPlcaeName());
                         intent.putExtra("pId", item.getPlaceId());
                         Bundle mBundle = new Bundle();
@@ -221,7 +217,6 @@ public class MyCard extends Card {
                     }
                     break;
                 case R.id.item_recommend_card_collect_rl:
-                    Log.d("Switch","A5");
                     setFavorite();
                     break;
             }

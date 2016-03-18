@@ -124,7 +124,6 @@ public class PostCardListFg extends BaseFragment {
     @Subscribe
     public void onMessageEvent(QuchuEventModel event){
         if (event.getFlag()== EventFlags.EVENT_POST_CARD_DELETED){
-            Log.d("WWW","MSG RECEIVED");
             initPostCardData();
         }
     }

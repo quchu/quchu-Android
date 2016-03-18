@@ -22,7 +22,9 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -81,6 +83,26 @@ public class RecommendAdapterLite extends RecyclerView.Adapter<RecommendAdapterL
         } else {
             holder.item_place_event_tv.setVisibility(View.GONE);
         }
+
+        if (null != model.getTags() && model.getTags().size() > 0) {
+            ArrayList<String> tags = new ArrayList<String>();
+            for (int i = 0; i < model.getTags().size(); i++) {
+                tags.add(model.getTags().get(i).getZh());
+            }
+            holder.detailStoreTagcloundTcv.setVisibility(View.VISIBLE);
+            holder.detailStoreTagcloundTcv.setTags(tags);
+        } else {
+            holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
+        }
+        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
+            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
+        } else {
+            if (StringUtils.isDouble(model.getDistance())) {
+                String distance = StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
+                holder.item_recommend_card_distance_tv.setText("距您" + distance);
+                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + distance.length(), R.color.white);
+            }
+        }
         holder.itemRecommendCardAddressTv.setText(model.getAddress());
         holder.itemRecommendCardCityTv.setText(model.getDescribe());
         holder.itemRecommendCardNameTv.setText(model.getName());
@@ -122,6 +144,11 @@ public class RecommendAdapterLite extends RecyclerView.Adapter<RecommendAdapterL
         CardView rootCv;
         @Bind(R.id.item_recommend_card_collect_iv)
         ImageView itemRecommendCardCollectIv;
+
+        @Bind(R.id.detail_store_tagclound_tcv)
+        TagCloudView detailStoreTagcloundTcv;
+        @Bind(R.id.item_recommend_card_distance_tv)
+        TextView item_recommend_card_distance_tv;
         private CardClickListener listener;
 
         public RecommendHolder(View itemView, CardClickListener listener) {

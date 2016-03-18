@@ -171,7 +171,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private void sendToServer(String name, String position, String desc, String Images) {
         String url;
         if (id != -1) {
-            url = String.format(NetApi.findPosition, id + "", name, position, desc, Images);
+            url = String.format(NetApi.findPosition, String.valueOf(id) , name, position, desc, Images);
         } else {
             url = String.format(NetApi.findPosition, "", name, position, desc, Images);
         }

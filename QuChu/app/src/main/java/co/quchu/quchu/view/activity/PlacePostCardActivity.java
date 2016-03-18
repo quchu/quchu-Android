@@ -173,13 +173,13 @@ public class PlacePostCardActivity extends BaseActivity {
 
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }

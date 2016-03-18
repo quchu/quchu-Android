@@ -46,7 +46,7 @@
             android:layout_centerVertical="true"
             android:background="@drawable/shape_recommend_button_unselected_bg"
             android:gravity="center"
-            android:text="分类"
+            android:text="@string/spot"
             android:textColor="@color/text_color_white"
             android:textSize="@dimen/word_subhead_size" />
 
