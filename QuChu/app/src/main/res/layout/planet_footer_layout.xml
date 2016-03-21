@@ -15,7 +15,7 @@
         <RelativeLayout
             android:id="@+id/planet_myfocus_rl"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="@dimen/subTabLayoutHeight"
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 

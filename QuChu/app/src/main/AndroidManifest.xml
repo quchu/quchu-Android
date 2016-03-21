@@ -79,6 +79,7 @@
         <activity
             android:name=".view.activity.QuFriendsActivity"
             android:label="@string/titlebar_word_qu_friends"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.FlickrActivity"
@@ -149,6 +150,7 @@
         <activity
             android:name=".view.activity.UserCenterActivity"
             android:label="@string/titlebar_word_user_center"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.PostCardFromImageActivity"

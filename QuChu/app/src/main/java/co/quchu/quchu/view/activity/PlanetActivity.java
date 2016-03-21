@@ -112,6 +112,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     private int AnimationDuration = 160 * 1000;
     private AnimatorSet animatorSet;
     PlanetImgGridAdapter imageAdapter;
+    PlanetModel dataModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +145,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
             @Override
             public void onNetSuccess(PlanetModel model) {
                 DialogUtil.dismissProgess();
+                dataModel = model;
                 imageAdapter.updateDate(model.getImgs(), model.getImgNum());
                 planetImageGv.setOnItemClickListener(PlanetActivity.this);
                 planetAvatarIcon.setImageURI(Uri.parse(AppContext.user.getPhoto()));
@@ -372,10 +374,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                 case R.id.atmosphere_rpv: //氛围
                     break;
                 case R.id.stroll_rpv://逛店
-
                     break;
                 case R.id.cate_rpv: //美食
-
                     break;
                 case R.id.planet_postcard_ll: //明信片
                     intent.setClass(this, PostCardActivity.class);
@@ -392,9 +392,23 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                 case R.id.planet_gene_tv:
                     startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
                     break;
-                case R.id.planet_myfocus_rl://趣星人
-                case R.id.planet_focusonme_rl://趣星人
-                    //    startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class));
+                case R.id.planet_myfocus_rl://我关注的
+                    if (null!=dataModel){
+                        startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class)
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FOLLOWERS,dataModel.getFollowNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_SUBSCRIBERS,dataModel.getHostNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FROM_SUBSCRIBE,true)
+                        );
+                    }
+                    break;
+                case R.id.planet_focusonme_rl://关注我的
+                    if (null!=dataModel){
+                        startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class)
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FOLLOWERS,dataModel.getFollowNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_SUBSCRIBERS,dataModel.getHostNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FROM_SUBSCRIBE,false)
+                        );
+                    }
                     break;
             }
         }
