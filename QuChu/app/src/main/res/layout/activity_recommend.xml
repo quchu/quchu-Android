@@ -9,11 +9,12 @@
         layout="@layout/layout_mai_title" />
 
 
-    <co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager
-        android:id="@+id/recommend_body_vp"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title" />
+
 
     <View
         android:layout_width="match_parent"

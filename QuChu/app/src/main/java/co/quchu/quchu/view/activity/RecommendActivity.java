@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,11 +29,8 @@ import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.view.adapter.RecommendFragmentAdapter;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
-import co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager;
-import co.quchu.quchu.widget.AnimationViewPager.ZoomOutPageTransformer;
 import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.RecommendTitleGroup;
 
@@ -53,14 +50,13 @@ public class RecommendActivity extends BaseActivity {
     MoreButtonView recommendTitleMoreRl;
     @Bind(R.id.recommend_title_center_rtg)
     RecommendTitleGroup recommendTitleCenterRtg;
-    @Bind(R.id.recommend_body_vp)
-    NoScrollViewPager recommendBodyVp;
 
     public long firstTime = 0;
-    private RecommendFragment recoFragment;
     private ArrayList<CityModel> list;
     private boolean isGuide = false;
     public int viewPagerIndex = 0;
+    private RecommendFragment recommendFragment;
+    private ClassifyFragment classifyFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +66,13 @@ public class RecommendActivity extends BaseActivity {
         isGuide = getIntent().getBooleanExtra("isGuide", false);
         if (isGuide) {
             startActivity(new Intent(this, PlanetActivity.class));
-            return;
         }
+        recommendFragment = new RecommendFragment();
+        classifyFragment = new ClassifyFragment();
+
+        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
+
         initView();
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
             @Override
@@ -116,11 +117,9 @@ public class RecommendActivity extends BaseActivity {
     }
 
     private void initView() {
-        InitViewPager();
 
         recommendTitleCenterRtg.setViewsClickable(true);
         recommendTitleCenterRtg.setInitSelected(false);
-        recommendBodyVp.setCurrentItem(0);
         viewpagerSelected(0);
 
         recommendTitleCenterRtg.setSelectedListener(new RecommendTitleGroup.RecoSelectedistener() {
@@ -142,32 +141,28 @@ public class RecommendActivity extends BaseActivity {
         });
     }
 
-    /*
-   * 初始化ViewPager
-   */
-    public void InitViewPager() {
-        ArrayList<Fragment> fragmentList = new ArrayList<>(2);
-        recoFragment = new RecommendFragment();
-        ClassifyFragment classifyFragment = new ClassifyFragment();
-        fragmentList.add(recoFragment);
-        fragmentList.add(classifyFragment);
-        //给ViewPager设置适配器
-        recommendBodyVp.setAdapter(new RecommendFragmentAdapter(getSupportFragmentManager(), fragmentList));
-        recommendBodyVp.setPageTransformer(true, new ZoomOutPageTransformer());
-    }
 
     private void viewpagerSelected(int index) {
         LogUtils.json("selected == " + index);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
             recommendTitleLocationIv.setImageResource(R.drawable.ic_recommed_title_location);
-            recommendBodyVp.setCurrentItem(0);//设置当前显示标签页为第一页
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
-        } else if (index == 1) {
+
+            transaction.
+//                    setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out).
+                    hide(classifyFragment).show(recommendFragment).commit();
+
+        } else {
             recommendTitleLocationIv.setImageResource(R.drawable.ic_recommed_title_location);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             titleContentTv.setVisibility(View.INVISIBLE);
-            recommendBodyVp.setCurrentItem(1);//设置当前显示标签页为第二页
+
+            transaction
+//                    .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out)
+                    .hide(recommendFragment).show(classifyFragment).commit();
         }
         viewPagerIndex = index;
     }
@@ -177,35 +172,30 @@ public class RecommendActivity extends BaseActivity {
      * 城市切换后调用
      */
     public void updateRecommend() {
-        recoFragment.initData();
+        recommendFragment.initData();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (viewPagerIndex == 2) {
-                viewpagerSelected(1);
+            long secondTime = System.currentTimeMillis();
+            if (secondTime - firstTime > 700) {// 如果两次按键时间间隔大于800毫秒，则不退出
+                Toast.makeText(RecommendActivity.this, R.string.app_exit_text,
+                        Toast.LENGTH_SHORT).show();
+                firstTime = secondTime;// 更新firstTime
                 return true;
             } else {
-                long secondTime = System.currentTimeMillis();
-                if (secondTime - firstTime > 700) {// 如果两次按键时间间隔大于800毫秒，则不退出
-                    Toast.makeText(RecommendActivity.this, R.string.app_exit_text,
-                            Toast.LENGTH_SHORT).show();
-                    firstTime = secondTime;// 更新firstTime
-                    return true;
-                } else {
-                    UserAnalysisUtils.sendUserBehavior(RecommendActivity.this);
-                    ActManager.getAppManager().AppExit();
-                    AppContext.stopLocation();
-                }
+                UserAnalysisUtils.sendUserBehavior(RecommendActivity.this);
+                ActManager.getAppManager().AppExit();
+                AppContext.stopLocation();
             }
+
         }
         return true;
     }
 
     @Override
     protected void onResume() {
-        LogUtils.json("RecommendActivity  onResume===" + viewPagerIndex);
         if (isGuide) {
             isGuide = false;
         }
@@ -240,7 +230,7 @@ public class RecommendActivity extends BaseActivity {
     private void resumeUpdateData() {
         if (AppContext.dCardListNeedUpdate) {
             if (viewPagerIndex == 0) {
-                recoFragment.updateDateSet();
+                recommendFragment.updateDateSet();
             }
             AppContext.dCardListNeedUpdate = false;
             resumeUpdateDataTimes = 0;
