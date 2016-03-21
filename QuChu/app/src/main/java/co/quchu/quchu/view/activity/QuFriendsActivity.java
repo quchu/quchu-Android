@@ -97,7 +97,7 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
         mFromSubscribe = getIntent().getBooleanExtra(BUNDLE_KEY_FROM_SUBSCRIBE,false);
         mSubscribers = mSubscribers<0?0:mSubscribers;
         mFollowers = mFollowers<0?0:mFollowers;
-
+        titleMoreRl.setVisibility(View.INVISIBLE);
         title_content_tv.setText(getTitle().toString());
         planetGeneTv.setText(getResources().getString(R.string.text_planet_discover_friends));
         StringUtils.alterBoldTextColor(planetGeneTv, 4, 7, R.color.gene_textcolor_yellow);
