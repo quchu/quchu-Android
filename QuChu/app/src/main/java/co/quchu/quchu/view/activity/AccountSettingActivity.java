@@ -217,12 +217,17 @@ public class AccountSettingActivity extends BaseActivity {
     public void saveUserChange() {
         newUserPw = accountSettingNewPwdEt.getText().toString();
         newUserPwAgain = accountSettingNewPwdAgainEt.getText().toString();
-        newUserNickName = StringUtils.isEmpty(accountSettingNicknameEt.getText().toString()) ? AppContext.user.getFullname() : accountSettingNicknameEt.getText().toString();
+        newUserNickName = StringUtils.isEmpty(accountSettingNicknameEt.getText().toString()) ? AppContext.user.getFullname()
+                : accountSettingNicknameEt.getText().toString();
+
         newUserGender = accountSettingGenderTv.getText().toString();
         newUserLocation = accountSettingUserLocation.getText().toString();
-        if ((StringUtils.isEmpty(newUserPw) && StringUtils.isEmpty(newUserPwAgain)) || (!StringUtils.isEmpty(newUserPw) && !StringUtils.isEmpty(newUserPwAgain) && newUserPwAgain.equals(newUserPw))) {
+
+        if ((StringUtils.isEmpty(newUserPw) && StringUtils.isEmpty(newUserPwAgain)) ||
+                (!StringUtils.isEmpty(newUserPw) && !StringUtils.isEmpty(newUserPwAgain) && newUserPwAgain.equals(newUserPw))) {
             if (newUserPw.length() < 6) {
                 Toast.makeText(this, "密码长度必须大于6位", Toast.LENGTH_SHORT).show();
+                return;
             }
             DialogUtil.showProgess(this, R.string.loading_dialog_text);
             if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
@@ -251,18 +256,19 @@ public class AccountSettingActivity extends BaseActivity {
     }
 
     public void putUserInfo(String photoUrl) {
-        AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this, newUserNickName, photoUrl, newUserGender, newUserLocation, newUserPw, newUserPwAgain, new AccountSettingPresenter.UploadUserPhotoListener() {
-            @Override
-            public void onSuccess(String photoUrl) {
-                refreshUserInfo();
-            }
+        AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this,
+                newUserNickName, photoUrl, newUserGender, newUserLocation, newUserPw, newUserPwAgain, new AccountSettingPresenter.UploadUserPhotoListener() {
+                    @Override
+                    public void onSuccess(String photoUrl) {
+                        refreshUserInfo();
+                    }
 
-            @Override
-            public void onError() {
-                Toast.makeText(AccountSettingActivity.this, "账户信息修改失败", Toast.LENGTH_SHORT).show();
-                DialogUtil.dismissProgess();
-            }
-        });
+                    @Override
+                    public void onError() {
+                        Toast.makeText(AccountSettingActivity.this, "账户信息修改失败", Toast.LENGTH_SHORT).show();
+                        DialogUtil.dismissProgess();
+                    }
+                });
     }
 
 
