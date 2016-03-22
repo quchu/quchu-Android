@@ -42,6 +42,7 @@ public class PhotoTools {
 
     /**
      * 获取所有图片
+     *
      * @param context
      * @return
      */
@@ -57,17 +58,16 @@ public class PhotoTools {
         };
 
         HashMap thumbnailsList = new HashMap();
-        final String[] projectionPhotoThumbnails = {MediaStore.Images.Thumbnails.IMAGE_ID,MediaStore.Images.Thumbnails.DATA};
+        final String[] projectionPhotoThumbnails = {MediaStore.Images.Thumbnails.IMAGE_ID, MediaStore.Images.Thumbnails.DATA};
         Cursor cursorThumbnails = MediaStore.Images.Thumbnails.query(context.getContentResolver(), MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI
                 , projectionPhotoThumbnails);
         int columnId = cursorThumbnails.getColumnIndex(MediaStore.Images.Thumbnails.IMAGE_ID);
         int columnThumbnailData = cursorThumbnails.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
-        while (cursorThumbnails.moveToNext()){
-            if (null!=cursorThumbnails.getString(columnThumbnailData)){
-                thumbnailsList.put(cursorThumbnails.getInt(columnId),cursorThumbnails.getString(columnThumbnailData));
+        while (cursorThumbnails.moveToNext()) {
+            if (null != cursorThumbnails.getString(columnThumbnailData)) {
+                thumbnailsList.put(cursorThumbnails.getInt(columnId), cursorThumbnails.getString(columnThumbnailData));
             }
         }
-
 
 
         final ArrayList<PhotoFolderInfo> allPhotoFolderList = new ArrayList<>();
@@ -97,11 +97,11 @@ public class PhotoTools {
                     final String path = cursor.getString(dataColumn);
                     //final String thumb = cursor.getString(thumbImageColumn);
                     File file = new File(path);
-                    if ( (filterList == null || !filterList.contains(path)) && file.exists() && file.length() > 0 ) {
+                    if ((filterList == null || !filterList.contains(path)) && file.exists() && file.length() > 0) {
                         final PhotoInfo photoInfo = new PhotoInfo();
                         photoInfo.setPhotoId(imageId);
                         photoInfo.setPhotoPath(path);
-                        if (thumbnailsList.containsKey(photoInfo.getPhotoId())){
+                        if (thumbnailsList.containsKey(photoInfo.getPhotoId())) {
                             photoInfo.setThumbPath((String) thumbnailsList.get(photoInfo.getPhotoId()));
                         }
 
@@ -139,9 +139,7 @@ public class PhotoTools {
             if (cursor != null) {
                 cursor.close();
             }
-            if (null!= cursorThumbnails){
-                cursorThumbnails.close();
-            }
+            cursorThumbnails.close();
             thumbnailsList.clear();
         }
         allFolderList.addAll(allPhotoFolderList);

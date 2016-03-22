@@ -210,7 +210,10 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 AppContext.selectedPlace = cardList.get(position);
                 hasChangePosition = position;
                 if (!KeyboardUtils.isFastDoubleClick()) {
-                    EventBus.getDefault().register(this);
+
+                    if (!EventBus.getDefault().isRegistered(this))
+                        EventBus.getDefault().register(this);
+
                     Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_POSITION, position);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(position).getPid());
