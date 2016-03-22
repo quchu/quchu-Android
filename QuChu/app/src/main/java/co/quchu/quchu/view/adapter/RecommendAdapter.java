@@ -37,7 +37,7 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
  * Date: 2015-12-08
  * 趣处推荐 适配器 adapter
  */
-public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.RecommendHolder> {
+public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.RecommendHolder> {
 
 
     private Activity mContext;
@@ -45,7 +45,7 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
     private List<RecommendModel> dataSet;
     private CardClickListener listener;
 
-    public RecommendAdapter2(Activity mContext, List<RecommendModel> arrayList, CardClickListener listener) {
+    public RecommendAdapter(Activity mContext, List<RecommendModel> arrayList, CardClickListener listener) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
         dataSet = arrayList;
@@ -54,12 +54,12 @@ public class RecommendAdapter2 extends RecyclerView.Adapter<RecommendAdapter2.Re
 
 
     @Override
-    public RecommendAdapter2.RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecommendAdapter.RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, parent, false), listener);
     }
 
     @Override
-    public void onBindViewHolder(RecommendAdapter2.RecommendHolder holder, int position) {
+    public void onBindViewHolder(RecommendAdapter.RecommendHolder holder, int position) {
         RecommendModel model = dataSet.get(position);
         holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));

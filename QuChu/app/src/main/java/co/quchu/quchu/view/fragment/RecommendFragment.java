@@ -48,7 +48,7 @@ import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
-import co.quchu.quchu.view.adapter.RecommendAdapter2;
+import co.quchu.quchu.view.adapter.RecommendAdapter;
 import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout;
 import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
@@ -60,7 +60,7 @@ import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment extends BaseFragment implements RecommendAdapter2.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
+public class RecommendFragment extends BaseFragment implements RecommendAdapter.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
     @Bind(R.id.recyclerView)
     RecyclerViewPager recyclerView;
     @Bind(R.id.tabLayout)
@@ -74,7 +74,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
 
     private boolean isLoading = false;
     public List<RecommendModel> cardList = new ArrayList<>();
-    private RecommendAdapter2 adapter;
+    private RecommendAdapter adapter;
     private RecommentFragPresenter presenter;
     private int currentIndex = -1;
     private int currentBGIndex = -1;
@@ -153,7 +153,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
 
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layout);
-        adapter = new RecommendAdapter2(getActivity(), cardList, this);
+        adapter = new RecommendAdapter(getActivity(), cardList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener();
