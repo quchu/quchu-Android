@@ -28,6 +28,9 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.Postprocessor;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +43,12 @@ import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
@@ -82,7 +87,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     private final int MESSAGE_FLAG_BLUR_RENDERING_FINISH = 0x0002;
     public static final String MESSAGE_KEY_BITMAP = "MESSAGE_KEY_BITMAP";
     private boolean mFragmentStoped;
-
 
     Bitmap mSourceBitmap;
     private int index;
@@ -206,6 +210,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 AppContext.selectedPlace = cardList.get(position);
                 hasChangePosition = position;
                 if (!KeyboardUtils.isFastDoubleClick()) {
+                    EventBus.getDefault().register(this);
                     Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_POSITION, position);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(position).getPid());
@@ -397,20 +402,20 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     public void onAnimationEnd(android.animation.Animator animation) {
                         fRecommendBimgTop.setAlpha(.9f);
                         fRecommendBimgTop.setImageBitmap(finalBm);
-                        if (null!=fRecommendBimgTop)
-                        fRecommendBimgTop.animate()
-                                .alpha(1f)
-                                .alphaBy(.9f)
-                                .setInterpolator(new AccelerateInterpolator())
-                                .setDuration(800)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(android.animation.Animator animation) {
-                                        if (null!=fRecommendBimgTop)
-                                        fRecommendBimgTop.setAlpha(1f);
-                                    }
-                                })
-                                .start();
+                        if (null != fRecommendBimgTop)
+                            fRecommendBimgTop.animate()
+                                    .alpha(1f)
+                                    .alphaBy(.9f)
+                                    .setInterpolator(new AccelerateInterpolator())
+                                    .setDuration(800)
+                                    .setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(android.animation.Animator animation) {
+                                            if (null != fRecommendBimgTop)
+                                                fRecommendBimgTop.setAlpha(1f);
+                                        }
+                                    })
+                                    .start();
                     }
                 }).start();
 
@@ -432,9 +437,22 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().register(this);
         if (null != mSourceBitmap && !mSourceBitmap.isRecycled())
             mSourceBitmap.recycle();
         if (mSourceBitmap != null)
             mSourceBitmap = null;
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+
+        if (event.getFlag() == EventFlags.EVENT_QUCHU_DETAIL_UPDATED) {
+            if ((Integer) event.getContent() == cardList.get(currentIndex).getPid()) {
+                cardList.get(currentIndex).isout = true;
+                adapter.notifyItemChanged(currentIndex);
+                EventBus.getDefault().register(this);
+            }
+        }
     }
 }

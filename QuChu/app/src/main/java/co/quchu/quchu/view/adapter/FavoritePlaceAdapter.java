@@ -66,6 +66,7 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
         } else {
             holder.rootCv.setCardBackgroundColor(Color.parseColor("#808080"));
         }
+        holder.rootCv.setCardElevation(15);
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (isFlyme) {
             holder.itemRecommendCardPhotoSdv.setAspectRatio(1.45f);
