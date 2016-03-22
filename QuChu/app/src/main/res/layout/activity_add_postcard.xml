@@ -72,7 +72,7 @@
         android:layout_below="@id/add_postcard_top_ll"
         android:background="@drawable/shape_activity_bg"
         android:orientation="vertical"
-        android:overScrollMode="never"
+        android:overScrollMode="always"
         android:scrollbars="none">
 
         <LinearLayout

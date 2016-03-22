@@ -55,7 +55,7 @@
         android:layout_below="@id/dialog_location_selected_city_tv"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
-        android:overScrollMode="never"
+        android:overScrollMode="always"
         android:scrollbars="none" />
 
     <TextView

@@ -94,7 +94,7 @@
         android:gravity="center"
         android:horizontalSpacing="6dp"
         android:numColumns="4"
-        android:overScrollMode="never"
+        android:overScrollMode="always"
         android:scrollbars="none"
         android:stretchMode="columnWidth" />
 

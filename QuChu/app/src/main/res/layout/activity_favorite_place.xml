@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            android:overScrollMode="never" />
+            android:overScrollMode="always" />
 
         <FrameLayout
             android:id="@+id/favorite_place_empty_view"

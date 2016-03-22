@@ -22,7 +22,7 @@
             android:layout_above="@id/place_postcard_bottom_botton_rl"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            android:overScrollMode="never"
+            android:overScrollMode="always"
             android:scrollbars="none" />
 
         <FrameLayout

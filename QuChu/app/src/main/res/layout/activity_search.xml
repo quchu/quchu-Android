@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/base_margin"
                     android:layout_marginTop="@dimen/half_margin"
-                    android:overScrollMode="never"
+                    android:overScrollMode="always"
                     android:visibility="gone" />
 
                 <RelativeLayout
@@ -140,7 +140,7 @@
                 android:layout_marginLeft="@dimen/dialog_margin"
                 android:layout_marginRight="@dimen/dialog_margin"
                 android:layout_marginTop="@dimen/base_margin"
-                android:overScrollMode="never" />
+                android:overScrollMode="always" />
 
         </FrameLayout>
 

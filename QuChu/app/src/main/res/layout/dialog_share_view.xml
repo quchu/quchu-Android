@@ -13,7 +13,7 @@
         android:layout_margin="@dimen/base_margin"
         android:horizontalSpacing="8dp"
         android:numColumns="3"
-        android:overScrollMode="never"
+        android:overScrollMode="always"
         android:scrollbars="none"
         android:verticalSpacing="16dp" />
 

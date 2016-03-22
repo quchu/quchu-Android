@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/title"
         android:background="@color/appBackground"
-        android:overScrollMode="never" />
+        android:overScrollMode="always" />
 
     <co.quchu.quchu.widget.ErrorView
         android:id="@+id/errorView"

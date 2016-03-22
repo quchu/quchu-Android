@@ -21,7 +21,7 @@
             android:id="@+id/atmosphere_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never" />
+            android:overScrollMode="always" />
     </RelativeLayout>
 
     <View
