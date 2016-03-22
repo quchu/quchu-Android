@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ic_card_shadow_full_image_bg"
     android:layout_marginBottom="@dimen/base_margin"
-    >
+    android:background="@drawable/ic_card_shadow_full_image_bg">
 
     <android.support.v7.widget.CardView
         android:id="@+id/root_cv"
@@ -57,10 +55,10 @@
 
             <RelativeLayout
                 android:id="@+id/item_recommend_card_rl"
-                android:layout_below="@id/animation1"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent">
+                android:layout_below="@id/animation1"
+                android:layout_weight="1">
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/item_recommend_card_photo_sdv"
@@ -72,37 +70,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <co.quchu.quchu.widget.TagCloudView
                         android:id="@+id/detail_store_tagclound_tcv"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        card_view:tcvBackground="@drawable/shape_recommend_card_tag_bg"
                         card_view:tcvBorder="8dp"
                         card_view:tcvCanTagClick="false"
                         card_view:tcvItemBorderHorizontal="1dp"
                         card_view:tcvItemBorderVertical="4dp"
-                        card_view:tcvBackground="@drawable/shape_recommend_card_tag_bg"
                         card_view:tcvRightResId="@null"
                         card_view:tcvSingleLine="false"
                         card_view:tcvTextColor="@color/text_color_white" />
+
                     <TextView
                         android:id="@+id/item_recommend_card_distance_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
                         android:layout_alignParentRight="true"
-                        android:layout_marginBottom="@dimen/quarter_margin"
                         android:layout_gravity="bottom"
-                        android:textColor="@color/text_color_white"
+                        android:layout_marginBottom="@dimen/quarter_margin"
                         android:background="@drawable/shape_recommend_card_tag_bg"
                         android:text="距您100km"
+                        android:textColor="@color/text_color_white"
                         android:textSize="@dimen/word_size_time" />
                 </LinearLayout>
             </RelativeLayout>
-
-
 
 
             <co.quchu.quchu.widget.ratingbar.ProperRatingBar
@@ -139,8 +136,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/half_margin"
-                />
+                android:layout_marginTop="@dimen/half_margin" />
 
 
             <co.quchu.quchu.widget.HorizontalNumProgressBar
@@ -150,8 +146,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/quarter_margin"
-                />
+                android:layout_marginTop="@dimen/quarter_margin" />
 
 
             <co.quchu.quchu.widget.HorizontalNumProgressBar
@@ -161,8 +156,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/quarter_margin"
-                />
+                android:layout_marginTop="@dimen/quarter_margin" />
 
 
             <RelativeLayout

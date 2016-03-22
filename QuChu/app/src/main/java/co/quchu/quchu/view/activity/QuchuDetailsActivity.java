@@ -132,7 +132,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
     private void bindingDetailData() {
-        changeBottomBeenBg(dModel.getMyCardId() > 0);
+        changeBottomBeenBg(dModel.isIsout());
         changeCollectState(dModel.isIsf());
 
     }

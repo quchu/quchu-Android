@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/item_search_history_str_tv"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:singleLine="true"
+        android:textColor="@color/user_login_text_hint_text_color"
+        android:textSize="@dimen/word_size_body" />
 
-        <TextView
-            android:id="@+id/item_search_history_str_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/half_margin"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:gravity="left"
-            android:singleLine="true"
-            android:textColor="@color/user_login_text_hint_text_color"
-            android:textSize="@dimen/word_size_body" />
+    <RelativeLayout
+        android:id="@+id/item_search_history_delete_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/quarter_margin"
+        android:layout_marginTop="@dimen/quarter_margin">
 
-        <RelativeLayout
-            android:id="@+id/item_search_history_delete_rl"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/quarter_margin"
-
-            android:layout_marginTop="@dimen/quarter_margin">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="@dimen/half_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/half_margin"
-                android:src="@drawable/ic_search_history_delete" />
-        </RelativeLayout>
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            android:src="@drawable/ic_search_history_delete" />
+    </RelativeLayout>
 
 
-    </LinearLayout>
+</LinearLayout>
