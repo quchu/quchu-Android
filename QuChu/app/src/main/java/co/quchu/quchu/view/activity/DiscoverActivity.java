@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
@@ -23,6 +24,7 @@ import butterknife.OnClick;
 import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DiscoverModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -30,6 +32,7 @@ import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.DiscoverAdapter;
+import co.quchu.quchu.widget.ErrorView;
 
 /**
  * DiscoverActivity
@@ -46,6 +49,8 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
     RecyclerView atmosphereRv;
     @Bind(R.id.atmosphere_empty_view_fl)
     FrameLayout atmosphereEmptyViewFl;
+    @Bind(R.id.errorView)
+    ErrorView errorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +90,7 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
             public void onSuccess(JSONObject response) {
                 LogUtils.json("initDiscoverData==" + response);
                 try {
-                    if (response != null && response.has("result") && !StringUtils.isEmpty(response.getString("result")) && !"null".equals(response.getString("result"))) {
+                    if (response.has("data")&&null!=response.get("data")&& response != null && response.has("result") && !StringUtils.isEmpty(response.getString("result")) && !"null".equals(response.getString("result"))) {
                         Gson gson = new Gson();
                         DiscoverModel model = gson.fromJson(response.toString(), DiscoverModel.class);
                         if (model != null && model.getResult().size() > 0) {
@@ -98,18 +103,36 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
                             atmosphereEmptyViewFl.setVisibility(View.VISIBLE);
                             atmosphereRv.setVisibility(View.GONE);
                         }
+                        errorView.himeView();
                     } else {
                         atmosphereEmptyViewFl.setVisibility(View.VISIBLE);
                         atmosphereRv.setVisibility(View.GONE);
+
+                        showErrorView();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    showErrorView();
+                } catch (JsonSyntaxException e){
+                    e.printStackTrace();
+                    showErrorView();
                 }
             }
 
             @Override
             public boolean onError(String error) {
+                showErrorView();
                 return false;
+            }
+        });
+    }
+
+    private void showErrorView() {
+        errorView.showViewDefault(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogUtil.showProgess(DiscoverActivity.this, "加载中");
+                initDiscoverData(1);
             }
         });
     }

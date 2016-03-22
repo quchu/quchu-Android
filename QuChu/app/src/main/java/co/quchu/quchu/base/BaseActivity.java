@@ -20,6 +20,7 @@ import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.ReserveActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
 import co.quchu.quchu.view.activity.UserLoginActivity;
+import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
@@ -57,7 +58,7 @@ public class BaseActivity extends AppCompatActivity implements SwipeBackActivity
         ActManager.getAppManager().addActivity(this);
 
         if (this instanceof UserLoginActivity || this instanceof RecommendActivity || this instanceof PostcarDetailActivity || this instanceof SplashActivity
-                || this instanceof PreviewImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity) {
+                || this instanceof PreviewImage || this instanceof ReserveActivity || this instanceof PlaceMapActivity || this instanceof WebViewActivity) {
         } else if (this instanceof MenusActivity) {
             mHelper = new SwipeBackActivityHelper(this);
             mHelper.onActivityCreate();

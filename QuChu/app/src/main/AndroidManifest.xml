@@ -111,6 +111,10 @@
             android:label="@string/titlebar_word_favorite_place"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".view.activity.WebViewActivity"
+            android:label="@string/webview_redirecting"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.activity.PlacePostCardActivity"
             android:label="@string/titlebar_word_place_postcard"
             android:screenOrientation="portrait" />

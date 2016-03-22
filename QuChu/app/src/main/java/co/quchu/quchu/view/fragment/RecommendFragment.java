@@ -397,6 +397,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
                     public void onAnimationEnd(android.animation.Animator animation) {
                         fRecommendBimgTop.setAlpha(.9f);
                         fRecommendBimgTop.setImageBitmap(finalBm);
+                        if (null!=fRecommendBimgTop)
                         fRecommendBimgTop.animate()
                                 .alpha(1f)
                                 .alphaBy(.9f)
@@ -405,6 +406,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
                                 .setListener(new AnimatorListenerAdapter() {
                                     @Override
                                     public void onAnimationEnd(android.animation.Animator animation) {
+                                        if (null!=fRecommendBimgTop)
                                         fRecommendBimgTop.setAlpha(1f);
                                     }
                                 })

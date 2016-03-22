@@ -183,9 +183,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                     //用户想去
                     if (dModel.isIsf()) {
                         // startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
-                        Uri uri = Uri.parse(dModel.getNet());
-                        Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(it);
+                        WebViewActivity.enterActivity(QuchuDetailsActivity.this,dModel.getNet(),dModel.getName());
                     } else {
                         WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
                         lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
@@ -341,9 +339,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                 Toast.makeText(QuchuDetailsActivity.this, "还没找到去往你心里的路...", Toast.LENGTH_SHORT).show();
             } else {
                 LogUtils.json("webview ==");
-                Uri uri = Uri.parse(dModel.getNet());
-                Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(it);
+                WebViewActivity.enterActivity(QuchuDetailsActivity.this,dModel.getNet(),dModel.getName());
             }
         }
     }
