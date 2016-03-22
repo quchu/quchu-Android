@@ -110,6 +110,7 @@ public class AccountSettingPresenter {
      * @param listener
      */
     public static void postUserInfo2Server(Context mContext, String userName, String userPhoto, String userGender, String userLocation, String userPw, String userRePw, final UploadUserPhotoListener listener) {
+
         String netUrl = NetApi.updateUser + "?user.name=" + userName + "&user.gander=" + ("男".equals(userGender) ? "M" : "W") + "&user.location=" + userLocation;
         if (!StringUtils.isEmpty(userPhoto))
             netUrl += "&user.photo=" + userPhoto;

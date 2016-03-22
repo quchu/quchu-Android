@@ -21,9 +21,9 @@ public class PostCardItemModel implements Serializable {
     private boolean isme;
     private boolean isp;
     private int placeId;
-    private String plcaeAddress;
-    private String plcaeCover;
-    private String plcaeName;
+    private String placeAddress;
+    private String placeCover;
+    private String placeName;
     private int praiseNum;
     private String rgb;
     private float score;
@@ -96,15 +96,15 @@ public class PostCardItemModel implements Serializable {
     }
 
     public void setPlcaeAddress(String plcaeAddress) {
-        this.plcaeAddress = plcaeAddress;
+        this.placeAddress = plcaeAddress;
     }
 
     public void setPlcaeCover(String plcaeCover) {
-        this.plcaeCover = plcaeCover;
+        this.placeCover = plcaeCover;
     }
 
     public void setPlcaeName(String plcaeName) {
-        this.plcaeName = plcaeName;
+        this.placeName = plcaeName;
     }
 
     public void setPraiseNum(int praiseNum) {
@@ -184,15 +184,15 @@ public class PostCardItemModel implements Serializable {
     }
 
     public String getPlcaeAddress() {
-        return plcaeAddress;
+        return placeAddress;
     }
 
     public String getPlcaeCover() {
-        return plcaeCover;
+        return placeCover;
     }
 
     public String getPlcaeName() {
-        return plcaeName;
+        return placeName;
     }
 
     public int getPraiseNum() {
