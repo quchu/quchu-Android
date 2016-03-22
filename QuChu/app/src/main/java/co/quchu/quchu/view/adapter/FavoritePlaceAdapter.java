@@ -55,8 +55,7 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
 
     @Override
     public FavoritePlaceHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        FavoritePlaceHolder holder = new FavoritePlaceHolder(LayoutInflater.from(mContext).inflate(R.layout.item_favorite_place_cardview, parent, false), listener);
-        return holder;
+        return new FavoritePlaceHolder(LayoutInflater.from(mContext).inflate(R.layout.item_favorite_place_cardview, parent, false), listener);
     }
 
     @Override
@@ -101,12 +100,12 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
         ProperRatingBar itemRecommendCardPrb;
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
-        @Bind(R.id.item_recommend_card_collect_rl)
-        RelativeLayout itemRecommendCardCollectRl;
-        @Bind(R.id.item_recommend_card_interest_rl)
-        RelativeLayout itemRecommendCardInterestRl;
-        @Bind(R.id.item_recommend_card_reply_rl)
-        RelativeLayout itemRecommendCardReplyRl;
+//        @Bind(R.id.item_recommend_card_collect_rl)
+//        RelativeLayout itemRecommendCardCollectRl;
+//        @Bind(R.id.item_recommend_card_interest_rl)
+//        RelativeLayout itemRecommendCardInterestRl;
+//        @Bind(R.id.item_recommend_card_reply_rl)
+//        RelativeLayout itemRecommendCardReplyRl;
 
         @Bind(R.id.root_cv)
         CardView rootCv;
@@ -129,7 +128,6 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
                 case R.id.item_recommend_card_collect_rl:
                     setFavorite(getPosition());
                     break;
-
             }
             if (listener != null)
                 listener.onCardLick(view, getPosition());

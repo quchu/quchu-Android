@@ -207,8 +207,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter2
                 hasChangePosition = position;
                 if (!KeyboardUtils.isFastDoubleClick()) {
                     Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
-                    intent.putExtra("pPosition", position);
-                    intent.putExtra("pId", cardList.get(position).getPid());
+                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_POSITION, position);
+                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(position).getPid());
                     startActivity(intent);
                 }
                 break;

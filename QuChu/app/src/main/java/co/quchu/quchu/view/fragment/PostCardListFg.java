@@ -2,7 +2,6 @@ package co.quchu.quchu.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +57,6 @@ public class PostCardListFg extends BaseFragment {
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -95,14 +93,12 @@ public class PostCardListFg extends BaseFragment {
             postcardCardsui.clearCards();
             postcardCardsui.refresh();
             stack = new CardStack(getActivity());
-            MyCard card = null;
+            MyCard card;
             for (int i = 0; i < pModel.getResult().size(); i++) {
-                boolean isLast = (i==pModel.getResult().size()-1);
-                card = new MyCard(pModel.getResult().get(i), listener, getActivity(),!isLast);
+                boolean isLast = (i == pModel.getResult().size() - 1);
+                card = new MyCard(pModel.getResult().get(i), listener, getActivity(), !isLast);
                 stack.add(card);
             }
-
-
             postcardCardsui.addStack(stack);
             // draw cards
             postcardCardsui.refresh();
@@ -122,8 +118,8 @@ public class PostCardListFg extends BaseFragment {
     }
 
     @Subscribe
-    public void onMessageEvent(QuchuEventModel event){
-        if (event.getFlag()== EventFlags.EVENT_POST_CARD_DELETED){
+    public void onMessageEvent(QuchuEventModel event) {
+        if (event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
             initPostCardData();
         }
     }

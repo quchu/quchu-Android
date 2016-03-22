@@ -60,14 +60,11 @@ public class FavoritePlaceActivity extends BaseActivity {
             @Override
             public void onCardLick(View view, int position) {
                 switch (view.getId()) {
-                    case R.id.item_recommend_card_reply_rl:
+                    case R.id.root_cv:
                         Intent intent = new Intent();
-                        intent.putExtra("pId", model.getResult().get(position).getPid());
+                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, model.getResult().get(position).getPid());
                         intent.setClass(FavoritePlaceActivity.this, QuchuDetailsActivity.class);
                         startActivity(intent);
-                        break;
-                    case R.id.root_cv:
-
                         break;
                     case R.id.item_recommend_card_interest_rl:
                         ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(model.getResult().get(position).getPid(), model.getResult().get(position).getName(), true);
@@ -96,13 +93,11 @@ public class FavoritePlaceActivity extends BaseActivity {
                         favoritePlaceEmptyView.setVisibility(View.VISIBLE);
                         favoritePlaceRv.setVisibility(View.GONE);
                     }
-
                 } else {
                     favoritePlaceEmptyView.setVisibility(View.VISIBLE);
                     favoritePlaceRv.setVisibility(View.GONE);
                 }
             }
-
 
             @Override
             public boolean onError(String error) {

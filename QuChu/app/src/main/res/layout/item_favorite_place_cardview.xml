@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_cv"
@@ -11,8 +10,8 @@
     android:fitsSystemWindows="true"
     android:foreground="?attr/selectableItemBackground"
     card_view:cardCornerRadius="8dp"
-    card_view:cardPreventCornerOverlap="false"
-    card_view:cardElevation="@dimen/cardview_elevation">
+    card_view:cardElevation="@dimen/cardview_elevation"
+    card_view:cardPreventCornerOverlap="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,8 +83,6 @@
             android:textSize="@dimen/word_size_body" />
 
 
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -108,10 +105,11 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_below="@id/item_recommend_card_collect_iv" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_toRightOf="@id/item_recommend_card_collect_iv"/>
+                    android:layout_toRightOf="@id/item_recommend_card_collect_iv" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -132,10 +130,11 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_below="@id/item_recommend_card_interest_iv" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_toRightOf="@id/item_recommend_card_interest_iv"/>
+                    android:layout_toRightOf="@id/item_recommend_card_interest_iv" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -156,6 +155,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_below="@id/item_recommend_card_reply_Iv" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"

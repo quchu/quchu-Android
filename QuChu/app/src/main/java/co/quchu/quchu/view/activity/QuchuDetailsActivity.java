@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,19 +61,17 @@ public class QuchuDetailsActivity extends BaseActivity {
     TextView titleContentTv;
     @Bind(R.id.detail_recyclerview)
     RecyclerView mRecyclerView;
-    @Bind(R.id.detail_want_tv)
-    TextView detail_want_tv;
+
+    public static final String REQUEST_KEY_PID = "pid";
+    public static final String REQUEST_KEY_POSITION = "position";
 
     private int pId, pPosition = 0;
     public DetailModel dModel = new DetailModel();
     private GatherViewModel gatherViewModel;
     private long startViewTime = 0L;
     private QuchuDetailsAdapter mQuchuDetailAdapter;
-
     int detailButtonGroupLlHeight = -1;
-
-
-    private View.OnClickListener mOnClickListener= new View.OnClickListener() {
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             detailClick(v);
@@ -96,7 +93,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         /**
          *buttonGroup 控件位置计算 =图片高度+图片marginTop值16+图片上下view 高度8（各4）+ buttonGroup 的marginTop值８+阴影高度２
          */
-        detailButtonGroupLlHeight = (int) ((AppContext.Width-StringUtils.dip2px(this,28))/1.2f+StringUtils.dip2px(this,34));
+        detailButtonGroupLlHeight = (int) ((AppContext.Width - StringUtils.dip2px(this, 28)) / 1.2f + StringUtils.dip2px(this, 34));
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             private int scrollTotal = 0;
 
@@ -104,7 +101,7 @@ public class QuchuDetailsActivity extends BaseActivity {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 scrollTotal += dy;
-                if (scrollTotal!=0&&detailButtonGroupLlHeight<=scrollTotal){
+                if (scrollTotal != 0 && detailButtonGroupLlHeight <= scrollTotal) {
                     detailButtonGroupOutLl.setVisibility(View.VISIBLE);
                 } else {
                     detailButtonGroupOutLl.setVisibility(View.GONE);
@@ -115,8 +112,8 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
     private void initData() {
-        pId = getIntent().getIntExtra("pId", -1);
-        pPosition = getIntent().getIntExtra("pPosition", 0);
+        pId = getIntent().getIntExtra(REQUEST_KEY_PID, -1);
+        pPosition = getIntent().getIntExtra(REQUEST_KEY_POSITION, 0);
         if (-1 == pId) {
             Toast.makeText(this, "该趣处已不存在!", Toast.LENGTH_SHORT).show();
         } else {
@@ -135,7 +132,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
     private void bindingDetailData() {
-        changeBottomBeenBg(dModel.getMyCardId()>0);
+        changeBottomBeenBg(dModel.getMyCardId() > 0);
         changeCollectState(dModel.isIsf());
 
     }
@@ -163,7 +160,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.detail_want_tv,R.id.detail_been_tv,R.id.detail_button_collect_out_rl,R.id.detail_button_share_out_rl,R.id.detail_button_add_postcard_out_rl})
+    @OnClick({R.id.detail_want_tv, R.id.detail_been_tv, R.id.detail_button_collect_out_rl, R.id.detail_button_share_out_rl, R.id.detail_button_add_postcard_out_rl})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -215,10 +212,10 @@ public class QuchuDetailsActivity extends BaseActivity {
                 case R.id.detail_button_share_out_rl:
                 case R.id.detail_button_share_rl:
                     //分享
-                    try{
+                    try {
                         ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
                         shareDialogFg.show(getFragmentManager(), "share_dialog");
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                     break;
@@ -247,13 +244,13 @@ public class QuchuDetailsActivity extends BaseActivity {
      */
     private void userBeen() {
 
-        Intent intent = new Intent(this,AddPostCardActivity.class);
-        intent.putExtra("pName",dModel.getName());
-        intent.putExtra("pId",dModel.getPid());
-        if (dModel.isIsout()){
+        Intent intent = new Intent(this, AddPostCardActivity.class);
+        intent.putExtra("pName", dModel.getName());
+        intent.putExtra("pId", dModel.getPid());
+        if (dModel.isIsout()) {
 
             //Edit post card
-        }else{
+        } else {
 
             //Create new one
         }
@@ -378,10 +375,10 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onMessageEvent(QuchuEventModel event){
+    public void onMessageEvent(QuchuEventModel event) {
 
-        if (event.getFlag()== EventFlags.EVENT_QUCHU_DETAIL_UPDATED && null!= dModel){
-            if ((Integer) event.getContent()==dModel.getPid()){
+        if (event.getFlag() == EventFlags.EVENT_QUCHU_DETAIL_UPDATED && null != dModel) {
+            if ((Integer) event.getContent() == dModel.getPid()) {
                 dModel.setMyCardId((Integer) event.getContent());
                 changeBottomBeenBg(true);
             }

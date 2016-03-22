@@ -2,21 +2,15 @@ package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.PostCardItemModel;
-import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.fragment.PostCardListFg;
 import co.quchu.quchu.widget.cardsui.MyCard;
@@ -70,13 +64,6 @@ public class PostCardActivity extends BaseActivity {
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
-    }
-
-
-    @Override
     protected void onResume() {
         MobclickAgent.onPageStart("PostCardActivity");
 
@@ -106,36 +93,8 @@ public class PostCardActivity extends BaseActivity {
 
     public void showListFragment() {
         transaction = getSupportFragmentManager().beginTransaction();
-//        isFragmentStatOk = false;
-//        transaction.setCustomAnimations(R.anim.in_bottom_to_to_fg, R.anim.out_top_to_bottom_fg);
         transaction.replace(R.id.postcard_fl, postCardListFg);
         transaction.commit();
         fragmentIndex = 0;
-//        mHandler.sendMessageDelayed(mHandler.obtainMessage(0x00), 900);
     }
-
-
-
-//    private boolean isFragmentStatOk = true;
-//
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        return !isFragmentStatOk || super.dispatchTouchEvent(ev);
-//    }
-//
-//    @Override
-//    public boolean dispatchKeyEvent(KeyEvent event) {
-//        return !isFragmentStatOk || super.dispatchKeyEvent(event);
-//    }
-//
-//    public Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case 0x00:
-//                    isFragmentStatOk = true;
-//                    break;
-//            }
-//        }
-//    };
 }
