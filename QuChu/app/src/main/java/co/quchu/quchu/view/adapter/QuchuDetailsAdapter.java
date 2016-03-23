@@ -546,7 +546,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void onClick(View v) {
                         if (!KeyboardUtils.isFastDoubleClick()){
-                            mAnchorActivity.startActivity(new Intent(mAnchorActivity, QuchuDetailsActivity.class).putExtra("pId", mData.get(position).getPid()));
+                            mAnchorActivity.startActivity(new Intent(mAnchorActivity, QuchuDetailsActivity.class).putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid()));
                         }
 
                     }

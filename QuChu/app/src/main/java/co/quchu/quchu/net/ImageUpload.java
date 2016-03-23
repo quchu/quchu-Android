@@ -136,7 +136,6 @@ public class ImageUpload {
 
             @Override
             public void onSuccess(JSONObject response) {
-                LogUtils.json("qiniu token==" + response);
                 if (response != null && response.has("token")) {
                     try {
                         qiniuToken = response.getString("token");

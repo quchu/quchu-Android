@@ -90,7 +90,7 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
             public void onSuccess(JSONObject response) {
                 LogUtils.json("initDiscoverData==" + response);
                 try {
-                    if (response.has("data")&&null!=response.get("data")&& response != null && response.has("result") && !StringUtils.isEmpty(response.getString("result")) && !"null".equals(response.getString("result"))) {
+                    if (response.has("result") && !StringUtils.isEmpty(response.getString("result")) && !"null".equals(response.getString("result"))) {
                         Gson gson = new Gson();
                         DiscoverModel model = gson.fromJson(response.toString(), DiscoverModel.class);
                         if (model != null && model.getResult().size() > 0) {
@@ -110,10 +110,7 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
 
                         showErrorView();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    showErrorView();
-                } catch (JsonSyntaxException e){
+                } catch (JSONException | JsonSyntaxException e) {
                     e.printStackTrace();
                     showErrorView();
                 }
@@ -154,7 +151,7 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
             String path = item.getImgpath();
             PhotoInfo info = new PhotoInfo();
             info.setPhotoPath(path);
-             photos.add(info);
+            photos.add(info);
         }
         Intent intent = new Intent(this, FindPositionActivity.class);
         intent.putExtra(FindPositionActivity.REQUEST_KEY_NAME, name);

@@ -131,39 +131,33 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                     return;
                 }
 
-                if (photoInfos.size() > 0 && !photoInfos.get(0).getPhotoPath().contains("res:///") || photoInfos.size() > 2) {
-                    List<String> im = new ArrayList<String>();
-                    for (PhotoInfo item : photoInfos) {
-                        if (item.getPhotoPath().contains("file://")) {
-                            im.add(Uri.parse(item.getPhotoPath()).getPath());
-                        } else if (item.getPhotoPath().contains("http://")) {
-                            im.add(item.getPhotoPath());
+                List<String> im = new ArrayList<String>();
+                for (PhotoInfo item : photoInfos) {
+                    if (item.getPhotoPath().contains("file://")) {
+                        im.add(Uri.parse(item.getPhotoPath()).getPath());
+                    } else if (item.getPhotoPath().contains("http://")) {
+                        im.add(item.getPhotoPath());
+                    }
+                }
+                if (im.size() > 0) {
+                    DialogUtil.showProgess(FindPositionActivity.this, "上传中");
+                    new ImageUpload(FindPositionActivity.this, im, new ImageUpload.UploadResponseListener() {
+                        @Override
+                        public void finish(String result) {
+                            init();
+                            sendToServer(nameText, positionText, descText, result);
                         }
-                    }
-                    if (im.size() > 0) {
-                        DialogUtil.showProgess(FindPositionActivity.this, "上传中");
-                        new ImageUpload(FindPositionActivity.this, im, new ImageUpload.UploadResponseListener() {
-                            @Override
-                            public void finish(String result) {
-                                init();
-                                sendToServer(nameText, positionText, descText, result);
-                            }
 
-                            @Override
-                            public void error() {
-                                DialogUtil.dismissProgessDirectly();
-                                Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        DialogUtil.showProgess(FindPositionActivity.this, "上传中");
-                        sendToServer(nameText, positionText, descText, "");
-                    }
+                        @Override
+                        public void error() {
+                            DialogUtil.dismissProgessDirectly();
+                            Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     DialogUtil.showProgess(FindPositionActivity.this, "上传中");
                     sendToServer(nameText, positionText, descText, "");
                 }
-
             }
         });
     }
@@ -171,7 +165,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private void sendToServer(String name, String position, String desc, String Images) {
         String url;
         if (id != -1) {
-            url = String.format(NetApi.findPosition, String.valueOf(id) , name, position, desc, Images);
+            url = String.format(NetApi.findPosition, String.valueOf(id), name, position, desc, Images);
         } else {
             url = String.format(NetApi.findPosition, "", name, position, desc, Images);
         }

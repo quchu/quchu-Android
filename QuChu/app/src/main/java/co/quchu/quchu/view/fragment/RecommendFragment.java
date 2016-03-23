@@ -154,7 +154,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
-
+        EventBus.getDefault().register(this);
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layout);
         adapter = new RecommendAdapter(getActivity(), cardList, this);
@@ -210,10 +210,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 AppContext.selectedPlace = cardList.get(position);
                 hasChangePosition = position;
                 if (!KeyboardUtils.isFastDoubleClick()) {
-
-                    if (!EventBus.getDefault().isRegistered(this))
-                        EventBus.getDefault().register(this);
-
                     Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_POSITION, position);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(position).getPid());

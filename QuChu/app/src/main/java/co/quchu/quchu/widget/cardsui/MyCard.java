@@ -143,6 +143,7 @@ public class MyCard extends Card {
 
                     // TODO: 2016/3/7
                     Intent intent = new Intent(v.getContext(), PostcarDetailActivity.class);
+                    item.setIsf(true);//已收藏列表 公用明信片列表mode 接口没有返回这个字段
                     intent.putExtra(PostcarDetailActivity.REQUEST_PARAMATER_ENTITY, item);
                     Bundle bundle = null;
 

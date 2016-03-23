@@ -1,7 +1,6 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -24,7 +23,7 @@ public class PostCardPresenter {
 
 
     public static void GetPostCardList(Context context, boolean isFavoritePostCard, final MyPostCardListener listener) {
-        String netUrl = "";
+        String netUrl;
         if (isFavoritePostCard) {
             netUrl = String.format(NetApi.getFavoriteList, 1, NetApi.FavTypeCard);
         } else {
@@ -53,11 +52,12 @@ public class PostCardPresenter {
 
     /**
      * Get postcard info via pid
+     *
      * @param context
      * @param pId
      * @param listener
      */
-    public static void getPostCardByPid(Context context,int pId, final MyPostCardItemListener listener) {
+    public static void getPostCardByPid(Context context, int pId, final MyPostCardItemListener listener) {
         NetService.get(context, String.format(NetApi.getPlaceUserCard, pId), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
@@ -67,7 +67,7 @@ public class PostCardPresenter {
                         Gson gson = new Gson();
                         PostCardItemModel model = gson.fromJson(response.toString(), PostCardItemModel.class);
                         listener.onSuccess(model);
-                    }else{
+                    } else {
                         listener.onError(null);
                     }
                 }
