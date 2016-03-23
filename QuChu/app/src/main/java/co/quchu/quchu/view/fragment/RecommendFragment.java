@@ -392,7 +392,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
         final Bitmap finalBm = bm;
         fRecommendBimgTop.animate()
-                .alpha(.9f)
+                .alpha(.6f)
                 .alphaBy(1f)
                 .setDuration(800)
                 .setInterpolator(new DecelerateInterpolator())
@@ -404,7 +404,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                         if (null != fRecommendBimgTop)
                             fRecommendBimgTop.animate()
                                     .alpha(1f)
-                                    .alphaBy(.9f)
+                                    .alphaBy(.6f)
                                     .setInterpolator(new AccelerateInterpolator())
                                     .setDuration(800)
                                     .setListener(new AnimatorListenerAdapter() {
@@ -436,7 +436,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().register(this);
+        EventBus.getDefault().unregister(this);
         if (null != mSourceBitmap && !mSourceBitmap.isRecycled())
             mSourceBitmap.recycle();
         if (mSourceBitmap != null)

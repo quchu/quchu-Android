@@ -20,8 +20,6 @@
             android:id="@+id/favorite_place_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
             android:overScrollMode="always" />
 
         <FrameLayout

@@ -59,7 +59,9 @@ public class ClassifyFragment extends BaseFragment {
      * 获取分类信息
      */
     public void getRootTagsData() {
-        GsonRequest<List<ClassifyModel>> request = new GsonRequest<>(NetApi.getRootTags, new TypeToken<List<ClassifyModel>>() {
+
+        String uri = String.format(NetApi.getRootTags, SPUtils.getCityId());
+        GsonRequest<List<ClassifyModel>> request = new GsonRequest<>(uri, new TypeToken<List<ClassifyModel>>() {
         }.getType(), new ResponseListener<List<ClassifyModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {

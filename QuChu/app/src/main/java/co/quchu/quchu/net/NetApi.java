@@ -40,7 +40,7 @@ public class NetApi {
     public static final String UserStar = HOST + "/personal/getUserStar"; //我的趣星球
     public static final String getMessageList = HOST + "/personal/getMessageList"; //消息中心
 
-    public static final String getRootTags = HOST + "/place/getRootTags"; //获取趣处分类列表
+    public static final String getRootTags = HOST + "/place/getRootTags?cityId=%d"; //获取趣处分类列表
 
     // public static final String getPlaceList = HOST + "/place/getPlaceList";//获取趣处 推荐列表
     public static final String getPlaceList = HOST + "/place/getPlaceList?cityId=%d&tagsEn=%s&latitude=%s&longitude=%s&pageno=%d";//获取趣处 推荐列表按照分类

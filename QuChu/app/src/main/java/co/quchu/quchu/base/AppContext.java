@@ -24,6 +24,7 @@ import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -44,6 +45,8 @@ public class AppContext extends Application {
     public static RecommendModel selectedPlace; //推荐分类 数据源
     public static boolean dCardListNeedUpdate = false;
 
+    public static String token = "";
+
     private RefWatcher refWatcher;
 
     public static RefWatcher getRefWatcher(Context context) {
@@ -57,6 +60,8 @@ public class AppContext extends Application {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
+        token = SPUtils.getUserToken(getApplicationContext());
+
    /*     AnalyticsConfig.setChannel("quchu_360");
         LogUtils.json("userinfo=" + SPUtils.getUserInfo(mContext));
         LogUtils.json("userToken=" + SPUtils.getUserToken(mContext));*/
