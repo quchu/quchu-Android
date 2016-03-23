@@ -127,7 +127,7 @@ public class PostCardDetailFg extends Fragment {
 
             case R.id.postcard_detail_enter_place_tv:
                 if (model != null && !model.issys())
-                    startActivity(new Intent(getActivity(), QuchuDetailsActivity.class).putExtra("pId", model.getPlaceId()));
+                    startActivity(new Intent(getActivity(), QuchuDetailsActivity.class).putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, model.getPlaceId()));
                 else
                     Toast.makeText(getActivity(), "系统明信片无法进去趣处!", Toast.LENGTH_SHORT).show();
                 break;

@@ -132,7 +132,7 @@ public class PostCardDetailActivity extends BaseActivity {
                 break;
             case R.id.postcard_detail_enter_place_tv:
                 if (model != null && !model.issys())
-                    startActivity(new Intent(this, QuchuDetailsActivity.class).putExtra("pId", model.getPlaceId()));
+                    startActivity(new Intent(this, QuchuDetailsActivity.class).putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, model.getPlaceId()));
                 else
                     Toast.makeText(PostCardDetailActivity.this, "系统明信片无法进去趣处!", Toast.LENGTH_SHORT).show();
                 break;

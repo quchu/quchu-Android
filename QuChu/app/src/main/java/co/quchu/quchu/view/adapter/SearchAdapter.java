@@ -206,7 +206,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
             switch (v.getId()) {
                 case R.id.root_cv:
                 case R.id.item_recommend_card_reply_rl:
-                    mContext.startActivity(new Intent(mContext, QuchuDetailsActivity.class).putExtra("pId", arrayList.get(getPosition()).getPid()));
+                    mContext.startActivity(new Intent(mContext, QuchuDetailsActivity.class).putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, arrayList.get(getPosition()).getPid()));
                     break;
                 case R.id.item_recommend_card_collect_rl:
                     setFavorite(getPosition());
