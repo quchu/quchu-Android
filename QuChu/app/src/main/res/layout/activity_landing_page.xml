@@ -103,7 +103,7 @@
         />
 
     <ImageView
-        android:id="@+id/ivMiddleFinger"
+        android:id="@+id/ivAppIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_user_loginview_logo"
@@ -148,7 +148,7 @@
         android:layout_height="wrap_content"
         android:text="趣处"
         android:translationY="50dp"
-        android:layout_below="@+id/ivMiddleFinger"
+        android:layout_below="@+id/ivAppIcon"
         android:textSize="24sp"
         android:textColor="#fff"
         android:layout_centerHorizontal="true"

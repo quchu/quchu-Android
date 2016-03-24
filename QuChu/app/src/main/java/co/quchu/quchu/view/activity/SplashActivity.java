@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -61,8 +60,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     ImageView mIvBgSec;
     @Bind(R.id.rlRoot)
     RelativeLayout mRelativeLayout;
-    @Bind(R.id.ivMiddleFinger)
-    ImageView mIvMiddleFinger;
+    @Bind(R.id.ivAppIcon)
+    ImageView mIvAppIcon;
     @Bind(R.id.tvAppName)
     TextView mTvAppName;
     @Bind(R.id.tvCopyRight)
@@ -205,8 +204,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
-                ObjectAnimator.ofFloat(mIvMiddleFinger, "scaleX", 0, 1),
-                ObjectAnimator.ofFloat(mIvMiddleFinger, "scaleY", 0, 1));
+                ObjectAnimator.ofFloat(mIvAppIcon, "scaleX", 0, 1),
+                ObjectAnimator.ofFloat(mIvAppIcon, "scaleY", 0, 1));
         animatorSet.setDuration(600);
         animatorSet.setInterpolator(new OvershootInterpolator());
         animatorSet.start();
@@ -311,18 +310,18 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             ((BitmapDrawable) mIvCloudLeft.getDrawable()).getBitmap().recycle();
             ((BitmapDrawable) mIvCloudRight.getDrawable()).getBitmap().recycle();
             ((BitmapDrawable) mIvBgSec.getDrawable()).getBitmap().recycle();
-            ((BitmapDrawable) mIvMiddleFinger.getDrawable()).getBitmap().recycle();
+            ((BitmapDrawable) mIvAppIcon.getDrawable()).getBitmap().recycle();
             ((BitmapDrawable) mIvArrow.getDrawable()).getBitmap().recycle();
             mIvBg.setImageBitmap(null);
             mIvCloudLeft.setImageBitmap(null);
             mIvCloudRight.setImageBitmap(null);
             mIvBgSec.setImageBitmap(null);
-            mIvMiddleFinger.setImageBitmap(null);
+            mIvAppIcon.setImageBitmap(null);
             mIvArrow.setImageBitmap(null);
             mRelativeLayout.removeView(mIvBg);
             mRelativeLayout.removeView(mIvCloudLeft);
             mRelativeLayout.removeView(mIvCloudRight);
-            mRelativeLayout.removeView(mIvMiddleFinger);
+            mRelativeLayout.removeView(mIvAppIcon);
             mRelativeLayout.removeView(mIvArrow);
             //mRelativeLayout.removeView(mScrollView);
             System.gc();
@@ -333,9 +332,9 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             initLogic();
         }else{
             mIvBgSec.setAlpha(.0f);
-            mIvMiddleFinger.setScaleY(0f);
-            mIvMiddleFinger.setScaleX(0f);
-            mIvMiddleFinger.setAlpha(1f);
+            mIvAppIcon.setScaleY(0f);
+            mIvAppIcon.setScaleX(0f);
+            mIvAppIcon.setAlpha(1f);
             mAnimationSet = new AnimatorSet();
 
             mScrollView.post(new Runnable() {
