@@ -262,11 +262,6 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
                     @Override
                     public void run() {
                         System.gc();
-                        if (Constants.ISSTARTINGPKG) {
-                            mIvBg.setImageResource(R.drawable.ic_splash_bg_360);
-                        } else {
-                            mIvBg.setImageResource(R.drawable.ic_splash_bg);
-                        }
 
                         initLogic();
 
@@ -328,11 +323,6 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             mIvBgSec.setAlpha(1f);
             mTvTips.setVisibility(View.GONE);
             mVSpace.setVisibility(View.GONE);
-            if (Constants.ISSTARTINGPKG) {
-                mIvBgSec.setImageResource(R.drawable.ic_splash_bg_360);
-            } else {
-                mIvBgSec.setImageResource(R.drawable.ic_splash_bg);
-            }
             initLogic();
         }else{
             mIvBgSec.setAlpha(.0f);
@@ -389,6 +379,12 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     }
 
     private void initLogic() {
+
+        if (Constants.ISSTARTINGPKG) {
+            mIvBg.setImageResource(R.mipmap.ic_splash_bg_360);
+        } else {
+            mIvBg.setImageResource(R.mipmap.ic_splash_bg);
+        }
         mAnimationEnd = true;
         if (AppContext.user != null) {
             new EnterAppTask().execute(viewDuration);
