@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rlRoot"
+    >
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivBg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/background_long"
+                />
+
+            <View
+                android:id="@+id/vSpace"
+                android:layout_below="@+id/ivBg"
+                android:layout_width="match_parent"
+                android:layout_height="1271px"
+                android:adjustViewBounds="true"
+                android:background="#f4ffff"
+                />
+            <TextView
+                android:id="@+id/tvTips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="趣处 1.1 \n给春天开一扇玩耍的门"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:layout_below="@+id/ivBg"
+                android:layout_marginTop="320dp"
+                android:lineSpacingExtra="8dp"
+                android:textColor="#999999"
+                />
+            <ImageView
+                android:id="@+id/ivBgSec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/background_fth"
+                android:visibility="visible"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:alpha="0"
+                />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:id="@+id/ivCloudLeft"
+            android:layout_marginTop="50dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/cloud_left" />
+
+
+        <ImageView
+            android:layout_marginTop="130dip"
+            android:id="@+id/ivCloudRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/cloud_right" />
+
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/ivArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dip"
+        android:src="@mipmap/ic_wide_arrow"
+        />
+
+
+    <View
+        android:id="@+id/vBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#383635"
+        android:alpha="0"
+        />
+
+    <ImageView
+        android:id="@+id/ivMiddleFinger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_user_loginview_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:alpha="0"
+        />
+
+    <TextView
+        android:id="@+id/tvCopyRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CopyRight @ 2015 QUCHU Technologies. All rights reserved"
+        android:textSize="12sp"
+        android:textColor="#fff"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:padding="12dp"
+        android:alpha="0"
+        />
+
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1.1"
+        android:textSize="16sp"
+        android:textColor="#fff"
+        android:layout_toRightOf="@+id/tvAppName"
+        android:layout_alignTop="@+id/tvAppName"
+        android:translationY="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:padding="12dp"
+        android:alpha="0"
+        />
+
+
+    <TextView
+        android:id="@+id/tvAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="趣处"
+        android:translationY="50dp"
+        android:layout_below="@+id/ivMiddleFinger"
+        android:textSize="24sp"
+        android:textColor="#fff"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:padding="12dp"
+        android:alpha="0"
+        />
+
+
+</RelativeLayout>

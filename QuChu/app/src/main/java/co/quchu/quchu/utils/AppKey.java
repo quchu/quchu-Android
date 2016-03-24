@@ -71,6 +71,10 @@ public class AppKey {
      */
     public static final String IS_PLANET_GUIDE = "is_planet_guide";
     /**
+     * 落地页动画
+     */
+    public static final String IS_LANDING_ANIMATION = "is_landing_animation";
+    /**
      * 我的明信片界面是否需要弹出引导页
      */
     public static final String IS_POSTCARD_GUIDE = "is_postcard_guide";

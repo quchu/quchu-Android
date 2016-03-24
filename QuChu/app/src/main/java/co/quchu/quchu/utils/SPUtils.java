@@ -27,6 +27,7 @@ public class SPUtils {
         edit.apply();
     }
 
+
     /**
      * 获取布尔值
      */
@@ -139,6 +140,17 @@ public class SPUtils {
         return getValueFromSPMap(context, AppKey.USERTOKEN, "");
     }
 
+
+    public static boolean animationShown(Context context) {
+        if (!getBooleanFromSPMap(context, AppKey.IS_LANDING_ANIMATION,false)){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+
     public static void setUserToken(Context context, String userToken) {
         putValueToSPMap(context, AppKey.USERTOKEN, userToken);
     }
@@ -196,6 +208,7 @@ public class SPUtils {
         putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_IMAGES_GUIDE, true);
         putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_GUIDE, true);
         putBooleanToSPMap(AppContext.mContext, AppKey.IS_PLANET_GUIDE, true);
+
     }
 }
 
