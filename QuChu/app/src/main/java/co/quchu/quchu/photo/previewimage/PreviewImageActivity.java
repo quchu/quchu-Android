@@ -43,11 +43,6 @@ import co.quchu.quchu.utils.SPUtils;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-//import com.facebook.rebound.Spring;
-//import com.facebook.rebound.SpringConfig;
-//import com.facebook.rebound.SpringListener;
-//import com.facebook.rebound.SpringSystem;
-//import com.facebook.rebound.SpringUtil;
 
 public class PreviewImageActivity extends BaseActivity implements OnPageChangeListener {
 
@@ -211,10 +206,10 @@ public class PreviewImageActivity extends BaseActivity implements OnPageChangeLi
                 @Override
                 public void onViewTap(View arg0, float arg1, float arg2) {
                     SPUtils.putBooleanToSPMap(PreviewImageActivity.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false);
-                    userguideImageFirstIndexFl.setVisibility(View.GONE);
-                    userguideImageLastindexFl.setVisibility(View.GONE);
-                    viewpager.setVisibility(View.GONE);
-//                    finish();
+//                    userguideImageFirstIndexFl.setVisibility(View.GONE);
+//                    userguideImageLastindexFl.setVisibility(View.GONE);
+//                    viewpager.setVisibility(View.GONE);
+                    finish();
                 }
             });
             if (position == 0 && SPUtils.getBooleanFromSPMap(PreviewImageActivity.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)) {
