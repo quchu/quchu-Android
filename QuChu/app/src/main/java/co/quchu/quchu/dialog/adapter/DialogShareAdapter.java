@@ -19,8 +19,8 @@ import co.quchu.quchu.R;
  */
 public class DialogShareAdapter extends BaseAdapter {
     private Context mContext;
-    private int[] imageLIst = {R.drawable.ic_share_wechat, R.drawable.ic_share_wechat_friends, R.drawable.ic_share_qq,
-            R.drawable.ic_share_qzone, R.drawable.ic_share_weibo};
+    private int[] imageLIst = {R.mipmap.ic_share_wechat, R.mipmap.ic_share_wechat_friends, R.mipmap.ic_share_qq,
+            R.mipmap.ic_share_qzone, R.mipmap.ic_share_weibo};
     private String[] textArray = {
             "微信好友", "朋友圈",
             "QQ好友",
@@ -28,7 +28,7 @@ public class DialogShareAdapter extends BaseAdapter {
             "新浪微博"};
 
     /*,
-    , R.drawable.ic_share_douban, R.drawable.ic_share_photo_album
+    , R.mipmap.ic_share_douban, R.mipmap.ic_share_photo_album
 
                 "豆瓣",
                 "手机相册"*/

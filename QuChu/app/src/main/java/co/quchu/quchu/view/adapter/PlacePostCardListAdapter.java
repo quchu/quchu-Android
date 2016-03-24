@@ -97,11 +97,11 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
         holder.itemRecommendCardCityTv.setText(model.getPlcaeAddress());
         holder.itemRecommendCardNameTv.setText(model.getPlcaeName());
         holder.itemMyPostcardCardPrb.setRating((int) (model.getScore() + 0.5) >= 5 ? 5 : (model.getScore()));
-        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
         if (model.isIsme()) {
-            holder.itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_post_card_editer));
+            holder.itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_post_card_editer));
         } else {
-            holder.itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+            holder.itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
         }
         if (model.getImglist().size() > 0) {
             holder.item_recommend_card_photo_num_tv.setVisibility(View.VISIBLE);

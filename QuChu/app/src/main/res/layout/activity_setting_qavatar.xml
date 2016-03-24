@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/base_margin"
-                android:src="@drawable/ic_title_back" />
+                android:src="@mipmap/ic_title_back" />
         </RelativeLayout>
 
         <TextView

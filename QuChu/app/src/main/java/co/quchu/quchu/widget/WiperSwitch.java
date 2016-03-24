@@ -96,7 +96,7 @@ public class WiperSwitch extends View {
         this.middleCircleRect = new RectF();
         this.backCircleRect = new RectF(0, 0, width, height);
         options = new BitmapFactory.Options();
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.switch_thumb, options);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.switch_thumb, options);
         this.min_left = 15;
         this.max_left = width - (height - 30) - 15;
 

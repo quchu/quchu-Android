@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_planet_avatar" />
+            android:src="@mipmap/ic_planet_avatar" />
 
     </co.quchu.quchu.widget.CircleWaveView>
 
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginBottom="@dimen/rippleRadius"
-        android:background="@drawable/shape_frame_yellow"
+        android:background="@mipmap/shape_frame_yellow"
         android:text="立即进入"
         android:textColor="@color/gene_textcolor_yellow"
         android:textSize="@dimen/word_size_body" />-->

@@ -15,8 +15,8 @@
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:placeholderImage="@drawable/ic_image_empty"
-        app:failureImage="@drawable/ic_image_empty"
+        app:placeholderImage="@mipmap/ic_image_empty"
+        app:failureImage="@mipmap/ic_image_empty"
         app:actualImageScaleType="focusCrop"
         app:placeholderImageScaleType="focusCrop"
         app:roundedCornerRadius="4dp"/>

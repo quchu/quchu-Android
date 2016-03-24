@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/base_margin"
-                android:src="@drawable/ic_planet_collect" />
+                android:src="@mipmap/ic_planet_collect" />
 
             <co.quchu.quchu.widget.textcounter.CounterView
                 android:id="@+id/planet_collect_num_tv"
@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/base_margin"
-                android:src="@drawable/ic_planet_discover" />
+                android:src="@mipmap/ic_planet_discover" />
 
             <co.quchu.quchu.widget.textcounter.CounterView
                 android:id="@+id/planet_discover_num_tv"
@@ -209,7 +209,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/base_margin"
-                        android:src="@drawable/ic_planet_postcaard" />
+                        android:src="@mipmap/ic_planet_postcaard" />
 
                     <co.quchu.quchu.widget.textcounter.CounterView
                         android:id="@+id/planet_postcard_num_tv"
@@ -255,7 +255,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_user_guide_button_icon"
+            android:src="@mipmap/ic_user_guide_button_icon"
             android:visibility="gone" />
 
         <TextView

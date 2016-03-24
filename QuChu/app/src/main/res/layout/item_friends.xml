@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_friends_arrow" />
+        android:src="@mipmap/ic_friends_arrow" />
 
     <TextView
         android:id="@+id/item_friends_name_tv"

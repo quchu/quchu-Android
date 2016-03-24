@@ -55,7 +55,7 @@
             android:layout_marginBottom="@dimen/base_margin"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="@dimen/base_margin"
-            android:src="@drawable/ic_planet_postcaard" />
+            android:src="@mipmap/ic_planet_postcaard" />
 
         <TextView
             android:id="@+id/user_center_pnum_tv"
@@ -92,7 +92,7 @@
             android:layout_marginBottom="@dimen/base_margin"
             android:layout_marginLeft="36dp"
             android:layout_marginTop="@dimen/base_margin"
-            android:src="@drawable/ic_planet_collect" />
+            android:src="@mipmap/ic_planet_collect" />
 
         <TextView
             android:id="@+id/user_center_favoritenum_tv"

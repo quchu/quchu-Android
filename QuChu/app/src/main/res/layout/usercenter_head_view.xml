@@ -19,7 +19,7 @@
             android:layout_marginBottom="@dimen/half_margin"
             android:layout_marginTop="@dimen/half_margin"
             fresco:actualImageScaleType="focusCrop"
-            fresco:retryImage="@drawable/ic_care_friends_avatar"
+            fresco:retryImage="@mipmap/ic_care_friends_avatar"
             fresco:roundAsCircle="true"
             fresco:roundBottomLeft="true"
             fresco:roundBottomRight="true"

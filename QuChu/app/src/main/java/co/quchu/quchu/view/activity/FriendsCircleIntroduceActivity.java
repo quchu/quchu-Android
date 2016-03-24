@@ -43,7 +43,7 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
         title_content_tv.setText(getTitle().toString());
         geneIntroduceTv.setText(getResources().getString(R.string.subtitle_word_gene_introduce));
         titleMoreRl.setVisibility(View.GONE);
-        geneIntroduceIv.setImageResource(R.drawable.ic_friends_introduce);
+        geneIntroduceIv.setImageResource(R.mipmap.ic_friends_introduce);
     }
 
     @OnClick({R.id.title_back_rl, R.id.gene_introduce})

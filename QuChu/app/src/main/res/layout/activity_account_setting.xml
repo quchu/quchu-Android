@@ -116,7 +116,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/ic_account_setting_right_arrow" />
+                                android:src="@mipmap/ic_account_setting_right_arrow" />
 
                         </RelativeLayout>
                     </RelativeLayout>
@@ -167,7 +167,7 @@
                             android:paddingBottom="@dimen/half_margin"
                             android:paddingTop="@dimen/half_margin"
                             android:scaleType="center"
-                            android:src="@drawable/ic_account_setting_location_icon" />
+                            android:src="@mipmap/ic_account_setting_location_icon" />
 
                         <TextView
                             android:id="@+id/account_setting_user_location"

@@ -49,7 +49,7 @@ public class ImageBucketActivity extends BaseActivity {
 		dataList = helper.getImagesBucketList(false);	
 		bimap=BitmapFactory.decodeResource(
 				getResources(),
-				R.drawable.ic_add_photo_image);
+				R.mipmap.ic_add_photo_image);
 	}
 
 	/**

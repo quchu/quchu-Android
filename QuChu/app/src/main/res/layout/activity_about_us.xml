@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/base_margin"
-                android:src="@drawable/ic_title_back" />
+                android:src="@mipmap/ic_title_back" />
         </RelativeLayout>
 
         <TextView
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_menus_title_more" />
+                android:src="@mipmap/ic_menus_title_more" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/half_margin"
-                android:background="@drawable/ic_about_us_text" />
+                android:background="@mipmap/ic_about_us_text" />
             <!--   <LinearLayout
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"

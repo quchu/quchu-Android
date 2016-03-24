@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/half_margin"
-                    android:src="@drawable/ic_pull_menus_search" />
+                    android:src="@mipmap/ic_pull_menus_search" />
 
                 <EditText
                     android:id="@+id/search_input_et"

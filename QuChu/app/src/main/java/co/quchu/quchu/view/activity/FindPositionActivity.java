@@ -70,7 +70,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         setContentView(R.layout.activity_find_position);
         ButterKnife.bind(this);
         ImageView image = (ImageView) recommendTitleMoreRl.findViewById(R.id.widget_title_more_iv);
-        image.setImageResource(R.drawable.ic_menus_title_more);
+        image.setImageResource(R.mipmap.ic_menus_title_more);
 
         recommendTitleMoreRl.setMoreClick(new MoreButtonView.MoreClicklistener() {
             @Override
@@ -110,7 +110,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         position.setText("");
         photoInfos = new ArrayList<>();
         tackImage = new PhotoInfo();
-        tackImage.setPhotoPath("res:///" + R.drawable.ic_add_photo_image);
+        tackImage.setPhotoPath("res:///" + R.mipmap.ic_add_photo_image);
         photoInfos.add(tackImage);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));

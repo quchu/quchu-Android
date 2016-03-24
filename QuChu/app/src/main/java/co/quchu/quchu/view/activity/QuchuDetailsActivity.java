@@ -151,9 +151,9 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     private void changeCollectState(boolean isCollect) {
         if (isCollect) {
-            detailButtonCollectOutIv.setImageResource(R.drawable.ic_detail_collect);
+            detailButtonCollectOutIv.setImageResource(R.mipmap.ic_detail_collect);
         } else {
-            detailButtonCollectOutIv.setImageResource(R.drawable.ic_detail_uncollect);
+            detailButtonCollectOutIv.setImageResource(R.mipmap.ic_detail_uncollect);
         }
         dModel.setIsf(isCollect);
         mQuchuDetailAdapter.notifyDataSetChanged();

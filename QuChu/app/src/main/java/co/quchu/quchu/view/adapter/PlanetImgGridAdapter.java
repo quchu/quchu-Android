@@ -74,7 +74,7 @@ public class PlanetImgGridAdapter extends BaseAdapter {
             pvh.planet_gallery_mask_tv.setText("照片");
             pvh.planet_collect_num_tv.setEndValue(0);
             pvh.planet_collect_num_tv.start();
-            pvh.sdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.drawable.ic_image_empty));
+            pvh.sdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.mipmap.ic_image_empty));
             pvh.sdv.setAspectRatio(1.0f);
         } else {
             if (position == count - 1) {

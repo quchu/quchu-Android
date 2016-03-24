@@ -239,7 +239,7 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
 
 
     private void setIsfState(boolean isfState) {
-        previewCollectIv.setImageDrawable(getResources().getDrawable(isfState ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        previewCollectIv.setImageDrawable(getResources().getDrawable(isfState ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
     }
 
 

@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_detail_uncollect" />
+            android:src="@mipmap/ic_detail_uncollect" />
     </RelativeLayout>
 
     <View
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_detail_share" />
+            android:src="@mipmap/ic_detail_share" />
     </RelativeLayout>
 
     <View
@@ -56,6 +56,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_detail_add_postcard" />
+            android:src="@mipmap/ic_detail_add_postcard" />
     </RelativeLayout>
 </LinearLayout>

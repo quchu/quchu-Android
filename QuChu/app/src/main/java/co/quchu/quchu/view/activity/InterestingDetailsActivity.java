@@ -331,21 +331,21 @@
 //    private void changeBottomBeenBg(boolean isOut) {
 //        if (isOut) {
 //            detailBeenTv.setTextColor(getResources().getColor(R.color.black));
-//            detailBeenTv.setBackgroundResource(R.drawable.shape_detail_bottom_full_bg);
+//            detailBeenTv.setBackgroundResource(R.mipmap.shape_detail_bottom_full_bg);
 //        } else {
 //            detailBeenTv.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
-//            detailBeenTv.setBackgroundResource(R.drawable.shape_detail_bottom_bg);
+//            detailBeenTv.setBackgroundResource(R.mipmap.shape_detail_bottom_bg);
 //        }
 //    }
 //
 //
 //    private void changeCollectState(boolean isCollect) {
 //        if (isCollect) {
-//            detailButtonCollectIv.setImageResource(R.drawable.ic_detail_collect);
-//            detailButtonCollectOutIv.setImageResource(R.drawable.ic_detail_collect);
+//            detailButtonCollectIv.setImageResource(R.mipmap.ic_detail_collect);
+//            detailButtonCollectOutIv.setImageResource(R.mipmap.ic_detail_collect);
 //        } else {
-//            detailButtonCollectIv.setImageResource(R.drawable.ic_detail_uncollect);
-//            detailButtonCollectOutIv.setImageResource(R.drawable.ic_detail_uncollect);
+//            detailButtonCollectIv.setImageResource(R.mipmap.ic_detail_uncollect);
+//            detailButtonCollectOutIv.setImageResource(R.mipmap.ic_detail_uncollect);
 //        }
 //    }
 //

@@ -57,9 +57,9 @@ public class AddPostCardGridAdapter extends BaseAdapter {
         this.mContext = context;
         this.mPhotoList = mPhotoList;
 //        options = new DisplayImageOptions.Builder()
-//                .showImageOnFail(R.drawable.ic_gf_default_photo)
-//                .showImageForEmptyUri(R.drawable.ic_gf_default_photo)
-//                .showImageOnLoading(R.drawable.ic_gf_default_photo).build();
+//                .showImageOnFail(R.mipmap.ic_gf_default_photo)
+//                .showImageForEmptyUri(R.mipmap.ic_gf_default_photo)
+//                .showImageOnLoading(R.mipmap.ic_gf_default_photo).build();
     }
 
     @Override
@@ -93,7 +93,7 @@ public class AddPostCardGridAdapter extends BaseAdapter {
 
         if ((mPhotoList.size() + Bimp.imglist.size()) < 5) {
             if (position == 0) {
-                holder.itemAddpostcardSdv.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_add_photo_image));
+                holder.itemAddpostcardSdv.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_add_photo_image));
                 holder.itemAddpostcardDelIv.setVisibility(View.GONE);
             } else {
                 if (Bimp.imglist.size() > 0) {
