@@ -5,7 +5,7 @@
     android:layout_height="300dp"
     android:layout_marginBottom="@dimen/dialog_margin"
     android:layout_marginTop="@dimen/dialog_margin"
-    android:background="@mipmap/ic_postcard_top_shadow">
+    android:background="@drawable/ic_postcard_top_shadow">
 
     <android.support.v7.widget.CardView
         android:id="@+id/root_cv"
@@ -125,9 +125,9 @@
                   card_view:actualImageScaleType="centerCrop" />-->
 
             <RelativeLayout
+                android:id="@+id/animation2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/animation2"
                 android:layout_marginBottom="@dimen/half_margin"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginTop="@dimen/half_margin">
@@ -194,9 +194,9 @@
 
 
             <LinearLayout
+                android:id="@+id/animation3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/animation3"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="@dimen/half_margin"
                 android:orientation="horizontal">

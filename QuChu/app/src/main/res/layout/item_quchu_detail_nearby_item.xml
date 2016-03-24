@@ -26,7 +26,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/shape_quchu_detail_text_item_bg"
+        android:background="@drawable/shape_quchu_detail_text_item_bg"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:paddingTop="@dimen/quarter_margin"
