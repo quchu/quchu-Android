@@ -78,6 +78,11 @@ public class UserPostCardActivity extends BaseActivity {
         placePostcardCenterRv.setAdapter(adapter);
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void initPostCardData(int pageNos) {
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
         NetService.get(this, String.format(NetApi.getUserCardList, userId, pageNos), new IRequestListener() {

@@ -41,6 +41,11 @@ public class ImageBucketActivity extends BaseActivity {
 		initView();
 	}
 
+	@Override
+	protected int activitySetup() {
+		return TRANSITION_TYPE_LEFT;
+	}
+
 	/**
 	 * 初始化数据
 	 */

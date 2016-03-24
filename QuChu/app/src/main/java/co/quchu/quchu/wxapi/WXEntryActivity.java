@@ -43,6 +43,11 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     }
 
     @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);

@@ -71,6 +71,11 @@ public class MessageCenterActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     @OnClick(R.id.action_buttton)
     public void emptyClick(View view) {
         this.finish();

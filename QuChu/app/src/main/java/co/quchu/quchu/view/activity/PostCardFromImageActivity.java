@@ -62,6 +62,11 @@ public class PostCardFromImageActivity extends BaseActivity {
         initData();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     public void flipOver() {
         centerX = animationRoot.getWidth() / 2;

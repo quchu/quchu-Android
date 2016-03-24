@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -25,12 +23,6 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.Postprocessor;
 
-//import com.facebook.rebound.Spring;
-//import com.facebook.rebound.SpringConfig;
-//import com.facebook.rebound.SpringListener;
-//import com.facebook.rebound.SpringSystem;
-//import com.facebook.rebound.SpringUtil;
-
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -47,12 +39,17 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppKey;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class PreviewImage extends BaseActivity implements OnPageChangeListener {
+//import com.facebook.rebound.Spring;
+//import com.facebook.rebound.SpringConfig;
+//import com.facebook.rebound.SpringListener;
+//import com.facebook.rebound.SpringSystem;
+//import com.facebook.rebound.SpringUtil;
+
+public class PreviewImageActivity extends BaseActivity implements OnPageChangeListener {
 
     @Bind(R.id.preview_creater_avatar_sdv)
     SimpleDraweeView previewCreaterAvatarSdv;
@@ -91,6 +88,11 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
         viewpager.setOnPageChangeListener(this);
         viewpager.setVisibility(View.VISIBLE);
         InData();
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_ALPHA;
     }
 
 
@@ -150,7 +152,7 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
             previewCollectIv.setVisibility(View.VISIBLE);
             setIsfState(info.isf());
         }
-        if (SPUtils.getBooleanFromSPMap(PreviewImage.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)) {
+        if (SPUtils.getBooleanFromSPMap(PreviewImageActivity.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)) {
             if (arg0 == ImgList.size() - 1) {
                 userguideImageFirstIndexFl.setVisibility(View.GONE);
                 userguideImageLastindexFl.setVisibility(View.VISIBLE);
@@ -200,7 +202,7 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
                         }
                     })
                     .build();
-            Fresco.getImagePipeline().fetchImageFromBitmapCache(request, PreviewImage.this);
+            Fresco.getImagePipeline().fetchImageFromBitmapCache(request, PreviewImageActivity.this);
 
 
             // Now just add PhotoView to ViewPager and return it
@@ -208,14 +210,14 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
 
                 @Override
                 public void onViewTap(View arg0, float arg1, float arg2) {
-                    SPUtils.putBooleanToSPMap(PreviewImage.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false);
+                    SPUtils.putBooleanToSPMap(PreviewImageActivity.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false);
                     userguideImageFirstIndexFl.setVisibility(View.GONE);
                     userguideImageLastindexFl.setVisibility(View.GONE);
                     viewpager.setVisibility(View.GONE);
 //                    finish();
                 }
             });
-            if (position == 0 && SPUtils.getBooleanFromSPMap(PreviewImage.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)) {
+            if (position == 0 && SPUtils.getBooleanFromSPMap(PreviewImageActivity.this, AppKey.IS_POSTCARD_IMAGES_GUIDE, false)) {
                 userguideImageFirstIndexFl.setVisibility(View.VISIBLE);
             }
             container.addView(photoView, ViewPager.LayoutParams.MATCH_PARENT,
@@ -234,8 +236,6 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
             return view == object;
         }
     }
-
-
 
 
     private void setIsfState(boolean isfState) {
@@ -258,9 +258,9 @@ public class PreviewImage extends BaseActivity implements OnPageChangeListener {
             @Override
             public void onSuccess(JSONObject response) {
                 if (ImgList.get(showingIndex).isf()) {
-                    Toast.makeText(PreviewImage.this, "取消收藏!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PreviewImageActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(PreviewImage.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PreviewImageActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
                 }
                 ImgList.get(showingIndex).setIsf(!ImgList.get(showingIndex).isf());
                 setIsfState(ImgList.get(showingIndex).isf());

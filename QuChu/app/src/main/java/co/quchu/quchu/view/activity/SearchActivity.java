@@ -80,6 +80,11 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         initData();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     private void showNoneResultFrame() {
         searchResultIsnullVtv.setVisibility(View.VISIBLE);

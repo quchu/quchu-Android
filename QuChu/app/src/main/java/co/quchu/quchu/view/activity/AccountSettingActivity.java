@@ -91,6 +91,11 @@ public class AccountSettingActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void userInfoBinding() {
         titleContentTv.setText(getTitle());
         if (AppContext.user == null) {

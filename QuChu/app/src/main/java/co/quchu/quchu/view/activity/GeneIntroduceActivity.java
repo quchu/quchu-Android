@@ -46,6 +46,11 @@ public class GeneIntroduceActivity extends BaseActivity {
         geneIntroduceIv.setImageResource(R.mipmap.ic_gene_introduce_img);
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     @OnClick({R.id.title_back_rl, R.id.gene_introduce})
     public void click(View v) {
         if (KeyboardUtils.isFastDoubleClick())

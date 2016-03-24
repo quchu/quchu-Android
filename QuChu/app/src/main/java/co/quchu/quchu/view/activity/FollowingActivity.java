@@ -53,6 +53,11 @@ public class FollowingActivity extends BaseActivity implements View.OnClickListe
         FollowPresenter.getFollowsList(this, userId, followType, 1, callBack);
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     @Override
     public void onClick(View v) {

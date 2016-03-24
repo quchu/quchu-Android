@@ -24,7 +24,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.photo.previewimage.ImageBDInfo;
-import co.quchu.quchu.photo.previewimage.PreviewImage;
+import co.quchu.quchu.photo.previewimage.PreviewImageActivity;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PostCardFromImageActivity;
 import co.quchu.quchu.view.adapter.PostCardImageAdapter;
@@ -87,7 +87,7 @@ public class PostCardPhotoFg extends Fragment {
                 bdInfo.y = StringUtils.dip2px(1) + bdInfo.height * (a - firstVisiblePosition) + top + (a - firstVisiblePosition) * StringUtils.dip2px(2) + addPostcardImageIgv.getTop() - StringUtils.dip2px(1)
                         + StringUtils.dip2px(128);
 
-                Intent intent = new Intent(getActivity(), PreviewImage.class);
+                Intent intent = new Intent(getActivity(), PreviewImageActivity.class);
                 intent.putExtra("data", (Serializable) model);
                 intent.putExtra("bdinfo", bdInfo);
                 intent.putExtra("index", position);

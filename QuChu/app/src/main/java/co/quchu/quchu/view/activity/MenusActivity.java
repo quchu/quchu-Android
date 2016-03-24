@@ -69,6 +69,11 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
 
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_BOTTOM;
+    }
+
     @OnClick({R.id.menus_search_rl, R.id.menus_add_topic, R.id.menu_visitor_login_iv, R.id.menu_user_logout_tv})
     public void onViewClick(View view) {
         if (KeyboardUtils.isFastDoubleClick())

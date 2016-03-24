@@ -62,6 +62,11 @@ public class PostCardActivity extends BaseActivity {
         showListFragment();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     @Override
     protected void onResume() {

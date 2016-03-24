@@ -83,6 +83,11 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         restore();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     /**
      * 修改的时候恢复文件
      */

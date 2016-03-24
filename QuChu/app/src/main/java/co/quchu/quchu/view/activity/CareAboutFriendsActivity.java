@@ -51,6 +51,11 @@ public class CareAboutFriendsActivity extends BaseActivity {
      //   atmosphereRv.setAdapter(new DiscoverAdapter(this, model.getResult()));
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     public void addOnBackPressedListener( PostCardRecyclerView.OnBackPressedListener onBackPressedListener ) {
         if ( this.listeners.indexOf( onBackPressedListener ) == -1 ) {
             this.listeners.add( onBackPressedListener );

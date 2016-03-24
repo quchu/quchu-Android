@@ -58,7 +58,6 @@ public class FlickrListFragment extends BaseFragment {
                 bdInfo.y = StringUtils.dip2px(1) + bdInfo.height * (a - firstVisiblePosition) + top + (a - firstVisiblePosition) * StringUtils.dip2px(2) + fragmentFlickrLv.getTop() - StringUtils.dip2px(1)
                         + StringUtils.dip2px(128);
 
-                Intent intent = new Intent(getActivity(), PreviewImage.class);
                 intent.putExtra("data", (Serializable) defaulModel);
                 intent.putExtra("bdinfo", bdInfo);
                 intent.putExtra("index", position);

@@ -80,6 +80,11 @@ public class PostcarDetailActivity extends BaseActivity {
         initTitleBar();
     }
 
+    @Override
+    protected int activitySetup() {
+        return 0;
+    }
+
 
     private void initPostCardDetailData() {
         if (item != null) {

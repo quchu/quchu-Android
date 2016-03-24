@@ -109,6 +109,11 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    @Override
+    protected int activitySetup() {
+        return 0;
+    }
+
     private void initData() {
         if (StringUtils.isDouble(getIntent().getStringExtra("lat")))
             lat = Double.parseDouble(getIntent().getStringExtra("lat"));

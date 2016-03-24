@@ -56,6 +56,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         scrollView.setHeaderLayoutParams(localObject);
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void initView() {
         ivZoom = (SimpleDraweeView) scrollView.getZoomView().findViewById(R.id.iv_zoom);
         userCenterUserIconSdv = (SimpleDraweeView) scrollView.getHeaderView().findViewById(R.id.user_center_user_icon_sdv);

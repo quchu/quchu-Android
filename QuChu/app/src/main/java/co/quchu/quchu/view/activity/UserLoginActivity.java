@@ -53,6 +53,11 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
      /*   }*/
     }
 
+    @Override
+    protected int activitySetup() {
+        return 0;
+    }
+
     private boolean IsVisitorLogin = false;
 
 

@@ -95,6 +95,11 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
         vto.addOnGlobalLayoutListener(this);
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     @OnClick({R.id.gene_introduce, R.id.atmosphere_rpv})
     public void Click(View view) {

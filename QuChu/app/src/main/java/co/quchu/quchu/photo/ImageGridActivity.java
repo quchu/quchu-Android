@@ -98,6 +98,11 @@ public class ImageGridActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     private void initView() {
         gridView = (GridView) findViewById(R.id.gridview);

@@ -87,6 +87,11 @@ public class RecommendActivity extends BaseActivity {
         UmengUpdateAgent.setUpdateCheckConfig(true);
     }
 
+    @Override
+    protected int activitySetup() {
+        return 0;
+    }
+
     @OnClick({R.id.recommend_title_location_rl})
     public void titleClick(View view) {
         if (KeyboardUtils.isFastDoubleClick())

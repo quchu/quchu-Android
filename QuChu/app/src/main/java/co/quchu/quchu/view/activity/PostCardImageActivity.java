@@ -22,7 +22,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.photo.previewimage.ImageBDInfo;
-import co.quchu.quchu.photo.previewimage.PreviewImage;
+import co.quchu.quchu.photo.previewimage.PreviewImageActivity;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.PostCardImageAdapter;
 
@@ -72,7 +72,7 @@ public class PostCardImageActivity extends BaseActivity {
                 bdInfo.y = StringUtils.dip2px(1) + bdInfo.height * (a - firstVisiblePosition) + top + (a - firstVisiblePosition) * StringUtils.dip2px(2) + addPostcardImageIgv.getTop() - StringUtils.dip2px(1)
                         + StringUtils.dip2px(128);
 
-                Intent intent = new Intent(PostCardImageActivity.this, PreviewImage.class);
+                Intent intent = new Intent(PostCardImageActivity.this, PreviewImageActivity.class);
                 intent.putExtra("data", (Serializable) defaulModel);
                 intent.putExtra("bdinfo", bdInfo);
                 intent.putExtra("index", position);
@@ -82,6 +82,11 @@ public class PostCardImageActivity extends BaseActivity {
         });
         getDatas();
 
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 /*Error:Execution failed for task ':app:transformClassesAndResourcesWithProguardForRelease'.
 > java.io.IOException: Please correct the above warnings first.*/

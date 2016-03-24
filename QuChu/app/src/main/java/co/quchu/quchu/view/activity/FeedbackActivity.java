@@ -79,6 +79,11 @@ public class FeedbackActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     @OnClick(R.id.title_back_rl)
     public void feedClick(View view) {

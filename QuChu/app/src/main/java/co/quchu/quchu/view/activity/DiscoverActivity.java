@@ -65,6 +65,11 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
 
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     @Override
     protected void onPause() {

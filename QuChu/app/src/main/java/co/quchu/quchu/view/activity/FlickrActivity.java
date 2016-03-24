@@ -124,6 +124,11 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
 
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     @Override
     public void onViewsClick(int flag) {

@@ -111,6 +111,11 @@ public class QuchuDetailsActivity extends BaseActivity {
         startViewTime = System.currentTimeMillis();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void initData() {
         pId = getIntent().getIntExtra(REQUEST_KEY_PID, -1);
         pPosition = getIntent().getIntExtra(REQUEST_KEY_POSITION, 0);

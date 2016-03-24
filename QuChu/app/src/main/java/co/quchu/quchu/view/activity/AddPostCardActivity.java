@@ -137,6 +137,11 @@ public class AddPostCardActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private FunctionConfig functionConfig;
 
     private void initGralley() {

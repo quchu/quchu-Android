@@ -48,6 +48,11 @@ public class AboutUsActivity extends BaseActivity {
         aboutUsDescTv.setMovementMethod(LinkMovementMethod.getInstance());*/
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     @OnClick({R.id.about_us_title_back_rl})
     public void aboutUsClick(View view) {
         switch (view.getId()) {

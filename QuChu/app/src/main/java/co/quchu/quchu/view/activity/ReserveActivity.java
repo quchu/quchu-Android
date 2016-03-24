@@ -106,6 +106,11 @@ public class ReserveActivity extends BaseActivity {
     }
 
     @Override
+    protected int activitySetup() {
+        return 0;
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
         if (keyCode == KeyEvent.KEYCODE_BACK) {

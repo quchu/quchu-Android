@@ -93,6 +93,11 @@ public class PostCardDetailActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void bindingDatas() {
         if (model.isIsme()) {
             postcardDetailDelTv.setVisibility(View.VISIBLE);

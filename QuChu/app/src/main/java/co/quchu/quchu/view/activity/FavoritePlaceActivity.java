@@ -76,6 +76,11 @@ public class FavoritePlaceActivity extends BaseActivity {
         favoritePlaceRv.setAdapter(adapter);
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void initData(int pageNo) {
         NetService.get(this, String.format(NetApi.getFavoriteList, pageNo, NetApi.FavTypePlace), new IRequestListener() {
             @Override

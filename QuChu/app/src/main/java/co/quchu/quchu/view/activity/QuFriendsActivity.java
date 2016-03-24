@@ -193,6 +193,11 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
     }
 
     @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
+    @Override
     public void onGlobalLayout() {
 //        int heigh = midLuncher.getHeight() / 2;
         midLuncher.getViewTreeObserver().removeGlobalOnLayoutListener(this);

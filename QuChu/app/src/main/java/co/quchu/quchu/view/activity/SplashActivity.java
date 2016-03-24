@@ -414,6 +414,11 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     }
 
     @Override
+    protected int activitySetup() {
+        return 0;
+    }
+
+    @Override
     protected void onResume() {
         MobclickAgent.onPageStart("SplashActivity");
         super.onResume();

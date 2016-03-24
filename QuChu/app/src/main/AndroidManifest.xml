@@ -197,7 +197,7 @@
             android:name=".view.activity.UserLoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".photo.previewimage.PreviewImage"
+            android:name=".photo.previewimage.PreviewImageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".photo.previewimage.PreviewAlbumImage"

@@ -130,6 +130,11 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         }
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void fetchData() {
         if (NetUtil.isNetworkConnected(this))
             DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));

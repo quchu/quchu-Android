@@ -91,6 +91,11 @@ public class PalceMyPostCardActivity extends BaseActivity {
         getDataFromServer();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     PostCardItemModel pPostCardModel;
 
     private void getDataFromServer() {

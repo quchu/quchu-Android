@@ -68,6 +68,11 @@ public class FavoriteActivity extends BaseActivity {
         initFavoriteData();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void initFavoriteData() {
         DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));
         NetService.get(this, NetApi.getFavorite, new IRequestListener() {

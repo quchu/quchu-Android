@@ -51,6 +51,11 @@ public class ClassifyDetailActivity extends BaseActivity implements RecommendAda
         changeDataSetFromServer();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private RecommendAdapterLite adapter;
 
 

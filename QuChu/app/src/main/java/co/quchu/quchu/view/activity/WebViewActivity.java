@@ -84,6 +84,11 @@ public class WebViewActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected int activitySetup() {
+        return 0;
+    }
+
     private void showErrorToast() {
         if (DialogUtil.isDialogShowing()){
             DialogUtil.dismissProgess();

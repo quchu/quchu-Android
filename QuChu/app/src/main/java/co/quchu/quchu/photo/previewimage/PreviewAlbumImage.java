@@ -73,6 +73,11 @@ public class PreviewAlbumImage extends BaseActivity implements OnPageChangeListe
         InData();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
 
     public void Listener() {
         // TODO Auto-generated method stub
