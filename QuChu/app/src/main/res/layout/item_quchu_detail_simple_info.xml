@@ -35,8 +35,8 @@
                 android:layout_marginTop="@dimen/half_margin"
                 card_view:prb_clickable="false"
                 card_view:prb_defaultRating="4"
-                card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
-                card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
+                card_view:prb_tickNormalDrawable="@mipmap/ic_ratingbar_off"
+                card_view:prb_tickSelectedDrawable="@mipmap/ic_ratingbar_on"
                 card_view:prb_tickSpacing="2dp"
                 card_view:prb_totalTicks="5" />
 

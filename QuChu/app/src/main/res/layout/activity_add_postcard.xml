@@ -114,8 +114,8 @@
                     android:gravity="center"
                     card_view:prb_clickable="true"
                     card_view:prb_defaultRating="0"
-                    card_view:prb_tickNormalDrawable="@drawable/ic_add_postcard_star"
-                    card_view:prb_tickSelectedDrawable="@drawable/ic_add_postcard_star_full"
+                    card_view:prb_tickNormalDrawable="@mipmap/ic_add_postcard_star"
+                    card_view:prb_tickSelectedDrawable="@mipmap/ic_add_postcard_star_full"
                     card_view:prb_tickSpacing="@dimen/base_margin"
                     card_view:prb_totalTicks="5" />
 

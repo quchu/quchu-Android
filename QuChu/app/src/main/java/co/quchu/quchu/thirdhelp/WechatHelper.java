@@ -222,7 +222,7 @@ public class WechatHelper {
             msg.title = description;
             if (bitmap == null) {
                 bitmap = BitmapFactory.decodeResource(mActivity.getResources(),
-                        R.drawable.ic_share_logo);
+                        R.mipmap.ic_share_logo);
 //                msg.thumbData = Util.bmpToByteArray(bitmap, true);
             }
 //            else{
@@ -266,7 +266,7 @@ public class WechatHelper {
             msg.title = description;
             if (bytes == null) {
                 bytes = Util.bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
-                        R.drawable.ic_share_logo), true);
+                        R.mipmap.ic_share_logo), true);
             }
             msg.thumbData = bytes;
 
@@ -310,7 +310,7 @@ public class WechatHelper {
             msg.title = description;
             if (bitmap == null) {
                 bitmap = BitmapFactory.decodeResource(mActivity.getResources(),
-                        R.drawable.ic_share_logo);
+                        R.mipmap.ic_share_logo);
 //                msg.thumbData = Util.bmpToByteArray(bitmap, true);
             }
 //            else{
@@ -354,7 +354,7 @@ public class WechatHelper {
             msg.title = description;
             if (bytes == null) {
                 bytes = Util.bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
-                        R.drawable.ic_share_logo), true);
+                        R.mipmap.ic_share_logo), true);
             }
             msg.thumbData = bytes;
 

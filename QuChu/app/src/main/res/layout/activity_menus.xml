@@ -39,7 +39,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="8dp"
                     android:layout_toLeftOf="@id/menus_search_text_tv"
-                    android:src="@drawable/ic_pull_menus_search" />
+                    android:src="@mipmap/ic_pull_menus_search" />
             </RelativeLayout>
 
 
@@ -71,7 +71,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:src="@drawable/ic_pull_menus_add" />
+                android:src="@mipmap/ic_pull_menus_add" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_visitor_btn"
+                    android:src="@mipmap/ic_visitor_btn"
                     android:visibility="invisible" />
 
                 <TextView

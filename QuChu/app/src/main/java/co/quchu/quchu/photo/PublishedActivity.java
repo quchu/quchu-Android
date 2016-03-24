@@ -147,7 +147,7 @@ public class PublishedActivity extends Activity {
 
             if (position == Bimp.bmp.size()) {
                 holder.image.setImageBitmap(BitmapFactory.decodeResource(
-                        getResources(), R.drawable.ic_add_photo_image));
+                        getResources(), R.mipmap.ic_add_photo_image));
                 if (position == 9) {
                     holder.image.setVisibility(View.GONE);
                 }

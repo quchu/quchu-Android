@@ -17,7 +17,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginStart="@dimen/base_margin"
-            android:src="@drawable/ic_recommed_title_location"
+            android:src="@mipmap/ic_recommed_title_location"
             tools:ignore="ContentDescription" />
     </RelativeLayout>
 
@@ -45,5 +45,5 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:paddingRight="16dp"
-        android:src="@drawable/ic_title_more" />
+        android:src="@mipmap/ic_title_more" />
 </RelativeLayout>

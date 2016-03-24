@@ -98,9 +98,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         holder.itemRecommendCardProgressThree.setProgressName(model.getGenes().get(2).getKey());
 
         if (model.isIsf()) {
-            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_collect));
+            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_collect));
         } else {
-            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_uncollect));
+            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_uncollect));
         }
 
 

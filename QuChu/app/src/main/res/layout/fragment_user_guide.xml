@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_user_guide"
+    android:background="@mipmap/ic_user_guide"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -12,7 +12,7 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
-        android:background="@drawable/ic_user_guide_postcard"
+        android:background="@mipmap/ic_user_guide_postcard"
         android:orientation="vertical">
 
         <TextView
@@ -44,7 +44,7 @@
         android:layout_marginTop="@dimen/base_margin"
         android:layout_below="@id/user_guide_postcard"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_user_guide_button_bg"
+        android:background="@mipmap/ic_user_guide_button_bg"
         android:paddingLeft="@dimen/dialog_margin"
         android:paddingRight="@dimen/dialog_margin"
         android:text="拆开看看"

@@ -108,7 +108,7 @@ public class RecommendAdapterLite extends RecyclerView.Adapter<RecommendAdapterL
         holder.itemRecommendCardNameTv.setText(model.getName());
         holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().
-                getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+                getDrawable(model.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
 
     }
 

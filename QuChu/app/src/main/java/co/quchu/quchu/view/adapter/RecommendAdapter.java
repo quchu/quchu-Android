@@ -79,7 +79,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         holder.tag2.setText(genes.get(1).getKey());
         holder.tag3.setText(genes.get(2).getKey());
 
-        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.drawable.ic_detail_collect_dark : R.drawable.ic_atmophere_unselected_dark));
+        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.mipmap.ic_detail_collect_dark : R.mipmap.ic_atmophere_unselected_dark));
 
         if (model.isout) {//用户去过该趣处
             //去过标签 start
@@ -88,7 +88,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
                     DynamicDrawableSpan.ALIGN_BOTTOM) {
                 @Override
                 public Drawable getDrawable() {
-                    Drawable d = mContext.getResources().getDrawable(R.drawable.ic_span_been);
+                    Drawable d = mContext.getResources().getDrawable(R.mipmap.ic_span_been);
                     d.setBounds(StringUtils.dip2px(8), -StringUtils.dip2px(16), StringUtils.dip2px(40), 0);
                     return d;
                 }

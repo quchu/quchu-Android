@@ -51,9 +51,9 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         if (Constants.ISSTARTINGPKG) {
-            splashRootRl.setImageResource(R.drawable.ic_splash_bg_360);
+            splashRootRl.setImageResource(R.mipmap.ic_splash_bg_360);
         } else {
-            splashRootRl.setImageResource(R.drawable.ic_splash_bg);
+            splashRootRl.setImageResource(R.mipmap.ic_splash_bg);
         }
         AppContext.initLocation();
         if (AppContext.user != null) {

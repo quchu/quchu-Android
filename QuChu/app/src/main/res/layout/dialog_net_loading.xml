@@ -12,7 +12,7 @@
 
     <!--    <ProgressBar
 
-     android:background="@drawable/shape_loading_dialog_bg"
+     android:background="@mipmap/shape_loading_dialog_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminateDrawable="@anim/loading_progress"

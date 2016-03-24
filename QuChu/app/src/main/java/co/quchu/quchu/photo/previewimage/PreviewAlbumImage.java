@@ -185,7 +185,7 @@ public class PreviewAlbumImage extends BaseActivity implements OnPageChangeListe
     private int showingIndex = 0;
 
 /*    private void setIsfState(boolean isfState) {
-        previewCollectIv.setImageDrawable(getResources().getDrawable(isfState ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        previewCollectIv.setImageDrawable(getResources().getDrawable(isfState ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
     }*/
 
     @OnClick(R.id.preview_collect_rl)

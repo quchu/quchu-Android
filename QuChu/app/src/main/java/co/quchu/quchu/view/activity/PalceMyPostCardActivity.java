@@ -114,8 +114,8 @@ public class PalceMyPostCardActivity extends BaseActivity {
                         itemMyPostcardCardCommentTv.setText(pPostCardModel.getComment());
                         rootCv.setCardBackgroundColor(Color.parseColor("#" + pPostCardModel.getRgb()));
 
-                        itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
-                        itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_post_card_editer));
+                        itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
+                        itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.mipmap.ic_post_card_editer));
                         rootCv.setVisibility(View.VISIBLE);
                         DialogUtil.dismissProgess();
                     }
@@ -186,7 +186,7 @@ public class PalceMyPostCardActivity extends BaseActivity {
                 } else {
                     Toast.makeText(PalceMyPostCardActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }
-                itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+                itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
             }
 
             @Override

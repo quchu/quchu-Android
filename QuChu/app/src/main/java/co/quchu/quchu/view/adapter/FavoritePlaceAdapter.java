@@ -77,7 +77,7 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
         holder.itemRecommendCardCityTv.setText(model.getDescribe());
         holder.itemRecommendCardNameTv.setText(model.getName());
         holder.itemRecommendCardPrb.setRating((int) (model.getSuggest() + 0.5) >= 5 ? 5 : (model.getSuggest()));
-        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
 
     }
 

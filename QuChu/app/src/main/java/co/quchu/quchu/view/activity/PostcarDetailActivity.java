@@ -94,14 +94,14 @@ public class PostcarDetailActivity extends BaseActivity {
             itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
             itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
 
-            itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(item.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+            itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(item.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
             if (item.issys()) {
-                itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
             } else {
                 if (item.isIsme()) {
-                    itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_post_card_editer));
+                    itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.mipmap.ic_post_card_editer));
                 } else {
-                    itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                    itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
                 }
             }
             if (item.getImglist() != null && item.getImglist().size() > 0) {
@@ -161,7 +161,7 @@ public class PostcarDetailActivity extends BaseActivity {
             @Override
             public void onSuccess(PostCardModel model) {
                 item.setIsp(!item.isIsp());
-                itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(item.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
                 if (item.isIsp()) {
                     Toast.makeText(PostcarDetailActivity.this, "点赞成功!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -191,10 +191,10 @@ public class PostcarDetailActivity extends BaseActivity {
                     item.setIsf(!item.isIsf());
                     if (item.isIsf()) {
                         Toast.makeText(PostcarDetailActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
-                        itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_collect));
+                        itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.mipmap.ic_detail_collect));
                     } else {
                         Toast.makeText(PostcarDetailActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
-                        itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_detail_uncollect));
+                        itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(R.mipmap.ic_detail_uncollect));
                     }
                 }
 

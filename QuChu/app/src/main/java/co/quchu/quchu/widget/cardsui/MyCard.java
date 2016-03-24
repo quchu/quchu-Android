@@ -124,14 +124,14 @@ public class MyCard extends Card {
         } else {
             itemRecommendCardPhotoNumTv.setVisibility(View.INVISIBLE);
         }
-        itemRecommendCardCollectIv.setImageDrawable(context.getResources().getDrawable(item.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        itemRecommendCardCollectIv.setImageDrawable(context.getResources().getDrawable(item.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
         if (item.issys()) {
-            itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+            itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(item.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
         } else {
             if (item.isIsme()) {
-                itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_post_card_editer));
+                itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_post_card_editer));
             } else {
-                itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(item.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
             }
         }
         rootCv.setOnClickListener(new View.OnClickListener() {
@@ -230,7 +230,7 @@ public class MyCard extends Card {
             @Override
             public void onSuccess(PostCardModel model) {
                 item.setIsp(!item.isIsp());
-                itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(item.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
                 if (item.isIsp()) {
                     Toast.makeText(mContext, "点赞成功!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -271,10 +271,10 @@ public class MyCard extends Card {
                     item.setIsf(!item.isIsf());
                     if (item.isIsf()) {
                         Toast.makeText(mContext, "收藏成功!", Toast.LENGTH_SHORT).show();
-                        itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_collect));
+                        itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_collect));
                     } else {
                         Toast.makeText(mContext, "取消收藏!", Toast.LENGTH_SHORT).show();
-                        itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_uncollect));
+                        itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_uncollect));
                     }
                 }
 

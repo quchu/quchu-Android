@@ -5,7 +5,7 @@
     android:layout_height="300dp"
     android:layout_marginBottom="@dimen/dialog_margin"
     android:layout_marginTop="@dimen/dialog_margin"
-    android:background="@drawable/ic_postcard_top_shadow">
+    android:background="@mipmap/ic_postcard_top_shadow">
 
     <android.support.v7.widget.CardView
         android:id="@+id/root_cv"
@@ -104,7 +104,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_user_guide_ver_icon" />
+                            android:src="@mipmap/ic_user_guide_ver_icon" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -173,8 +173,8 @@
                     android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
                     card_view:prb_clickable="false"
                     card_view:prb_defaultRating="4"
-                    card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
-                    card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
+                    card_view:prb_tickNormalDrawable="@mipmap/ic_ratingbar_off"
+                    card_view:prb_tickSelectedDrawable="@mipmap/ic_ratingbar_on"
                     card_view:prb_tickSpacing="2dp"
                     card_view:prb_totalTicks="5" />
 
@@ -213,7 +213,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_margin="@dimen/base_margin"
-                        android:src="@drawable/ic_atmophere_unselected" />
+                        android:src="@mipmap/ic_atmophere_unselected" />
 
                 </RelativeLayout>
 
@@ -229,7 +229,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_margin="@dimen/base_margin"
-                        android:src="@drawable/ic_atmophere_unselected" />
+                        android:src="@mipmap/ic_atmophere_unselected" />
 
                 </RelativeLayout>
 
@@ -245,7 +245,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_margin="@dimen/base_margin"
-                        android:src="@drawable/ic_recommend_bc_right" />
+                        android:src="@mipmap/ic_recommend_bc_right" />
 
                 </RelativeLayout>
 
@@ -261,7 +261,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_margin="@dimen/base_margin"
-                        android:src="@drawable/ic_atmosphere_more" />
+                        android:src="@mipmap/ic_atmosphere_more" />
 
                 </RelativeLayout>
             </LinearLayout>

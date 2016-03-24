@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/base_margin"
-            android:src="@drawable/ic_title_back" />
+            android:src="@mipmap/ic_title_back" />
     </RelativeLayout>
 
     <TextView
@@ -36,5 +36,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingRight="16dp"
-        android:src="@drawable/ic_title_more" />
+        android:src="@mipmap/ic_title_more" />
 </LinearLayout>

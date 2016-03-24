@@ -131,7 +131,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         markerOption.draggable(true);
         markerOption.visible(true);
         markerOption.setFlat(true);
-//        markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.avatar_1));
+//        markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.avatar_1));
         aMap.addMarker(markerOption);
     }
 

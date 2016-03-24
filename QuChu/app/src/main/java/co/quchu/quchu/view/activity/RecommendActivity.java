@@ -147,7 +147,7 @@ public class RecommendActivity extends BaseActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
-            recommendTitleLocationIv.setImageResource(R.drawable.ic_recommed_title_location);
+            recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
 
@@ -156,7 +156,7 @@ public class RecommendActivity extends BaseActivity {
                     hide(classifyFragment).show(recommendFragment).commit();
 
         } else {
-            recommendTitleLocationIv.setImageResource(R.drawable.ic_recommed_title_location);
+            recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             titleContentTv.setVisibility(View.INVISIBLE);
 

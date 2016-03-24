@@ -5,4 +5,4 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     android:scaleType="centerCrop"
-    android:src="@drawable/avatar_10" />
+    android:src="@mipmap/avatar_10" />

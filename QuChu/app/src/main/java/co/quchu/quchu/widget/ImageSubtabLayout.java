@@ -81,8 +81,8 @@ public class ImageSubtabLayout extends RelativeLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mInflater.inflate(R.layout.widget_image_subtab, this, true);
         ButterKnife.bind(this);
-        widgetImageSubtabRightSdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.drawable.ic_image_empty));
-        widgetImageSubtabLeftSdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.drawable.ic_image_empty));
+        widgetImageSubtabRightSdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.mipmap.ic_image_empty));
+        widgetImageSubtabLeftSdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.mipmap.ic_image_empty));
         initData();
     }
 

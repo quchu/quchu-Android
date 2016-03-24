@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="3dp"
-        android:src="@drawable/ic_share_wechat" />
+        android:src="@mipmap/ic_share_wechat" />
 
     <TextView
         android:id="@+id/item_image_grid_text"

@@ -52,7 +52,7 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menus);
         ButterKnife.bind(this);
-        menusSearchMoreRl.setImage(R.drawable.ic_menus_title_more);
+        menusSearchMoreRl.setImage(R.mipmap.ic_menus_title_more);
         if (AppContext.user != null) {
             menusSearchUsername.setText(AppContext.user.getFullname());
             menusPullmenusPmv.setAvatar(AppContext.user.getPhoto());

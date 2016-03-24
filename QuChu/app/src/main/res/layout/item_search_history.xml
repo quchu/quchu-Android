@@ -33,7 +33,7 @@
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
             android:layout_marginTop="@dimen/half_margin"
-            android:src="@drawable/ic_search_history_delete" />
+            android:src="@mipmap/ic_search_history_delete" />
     </RelativeLayout>
 
 

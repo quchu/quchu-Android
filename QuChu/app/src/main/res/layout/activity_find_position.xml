@@ -20,7 +20,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:paddingRight="16dp"
-            android:src="@drawable/ic_title_more" />
+            android:src="@mipmap/ic_title_more" />
 
     </RelativeLayout>
 
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:drawableLeft="@drawable/ic_pull_menus_add"
+                android:drawableLeft="@mipmap/ic_pull_menus_add"
                 android:drawablePadding="10dp"
                 android:gravity="center"
                 android:text="我发现一个新趣处"

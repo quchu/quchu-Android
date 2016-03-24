@@ -83,7 +83,7 @@
                 android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
                 android:layout_marginBottom="@dimen/half_margin"
                 android:layout_marginLeft="@dimen/half_margin"
-                android:background="@drawable/shape_recommend_card_tag_bg"
+                android:background="@mipmap/shape_recommend_card_tag_bg"
                 android:textColor="@color/text_color_white"
                 android:text="未知"
                 android:textSize="@dimen/word_size_time" />-->
@@ -158,8 +158,8 @@
             android:layout_marginTop="@dimen/half_margin"
             card_view:prb_clickable="false"
             card_view:prb_defaultRating="4"
-            card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
-            card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
+            card_view:prb_tickNormalDrawable="@mipmap/ic_ratingbar_off"
+            card_view:prb_tickSelectedDrawable="@mipmap/ic_ratingbar_on"
             card_view:prb_tickSpacing="2dp"
             card_view:prb_totalTicks="5" />
 
@@ -190,7 +190,7 @@
                 android:layout_marginTop="@dimen/quarter_margin"
                 android:clickable="true"
                 android:padding="10dp"
-                android:src="@drawable/ic_atmophere_unselected_dark" />
+                android:src="@mipmap/ic_atmophere_unselected_dark" />
 
 
             <ImageView
@@ -204,7 +204,7 @@
                 android:layout_marginBottom="@dimen/quarter_margin"
                 android:layout_marginTop="@dimen/quarter_margin"
                 android:padding="10dp"
-                android:src="@drawable/ic_recommend_bc_right_dark" />
+                android:src="@mipmap/ic_recommend_bc_right_dark" />
 
 
             <ImageView
@@ -218,7 +218,7 @@
                 android:layout_marginBottom="@dimen/quarter_margin"
                 android:layout_marginTop="@dimen/quarter_margin"
                 android:padding="10dp"
-                android:src="@drawable/ic_atmosphere_more_dark" />
+                android:src="@mipmap/ic_atmosphere_more_dark" />
 
         </RelativeLayout>
 
