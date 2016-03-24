@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -34,6 +35,7 @@ import co.quchu.quchu.base.Constants;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -295,6 +297,11 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
         setContentView(R.layout.activity_landing_page);
         AppContext.initLocation();
         ButterKnife.bind(this);
+
+        //大屏幕不执行动画
+        if (ScreenUtils.getScreenHeight(getApplicationContext())>3204){
+            mShowGuide = false;
+        }
 
         if (!mShowGuide){
             mTvAppName.setVisibility(View.GONE);
