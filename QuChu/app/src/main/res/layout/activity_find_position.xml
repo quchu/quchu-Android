@@ -76,6 +76,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:hint="填写趣处名称"
+                        android:maxLines="1"
                         android:textSize="@dimen/word_size_time" />
 
                 </LinearLayout>
@@ -105,6 +106,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:hint="填写趣处地址"
+                        android:maxLines="1"
                         android:textSize="@dimen/word_size_time" />
 
                 </LinearLayout>
