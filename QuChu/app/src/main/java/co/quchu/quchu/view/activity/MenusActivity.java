@@ -13,6 +13,9 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,7 +26,9 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.dialog.adapter.ConfirmDialogFg;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.MoreButtonView;
@@ -218,5 +223,26 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
             }
         });
         UmengUpdateAgent.forceUpdate(this);
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+
+        if (event.getFlag() == EventFlags.EVENT_USER_LOGIN_SUCCESS) {
+            menusPullmenusPmv.setAvatar(AppContext.user.getPhoto());
+        }
     }
 }

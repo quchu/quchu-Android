@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -49,7 +50,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.commit)
-    Button commit;
+    TextView commit;
     List<PhotoInfo> photoInfos;
     private FindPositionAdapter adapter;
     private PhotoInfo tackImage;

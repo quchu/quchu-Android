@@ -6,13 +6,17 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.PhoneLoginFragment;
@@ -116,6 +120,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         } else {
             enterApp();
         }
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS,null));
     }
 
     public void userRegiestSuccess() {
@@ -125,6 +130,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         transaction.commitAllowingStateLoss();
         SPUtils.initGuideIndex();
         KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS,null));
     }
 
     public void enterApp() {

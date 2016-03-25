@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,6 +79,14 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         initHistory();
         initEdittext();
         initData();
+
+        searchInputEt.post(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(searchInputEt, 0);
+            }
+        });
     }
 
     @Override

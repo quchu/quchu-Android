@@ -76,6 +76,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:hint="填写趣处名称"
+                        android:minHeight="@dimen/subTabLayoutHeight"
+                        android:background="@null"
                         android:maxLines="1"
                         android:textSize="@dimen/word_size_time" />
 
@@ -105,6 +107,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:minHeight="@dimen/subTabLayoutHeight"
+                        android:background="@null"
                         android:hint="填写趣处地址"
                         android:maxLines="1"
                         android:textSize="@dimen/word_size_time" />
@@ -120,7 +124,8 @@
                 <EditText
                     android:id="@+id/detail"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
+                    android:minLines="3"
                     android:layout_marginTop="5dp"
                     android:background="@null"
                     android:gravity="top"
@@ -130,16 +135,18 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:overScrollMode="always" />
 
-                <Button
+                <TextView
                     android:id="@+id/commit"
                     android:layout_width="match_parent"
-                    android:layout_height="32dp"
+                    android:layout_height="36dp"
                     android:background="#f4e727"
                     android:text="提交"
-                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/word_size_time" />
             </LinearLayout>
 
