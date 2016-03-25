@@ -22,6 +22,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
+import co.quchu.quchu.dialog.adapter.ConfirmDialogFg;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -93,10 +94,26 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                 this.finish();
                 break;
             case R.id.menu_user_logout_tv:
-                SPUtils.clearUserinfo(AppContext.mContext);
-                AppContext.user = null;
-                startActivity(new Intent(this, UserLoginActivity.class).putExtra("IsVisitorLogin", true));
-                this.finish();
+
+
+
+                ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance(R.string.confirm,R.string.cancel);
+                confirmDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
+                    @Override
+                    public void onClick(int index) {
+                        if (index==ConfirmDialogFg.INDEX_OK){
+                            VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
+                            vDialog.show(getFragmentManager(), "visitor");
+                            SPUtils.clearUserinfo(AppContext.mContext);
+                            AppContext.user = null;
+                            startActivity(new Intent(MenusActivity.this, UserLoginActivity.class).putExtra("IsVisitorLogin", true));
+                            MenusActivity.this.finish();
+                        }
+                    }
+                });
+                confirmDialog.show(getFragmentManager(),"confirm");
+
+
                 break;
         }
     }
