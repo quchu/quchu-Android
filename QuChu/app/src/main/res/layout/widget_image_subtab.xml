@@ -14,6 +14,7 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:gravity="center_horizontal"
             android:layout_weight="1">
 
             <RelativeLayout
@@ -39,6 +40,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <co.quchu.quchu.widget.textcounter.CounterView
@@ -55,10 +57,11 @@
 
                 <TextView
                     android:id="@+id/widget_image_subtab_left_des_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:text="我的照片"
+                    android:layout_marginRight="4dip"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_subhead_size" />
             </LinearLayout>
@@ -126,10 +129,11 @@
 
                 <TextView
                     android:id="@+id/widget_image_subtab_right_des_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:text="我的收藏"
+                    android:layout_marginRight="4dip"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_subhead_size" />
             </LinearLayout>
