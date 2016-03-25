@@ -8,8 +8,7 @@
     <co.quchu.quchu.photo.previewimage.HackyViewPager
         android:id="@+id/bi_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         />
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:layout_width="match_parent"

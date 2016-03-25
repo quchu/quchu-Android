@@ -177,7 +177,7 @@ public class AccountSettingActivity extends BaseActivity {
         FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
         functionConfigBuilder.setEnableEdit(false);
         functionConfigBuilder.setEnableCrop(true);
-        functionConfigBuilder.setEnablePreview(true);
+        functionConfigBuilder.setEnablePreview(false);
         functionConfigBuilder.setForceCrop(false);//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
         functionConfigBuilder.setForceCropEdit(true);
         functionConfigBuilder.setRotateReplaceSource(true);
