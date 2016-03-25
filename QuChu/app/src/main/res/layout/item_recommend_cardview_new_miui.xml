@@ -206,7 +206,7 @@
                 android:layout_marginRight="@dimen/base_margin"
                 android:layout_marginTop="@dimen/quarter_margin"
                 android:padding="10dp"
-                android:src="@mipmap/ic_recommend_bc_right_dark" />
+                android:src="@mipmap/ic_detail_share_back" />
 
 
             <ImageView
