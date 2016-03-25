@@ -105,7 +105,7 @@ public class AccountSettingActivity extends BaseActivity {
 
         if (AppContext.user != null) {
             accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
-            accountSettingNicknameEt.setHint(AppContext.user.getFullname());
+            accountSettingNicknameEt.setText(AppContext.user.getFullname());
             accountSettingPhoneTv.setText(AppContext.user.getUsername());
             newUserGender = AppContext.user.getGender();
             accountSettingGenderTv.setText(newUserGender);
@@ -220,20 +220,15 @@ public class AccountSettingActivity extends BaseActivity {
 
     //保存修改信息
     public void saveUserChange() {
-        newUserPw = accountSettingNewPwdEt.getText().toString();
-        newUserPwAgain = accountSettingNewPwdAgainEt.getText().toString();
-        newUserNickName = StringUtils.isEmpty(accountSettingNicknameEt.getText().toString()) ? AppContext.user.getFullname()
-                : accountSettingNicknameEt.getText().toString();
+        newUserPw = accountSettingNewPwdEt.getText().toString().trim();
+        newUserPwAgain = accountSettingNewPwdAgainEt.getText().toString().trim();
+        newUserNickName = StringUtils.isEmpty(accountSettingNicknameEt.getText().toString().trim()) ? AppContext.user.getFullname()
+                : accountSettingNicknameEt.getText().toString().trim();
 
-        newUserGender = accountSettingGenderTv.getText().toString();
-        newUserLocation = accountSettingUserLocation.getText().toString();
+        newUserGender = accountSettingGenderTv.getText().toString().trim();
+        newUserLocation = accountSettingUserLocation.getText().toString().trim();
 
-        if ((StringUtils.isEmpty(newUserPw) && StringUtils.isEmpty(newUserPwAgain)) ||
-                (!StringUtils.isEmpty(newUserPw) && !StringUtils.isEmpty(newUserPwAgain) && newUserPwAgain.equals(newUserPw))) {
-            if (newUserPw.length() < 6) {
-                Toast.makeText(this, "密码长度必须大于6位", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        if (StringUtils.isEmpty(newUserPw) && newUserPwAgain.equals(newUserPw) || (newUserPw.equals(newUserPwAgain) && newUserPw.length() > 6)) {
             DialogUtil.showProgess(this, R.string.loading_dialog_text);
             if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
                 AccountSettingPresenter.getQiNiuToken(this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
@@ -256,7 +251,7 @@ public class AccountSettingActivity extends BaseActivity {
             }
 
         } else {
-            Toast.makeText(this, "请检查新密码与确认密码是否一致!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "密码必须六位数以上,且跟确认密码相同", Toast.LENGTH_SHORT).show();
         }
     }
 

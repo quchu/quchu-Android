@@ -1,26 +1,19 @@
 package co.quchu.quchu.dialog;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCityModel;
 import co.quchu.quchu.base.AppContext;
@@ -29,7 +22,6 @@ import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
@@ -43,18 +35,12 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
     private static final String CITY_LIST_MODEL = "city_list_model";
-    @Bind(R.id.dialog_location_selected_city_tv)
-    TextView dialogLocationSelectedCityTv;
-    /*    @Bind(R.id.dialog_location_xm_cb)
-        CheckBox dialogLocationXmCb;
-        @Bind(R.id.dialog_location_hz_cb)
-        CheckBox dialogLocationHzCb;*/
-    @Bind(R.id.dialog_location_submit_tv)
-    TextView dialogLocationSubmitTv;
-    @Bind(R.id.dialog_location_cancel_tv)
-    TextView dialogLocationCancelTv;
-    @Bind(R.id.dialog_location_bottom_textviews_rl)
-    RelativeLayout dialogLocationBottomTextviewsRl;
+//    @Bind(R.id.dialog_location_selected_city_tv)
+//    TextView dialogLocationSelectedCityTv;
+
+//    @Bind(R.id.dialog_location_submit_tv)
+//    TextView dialogLocationSubmitTv;
+
     @Bind(R.id.dialog_location_rv)
     RecyclerView dialogLocationRv;
     @Bind(R.id.tv_bottom_tips)
@@ -94,27 +80,33 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_location_selected, null);
         ButterKnife.bind(this, view);
-        Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_Translucent_NoTitleBar);
+        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(view);
 
         initSelected();
         dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new LocationSelectedAdapter(cityList, dialogLocationSelectedCityTv, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
+        adapter = new LocationSelectedAdapter(cityList, null, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
             @Override
-            public void onSelected() {
-                dialogLocationSubmitTv.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialogLocationSubmitTv.performClick();
-                    }
-                });
+            public void onSelected(String cityName, int CityId) {
+                //保存数据 而后关闭
+                SPUtils.setCityId(CityId);
+                SPUtils.setCityName(cityName);
+                if (getActivity() instanceof RecommendActivity)
+                    ((RecommendActivity) getActivity()).updateRecommend();
+                if (AppContext.gatherList == null)
+                    AppContext.gatherList = new ArrayList<>();
+                AppContext.gatherList.add(new GatherCityModel(cityList.get(adapter.getSelectedIndex()).getCid()));
+                dismiss();
             }
         });
         dialogLocationRv.setAdapter(adapter);
         tvBottomTips.setVisibility(View.VISIBLE);
-        dialogLocationSelectedCityTv.setText("所在城市:" + SPUtils.getCityName());
-        StringUtils.alterTextColor(dialogLocationSelectedCityTv, 5, 5 + SPUtils.getCityName().length(), R.color.gene_textcolor_yellow);
-
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         return dialog;
     }
 
@@ -174,34 +166,6 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     @Override
     protected int getBlurRadius() {
         return 8;
-    }
-
-    private boolean submitClickable = true;
-
-    @OnClick({R.id.dialog_location_submit_tv, R.id.dialog_location_cancel_tv})
-    public void loacationDialogClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.dialog_location_submit_tv:
-                //保存数据 而后关闭
-                if (submitClickable) {
-                    submitClickable = false;
-
-                    if (cityList != null) {
-                        SPUtils.setCityId(cityList.get(adapter.getSelectedIndex()).getCid());
-                        SPUtils.setCityName(cityList.get(adapter.getSelectedIndex()).getCvalue());
-                        if (getActivity() instanceof RecommendActivity)
-                            ((RecommendActivity) getActivity()).updateRecommend();
-                        if (AppContext.gatherList == null)
-                            AppContext.gatherList = new ArrayList<>();
-                        AppContext.gatherList.add(new GatherCityModel(cityList.get(adapter.getSelectedIndex()).getCid()));
-                    }
-                }
-            case R.id.dialog_location_cancel_tv:
-                LocationSelectedDialogFg.this.dismiss();
-                submitClickable = true;
-                break;
-        }
     }
 
 

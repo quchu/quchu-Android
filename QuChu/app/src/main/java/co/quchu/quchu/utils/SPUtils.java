@@ -182,7 +182,7 @@ public class SPUtils {
     }
 
     public static String getCityName() {
-        return getValueFromSPMap(AppContext.mContext, AppKey.CITYNAME, " ");
+        return getValueFromSPMap(AppContext.mContext, AppKey.CITYNAME, "厦门");
     }
 
     public static void setLongitude(double cityId) {

@@ -12,9 +12,9 @@
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
+}
 
 ## -----------------------------------------
 ################## eventbus混淆  ########
@@ -86,20 +86,43 @@ public static final int *;
 
 -keep class com.squareup.okhttp.** { *;}
 
--dontwarn okio.**
+
 ## ----------------------------------
 ##   ########## OkHttp混淆    #######
 ## ----------------------------------
 -dontwarn com.squareup.okhttp.**
 -keep class com.squareup.okhttp.** { *;}
--dontwarn okio.**
 ## ----------------------------------
 ##   ########## Fresco混淆    #######
 ## ----------------------------------
 #-keep class com.facebook.** {*;}
 #-keep public class * extends com.facebook.**
--dontwarn  com.facebook.**
--keep class com.facebook.** {*;}
+#-dontwarn  com.facebook.**
+#-keep class com.facebook.** {*;}
+
+# Keep our interfaces so they can be used by other ProGuard rules.
+# See http://sourceforge.net/p/proguard/bugs/466/
+-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+
+# Do not strip any method/class that is annotated with @DoNotStrip
+-keep @com.facebook.common.internal.DoNotStrip class *
+-keepclassmembers class * {
+    @com.facebook.common.internal.DoNotStrip *;
+}
+
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
+
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn com.android.volley.toolbox.**
+
+
+
+
+
 ## ----------------------------------
 ##   ########## photoView混淆  ######
 ## ----------------------------------
@@ -216,7 +239,7 @@ public static final int *;
 -dontskipnonpubliclibraryclasses
 -dontwarn net.poemcode.**
 -ignorewarnings
-
+-keep class co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager{*;}
 ## ----------------------------------
 ##   ########## 其他混淆    #########
 ## ----------------------------------
@@ -247,4 +270,6 @@ public static final int *;
 -keep public class * extends android.preference.Preference
 
 -keep public class com.android.vending.licensing.ILicensingService
+
+
 

@@ -47,7 +47,7 @@ public class RecommendPresenter {
                     SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
             );
         }
-        DialogUtil.showProgess(context,"加载中!!");
+        DialogUtil.showProgess(context, "加载中!!");
 
         NetService.get(context, urlStr, new IRequestListener() {
 
@@ -171,15 +171,7 @@ public class RecommendPresenter {
 
             @Override
             public void onResponse(CityEntity response, boolean result, @Nullable String exception, @Nullable String msg) {
-                SPUtils.setCityId(response.getDefaultX().getCid());
-                SPUtils.setCityName(response.getDefaultX().getCvalue());
                 ArrayList<CityModel> list = response.getPage().getResult();
-                for (CityModel item : list) {
-                    if (item.getCid() == response.getDefaultX().getCid()) {
-                        item.setIsSelected(true);
-                        break;
-                    }
-                }
                 listener.hasCityList(list);
             }
         });
