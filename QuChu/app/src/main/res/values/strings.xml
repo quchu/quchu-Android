@@ -21,7 +21,7 @@
     <string name="titlebar_word_imagephoto">相片</string>
     <string name="titlebar_word_place_my_postcard">我留下的明信片</string>
     <string name="titlebar_word_account_setting">账户设置</string>
-    <string name="titlebar_word_favorite_place">我收藏的趣处</string>
+    <string name="ic_detail_share">我收藏的趣处</string>
     <string name="titlebar_word_message_center">消息中心</string>
     <string name="titlebar_word_about_us">关于我们</string>
     <string name="titlebar_word_place_detail">趣处详情</string>

@@ -108,7 +108,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.FavoritePlaceActivity"
-            android:label="@string/titlebar_word_favorite_place"
+            android:label="@string/ic_detail_share"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.WebViewActivity"
