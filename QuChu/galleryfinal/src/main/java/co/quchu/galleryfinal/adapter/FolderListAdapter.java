@@ -18,12 +18,16 @@ package co.quchu.galleryfinal.adapter;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.io.File;
 import java.util.List;
 
 import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
@@ -70,9 +74,11 @@ public class FolderListAdapter extends ViewHolderAdapter<FolderListAdapter.Folde
         holder.mIvCover.setImageResource(R.drawable.ic_gf_default_photo);
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
         if (null!=photoInfo.getThumbPath()){
-            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, photoInfo.getThumbPath(), holder.mIvCover, defaultDrawable, 200, 200);
+//            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, photoInfo.getThumbPath(), holder.mIvCover, defaultDrawable, 200, 200);
+            holder.mIvCover.setImageURI(Uri.fromFile(new File(photoInfo.getThumbPath())));
         }else{
-            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvCover, defaultDrawable, 200, 200);
+            holder.mIvCover.setImageURI(Uri.fromFile(new File(path)));
+//            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvCover, defaultDrawable, 200, 200);
         }
 
         holder.mTvFolderName.setText(photoFolderInfo.getFolderName());
@@ -102,7 +108,7 @@ public class FolderListAdapter extends ViewHolderAdapter<FolderListAdapter.Folde
     }
 
     public static class FolderViewHolder extends ViewHolderAdapter.ViewHolder {
-        GFImageView mIvCover;
+        SimpleDraweeView mIvCover;
         ImageView mIvFolderCheck;
         TextView mTvFolderName;
         TextView mTvPhotoCount;
@@ -111,7 +117,7 @@ public class FolderListAdapter extends ViewHolderAdapter<FolderListAdapter.Folde
         public FolderViewHolder(View view) {
             super(view);
             this.mView = view;
-            mIvCover = (GFImageView) view.findViewById(R.id.iv_cover);
+            mIvCover = (SimpleDraweeView) view.findViewById(R.id.iv_cover);
             mTvFolderName = (TextView) view.findViewById(R.id.tv_folder_name);
             mTvPhotoCount = (TextView) view.findViewById(R.id.tv_photo_count);
             mIvFolderCheck = (ImageView) view.findViewById(R.id.iv_folder_check);
