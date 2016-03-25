@@ -33,7 +33,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_place_postcard_bottom_gray" />
+                    android:background="@mipmap/ic_place_postcard_bottom_gray" />
 
 
                 <TextView

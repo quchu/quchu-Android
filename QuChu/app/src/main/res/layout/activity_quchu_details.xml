@@ -92,7 +92,7 @@
                 android:layout_marginBottom="@dimen/quarter_margin"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/detail_marginright"
-                android:background="@drawable/ic_card_shadow_bg"
+                android:background="@mipmap/ic_card_shadow_bg"
                 android:orientation="horizontal">
 
                 <RelativeLayout

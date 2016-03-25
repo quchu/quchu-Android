@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/base_margin"
-                android:background="@drawable/ic_place_event"
+                android:background="@mipmap/ic_place_event"
                 android:text="活动"
                 android:textColor="@color/black"
                 android:textSize="@dimen/word_size_time" />

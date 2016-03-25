@@ -19,7 +19,7 @@
             android:id="@+id/item_popupwindows_camera"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/ic_card_shadow_full_bg"
+            android:background="@mipmap/ic_card_shadow_full_bg"
             android:text="拍照"
             android:textColor="@color/gene_textcolor_yellow"
             android:textSize="@dimen/word_size_body" />
@@ -28,7 +28,7 @@
             android:id="@+id/item_popupwindows_Photo"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/ic_card_shadow_full_bg"
+            android:background="@mipmap/ic_card_shadow_full_bg"
             android:text="从相册中选取"
             android:textColor="@color/gene_textcolor_yellow"
             android:textSize="@dimen/word_size_body" />
@@ -41,7 +41,7 @@
             android:id="@+id/item_popupwindows_cancel"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/ic_card_shadow_full_bg"
+            android:background="@mipmap/ic_card_shadow_full_bg"
             android:text="取消"
             android:textColor="@color/gene_textcolor_yellow"
             android:textSize="@dimen/word_size_body" />

@@ -5,7 +5,7 @@
     android:layout_height="300dp"
     android:layout_marginBottom="@dimen/dialog_margin"
     android:layout_marginTop="@dimen/dialog_margin"
-    android:background="@drawable/ic_postcard_top_shadow">
+    android:background="@mipmap/ic_postcard_top_shadow">
 
     <android.support.v7.widget.CardView
         android:id="@+id/root_cv"
