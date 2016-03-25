@@ -83,7 +83,6 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 R.color.load_progress_yellow);
         flickrActSwipeRefreshLayout.setMode(SwipeRefreshLayout.Mode.PULL_FROM_END);
         flickrActSwipeRefreshLayout.setLoadNoFull(false);
-        initData();
         tabBar.setSelectedListener(new ImageSubtabLayout.ImageSubtabSelectedListener() {
             @Override
             public void onSelected(int selectedNum) {
@@ -415,5 +414,6 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("FlickrActivity");
+        initData();
     }
 }

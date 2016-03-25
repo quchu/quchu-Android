@@ -8,8 +8,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -17,13 +15,15 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/subTabLayoutHeight"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/planet_myfocus_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:gravity="center"
                 android:text="@string/following"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />
@@ -51,15 +51,17 @@
         <RelativeLayout
             android:id="@+id/planet_focusonme_rl"
             android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1">
+            android:layout_height="@dimen/subTabLayoutHeight"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/planet_focusonme_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:gravity="center"
                 android:text="@string/follower"
                 android:textColor="@color/planet_text_color_white"
                 android:textSize="@dimen/word_size_body" />

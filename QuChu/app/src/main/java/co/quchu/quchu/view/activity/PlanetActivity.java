@@ -146,6 +146,42 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(this);
 
+
+    }
+
+    private void initGuideView() {
+        userGuideBgView.setVisibility(View.VISIBLE);
+        userGuideWpointIv.setVisibility(View.VISIBLE);
+        userGuideWpointDescTv.setVisibility(View.VISIBLE);
+    }
+
+    private void hintGuideView() {
+        userGuideBgView.setVisibility(View.GONE);
+        userGuideWpointIv.setVisibility(View.GONE);
+        userGuideWpointDescTv.setVisibility(View.GONE);
+        SPUtils.putBooleanToSPMap(this, AppKey.IS_PLANET_GUIDE, false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (myHandler != null)
+            myHandler = null;
+        if (animatorSet != null) {
+            animatorSet.cancel();
+            animatorSet = null;
+        }
+        isShowing = false;
+        ButterKnife.unbind(this);
+    }
+
+    private boolean isShowing = true;
+
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("PlanetActivity");
+
+        super.onResume();
         presenter.initUserStarData(new PlanetActPresenter.PlanetNetListener() {
             @Override
             public void onNetSuccess(PlanetModel model) {
@@ -200,40 +236,6 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         });
     }
 
-    private void initGuideView() {
-        userGuideBgView.setVisibility(View.VISIBLE);
-        userGuideWpointIv.setVisibility(View.VISIBLE);
-        userGuideWpointDescTv.setVisibility(View.VISIBLE);
-    }
-
-    private void hintGuideView() {
-        userGuideBgView.setVisibility(View.GONE);
-        userGuideWpointIv.setVisibility(View.GONE);
-        userGuideWpointDescTv.setVisibility(View.GONE);
-        SPUtils.putBooleanToSPMap(this, AppKey.IS_PLANET_GUIDE, false);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (myHandler != null)
-            myHandler = null;
-        if (animatorSet != null) {
-            animatorSet.cancel();
-            animatorSet = null;
-        }
-        isShowing = false;
-        ButterKnife.unbind(this);
-    }
-
-    private boolean isShowing = true;
-
-    @Override
-    protected void onResume() {
-        MobclickAgent.onPageStart("PlanetActivity");
-
-        super.onResume();
-    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -337,8 +339,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
             }
         });
-        if (myHandler!=null)
-        myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
+        if (myHandler != null)
+            myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
     }
 
     @Override
@@ -398,20 +400,20 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                     startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
                     break;
                 case R.id.planet_myfocus_rl://我关注的
-                    if (null!=dataModel){
+                    if (null != dataModel) {
                         startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class)
-                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FOLLOWERS,dataModel.getFollowNum())
-                                .putExtra(QuFriendsActivity.BUNDLE_KEY_SUBSCRIBERS,dataModel.getHostNum())
-                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FROM_SUBSCRIBE,true)
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FOLLOWERS, dataModel.getFollowNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_SUBSCRIBERS, dataModel.getHostNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FROM_SUBSCRIBE, true)
                         );
                     }
                     break;
                 case R.id.planet_focusonme_rl://关注我的
-                    if (null!=dataModel){
+                    if (null != dataModel) {
                         startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class)
-                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FOLLOWERS,dataModel.getFollowNum())
-                                .putExtra(QuFriendsActivity.BUNDLE_KEY_SUBSCRIBERS,dataModel.getHostNum())
-                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FROM_SUBSCRIBE,false)
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FOLLOWERS, dataModel.getFollowNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_SUBSCRIBERS, dataModel.getHostNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FROM_SUBSCRIBE, false)
                         );
                     }
                     break;
@@ -433,8 +435,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     }
 
     @Subscribe
-    public void onMessageEvent(QuchuEventModel event){
-        if (event.getFlag()== EventFlags.EVENT_POST_CARD_DELETED){
+    public void onMessageEvent(QuchuEventModel event) {
+        if (event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
             fetchData();
         }
     }

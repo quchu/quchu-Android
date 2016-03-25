@@ -40,7 +40,7 @@ public class PostCardListFg extends BaseFragment {
     public PostCardListFg(MyCard.PostCardItemClickListener listener, boolean isFavoritePostCard) {
         this.listener = listener;
         this.isFavoritePostCard = isFavoritePostCard;
-        initPostCardData();
+
     }
 
     public PostCardListFg() {
@@ -56,6 +56,11 @@ public class PostCardListFg extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initPostCardData();
+    }
 
     @Override
     public void onDestroyView() {
