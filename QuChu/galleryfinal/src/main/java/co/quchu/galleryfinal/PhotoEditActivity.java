@@ -47,6 +47,7 @@ import cn.finalteam.toolsfinal.Logger;
 import cn.finalteam.toolsfinal.StringUtils;
 import co.quchu.galleryfinal.adapter.PhotoEditListAdapter;
 import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.galleryfinal.utils.ImageUtils;
 import co.quchu.galleryfinal.utils.RecycleViewBitmapUtils;
 import co.quchu.galleryfinal.utils.Utils;
 import co.quchu.galleryfinal.widget.FloatingActionButton;
@@ -352,8 +353,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
             setSourceUri(Uri.fromFile(new File(path)));
         }
         // TODO: 2016/3/25
-//        GalleryFinal.getCoreConfig().getImageLoader().displayImage(this, path, mIvSourcePhoto, mDefaultDrawable, mScreenWidth, mScreenHeight);
-        mIvSourcePhoto.setImageURI(Uri.fromFile(new File(path)));
+//        GalleryFinal.getCoreConfig().getImageLoader().displayImage(this, path,
+// mIvSourcePhoto, mDefaultDrawable, mScreenWidth, mScreenHeight);
+//        mIvSourcePhoto.setImageURI(Uri.fromFile(new File(path)));
+        ImageUtils.ShowImage(Uri.fromFile(new File(path)),mIvSourcePhoto,mScreenWidth,mScreenHeight);
     }
 
     public void deleteIndex(int position, PhotoInfo dPhoto) {
@@ -372,6 +375,7 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
                     }
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
