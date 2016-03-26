@@ -3,6 +3,8 @@ package co.quchu.quchu.view.fragment;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -154,7 +156,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
         LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layout);
         adapter = new RecommendAdapter(getActivity(), cardList, this);
@@ -400,6 +401,18 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     @Override
                     public void onAnimationEnd(android.animation.Animator animation) {
                         fRecommendBimgTop.setAlpha(.9f);
+
+                        if (fRecommendBimgTop.getDrawable() instanceof  ColorDrawable){
+                            fRecommendBimgTop.setImageBitmap(null);
+                        }else{
+                            if (!(fRecommendBimgTop.getDrawable() instanceof ColorDrawable )&& null!=fRecommendBimgTop.getDrawable() && null!=((BitmapDrawable)fRecommendBimgTop.getDrawable()).getBitmap()){
+                                ((BitmapDrawable)fRecommendBimgTop.getDrawable()).getBitmap().recycle();
+                                fRecommendBimgTop.setImageBitmap(null);
+                                System.gc();
+                            }
+                        }
+
+
                         fRecommendBimgTop.setImageBitmap(finalBm);
                         if (null != fRecommendBimgTop)
                             fRecommendBimgTop.animate()
@@ -422,8 +435,15 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public void onStop() {
         mFragmentStoped = true;
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -436,11 +456,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        if (null != mSourceBitmap && !mSourceBitmap.isRecycled())
-            mSourceBitmap.recycle();
-        if (mSourceBitmap != null)
-            mSourceBitmap = null;
     }
 
     @Subscribe
@@ -450,7 +465,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             if ((Integer) event.getContent() == cardList.get(currentIndex).getPid()) {
                 cardList.get(currentIndex).isout = true;
                 adapter.notifyItemChanged(currentIndex);
-                EventBus.getDefault().register(this);
             }
         }
     }
