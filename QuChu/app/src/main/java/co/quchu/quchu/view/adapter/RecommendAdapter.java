@@ -17,14 +17,13 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import co.quchu.galleryfinal.utils.ImageUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
@@ -64,7 +63,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     public void onBindViewHolder(RecommendAdapter.RecommendHolder holder, int position) {
         RecommendModel model = dataSet.get(position);
         holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
-        holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
+        ImageUtils.loadWithAppropriateSize(holder.itemRecommendCardPhotoSdv,Uri.parse(model.getCover()));
+        //holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (model.isIsActivity()) {
             holder.item_place_event_tv.setVisibility(View.VISIBLE);
         } else {
