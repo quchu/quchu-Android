@@ -254,9 +254,9 @@
         <!-- 高德地图 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="b60847e00e5cc92cc6239b4a664cd872" />
+            android:value="8d635450932036faf3681a8960d884fa" />
         <!--
-        android:value="5796ca0f891c43e8eca0a8bc4a1aab09"
+        正式版的key"8d635450932036faf3681a8960d884fa"
         />
         -->
         <!-- 地图key_林启鹏debug:b60847e00e5cc92cc6239b4a664cd872 -->
