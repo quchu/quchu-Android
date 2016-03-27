@@ -156,7 +156,7 @@ public class ImageUtils {
 
         ImageRequest imageRequest = ImageRequestBuilder
                 .newBuilderWithSource(uri)
-                .setResizeOptions(new ResizeOptions(150, 150))//图片目标大小
+                .setResizeOptions(new ResizeOptions(width, height))//图片目标大小
                 .build();
 
         DraweeController controller = Fresco.newDraweeControllerBuilder()

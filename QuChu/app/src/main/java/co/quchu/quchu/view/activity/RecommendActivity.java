@@ -178,6 +178,7 @@ public class RecommendActivity extends BaseActivity {
      */
     public void updateRecommend() {
         recommendFragment.initData();
+        classifyFragment.getRootTagsData();
     }
 
     @Override

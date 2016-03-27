@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.utils.SPUtils;
 
 /**
  * LocationSelectedAdapter

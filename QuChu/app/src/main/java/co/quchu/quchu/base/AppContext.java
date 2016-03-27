@@ -62,6 +62,7 @@ public class AppContext extends Application {
         mContext = getApplicationContext();
         token = SPUtils.getUserToken(getApplicationContext());
 
+
    /*     AnalyticsConfig.setChannel("quchu_360");
         LogUtils.json("userinfo=" + SPUtils.getUserInfo(mContext));
         LogUtils.json("userToken=" + SPUtils.getUserToken(mContext));*/

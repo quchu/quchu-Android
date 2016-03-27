@@ -169,6 +169,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (holder instanceof ContactInfoViewHolder) {
             if (null == mData.getTraffic() || StringUtils.isEmpty(mData.getTraffic())) {
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(mData.getAddress());
+                ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(mOnItemClickListener);
+
             } else if (!StringUtils.isEmpty(mData.getTraffic())) {
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(String.format(mAnchorActivity.getResources().getString(R.string.detail_address_hint_text), mData.getAddress(), mData.getTraffic()));
                 ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(mOnItemClickListener);

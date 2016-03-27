@@ -90,7 +90,7 @@ public class NetApi {
     public static final String getCurrentUserFollowers = HOST + "/personal/getFollow?head=%s&type=%s&pageno=%d";  //获取当前用户的关注列表
 
 
-    public static final String getCategoryTags = HOST + "/place/getCategoryTags";  //获取tag 列表
+    public static final String getCategoryTags = HOST + "/place/getCategoryTags?cityId=%d";  //获取tag 列表
 
     /****  Get end  ****/
 

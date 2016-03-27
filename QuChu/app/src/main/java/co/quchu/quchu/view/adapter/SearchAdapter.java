@@ -1,19 +1,23 @@
 package co.quchu.quchu.view.adapter;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.maps.AMapUtils;
+import com.amap.api.maps.model.LatLng;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.json.JSONObject;
@@ -47,13 +51,13 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendHolder> {
 
 
-    private Activity mContext;
+    private AppCompatActivity mContext;
     private boolean isFlyme = false;
     private ArrayList<RecommendModel> arrayList;
     private RecommendHolder holder;
     RecommendModel model;
 
-    public SearchAdapter(Activity mContext) {
+    public SearchAdapter(AppCompatActivity mContext) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
 
@@ -114,15 +118,26 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         } else {
             holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
         }
-        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
-            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
-        } else {
-            if (StringUtils.isDouble(model.getDistance())) {
-                String distance = StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
-                holder.item_recommend_card_distance_tv.setText("距您" + distance);
-                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + distance.length(), R.color.white);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (PackageManager.PERMISSION_DENIED == mContext.
+                    checkSelfPermission(Manifest.permission_group.LOCATION)) {
+
+                holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
+            } else {
+                int distance = (int) AMapUtils.calculateLineDistance(new LatLng(model.getLatitude(), model.getLongitude()),
+                        new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude()));
+                //            StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
+                holder.item_recommend_card_distance_tv.setText("距您:" + distance / 1000 + "km");
             }
+        } else {
+            int distance = (int) AMapUtils.calculateLineDistance(new LatLng(model.getLatitude(), model.getLongitude()),
+                    new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude()));
+            //            StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
+            holder.item_recommend_card_distance_tv.setText("距您:" + distance / 1000 + "km");
+            //            StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2
+            //                    + distance.length(), R.color.white);
         }
+
     }
 
 
@@ -174,12 +189,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         ProperRatingBar itemRecommendCardPrb;
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
-        @Bind(R.id.item_recommend_card_collect_rl)
-        RelativeLayout itemRecommendCardCollectRl;
-        @Bind(R.id.item_recommend_card_interest_rl)
-        RelativeLayout itemRecommendCardInterestRl;
-        @Bind(R.id.item_recommend_card_reply_rl)
-        RelativeLayout itemRecommendCardReplyRl;
+//        @Bind(R.id.item_recommend_card_collect_rl)
+//        RelativeLayout itemRecommendCardCollectRl;
+//        @Bind(R.id.item_recommend_card_interest_rl)
+//        RelativeLayout itemRecommendCardInterestRl;
+//        @Bind(R.id.item_recommend_card_reply_rl)
+//        RelativeLayout itemRecommendCardReplyRl;
 
         @Bind(R.id.item_recommend_card_progress_one)
         HorizontalNumProgressBar itemRecommendCardProgressOne;

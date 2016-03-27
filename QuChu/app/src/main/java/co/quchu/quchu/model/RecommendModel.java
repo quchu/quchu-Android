@@ -144,12 +144,26 @@ public class RecommendModel {
         return isf;
     }
 
-    public String getLatitude() {
-        return latitude;
+    public double getLatitude() {
+        double v = 0;
+        try {
+            v = Double.parseDouble(latitude);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return v;
     }
 
-    public String getLongitude() {
-        return longitude;
+    public double getLongitude() {
+        double v = 0;
+        try {
+            v = Double.parseDouble(longitude);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return v;
     }
 
     public String getName() {
