@@ -36,6 +36,7 @@ import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.R;
 import co.quchu.galleryfinal.model.PhotoFolderInfo;
 import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.galleryfinal.utils.ImageUtils;
 import co.quchu.galleryfinal.widget.GFImageView;
 
 /**
@@ -77,7 +78,7 @@ public class FolderListAdapter extends ViewHolderAdapter<FolderListAdapter.Folde
 //            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, photoInfo.getThumbPath(), holder.mIvCover, defaultDrawable, 200, 200);
             holder.mIvCover.setImageURI(Uri.fromFile(new File(photoInfo.getThumbPath())));
         }else{
-            holder.mIvCover.setImageURI(Uri.fromFile(new File(path)));
+            ImageUtils.loadWithAppropriateSize(holder.mIvCover,Uri.fromFile(new File(path)));
 //            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvCover, defaultDrawable, 200, 200);
         }
 

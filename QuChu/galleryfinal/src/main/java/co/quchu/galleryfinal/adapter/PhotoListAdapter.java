@@ -35,6 +35,7 @@ import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
 import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.R;
 import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.galleryfinal.utils.ImageUtils;
 import co.quchu.galleryfinal.widget.GFImageView;
 
 /**
@@ -80,7 +81,7 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
 //            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, photoInfo.getThumbPath(), holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
             holder.mIvThumb.setImageURI(Uri.fromFile(new File(photoInfo.getThumbPath())));
         } else {
-            holder.mIvThumb.setImageURI(Uri.fromFile(new File(path)));
+            ImageUtils.loadWithAppropriateSize(holder.mIvThumb,Uri.fromFile(new File(path)));
 //            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
         }
         holder.mView.setAnimation(null);

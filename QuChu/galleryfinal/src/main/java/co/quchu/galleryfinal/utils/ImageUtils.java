@@ -8,6 +8,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.view.ViewTreeObserver;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
@@ -39,6 +40,36 @@ public class ImageUtils {
         return bmp;
     }
 
+
+    public static void loadWithAppropriateSize(final SimpleDraweeView v, final Uri uri){
+        if (v.getWidth()<=0){
+            v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+                            .setResizeOptions(new ResizeOptions(v.getWidth(),  v.getHeight()))
+                            .build();
+                    DraweeController controller = Fresco.newDraweeControllerBuilder()
+                            .setOldController(v.getController())
+                            .setImageRequest(request)
+                            .build();
+                    v.setController(controller);
+                    v.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+
+        }else{
+            ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+                    .setResizeOptions(new ResizeOptions(v.getWidth(),  v.getHeight()))
+                    .build();
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setOldController(v.getController())
+                    .setImageRequest(request)
+                    .build();
+            v.setController(controller);
+        }
+
+    }
 
     public static byte[] getBitmapBytes(Bitmap bitmap, boolean paramBoolean) {
         Bitmap localBitmap = Bitmap.createBitmap(80, 80, Bitmap.Config.RGB_565);

@@ -32,6 +32,7 @@ import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.PhotoEditActivity;
 import co.quchu.galleryfinal.R;
 import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.galleryfinal.utils.ImageUtils;
 import co.quchu.galleryfinal.widget.GFImageView;
 
 /**
@@ -68,7 +69,13 @@ public class PhotoEditListAdapter extends ViewHolderAdapter<PhotoEditListAdapter
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
 //        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvPhoto, defaultDrawable, 100, 100);
 
-        holder.mIvPhoto.setImageURI(Uri.fromFile(new File(path)));
+
+        if (null!=photoInfo.getThumbPath()){
+            holder.mIvPhoto.setImageURI(Uri.fromFile(new File(photoInfo.getThumbPath())));
+        }else{
+            ImageUtils.loadWithAppropriateSize(holder.mIvPhoto,Uri.fromFile(new File(path)));
+        }
+
         if (!GalleryFinal.getFunctionConfig().isMutiSelect()) {
             holder.mIvDelete.setVisibility(View.GONE);
         } else {
