@@ -1,5 +1,6 @@
 package co.quchu.galleryfinal;
 
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -45,7 +46,6 @@ public class PhotoPreviewActivity extends PhotoBaseActivity implements ViewPager
             findViews();
             setListener();
         //    setTheme();
-
             mPhotoList = (List<PhotoInfo>) getIntent().getSerializableExtra(PHOTO_LIST);
             mPhotoPreviewAdapter = new PhotoPreviewAdapter(this, mPhotoList);
             mVpPager.setAdapter(mPhotoPreviewAdapter);

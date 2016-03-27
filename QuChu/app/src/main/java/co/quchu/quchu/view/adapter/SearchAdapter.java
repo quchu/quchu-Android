@@ -1,11 +1,8 @@
 package co.quchu.quchu.view.adapter;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -118,26 +115,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         } else {
             holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (PackageManager.PERMISSION_DENIED == mContext.
-                    checkSelfPermission(Manifest.permission_group.LOCATION)) {
-
-                holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
-            } else {
-                int distance = (int) AMapUtils.calculateLineDistance(new LatLng(model.getLatitude(), model.getLongitude()),
-                        new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude()));
-                //            StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
-                holder.item_recommend_card_distance_tv.setText("距您:" + distance / 1000 + "km");
-            }
-        } else {
+        double latitude = SPUtils.getLatitude();
+        if (model.getLatitude() != 0 && SPUtils.getLatitude() != 0) {
+            holder.item_recommend_card_distance_tv.setVisibility(View.VISIBLE);
             int distance = (int) AMapUtils.calculateLineDistance(new LatLng(model.getLatitude(), model.getLongitude()),
                     new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude()));
-            //            StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
-            holder.item_recommend_card_distance_tv.setText("距您:" + distance / 1000 + "km");
-            //            StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2
-            //                    + distance.length(), R.color.white);
-        }
 
+            String s = "距您:" + ((distance / 1000) / 100f) * 100 + "km";
+            holder.item_recommend_card_distance_tv.setText(s);
+            StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + s.length(), R.color.white);
+
+        } else {
+            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
+        }
     }
 
 
