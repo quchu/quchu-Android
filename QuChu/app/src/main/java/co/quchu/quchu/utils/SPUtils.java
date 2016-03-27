@@ -48,7 +48,7 @@ public class SPUtils {
         preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         edit = preferences.edit();
         edit.putString(key, value);
-        edit.apply();
+        edit.commit();
     }
 
     /**
