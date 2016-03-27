@@ -260,6 +260,13 @@
         />
         -->
         <!-- 地图key_林启鹏debug:b60847e00e5cc92cc6239b4a664cd872 -->
+
+
+        <!--
+            许永斌的SHA1 指纹
+            HOME: 66:DC:C2:62:7D:16:73:8E:68:05:34:B7:9A:2C:B2:41:59:E7:71:C9
+            COMP: E8:11:A0:B4:A0:9E:0B:64:5D:E8:0A:69:1D:D5:8A:44:E7:C7:70:DC
+        -->
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
 

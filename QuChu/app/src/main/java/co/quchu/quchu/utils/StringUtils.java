@@ -165,6 +165,20 @@ public class StringUtils {
     }
 
     /**
+     * 是否数字
+     * @param str
+     * @return
+     */
+    public static boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 文字高亮处理
      *
      * @param view       Textview

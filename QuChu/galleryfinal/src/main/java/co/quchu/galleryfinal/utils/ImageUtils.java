@@ -42,6 +42,9 @@ public class ImageUtils {
 
 
     public static void loadWithAppropriateSize(final SimpleDraweeView v, final Uri uri){
+        if (null == uri) {
+            return;
+        }
         if (v.getWidth()<=0){
             v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override

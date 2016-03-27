@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * HorizontalNumProgressBar
@@ -39,7 +40,12 @@ public class HorizontalNumProgressBar extends RelativeLayout {
     }
 
     public void setProgress(String progress) {
-        setProgress(Integer.valueOf(progress));
+        if (!StringUtils.isEmpty(progress) && StringUtils.isNumeric(progress)){
+            setProgress(Integer.valueOf(progress));
+        }else{
+            setProgress(0);
+        }
+
     }
 
 
