@@ -2,17 +2,20 @@ package co.quchu.galleryfinal.adapter;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.io.File;
 import java.util.List;
 
 import cn.finalteam.toolsfinal.DeviceUtils;
-import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.R;
 import co.quchu.galleryfinal.model.PhotoInfo;
-import co.quchu.galleryfinal.widget.zoonview.PhotoView;
+import co.quchu.galleryfinal.utils.ImageUtils;
 
 /**
  * Desction:
@@ -45,14 +48,18 @@ public class PhotoPreviewAdapter extends ViewHolderRecyclingPagerAdapter<PhotoPr
         }
         holder.mImageView.setImageResource(R.drawable.ic_gf_default_photo);
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
-        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mImageView, defaultDrawable, mDisplayMetrics.widthPixels/2, mDisplayMetrics.heightPixels/2);
+//        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mImageView,
+// defaultDrawable, mDisplayMetrics.widthPixels/2, mDisplayMetrics.heightPixels/2);
+        ImageUtils.ShowImage(Uri.fromFile(new File(path)), holder.mImageView,
+                mDisplayMetrics.widthPixels / 2, mDisplayMetrics.heightPixels / 2);
     }
 
-    static class PreviewViewHolder extends ViewHolderRecyclingPagerAdapter.ViewHolder{
-        PhotoView mImageView;
+    static class PreviewViewHolder extends ViewHolderRecyclingPagerAdapter.ViewHolder {
+        SimpleDraweeView mImageView;
+
         public PreviewViewHolder(View view) {
             super(view);
-            mImageView = (PhotoView) view;
+            mImageView = (SimpleDraweeView) view;
         }
     }
 }
