@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,8 +17,6 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -32,11 +29,9 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
-import co.quchu.quchu.widget.NestedLinearLayoutManager;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
@@ -62,72 +57,104 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mLayoutInflater = LayoutInflater.from(activity);
         mOnItemClickListener = onClickListener;
     }
+    protected static final int LAYOUT_TYPE_INTRO_IMAGE = 0x0001;
+    protected static final int LAYOUT_TYPE_ACTIONBAR = 0x0002;
+    protected static final int LAYOUT_TYPE_SIMPLE_INFO = 0x0003;
+    protected static final int LAYOUT_TYPE_CONTACT_INFO = 0x0004;
+    protected static final int LAYOUT_TYPE_RATING_INFO = 0x0005;
+    protected static final int LAYOUT_TYPE_ADDITIONAL_INFO = 0x0006;
+    protected static final int LAYOUT_TYPE_OPENING_INFO = 0x0007;
+    protected static final int LAYOUT_TYPE_PARTY_STARTER_INFO = 0x0008;
+    protected static final int LAYOUT_TYPE_PARTY_INFO = 0x0009;
+    protected static final int LAYOUT_TYPE_IMAGE = 0x0010;
+    protected static final int LAYOUT_TYPE_NEARBY = 0x0011;
+    protected static final int LAYOUT_TYPE_BLANK = 0x0012;
 
-    public enum LAYOUT_TYPE {
-        LAYOUT_TYPE_INTRO_IMAGE,
-        LAYOUT_TYPE_ACTIONBAR,
-        LAYOUT_TYPE_SIMPLE_INFO,
-        LAYOUT_TYPE_CONTACT_INFO,
-        LAYOUT_TYPE_RATING_INFO,
-        LAYOUT_TYPE_ADDITIONAL_INFO,
-        LAYOUT_TYPE_OPENING_INFO,
-        LAYOUT_TYPE_PARTY_STARTER_INFO,
-        LAYOUT_TYPE_PARTY_INFO,
-        LAYOUT_TYPE_IMAGE,
-        LAYOUT_TYPE_NEARBY
+    protected static final int VIEW_TYPES[] = new int[]{
+            LAYOUT_TYPE_INTRO_IMAGE,
+            LAYOUT_TYPE_ACTIONBAR,
+            LAYOUT_TYPE_SIMPLE_INFO,
+            LAYOUT_TYPE_CONTACT_INFO,
+            LAYOUT_TYPE_RATING_INFO,
+            LAYOUT_TYPE_ADDITIONAL_INFO,
+            LAYOUT_TYPE_OPENING_INFO,
+            LAYOUT_TYPE_BLANK,
+            LAYOUT_TYPE_BLANK,
+            LAYOUT_TYPE_IMAGE,
+            LAYOUT_TYPE_NEARBY
+    };
+
+    protected static final int VIEW_TYPES_PARTY[] = new int[]{
+            LAYOUT_TYPE_INTRO_IMAGE,
+            LAYOUT_TYPE_ACTIONBAR,
+            LAYOUT_TYPE_SIMPLE_INFO,
+            LAYOUT_TYPE_CONTACT_INFO,
+            LAYOUT_TYPE_RATING_INFO,
+            LAYOUT_TYPE_BLANK,
+            LAYOUT_TYPE_OPENING_INFO,
+            LAYOUT_TYPE_PARTY_STARTER_INFO,
+            LAYOUT_TYPE_PARTY_INFO,
+            LAYOUT_TYPE_IMAGE,
+            LAYOUT_TYPE_NEARBY
+    };
+
+
+    @Override
+    public int getItemViewType(int position) {
+
+        if (position <= (BLOCK_INDEX + 1)) {
+            return null!=mData && mData.isIsActivity()? VIEW_TYPES_PARTY[position]:VIEW_TYPES[position];
+        } else if (position >= (BLOCK_INDEX + 1) && position < (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
+            return LAYOUT_TYPE_IMAGE;
+        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
+            return LAYOUT_TYPE_NEARBY;
+        }
+        return LAYOUT_TYPE_IMAGE;
     }
 
-    protected static final LAYOUT_TYPE VIEW_TYPES[] = new LAYOUT_TYPE[]{LAYOUT_TYPE.LAYOUT_TYPE_INTRO_IMAGE,
-            LAYOUT_TYPE.LAYOUT_TYPE_ACTIONBAR,
-            LAYOUT_TYPE.LAYOUT_TYPE_SIMPLE_INFO,
-            LAYOUT_TYPE.LAYOUT_TYPE_CONTACT_INFO,
-            LAYOUT_TYPE.LAYOUT_TYPE_RATING_INFO,
-            LAYOUT_TYPE.LAYOUT_TYPE_ADDITIONAL_INFO,
-            LAYOUT_TYPE.LAYOUT_TYPE_OPENING_INFO,
-            LAYOUT_TYPE.LAYOUT_TYPE_PARTY_STARTER_INFO,
-            LAYOUT_TYPE.LAYOUT_TYPE_PARTY_INFO,
-            LAYOUT_TYPE.LAYOUT_TYPE_IMAGE,
-            LAYOUT_TYPE.LAYOUT_TYPE_NEARBY};
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_INTRO_IMAGE.ordinal()) {
-            return new IntroImageViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_image, parent, false));
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_ACTIONBAR.ordinal()) {
-            return new ActionViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_actionbar, parent, false));
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_SIMPLE_INFO.ordinal()) {
-            return new SimpleInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_info, parent, false));
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_CONTACT_INFO.ordinal()) {
-            return new ContactInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_contact_info, parent, false));
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_RATING_INFO.ordinal()) {
-            return new RatingInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_ADDITIONAL_INFO.ordinal()) {
-            if (null != mData && mData.isIsActivity()) {
+
+        switch (viewType){
+            case  LAYOUT_TYPE_INTRO_IMAGE:
+                return new IntroImageViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_image, parent, false));
+            case  LAYOUT_TYPE_ACTIONBAR:
+                return new ActionViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_actionbar, parent, false));
+            case  LAYOUT_TYPE_SIMPLE_INFO:
+                return new SimpleInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_info, parent, false));
+            case  LAYOUT_TYPE_CONTACT_INFO:
+                return new ContactInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_contact_info, parent, false));
+            case  LAYOUT_TYPE_RATING_INFO:
+                return new RatingInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
+            case  LAYOUT_TYPE_ADDITIONAL_INFO:
+                if (null == mData || mData.isIsActivity()) {
+                    return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
+                } else {
+                    return new AdditionalInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
+                }
+            case  LAYOUT_TYPE_OPENING_INFO:
+                return new OpeningInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_opening_info, parent, false));
+            case  LAYOUT_TYPE_PARTY_STARTER_INFO:
+                if (null != mData && mData.isIsActivity()) {
+                    return new StarterInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_starter_info, parent, false));
+                } else {
+                    return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
+                }
+            case  LAYOUT_TYPE_PARTY_INFO:
+                if (null != mData && mData.isIsActivity()) {
+                    return new PartyInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_info, parent, false));
+                } else {
+                    return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
+                }
+            case  LAYOUT_TYPE_IMAGE:
+                return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
+            case  LAYOUT_TYPE_NEARBY:
+                return new NearByViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_nearby, parent, false));
+            default:
                 return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
-            } else {
-                return new AdditionalInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
-            }
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_OPENING_INFO.ordinal()) {
-            return new OpeningInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_opening_info, parent, false));
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_PARTY_STARTER_INFO.ordinal()) {
-            if (null != mData && mData.isIsActivity()) {
-                return new StarterInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_starter_info, parent, false));
-            } else {
-                return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
-            }
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_PARTY_INFO.ordinal()) {
-            if (null != mData && mData.isIsActivity()) {
-                return new PartyInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_info, parent, false));
-            } else {
-                return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
-            }
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal()) {
-            return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
-        } else if (viewType == LAYOUT_TYPE.LAYOUT_TYPE_NEARBY.ordinal()) {
-            return new NearByViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_nearby, parent, false));
         }
-        //Impossible
-        return null;
+
     }
 
     @Override
@@ -315,19 +342,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return false;
         }
     };
-
-    @Override
-    public int getItemViewType(int position) {
-
-        if (position <= (BLOCK_INDEX + 1)) {
-            return VIEW_TYPES[position].ordinal();
-        } else if (position >= (BLOCK_INDEX + 1) && position < (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
-            return LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal();
-        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
-            return LAYOUT_TYPE.LAYOUT_TYPE_NEARBY.ordinal();
-        }
-        return LAYOUT_TYPE.LAYOUT_TYPE_IMAGE.ordinal();
-    }
 
     @Override
     public int getItemCount() {
