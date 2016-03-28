@@ -21,8 +21,8 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.PostCardItemModel;
-import co.quchu.quchu.photo.previewimage.ImageBDInfo;
-import co.quchu.quchu.photo.previewimage.PreviewImageActivity;
+import co.quchu.quchu.photoselected.ImageBDInfo;
+import co.quchu.quchu.photoselected.PreviewImageActivity;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.PostCardImageAdapter;
 

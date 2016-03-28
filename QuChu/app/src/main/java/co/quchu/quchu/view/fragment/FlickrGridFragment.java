@@ -16,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.FlickrModel;
-import co.quchu.quchu.photo.previewimage.PreviewAlbumImage;
+import co.quchu.quchu.photoselected.PreviewAlbumImage;
 import co.quchu.quchu.view.adapter.FlickrGridAdapter;
 import co.quchu.quchu.widget.InnerGridView;
 

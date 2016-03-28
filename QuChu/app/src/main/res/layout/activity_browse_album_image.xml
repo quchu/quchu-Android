@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <co.quchu.quchu.photo.previewimage.HackyViewPager
+    <co.quchu.quchu.widget.HackyViewPager
         android:id="@+id/bi_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

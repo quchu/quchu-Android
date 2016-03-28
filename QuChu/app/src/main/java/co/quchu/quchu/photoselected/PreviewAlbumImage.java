@@ -32,6 +32,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.AlbumImageListModel;
 import co.quchu.quchu.view.activity.PostCardFromImageActivity;
+import co.quchu.quchu.widget.HackyViewPager;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher.OnViewTapListener;
 

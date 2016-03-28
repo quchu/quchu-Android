@@ -11,7 +11,7 @@ import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.photo.previewimage.PreviewImageActivity;
+import co.quchu.quchu.photoselected.PreviewImageActivity;
 import co.quchu.quchu.view.activity.MenusActivity;
 import co.quchu.quchu.view.activity.PostcarDetailActivity;
 import co.quchu.quchu.widget.MoreButtonView;

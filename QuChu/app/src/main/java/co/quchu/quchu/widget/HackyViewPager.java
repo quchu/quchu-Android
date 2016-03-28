@@ -1,4 +1,4 @@
-package co.quchu.quchu.photoselected;
+package co.quchu.quchu.widget;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
@@ -61,17 +61,5 @@ public class HackyViewPager extends ViewPager {
         }
         return false;
     }
-    
-	public void toggleLock() {
-		isLocked = !isLocked;
-	}
 
-	public void setLocked(boolean isLocked) {
-		this.isLocked = isLocked;
-	}
-
-	public boolean isLocked() {
-		return isLocked;
-	}
-	
 }
