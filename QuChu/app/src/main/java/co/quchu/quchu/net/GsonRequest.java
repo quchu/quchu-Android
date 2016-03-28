@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -113,37 +112,35 @@ public class GsonRequest<T> extends Request<T> {
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
         T t = null;
-        if (networkResponse.statusCode == 200) {
-            try {
-                String json = new String(networkResponse.data, "utf-8");
+        try {
+            String json = new String(networkResponse.data, HttpHeaderParser.parseCharset(networkResponse.headers, "utf-8"));
 
-                LogUtils.e("原始数据为" + json);
-                JSONObject jsonObject = new JSONObject(json);
-                result = jsonObject.getBoolean("result");
-                if (result) {
-                    //结果正确
-                    String data;
-                    data = jsonObject.getString("data");
-                    if (entity != null || type != null) {
-                        Gson gson = new Gson();
-                        t = gson.fromJson(data, entity != null ? entity : type);
-                    } else {
-                        t = (T) data;
-                    }
+            LogUtils.e("原始数据为" + json);
+            JSONObject jsonObject = new JSONObject(json);
+            result = jsonObject.getBoolean("result");
+            if (result) {
+                //结果正确
+                String data;
+                data = jsonObject.getString("data");
+                if (entity != null || type != null) {
+                    Gson gson = new Gson();
+                    t = gson.fromJson(data, entity != null ? entity : type);
                 } else {
-                    msg = jsonObject.getString("msg");
-                    exception = jsonObject.getString("exception");
-                    LogUtils.e("网络返回Result为false:" + json);
+                    t = (T) data;
                 }
-            } catch (UnsupportedEncodingException | JSONException e) {
-                e.printStackTrace();
+            } else {
+                msg = jsonObject.getString("msg");
+                exception = jsonObject.getString("exception");
+                LogUtils.e("网络返回Result为false:" + json);
             }
             return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
-        } else {
-            LogUtils.e("网络异常");
-            closeDialog();
-            return Response.error(new NetworkError());
+        } catch (UnsupportedEncodingException | JSONException e) {
+            e.printStackTrace();
         }
+        LogUtils.e("网络异常");
+        closeDialog();
+        return Response.error(new NetworkError());
+
     }
 
     private void closeDialog() {
@@ -203,7 +200,6 @@ public class GsonRequest<T> extends Request<T> {
     public void start(Context context, Object tag) {
         this.context = context;
         setTag(tag);
-        setShouldCache(false);
         setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
         queue.add(this);
         queue.start();
@@ -212,7 +208,6 @@ public class GsonRequest<T> extends Request<T> {
     public void start(Context context, Object tag, boolean showDialog) {
         this.context = context;
         this.showDialog = showDialog;
-        setShouldCache(false);
         setTag(tag);
         setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
         queue.add(this);
