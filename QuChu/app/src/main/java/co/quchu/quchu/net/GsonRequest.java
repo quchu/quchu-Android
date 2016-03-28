@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -111,7 +112,6 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
-
         T t = null;
         if (networkResponse.statusCode == 200) {
             try {
@@ -203,6 +203,7 @@ public class GsonRequest<T> extends Request<T> {
     public void start(Context context, Object tag) {
         this.context = context;
         setTag(tag);
+        setShouldCache(false);
         setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
         queue.add(this);
         queue.start();
@@ -211,6 +212,7 @@ public class GsonRequest<T> extends Request<T> {
     public void start(Context context, Object tag, boolean showDialog) {
         this.context = context;
         this.showDialog = showDialog;
+        setShouldCache(false);
         setTag(tag);
         setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
         queue.add(this);
