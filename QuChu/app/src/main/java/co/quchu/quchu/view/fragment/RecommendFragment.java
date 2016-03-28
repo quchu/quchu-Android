@@ -285,6 +285,10 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         errorView.himeView();
 
         tagList = list;
+        if (tabLayout.getTabCount()>0){
+            tabLayout.removeAllTabs();
+        }
+
         for (int i = 0; i < list.size(); i++) {
             TextView textView = (TextView) View.inflate(getActivity(), R.layout.text_view, null);
             textView.setText(list.get(i).getZh());
