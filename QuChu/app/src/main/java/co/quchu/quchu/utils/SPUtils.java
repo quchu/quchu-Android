@@ -174,7 +174,7 @@ public class SPUtils {
     }
 
     public static int getCityId() {
-        return Integer.parseInt(getValueFromSPMap(AppContext.mContext, AppKey.CITYID, "5"));
+        return Integer.parseInt(getValueFromSPMap(AppContext.mContext, AppKey.CITYID, "-1"));
     }
 
     public static void setCityName(String cityId) {

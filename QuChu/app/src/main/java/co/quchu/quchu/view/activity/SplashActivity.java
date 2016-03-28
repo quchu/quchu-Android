@@ -84,6 +84,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     boolean mActionUp = false;
     boolean mAnimationEnd = false;
 
+
+
     @Override
     public void onScrollChanged() {
 
@@ -306,23 +308,6 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             mTvAppName.setVisibility(View.GONE);
             mTvCopyRight.setVisibility(View.GONE);
             mTvVersion.setVisibility(View.GONE);
-            ((BitmapDrawable) mIvBg.getDrawable()).getBitmap().recycle();
-            ((BitmapDrawable) mIvCloudLeft.getDrawable()).getBitmap().recycle();
-            ((BitmapDrawable) mIvCloudRight.getDrawable()).getBitmap().recycle();
-            ((BitmapDrawable) mIvBgSec.getDrawable()).getBitmap().recycle();
-            ((BitmapDrawable) mIvAppIcon.getDrawable()).getBitmap().recycle();
-            ((BitmapDrawable) mIvArrow.getDrawable()).getBitmap().recycle();
-            mIvBg.setImageBitmap(null);
-            mIvCloudLeft.setImageBitmap(null);
-            mIvCloudRight.setImageBitmap(null);
-            mIvBgSec.setImageBitmap(null);
-            mIvAppIcon.setImageBitmap(null);
-            mIvArrow.setImageBitmap(null);
-            mRelativeLayout.removeView(mIvBg);
-            mRelativeLayout.removeView(mIvCloudLeft);
-            mRelativeLayout.removeView(mIvCloudRight);
-            mRelativeLayout.removeView(mIvAppIcon);
-            mRelativeLayout.removeView(mIvArrow);
             //mRelativeLayout.removeView(mScrollView);
             System.gc();
             mIvBgSec.setAdjustViewBounds(true);
@@ -331,19 +316,29 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             mVSpace.setVisibility(View.GONE);
             initLogic();
         }else{
+
+
+            mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
+            mIvArrow.setImageResource(R.mipmap.ic_wide_arrow);
+            mIvBgSec.setImageResource(R.mipmap.background_fth);
+            mIvCloudRight.setImageResource(R.mipmap.cloud_right);
+            mIvCloudLeft.setImageResource(R.mipmap.cloud_left);
+            mIvBg.setImageResource(R.mipmap.background_long);
+
+
             mIvBgSec.setAlpha(.0f);
             mIvAppIcon.setScaleY(0f);
             mIvAppIcon.setScaleX(0f);
             mIvAppIcon.setAlpha(1f);
             mAnimationSet = new AnimatorSet();
 
-            mScrollView.post(new Runnable() {
+            mScrollView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mScrollView.fullScroll(View.FOCUS_DOWN);
                     mScrollView.getViewTreeObserver().addOnScrollChangedListener(SplashActivity.this);
                 }
-            });
+            },100);
 
             mIvBg.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override

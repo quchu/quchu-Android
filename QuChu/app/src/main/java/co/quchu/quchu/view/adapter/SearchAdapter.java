@@ -125,6 +125,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
             holder.item_recommend_card_distance_tv.setText(s);
             StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + s.length(), R.color.white);
 
+
+
         } else {
             holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
         }

@@ -2,6 +2,8 @@ package co.quchu.quchu.presenter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -12,6 +14,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.CityModel;
@@ -172,6 +175,24 @@ public class RecommendPresenter {
             @Override
             public void onResponse(CityEntity response, boolean result, @Nullable String exception, @Nullable String msg) {
                 ArrayList<CityModel> list = response.getPage().getResult();
+
+                Log.d("LOCA","onResponse");
+                if (SPUtils.getCityId() == -1 && !TextUtils.isEmpty(AppLocationListener.currentCity)) {
+                    //第一次
+                    String fixStr = AppLocationListener.currentCity.endsWith("市")?AppLocationListener.currentCity.substring(0,AppLocationListener.currentCity.length()-1):AppLocationListener.currentCity;
+                    for (CityModel item : list) {
+                        if (item.getCvalue().equals(fixStr)) {
+                            SPUtils.setCityId(item.getCid());
+                            SPUtils.setCityName(item.getCvalue());
+                        }
+                    }
+                } else if(SPUtils.getCityId() == -1){
+                    int cid = response.getDefaultX().getCid();
+                    String cvalue = response.getDefaultX().getCvalue();
+                    SPUtils.setCityId(cid);
+                    SPUtils.setCityName(cvalue);
+                }
+
                 listener.hasCityList(list);
             }
         });

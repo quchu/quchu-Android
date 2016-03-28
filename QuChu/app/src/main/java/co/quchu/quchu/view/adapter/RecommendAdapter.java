@@ -63,8 +63,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     public void onBindViewHolder(RecommendAdapter.RecommendHolder holder, int position) {
         RecommendModel model = dataSet.get(position);
         holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
-        ImageUtils.loadWithAppropriateSize(holder.itemRecommendCardPhotoSdv,Uri.parse(model.getCover()));
-        //holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
+        //ImageUtils.loadWithAppropriateSize(holder.itemRecommendCardPhotoSdv,Uri.parse(model.getCover()));
+        holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (model.isIsActivity()) {
             holder.item_place_event_tv.setVisibility(View.VISIBLE);
         } else {

@@ -217,11 +217,16 @@ public class StringUtils {
      * @param mColor
      */
     public static void alterBoldTextColor(TextView view, int startIndex, int endIndex, int mColor) {
-        SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
-        ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(mColor));
-        builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        view.setText(builder);
+        try{
+            SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
+            ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(mColor));
+            builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            view.setText(builder);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     /**

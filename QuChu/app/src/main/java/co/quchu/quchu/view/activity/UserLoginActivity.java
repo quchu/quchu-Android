@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -135,6 +136,8 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
     public void enterApp() {
         //   startActivity(new Intent(this, RecommendActivity.class));
+
+        Toast.makeText(getApplicationContext(),R.string.login_success,Toast.LENGTH_SHORT).show();
         this.finish();
     }
 
