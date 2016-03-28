@@ -1,4 +1,4 @@
-package co.quchu.quchu.photo;
+package co.quchu.quchu.photoselected;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

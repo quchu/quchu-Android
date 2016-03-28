@@ -332,6 +332,9 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Override
     public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
+        if (null==refreshLayout){
+            return;
+        }
         refreshLayout.setRefreshing(false);
         if (isError) {
             errorView.showViewDefault(new View.OnClickListener() {

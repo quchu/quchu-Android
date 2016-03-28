@@ -1,4 +1,4 @@
-package co.quchu.quchu.photo.previewimage;
+package co.quchu.quchu.photoselected;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

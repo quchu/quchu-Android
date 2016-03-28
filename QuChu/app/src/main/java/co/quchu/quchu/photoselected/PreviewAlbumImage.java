@@ -1,4 +1,4 @@
-package co.quchu.quchu.photo.previewimage;
+package co.quchu.quchu.photoselected;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

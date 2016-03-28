@@ -131,16 +131,8 @@
             android:label="@string/titlebar_word_about_us"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".photo.ImageBucketActivity"
-            android:label="@string/titlebar_word_imagebucket"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.AccountSettingActivity"
             android:label="@string/titlebar_word_account_setting"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".photo.ImageGridActivity"
-            android:label="@string/titlebar_word_imagephoto"
             android:screenOrientation="portrait" />
         <!-- 趣处详情 -->
         <activity
@@ -197,10 +189,10 @@
             android:name=".view.activity.UserLoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".photo.previewimage.PreviewImageActivity"
+            android:name=".photoselected.PreviewImageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".photo.previewimage.PreviewAlbumImage"
+            android:name=".photoselected.PreviewAlbumImage"
             android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
