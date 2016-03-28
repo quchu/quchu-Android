@@ -4,13 +4,14 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+
     defaultConfig {
         applicationId "co.quchu.quchu"
-        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
-        targetSdkVersion ANDROID_BUILD_SDK_VERSION as int
-        versionCode VERSION_CODE as int
-        versionName VERSION_NAME
-        renderscriptTargetApi RENDERSCRIPT_TARGET_API as int
+        minSdkVersion 16
+        targetSdkVersion 16
+        versionCode 1002
+        versionName "1.1.1"
+        renderscriptTargetApi 22
         renderscriptSupportModeEnabled true
     }
     lintOptions {
@@ -83,7 +84,7 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 String  supportVersion(){
-    '23.2.0'
+    '23.2.1'
 }
 dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')

@@ -3,12 +3,12 @@ package co.quchu.quchu.net;
 import co.quchu.quchu.base.Constants;
 
 /**
- * netApi
+ * netApi 
  */
 public class NetApi {
     // public static boolean isDebug = false;
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
-    public static String RELEASE_HOST = "http://www.quchu.co/appservices";
+    public static String RELEASE_HOST = "http://www.quchu.co/app-main-service";
     public static String HOST_UAT = "http://uat.quchu.co:80/appservices";
     public static String HOST_SIT = "http://sit.quchu.co:8080/appservices";
 //    public static String HOST_SIT = "http://192.168.1.134:8080/appservices";
