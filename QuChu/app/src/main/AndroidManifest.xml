@@ -146,7 +146,6 @@
         <activity
             android:name=".view.activity.UserCenterActivity"
             android:label="@string/titlebar_word_user_center"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.PostCardFromImageActivity"
