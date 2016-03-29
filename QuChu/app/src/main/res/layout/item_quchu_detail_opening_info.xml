@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detail_store_business_hours_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/half_margin"
+    android:background="@mipmap/ic_card_shadow_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/detail_store_business_hours_key_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:text="营业时间"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
+
+    <View style="@style/DetailHorizontalLine" />
+
+    <TextView
+        android:id="@+id/detail_store_business_hours_value_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_size_body" />
+</LinearLayout>

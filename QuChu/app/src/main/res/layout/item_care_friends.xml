@@ -44,7 +44,7 @@
             android:layout_marginTop="@dimen/half_margin"
             fresco:actualImageScaleType="focusCrop"
             fresco:roundAsCircle="true"
-            fresco:retryImage="@drawable/ic_care_friends_avatar"
+            fresco:retryImage="@mipmap/ic_care_friends_avatar"
             fresco:roundBottomLeft="true"
             fresco:roundingBorderColor="@color/planet_progress_yellow"
             fresco:roundingBorderWidth="2dp"

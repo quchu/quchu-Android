@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,10 +32,10 @@ import co.quchu.quchu.utils.KeyboardUtils;
 public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdapter.MessageCenterItemHolder> {
 
     private Context mContext;
-    private ArrayList<MessageModel> messageModelArrayList;
+    private List<MessageModel> messageModelArrayList;
 
 
-    public MessageCenterAdapter(Context mContext, ArrayList<MessageModel> messageList) {
+    public MessageCenterAdapter(Context mContext, List<MessageModel> messageList) {
         this.mContext = mContext;
         this.messageModelArrayList = messageList;
     }
@@ -81,7 +82,7 @@ public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdap
         }
     }
 
-    public void changeDateSet(ArrayList<MessageModel> arrayList) {
+    public void changeDateSet(List<MessageModel> arrayList) {
         this.messageModelArrayList = arrayList;
         this.notifyDataSetChanged();
     }
@@ -124,7 +125,7 @@ public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdap
                     DialogUtil.showProgess(mContext, R.string.loading_dialog_text);
                     MessageCenterPresenter.followMessageCenterFriends(mContext, messageModelArrayList.get(getPosition()).getFormId(), "yes".equals(messageModelArrayList.get(getPosition()).getCome()), new MessageCenterPresenter.MessageGetDataListener() {
                         @Override
-                        public void onSuccess(ArrayList<MessageModel> arrayList) {
+                        public void onSuccess(List<MessageModel> arrayList) {
                             if ("yes".equals(messageModelArrayList.get(getPosition()).getCome())) {
                                 messageModelArrayList.get(getPosition()).setCome("no");
                             } else {

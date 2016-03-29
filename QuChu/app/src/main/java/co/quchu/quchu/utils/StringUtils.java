@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -164,6 +165,20 @@ public class StringUtils {
     }
 
     /**
+     * 是否数字
+     * @param str
+     * @return
+     */
+    public static boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 文字高亮处理
      *
      * @param view       Textview
@@ -202,11 +217,16 @@ public class StringUtils {
      * @param mColor
      */
     public static void alterBoldTextColor(TextView view, int startIndex, int endIndex, int mColor) {
-        SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
-        ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(mColor));
-        builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        view.setText(builder);
+        try{
+            SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
+            ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(mColor));
+            builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            view.setText(builder);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -289,5 +309,16 @@ public class StringUtils {
         } else {
             return false;
         }
+    }
+    /**
+     * 格式化成小数点后两位
+     *
+     * @param price
+     * @return
+     */
+    public static Double formatDouble(double price) {
+        BigDecimal b3 = new BigDecimal(price);
+        double f3 = b3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return new Double(f3);
     }
 }

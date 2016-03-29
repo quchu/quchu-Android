@@ -29,14 +29,14 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
     private static final String VIEW_MODEL = "view_model"; //弹窗界面
-    @Bind(R.id.dialog_location_selected_city_tv)
-    TextView dialogLocationSelectedCityTv;
+//    @Bind(R.id.dialog_location_selected_city_tv)
+//    TextView dialogLocationSelectedCityTv;
     @Bind(R.id.dialog_location_tv)
     TextView dialogLocationTv;
-    @Bind(R.id.dialog_location_submit_tv)
-    TextView dialogLocationSubmitTv;
-    @Bind(R.id.dialog_location_cancel_tv)
-    TextView dialogLocationCancelTv;
+//    @Bind(R.id.dialog_location_submit_tv)
+//    TextView dialogLocationSubmitTv;
+//    @Bind(R.id.dialog_location_cancel_tv)
+//    TextView dialogLocationCancelTv;
 
 
     private int viewModel = 0x00;
@@ -46,6 +46,7 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
     public static final int QAVATAR = 0x03; //头像 趣星球
     public static final int QACCOUNTSETTING = 0x04; //账户设置
     public static final int QMESSAGECENTER = 0x05; // 消息中心
+    public static final int QBEEN = 0x06;//quguo
 
     /**
      * Retrieve a new instance of the sample fragment.
@@ -108,6 +109,10 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
                 dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入消息中心")));
                 StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.gene_textcolor_yellow);
                 break;
+            case QBEEN:
+                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "明信片操作")));
+                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.gene_textcolor_yellow);
+                break;
         }
         return builder.create();
     }
@@ -161,6 +166,7 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
         switch (view.getId()) {
             case R.id.dialog_location_submit_tv:
                 startActivity(new Intent(getActivity(), UserLoginActivity.class));
+
             case R.id.dialog_location_cancel_tv:
                 VisitorLoginDialogFg.this.dismiss();
                 break;

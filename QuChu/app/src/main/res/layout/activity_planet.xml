@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true">
 
     <include
         android:id="@+id/planet_title"
@@ -21,19 +19,17 @@
             layout="@layout/planet_body"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.1"
-            />
+            android:layout_weight="1.1" />
 
         <include
             layout="@layout/planet_footer_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/half_margin"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            />
+            android:layout_weight="1" />
     </LinearLayout>
 
 </RelativeLayout>

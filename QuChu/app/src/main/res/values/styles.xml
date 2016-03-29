@@ -64,9 +64,10 @@
         <item name="android:layout_marginRight">@dimen/half_margin</item>
         <item name="android:background">@color/user_login_view_bg_color</item>
     </style>
+
     <style name="QuchuRatingBarStyle" parent="android:Widget.RatingBar">
-        <!--<item name="progressDrawable">@drawable/ratingbar_full</item>-->
-        <!--<item name="indeterminateDrawable">@drawable/ratingbar_full</item>-->
+        <!--<item name="progressDrawable">@mipmap/ratingbar_full</item>-->
+        <!--<item name="indeterminateDrawable">@mipmap/ratingbar_full</item>-->
         <item name="android:progressDrawable">@drawable/ratingbar_layer_list</item>
         <item name="android:indeterminateDrawable">@drawable/ratingbar_layer_list</item>
     </style>
@@ -74,9 +75,9 @@
     <!-- ************* SwipeBackLayout ************ -->
     <style name="SwipeBackLayout">
         <item name="edge_size">50dip</item>
-        <item name="shadow_left">@drawable/shadow_left</item>
-        <item name="shadow_right">@drawable/shadow_right</item>
-        <item name="shadow_bottom">@drawable/shadow_bottom</item>
+        <item name="shadow_left">@mipmap/shadow_left</item>
+        <item name="shadow_right">@mipmap/shadow_right</item>
+        <item name="shadow_bottom">@mipmap/shadow_bottom</item>
     </style>
 
 
@@ -119,4 +120,13 @@
         <item name="android:windowEnterAnimation">@anim/default_dialog_in</item>
         <item name="android:windowExitAnimation">@anim/default_dialog_out</item>
     </style>
+    <!--对话框-->
+    <style name="dialog_two_button" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColor">@color/planet_progress_yellow</item>
+        <item name="android:background">@color/appBackground</item>
+
+    </style>
+
+
 </resources>

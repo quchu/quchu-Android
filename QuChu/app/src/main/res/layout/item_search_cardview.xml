@@ -1,170 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root_cv"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true"
-    android:layout_marginTop="@dimen/half_margin"
-    android:layout_marginBottom="@dimen/half_margin"
-    android:fitsSystemWindows="true"
-    android:foreground="?attr/selectableItemBackground"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="@dimen/cardview_elevation">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/base_margin"
+    android:background="@mipmap/ic_card_shadow_full_image_bg">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/root_cv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:clickable="true"
+        android:fitsSystemWindows="true"
+        android:foreground="?attr/selectableItemBackground"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardPreventCornerOverlap="false">
 
-        <RelativeLayout
-            android:id="@+id/item_recommend_card_title_textrl"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/item_recommend_card_name_tv"
+            <RelativeLayout
+                android:id="@+id/animation1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/item_recommend_card_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/half_margin"
+                    android:layout_marginLeft="@dimen/base_margin"
+                    android:layout_marginRight="@dimen/base_margin"
+                    android:layout_marginTop="@dimen/base_margin"
+                    android:text="地理位置"
+                    android:textColor="@color/text_color_white"
+                    android:textSize="@dimen/word_subhead_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/item_recommend_card_city_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="@dimen/half_margin"
+                    android:layout_marginLeft="@dimen/base_margin"
+                    android:layout_marginRight="@dimen/base_margin"
+                    android:layout_marginTop="@dimen/base_margin"
+                    android:text="厦门"
+                    android:textColor="@color/text_color_white"
+                    android:textSize="@dimen/word_subhead_size" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/item_recommend_card_rl"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@id/animation1"
+                android:layout_weight="1">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/item_recommend_card_photo_sdv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    card_view:actualImageScaleType="centerCrop" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal">
+
+                    <co.quchu.quchu.widget.TagCloudView
+                        android:id="@+id/detail_store_tagclound_tcv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        card_view:tcvBackground="@drawable/shape_recommend_card_tag_bg"
+                        card_view:tcvBorder="8dp"
+                        card_view:tcvCanTagClick="false"
+                        card_view:tcvItemBorderHorizontal="1dp"
+                        card_view:tcvItemBorderVertical="4dp"
+                        card_view:tcvRightResId="@null"
+                        card_view:tcvSingleLine="false"
+                        card_view:tcvTextColor="@color/text_color_white" />
+
+                    <TextView
+                        android:id="@+id/item_recommend_card_distance_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="@dimen/quarter_margin"
+                        android:background="@drawable/shape_recommend_card_tag_bg"
+                        android:textColor="@color/text_color_white"
+                        android:textSize="@dimen/word_size_time" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <co.quchu.quchu.widget.ratingbar.ProperRatingBar
+                android:id="@+id/item_recommend_card_prb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/item_recommend_card_rl"
                 android:layout_marginBottom="@dimen/half_margin"
                 android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/base_margin"
-                android:text="地理位置"
-                android:textColor="@color/text_color_white"
-                android:textSize="@dimen/word_subhead_size"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/half_margin"
+                card_view:prb_clickable="false"
+                card_view:prb_defaultRating="4"
+                card_view:prb_tickNormalDrawable="@mipmap/ic_ratingbar_off"
+                card_view:prb_tickSelectedDrawable="@mipmap/ic_ratingbar_on"
+                card_view:prb_tickSpacing="2dp"
+                card_view:prb_totalTicks="5" />
 
             <TextView
-                android:id="@+id/item_recommend_card_city_tv"
+                android:id="@+id/item_recommend_card_address_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="@dimen/half_margin"
+                android:layout_below="@id/item_recommend_card_prb"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/base_margin"
                 android:text="厦门"
                 android:textColor="@color/text_color_white"
-                android:textSize="@dimen/word_subhead_size" />
-        </RelativeLayout>
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/item_recommend_card_photo_sdv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@id/item_recommend_card_title_textrl"
-            android:layout_weight="1"
-            card_view:actualImageScaleType="centerCrop" />
-
-        <co.quchu.quchu.widget.ratingbar.ProperRatingBar
-            android:id="@+id/item_recommend_card_prb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/item_recommend_card_photo_sdv"
-            android:layout_marginBottom="@dimen/half_margin"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            card_view:prb_clickable="false"
-            card_view:prb_defaultRating="4"
-            card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
-            card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
-            card_view:prb_tickSpacing="2dp"
-            card_view:prb_totalTicks="5" />
-
-        <TextView
-            android:id="@+id/item_recommend_card_address_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/item_recommend_card_prb"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:text="厦门"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/word_size_body" />
+                android:textSize="@dimen/word_size_body" />
 
 
-        <co.quchu.quchu.widget.HorizontalNumProgressBar
-            android:id="@+id/item_recommend_card_progress_one"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_progressbar_height"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/half_margin"
-          />
+            <co.quchu.quchu.widget.HorizontalNumProgressBar
+                android:id="@+id/item_recommend_card_progress_one"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/horizontal_progressbar_height"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginTop="@dimen/half_margin" />
 
 
-        <co.quchu.quchu.widget.HorizontalNumProgressBar
-            android:id="@+id/item_recommend_card_progress_two"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_progressbar_height"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/quarter_margin"
-        />
+            <co.quchu.quchu.widget.HorizontalNumProgressBar
+                android:id="@+id/item_recommend_card_progress_two"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/horizontal_progressbar_height"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginTop="@dimen/quarter_margin" />
 
 
-        <co.quchu.quchu.widget.HorizontalNumProgressBar
-            android:id="@+id/item_recommend_card_progress_three"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_progressbar_height"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/quarter_margin"
-           />
+            <co.quchu.quchu.widget.HorizontalNumProgressBar
+                android:id="@+id/item_recommend_card_progress_three"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/horizontal_progressbar_height"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginTop="@dimen/quarter_margin" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/item_recommend_card_collect_rl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/item_recommend_card_collect_iv"
+                <RelativeLayout
+                    android:id="@+id/item_recommend_card_collect_rl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/base_margin"
-                    android:src="@drawable/ic_atmophere_unselected" />
-            </RelativeLayout>
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true">
 
-            <RelativeLayout
-                android:id="@+id/item_recommend_card_interest_rl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true">
+                    <ImageView
+                        android:id="@+id/item_recommend_card_collect_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/base_margin"
+                        android:src="@mipmap/ic_atmophere_unselected" />
+                </RelativeLayout>
 
-                <ImageView
+                <RelativeLayout
+                    android:id="@+id/item_recommend_card_interest_rl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/base_margin"
-                    android:src="@drawable/ic_recommend_bc_right" />
-            </RelativeLayout>
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true">
 
-            <RelativeLayout
-                android:id="@+id/item_recommend_card_reply_rl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/base_margin"
+                        android:src="@mipmap/ic_detail_share" />
+                </RelativeLayout>
 
-                <ImageView
+                <RelativeLayout
+                    android:id="@+id/item_recommend_card_reply_rl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/base_margin"
-                    android:src="@drawable/ic_atmosphere_more" />
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/base_margin"
+                        android:src="@mipmap/ic_atmosphere_more" />
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
 
 
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

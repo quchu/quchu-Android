@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -20,8 +21,9 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class PostCardPresenter {
 
+
     public static void GetPostCardList(Context context, boolean isFavoritePostCard, final MyPostCardListener listener) {
-        String netUrl = "";
+        String netUrl;
         if (isFavoritePostCard) {
             netUrl = String.format(NetApi.getFavoriteList, 1, NetApi.FavTypeCard);
         } else {
@@ -36,6 +38,37 @@ public class PostCardPresenter {
                         Gson gson = new Gson();
                         PostCardModel model = gson.fromJson(response.toString(), PostCardModel.class);
                         listener.onSuccess(model);
+                    }
+                }
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.onError(error);
+                return false;
+            }
+        });
+    }
+
+    /**
+     * Get postcard info via pid
+     *
+     * @param context
+     * @param pId
+     * @param listener
+     */
+    public static void getPostCardByPid(Context context, int pId, final MyPostCardItemListener listener) {
+        NetService.get(context, String.format(NetApi.getPlaceUserCard, pId), new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("CardList=" + response);
+                if (response != null) {
+                    if (!response.has("msg") && !response.has("data")) {
+                        Gson gson = new Gson();
+                        PostCardItemModel model = gson.fromJson(response.toString(), PostCardItemModel.class);
+                        listener.onSuccess(model);
+                    } else {
+                        listener.onError(null);
                     }
                 }
             }
@@ -80,6 +113,13 @@ public class PostCardPresenter {
         void onError(String error);
     }
 
+
+    public interface MyPostCardItemListener {
+        void onSuccess(PostCardItemModel model);
+
+        void onError(String error);
+    }
+
     /**
      * 点赞、取消点赞功能
      *
@@ -88,7 +128,7 @@ public class PostCardPresenter {
      * @param praiseId   id  操作对象id
      */
     public static void setPraise(Context mContext, boolean isPraise, boolean typeIsCard, int praiseId, final MyPostCardListener listener) {
-        String urlStr = "";
+        String urlStr;
         if (isPraise) {
             if (typeIsCard) {
                 urlStr = String.format(NetApi.delPraise, praiseId, "card");

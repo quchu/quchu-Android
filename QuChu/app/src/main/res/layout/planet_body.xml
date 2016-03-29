@@ -4,25 +4,21 @@
     xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_planet_bg">
+    android:background="@mipmap/ic_planet_bg">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/planet_avatar_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            fresco:actualImageScaleType="focusCrop"
-            fresco:roundAsCircle="true"
-            fresco:roundBottomLeft="true"
-            fresco:roundBottomRight="true"
-            fresco:roundTopLeft="true"
-            fresco:roundTopRight="true"
-            fresco:roundingBorderWidth="2dp" />
-    </FrameLayout>
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/planet_avatar_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        fresco:actualImageScaleType="focusCrop"
+        fresco:roundAsCircle="true"
+        fresco:roundBottomLeft="true"
+        fresco:roundBottomRight="true"
+        fresco:roundTopLeft="true"
+        fresco:roundTopRight="true"
+        fresco:roundingBorderWidth="2dp" />
 
     <FrameLayout
         android:id="@+id/mid_luncher"
@@ -33,7 +29,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_planet_avatar" />
+            android:src="@mipmap/ic_planet_avatar" />
     </FrameLayout>
 
 
@@ -46,6 +42,7 @@
         android:layout_alignRight="@+id/mid_luncher"
         android:layout_marginBottom="4dp"
         android:layout_marginRight="@dimen/half_margin"
+        android:gravity="center"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_white"
         app:roundProgressText="@string/text_planet_design"
@@ -62,6 +59,7 @@
         android:layout_marginLeft="18dp"
         android:layout_toEndOf="@+id/mid_luncher"
         android:layout_toRightOf="@+id/mid_luncher"
+        android:gravity="center"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_yellow"
         app:roundProgressText="@string/text_planet_pavilion"
@@ -76,6 +74,7 @@
         android:layout_below="@+id/mid_luncher"
         android:layout_marginLeft="22dp"
         android:layout_toRightOf="@+id/mid_luncher"
+        android:gravity="center"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_white"
         app:roundProgressText="@string/text_planet_atmosphere"
@@ -90,6 +89,7 @@
         android:layout_below="@+id/mid_luncher"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="4dp"
+        android:gravity="center"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_yellow"
         app:roundProgressText="@string/text_planet_stroll"
@@ -103,6 +103,7 @@
         android:layout_height="62dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="24dp"
+        android:gravity="center"
         app:roundProgressBackground="@color/itemMask_black"
         app:roundProgressColor="@color/planet_progress_yellow"
         app:roundProgressText="@string/text_planet_cate"

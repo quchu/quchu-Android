@@ -1,19 +1,20 @@
 package co.quchu.quchu.view.adapter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.maps.AMapUtils;
+import com.amap.api.maps.model.LatLng;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.json.JSONObject;
@@ -31,9 +32,11 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.KeyboardUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.InterestingDetailsActivity;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.HorizontalNumProgressBar;
+import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
@@ -45,13 +48,13 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendHolder> {
 
 
-    private Activity mContext;
+    private AppCompatActivity mContext;
     private boolean isFlyme = false;
     private ArrayList<RecommendModel> arrayList;
     private RecommendHolder holder;
     RecommendModel model;
 
-    public SearchAdapter(Activity mContext) {
+    public SearchAdapter(AppCompatActivity mContext) {
         this.mContext = mContext;
         isFlyme = FlyMeUtils.isFlyme();
 
@@ -96,9 +99,36 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         holder.itemRecommendCardProgressThree.setProgressName(model.getGenes().get(2).getKey());
 
         if (model.isIsf()) {
-            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_collect));
+            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_collect));
         } else {
-            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_uncollect));
+            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_uncollect));
+        }
+
+
+        if (null != model.getTags() && model.getTags().size() > 0) {
+            ArrayList<String> tags = new ArrayList<String>();
+            for (int i = 0; i < model.getTags().size(); i++) {
+                tags.add(model.getTags().get(i).getZh());
+            }
+            holder.detailStoreTagcloundTcv.setVisibility(View.VISIBLE);
+            holder.detailStoreTagcloundTcv.setTags(tags);
+        } else {
+            holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
+        }
+        double latitude = SPUtils.getLatitude();
+        if (model.getLatitude() != 0 && SPUtils.getLatitude() != 0) {
+            holder.item_recommend_card_distance_tv.setVisibility(View.VISIBLE);
+            int distance = (int) AMapUtils.calculateLineDistance(new LatLng(model.getLatitude(), model.getLongitude()),
+                    new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude()));
+
+            String s = "距您:" + ((distance / 1000) / 100f) * 100 + "km";
+            holder.item_recommend_card_distance_tv.setText(s);
+            StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + s.length(), R.color.white);
+
+
+
+        } else {
+            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
         }
     }
 
@@ -151,12 +181,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         ProperRatingBar itemRecommendCardPrb;
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
-        @Bind(R.id.item_recommend_card_collect_rl)
-        RelativeLayout itemRecommendCardCollectRl;
-        @Bind(R.id.item_recommend_card_interest_rl)
-        RelativeLayout itemRecommendCardInterestRl;
-        @Bind(R.id.item_recommend_card_reply_rl)
-        RelativeLayout itemRecommendCardReplyRl;
+//        @Bind(R.id.item_recommend_card_collect_rl)
+//        RelativeLayout itemRecommendCardCollectRl;
+//        @Bind(R.id.item_recommend_card_interest_rl)
+//        RelativeLayout itemRecommendCardInterestRl;
+//        @Bind(R.id.item_recommend_card_reply_rl)
+//        RelativeLayout itemRecommendCardReplyRl;
 
         @Bind(R.id.item_recommend_card_progress_one)
         HorizontalNumProgressBar itemRecommendCardProgressOne;
@@ -166,6 +196,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         HorizontalNumProgressBar itemRecommendCardProgressThree;
         @Bind(R.id.root_cv)
         CardView rootCv;
+        @Bind(R.id.detail_store_tagclound_tcv)
+        TagCloudView detailStoreTagcloundTcv;
+        @Bind(R.id.item_recommend_card_distance_tv)
+        TextView item_recommend_card_distance_tv;
 
         public RecommendHolder(View itemView) {
             super(itemView);
@@ -179,7 +213,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
             switch (v.getId()) {
                 case R.id.root_cv:
                 case R.id.item_recommend_card_reply_rl:
-                    mContext.startActivity(new Intent(mContext, InterestingDetailsActivity.class).putExtra("pId", arrayList.get(getPosition()).getPid()));
+                    mContext.startActivity(new Intent(mContext, QuchuDetailsActivity.class).putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, arrayList.get(getPosition()).getPid()));
                     break;
                 case R.id.item_recommend_card_collect_rl:
                     setFavorite(getPosition());

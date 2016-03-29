@@ -159,7 +159,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             mGvPhotoList.setOnScrollListener(GalleryFinal.getCoreConfig().getPauseOnScrollListener());
         }
 
-        Global.mPhotoSelectActivity = this;
+//        Global.mPhotoSelectActivity = this;
     }
 
     private void setTheme() {

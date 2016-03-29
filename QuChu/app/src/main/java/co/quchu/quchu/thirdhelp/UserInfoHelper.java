@@ -21,7 +21,9 @@ public class UserInfoHelper {
         if (userInfo != null) {
             if (userInfo.has("token")) {
                 try {
+                    SPUtils.clearUserinfo(AppContext.mContext);
                     SPUtils.setUserToken(AppContext.mContext, userInfo.getString("token"));
+                    AppContext.token = userInfo.getString("token");
                     SPUtils.setUserInfo(AppContext.mContext, userInfo.toString());
                     AppContext.user = new Gson().fromJson(userInfo.toString(), UserInfoModel.class);
                     //    AppContext.gatherDataModel=new GatherDataModel();

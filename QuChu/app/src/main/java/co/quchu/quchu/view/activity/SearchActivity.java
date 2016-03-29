@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +25,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.RecommendModel;
@@ -79,20 +79,33 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         initHistory();
         initEdittext();
         initData();
+
+        searchInputEt.post(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(searchInputEt, 0);
+            }
+        });
     }
 
-
-    private void showNoneResultFrame() {
-        searchResultIsnullVtv.setVisibility(View.VISIBLE);
-        searchResultIsnullVtv.setFontSize(60);             // 设定字体尺寸
-        searchResultIsnullVtv.setIsOpenUnderLine(false);     // 设定开启下划线
-        /*searchResultIsnullVtv.setUnderLineColor(Color.RED); // 设定下划线颜色
-        searchResultIsnullVtv.setUnderLineWidth(3);         // 设定下划线宽度*/
-        searchResultIsnullVtv.setUnderLineSpacing(30);      // 设定下划线到字的间距
-        searchResultIsnullVtv.setTextStartAlign(VerTextView.RIGHT); // 从右侧或左侧开始排版
-        searchResultIsnullVtv.setTextColor(getResources().getColor(R.color.load_progress_gray));           // 设定字体颜色
-        searchResultIsnullVtv.setText("啦啦：啦啊 \n呼呼 \n哈");
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
+
+//
+//    private void showNoneResultFrame() {
+//        searchResultIsnullVtv.setVisibility(View.VISIBLE);
+//        searchResultIsnullVtv.setFontSize(60);             // 设定字体尺寸
+//        searchResultIsnullVtv.setIsOpenUnderLine(false);     // 设定开启下划线
+//        /*searchResultIsnullVtv.setUnderLineColor(Color.RED); // 设定下划线颜色
+//        searchResultIsnullVtv.setUnderLineWidth(3);         // 设定下划线宽度*/
+//        searchResultIsnullVtv.setUnderLineSpacing(30);      // 设定下划线到字的间距
+//        searchResultIsnullVtv.setTextStartAlign(VerTextView.RIGHT); // 从右侧或左侧开始排版
+//        searchResultIsnullVtv.setTextColor(getResources().getColor(R.color.load_progress_gray));           // 设定字体颜色
+//        searchResultIsnullVtv.setText("啦啦：啦啊 \n呼呼 \n哈");
+//    }
 
     private void initHistory() {
 
@@ -119,7 +132,6 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("SearchActivity");
-        MobclickAgent.onResume(this);
 
         super.onResume();
     }
@@ -128,7 +140,6 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         super.onPause();
 
         MobclickAgent.onPageEnd("SearchActivity");
-        MobclickAgent.onPause(this);
     }
 
     @OnClick({R.id.search_button_rl, R.id.search_history_clear_rl})

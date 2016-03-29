@@ -106,6 +106,11 @@ public class ReserveActivity extends BaseActivity {
     }
 
     @Override
+    protected int activitySetup() {
+        return 0;
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -123,7 +128,6 @@ public class ReserveActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("ReserveActivity");
-        MobclickAgent.onResume(this);
 
         super.onResume();
     }
@@ -132,6 +136,5 @@ public class ReserveActivity extends BaseActivity {
         super.onPause();
 
         MobclickAgent.onPageEnd("ReserveActivity");
-        MobclickAgent.onPause(this);
     }
 }

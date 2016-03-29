@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.textcounter.CounterView;
@@ -80,8 +81,8 @@ public class ImageSubtabLayout extends RelativeLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mInflater.inflate(R.layout.widget_image_subtab, this, true);
         ButterKnife.bind(this);
-        widgetImageSubtabRightSdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.drawable.ic_image_empty));
-        widgetImageSubtabLeftSdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.drawable.ic_image_empty));
+        widgetImageSubtabRightSdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.mipmap.ic_image_empty));
+        widgetImageSubtabLeftSdv.setImageURI(Uri.parse("res://" + context.getPackageName() + "/" + R.mipmap.ic_image_empty));
         initData();
     }
 
@@ -187,7 +188,7 @@ public class ImageSubtabLayout extends RelativeLayout {
 
     private void initData() {
         //    widgetTextIndexIv
-        leftX = ((AppUtil.getScreenWidth(context) / 2) - widgetAnimationIndexIv.getWidth() / 2) / 2;
+        leftX = ((AppContext.Width / 2) - widgetAnimationIndexIv.getWidth() / 2) / 2;
         rightX = leftX * 3;
         widgetAnimationIndexIv.setX(leftX);
         initIndexView(0);

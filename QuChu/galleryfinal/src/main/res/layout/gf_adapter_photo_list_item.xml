@@ -20,7 +20,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <co.quchu.galleryfinal.widget.GFImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_thumb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

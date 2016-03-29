@@ -2,9 +2,9 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background"
-        android:drawable="@drawable/ic_ratingbar_off" />
+        android:drawable="@mipmap/ic_ratingbar_off" />
     <item android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/ic_ratingbar_off" />
+        android:drawable="@mipmap/ic_ratingbar_off" />
     <item android:id="@android:id/progress"
-        android:drawable="@drawable/ic_ratingbar_on" />
+        android:drawable="@mipmap/ic_ratingbar_on" />
 </layer-list>

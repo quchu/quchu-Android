@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.net.IRequestListener;
@@ -35,7 +35,7 @@ import co.quchu.quchu.widget.CircleWaveView;
  * User: Chenhs
  * Date: 2015-11-30
  */
-public class UserEnterAppFragment extends Fragment {
+public class UserEnterAppFragment extends BaseFragment {
 
     @Bind(R.id.user_enter_app_circle_iv)
     SimpleDraweeView userEnterAppCircleIv;

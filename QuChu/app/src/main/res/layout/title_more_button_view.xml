@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_title_more" />
+        android:src="@mipmap/ic_title_more" />
 
 
 </RelativeLayout>

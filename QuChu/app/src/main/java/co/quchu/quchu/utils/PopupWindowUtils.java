@@ -24,7 +24,7 @@ public class PopupWindowUtils {
         LayoutInflater inflater = LayoutInflater.from(v.getContext());
         // 引入窗口配置文件
         View view = inflater.inflate(R.layout.pop_menus_setting, null);
-        //  ( view.findViewById(R.id.pop_root)).setBackground(act.getResources().getDrawable(R.drawable.bb));
+        //  ( view.findViewById(R.id.pop_root)).setBackground(act.getResources().getDrawable(R.mipmap.bb));
         ( view.findViewById(R.id.pop_root)).setBackground(new BitmapDrawable(bitmap));
         // 创建PopupWindow对象
         final PopupWindow pop = new PopupWindow(view,

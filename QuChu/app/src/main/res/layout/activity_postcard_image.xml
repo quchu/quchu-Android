@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/postcard_detail_titlebar"
-        android:background="@drawable/ic_activity_bg">
+        android:background="@drawable/shape_activity_bg">
 
         <android.support.v7.widget.CardView
             android:id="@+id/root_cv"
@@ -22,6 +22,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/base_margin"
             android:clickable="true"
+            card_view:cardPreventCornerOverlap="false"
             android:fitsSystemWindows="true"
             card_view:cardCornerRadius="8dp"
             card_view:cardElevation="@dimen/cardview_elevation">
@@ -32,7 +33,7 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/item_recommend_card_title_textrl"
+                    android:id="@+id/animation1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -52,7 +53,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/item_recommend_card_title_textrl"
+                    android:layout_below="@id/animation1"
                     android:layout_margin="@dimen/half_margin"
                     android:background="@drawable/shape_postcard_detail_white_bg">
 

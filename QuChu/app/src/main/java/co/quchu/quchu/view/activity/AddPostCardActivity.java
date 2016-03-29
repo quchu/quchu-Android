@@ -25,6 +25,7 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,13 +48,15 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
-import co.quchu.quchu.photo.Bimp;
+import co.quchu.quchu.photoselected.Bimp;
 import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.FileUtils;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.KeyboardUtils;
@@ -97,7 +100,6 @@ public class AddPostCardActivity extends BaseActivity {
     private String pName = "";
     AddPostCardGridAdapter adapter;
     PostCardItemModel defaulModel;
-    private boolean isNeedUpdate = false;
     int pId;
     private String editTextDefaultText = "";
     String[] prbHintText;
@@ -123,7 +125,7 @@ public class AddPostCardActivity extends BaseActivity {
         addPostcardImageIgv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if ((Bimp.imglist.size() + Bimp.drr.size()) < 5) {
+                if ((Bimp.imglist.size() + Bimp.drr.size() + mPhotoList.size()) < 5) {
                     if (position == 0) {
                         new PopupWindows(AddPostCardActivity.this, addPostcardImageIgv);
                     }
@@ -133,6 +135,11 @@ public class AddPostCardActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 
     private FunctionConfig functionConfig;
@@ -161,22 +168,56 @@ public class AddPostCardActivity extends BaseActivity {
 
     private void initData() {
         defaulModel = (PostCardItemModel) getIntent().getSerializableExtra("pCardModel");
-        if (defaulModel != null) {
-            Bimp.imglist = defaulModel.getImglist();
-            addPostcardSuggestPrb.setRating(defaulModel.getScore());
-            addPostcardAboutPlaceTv.setText(defaulModel.getComment());
-            addPostcardAboutPlaceTv.setText(defaulModel.getComment());
-            if ((int) (defaulModel.getScore() + 0.5f) > prbHintText.length) {
-                editTextDefaultText = prbHintText[prbHintText.length - 1];
-                addPostcardSuggestTv.setText(prbHintText[prbHintText.length - 1]);
-            } else {
-                editTextDefaultText = prbHintText[(int) (defaulModel.getScore() + 0.5f)];
-                addPostcardSuggestTv.setText(prbHintText[(int) (defaulModel.getScore() + 0.5f)]);
-            }
-        }
         pName = getIntent().getStringExtra("pName");
         pId = getIntent().getIntExtra("pId", 2);
+
+        if (null != defaulModel && pId != -1) {
+            fillUI();
+        } else {
+            getFromSetver(pId);
+        }
     }
+
+    private void fillUI() {
+        Bimp.imglist = defaulModel.getImglist();
+        addPostcardSuggestPrb.setRating(defaulModel.getScore());
+        addPostcardAboutPlaceTv.setText(defaulModel.getComment());
+        addPostcardAboutPlaceTv.setText(defaulModel.getComment());
+        if ((int) (defaulModel.getScore() + 0.5f) > prbHintText.length) {
+            editTextDefaultText = prbHintText[prbHintText.length - 1];
+            addPostcardSuggestTv.setText(prbHintText[prbHintText.length - 1]);
+        } else {
+            editTextDefaultText = prbHintText[(int) (defaulModel.getScore() + 0.5f)];
+            addPostcardSuggestTv.setText(prbHintText[(int) (defaulModel.getScore() + 0.5f)]);
+        }
+    }
+
+    private void getFromSetver(int pid) {
+        if (-1 == pId) {
+            return;
+        }
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        PostCardPresenter.getPostCardByPid(this, pid, new PostCardPresenter.MyPostCardItemListener() {
+            @Override
+            public void onSuccess(PostCardItemModel model) {
+                if (null != model) {
+                    defaulModel = model;
+                    fillUI();
+                }
+                DialogUtil.dismissProgess();
+            }
+
+            @Override
+            public void onError(String error) {
+                if (null != error) {
+                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+                }
+
+                DialogUtil.dismissProgess();
+            }
+        });
+    }
+
 
     private void setPRBlistener() {
         addPostcardSuggestPrb.setListener(new RatingListener() {
@@ -247,14 +288,12 @@ public class AddPostCardActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("AddPostCardActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("AddPostCardActivity");
-        MobclickAgent.onResume(this);
     }
 
     public class PopupWindows extends PopupWindow {
@@ -350,11 +389,13 @@ public class AddPostCardActivity extends BaseActivity {
 
     }
 
+
     private void saveCard(String imageStr) {
         PostCardPresenter.sacePostCard(this, pId, addPostcardSuggestPrb.getRating(), addPostcardAboutPlaceTv.getText().toString(), imageStr, new PostCardPresenter.MyPostCardListener() {
             @Override
             public void onSuccess(PostCardModel model) {
                 //   if (Bimp.delImageIdList.size() == 0) {
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_QUCHU_DETAIL_UPDATED, pId));
                 AppContext.gatherList.add(new GatherRateModel(pId + "", addPostcardSuggestPrb.getRating()));
                 DialogUtil.dismissProgessDirectly();
                 if (Bimp.imglist.size() > 0) {
@@ -443,9 +484,15 @@ public class AddPostCardActivity extends BaseActivity {
         //    uploadManager = new UploadManager();
         //  }
         //   LogUtils.json("addImage2QiNiu  addImage2QiNiu  addImage2QiNiu" + list.get(imageIndex));
+        if (imageIndex >= mPhotoList.size()) {
+
+            DialogUtil.dismissProgessDirectly();
+            return;
+        }
         uploadBitmap = ImageUtils.getimage(mPhotoList.get(imageIndex).getPhotoPath());
         if (uploadBitmap != null)
-            uploadManager.put(ImageUtils.Bitmap2Bytes(uploadBitmap, 90), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
+            uploadManager.put(ImageUtils.Bitmap2Bytes(uploadBitmap, 90), String.format(defaulQiNiuFileName,
+                    AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
                     //    uploadManager.put(ImageUtils.Bitmap2Bytes(Bimp.bmp.get(imageIndex), 100), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
                     new UpCompletionHandler() {
 
@@ -542,10 +589,10 @@ public class AddPostCardActivity extends BaseActivity {
                 //   mPhotoList = resultList;
                 adapter.notifyDataSetChanged();
                 //   mChoosePhotoListAdapter.notifyDataSetChanged();
-                for (int i = 0; i < mPhotoList.size(); i++) {
+              /*  for (int i = 0; i < mPhotoList.size(); i++) {
                     PhotoInfo infos = mPhotoList.get(i);
                     LogUtils.json(infos.getPhotoPath() + "//id=" + infos.getPhotoId() + "//width=" + infos.getWidth() + "//height=" + infos.getHeight());
-                }
+                }*/
             }
         }
 

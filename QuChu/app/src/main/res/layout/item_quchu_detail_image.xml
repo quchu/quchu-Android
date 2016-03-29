@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/base_margin"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <!--   android:foreground="?attr/selectableItemBackground"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="@dimen/cardview_elevation"-->
+    <View
+        android:layout_width="0.1dp"
+        android:layout_height="@dimen/quarter_margin" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_card_shadow_full_image_bg">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/item_card_image_sdv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:actualImageScaleType="focusCrop"
+            card_view:placeholderImageScaleType="focusCrop"
+            card_view:roundedCornerRadius="4dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="0.1dp"
+        android:layout_height="@dimen/quarter_margin" />
+</LinearLayout>

@@ -22,6 +22,11 @@ public class SettingQAvatarActivity extends BaseActivity {
         userInfoBinding();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void initTitleBarView() {
 
     }

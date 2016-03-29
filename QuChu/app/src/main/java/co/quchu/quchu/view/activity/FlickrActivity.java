@@ -62,7 +62,7 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     public FlickrModel flickrFavoriteNew = new FlickrModel();//我的收藏 new
     @Bind(R.id.flickr_act_swipe_refresh_layout)
     SwipeRefreshLayout flickrActSwipeRefreshLayout;
-    @Bind(R.id.empty_view_other_tv)
+    @Bind(R.id.action_buttton)
     TextView emptyViewOtherTv;
     @Bind(R.id.empty_view_fl)
     FrameLayout emptyViewFl;
@@ -83,7 +83,6 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
                 R.color.load_progress_yellow);
         flickrActSwipeRefreshLayout.setMode(SwipeRefreshLayout.Mode.PULL_FROM_END);
         flickrActSwipeRefreshLayout.setLoadNoFull(false);
-        initData();
         tabBar.setSelectedListener(new ImageSubtabLayout.ImageSubtabSelectedListener() {
             @Override
             public void onSelected(int selectedNum) {
@@ -122,6 +121,11 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
             }
         });
 
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 
 
@@ -267,11 +271,11 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
             @Override
             public void onSuccess(FlickrModel flickrModel) {
                 flickrImagesHot = flickrModel;
-                flickrListFragment = new FlickrListFragment(FlickrActivity.this, flickrImagesHot.getImgs());
-                flickrGridFragment = new FlickrGridFragment(FlickrActivity.this, flickrImagesHot.getImgs());
+                flickrListFragment = FlickrListFragment.newInstance(flickrImagesHot.getImgs());
+                flickrGridFragment = FlickrGridFragment.newInstance(flickrImagesHot.getImgs());
                 transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.flickr_fl, flickrListFragment);
-                transaction.commit();
+                transaction.commitAllowingStateLoss();
                 scrollViewFlickr.smoothScrollTo(0, 0);
                 showEmptyView(flickrImagesHot.getImgs());
                 if (!StringUtils.isEmpty(flickrImagesHot.getPhoto().getCover()))
@@ -393,7 +397,7 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
         }
     }
 
-    @OnClick(R.id.empty_view_other_tv)
+    @OnClick(R.id.action_buttton)
     public void flickrClick(View view) {
         this.finish();
     }
@@ -403,7 +407,6 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("FlickrActivity");
-        MobclickAgent.onPause(this);
 
     }
 
@@ -411,6 +414,6 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("FlickrActivity");
-        MobclickAgent.onResume(this);
+        initData();
     }
 }

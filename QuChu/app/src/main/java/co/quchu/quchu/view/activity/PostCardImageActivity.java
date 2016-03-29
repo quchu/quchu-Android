@@ -21,8 +21,8 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.PostCardItemModel;
-import co.quchu.quchu.photo.previewimage.ImageBDInfo;
-import co.quchu.quchu.photo.previewimage.PreviewImage;
+import co.quchu.quchu.photoselected.ImageBDInfo;
+import co.quchu.quchu.photoselected.PreviewImageActivity;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.PostCardImageAdapter;
 
@@ -36,7 +36,7 @@ public class PostCardImageActivity extends BaseActivity {
 
     @Bind(R.id.postcard_detail_finish_tv)
     TextView postcardDetailFinishTv;
-    @Bind(R.id.item_recommend_card_title_textrl)
+    @Bind(R.id.animation1)
     RelativeLayout itemRecommendCardTitleTextrl;
     @Bind(R.id.add_postcard_image_igv)
     GridView addPostcardImageIgv;
@@ -66,13 +66,13 @@ public class PostCardImageActivity extends BaseActivity {
                 int a, b;
                 a = position / 4;
                 b = position % 4;
-                bdInfo.width = (AppContext.Width - (2 * StringUtils.dip2px(24)) - 4 * StringUtils.dip2px(2)) / 4;
+                bdInfo.width = (AppContext.Width - (2 * StringUtils.dip2px(34))) / 4;
                 bdInfo.height = bdInfo.width;
-                bdInfo.x = StringUtils.dip2px(8) + b * bdInfo.width + b * StringUtils.dip2px(4);
+                bdInfo.x = StringUtils.dip2px(32) + b * bdInfo.width + b * StringUtils.dip2px(4);
                 bdInfo.y = StringUtils.dip2px(1) + bdInfo.height * (a - firstVisiblePosition) + top + (a - firstVisiblePosition) * StringUtils.dip2px(2) + addPostcardImageIgv.getTop() - StringUtils.dip2px(1)
                         + StringUtils.dip2px(128);
 
-                Intent intent = new Intent(PostCardImageActivity.this, PreviewImage.class);
+                Intent intent = new Intent(PostCardImageActivity.this, PreviewImageActivity.class);
                 intent.putExtra("data", (Serializable) defaulModel);
                 intent.putExtra("bdinfo", bdInfo);
                 intent.putExtra("index", position);
@@ -82,6 +82,11 @@ public class PostCardImageActivity extends BaseActivity {
         });
         getDatas();
 
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 /*Error:Execution failed for task ':app:transformClassesAndResourcesWithProguardForRelease'.
 > java.io.IOException: Please correct the above warnings first.*/
@@ -110,7 +115,6 @@ public class PostCardImageActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("PostCardImageActivity");
-        MobclickAgent.onResume(this);
 
         super.onResume();
     }
@@ -119,7 +123,6 @@ public class PostCardImageActivity extends BaseActivity {
         super.onPause();
 
         MobclickAgent.onPageEnd("PostCardImageActivity");
-        MobclickAgent.onPause(this);
     }
 
 }

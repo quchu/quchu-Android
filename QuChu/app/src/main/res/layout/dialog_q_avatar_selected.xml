@@ -24,7 +24,7 @@
         android:background="#555252"
         android:horizontalSpacing="@dimen/half_margin"
         android:numColumns="3"
-        android:overScrollMode="never"
+        android:overScrollMode="always"
         android:padding="@dimen/quarter_margin"
         android:scrollbars="none"
         android:verticalSpacing="@dimen/half_margin" />

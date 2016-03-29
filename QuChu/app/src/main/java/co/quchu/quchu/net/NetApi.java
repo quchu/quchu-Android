@@ -3,14 +3,15 @@ package co.quchu.quchu.net;
 import co.quchu.quchu.base.Constants;
 
 /**
- * netApi
+ * netApi 
  */
 public class NetApi {
     // public static boolean isDebug = false;
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
-    public static String RELEASE_HOST = "http://www.quchu.co/appservices";
-    public static String HOST_UAT = "http://uat.quchu.co:8080/appservices";
+    public static String RELEASE_HOST = "http://www.quchu.co/app-main-service";
+    public static String HOST_UAT = "http://uat.quchu.co:80/appservices";
     public static String HOST_SIT = "http://sit.quchu.co:8080/appservices";
+//    public static String HOST_SIT = "http://192.168.1.134:8080/appservices";
 
     //  public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
@@ -39,11 +40,12 @@ public class NetApi {
     public static final String UserStar = HOST + "/personal/getUserStar"; //我的趣星球
     public static final String getMessageList = HOST + "/personal/getMessageList"; //消息中心
 
-    public static final String getRootTags = HOST + "/place/getRootTags"; //获取趣处分类列表
+    public static final String getRootTags = HOST + "/place/getRootTags?cityId=%d"; //获取趣处分类列表
 
     // public static final String getPlaceList = HOST + "/place/getPlaceList";//获取趣处 推荐列表
-    public static final String getPlaceList = HOST + "/place/getPlaceList?cityId=%d&tagsEn=%s&latitude=%s&longitude=%s&pageno=%d";//获取趣处 推荐列表
-    public static final String getDefaultPlaceList = HOST + "/place/getPlaceList?cityId=%d&latitude=%s&longitude=%s&pageno=%d";//获取趣处 推荐列表
+    public static final String getPlaceList = HOST + "/place/getPlaceList?cityId=%d&tagsEn=%s&latitude=%s&longitude=%s&pageno=%d";//获取趣处 推荐列表按照分类
+    //public static final String getDefaultPlaceList = HOST + "/place/getPlaceList?cityId=%d&latitude=%s&longitude=%s&pageno=%d";//获取趣处 推荐列表
+    public static final String getDefaultPlaceList = HOST + "/place/getPlaceList?tagsEn=%s&cityId=%d&latitude=%s&longitude=%s&pageno=%d";// 1.1 根据tag获取趣处 列表
     public static final String GetCityList = HOST + "/place/getCityList";  //获取城市列表  或验证城市
     public static final String Seach = HOST + "/search?value=%s&pageno=%d";  //搜索 value=搜索内容  gageno=分页页码
     public static final String getDetail = HOST + "/place/GetPlace?pId=%d";  //获取趣处详情信息 pid=趣处id
@@ -63,10 +65,10 @@ public class NetApi {
     public static final String getQiniuToken = HOST + "/operate/getQiniuToenk";  //获取七牛token
 
     public static final String getCardDetail = HOST + "/place/getCard?cId=%d";  //获取明信片详情
-    public static final String delPostCard = HOST + "/operate/delCard?cId=%d";  //获取明信片详情
+    public static final String delPostCard = HOST + "/operate/delCard?cId=%d";  //删除明信片
 
     public static final String delPraise = HOST + "/sns/delpraise?formId=%d&type=%s";  //取消点赞
-    public static final String doPraise = HOST + "/sns/praise?formId=%d&type=%s";  //点赞
+    public static final String doPraise = HOST + "/sns/praise?formId=%d&type=%s";  //点赞 ·
     public static final String delPostCardImage = HOST + "/place/delCardImg?imgId=%s";  //删除明信片照片
 
     public static final String getPlaceUserCard = HOST + "/place/getPlaceUserCard?pId=%d";  //获取趣处中我留下的明信片
@@ -79,7 +81,16 @@ public class NetApi {
 
     public static final String followFriends = HOST + "/sns/follow?followId=%d";  //关注他人
     public static final String delFollowFriends = HOST + "/sns/delFollow?followId=%d";  //取消关注
-    public static final String getUserInfo = HOST + "/personal/getUser";  //取消关注
+    public static final String getMyUserInfo = HOST + "/personal/getUser";  //获取自己用户信息
+    public static final String getUserInfo = HOST + "/personal/getUserInfo?userId=%d";  //获取自己用户信息
+    public static final String getUserCardList = HOST + "/place/getUserCardList?userId=%d&pageno=%d";  //获取某个用户的明信片
+    public static final String getUsercenterFavoriteList = HOST + "/place/getFavoriteList?userId=%d&pageno=%d";  //获取某个用户收藏的趣处列表
+    public static final String getFollow = HOST + "/place/getFollow?userId=%d&pageno=%d&head=no&type=%s";  //获取某个用户收藏的趣处列表
+
+    public static final String getCurrentUserFollowers = HOST + "/personal/getFollow?head=%s&type=%s&pageno=%d";  //获取当前用户的关注列表
+
+
+    public static final String getCategoryTags = HOST + "/place/getCategoryTags?cityId=%d";  //获取tag 列表
 
     /****  Get end  ****/
 
@@ -94,5 +105,8 @@ public class NetApi {
     public static final String saveOrUpdateCard = HOST + "/operate/saveOrUpdateCard"; //意见反馈
     public static final String updateUser = HOST + "/personal/updateUser"; //修改用户设置
     public static final String VisitorRegiester = HOST + "/mregister?visitors=1&equip=%s";
+    public static final String findPosition = HOST + "/operate/proposalPlace?place.pId=%s&place.pname=%s&place.paddress=%s&place.profile=%s&place.pimage=%s";//发现趣处
+
+
     /****************** POST *******************/
 }

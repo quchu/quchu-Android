@@ -18,6 +18,7 @@ public class RecommendModel {
      * height : 683
      * isActivity : false
      * isf : false
+     * isout :false  是否去过
      * latitude : 24.497263415041
      * longitude : 118.09703816664
      * name : 迷待音乐会所
@@ -42,13 +43,14 @@ public class RecommendModel {
     private String rgb;
     private float suggest;
     private int width;
+    public boolean isout;  //是否去过
     /**
      * key : 夜生活
      * value : 90
      */
 
     private List<GenesEntity> genes;
-    private List<?> tags;
+    private List<TagsEntity> tags;
 
     public void setAddress(String address) {
         this.address = address;
@@ -110,7 +112,7 @@ public class RecommendModel {
         this.genes = genes;
     }
 
-    public void setTags(List<?> tags) {
+    public void setTags(List<TagsEntity> tags) {
         this.tags = tags;
     }
 
@@ -142,12 +144,26 @@ public class RecommendModel {
         return isf;
     }
 
-    public String getLatitude() {
-        return latitude;
+    public double getLatitude() {
+        double v = 0;
+        try {
+            v = Double.parseDouble(latitude);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return v;
     }
 
-    public String getLongitude() {
-        return longitude;
+    public double getLongitude() {
+        double v = 0;
+        try {
+            v = Double.parseDouble(longitude);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return v;
     }
 
     public String getName() {
@@ -174,7 +190,7 @@ public class RecommendModel {
         return genes;
     }
 
-    public List<?> getTags() {
+    public List<TagsEntity> getTags() {
         return tags;
     }
 
@@ -196,6 +212,18 @@ public class RecommendModel {
 
         public String getValue() {
             return value;
+        }
+    }
+
+    public static class TagsEntity {
+        private String zh;
+
+        public void setZh(String zh) {
+            this.zh = zh;
+        }
+
+        public String getZh() {
+            return zh;
         }
     }
 }

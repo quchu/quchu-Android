@@ -3,7 +3,6 @@ package co.quchu.quchu.view.fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,9 @@ import com.nineoldandroids.animation.ObjectAnimator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
@@ -36,7 +35,7 @@ import co.quchu.quchu.view.activity.UserLoginActivity;
  * User: Chenhs
  * Date: 2015-11-25
  */
-public class UserLoginMainFragment extends Fragment {
+public class UserLoginMainFragment extends BaseFragment implements View.OnClickListener {
     /*   @Bind(R.id.user_login_main_circle_iv)
        ImageView userLoginMainCircleIv;
        @Bind(R.id.user_login_main_cwv)
@@ -125,6 +124,15 @@ public class UserLoginMainFragment extends Fragment {
 
     private int RepeatCounts = 0;
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        userLoginMainWeiboLl.setOnClickListener(this);
+        userLoginMainWechatLl.setOnClickListener(this);
+        userLoginMainPhoneLl.setOnClickListener(this);
+    }
+
     private void userAnimation() {
         animatorSets = new AnimatorSet();
         ObjectAnimator rountAxs = ObjectAnimator.ofFloat(user_login_bg_animators_iv, "scaleX", 0.2f, 0.8f, 0.9f);
@@ -201,34 +209,6 @@ public class UserLoginMainFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.user_login_main_phone_ll, R.id.user_login_main_wechat_ll, R.id.user_login_main_weibo_ll})
-    public void onLoginClick(View view) {
-        if (KeyboardUtils.isFastDoubleClick())
-            return;
-        switch (view.getId()) {
-            case R.id.user_login_main_phone_ll:
-              /* */
-                transitionAnimation();
-                break;
-            case R.id.user_login_main_wechat_ll:
-                LogUtils.json("user_login_main_wechat_ll");
-                if (!NetUtil.isNetworkConnected(getActivity())) {
-                    Toast.makeText(getActivity(), "请检查网络后重试!", Toast.LENGTH_SHORT).show();
-                } else {
-                    ((UserLoginActivity) getActivity()).weixinLogin();
-                }
-                break;
-            case R.id.user_login_main_weibo_ll:
-                LogUtils.json("user_login_main_weibo_ll");
-                if (!NetUtil.isNetworkConnected(getActivity())) {
-                    Toast.makeText(getActivity(), "请检查网络后重试!", Toast.LENGTH_SHORT).show();
-                } else {
-                    ((UserLoginActivity) getActivity()).sinaLogin();
-                }
-
-                break;
-        }
-    }
 
     @Override
     public void onResume() {
@@ -323,4 +303,30 @@ public class UserLoginMainFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
+        switch (v.getId()) {
+            case R.id.user_login_main_wechat_ll:
+                LogUtils.json("user_login_main_wechat_ll");
+                if (!NetUtil.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "请检查网络后重试!", Toast.LENGTH_SHORT).show();
+                } else {
+                    ((UserLoginActivity) getActivity()).weixinLogin();
+                }
+                break;
+            case R.id.user_login_main_weibo_ll:
+                LogUtils.json("user_login_main_weibo_ll");
+                if (!NetUtil.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "请检查网络后重试!", Toast.LENGTH_SHORT).show();
+                } else {
+                    ((UserLoginActivity) getActivity()).sinaLogin();
+                }
+                break;
+            case R.id.user_login_main_phone_ll:
+                transitionAnimation();
+                break;
+        }
+    }
 }

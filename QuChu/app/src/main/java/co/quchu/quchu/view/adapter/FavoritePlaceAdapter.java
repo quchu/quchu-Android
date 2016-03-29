@@ -55,8 +55,7 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
 
     @Override
     public FavoritePlaceHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        FavoritePlaceHolder holder = new FavoritePlaceHolder(LayoutInflater.from(mContext).inflate(R.layout.item_favorite_place_cardview, parent, false), listener);
-        return holder;
+        return new FavoritePlaceHolder(LayoutInflater.from(mContext).inflate(R.layout.item_favorite_place_cardview, parent, false), listener);
     }
 
     @Override
@@ -67,6 +66,7 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
         } else {
             holder.rootCv.setCardBackgroundColor(Color.parseColor("#808080"));
         }
+        holder.rootCv.setCardElevation(15);
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (isFlyme) {
             holder.itemRecommendCardPhotoSdv.setAspectRatio(1.45f);
@@ -77,7 +77,7 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
         holder.itemRecommendCardCityTv.setText(model.getDescribe());
         holder.itemRecommendCardNameTv.setText(model.getName());
         holder.itemRecommendCardPrb.setRating((int) (model.getSuggest() + 0.5) >= 5 ? 5 : (model.getSuggest()));
-        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
 
     }
 
@@ -101,12 +101,12 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
         ProperRatingBar itemRecommendCardPrb;
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
-        @Bind(R.id.item_recommend_card_collect_rl)
-        RelativeLayout itemRecommendCardCollectRl;
-        @Bind(R.id.item_recommend_card_interest_rl)
-        RelativeLayout itemRecommendCardInterestRl;
-        @Bind(R.id.item_recommend_card_reply_rl)
-        RelativeLayout itemRecommendCardReplyRl;
+//        @Bind(R.id.item_recommend_card_collect_rl)
+//        RelativeLayout itemRecommendCardCollectRl;
+//        @Bind(R.id.item_recommend_card_interest_rl)
+//        RelativeLayout itemRecommendCardInterestRl;
+//        @Bind(R.id.item_recommend_card_reply_rl)
+//        RelativeLayout itemRecommendCardReplyRl;
 
         @Bind(R.id.root_cv)
         CardView rootCv;
@@ -129,7 +129,6 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
                 case R.id.item_recommend_card_collect_rl:
                     setFavorite(getPosition());
                     break;
-
             }
             if (listener != null)
                 listener.onCardLick(view, getPosition());

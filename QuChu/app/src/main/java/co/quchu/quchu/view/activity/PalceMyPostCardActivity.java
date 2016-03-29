@@ -42,7 +42,7 @@ public class PalceMyPostCardActivity extends BaseActivity {
     TextView itemRecommendCardNameTv;
     @Bind(R.id.item_recommend_card_city_tv)
     TextView itemRecommendCardCityTv;
-    @Bind(R.id.item_recommend_card_title_textrl)
+    @Bind(R.id.animation1)
     RelativeLayout itemRecommendCardTitleTextrl;
     @Bind(R.id.item_recommend_card_photo_sdv)
     SimpleDraweeView itemRecommendCardPhotoSdv;
@@ -91,6 +91,11 @@ public class PalceMyPostCardActivity extends BaseActivity {
         getDataFromServer();
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     PostCardItemModel pPostCardModel;
 
     private void getDataFromServer() {
@@ -114,8 +119,8 @@ public class PalceMyPostCardActivity extends BaseActivity {
                         itemMyPostcardCardCommentTv.setText(pPostCardModel.getComment());
                         rootCv.setCardBackgroundColor(Color.parseColor("#" + pPostCardModel.getRgb()));
 
-                        itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
-                        itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_post_card_editer));
+                        itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
+                        itemMyPostcardCardHeartIv.setImageDrawable(getResources().getDrawable(R.mipmap.ic_post_card_editer));
                         rootCv.setVisibility(View.VISIBLE);
                         DialogUtil.dismissProgess();
                     }
@@ -186,7 +191,7 @@ public class PalceMyPostCardActivity extends BaseActivity {
                 } else {
                     Toast.makeText(PalceMyPostCardActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }
-                itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+                itemRecommendCardCollectIv.setImageDrawable(getResources().getDrawable(pPostCardModel.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
             }
 
             @Override
@@ -199,13 +204,11 @@ public class PalceMyPostCardActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("PlaceMyPostCardActivity");
-        MobclickAgent.onResume(this);
         super.onResume();
     }
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("PlaceMyPostCardActivity");
-        MobclickAgent.onPause(this);
     }
 }

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.animation.AccelerateInterpolator;
+
+import java.lang.reflect.Field;
 
 /**
  * NoScrollViewPager
@@ -27,34 +30,29 @@ public class NoScrollViewPager extends ViewPager {
     }
 
     @Override
-    public void scrollTo(int x, int y) {
-        super.scrollTo(x, y);
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent arg0) {
-        /* return false;//super.onTouchEvent(arg0); */
-        if (noScroll)
-            return false;
-        else
-            return super.onTouchEvent(arg0);
+        return !noScroll && super.onTouchEvent(arg0);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent arg0) {
-        if (noScroll)
-            return false;
-        else
-            return super.onInterceptTouchEvent(arg0);
+        return !noScroll && super.onInterceptTouchEvent(arg0);
     }
 
-    @Override
-    public void setCurrentItem(int item, boolean smoothScroll) {
-        super.setCurrentItem(item, smoothScroll);
+
+    public void setSlowAnimation(ViewPager viewPager,int animationDuration) {
+        try {
+            Field field = viewPager.getClass().getDeclaredField("mScroller");
+            field.setAccessible(true);
+            FixedSpeedScroller scroller = new FixedSpeedScroller(viewPager.getContext(),
+                    new AccelerateInterpolator());
+            field.set(viewPager, scroller);
+            scroller.setmDuration(animationDuration);
+        } catch (Exception e) {
+        }
     }
 
-    @Override
-    public void setCurrentItem(int item) {
-        super.setCurrentItem(item);
+    public void setSlowAnimation(ViewPager viewPager) {
+        setSlowAnimation(viewPager,2000);
     }
 }

@@ -48,6 +48,11 @@ public class AboutUsActivity extends BaseActivity {
         aboutUsDescTv.setMovementMethod(LinkMovementMethod.getInstance());*/
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     @OnClick({R.id.about_us_title_back_rl})
     public void aboutUsClick(View view) {
         switch (view.getId()) {
@@ -61,13 +66,11 @@ public class AboutUsActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("AboutUsActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("AboutUsActivity");
-        MobclickAgent.onResume(this);
     }
 }

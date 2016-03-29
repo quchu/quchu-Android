@@ -14,7 +14,7 @@ import android.util.Log;
 /**
  * Simple helper used to blur a bitmap thanks to render script.
  */
-final class RenderScriptBlurHelper {
+public class RenderScriptBlurHelper {
 
     /**
      * Log cat

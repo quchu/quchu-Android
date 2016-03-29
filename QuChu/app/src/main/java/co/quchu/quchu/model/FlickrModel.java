@@ -77,7 +77,7 @@ public class FlickrModel implements Serializable{
         }
     }
 
-    public static class ImgsEntity {
+    public static class ImgsEntity implements Serializable {
         private int pageCount;
         private int pageSize;
         private int pagesNo;
@@ -86,7 +86,7 @@ public class FlickrModel implements Serializable{
          * path : http://7xo7et.com1.z0.glb.clouddn.com/1442461307213
          */
 
-        private List<PostCardImageListModel> result;
+        private List<AlbumImageListModel> result;
 
         public void setPageCount(int pageCount) {
             this.pageCount = pageCount;
@@ -100,10 +100,10 @@ public class FlickrModel implements Serializable{
             this.pagesNo = pagesNo;
         }
 
-        public void setResult(List<PostCardImageListModel> result) {
+        public void setResult(List<AlbumImageListModel> result) {
             this.result = result;
         }
-        public void addResult(List<PostCardImageListModel> result) {
+        public void addResult(List<AlbumImageListModel> result) {
             this.result.addAll(result);
         }
 
@@ -119,7 +119,7 @@ public class FlickrModel implements Serializable{
             return pagesNo;
         }
 
-        public List<PostCardImageListModel> getResult() {
+        public List<AlbumImageListModel> getResult() {
             return result;
         }
 

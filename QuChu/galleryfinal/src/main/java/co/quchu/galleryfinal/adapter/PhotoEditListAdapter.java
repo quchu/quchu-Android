@@ -17,10 +17,14 @@
 package co.quchu.galleryfinal.adapter;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.io.File;
 import java.util.List;
 
 import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
@@ -28,6 +32,7 @@ import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.PhotoEditActivity;
 import co.quchu.galleryfinal.R;
 import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.galleryfinal.utils.ImageUtils;
 import co.quchu.galleryfinal.widget.GFImageView;
 
 /**
@@ -43,7 +48,7 @@ public class PhotoEditListAdapter extends ViewHolderAdapter<PhotoEditListAdapter
     public PhotoEditListAdapter(PhotoEditActivity activity, List<PhotoInfo> list, int screenWidth) {
         super(activity, list);
         mActivity = activity;
-        this.mRowWidth = screenWidth/5;
+        this.mRowWidth = screenWidth / 5;
     }
 
     @Override
@@ -62,7 +67,15 @@ public class PhotoEditListAdapter extends ViewHolderAdapter<PhotoEditListAdapter
         holder.mIvPhoto.setImageResource(R.drawable.ic_gf_default_photo);
         holder.mIvDelete.setImageResource(GalleryFinal.getGalleryTheme().getIconDelete());
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
-        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvPhoto, defaultDrawable, 100, 100);
+//        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvPhoto, defaultDrawable, 100, 100);
+
+
+        if (null!=photoInfo.getThumbPath()){
+            holder.mIvPhoto.setImageURI(Uri.fromFile(new File(photoInfo.getThumbPath())));
+        }else{
+            ImageUtils.loadWithAppropriateSize(holder.mIvPhoto,Uri.fromFile(new File(path)));
+        }
+
         if (!GalleryFinal.getFunctionConfig().isMutiSelect()) {
             holder.mIvDelete.setVisibility(View.GONE);
         } else {
@@ -72,11 +85,12 @@ public class PhotoEditListAdapter extends ViewHolderAdapter<PhotoEditListAdapter
     }
 
     public class ViewHolder extends ViewHolderAdapter.ViewHolder {
-        GFImageView mIvPhoto;
+        SimpleDraweeView mIvPhoto;
         ImageView mIvDelete;
+
         public ViewHolder(View view) {
             super(view);
-            mIvPhoto = (GFImageView) view.findViewById(R.id.iv_photo);
+            mIvPhoto = (SimpleDraweeView) view.findViewById(R.id.iv_photo);
             mIvDelete = (ImageView) view.findViewById(R.id.iv_delete);
         }
     }
@@ -94,7 +108,7 @@ public class PhotoEditListAdapter extends ViewHolderAdapter<PhotoEditListAdapter
             PhotoInfo photoInfo = null;
             try {
                 photoInfo = getDatas().remove(position);
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             notifyDataSetChanged();

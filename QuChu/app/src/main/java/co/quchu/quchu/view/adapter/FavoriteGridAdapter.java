@@ -35,12 +35,12 @@ public class FavoriteGridAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-      /*  if (isPlace) {
-
-            return model.getPlace().getData().size();
-        } else {
-            return model.getCard().getData().size();
-        }*/
+//        if (isPlace) {
+//
+//            return model.getPlace().getData().size();
+//        } else {
+//            return model.getCard().getData().size();
+//        }
         return 3;
     }
 
@@ -85,7 +85,7 @@ public class FavoriteGridAdapter extends BaseAdapter {
                 holder.itemFavoriteSdv.setAspectRatio(1.33f);
                 holder.itemFavoritePrb.setRating(model.getCard().getData().get(position).getScore());
                 holder.itemDiscoverRootLl.setCardBackgroundColor(Color.parseColor("#" + model.getCard().getData().get(position).getRgb()));
-            }else {
+            } else {
                 holder.itemFavoritePrb.setRating(0);
                 holder.itemFavoriteSdv.setImageDrawable(mContext.getResources().getDrawable(R.color.favorite_scard_none_bg));
                 holder.itemFavoriteSdv.setAspectRatio(1.33f);

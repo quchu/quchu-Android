@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -30,6 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
@@ -43,7 +43,7 @@ import co.quchu.quchu.view.activity.UserLoginActivity;
  * User: Chenhs
  * Date: 2015-11-25
  */
-public class PhoneLoginFragment extends Fragment {
+public class PhoneLoginFragment extends BaseFragment {
     @Bind(R.id.phone_login_pnum_et)
     EditText phoneLoginPnumEt;
     @Bind(R.id.phone_login_pnum_ll)

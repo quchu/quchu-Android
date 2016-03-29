@@ -1,8 +1,11 @@
 package co.quchu.quchu.base;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import java.util.LinkedList;
+
+import co.quchu.quchu.view.activity.MenusActivity;
 
 //import com.orhanobut.logger.Logger;
 
@@ -28,7 +31,7 @@ public class ActManager {
      */
     public void addActivity(Activity activity) {
         if (activityStack == null) {
-            activityStack = new LinkedList<Activity>();
+            activityStack = new LinkedList<>();
         }
         activityStack.add(activity);
     }
@@ -45,22 +48,6 @@ public class ActManager {
         return activity;
     }
 
-    public void startActivity4N(Class cls) {
-        for (Activity activity : activityStack) {
-            if (activity.getClass().equals(cls)) {
-
-            }
-        }
-    }
-
-    /**
-     * 结束当前Activity
-     */
-    public void finishActivity() {
-        Activity activity = activityStack.getLast();
-        if (null != activity)
-            finishActivity(activity);
-    }
 
     /**
      * 结束指定的Activity
@@ -76,7 +63,7 @@ public class ActManager {
      *
      * @param cls Activity的类名
      */
-    public void finishActivity(Class<?> cls) {
+    public void finishActivity(Class<? extends BaseActivity> cls) {
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
                 finishActivity(activity);
@@ -100,9 +87,9 @@ public class ActManager {
      * 结束所有Activity，但保留最后一个
      */
     public void finishActivitiesAndKeepLastOne() {
-        for (int i = 1, size = activityStack.size() - 1; i < size; i++) {
-            activityStack.get(0).finish();
-            activityStack.remove(0);
+        for (int i = 1, size = activityStack.size() ; i < size; i++) {
+            activityStack.get(1).finish();
+            activityStack.remove(1);
         }
     }
 
@@ -113,12 +100,6 @@ public class ActManager {
         }
     }
 
-    public void printActStack() {
-        for (int i = 0; i < activityStack.size(); i++) {
-//            System.out.println(activityStack.get(i).getClass().getSimpleName());
-//            Logger.d(activityStack.get(i).getClass().getSimpleName());
-        }
-    }
 
     /**
      * 退出应用程序
@@ -127,18 +108,37 @@ public class ActManager {
         try {
             //finish
             finishAllActivity();
-       //    System.exit(0);
+            //    System.exit(0);
             //取消消息
 //			NotificationManager mNotificationManager = (NotificationManager)AppContext.mContext.getSystemService(Context.NOTIFICATION_SERVICE) ;
 //			mNotificationManager.cancelAll();
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
 
     public boolean hasActRunning() {
-        if (activityStack != null)
-            return activityStack.size() > 0;
-        else return false;
+        return activityStack != null && activityStack.size() > 0;
     }
+
+    /**
+     * 清楚 menusactivity 之后入栈
+     */
+    public void Back2MenusAct() {
+        boolean isMenu = false;
+        for (Activity activity : activityStack) {
+            if (isMenu) {
+                activity.finish();
+            }
+            if (activity instanceof MenusActivity) {
+                isMenu = true;
+            }
+        }
+
+        if (!isMenu) {
+            currentActivity().startActivity(new Intent(currentActivity(), MenusActivity.class));
+        }
+    }
+
 }

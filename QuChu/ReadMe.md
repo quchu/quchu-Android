@@ -1,3 +1,27 @@
+#
+margin值根据 Material Design 推荐设置为8的倍数
+    <dimen name="dialog_margin">24dp</dimen>
+    <dimen name="base_margin">16dp</dimen>
+    <dimen name="half_margin">8dp</dimen>
+    <dimen name="quarter_margin">4dp</dimen>
+<!--字号-->
+    <dimen name="word_large_number">34sp</dimen>    大号数字字号
+    <dimen name="word_title_body">20sp</dimen>      标题字号
+    <dimen name="word_subhead_size">16sp</dimen>    副标题字号
+    <dimen name="word_size_body">14sp</dimen>       正文字号
+    <dimen name="word_size_time">12sp</dimen>       正文时间戳推荐字号
+    <dimen name="word_size_minimum">10sp</dimen>    正文中最小字号如标签
+ Constants
+    public static final int ISDEBUG = 2; // 0=正式环境  1 =uat环境   2=sit环境
+    public static final boolean ISPRINTLOG = true; //是否打印log
+    public static final boolean ISSTARTINGPKG = false;//是否显示360首发
+
+ 注意：打包时需按照开发阶段切换服务器环境。
+
+#version1.0.1
+新增用户点击“想去”按钮数据采集
+新增用户中心
+新增游客模式
 #version1.0_20160129
 屏蔽台北地区趣处导航
 修改账户登录后显示趣基因

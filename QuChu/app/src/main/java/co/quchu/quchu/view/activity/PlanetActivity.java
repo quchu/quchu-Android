@@ -21,6 +21,9 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +35,11 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PlanetModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.PlanetActPresenter;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -107,6 +112,7 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
     private int AnimationDuration = 160 * 1000;
     private AnimatorSet animatorSet;
     PlanetImgGridAdapter imageAdapter;
+    PlanetModel dataModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +121,21 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         ButterKnife.bind(this);
         initTitleBar();
         title_content_tv.setText(getTitle());
+        fetchData();
+        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false)) {
+            initGuideView();
+            mSwipeBackLayout.setEnableGesture(false);
+        } else {
+            mSwipeBackLayout.setEnableGesture(true);
+        }
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
+    private void fetchData() {
         if (NetUtil.isNetworkConnected(this))
             DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));
         initActivityViewHolder();
@@ -125,10 +146,47 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
         ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(this);
 
+
+    }
+
+    private void initGuideView() {
+        userGuideBgView.setVisibility(View.VISIBLE);
+        userGuideWpointIv.setVisibility(View.VISIBLE);
+        userGuideWpointDescTv.setVisibility(View.VISIBLE);
+    }
+
+    private void hintGuideView() {
+        userGuideBgView.setVisibility(View.GONE);
+        userGuideWpointIv.setVisibility(View.GONE);
+        userGuideWpointDescTv.setVisibility(View.GONE);
+        SPUtils.putBooleanToSPMap(this, AppKey.IS_PLANET_GUIDE, false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (myHandler != null)
+            myHandler = null;
+        if (animatorSet != null) {
+            animatorSet.cancel();
+            animatorSet = null;
+        }
+        isShowing = false;
+        ButterKnife.unbind(this);
+    }
+
+    private boolean isShowing = true;
+
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("PlanetActivity");
+
+        super.onResume();
         presenter.initUserStarData(new PlanetActPresenter.PlanetNetListener() {
             @Override
             public void onNetSuccess(PlanetModel model) {
                 DialogUtil.dismissProgess();
+                dataModel = model;
                 imageAdapter.updateDate(model.getImgs(), model.getImgNum());
                 planetImageGv.setOnItemClickListener(PlanetActivity.this);
                 planetAvatarIcon.setImageURI(Uri.parse(AppContext.user.getPhoto()));
@@ -176,55 +234,13 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
             }
         });
-        if (SPUtils.getBooleanFromSPMap(this, AppKey.IS_PLANET_GUIDE, false)) {
-            initGuideView();
-            mSwipeBackLayout.setEnableGesture(false);
-        } else {
-            mSwipeBackLayout.setEnableGesture(true);
-        }
     }
 
-    private void initGuideView() {
-        userGuideBgView.setVisibility(View.VISIBLE);
-        userGuideWpointIv.setVisibility(View.VISIBLE);
-        userGuideWpointDescTv.setVisibility(View.VISIBLE);
-    }
-
-    private void hintGuideView() {
-        userGuideBgView.setVisibility(View.GONE);
-        userGuideWpointIv.setVisibility(View.GONE);
-        userGuideWpointDescTv.setVisibility(View.GONE);
-        SPUtils.putBooleanToSPMap(this, AppKey.IS_PLANET_GUIDE, false);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (myHandler != null)
-            myHandler = null;
-        if (animatorSet != null) {
-            animatorSet.cancel();
-            animatorSet = null;
-        }
-        isShowing = false;
-        ButterKnife.unbind(this);
-    }
-
-    private boolean isShowing = true;
-
-    @Override
-    protected void onResume() {
-        MobclickAgent.onPageStart("PlanetActivity");
-        MobclickAgent.onResume(this);
-
-        super.onResume();
-    }
     @Override
     protected void onPause() {
         super.onPause();
 
         MobclickAgent.onPageEnd("PlanetActivity");
-        MobclickAgent.onPause(this);
     }
 
     Handler myHandler = new Handler() {
@@ -323,15 +339,13 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
 
             }
         });
-        if (myHandler!=null)
-        myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
+        if (myHandler != null)
+            myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 3000);
     }
-
-    private int heigh = 0;
 
     @Override
     public void onGlobalLayout() {
-        heigh = midLuncher.getHeight() / 2;
+//        int heigh = midLuncher.getHeight() / 2;
         midLuncher.getViewTreeObserver().removeGlobalOnLayoutListener(this);
         initAnimation();
     }
@@ -367,10 +381,8 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                 case R.id.atmosphere_rpv: //氛围
                     break;
                 case R.id.stroll_rpv://逛店
-
                     break;
                 case R.id.cate_rpv: //美食
-
                     break;
                 case R.id.planet_postcard_ll: //明信片
                     intent.setClass(this, PostCardActivity.class);
@@ -387,13 +399,46 @@ public class PlanetActivity extends BaseActivity implements ViewTreeObserver.OnG
                 case R.id.planet_gene_tv:
                     startActivity(new Intent(PlanetActivity.this, GeneActivity.class));
                     break;
-                case R.id.planet_myfocus_rl://趣星人
-                case R.id.planet_focusonme_rl://趣星人
-                    //    startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class));
+                case R.id.planet_myfocus_rl://我关注的
+                    if (null != dataModel) {
+                        startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class)
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FOLLOWERS, dataModel.getFollowNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_SUBSCRIBERS, dataModel.getHostNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FROM_SUBSCRIBE, true)
+                        );
+                    }
+                    break;
+                case R.id.planet_focusonme_rl://关注我的
+                    if (null != dataModel) {
+                        startActivity(new Intent(PlanetActivity.this, QuFriendsActivity.class)
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FOLLOWERS, dataModel.getFollowNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_SUBSCRIBERS, dataModel.getHostNum())
+                                .putExtra(QuFriendsActivity.BUNDLE_KEY_FROM_SUBSCRIBE, false)
+                        );
+                    }
                     break;
             }
         }
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        if (event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+            fetchData();
+        }
+    }
 
 }

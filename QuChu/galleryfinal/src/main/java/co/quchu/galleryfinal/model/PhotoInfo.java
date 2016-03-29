@@ -16,6 +16,9 @@
 
 package co.quchu.galleryfinal.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
@@ -23,11 +26,11 @@ import java.io.Serializable;
  * Author:pengjianbo
  * Date:15/7/30 上午11:23
  */
-public class PhotoInfo implements Serializable {
+public class PhotoInfo implements Serializable, Parcelable {
 
     private int photoId;
     private String photoPath;
-    //private String thumbPath;
+    private String thumbPath;
     private int width;
     private int height;
 
@@ -64,12 +67,44 @@ public class PhotoInfo implements Serializable {
     public void setPhotoId(int photoId) {
         this.photoId = photoId;
     }
-    //
-    //public String getThumbPath() {
-    //    return thumbPath;
-    //}
-    //
-    //public void setThumbPath(String thumbPath) {
-    //    this.thumbPath = thumbPath;
-    //}
+
+    public String getThumbPath() {
+        return thumbPath;
+    }
+
+    public void setThumbPath(String thumbPath) {
+        this.thumbPath = thumbPath;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.photoId);
+        dest.writeString(this.photoPath);
+        dest.writeString(this.thumbPath);
+        dest.writeInt(this.width);
+        dest.writeInt(this.height);
+    }
+
+    protected PhotoInfo(Parcel in) {
+        this.photoId = in.readInt();
+        this.photoPath = in.readString();
+        this.thumbPath = in.readString();
+        this.width = in.readInt();
+        this.height = in.readInt();
+    }
+
+    public static final Parcelable.Creator<PhotoInfo> CREATOR = new Parcelable.Creator<PhotoInfo>() {
+        public PhotoInfo createFromParcel(Parcel source) {
+            return new PhotoInfo(source);
+        }
+
+        public PhotoInfo[] newArray(int size) {
+            return new PhotoInfo[size];
+        }
+    };
 }

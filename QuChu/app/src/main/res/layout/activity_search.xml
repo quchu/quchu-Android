@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_activity_bg">
+        android:background="@drawable/shape_activity_bg">
 
         <co.quchu.quchu.widget.VerTextView
             android:id="@+id/search_result_isnull_vtv"
@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/half_margin"
-                    android:src="@drawable/ic_pull_menus_search" />
+                    android:src="@mipmap/ic_pull_menus_search" />
 
                 <EditText
                     android:id="@+id/search_input_et"
@@ -94,11 +94,6 @@
                     android:text="历史记录"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/word_subhead_size" />
-                <!--
-                                  <LinearLayout
-                                      android:layout_width="match_parent"
-                                      android:layout_height="0dp"
-                                      android:layout_weight="1">-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/search_history_rv"
@@ -106,17 +101,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/base_margin"
                     android:layout_marginTop="@dimen/half_margin"
-                    android:overScrollMode="never"
+                    android:overScrollMode="always"
                     android:visibility="gone" />
-                <!--              </LinearLayout>-->
-                <!--          <co.quchu.quchu.widget.InnerListView
-                              android:id="@+id/search_history_rv"
-                              android:layout_width="match_parent"
-                              android:layout_height="0dp"
-                              android:layout_margin="@dimen/base_margin"
-                              android:layout_weight="1"
-                              android:overScrollMode="never"
-                              android:visibility="gone" />-->
 
                 <RelativeLayout
                     android:id="@+id/search_history_clear_rl"
@@ -154,7 +140,7 @@
                 android:layout_marginLeft="@dimen/dialog_margin"
                 android:layout_marginRight="@dimen/dialog_margin"
                 android:layout_marginTop="@dimen/base_margin"
-                android:overScrollMode="never" />
+                android:overScrollMode="always" />
 
         </FrameLayout>
 

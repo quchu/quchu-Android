@@ -2,7 +2,6 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -35,28 +34,28 @@ import co.quchu.quchu.widget.textcounter.CounterView;
  * Date: 2015-12-14
  */
 public class FavoriteActivity extends BaseActivity {
-    @Bind(R.id.favorite_place_name_tv)
-    TextView favoritePlaceNameTv;
+    //    @Bind(R.id.favorite_place_name_tv)
+//    TextView favoritePlaceNameTv;
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
     @Bind(R.id.favorite_place_counter_cv)
     CounterView favoritePlaceCounterCv;
     @Bind(R.id.favorite_place_gv)
     GridView favoritePlaceGv;
-    @Bind(R.id.favorite_postcard_name_tv)
-    TextView favoritePostcardNameTv;
+    //    @Bind(R.id.favorite_postcard_name_tv)
+//    TextView favoritePostcardNameTv;
     @Bind(R.id.favorite_postcard_counter_cv)
     CounterView favoritePostcardCounterCv;
     @Bind(R.id.favorite_postcard_gv)
     GridView favoritePostcardGv;
-    @Bind(R.id.favorite_place_cv)
-    CardView favoritePlaceCv;
-    @Bind(R.id.favorite_postcard_cv)
-    CardView favoritePostcardCv;
-    @Bind(R.id.favorite_postcard_gvcv)
-    CardView favoritePostcardGvcv;
-    @Bind(R.id.favorite_place_name_gvcv)
-    CardView favoritePlaceNameGvcv;
+    //    @Bind(R.id.favorite_place_cv)
+//    CardView favoritePlaceCv;
+//    @Bind(R.id.favorite_postcard_cv)
+//    CardView favoritePostcardCv;
+//    @Bind(R.id.favorite_postcard_gvcv)
+//    CardView favoritePostcardGvcv;
+//    @Bind(R.id.favorite_place_name_gvcv)
+//    CardView favoritePlaceNameGvcv;
     private FavoriteModel model;
 
     @Override
@@ -67,6 +66,11 @@ public class FavoriteActivity extends BaseActivity {
         titleContentTv.setText(getTitle());
         initTitleBar();
         initFavoriteData();
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 
     private void initFavoriteData() {
@@ -87,7 +91,9 @@ public class FavoriteActivity extends BaseActivity {
                         favoritePlaceGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                startActivity(new Intent(FavoriteActivity.this, FavoritePlaceActivity.class));
+                                Intent intent = new Intent(FavoriteActivity.this, QuchuDetailsActivity.class);
+                                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, model.getPlace().getData().get(position).getId());
+                                startActivity(intent);
                             }
                         });
                         favoritePostcardGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -129,14 +135,14 @@ public class FavoriteActivity extends BaseActivity {
             return;
         switch (v.getId()) {
             case R.id.favorite_postcard_cv:
-            case R.id.favorite_postcard_gvcv:
+//            case R.id.favorite_postcard_gvcv:
                 if (model.getCard() != null && model.getCard().getData().size() > 0)
                     startActivity(new Intent(this, PostCardActivity.class).putExtra("isFavoritePostCard", true));
                 else
                     Toast.makeText(this, "暂未收藏明信片!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.favorite_place_cv:
-            case R.id.favorite_place_name_gvcv:
+//            case R.id.favorite_place_name_gvcv:
                 startActivity(new Intent(this, FavoritePlaceActivity.class));
                 break;
         }
@@ -147,13 +153,11 @@ public class FavoriteActivity extends BaseActivity {
         super.onPause();
 
         MobclickAgent.onPageEnd("FavoriteActivity");
-        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("FavoriteActivity");
-        MobclickAgent.onResume(this);
     }
 }

@@ -4,9 +4,9 @@
     android:id="@+id/item_friends_root_rl"
     android:layout_width="match_parent"
     android:layout_height="72dp"
-    android:clickable="true"
     android:layout_marginLeft="@dimen/base_margin"
     android:layout_marginRight="@dimen/base_margin"
+    android:clickable="true"
     android:fitsSystemWindows="true"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical">
@@ -26,34 +26,40 @@
         fresco:roundTopRight="true"
         fresco:roundedCornerRadius="180dp" />
 
-    <TextView
-        android:id="@+id/item_friends_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/item_firends_icon_sdv"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_toRightOf="@id/item_firends_icon_sdv"
-        android:textColor="@color/text_color_white"
-        android:textSize="@dimen/word_size_body" />
 
-    <TextView
-        android:id="@+id/item_firends_address_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/item_firends_icon_sdv"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_toRightOf="@id/item_firends_icon_sdv"
-        android:textColor="@color/text_color_white"
-        android:textSize="@dimen/word_size_time" />
+    <!--   <TextView
+           android:id="@+id/item_firends_address_tv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBottom="@id/item_firends_icon_sdv"
+           android:layout_marginLeft="@dimen/half_margin"
+           android:layout_toRightOf="@id/item_firends_icon_sdv"
+           android:textColor="@color/text_color_white"
+           android:textSize="@dimen/word_size_time" />-->
 
     <ImageView
+        android:id="@+id/item_friends_arrow_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_friends_arrow" />
-<View
-    style="@style/HorizontalLine"
-    android:layout_alignParentBottom="true"
-    />
+        android:src="@mipmap/ic_friends_arrow" />
+
+    <TextView
+        android:id="@+id/item_friends_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_toLeftOf="@id/item_friends_arrow_iv"
+        android:layout_toRightOf="@id/item_firends_icon_sdv"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_size_body" />
+
+    <View
+        style="@style/HorizontalLine"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

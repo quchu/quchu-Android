@@ -15,6 +15,7 @@ import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 
@@ -35,7 +36,6 @@ public class TextSubtabLayout extends RelativeLayout implements View.OnClickList
     private ObjectAnimator objectAnimator;
     private static long ScaleDuration = 400;//动画时长
     private boolean isLeftSelected = true;
-    private int mScreenWidth = 0;
     private AnimatorSet animatorSet;
     private View view;
     private TextSubtabSelectedListener listener;
@@ -57,7 +57,6 @@ public class TextSubtabLayout extends RelativeLayout implements View.OnClickList
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = mInflater.inflate(R.layout.widget_text_subtab, this, true);
         initView();
-        mScreenWidth = AppUtil.getScreenWidth(context);
         initData();
         initIndexView(0);
 
@@ -190,9 +189,8 @@ public class TextSubtabLayout extends RelativeLayout implements View.OnClickList
      */
     private void initData() {
         //    widgetTextIndexIv
-        leftX = ((mScreenWidth / 2) - widgetTextIndexIv.getWidth() / 2) / 2;
+        leftX = ((AppContext.Width / 2) - widgetTextIndexIv.getWidth() / 2) / 2;
         rightX = leftX * 3;
-        LogUtils.json("mScreenWidth=initData=" + leftX);
     }
 
 

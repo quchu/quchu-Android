@@ -21,7 +21,7 @@ public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, int i, int i2) {
+    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         //    LogUtils.json("onScrolled==i=" + i + "////i2=" + i2);
 //                mPositionText.setText("First: " + mRecyclerView.getFirstVisiblePosition());
         int childCount = mRecyclerView.getChildCount();
@@ -39,9 +39,14 @@ public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
                 } else {
                     rate = 1;
                 }
-                v.setScaleY(1 - rate * 0.1f);
 
+                v.setScaleY(1 - rate * 0.1f);
                 v.setScaleX(1 - rate * 0.1f);
+                if (v.getLeft()==padding){
+                    v.setAlpha(1);
+                }else{
+                    v.setAlpha(1-rate+.5f);
+                }
 
             } else {
                 //往右 从 padding 到 recyclerView.getWidth()-padding 的过程中，由大到小
@@ -50,6 +55,8 @@ public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
                 }
                 v.setScaleY(0.9f + rate * 0.1f);
                 v.setScaleX(0.9f + rate * 0.1f);
+                v.setAlpha(.5f+rate);
+
             }
         }
     }

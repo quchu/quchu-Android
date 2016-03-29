@@ -4,7 +4,7 @@
     xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_gene_background">
+    android:background="@mipmap/ic_gene_background">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_planet_avatar" />
+            android:src="@mipmap/ic_planet_avatar" />
     </FrameLayout>
 
 

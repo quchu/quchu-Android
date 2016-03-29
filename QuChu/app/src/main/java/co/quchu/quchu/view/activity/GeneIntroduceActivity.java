@@ -7,8 +7,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.umeng.analytics.MobclickAgent;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,7 +43,12 @@ public class GeneIntroduceActivity extends BaseActivity {
         geneIntroduceTv.setText(getResources().getString(R.string.subtitle_word_friends_introduce));
         titleMoreRl.setVisibility(View.GONE);
 
-        geneIntroduceIv.setImageResource(R.drawable.ic_gene_introduce_img);
+        geneIntroduceIv.setImageResource(R.mipmap.ic_gene_introduce_img);
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 
     @OnClick({R.id.title_back_rl, R.id.gene_introduce})

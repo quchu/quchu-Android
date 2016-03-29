@@ -21,10 +21,14 @@
     <string name="titlebar_word_imagephoto">相片</string>
     <string name="titlebar_word_place_my_postcard">我留下的明信片</string>
     <string name="titlebar_word_account_setting">账户设置</string>
-    <string name="titlebar_word_favorite_place">我收藏的趣处</string>
+    <string name="ic_detail_share">我收藏的趣处</string>
     <string name="titlebar_word_message_center">消息中心</string>
     <string name="titlebar_word_about_us">关于我们</string>
     <string name="titlebar_word_place_detail">趣处详情</string>
+    <string name="titlebar_word_user_center">个人主页</string>
+    <string name="titlebar_word_pcfromimage">明信片</string>
+    <string name="titlebar_word_user_postcard">用户明信片</string>
+    <string name="webview_redirecting">正在跳转...</string>
     <!-- ********** 趣星球 ********* -->
     <string name="prb_default_symbolic_string">$</string>
     <string name="following">我关注的</string>
@@ -97,6 +101,19 @@
     <string name="content_has_emoji">评论内容不能含有表情字符!</string>
     <string name="search_content_has_emoji">搜索内容不能含有表情字符!</string>
     <string name="visitor_login_prompt_text">%1$s之前需要进行登录 \r\n是否现在前往?</string>
+    <string name="usercenter_foucs_text">关注</string>
+    <string name="usercenter_foucsed_text">已关注</string>
+    <string name="usercenter_follow_text">%d 关注TA的</string>
+    <string name="usercenter_host_text">%d TA关注的</string>
+    <string name="usercenter_desc_text">%1$s,%2$s</string>
+    <string name="more_cities_coming_soon">更多城市将陆续登陆</string>
+    <string name="spot">发现</string>
+    <string name="error_invalid_arguments">参数错误！</string>
+    <string name="confirm_logout_title">确认退出？</string>
+    <string name="confirm_logout_content">退出后将以游客模式登录</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="login_success">登录成功</string>
 
 
 </resources>

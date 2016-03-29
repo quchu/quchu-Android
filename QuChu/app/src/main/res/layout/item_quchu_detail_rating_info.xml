@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/half_margin"
+    android:background="@mipmap/ic_card_shadow_bg"
+    android:orientation="vertical">
+
+
+    <co.quchu.quchu.widget.HorizontalNumProgressBar
+        android:id="@+id/detail_progress_one"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/base_margin"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin" />
+
+    <co.quchu.quchu.widget.HorizontalNumProgressBar
+        android:id="@+id/detail_progress_tow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/base_margin"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_marginTop="@dimen/quarter_margin" />
+
+    <co.quchu.quchu.widget.HorizontalNumProgressBar
+        android:id="@+id/detail_progress_three"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/base_margin"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_marginTop="@dimen/quarter_margin" />
+
+</LinearLayout>

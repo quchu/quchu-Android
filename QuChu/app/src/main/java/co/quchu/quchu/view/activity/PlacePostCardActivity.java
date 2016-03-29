@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -22,10 +24,12 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PlacePostCardModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -78,6 +82,11 @@ public class PlacePostCardActivity extends BaseActivity {
         });
         placePostcardCenterRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         placePostcardCenterRv.setAdapter(adapter);
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 
 
@@ -159,13 +168,31 @@ public class PlacePostCardActivity extends BaseActivity {
             SPUtils.putBooleanToSPMap(this, AppKey.IS_POSTCARD_LIST_NEED_REFRESH, false);
         }
         MobclickAgent.onPageStart("PlacePostCardActivity");
-        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("PlacePostCardActivity");
-        MobclickAgent.onPause(this);
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event){
+        if (event.getFlag()== EventFlags.EVENT_QUCHU_DETAIL_UPDATED ){
+            initPostCardData(1);
+        }
     }
 }

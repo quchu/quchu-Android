@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="24dp"
     android:orientation="vertical"
+    app:cardPreventCornerOverlap="false"
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp">
 

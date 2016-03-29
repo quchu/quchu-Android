@@ -10,6 +10,7 @@
     android:fitsSystemWindows="true"
     android:foreground="?attr/selectableItemBackground"
     card_view:cardCornerRadius="8dp"
+    card_view:cardPreventCornerOverlap="false"
     card_view:cardElevation="@dimen/cardview_elevation">
 
     <LinearLayout
@@ -18,7 +19,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/item_recommend_card_title_textrl"
+            android:id="@+id/animation1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -119,8 +120,8 @@
                 android:layout_toRightOf="@id/item_my_postcard_avatar_sdv"
                 card_view:prb_clickable="false"
                 card_view:prb_defaultRating="4"
-                card_view:prb_tickNormalDrawable="@drawable/ic_ratingbar_off"
-                card_view:prb_tickSelectedDrawable="@drawable/ic_ratingbar_on"
+                card_view:prb_tickNormalDrawable="@mipmap/ic_ratingbar_off"
+                card_view:prb_tickSelectedDrawable="@mipmap/ic_ratingbar_on"
                 card_view:prb_tickSpacing="2dp"
                 card_view:prb_totalTicks="5" />
 
@@ -167,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_margin="@dimen/base_margin"
-                    android:src="@drawable/ic_detail_heart" />
+                    android:src="@mipmap/ic_detail_heart" />
 
             </RelativeLayout>
 
@@ -183,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_margin="@dimen/base_margin"
-                    android:src="@drawable/ic_atmophere_unselected" />
+                    android:src="@mipmap/ic_atmophere_unselected" />
 
             </RelativeLayout>
 
@@ -199,7 +200,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_margin="@dimen/base_margin"
-                    android:src="@drawable/ic_recommend_bc_right" />
+                    android:src="@mipmap/ic_detail_share" />
 
             </RelativeLayout>
 
@@ -215,7 +216,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_margin="@dimen/base_margin"
-                    android:src="@drawable/ic_atmosphere_more" />
+                    android:src="@mipmap/ic_atmosphere_more" />
 
             </RelativeLayout>
         </LinearLayout>

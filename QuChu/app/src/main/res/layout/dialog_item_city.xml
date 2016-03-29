@@ -10,6 +10,8 @@
         android:id="@+id/dialog_item_city_cb"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:button="@null"
+        android:gravity="center"
         android:textColor="@color/text_color_white"
         android:textSize="@dimen/word_size_body" />
 

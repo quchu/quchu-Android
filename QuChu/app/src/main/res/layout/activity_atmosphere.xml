@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title_bar"
-        android:background="@drawable/ic_activity_bg">
+        android:background="@drawable/shape_activity_bg">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/atmosphere_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_activity_bg"
-            android:overScrollMode="never" />
+            android:background="@drawable/shape_activity_bg"
+            android:overScrollMode="always" />
 
         <FrameLayout
             android:id="@+id/atmosphere_empty_view_fl"
@@ -31,6 +31,13 @@
             <include layout="@layout/empty_view" />
         </FrameLayout>
     </RelativeLayout>
+
+    <co.quchu.quchu.widget.ErrorView
+        android:id="@+id/errorView"
+        android:layout_below="@id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"

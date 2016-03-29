@@ -1,15 +1,12 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,18 +14,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.CityEntity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.fragment.DefaultRecommendFragment;
-import co.quchu.quchu.view.fragment.RecommendFragment;
 
 /**
  * RecommendPresenter
@@ -38,9 +37,10 @@ import co.quchu.quchu.view.fragment.RecommendFragment;
  */
 public class RecommendPresenter {
 
+
     public static void getRecommendList(final Context context, boolean isDefaultData, final GetRecommendListener listener) {
         DialogUtil.showProgess(context, "数据加载中...");
-        String urlStr = "";
+        final String urlStr;
         if (isDefaultData) {
             urlStr = String.format(NetApi.getDefaultPlaceList,
                     SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
@@ -50,7 +50,10 @@ public class RecommendPresenter {
                     SPUtils.getValueFromSPMap(context, AppKey.USERSELECTEDCLASSIFY, ""), SPUtils.getLatitude(), SPUtils.getLongitude(), 1
             );
         }
+        DialogUtil.showProgess(context, "加载中!!");
+
         NetService.get(context, urlStr, new IRequestListener() {
+
 
             @Override
             public void onSuccess(JSONObject response) {
@@ -66,7 +69,7 @@ public class RecommendPresenter {
                         JSONArray array = response.getJSONArray("result");
                         if (array.length() > 0) {
                             Gson gson = new Gson();
-                            ArrayList<RecommendModel> arrayList = new ArrayList<RecommendModel>();
+                            ArrayList<RecommendModel> arrayList = new ArrayList<>();
                             RecommendModel model;
                             for (int i = 0; i < array.length(); i++) {
                                 model = gson.fromJson(array.getString(i), RecommendModel.class);
@@ -93,9 +96,9 @@ public class RecommendPresenter {
     /**
      * 加载更多
      *
-     * @param context
-     * @param isDefaultData
-     * @param listener
+     * @param context       c
+     * @param isDefaultData s
+     * @param listener      s
      */
     public static void loadMoreRecommendList(final Context context, boolean isDefaultData, int pageNumber, final GetRecommendListener listener) {
         //    DialogUtil.showProgess(context, "数据加载中...");
@@ -128,7 +131,7 @@ public class RecommendPresenter {
                         JSONArray array = response.getJSONArray("result");
                         if (array.length() > 0) {
                             Gson gson = new Gson();
-                            ArrayList<RecommendModel> arrayList = new ArrayList<RecommendModel>();
+                            ArrayList<RecommendModel> arrayList = new ArrayList<>();
                             RecommendModel model;
                             for (int i = 0; i < array.length(); i++) {
                                 model = gson.fromJson(array.getString(i), RecommendModel.class);
@@ -136,7 +139,7 @@ public class RecommendPresenter {
                             }
                             listener.onSuccess(arrayList, pageCount, pageNum);
 
-                        }else {
+                        } else {
                             listener.onError();
                         }
                     }
@@ -144,12 +147,10 @@ public class RecommendPresenter {
                     e.printStackTrace();
                     listener.onError();
                 }
-                //    DialogUtil.dismissProgess();
             }
 
             @Override
             public boolean onError(String error) {
-                //       DialogUtil.dismissProgess();
                 listener.onError();
                 return false;
             }
@@ -164,111 +165,38 @@ public class RecommendPresenter {
     }
 
 
-    public static void showBottomAnimation(final Fragment fragment, final ImageView viewGroup, int viewHeight, final boolean isNeedShow) {
-        int duration = 360;
-        AnimatorSet animatorSet = new AnimatorSet();
-        viewGroup.getY();
-        ObjectAnimator objectAnimator;
-        ObjectAnimator objectAnimator1;
-        if (isNeedShow) {
-            objectAnimator = ObjectAnimator.ofFloat(viewGroup, "translationY", viewHeight, viewHeight / 2, viewHeight / 2, viewHeight / 3, 0);
-            objectAnimator1 = ObjectAnimator.ofFloat(viewGroup, "scaleX", 1f, 1.1f, 1.2f, 1.1f, 1f, 0.9f, 0.8f, 1f);
-        } else {
-            objectAnimator = ObjectAnimator.ofFloat(viewGroup, "translationY", 0, viewHeight / 3, viewHeight / 3, viewHeight / 2, viewHeight);
-            objectAnimator1 = ObjectAnimator.ofFloat(viewGroup, "scaleX", 1f, 0.8f, 0.9f, 1f, 1.1f, 1.2f, 1.1f, 1f);
-        }
-        // objectAnimator.setDuration(400);
- /*       ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(viewGroup, "scaleY",0.8f, 1f, 1.1f,1.2f,1.4f,
-                Animation.RELATIVE_TO_SELF, 0.8f, Animation.RELATIVE_TO_SELF,1f);*/
-        //   objectAnimator1.setDuration(550);
-        animatorSet.playTogether(objectAnimator, objectAnimator1);
-        animatorSet.setDuration(duration);
-        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                viewGroup.setVisibility(View.VISIBLE);
-                if (fragment instanceof DefaultRecommendFragment) {
-                    ((DefaultRecommendFragment) fragment).isRunningAnimation = true;
-                } else if (fragment instanceof RecommendFragment) {
-                    ((RecommendFragment) fragment).isRunningAnimation = true;
-                }
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (isNeedShow)
-                    viewGroup.setVisibility(View.VISIBLE);
-                else
-                    viewGroup.setVisibility(View.INVISIBLE);
-                if (fragment instanceof DefaultRecommendFragment) {
-                    ((DefaultRecommendFragment) fragment).isRunningAnimation = false;
-                } else if (fragment instanceof RecommendFragment) {
-                    ((RecommendFragment) fragment).isRunningAnimation = false;
-                }
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        animatorSet.start();
-
-    }
-
     public static void getCityList(Context context, final CityListListener listener) {
-        //  NetService.get(context,String.format( NetApi.GetCityList, SPUtils.getCityName()), new IRequestListener() {
-        NetService.get(context, NetApi.GetCityList, new IRequestListener() {
+        GsonRequest<CityEntity> request = new GsonRequest<>(NetApi.GetCityList, CityEntity.class, new ResponseListener<CityEntity>() {
             @Override
-            public void onSuccess(JSONObject response) {
-                LogUtils.json("city ==" + response.toString());
-                if (response != null) {
-                    try {
-                        Gson gson = new Gson();
-                        if (response.has("default") && !StringUtils.isEmpty(response.getString("default")) && StringUtils.isEmpty(SPUtils.getCityName())) {
-                            CityModel defaultCity = gson.fromJson(response.getString("default"), CityModel.class);
-                            SPUtils.setCityId(defaultCity.getCid());
-                            SPUtils.setCityName(defaultCity.getCvalue());
-                            LogUtils.json("response.has(default)");
-                        }
-                        if (response.has("page") && !StringUtils.isEmpty(response.getString("page"))) {
-                            LogUtils.json("response.has(pages)");
-                            JSONArray pages = response.getJSONObject("page").getJSONArray("result");
+            public void onErrorResponse(@Nullable VolleyError error) {
 
-                            ArrayList<CityModel> cityList = new ArrayList<CityModel>();
-                            for (int i = 0; i < pages.length(); i++) {
+            }
 
-                                CityModel model = gson.fromJson(pages.getString(i), CityModel.class);
-                                if (model.getCvalue().equals(SPUtils.getCityName())) {
-                                    //   SPUtils.setCityId(model.getCid());
-                                    model.setIsSelected(true);
-                                    LogUtils.json("response.has(pages)" + i);
-                                } else {
-                                    model.setIsSelected(false);
-                                }
-                                cityList.add(model);
-                            }
-                            listener.hasCityList(cityList);
+            @Override
+            public void onResponse(CityEntity response, boolean result, @Nullable String exception, @Nullable String msg) {
+                ArrayList<CityModel> list = response.getPage().getResult();
+
+                Log.d("LOCA","onResponse");
+                if (SPUtils.getCityId() == -1 && !TextUtils.isEmpty(AppLocationListener.currentCity)) {
+                    //第一次
+                    String fixStr = AppLocationListener.currentCity.endsWith("市")?AppLocationListener.currentCity.substring(0,AppLocationListener.currentCity.length()-1):AppLocationListener.currentCity;
+                    for (CityModel item : list) {
+                        if (item.getCvalue().equals(fixStr)) {
+                            SPUtils.setCityId(item.getCid());
+                            SPUtils.setCityName(item.getCvalue());
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                } else if(SPUtils.getCityId() == -1){
+                    int cid = response.getDefaultX().getCid();
+                    String cvalue = response.getDefaultX().getCvalue();
+                    SPUtils.setCityId(cid);
+                    SPUtils.setCityName(cvalue);
                 }
 
-            }
-
-            @Override
-            public boolean onError(String error) {
-                return false;
+                listener.hasCityList(list);
             }
         });
+        request.start(context, null);
     }
 
     public interface CityListListener {

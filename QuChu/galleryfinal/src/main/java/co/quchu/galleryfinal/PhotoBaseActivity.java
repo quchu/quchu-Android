@@ -130,6 +130,7 @@ public abstract class PhotoBaseActivity extends Activity implements EasyPermissi
                 takeResult(info);
             } else {
                 toast(getString(R.string.take_photo_fail));
+                finish();
             }
         }
     }

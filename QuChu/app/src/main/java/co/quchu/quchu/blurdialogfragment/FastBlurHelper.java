@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 /**
  * Helper used to apply Fast blur algorithm on bitmap.
  */
-final class FastBlurHelper {
+public class FastBlurHelper {
 
     /**
      * non instantiable helper

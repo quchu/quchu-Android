@@ -1,19 +1,23 @@
 package co.quchu.quchu.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import java.io.Serializable;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FlickrModel;
-import co.quchu.quchu.photo.previewimage.ImageBDInfo;
+import co.quchu.quchu.photoselected.ImageBDInfo;
+import co.quchu.quchu.photoselected.PreviewAlbumImage;
 import co.quchu.quchu.view.adapter.FlickrListAdapter;
 import co.quchu.quchu.widget.InnerListView;
 
@@ -22,21 +26,21 @@ import co.quchu.quchu.widget.InnerListView;
  * User: Chenhs
  * Date: 2015-11-18
  */
-public class FlickrListFragment extends Fragment {
+public class FlickrListFragment extends BaseFragment {
     @Bind(R.id.fragment_flickr_lv)
     InnerListView fragmentFlickrLv;
 
     private View view;
-    private Context mContext;
     private FlickrModel.ImgsEntity images;
     private FlickrListAdapter listAdapter;
     ImageBDInfo bdInfo;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_flickr_list, null);
         ButterKnife.bind(this, view);
-        listAdapter = new FlickrListAdapter(mContext, images);
+        listAdapter = new FlickrListAdapter(getActivity(), images);
         fragmentFlickrLv.setAdapter(listAdapter);
         bdInfo = new ImageBDInfo();
         fragmentFlickrLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -54,12 +58,16 @@ public class FlickrListFragment extends Fragment {
                 bdInfo.y = StringUtils.dip2px(1) + bdInfo.height * (a - firstVisiblePosition) + top + (a - firstVisiblePosition) * StringUtils.dip2px(2) + fragmentFlickrLv.getTop() - StringUtils.dip2px(1)
                         + StringUtils.dip2px(128);
 
-                Intent intent = new Intent(getActivity(), PreviewImage.class);
                 intent.putExtra("data", (Serializable) defaulModel);
                 intent.putExtra("bdinfo", bdInfo);
                 intent.putExtra("index", position);
                 intent.putExtra("type", 2);
                 startActivity(intent);*/
+                Intent intent = new Intent(getActivity(), PreviewAlbumImage.class);
+                intent.putExtra("data", (Serializable) images.getResult());
+                intent.putExtra("index", position);
+                intent.putExtra("type", 2);
+                startActivity(intent);
             }
         });
         return view;
@@ -75,9 +83,19 @@ public class FlickrListFragment extends Fragment {
         super.onDestroy();
     }
 
-    public FlickrListFragment(Context context, FlickrModel.ImgsEntity images) {
-        this.mContext = context;
-        this.images = images;
+    public static FlickrListFragment newInstance(FlickrModel.ImgsEntity images) {
+
+        Bundle args = new Bundle();
+        FlickrListFragment fragment = new FlickrListFragment();
+        args.putSerializable("images", images);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.images = (FlickrModel.ImgsEntity) getArguments().getSerializable("images");
     }
 
     public void updateDataSet(FlickrModel.ImgsEntity images) {

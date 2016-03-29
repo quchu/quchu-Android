@@ -40,6 +40,7 @@ public class FavoritePlaceActivity extends BaseActivity {
     FrameLayout favoritePlaceEmptyView;
     private FavoritePlaceModel model;
     private FavoritePlaceAdapter adapter;
+    int userId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +48,23 @@ public class FavoritePlaceActivity extends BaseActivity {
         setContentView(R.layout.activity_favorite_place);
         ButterKnife.bind(this);
         initTitleBar();
-        title_content_tv.setText(getTitle());
-        initData(1);
+        userId = getIntent().getIntExtra("userId", -1);
+        if (-1 == userId) {
+            title_content_tv.setText(getTitle());
+            initData(1);
+        } else {
+            getUserFavoritePlaseFromeUserId(1);
+        }
         favoritePlaceRv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new FavoritePlaceAdapter(FavoritePlaceActivity.this, new FavoritePlaceAdapter.CardClickListener() {
             @Override
             public void onCardLick(View view, int position) {
                 switch (view.getId()) {
-                    case R.id.item_recommend_card_reply_rl:
-                        Intent intent = new Intent();
-                        intent.putExtra("pId", model.getResult().get(position).getPid());
-                        intent.setClass(FavoritePlaceActivity.this, InterestingDetailsActivity.class);
-                        startActivity(intent);
-                        break;
                     case R.id.root_cv:
-
+                        Intent intent = new Intent();
+                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, model.getResult().get(position).getPid());
+                        intent.setClass(FavoritePlaceActivity.this, QuchuDetailsActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.item_recommend_card_interest_rl:
                         ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(model.getResult().get(position).getPid(), model.getResult().get(position).getName(), true);
@@ -73,8 +76,57 @@ public class FavoritePlaceActivity extends BaseActivity {
         favoritePlaceRv.setAdapter(adapter);
     }
 
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
     private void initData(int pageNo) {
         NetService.get(this, String.format(NetApi.getFavoriteList, pageNo, NetApi.FavTypePlace), new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json("fav=" + response);
+
+                if (response != null && (!response.has("data") || !response.has("msg"))) {
+                    Gson gson = new Gson();
+                    model = gson.fromJson(response.toString(), FavoritePlaceModel.class);
+                    if (model != null && model.getResult().size() > 0) {
+                        adapter.changeDataSet(model.getResult());
+                        favoritePlaceRv.setVisibility(View.VISIBLE);
+                        favoritePlaceEmptyView.setVisibility(View.GONE);
+                    } else {
+                        favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                        favoritePlaceRv.setVisibility(View.GONE);
+                    }
+                } else {
+                    favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                    favoritePlaceRv.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public boolean onError(String error) {
+                favoritePlaceEmptyView.setVisibility(View.VISIBLE);
+                favoritePlaceRv.setVisibility(View.GONE);
+                return false;
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("FavoritePlaceActivity");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("FavoritePlaceActivity");
+    }
+
+    private void getUserFavoritePlaseFromeUserId(int pageNum) {
+        NetService.get(this, String.format(NetApi.getUsercenterFavoriteList, userId, pageNum), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("fav=" + response);
@@ -105,19 +157,5 @@ public class FavoritePlaceActivity extends BaseActivity {
                 return false;
             }
         });
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("FavoritePlaceActivity");
-        MobclickAgent.onPause(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("FavoritePlaceActivity");
-        MobclickAgent.onResume(this);
     }
 }

@@ -63,7 +63,7 @@ public class TagCloudView extends ViewGroup{
     private static final int DEFAULT_TEXT_BORDER_VERTICAL = 5;
 
     private static final int DEFAULT_TAG_RESID = R.layout.item_tag;
-/*    private static final int DEFAULT_RIGHT_IMAGE = R.drawable.arrow_right;*/
+/*    private static final int DEFAULT_RIGHT_IMAGE = R.mipmap.arrow_right;*/
     private static final boolean DEFAULT_SINGLE_LINE = false;
     private static final boolean DEFAULT_SHOW_RIGHT_IMAGE = false;
     private static final boolean DEFAULT_SHOW_END_TEXT = true;

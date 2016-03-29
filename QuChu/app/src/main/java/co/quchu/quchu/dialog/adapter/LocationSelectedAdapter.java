@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.CityModel;
-import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.utils.SPUtils;
 
 /**
  * LocationSelectedAdapter
@@ -29,26 +29,26 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
     private TextView titleText;
     private int selectedIndex = 0;
     private int dataType = 0;
+    private OnItemSelectedListener mListener;
 
-    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext) {
+    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext, OnItemSelectedListener listener) {
         cityList = cList;
         this.titleText = titleText;
         this.mContext = mContext;
+        this.mListener = listener;
     }
 
-    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext, int dataType) {
+    public LocationSelectedAdapter(ArrayList<CityModel> cList, TextView titleText, Context mContext, int dataType, OnItemSelectedListener listener) {
         cityList = cList;
         this.titleText = titleText;
         this.mContext = mContext;
         this.dataType = dataType;
+        this.mListener = listener;
     }
 
     @Override
     public LocationHodler onCreateViewHolder(ViewGroup parent, int viewType) {
-        LocationHodler holder = new LocationHodler((LayoutInflater.from(
-                mContext).inflate(R.layout.dialog_item_city, parent,
-                false)));
-        return holder;
+        return new LocationHodler(LayoutInflater.from(parent.getContext()).inflate(R.layout.dialog_item_city, parent, false));
     }
 
 
@@ -60,12 +60,12 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
             holder.dialogItemCityCb.setClickable(false);
             selectedIndex = position;
             holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.gene_textcolor_yellow));
-            if (dataType == 0) {
-                titleText.setText("所在城市:" + cityList.get(position).getCvalue());
-            } else {
-                titleText.setText("设置性别:" + cityList.get(position).getCvalue());
-            }
-            StringUtils.alterTextColor(titleText, 5, 5 + cityList.get(position).getCvalue().length(), R.color.gene_textcolor_yellow);
+//            if (dataType == 0) {
+//                titleText.setText("所在城市:" + cityList.get(position).getCvalue());
+//            } else {
+//                titleText.setText("设置性别:" + cityList.get(position).getCvalue());
+//            }
+//            StringUtils.alterTextColor(titleText, 5, 5 + cityList.get(position).getCvalue().length(), R.color.gene_textcolor_yellow);
         } else {
             holder.dialogItemCityCb.setChecked(false);
             holder.dialogItemCityCb.setClickable(true);
@@ -94,9 +94,17 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
         @OnClick(R.id.dialog_item_city_cb)
         public void locationClick(View view) {
             cityList.get(selectedIndex).setIsSelected(false);
-            cityList.get(getPosition()).setIsSelected(true);
+            cityList.get(getAdapterPosition()).setIsSelected(true);
+            CityModel model = cityList.get(getAdapterPosition());
             notifyDataSetChanged();
+            if (null != mListener) {
+                mListener.onSelected(model.getCvalue(), model.getCid());
+            }
         }
+    }
+
+    public interface OnItemSelectedListener {
+        void onSelected(String cityName, int cityId);
     }
 
     public int getSelectedIndex() {

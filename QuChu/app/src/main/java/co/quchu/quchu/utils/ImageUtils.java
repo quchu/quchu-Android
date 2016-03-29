@@ -3,7 +3,18 @@ package co.quchu.quchu.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -11,12 +22,39 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import co.quchu.quchu.blurdialogfragment.FastBlurHelper;
+
 /**
  * ImageUtils
  * User: Chenhs
  * Date: 2015-12-18
  */
 public class ImageUtils {
+
+    public static Bitmap setSaturation(Bitmap bmp, float fact) {
+        ColorMatrix cMatrix = new ColorMatrix();
+        cMatrix.setSaturation(fact);
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cMatrix));
+        Canvas canvas = new Canvas(bmp);
+        canvas.drawBitmap(bmp, 0, 0, paint);
+        return bmp;
+    }
+
+    public static Bitmap doBlur(Bitmap bitmap, int scaleToWith, int scaleToHeight) {
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                        sourceBitmap = RenderScriptBlurHelper.doBlur(sourceBitmap,60,false,getActivity());
+//                    }else{
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap = Bitmap.createScaledBitmap(bitmap, scaleToWith, scaleToHeight, false);
+            bitmap = FastBlurHelper.doBlur(bitmap, 10, false);
+            return bitmap;
+//                    }
+        }
+        return null;
+//        }
+    }
+
     public static byte[] Bitmap2Bytes(Bitmap bmp, int types) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         if (null == bmp) {
@@ -52,7 +90,7 @@ public class ImageUtils {
                 localByteArrayOutputStream.close();
                 return arrayOfByte;
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
             i = bitmap.getHeight();
             j = bitmap.getHeight();
@@ -93,12 +131,11 @@ public class ImageUtils {
         int options = 100;
         while (baos.toByteArray().length / 1024 > 100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
             options -= 10;//每次都减少10
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
         }
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
-        return bitmap;
+        return BitmapFactory.decodeStream(isBm);
     }
 
     //存储进SD卡
@@ -131,5 +168,23 @@ public class ImageUtils {
         }
 
         return filePath;
+    }
+
+    public static void ShowImage(String uri, final SimpleDraweeView view) {
+
+        if (null==uri){
+            return;
+        }
+
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse(uri))
+                .setResizeOptions(new ResizeOptions(150, 150))//图片目标大小
+                .build();
+
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setOldController(view.getController())
+                .setImageRequest(imageRequest)
+                .build();
+        view.setController(controller);
     }
 }

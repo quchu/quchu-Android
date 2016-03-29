@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_pull_menus_avatar" />
+            android:src="@mipmap/ic_pull_menus_avatar" />
     </RelativeLayout>
 
     <ImageView
@@ -38,7 +38,7 @@
         android:layout_alignBottom="@+id/widget_menus_setting_iv"
         android:layout_marginBottom="48dp"
         android:layout_toLeftOf="@+id/widget_menus_avatar_rl"
-        android:src="@drawable/ic_pull_menus_message"
+        android:src="@mipmap/ic_pull_menus_message"
         android:visibility="visible" />
 
     <ImageView
@@ -48,7 +48,7 @@
         android:layout_below="@id/widget_menus_avatar_rl"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ic_pull_menus_setting"
+        android:src="@mipmap/ic_pull_menus_setting"
         android:visibility="visible" />
 
     <ImageView
@@ -58,7 +58,7 @@
         android:layout_alignBottom="@+id/widget_menus_setting_iv"
         android:layout_marginBottom="48dp"
         android:layout_toRightOf="@+id/widget_menus_avatar_rl"
-        android:src="@drawable/ic_pull_menus_home"
+        android:src="@mipmap/ic_pull_menus_home"
         android:visibility="visible" />
 
 </RelativeLayout>

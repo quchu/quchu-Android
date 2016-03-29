@@ -35,7 +35,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_bar"
         android:layout_below="@id/image_grid_title_bar"
-        android:background="@drawable/ic_activity_bg"
+        android:background="@drawable/shape_activity_bg"
         android:orientation="vertical">
 
         <GridView
@@ -45,7 +45,7 @@
             android:layout_margin="@dimen/base_margin"
             android:horizontalSpacing="2dp"
             android:numColumns="4"
-            android:overScrollMode="never"
+            android:overScrollMode="always"
             android:scrollbars="none"
             android:verticalSpacing="2dp" />
 

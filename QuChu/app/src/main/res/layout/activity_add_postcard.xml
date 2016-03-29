@@ -44,13 +44,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/detail_button_group_height"
+            android:layout_height="60dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="@dimen/quarter_margin"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/detail_marginright"
             android:layout_marginTop="@dimen/half_margin"
-            android:background="@drawable/ic_card_shadow_bg"
+            android:background="@mipmap/ic_card_shadow_bg"
             android:orientation="horizontal">
 
             <TextView
@@ -70,9 +70,9 @@
         android:layout_height="match_parent"
         android:layout_above="@id/add_postcard_group_ll"
         android:layout_below="@id/add_postcard_top_ll"
-        android:background="@drawable/ic_activity_bg"
+        android:background="@drawable/shape_activity_bg"
         android:orientation="vertical"
-        android:overScrollMode="never"
+        android:overScrollMode="always"
         android:scrollbars="none">
 
         <LinearLayout
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/half_margin"
-                android:background="@drawable/ic_card_shadow_full_bg"
+                android:background="@mipmap/ic_card_shadow_full_bg"
                 android:orientation="vertical">
 
                 <TextView
@@ -114,8 +114,8 @@
                     android:gravity="center"
                     card_view:prb_clickable="true"
                     card_view:prb_defaultRating="0"
-                    card_view:prb_tickNormalDrawable="@drawable/ic_add_postcard_star"
-                    card_view:prb_tickSelectedDrawable="@drawable/ic_add_postcard_star_full"
+                    card_view:prb_tickNormalDrawable="@mipmap/ic_add_postcard_star"
+                    card_view:prb_tickSelectedDrawable="@mipmap/ic_add_postcard_star_full"
                     card_view:prb_tickSpacing="@dimen/base_margin"
                     card_view:prb_totalTicks="5" />
 
@@ -125,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/half_margin"
-                android:background="@drawable/ic_card_shadow_bg"
+                android:background="@mipmap/ic_card_shadow_bg"
                 android:orientation="vertical">
 
                 <TextView
@@ -157,7 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/half_margin"
-                android:background="@drawable/ic_card_shadow_bg"
+                android:background="@mipmap/ic_card_shadow_bg"
                 android:orientation="vertical">
 
                 <TextView

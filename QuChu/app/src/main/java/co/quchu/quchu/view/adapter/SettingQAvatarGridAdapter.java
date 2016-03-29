@@ -6,10 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ import co.quchu.quchu.R;
 public class SettingQAvatarGridAdapter extends BaseAdapter {
     private Activity mContext;
     List<Integer> mPhotoList;
-    DisplayImageOptions options;
+//    DisplayImageOptions options;
     String packName = "/";
 
     public SettingQAvatarGridAdapter(Activity context, List<Integer> mPhotoList) {

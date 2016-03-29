@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -16,11 +15,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_card_shadow_full_image_bg">
+        android:background="@mipmap/ic_card_shadow_full_image_bg">
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/item_card_image_sdv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        card_view:placeholderImage="@mipmap/ic_image_empty"
+        card_view:failureImage="@mipmap/ic_image_empty"
+        card_view:failureImageScaleType="focusCrop"
         card_view:actualImageScaleType="focusCrop"
         card_view:placeholderImageScaleType="focusCrop"
         card_view:roundedCornerRadius="4dp" />

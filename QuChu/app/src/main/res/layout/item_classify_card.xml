@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_classify_root_cv"
@@ -9,7 +8,8 @@
     android:fitsSystemWindows="true"
     android:foreground="?attr/selectableItemBackground"
     card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="@dimen/cardview_elevation">
+    card_view:cardElevation="@dimen/cardview_elevation"
+    card_view:cardPreventCornerOverlap="false">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/item_classify_image_sdv"

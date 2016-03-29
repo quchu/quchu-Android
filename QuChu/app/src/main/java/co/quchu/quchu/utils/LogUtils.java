@@ -17,22 +17,22 @@ public class LogUtils {
 
     public static void e(String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.e(msg);
+            Logger.init();
+            Logger.e(msg);
         }
     }
 
     public static void i(String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.i(msg);
+            Logger.init();
+            Logger.i(msg);
         }
     }
 
     public static void i(String TAG, String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.i(msg);
+            Logger.init();
+            Logger.i(msg);
         }
     }
 
@@ -45,15 +45,15 @@ public class LogUtils {
 
     public static void d(String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.d(msg);
+            Logger.init();
+            Logger.d(msg);
         }
     }
 
     public static void w(String msg) {
         if (Constants.ISPRINTLOG) {
-//            Logger.init();
-//            Logger.w(msg);
+            Logger.init();
+            Logger.w(msg);
         }
     }
 
@@ -70,6 +70,18 @@ public class LogUtils {
     public static void netLog(Object msg){
         if (Constants.ISPRINTLOG) {
             Log.e(tag+"Net=",msg.toString());
+        }
+    }
+
+    public static void jsonLong(String s, String msg) {
+        int chunkCount = msg.length() / 4000;     // integer division
+        for (int i = 0; i <= chunkCount; i++) {
+            int max = 4000 * (i + 1);
+            if (max >= msg.length()) {
+                Log.d(tag,s+"NetService== (" + i + "/" + chunkCount + "): " + msg.substring(4000 * i));
+            } else {
+                Log.d(tag,s+"NetService== (" + i + "/" + chunkCount + "): " + msg.substring(4000 * i, max));
+            }
         }
     }
 

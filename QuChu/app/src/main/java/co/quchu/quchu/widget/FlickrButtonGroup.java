@@ -122,7 +122,7 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
     private ObjectAnimator objectAnimator, objectAnimator1, objectAnimator2;
     private AnimatorSet animatorSet;
     private static long TranslationDuration = -1;
-    private static long ScaleDuration = 400;
+    private static long ScaleDuration = 300;
 
 
     /**
@@ -176,17 +176,17 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
 
     private void animationStartChange(boolean isHotSelected) {
         if (isHotSelected) {
-            widgetSwitchHotBtn.setImageResource(R.drawable.ic_widget_hot);
+            widgetSwitchHotBtn.setImageResource(R.mipmap.ic_widget_hot);
         } else {
-            widgetSwitchNewBtn.setImageResource(R.drawable.ic_widget_new);
+            widgetSwitchNewBtn.setImageResource(R.mipmap.ic_widget_new);
         }
     }
 
     private void animationEndChange(boolean isHotSelected) {
         if (isHotSelected) {
-            widgetSwitchHotBtn.setImageResource(R.drawable.ic_widget_hot_selected);
+            widgetSwitchHotBtn.setImageResource(R.mipmap.ic_widget_hot_selected);
         } else {
-            widgetSwitchNewBtn.setImageResource(R.drawable.ic_widget_new_selected);
+            widgetSwitchNewBtn.setImageResource(R.mipmap.ic_widget_new_selected);
         }
     }
 
@@ -232,10 +232,10 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
     private void animCenterAmplify() {
         animatorSet = new AnimatorSet();
         if (isCenterSelected) {
-            widgetSwitchCenterIv.setImageResource(R.drawable.ic_widget_center_amplify);
+            widgetSwitchCenterIv.setImageResource(R.mipmap.ic_widget_center_amplify);
             isCenterSelected = false;
         } else {
-            widgetSwitchCenterIv.setImageResource(R.drawable.ic_widget_center_shrink);
+            widgetSwitchCenterIv.setImageResource(R.mipmap.ic_widget_center_shrink);
             isCenterSelected = true;
         }
         objectAnimator1 = ObjectAnimator.ofFloat(widgetSwitchCenterIv, "scaleX", 0.4f, 0.8f, 0.9f, 1.0f);

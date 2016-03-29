@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
@@ -22,14 +21,14 @@
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/bt_quxiao" />
+            android:background="@mipmap/bt_quxiao" />
 
         <Button
             android:id="@+id/photo_bt_del"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/bt_shanchu" />
+            android:background="@mipmap/bt_shanchu" />
 
         <Button
             android:id="@+id/photo_bt_enter"
@@ -37,7 +36,7 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/bt_queding" />
+            android:background="@mipmap/bt_queding" />
     </RelativeLayout>-->
 
 </RelativeLayout>

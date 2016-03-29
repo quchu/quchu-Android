@@ -18,12 +18,16 @@ package co.quchu.galleryfinal.adapter;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +35,7 @@ import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
 import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.R;
 import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.galleryfinal.utils.ImageUtils;
 import co.quchu.galleryfinal.widget.GFImageView;
 
 /**
@@ -50,7 +55,7 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
         super(activity, list);
         this.mSelectList = selectList;
         this.mScreenWidth = screenWidth;
-        this.mRowWidth = mScreenWidth/3;
+        this.mRowWidth = mScreenWidth / 3;
         this.mActivity = activity;
     }
 
@@ -72,13 +77,19 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
 
         holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);
         Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
-        GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
+        if (null != photoInfo.getThumbPath()) {
+//            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, photoInfo.getThumbPath(), holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
+            holder.mIvThumb.setImageURI(Uri.fromFile(new File(photoInfo.getThumbPath())));
+        } else {
+            ImageUtils.loadWithAppropriateSize(holder.mIvThumb,Uri.fromFile(new File(path)));
+//            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
+        }
         holder.mView.setAnimation(null);
         if (GalleryFinal.getCoreConfig().getAnimation() > 0) {
             holder.mView.setAnimation(AnimationUtils.loadAnimation(mActivity, GalleryFinal.getCoreConfig().getAnimation()));
         }
         holder.mIvCheck.setImageResource(GalleryFinal.getGalleryTheme().getIconCheck());
-        if ( GalleryFinal.getFunctionConfig().isMutiSelect() ) {
+        if (GalleryFinal.getFunctionConfig().isMutiSelect()) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
             if (mSelectList.get(photoInfo.getPhotoPath()) != null) {
                 holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckSelectedColor());
@@ -95,15 +106,16 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
         convertView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
     }
 
-    public static class PhotoViewHolder extends  ViewHolderAdapter.ViewHolder {
+    public static class PhotoViewHolder extends ViewHolderAdapter.ViewHolder {
 
-        public GFImageView mIvThumb;
+        public SimpleDraweeView mIvThumb;
         public ImageView mIvCheck;
         View mView;
+
         public PhotoViewHolder(View view) {
             super(view);
             mView = view;
-            mIvThumb = (GFImageView) view.findViewById(R.id.iv_thumb);
+            mIvThumb = (SimpleDraweeView) view.findViewById(R.id.iv_thumb);
             mIvCheck = (ImageView) view.findViewById(R.id.iv_check);
         }
     }

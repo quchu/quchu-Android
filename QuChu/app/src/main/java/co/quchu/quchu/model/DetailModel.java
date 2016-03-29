@@ -1,5 +1,6 @@
 package co.quchu.quchu.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,38 +45,37 @@ public class DetailModel {
     private String activityInfoHtml;
     private String address;
     private String autor;
-    private int autorId;
     private String autorPhoto;
     private String businessHours;
     private String cover;
-    private int height;
-    private boolean isActivity;
-    private boolean isf;
-    private boolean isout;
     private String latitude;
     private String longitude;
     private String name;
     private String net;
-    private int pid;
     private String price;
     private String restDay;
     private String rgb;
-    private float suggest;
     private String tel;
     private String traffic;
+    public String gdLatitude= "";
+    public String gdLongitude= "";
+    private boolean isActivity;
+    private boolean isf;
+    private boolean isout;
     private int width;
-    public String gdLatitude = "";
-    public String gdLongitude = "";
+    private int pid;
+    private int autorId;
+    private int height;
+    private float suggest;
+    private int myCardId;                   //明信片ID -1为未创建明信片
     /**
      * key : 美食
      * value : 79
      */
-
     private List<GenesEntity> genes;
     /**
      * zh : 现金
      */
-
     private List<IconsEntity> icons;
     /**
      * cid : 15
@@ -84,13 +84,95 @@ public class DetailModel {
      * imgpath : http://7xo7et.com1.z0.glb.clouddn.com/5@1?imageMogr2/format/webp
      * width : 675
      */
-
     private List<ImglistEntity> imglist;
     /**
      * zh : 闽菜
      */
-
     private List<TagsEntity> tags;
+
+
+    public List<NearPlace> getNearPlace() {
+        return nearPlace;
+    }
+
+    public void setNearPlace(List<NearPlace> nearPlace) {
+        this.nearPlace = nearPlace;
+    }
+
+    private List<NearPlace>nearPlace;
+
+
+
+    public void copyFrom(DetailModel objTarget){
+        setActivityInfo(objTarget.getActivityInfo());
+        setActivityInfo(objTarget.getActivityInfo());
+        setActivityInfoHtml(objTarget.getActivityInfoHtml());
+        setAddress(objTarget.getAddress());
+        setAutor(objTarget.getAutor());
+        setAutorPhoto(objTarget.getAutorPhoto());
+        setBusinessHours(objTarget.getBusinessHours());
+        setCover(objTarget.getCover());
+        setLatitude(objTarget.getLatitude());
+        setLongitude(objTarget.getLongitude());
+        setName(objTarget.getName());
+        setNet(objTarget.getNet());
+        setPrice(objTarget.getPrice());
+        setRestDay(objTarget.getRestDay());
+        setRgb(objTarget.getRgb());
+        setTel(objTarget.getTel());
+        setTraffic(objTarget.getTraffic());
+        setIsActivity(objTarget.isIsActivity());
+        setIsf(objTarget.isIsf());
+        setIsout(objTarget.isIsout());
+        setWidth(objTarget.getWidth());
+        setPid(objTarget.getPid());
+        setAutorId(objTarget.getAutorId());
+        setHeight(objTarget.getHeight());
+        setSuggest(objTarget.getSuggest());
+        setMyCardId(objTarget.getMyCardId());
+        this.gdLatitude = objTarget.gdLatitude;
+        this.gdLongitude = objTarget.gdLongitude;
+
+        if (null==genes){
+            genes = new ArrayList<>();
+        }else{
+            genes.clear();
+        }
+        genes.addAll(objTarget.getGenes());
+
+        if (null==icons){
+            icons = new ArrayList<>();
+        }else{
+            icons.clear();
+        }
+        icons.addAll(objTarget.getIcons());
+
+        if (null==imglist){
+            imglist = new ArrayList<>();
+        }else{
+            imglist.clear();
+        }
+        imglist.addAll(objTarget.getImglist());
+
+        if (null==tags){
+            tags = new ArrayList<>();
+        }else{
+            tags.clear();
+        }
+        tags.addAll(objTarget.getTags());
+
+
+        if (null==nearPlace){
+            nearPlace = new ArrayList<>();
+        }else{
+            nearPlace.clear();
+        }
+        nearPlace.addAll(objTarget.getNearPlace());
+
+
+    }
+
+
 
     public void setActivityInfo(String activityInfo) {
         this.activityInfo = activityInfo;
@@ -407,5 +489,66 @@ public class DetailModel {
         public String getZh() {
             return zh;
         }
+    }
+
+    public static class NearPlace{
+        private List<Places> places;
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+
+        private String tag;
+
+        public List<Places> getPlaces() {
+            return places;
+        }
+
+        public void setPlaces(List<Places> places) {
+            this.places = places;
+        }
+    }
+
+    public static class Places {
+        private String cover;
+        private String name;
+        private int pid;
+
+        public String getCover() {
+            return cover;
+        }
+
+        public void setCover(String cover) {
+            this.cover = cover;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getPid() {
+            return pid;
+        }
+
+        public void setPid(int pid) {
+            this.pid = pid;
+        }
+
+    }
+
+    public int getMyCardId() {
+        return myCardId;
+    }
+
+    public void setMyCardId(int myCardId) {
+        this.myCardId = myCardId;
     }
 }

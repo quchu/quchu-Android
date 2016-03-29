@@ -3,7 +3,6 @@ package co.quchu.quchu.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
@@ -21,7 +21,7 @@ import co.quchu.quchu.view.activity.RecommendActivity;
  * User: Chenhs
  * Date: 2015-11-30
  */
-public class UserGuideFragment extends Fragment {
+public class UserGuideFragment extends BaseFragment {
 
     @Bind(R.id.userguide_start_button)
     TextView userguideStartButton;

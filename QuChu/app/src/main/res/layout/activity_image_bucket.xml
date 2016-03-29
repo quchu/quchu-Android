@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
@@ -13,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/image_bucket_title_bar"
-        android:background="@drawable/ic_activity_bg">
+        android:background="@drawable/shape_activity_bg">
 
         <GridView
             android:id="@+id/gridview"
@@ -22,7 +21,7 @@
             android:layout_margin="@dimen/base_margin"
             android:horizontalSpacing="20dp"
             android:numColumns="2"
-            android:overScrollMode="never"
+            android:overScrollMode="always"
             android:scrollbars="none"
             android:verticalSpacing="20dp" />
     </RelativeLayout>

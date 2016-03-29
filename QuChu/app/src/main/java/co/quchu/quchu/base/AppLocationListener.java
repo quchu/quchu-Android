@@ -14,6 +14,7 @@ import co.quchu.quchu.utils.SPUtils;
  * Date: 2016-01-20
  */
 public class AppLocationListener implements AMapLocationListener {
+    public static String currentCity;
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         if (amapLocation != null) {
@@ -35,6 +36,9 @@ public class AppLocationListener implements AMapLocationListener {
                 amapLocation.getCityCode();//城市编码
                 amapLocation.getAdCode();//地区编码
                 LogUtils.json("城市信息=" + amapLocation.getCity() + "///省信息=" + amapLocation.getProvince());*/
+                currentCity=amapLocation.getCity();
+
+                Log.d("LOCA","amapLocation.getCity()" +amapLocation.getCity());
                 SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_CITY, amapLocation.getCity());
                 SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_PROVINCE, amapLocation.getProvince());
             } else {

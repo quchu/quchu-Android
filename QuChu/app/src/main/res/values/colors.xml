@@ -6,8 +6,11 @@
     <!-- 自定义属性-->
     <color name="titleBackground">#383635</color>
     <color name="appBackground">#383635</color>
+    <color name="appBackground_dark">#2c2a2a</color>
     <color name="transparent">#00000000</color>
-    <color name="planet_progress_yellow">#f2e725</color>
+
+    <color name="translucent_white">#7fffffff</color>
+    <color name="planet_progress_yellow">#E4DB11</color>
     <color name="planet_progress_white">#dcdddd</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -68,4 +71,10 @@
 
     <color name="user_guide_text_color">#d8b07e</color>
     <color name="user_guide_bg_blue">#400000FF</color>
+    <!--  1.1版本颜色值 start-->
+    <color name="new_recommend_line_color">#3E3A39</color>
+    <color name="new_recommend_tablayout_color">#f2454545</color>
+    <color name="menu_logout_textcolor">#a5a5a5</color>
+    <color name="line_color">#52454545</color>
+    <!--  1.1版本颜色值 end-->
 </resources>

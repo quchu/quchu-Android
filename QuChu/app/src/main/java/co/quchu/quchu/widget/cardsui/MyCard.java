@@ -1,11 +1,16 @@
 package co.quchu.quchu.widget.cardsui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +40,7 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.AddPostCardActivity;
 import co.quchu.quchu.view.activity.PostCardDetailActivity;
 import co.quchu.quchu.view.activity.PostCardImageActivity;
+import co.quchu.quchu.view.activity.PostcarDetailActivity;
 import co.quchu.quchu.widget.cardsui.objects.Card;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -44,7 +50,7 @@ public class MyCard extends Card {
     TextView itemRecommendCardNameTv;
     @Bind(R.id.item_recommend_card_city_tv)
     TextView itemRecommendCardCityTv;
-    @Bind(R.id.item_recommend_card_title_textrl)
+    @Bind(R.id.animation1)
     RelativeLayout itemRecommendCardTitleTextrl;
     @Bind(R.id.item_recommend_card_photo_sdv)
     SimpleDraweeView itemRecommendCardPhotoSdv;
@@ -83,12 +89,14 @@ public class MyCard extends Card {
     private PostCardItemModel item;
     private PostCardItemClickListener listener;
     private Context mContext;
+    private boolean mDisableImage = false;
 
 
-    public MyCard(PostCardItemModel item, PostCardItemClickListener listener, Context activity) {
+    public MyCard(PostCardItemModel item, PostCardItemClickListener listener, Context activity,boolean disableImage) {
         this.item = item;
         this.listener = listener;
         this.mContext = activity;
+        mDisableImage = disableImage;
 
     }
 
@@ -105,7 +113,9 @@ public class MyCard extends Card {
         itemMyPostcardCardCommentTv.setText(item.getComment());
         itemMyPostcardCardNicknameTv.setText(item.getAutor());
         itemMyPostcardCardTiemTv.setText(StringUtils.isEmpty(item.getTime()) ? "" : item.getTime().substring(0, 10));
-        itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
+        if (!mDisableImage){
+            itemRecommendCardPhotoSdv.setImageURI(Uri.parse(item.getPlcaeCover()));
+        }
         itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
         itemMyPostcardAvatarSdv.setImageURI(Uri.parse(item.getAutorPhoto()));
         if (item.getImglist() != null && item.getImglist().size() > 0) {
@@ -114,22 +124,45 @@ public class MyCard extends Card {
         } else {
             itemRecommendCardPhotoNumTv.setVisibility(View.INVISIBLE);
         }
-        itemRecommendCardCollectIv.setImageDrawable(context.getResources().getDrawable(item.isIsf() ? R.drawable.ic_detail_collect : R.drawable.ic_detail_uncollect));
+        itemRecommendCardCollectIv.setImageDrawable(context.getResources().getDrawable(item.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect));
         if (item.issys()) {
-            itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+            itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(item.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
         } else {
             if (item.isIsme()) {
-                itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_post_card_editer));
+                itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_post_card_editer));
             } else {
-                itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                itemMyPostcardCardHeartIv.setImageDrawable(context.getResources().getDrawable(item.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
             }
         }
         rootCv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LogUtils.json("view is click");
-                if (listener != null)
-                    listener.onPostCardItemClick(item);
+                if (listener != null) {
+//                    listener.onPostCardItemClick(item);
+
+                    // TODO: 2016/3/7
+                    Intent intent = new Intent(v.getContext(), PostcarDetailActivity.class);
+                    item.setIsf(true);//已收藏列表 公用明信片列表mode 接口没有返回这个字段
+                    intent.putExtra(PostcarDetailActivity.REQUEST_PARAMATER_ENTITY, item);
+                    Bundle bundle = null;
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+                        Pair<View, String> pair = Pair.create(v.findViewById(R.id.animation1), "animation1");
+                        Pair<View, String> pair1 = Pair.create(v.findViewById(R.id.animation2), "animation2");
+                        Pair<View, String> pair2 = Pair.create(v.findViewById(R.id.animation3), "animation3");
+
+//                        bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                                (Activity) v.getContext(), v, PostcarDetailActivity.SHARE_ELEMENT_NAME).toBundle();
+                        bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                (Activity) v.getContext(), pair, pair1, pair2).toBundle();
+                    }
+                    v.getContext().startActivity(intent, bundle);
+
+                }
             }
         });
         if (SPUtils.getBooleanFromSPMap(mContext, AppKey.IS_POSTCARD_GUIDE, false)) {
@@ -197,7 +230,7 @@ public class MyCard extends Card {
             @Override
             public void onSuccess(PostCardModel model) {
                 item.setIsp(!item.isIsp());
-                itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(item.isIsp() ? R.drawable.ic_detail_heart_full : R.drawable.ic_detail_heart));
+                itemMyPostcardCardHeartIv.setImageDrawable(mContext.getResources().getDrawable(item.isIsp() ? R.mipmap.ic_detail_heart_full : R.mipmap.ic_detail_heart));
                 if (item.isIsp()) {
                     Toast.makeText(mContext, "点赞成功!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -238,10 +271,10 @@ public class MyCard extends Card {
                     item.setIsf(!item.isIsf());
                     if (item.isIsf()) {
                         Toast.makeText(mContext, "收藏成功!", Toast.LENGTH_SHORT).show();
-                        itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_collect));
+                        itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_collect));
                     } else {
                         Toast.makeText(mContext, "取消收藏!", Toast.LENGTH_SHORT).show();
-                        itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_detail_uncollect));
+                        itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_uncollect));
                     }
                 }
 

@@ -2,68 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout
-        android:id="@+id/recommend_title_bar_rl"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_heigh">
+    <include
+        android:id="@+id/title"
+        layout="@layout/layout_mai_title" />
 
-        <RelativeLayout
-            android:id="@+id/recommend_title_location_rl"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/recommend_title_location_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:src="@drawable/ic_recommed_title_location" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/title_content_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text=""
-            android:textColor="@color/planet_text_color_white"
-            android:textSize="@dimen/word_title_body"
-            android:visibility="invisible" />
-
-        <co.quchu.quchu.widget.RecommendTitleGroup
-            android:id="@+id/recommend_title_center_rtg"
-            android:layout_width="184dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="visible" />
-
-        <co.quchu.quchu.widget.MoreButtonView
-            android:id="@+id/recommend_title_more_rl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingRight="16dp"
-            android:src="@drawable/ic_title_more" />
-    </RelativeLayout>
-    <!--   <include layout="@layout/title_bar"
-           android:id="@+id/recommend_title_bar_rl"
-           />-->
-
-    <co.quchu.quchu.widget.AnimationViewPager.NoScrollViewPager
-        android:id="@+id/recommend_body_vp"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/recommend_title_bar_rl"
-        android:background="@drawable/ic_activity_bg" />
+        android:layout_below="@id/title" />
+
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:layout_below="@id/recommend_title_bar_rl"
-        android:background="@drawable/shape_shadow_toptobottom" />
+        android:layout_height="6dp"
+        android:layout_below="@id/title"
+        android:background="@mipmap/shadow_bottom" />
 </RelativeLayout>

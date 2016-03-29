@@ -2,7 +2,6 @@ package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,19 +26,18 @@ import co.quchu.quchu.utils.KeyboardUtils;
 public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ClassifyHolder> {
 
     private Context mContext;
-    private ArrayList<ClassifyModel> arrayList;
+    private List<ClassifyModel> arrayList;
 
     private ClasifyClickListener listener;
 
-    public ClassifyAdapter(Context context, ArrayList<ClassifyModel> arrayList) {
+    public ClassifyAdapter(Context context, List<ClassifyModel> arrayList) {
         this.mContext = context;
         this.arrayList = arrayList;
     }
 
     @Override
     public ClassifyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ClassifyHolder holder = new ClassifyHolder(LayoutInflater.from(mContext).inflate(R.layout.item_classify_card, parent, false), listener);
-        return holder;
+        return new ClassifyHolder(LayoutInflater.from(mContext).inflate(R.layout.item_classify_card, parent, false), listener);
     }
 
     public void setOnItemCliskListener(ClasifyClickListener listener) {
@@ -61,8 +59,6 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Classi
     public class ClassifyHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.item_classify_image_sdv)
         SimpleDraweeView itemClassifyImageSdv;
-        @Bind(R.id.item_classify_root_cv)
-        CardView itemClassifyRootCv;
         private ClasifyClickListener listener;
 
         public ClassifyHolder(View itemView, ClasifyClickListener listener) {
@@ -70,14 +66,15 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Classi
             ButterKnife.bind(this, itemView);
             this.listener = listener;
         }
+
         @OnClick(R.id.item_classify_root_cv)
-        public void onCardClick(View v){
-                if (KeyboardUtils.isFastDoubleClick())
-                    return;
-            switch (v.getId()){
+        public void onCardClick(View v) {
+            if (KeyboardUtils.isFastDoubleClick())
+                return;
+            switch (v.getId()) {
                 case R.id.item_classify_root_cv:
-                    if (listener!=null)
-                        listener.cItemClick(v,getAdapterPosition());
+                    if (listener != null)
+                        listener.cItemClick(v, getAdapterPosition());
                     break;
             }
         }

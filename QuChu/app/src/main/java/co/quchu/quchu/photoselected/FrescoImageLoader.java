@@ -47,7 +47,6 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import co.quchu.galleryfinal.widget.GFImageView;
 
 
-
 public class FrescoImageLoader implements co.quchu.galleryfinal.ImageLoader {
 
     private Context context;
@@ -58,10 +57,6 @@ public class FrescoImageLoader implements co.quchu.galleryfinal.ImageLoader {
 
     public FrescoImageLoader(Context context, Bitmap.Config config) {
         this.context = context;
-        ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(context)
-                .setBitmapsConfig(config)
-                .build();
-        Fresco.initialize(context, imagePipelineConfig);
     }
 
     @Override

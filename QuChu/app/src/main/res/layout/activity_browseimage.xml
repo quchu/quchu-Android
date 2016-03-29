@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <co.quchu.quchu.photo.previewimage.HackyViewPager
+    <co.quchu.quchu.widget.HackyViewPager
         android:id="@+id/bi_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_user_guide_bracket_left" />
+                android:src="@mipmap/ic_user_guide_bracket_left" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_user_guide_bracket_right" />
+                android:src="@mipmap/ic_user_guide_bracket_right" />
         </LinearLayout>
     </FrameLayout>
 
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_user_guide_ver_icon" />
+                android:src="@mipmap/ic_user_guide_ver_icon" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_detail_uncollect" />
+                android:src="@mipmap/ic_detail_uncollect" />
         </RelativeLayout>
 
         <TextView

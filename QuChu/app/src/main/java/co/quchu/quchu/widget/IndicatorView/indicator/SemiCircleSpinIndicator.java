@@ -3,7 +3,6 @@ package co.quchu.quchu.widget.IndicatorView.indicator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.view.animation.LinearInterpolator;
 
 import com.nineoldandroids.animation.ObjectAnimator;
 

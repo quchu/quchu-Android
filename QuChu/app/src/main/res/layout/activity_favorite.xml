@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/favoriter_title_bar"
-        android:background="@drawable/ic_activity_bg"
-        android:overScrollMode="never"
+        android:background="@drawable/shape_activity_bg"
+        android:overScrollMode="always"
         android:scrollbars="none">
 
         <LinearLayout
@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 card_view:cardBackgroundColor="@color/detail_card_bg_color"
                 card_view:cardCornerRadius="8dp"
+                card_view:cardPreventCornerOverlap="false"
                 card_view:cardElevation="8dp">
 
                 <RelativeLayout
@@ -146,6 +147,7 @@
                         android:layout_margin="@dimen/half_margin"
                         android:clickable="true"
                         card_view:cardBackgroundColor="@color/titleBackground"
+                        card_view:cardPreventCornerOverlap="false"
                         card_view:cardCornerRadius="8dp">
 
                         <GridView

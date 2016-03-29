@@ -2,29 +2,31 @@ package co.quchu.quchu.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
 
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.google.gson.Gson;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+//import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 
 import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.net.ImageUpload;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 
 /**
@@ -39,26 +41,42 @@ public class AppContext extends Application {
     public static float Width = 0;
     // 屏幕高度
     public static float Height = 0;
-    public static ArrayList<Object> gatherList;
-    // public static ArrayList<RecommendModel> dCardList; //推荐分类 数据源
+    public static ArrayList<Object> gatherList;//用户行为采集list
     public static RecommendModel selectedPlace; //推荐分类 数据源
     public static boolean dCardListNeedUpdate = false;
-    public static int dCardListRemoveIndex = -1;
+
+    public static String token = "";
+
+    private RefWatcher refWatcher;
+
+    public static RefWatcher getRefWatcher(Context context) {
+        AppContext application = (AppContext) context.getApplicationContext();
+        return application.refWatcher;
+    }
 
 
     @Override
     public void onCreate() {
         super.onCreate();
+        refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
+        token = SPUtils.getUserToken(getApplicationContext());
+
+
    /*     AnalyticsConfig.setChannel("quchu_360");
         LogUtils.json("userinfo=" + SPUtils.getUserInfo(mContext));
         LogUtils.json("userToken=" + SPUtils.getUserToken(mContext));*/
-        Fresco.initialize(mContext);
-        GenericDraweeHierarchyBuilder builder =
-                new GenericDraweeHierarchyBuilder(getResources());
-        GenericDraweeHierarchy hierarchy = builder
-                .setFadeDuration(300)
+
+
+        ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
+                .setBitmapsConfig(Bitmap.Config.RGB_565)
                 .build();
+        Fresco.initialize(getApplicationContext(), imagePipelineConfig);
+//        GenericDraweeHierarchyBuilder builder =
+//                new GenericDraweeHierarchyBuilder(getResources());
+//        GenericDraweeHierarchy hierarchy = builder
+//                .setFadeDuration(300)
+//                .build();
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
             if (user == null) {
                 LogUtils.json(SPUtils.getUserInfo(this));
@@ -66,7 +84,7 @@ public class AppContext extends Application {
             }
         }
         gatherList = new ArrayList<>();
-        initImageLoader();
+//        initImageLoader();
         initWidths();
     }
 
@@ -77,21 +95,21 @@ public class AppContext extends Application {
         Height = dm.heightPixels;
     }
 
-    private void initImageLoader() {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                mContext).threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .memoryCacheSize(2 * 1024 * 1024) //缓存到内存的最大数据
-                .memoryCacheSize(50 * 1024 * 1024) //设置内存缓存的大小
-                .diskCacheFileCount(200)
-                .writeDebugLogs() // Remove for release app
-                .build();
-        // Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(config);
-        //    SPUtils.initGuideIndex();
-    }
+//    private void initImageLoader() {
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//                mContext).threadPriority(Thread.NORM_PRIORITY - 2)
+//                .denyCacheImageMultipleSizesInMemory()
+//                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+//                .tasksProcessingOrder(QueueProcessingType.LIFO)
+//                .memoryCacheSize(2 * 1024 * 1024) //缓存到内存的最大数据
+//                .memoryCacheSize(50 * 1024 * 1024) //设置内存缓存的大小
+//                .diskCacheFileCount(200)
+//                .writeDebugLogs() // Remove for release app
+//                .build();
+//        // Initialize ImageLoader with configuration.
+//        ImageLoader.getInstance().init(config);
+//        //    SPUtils.initGuideIndex();
+//    }
 
     @Override
     public void onTerminate() {
@@ -100,7 +118,7 @@ public class AppContext extends Application {
             mLocationClient.onDestroy();
             mLocationClient = null;
         }
-     //   System.exit(0);
+        //   System.exit(0);
     }
 
     //声明AMapLocationClient类对象
@@ -141,6 +159,7 @@ public class AppContext extends Application {
     public static void stopLocation() {
         if (null != mLocationClient) {
             mLocationClient.stopLocation();
+            mLocationClient.unRegisterLocationListener(mLocationListener);
             mLocationClient.onDestroy();
             mLocationClient = null;
         }

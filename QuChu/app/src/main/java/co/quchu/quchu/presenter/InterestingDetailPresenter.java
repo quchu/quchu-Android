@@ -42,7 +42,7 @@ public class InterestingDetailPresenter {
     }
 
     public static void getUserOutPlace(Context context, int pId, boolean isout, final DetailDataListener listener) {
-        String urlStr = "";
+        String urlStr ;
         if (isout) {
             urlStr = String.format(NetApi.delUserOutPlace, pId);
         } else {
@@ -64,7 +64,7 @@ public class InterestingDetailPresenter {
     }
 
     public static void setDetailFavorite(Context context, int pId, boolean isFavorite, final DetailDataListener listener) {
-        String favoUrl = "";
+        String favoUrl ;
         if (isFavorite) {
             favoUrl = String.format(NetApi.userDelFavorite, pId, NetApi.FavTypePlace);
         } else {

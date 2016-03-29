@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -21,10 +23,12 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
@@ -41,7 +45,7 @@ public class PostCardDetailActivity extends BaseActivity {
     TextView postcardDetailDelTv;
     @Bind(R.id.postcard_detail_finish_tv)
     TextView postcardDetailFinishTv;
-    @Bind(R.id.item_recommend_card_title_textrl)
+    @Bind(R.id.animation1)
     RelativeLayout itemRecommendCardTitleTextrl;
     @Bind(R.id.postcard_detail_photo_sdv)
     SimpleDraweeView postcardDetailPhotoSdv;
@@ -88,32 +92,11 @@ public class PostCardDetailActivity extends BaseActivity {
             Toast.makeText(this, "该明信片已被邮到了火星!", Toast.LENGTH_SHORT).show();
         }
     }
-   /* private void getPostcardDetailData() {
 
-        NetService.get(this, String.format(NetApi.getCardDetail, cId), new IRequestListener() {
-            @Override
-            public void onSuccess(JSONObject response) {
-                LogUtils.json("/////" + response.toString());
-                try {
-                    if (response != null && !"null".equals(response.getString("data")) && !StringUtils.isEmpty(response.getString("data"))) {
-                        Gson gson = new Gson();
-                        model = gson.fromJson(response.toString(), PostCardDetailModel.class);
-                        if (model != null) {
-                            bindingDatas();
-                        }else {
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public boolean onError(String error) {
-                return false;
-            }
-        });
-    }*/
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
 
     private void bindingDatas() {
         if (model.isIsme()) {
@@ -154,7 +137,7 @@ public class PostCardDetailActivity extends BaseActivity {
                 break;
             case R.id.postcard_detail_enter_place_tv:
                 if (model != null && !model.issys())
-                    startActivity(new Intent(this, InterestingDetailsActivity.class).putExtra("pId", model.getPlaceId()));
+                    startActivity(new Intent(this, QuchuDetailsActivity.class).putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, model.getPlaceId()));
                 else
                     Toast.makeText(PostCardDetailActivity.this, "系统明信片无法进去趣处!", Toast.LENGTH_SHORT).show();
                 break;
@@ -168,6 +151,7 @@ public class PostCardDetailActivity extends BaseActivity {
                 Toast.makeText(PostCardDetailActivity.this, "明信片删除成功", Toast.LENGTH_SHORT).show();
                 SPUtils.putBooleanToSPMap(PostCardDetailActivity.this, AppKey.IS_POSTCARD_LIST_NEED_REFRESH, true);
                 PostCardDetailActivity.this.finish();
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED,null));
             }
 
             @Override
@@ -179,7 +163,6 @@ public class PostCardDetailActivity extends BaseActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("PostCardDetailActivity");
-        MobclickAgent.onResume(this);
 
         super.onResume();
     }
@@ -188,6 +171,24 @@ public class PostCardDetailActivity extends BaseActivity {
         super.onPause();
 
         MobclickAgent.onPageEnd("PostCardDetailActivity");
-        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event){
+        if (event.getFlag()== EventFlags.EVENT_POST_CARD_DELETED){
+            PostCardDetailActivity.this.finish();
+        }
     }
 }
