@@ -95,7 +95,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/half_margin"
             android:background="@null"
-            android:hint="填写新密码"
+            android:hint="填写密码"
             android:inputType="textPassword"
             android:textColor="@color/white"
             android:textColorHint="@color/user_login_text_hint_text_color"
