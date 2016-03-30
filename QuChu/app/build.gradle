@@ -73,6 +73,9 @@ android {
         quchu_sit {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_sit"]
         }
+        quchu_official {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_official"] //官网包渠道名
+        }
     }
 
     useLibrary 'org.apache.http.legacy'
