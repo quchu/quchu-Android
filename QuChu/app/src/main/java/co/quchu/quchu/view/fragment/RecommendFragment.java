@@ -187,7 +187,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     public void OnPageChanged(int oldPosition, int newPosition) {
         LogUtils.json("newPosition=" + newPosition + "//oldPosition=" + oldPosition + "//cardList.size() - 1===" + (cardList.size() - 1));
 //
-        if (newPosition > oldPosition && cardList.size() > 9 && pageNums <= pageCounts && !(pageCounts == 1 && pageNums == 1)) {
+        if (newPosition > oldPosition && cardList.size() > 9 && pageNums <= pageCounts) {
             if (newPosition == cardList.size() - 2 && !isLoading) {
                 isLoading = true;
                 presenter.loadMore(selectedTag, pageNums);

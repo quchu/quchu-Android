@@ -12,6 +12,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -19,10 +20,8 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -134,13 +133,12 @@ public class GsonRequest<T> extends Request<T> {
                 LogUtils.e("网络返回Result为false:" + json);
             }
             return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
-        } catch (UnsupportedEncodingException | JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         LogUtils.e("网络异常");
         closeDialog();
-        return Response.error(new NetworkError());
-
+        return Response.error(new ParseError());
     }
 
     private void closeDialog() {
@@ -153,6 +151,7 @@ public class GsonRequest<T> extends Request<T> {
             });
         }
     }
+
 
     @Override
     protected void deliverResponse(T t) {
@@ -177,6 +176,9 @@ public class GsonRequest<T> extends Request<T> {
                     reLogin();
                     LogUtils.e("登录令牌失效,游客没有权限进行相关操作");
                     break;
+                default:
+                    listener.onErrorResponse(new NetworkError());
+                    break;
             }
         } else if (t == null) {
             // TODO: 2016/3/23  没有数据了
@@ -200,7 +202,7 @@ public class GsonRequest<T> extends Request<T> {
     public void start(Context context, Object tag) {
         this.context = context;
         setTag(tag);
-        setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
+        setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
         queue.start();
     }
@@ -209,7 +211,7 @@ public class GsonRequest<T> extends Request<T> {
         this.context = context;
         this.showDialog = showDialog;
         setTag(tag);
-        setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
+        setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
         queue.start();
         if (showDialog)

@@ -122,7 +122,8 @@ dependencies {
     compile files('libs/AMap_Location_v2.3.0_20160112.jar')
     compile files('libs/Android_Map_V2.7.20151124.jar')
     compile files('libs/umeng-analytics-v5.6.4.jar')
-    compile 'com.mcxiaoke.volley:library:1.0.19'
+//    compile 'com.mcxiaoke.volley:library:1.0.19'
+    compile 'com.he5ed.lib:volley:android-6.0.1_r5'
     compile 'com.google.code.gson:gson:2.6'
 //    compile 'com.facebook.fresco:webpsupport:0.9.0+'
 
