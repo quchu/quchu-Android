@@ -89,6 +89,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     private final int MESSAGE_FLAG_BLUR_RENDERING_FINISH = 0x0002;
     public static final String MESSAGE_KEY_BITMAP = "MESSAGE_KEY_BITMAP";
     private boolean mFragmentStoped;
+    private int dataCount = -1;
 
     Bitmap mSourceBitmap;
     private int index;
@@ -171,6 +172,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                pageNums=1;
                 presenter.initTabData(true, selectedTag);
             }
         });
@@ -185,12 +187,13 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Override
     public void OnPageChanged(int oldPosition, int newPosition) {
-        LogUtils.json("newPosition=" + newPosition + "//oldPosition=" + oldPosition + "//cardList.size() - 1===" + (cardList.size() - 1));
-//
-        if (newPosition > oldPosition && cardList.size() > 9 && pageNums <= pageCounts && !(pageCounts == 1 && pageNums == 1)) {
+        LogUtils.json("newPosition-> " + newPosition + " oldPosition-> " + oldPosition
+                + " cardList.size()" + (cardList.size() )+ " pageNums-> "+pageNums +" pageCounts-> "+pageCounts);
+
+        if (newPosition > oldPosition && cardList.size()<dataCount) {
             if (newPosition == cardList.size() - 2 && !isLoading) {
                 isLoading = true;
-                presenter.loadMore(selectedTag, pageNums);
+                presenter.loadMore(selectedTag, (cardList.size()/10)+1);
             } else if (isLoading) {
                 DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
             }
@@ -201,7 +204,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     }
 
 
-    private int pageCounts, pageNums;
+    private int pageCounts, pageNums=1;
     private int hasChangePosition = 0;
 
     @Override
@@ -336,10 +339,14 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     private String selectedTag = "";
 
     @Override
-    public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
+    public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum, int rowCount) {
+
+        dataCount = rowCount>0?rowCount:-1;
+
         if (null == refreshLayout) {
             return;
         }
+
         refreshLayout.setRefreshing(false);
         if (isError) {
             errorView.showViewDefault(new View.OnClickListener() {
@@ -358,7 +365,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             cardList.addAll(arrayList);
             adapter.notifyDataSetChanged();
             pageCounts = pageCount;
-            pageNums = ++pageNum;
             if (cardList.size() > 0)
                 recyclerView.smoothScrollToPosition(0);
 

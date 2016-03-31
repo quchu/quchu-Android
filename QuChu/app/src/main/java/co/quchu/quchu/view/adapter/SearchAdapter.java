@@ -115,7 +115,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         } else {
             holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
         }
-        double latitude = SPUtils.getLatitude();
         if (model.getLatitude() != 0 && SPUtils.getLatitude() != 0) {
             holder.item_recommend_card_distance_tv.setVisibility(View.VISIBLE);
             int distance = (int) AMapUtils.calculateLineDistance(new LatLng(model.getLatitude(), model.getLongitude()),

@@ -62,7 +62,7 @@ public class RecommentFragPresenter {
             @Override
             public void successListener(RecommendModelNew response) {
                 DialogUtil.dismissProgessDirectly();
-                view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo());
+                view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo(),response.getRowCount());
 
 
             }
@@ -70,7 +70,7 @@ public class RecommentFragPresenter {
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
                 DialogUtil.dismissProgessDirectly();
-                view.initTabData(true, null, 0, 0);
+                view.initTabData(true, null, 0, 0,0);
             }
         });
     }
