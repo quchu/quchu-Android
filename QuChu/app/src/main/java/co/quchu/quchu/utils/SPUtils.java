@@ -89,12 +89,9 @@ public class SPUtils {
      */
 
     public static String getValueFromSPMap(Context mContext, String key, String defaults) {
-        if (null != mContext) {
-            preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-            return preferences.getString(key, defaults);
-        } else {
-            return null;
-        }
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        return preferences.getString(key, defaults);
+
     }
 
     /**
@@ -142,10 +139,10 @@ public class SPUtils {
 
 
     public static boolean animationShown(Context context) {
-        if (!getBooleanFromSPMap(context, AppKey.IS_LANDING_ANIMATION,false)){
-            putBooleanToSPMap(context,AppKey.IS_LANDING_ANIMATION,true);
+        if (!getBooleanFromSPMap(context, AppKey.IS_LANDING_ANIMATION, false)) {
+            putBooleanToSPMap(context, AppKey.IS_LANDING_ANIMATION, true);
             return true;
-        }else{
+        } else {
             return false;
         }
 
@@ -174,7 +171,7 @@ public class SPUtils {
     }
 
     public static int getCityId() {
-        return Integer.parseInt(getValueFromSPMap(AppContext.mContext, AppKey.CITYID, "-1"));
+        return Integer.parseInt(getValueFromSPMap(AppContext.mContext, AppKey.CITYID, "1"));
     }
 
     public static void setCityName(String cityId) {
