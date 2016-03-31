@@ -25,13 +25,17 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.Constants;
+import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScreenUtils;
@@ -381,6 +385,10 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
 
     private void initLogic() {
 
+
+
+
+
         if (Constants.ISSTARTINGPKG) {
             mIvBg.setImageResource(R.mipmap.ic_splash_bg_360);
         } else {
@@ -394,11 +402,19 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             UserLoginPresenter.visitorRegiest(this, new UserLoginPresenter.UserNameUniqueListener() {
                 @Override
                 public void isUnique(JSONObject msg) {
-                    if ((System.currentTimeMillis() / 1000 - visitorStartTime) > viewDuration) {
-                        enterApp();
-                    } else {
-                        new EnterAppTask().execute(viewDuration - (System.currentTimeMillis() / 1000 - visitorStartTime));
-                    }
+
+                    RecommendPresenter.getCityList(SplashActivity.this, new RecommendPresenter.CityListListener() {
+                        @Override
+                        public void hasCityList(ArrayList<CityModel> list) {
+
+                            if ((System.currentTimeMillis() / 1000 - visitorStartTime) > viewDuration) {
+                                enterApp();
+                            } else {
+                                new EnterAppTask().execute(viewDuration - (System.currentTimeMillis() / 1000 - visitorStartTime));
+                            }
+                        }
+                    });
+
                 }
 
                 @Override

@@ -176,8 +176,9 @@ public class RecommendPresenter {
             public void onResponse(CityEntity response, boolean result, @Nullable String exception, @Nullable String msg) {
                 ArrayList<CityModel> list = response.getPage().getResult();
 
-                Log.d("LOCA", "onResponse");
                 if (SPUtils.getCityId() == 1 && !TextUtils.isEmpty(AppLocationListener.currentCity)) {
+                    Log.d("~LOC",SPUtils.getCityId()+"|"+AppLocationListener.currentCity);
+
                     //第一次
                     String fixStr = AppLocationListener.currentCity.endsWith("市") ?
                             AppLocationListener.currentCity.substring(0, AppLocationListener.currentCity.length() - 1) : AppLocationListener.currentCity;
@@ -189,10 +190,15 @@ public class RecommendPresenter {
                         }
                     }
                 } else if (SPUtils.getCityId() == 1) {
+
+                    Log.d("~LOC",response.getDefaultX().getCvalue());
                     int cid = response.getDefaultX().getCid();
                     String cvalue = response.getDefaultX().getCvalue();
+
                     SPUtils.setCityId(cid);
                     SPUtils.setCityName(cvalue);
+                }else{
+                    Log.d("~LOC","ELSE");
                 }
 
                 listener.hasCityList(list);

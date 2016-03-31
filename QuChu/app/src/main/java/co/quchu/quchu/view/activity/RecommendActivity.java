@@ -74,12 +74,12 @@ public class RecommendActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
 
         initView();
-        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-            @Override
-            public void hasCityList(ArrayList<CityModel> list) {
-                RecommendActivity.this.list = list;
-            }
-        });
+//        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+//            @Override
+//            public void hasCityList(ArrayList<CityModel> list) {
+//                RecommendActivity.this.list = list;
+//            }
+//        });
 
         recommendTitleMoreRl.setMoreClick(this);
         UmengUpdateAgent.setUpdateListener(null);
