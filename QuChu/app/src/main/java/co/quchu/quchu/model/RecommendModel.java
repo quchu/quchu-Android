@@ -146,6 +146,11 @@ public class RecommendModel {
 
     public double getLatitude() {
         double v = 0;
+
+
+        if (null==latitude){
+            return v;
+        }
         try {
             v = Double.parseDouble(latitude);
         } catch (NumberFormatException e) {
