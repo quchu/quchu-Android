@@ -186,7 +186,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     @Override
     public void OnPageChanged(int oldPosition, int newPosition) {
         LogUtils.json("newPosition=" + newPosition + "//oldPosition=" + oldPosition + "//cardList.size() - 1===" + (cardList.size() - 1));
-        if (newPosition > oldPosition && cardList.size() > 9 && pageNums < pageCounts) {
+//
+        if (newPosition > oldPosition && cardList.size() > 9 && pageNums <= pageCounts && !(pageCounts == 1 && pageNums == 1)) {
             if (newPosition == cardList.size() - 2 && !isLoading) {
                 isLoading = true;
                 presenter.loadMore(selectedTag, pageNums);
@@ -285,7 +286,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         errorView.himeView();
 
         tagList = list;
-        if (tabLayout.getTabCount()>0){
+        if (tabLayout.getTabCount() > 0) {
             tabLayout.removeAllTabs();
         }
 
@@ -336,7 +337,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Override
     public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
-        if (null==refreshLayout){
+        if (null == refreshLayout) {
             return;
         }
         refreshLayout.setRefreshing(false);
@@ -409,11 +410,11 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     public void onAnimationEnd(android.animation.Animator animation) {
                         fRecommendBimgTop.setAlpha(.9f);
 
-                        if (fRecommendBimgTop.getDrawable() instanceof  ColorDrawable){
+                        if (fRecommendBimgTop.getDrawable() instanceof ColorDrawable) {
                             fRecommendBimgTop.setImageBitmap(null);
-                        }else{
-                            if (!(fRecommendBimgTop.getDrawable() instanceof ColorDrawable )&& null!=fRecommendBimgTop.getDrawable() && null!=((BitmapDrawable)fRecommendBimgTop.getDrawable()).getBitmap()){
-                                ((BitmapDrawable)fRecommendBimgTop.getDrawable()).getBitmap().recycle();
+                        } else {
+                            if (!(fRecommendBimgTop.getDrawable() instanceof ColorDrawable) && null != fRecommendBimgTop.getDrawable() && null != ((BitmapDrawable) fRecommendBimgTop.getDrawable()).getBitmap()) {
+                                ((BitmapDrawable) fRecommendBimgTop.getDrawable()).getBitmap().recycle();
                                 fRecommendBimgTop.setImageBitmap(null);
                                 System.gc();
                             }
