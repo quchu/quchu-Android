@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
+import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.base.Constants;
 
 /**
@@ -16,42 +17,42 @@ public class LogUtils {
     private static String tag = "QuChu";
 
     public static void e(String msg) {
-        if (Constants.ISPRINTLOG) {
+        if (BuildConfig.DISPLAY_LOG) {
             Logger.init();
             Logger.e(msg);
         }
     }
 
     public static void i(String msg) {
-        if (Constants.ISPRINTLOG) {
+        if (BuildConfig.DISPLAY_LOG) {
             Logger.init();
             Logger.i(msg);
         }
     }
 
     public static void i(String TAG, String msg) {
-        if (Constants.ISPRINTLOG) {
+        if (BuildConfig.DISPLAY_LOG) {
             Logger.init();
             Logger.i(msg);
         }
     }
 
     public static void v(String msg) {
-        if (Constants.ISPRINTLOG) {
+        if (BuildConfig.DISPLAY_LOG) {
             Logger.init();
             Logger.v(msg);
         }
     }
 
     public static void d(String msg) {
-        if (Constants.ISPRINTLOG) {
+        if (BuildConfig.DISPLAY_LOG) {
             Logger.init();
             Logger.d(msg);
         }
     }
 
     public static void w(String msg) {
-        if (Constants.ISPRINTLOG) {
+        if (BuildConfig.DISPLAY_LOG) {
             Logger.init();
             Logger.w(msg);
         }
@@ -62,13 +63,13 @@ public class LogUtils {
      * @param msg
      */
     public static void json(String msg){
-        if (Constants.ISPRINTLOG) {
+        if (BuildConfig.DISPLAY_LOG) {
            Log.e(tag + "Json=", msg);
         }
     }
 
     public static void netLog(Object msg){
-        if (Constants.ISPRINTLOG) {
+        if (BuildConfig.DISPLAY_LOG) {
             Log.e(tag+"Net=",msg.toString());
         }
     }

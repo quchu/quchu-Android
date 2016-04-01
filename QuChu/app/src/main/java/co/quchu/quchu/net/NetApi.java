@@ -1,5 +1,6 @@
 package co.quchu.quchu.net;
 
+import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.base.Constants;
 
 /**
@@ -9,14 +10,14 @@ public class NetApi {
     // public static boolean isDebug = false;
     // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
     public static String RELEASE_HOST = "http://www.quchu.co/app-main-service";
-    public static String HOST_UAT = "http://uat.quchu.co/appservices";
+    public static String HOST_UAT = "http://uat.quchu.co/app-main-service";
     public static String HOST_SIT = "http://sit.quchu.co/app-main-service";
 //    public static String HOST_SIT = "http://192.168.1.134:8080/appservices";
 
     //  public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
     //public static final String HOST = location_HOST;
-    public static final String HOST = Constants.ISDEBUG == 0 ? RELEASE_HOST : Constants.ISDEBUG == 1 ? HOST_UAT : HOST_SIT;
+    public static final String HOST = BuildConfig.API_SERVER == 0 ? RELEASE_HOST : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;
     /****
      * Get start
      ****/
