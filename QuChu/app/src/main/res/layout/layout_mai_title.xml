@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_heigh"
-    android:background="@color/appBackground">
+    tools:showIn="@layout/activity_recommend"
+    >
 
     <RelativeLayout
         android:id="@+id/recommend_title_location_rl"

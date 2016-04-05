@@ -30,6 +30,7 @@
 
     <co.quchu.quchu.widget.MoreButtonView
         android:id="@+id/title_more_rl"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

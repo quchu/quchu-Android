@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,7 +8,10 @@ import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +54,10 @@ public class RecommendActivity extends BaseActivity {
     MoreButtonView recommendTitleMoreRl;
     @Bind(R.id.recommend_title_center_rtg)
     RecommendTitleGroup recommendTitleCenterRtg;
+    @Bind(R.id.search_bar)
+    RelativeLayout rlSearchBar;
+    @Bind(R.id.search_input_et)
+    EditText editText;
 
     public long firstTime = 0;
     private ArrayList<CityModel> list;
@@ -74,6 +82,7 @@ public class RecommendActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
 
         initView();
+        enableRightButton();
 //        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
 //            @Override
 //            public void hasCityList(ArrayList<CityModel> list) {
@@ -152,6 +161,19 @@ public class RecommendActivity extends BaseActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
+            editText.animate()
+                    .translationY(-editText.getHeight())
+                    .alpha(0)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .withStartAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            rlSearchBar.setVisibility(View.GONE);
+                        }
+                    })
+                    .start();
+
             recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
@@ -161,6 +183,19 @@ public class RecommendActivity extends BaseActivity {
                     hide(classifyFragment).show(recommendFragment).commit();
 
         } else {
+
+            editText.animate()
+                    .translationY(0)
+                    .alpha(1)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .withStartAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            rlSearchBar.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .start();
             recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             titleContentTv.setVisibility(View.INVISIBLE);

@@ -167,6 +167,11 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         mvv.setMoreClick(this);
     }
 
+    public void enableRightButton(){
+        if (null!=this.findViewById(R.id.title_more_rl))
+        this.findViewById(R.id.title_more_rl).setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
