@@ -3,9 +3,12 @@ package co.quchu.quchu.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
 import java.util.Map;
 
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.model.UserInfoModel;
 
 /**
  * SPUtils
@@ -155,6 +158,9 @@ public class SPUtils {
 
     public static void setUserInfo(Context context, String userToken) {
         putValueToSPMap(context, AppKey.USERINFO, userToken);
+        AppContext.user=new Gson().fromJson(userToken, UserInfoModel.class);
+
+
     }
 
     public static String getUserInfo(Context context) {
@@ -162,7 +168,6 @@ public class SPUtils {
     }
 
     public static void clearUserinfo(Context mContext) {
-        putValueToSPMap(mContext, AppKey.USERINFO, "");
         putValueToSPMap(mContext, AppKey.USERTOKEN, "");
     }
 

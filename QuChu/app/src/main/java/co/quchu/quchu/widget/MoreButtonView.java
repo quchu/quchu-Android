@@ -60,7 +60,6 @@ public class MoreButtonView extends RelativeLayout implements View.OnClickListen
     }
 
 
-
     public void setImage(int imagedraw) {
         mTitleMore.setImageDrawable(getResources().getDrawable(imagedraw));
     }
@@ -117,7 +116,7 @@ public class MoreButtonView extends RelativeLayout implements View.OnClickListen
     }
 
     public interface MoreClicklistener {
-        public void moreClick();
+            void moreClick();
     }
 
     public void isNeedAnimation(boolean isNeed) {

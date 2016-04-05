@@ -32,6 +32,7 @@ import co.quchu.quchu.widget.textcounter.CounterView;
  * FavoriteActivity
  * User: Chenhs
  * Date: 2015-12-14
+ * 我的收藏
  */
 public class FavoriteActivity extends BaseActivity {
     //    @Bind(R.id.favorite_place_name_tv)

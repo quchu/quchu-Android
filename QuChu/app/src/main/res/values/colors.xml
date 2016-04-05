@@ -77,4 +77,7 @@
     <color name="menu_logout_textcolor">#a5a5a5</color>
     <color name="line_color">#52454545</color>
     <!--  1.1版本颜色值 end-->
+
+
+    <color name="quchu_title_bar">#413e3e</color>
 </resources>
