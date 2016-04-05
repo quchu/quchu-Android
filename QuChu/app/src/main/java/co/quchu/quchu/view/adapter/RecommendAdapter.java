@@ -74,12 +74,12 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
 
-        List<RecommendModel.GenesEntity> genes = model.getGenes();
-        holder.tag1.setText(genes.get(0).getKey());
-        holder.tag2.setText(genes.get(1).getKey());
-        holder.tag3.setText(genes.get(2).getKey());
+//        List<RecommendModel.GenesEntity> genes = model.getGenes();
+//        holder.tag1.setText(genes.get(0).getKey());
+//        holder.tag2.setText(genes.get(1).getKey());
+//        holder.tag3.setText(genes.get(2).getKey());
 
-        holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.mipmap.ic_detail_collect_dark : R.mipmap.ic_atmophere_unselected_dark));
+        //holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.mipmap.ic_detail_collect_dark : R.mipmap.ic_atmophere_unselected_dark));
 
         if (model.isout) {//用户去过该趣处
             //去过标签 start
@@ -101,23 +101,41 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             holder.item_recommend_card_name_tv.setText(model.getName());
         }
         if (null != model.getTags() && model.getTags().size() > 0) {
-            ArrayList<String> tags = new ArrayList<String>();
+            //ArrayList<String> tags = new ArrayList<String>();
             for (int i = 0; i < model.getTags().size(); i++) {
-                tags.add(model.getTags().get(i).getZh());
+                switch (i){
+                    case 0:
+                        holder.tag1.setText(model.getTags().get(i).getZh());
+                        holder.tag1.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+                        holder.tag2.setText(model.getTags().get(i).getZh());
+                        holder.tag2.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        holder.tag3.setText(model.getTags().get(i).getZh());
+                        holder.tag3.setVisibility(View.VISIBLE);
+                        break;
+                }
             }
-            holder.detailStoreTagcloundTcv.setVisibility(View.VISIBLE);
-            holder.detailStoreTagcloundTcv.setTags(tags);
+//            holder.detailStoreTagcloundTcv.setVisibility(View.VISIBLE);
+//            holder.detailStoreTagcloundTcv.setTags(tags);
         } else {
-            holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
+            //holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
+            holder.tag1.setVisibility(View.VISIBLE);
+            holder.tag2.setVisibility(View.VISIBLE);
+            holder.tag3.setVisibility(View.VISIBLE);
         }
         if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
             holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
         } else {
-            if (StringUtils.isDouble(model.getDistance())) {
-                String distance = StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
-                holder.item_recommend_card_distance_tv.setText("距您" + distance);
-                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + distance.length(), R.color.white);
-            }
+            String distance = StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
+            holder.item_recommend_card_distance_tv.setText("距您" + distance);
+//            if (StringUtils.isDouble(model.getDistance())) {
+//
+//                holder.item_recommend_card_distance_tv.setText("距您" + distance);
+//                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + distance.length(), R.color.white);
+//            }
         }
 
     }
@@ -142,19 +160,19 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         @Bind(R.id.item_recommend_card_name_tv)
         TextView item_recommend_card_name_tv;
 
-        @Bind(R.id.recommend_action_tag1)
+        @Bind(R.id.recommend_tag1)
         TextView tag1;
-        @Bind(R.id.recommend_action_tag2)
+        @Bind(R.id.recommend_tag2)
         TextView tag2;
-        @Bind(R.id.recommend_action_tag3)
+        @Bind(R.id.recommend_tag3)
         TextView tag3;
 
         @Bind(R.id.root_cv)
         CardView rootCv;
         @Bind(R.id.item_recommend_card_collect_iv)
-        ImageView itemRecommendCardCollectIv;
-        @Bind(R.id.detail_store_tagclound_tcv)
-        TagCloudView detailStoreTagcloundTcv;
+        TextView itemRecommendCardCollectIv;
+//        @Bind(R.id.detail_store_tagclound_tcv)
+//        TagCloudView detailStoreTagcloundTcv;
         @Bind(R.id.item_recommend_card_distance_tv)
         TextView item_recommend_card_distance_tv;
         private CardClickListener listener;
@@ -163,11 +181,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.listener = listener;
-            if (isFlyme) {
-                itemRecommendCardPhotoSdv.setAspectRatio(1.6f);
-            } else {
-                itemRecommendCardPhotoSdv.setAspectRatio(1.4f);
-            }
+//            if (isFlyme) {
+//                itemRecommendCardPhotoSdv.setAspectRatio(1.4f);
+//            } else {
+//                itemRecommendCardPhotoSdv.setAspectRatio(1.2f);
+//            }
         }
 
         @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_iv, R.id.item_recommend_card_interest_iv})

@@ -115,6 +115,8 @@
     <string name="cancel">取消</string>
     <string name="login_success">登录成功</string>
     <string name="search">搜索</string>
+    <string name="status_quguo">去过</string>
+    <string name="status_shoucang">收藏</string>
 
 
 </resources>
