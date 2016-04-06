@@ -147,12 +147,7 @@ public class RecommendActivity extends BaseActivity {
                 }
             }
         });
-        recommendTitleMoreRl.setMoreClick(new MoreButtonView.MoreClicklistener() {
-            @Override
-            public void moreClick() {
-                RecommendActivity.this.startActivity(new Intent(RecommendActivity.this, MenusActivity.class));
-            }
-        });
+
     }
 
 
@@ -180,7 +175,7 @@ public class RecommendActivity extends BaseActivity {
 
             transaction.
 //                    setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out).
-                    hide(classifyFragment).show(recommendFragment).commit();
+        hide(classifyFragment).show(recommendFragment).commit();
 
         } else {
 

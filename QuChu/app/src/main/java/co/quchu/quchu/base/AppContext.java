@@ -11,22 +11,21 @@ import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.google.gson.Gson;
-//import com.squareup.leakcanary.LeakCanary;
-//import com.squareup.leakcanary.RefWatcher;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 
 import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.net.ImageUpload;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.RefWatcher;
 
 
 /**
@@ -78,10 +77,9 @@ public class AppContext extends Application {
 //                .setFadeDuration(300)
 //                .build();
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
-            if (user == null) {
-                LogUtils.json(SPUtils.getUserInfo(this));
-                user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
-            }
+            LogUtils.json(SPUtils.getUserInfo(this));
+            user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
+
         }
         gatherList = new ArrayList<>();
 //        initImageLoader();

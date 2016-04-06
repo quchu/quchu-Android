@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    tools:context="co.quchu.quchu.view.activity.MeActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/bg_simpleDraweeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            fresco:viewAspectRatio="1.33" />
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:padding="16dp"
+            android:src="@mipmap/ic_back" />
+
+        <ImageView
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:padding="16dp"
+            android:src="@mipmap/ic_setting" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@mipmap/bg_head">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/headImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    fresco:roundAsCircle="true" />
+
+                <ImageView
+                    android:id="@+id/changeHeadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@mipmap/ic_edit_head" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:text="我的手_做不到"
+                android:textColor="@color/white" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/me_user_tag"
+                android:text="好奇猫" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_mid"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/layout_head"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/quchu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_quchu" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:gravity="center_vertical"
+                android:text="趣处"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_body" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/footPrint"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_pug" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:gravity="center_vertical"
+                android:text="脚印"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_body" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/friend"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_friend" />
+
+            <TextView
+                android:layout_width="wrap_content"
+
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:gravity="center_vertical"
+                android:text="趣友圈"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_body" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/massage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_massage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:gravity="center_vertical"
+                android:text="消息"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_body" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_mid"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <co.quchu.quchu.widget.RoundProgressView
+                android:id="@+id/curiosity"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:gravity="center"
+                app:roundProgressBackground="@color/itemMask_black"
+                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundWidth="8dp"
+                app:textSize="@dimen/word_size_time"
+                app:textStyle="Word" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@mipmap/ic_curiosity"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="好奇基因"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_time" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <co.quchu.quchu.widget.RoundProgressView
+                android:id="@+id/eat"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:gravity="center"
+                app:roundProgressBackground="@color/itemMask_black"
+                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundWidth="8dp"
+                app:textSize="@dimen/word_size_time"
+                app:textStyle="Word" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@mipmap/ic_eat"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="吃货基因"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_time" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <co.quchu.quchu.widget.RoundProgressView
+                android:id="@+id/art"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:gravity="center"
+                app:roundProgressBackground="@color/itemMask_black"
+                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundWidth="8dp"
+                app:textSize="@dimen/word_size_time"
+                app:textStyle="Word" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@mipmap/ic_art"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="艺术基因"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_time" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <co.quchu.quchu.widget.RoundProgressView
+                android:id="@+id/money"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:gravity="center"
+                app:roundProgressBackground="@color/itemMask_black"
+                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundWidth="8dp"
+                app:textSize="@dimen/word_size_time"
+                app:textStyle="Word" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@mipmap/ic_money"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="土豪基因"
+                android:textColor="@color/white"
+                android:textSize="@dimen/word_size_time" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/findPosition"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:cardBackgroundColor="@color/lineBackground_gray"
+        app:cardElevation="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:drawableLeft="@mipmap/ic_pull_menus_add"
+            android:gravity="center"
+            android:text="   我发现了一个新趣处"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_title_body" />
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

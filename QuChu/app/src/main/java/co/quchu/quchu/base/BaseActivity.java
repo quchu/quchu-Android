@@ -1,6 +1,7 @@
 package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.photoselected.PreviewImageActivity;
+import co.quchu.quchu.view.activity.MeActivity;
 import co.quchu.quchu.view.activity.MenusActivity;
 import co.quchu.quchu.view.activity.PostcarDetailActivity;
 import co.quchu.quchu.widget.MoreButtonView;
@@ -183,8 +185,10 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
 
     @Override
     public void moreClick() {
-        //   this.startActivity(new Intent(this, MenusActivity.class));
-        ActManager.getAppManager().Back2MenusAct();
+        this.startActivity(new Intent(this, MeActivity.class));
+//        ActManager.getAppManager().Back2MenusAct();
+
+
     }
 
     /**
