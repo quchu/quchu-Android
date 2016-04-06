@@ -3,11 +3,10 @@ package co.quchu.quchu.model;
 import java.util.List;
 
 /**
- * DiscoverModel
  * User: Chenhs
  * Date: 2015-12-28
  */
-public class DiscoverModel {
+public class FindBean {
 
     /**
      * pageCount : 1

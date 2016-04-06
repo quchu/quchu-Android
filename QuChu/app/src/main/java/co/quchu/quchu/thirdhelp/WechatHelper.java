@@ -120,14 +120,16 @@ public class WechatHelper {
 
     }
 
-    private void regiestWechat2Server(String token, String appId) {
+    private void regiestWechat2Server(final String token, final String appId) {
         NetService.get(mActivity, String.format(NetApi.WechatLogin, token, appId, StringUtils.getMyUUID()), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
                 UserInfoHelper.saveUserInfo(response);
-                if (null != listener)
-                    listener.loginSuccess();
+                if (null != listener) {
+                    listener.loginSuccess(2, token, appId);
+                }
+
             }
 
             @Override

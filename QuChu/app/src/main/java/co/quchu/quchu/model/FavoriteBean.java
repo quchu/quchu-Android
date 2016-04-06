@@ -7,7 +7,7 @@ import java.util.List;
  * email:437943145@qq.com
  * desc : 趣处里面 发现和收藏通用实体类
  */
-public class QuchuBean {
+public class FavoriteBean {
 
     /**
      * pageCount : 1

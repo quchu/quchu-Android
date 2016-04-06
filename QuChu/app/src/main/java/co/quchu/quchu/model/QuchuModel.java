@@ -19,16 +19,18 @@ public class QuchuModel {
     }
 
     //获取收藏
-    public void getFavoriteData(int pageNo, ResponseListener<QuchuBean> listener) {
+    public void getFavoriteData(int pageNo, ResponseListener<FavoriteBean> listener) {
         String uri = String.format(NetApi.getFavoriteList, pageNo, NetApi.FavTypePlace);
 
-        GsonRequest<QuchuBean> request = new GsonRequest<>(uri, QuchuBean.class,listener);
+        GsonRequest<FavoriteBean> request = new GsonRequest<>(uri, FavoriteBean.class, listener);
         request.start(context, null);
     }
 
     //获取发现
-    public void getFindData(int pageNo, ResponseListener listener) {
-
+    public void getFindData(int pageNo, ResponseListener<FindBean> listener) {
+        String uri = String.format(NetApi.getProposalPlaceList, pageNo);
+        GsonRequest<FindBean> request = new GsonRequest<>(uri, FindBean.class, listener);
+        request.start(context, null);
     }
 
 

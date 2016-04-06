@@ -80,8 +80,6 @@ public class WeiboHelper {
 
     public WeiboHelper(Activity context, UserLoginListener listener) {
         this.activity = context;
-/*        AuthInfo     mAuthInfo = new AuthInfo(context, APP_KEY,
-                REDIRECT_URL, SCOPE);*/
         mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
         this.listener = listener;
 
@@ -90,9 +88,7 @@ public class WeiboHelper {
 
     public void weiboLogin(Activity context) {
         this.activity = context;
-        //    if (mAuthInfo == null)
         mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
-        // if (mSsoHandler == null)
         mSsoHandler = new SsoHandler(activity, mAuthInfo);
         mSsoHandler.authorize(new AuthListener());
     }
@@ -103,24 +99,15 @@ public class WeiboHelper {
         public void onComplete(Bundle values) {
             Oauth2AccessToken accessToken = Oauth2AccessToken.parseAccessToken(values);
             if (accessToken != null && accessToken.isSessionValid()) {
-              /*  String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
-                        new java.util.Date(accessToken.getExpiresTime()));*/
                 AccessTokenKeeper.writeAccessToken(activity, accessToken);
             }
 
             LogUtils.json(values.toString());
-            if (null == values) {
-                LogUtils.json("values is empty");
-                return;
-            }
 
             String _weibo_transaction = values.getString("_weibo_transaction");
             String access_token = values.getString("access_token");
             String uid = values.getString("uid");
-          /*  if (TextUtils.isEmpty(_weibo_transaction) ||) {
-                LogUtils.json("code is empty");
-                return;
-            }*/
+
             LogUtils.json("uid==" + uid);
             regiest2Server(access_token, uid);
             LogUtils.json("access_token==" + access_token);
@@ -137,14 +124,16 @@ public class WeiboHelper {
     }
 
 
-    private void regiest2Server(String token, String uid) {
+    private void regiest2Server(final String token, final String uid) {
         NetService.get(activity, String.format(NetApi.WeiboLogin, token, uid, StringUtils.getMyUUID()), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 UserInfoHelper.saveUserInfo(response);
-                listener.loginSuccess();
+                listener.loginSuccess(3,token,uid);
 
                 LogUtils.json("skdf" + response.toString());
+
+
             }
 
             @Override
@@ -201,30 +190,6 @@ public class WeiboHelper {
         request.multiMessage = weiboMessage;
 
         mWeiboShareAPI.sendRequest(activity, request);
-
-       /* AuthInfo authInfo = new AuthInfo(activity, APP_KEY,REDIRECT_URL, SCOPE);
-        Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(activity);
-        String token = "";
-        if (accessToken != null) {
-            token = accessToken.getToken();
-        }
-        mWeiboShareAPI.sendRequest(activity, request, authInfo, token, new WeiboAuthListener() {
-
-            @Override
-            public void onWeiboException( WeiboException arg0 ) {
-            }
-
-            @Override
-            public void onComplete( Bundle bundle ) {
-                // TODO Auto-generated method stub
-                Oauth2AccessToken newToken = Oauth2AccessToken.parseAccessToken(bundle);
-                AccessTokenKeeper.writeAccessToken(activity, newToken);
-            }
-
-            @Override
-            public void onCancel() {
-            }
-        });*/
 
 
     }

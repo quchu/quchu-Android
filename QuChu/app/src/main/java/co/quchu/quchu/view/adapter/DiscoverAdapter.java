@@ -15,9 +15,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.DiscoverModel;
+import co.quchu.quchu.model.FindBean;
 
 /**
  * DiscoverAdapter
@@ -27,14 +26,14 @@ import co.quchu.quchu.model.DiscoverModel;
 public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHolder> {
 
     private Context mContext;
-    private List<DiscoverModel.ResultEntity> resultList;
+    private List<FindBean.ResultEntity> resultList;
     private OnItenClickListener listener;
 
     public void setListener(OnItenClickListener listener) {
         this.listener = listener;
     }
 
-    public DiscoverAdapter(Context mContext, List<DiscoverModel.ResultEntity> result) {
+    public DiscoverAdapter(Context mContext, List<FindBean.ResultEntity> result) {
         this.mContext = mContext;
         this.resultList = result;
     }
@@ -46,7 +45,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHol
 
     @Override
     public void onBindViewHolder(DisHolder holder, final int position) {
-        final DiscoverModel.ResultEntity entity = resultList.get(position);
+        final FindBean.ResultEntity entity = resultList.get(position);
         if (resultList.get(position).getImage().size() > 0) {
             holder.itemDiscoverIv.setImageURI(Uri.parse(resultList.get(position).getImage().get(0).getImgpath()));
         } else {
@@ -88,6 +87,6 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DisHol
     }
 
     public interface OnItenClickListener {
-        void itemClick(int position, DiscoverModel.ResultEntity entity);
+        void itemClick(int position, FindBean.ResultEntity entity);
     }
 }

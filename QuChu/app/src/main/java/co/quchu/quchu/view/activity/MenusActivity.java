@@ -25,7 +25,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
-import co.quchu.quchu.dialog.adapter.ConfirmDialogFg;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;

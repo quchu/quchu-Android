@@ -1,10 +1,9 @@
 package co.quchu.quchu.net;
 
 import co.quchu.quchu.BuildConfig;
-import co.quchu.quchu.base.Constants;
 
 /**
- * netApi 
+ * netApi
  */
 public class NetApi {
     // public static boolean isDebug = false;
@@ -12,7 +11,7 @@ public class NetApi {
     public static String RELEASE_HOST = "http://www.quchu.co/app-main-service";
     public static String HOST_UAT = "http://uat.quchu.co/app-main-service";
     public static String HOST_SIT = "http://sit.quchu.co/app-main-service";
-//    public static String HOST_SIT = "http://192.168.1.134:8080/appservices";
+//    public static String HOST_SIT = "http://192.168.1.134:8080/app-main-service";
 
     //  public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
     //    public static final String HOST = "http://www.paimeilv.com/appservices";
@@ -108,6 +107,7 @@ public class NetApi {
     public static final String VisitorRegiester = HOST + "/mregister?visitors=1&equip=%s";
     public static final String findPosition = HOST + "/operate/proposalPlace?place.pId=%s&place.pname=%s&place.paddress=%s&place.profile=%s&place.pimage=%s";//发现趣处
 
+    public static final String accoundMerger = HOST + "/oauth/userMerge";//账号合并
 
     /****************** POST *******************/
 }

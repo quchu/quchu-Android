@@ -115,5 +115,7 @@
     <string name="cancel">取消</string>
     <string name="login_success">登录成功</string>
 
+    <string name="accound_merger_title">合并账号</string>
+    <string name="accound_merger_body">是否将账号合并</string>
 
 </resources>

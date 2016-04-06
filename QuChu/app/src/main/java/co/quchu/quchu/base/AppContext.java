@@ -24,13 +24,6 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
-//import com.squareup.leakcanary.LeakCanary;
-//import com.squareup.leakcanary.RefWatcher;
-
-
-/**
- *
- */
 public class AppContext extends Application {
     public static Context mContext;
     public static UserInfoModel user;//用户信息
@@ -45,6 +38,9 @@ public class AppContext extends Application {
     public static boolean dCardListNeedUpdate = false;
 
     public static String token = "";
+
+
+
 
     private RefWatcher refWatcher;
 

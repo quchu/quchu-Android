@@ -131,7 +131,7 @@ public class UserLoginPresenter {
             @Override
             public void onSuccess(JSONObject response) {
                 UserInfoHelper.saveUserInfo(response);
-                listener.loginSuccess();
+                listener.loginSuccess(1, null, null);
             }
 
             @Override

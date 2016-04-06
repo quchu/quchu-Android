@@ -25,7 +25,7 @@ import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.DiscoverModel;
+import co.quchu.quchu.model.FindBean;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -97,7 +97,7 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
                 try {
                     if (response.has("result") && !StringUtils.isEmpty(response.getString("result")) && !"null".equals(response.getString("result"))) {
                         Gson gson = new Gson();
-                        DiscoverModel model = gson.fromJson(response.toString(), DiscoverModel.class);
+                        FindBean model = gson.fromJson(response.toString(), FindBean.class);
                         if (model != null && model.getResult().size() > 0) {
                             DiscoverAdapter adapter = new DiscoverAdapter(DiscoverActivity.this, model.getResult());
                             adapter.setListener(DiscoverActivity.this);
@@ -145,14 +145,14 @@ public class DiscoverActivity extends BaseActivity implements DiscoverAdapter.On
     }
 
     @Override
-    public void itemClick(int position, DiscoverModel.ResultEntity entity) {
+    public void itemClick(int position, FindBean.ResultEntity entity) {
         String address = entity.getAddress();
         String name = entity.getName();
         int pId = entity.getPId();
         String desc = entity.getInstruction();
         ArrayList<PhotoInfo> photos = new ArrayList<>();
-        List<DiscoverModel.ResultEntity.ImageEntity> image = entity.getImage();
-        for (DiscoverModel.ResultEntity.ImageEntity item : image) {
+        List<FindBean.ResultEntity.ImageEntity> image = entity.getImage();
+        for (FindBean.ResultEntity.ImageEntity item : image) {
             String path = item.getImgpath();
             PhotoInfo info = new PhotoInfo();
             info.setPhotoPath(path);
