@@ -275,7 +275,10 @@
             android:name=".view.activity.MeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.activity.QuchuActivity"></activity>
+        <activity android:name=".view.activity.QuchuActivity" />
+        <activity
+            android:name=".view.activity.BindActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
