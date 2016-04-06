@@ -76,8 +76,13 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     protected void onResume() {
 
         if (null != AppContext.user) {
-            if (!IsVisitorLogin)
-                loginSuccess();
+            if (!IsVisitorLogin) {
+                if (AppContext.user != null && AppContext.user.isIsVisitors()) {
+                } else {
+                    enterApp();
+                }
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS, null));
+            }
         } else {
             UserLoginPresenter.visitorRegiest(this, null);
         }
@@ -116,12 +121,12 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     }
 
     @Override
-    public void loginSuccess() {
+    public void loginSuccess(int type, String token, String appId) {
         if (AppContext.user != null && AppContext.user.isIsVisitors()) {
         } else {
             enterApp();
         }
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS,null));
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS, null));
     }
 
     public void userRegiestSuccess() {
@@ -131,13 +136,13 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         transaction.commitAllowingStateLoss();
         SPUtils.initGuideIndex();
         KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS,null));
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS, null));
     }
 
     public void enterApp() {
         //   startActivity(new Intent(this, RecommendActivity.class));
 
-        Toast.makeText(getApplicationContext(),R.string.login_success,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
         this.finish();
     }
 

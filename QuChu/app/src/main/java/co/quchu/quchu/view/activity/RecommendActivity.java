@@ -239,6 +239,9 @@ public class RecommendActivity extends BaseActivity {
         netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
         super.onResume();
         MobclickAgent.onPageStart("MainActivity");
+
+
+
     }
 
     @Override

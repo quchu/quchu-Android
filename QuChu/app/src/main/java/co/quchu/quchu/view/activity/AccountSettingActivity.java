@@ -1,12 +1,12 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,10 +73,12 @@ public class AccountSettingActivity extends BaseActivity {
     EditText accountSettingNewPwdEt;
     @Bind(R.id.account_setting_new_pwd_again_et)
     EditText accountSettingNewPwdAgainEt;
-    @Bind(R.id.account_setting_location_iv)
-    ImageView accountSettingLocationIv;
-    @Bind(R.id.account_setting_save_tv)
-    TextView accountSettingSaveTv;
+//    @Bind(R.id.account_setting_location_iv)
+//    ImageView accountSettingLocationIv;
+//    @Bind(R.id.account_setting_save_tv)
+//    TextView accountSettingSaveTv;
+//    @Bind(R.id.accounds)
+//    RelativeLayout accounds;
 
     private ArrayList<Integer> imageList;
 
@@ -119,7 +121,7 @@ public class AccountSettingActivity extends BaseActivity {
     ArrayList<CityModel> genderList;
 
     @OnClick({R.id.account_setting_avatar_sdv, R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv
-            , R.id.account_setting_save_tv, R.id.account_setting_user_location, R.id.account_setting_location_iv})
+            , R.id.account_setting_save_tv, R.id.account_setting_user_location, R.id.account_setting_location_iv, R.id.accounds})
     public void accountClick(View v) {
         switch (v.getId()) {
             case R.id.account_setting_avatar_sdv:
@@ -142,6 +144,10 @@ public class AccountSettingActivity extends BaseActivity {
             case R.id.account_setting_location_iv:
                 LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
                 locationDIalogFg.show(getFragmentManager(), "location");
+                break;
+            case R.id.accounds:
+                Intent intent =new Intent(this,BindActivity.class);
+                startActivity(intent);
                 break;
         }
     }

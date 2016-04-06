@@ -1,49 +1,34 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.QuchuBean;
-import co.quchu.quchu.presenter.IQuchuActivity;
-import co.quchu.quchu.presenter.QuchuPresenter;
-import co.quchu.quchu.view.adapter.QuchuAdapter;
-import co.quchu.quchu.widget.ErrorView;
+import co.quchu.quchu.view.fragment.FavoriteFragment;
+import co.quchu.quchu.view.fragment.FindFragment;
 
 /**
  * 趣处 包含我收藏的和我发现的
  */
-public class QuchuActivity extends BaseActivity implements IQuchuActivity {
+public class QuchuActivity extends BaseActivity {
 
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
     @Bind(R.id.Favorite)
     TextView Favorite;
     @Bind(R.id.find)
     TextView find;
-    @Bind(R.id.errorView)
-    ErrorView errorView;
-    private QuchuPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quchu);
         ButterKnife.bind(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-        Favorite.setSelected(true);
         initListener();
-        presenter = new QuchuPresenter(this, this);
-        presenter.getFavoriteData(1);
+        Favorite.callOnClick();
     }
 
     private void initListener() {
@@ -53,16 +38,22 @@ public class QuchuActivity extends BaseActivity implements IQuchuActivity {
 
     @Override
     public void onClick(View v) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
         switch (v.getId()) {
             case R.id.Favorite:
-                Favorite.setSelected(true);
-                find.setSelected(false);
-                presenter.getFavoriteData(1);
+                if (!Favorite.isSelected()) {
+                    Favorite.setSelected(true);
+                    find.setSelected(false);
+                    transaction.replace(R.id.container, new FavoriteFragment()).commit();
+                }
                 break;
             case R.id.find:
-                Favorite.setSelected(false);
-                find.setSelected(true);
-                presenter.getFindData(1);
+                if (!find.isSelected()) {
+                    Favorite.setSelected(false);
+                    find.setSelected(true);
+                    transaction.replace(R.id.container, new FindFragment()).commit();
+                }
                 break;
         }
     }
@@ -73,39 +64,4 @@ public class QuchuActivity extends BaseActivity implements IQuchuActivity {
     }
 
 
-    @Override
-    public void showFavorite(boolean isError, QuchuBean bean) {
-        if (isError) {
-            errorView.showViewDefault(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    presenter.getFavoriteData(1);
-                }
-            });
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            errorView.himeView();
-            recyclerView.setVisibility(View.VISIBLE);
-            List<QuchuBean.ResultBean> result = bean.getResult();
-            recyclerView.setAdapter(new QuchuAdapter(result));
-        }
-    }
-
-    @Override
-    public void showFind(boolean isError, QuchuBean bean) {
-        if (isError) {
-            errorView.showViewDefault(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    presenter.getFindData(1);
-                }
-            });
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            errorView.himeView();
-            recyclerView.setVisibility(View.VISIBLE);
-            List<QuchuBean.ResultBean> result = bean.getResult();
-            recyclerView.setAdapter(new QuchuAdapter(result));
-        }
-    }
 }

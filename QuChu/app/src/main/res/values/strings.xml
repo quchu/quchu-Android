@@ -118,5 +118,7 @@
     <string name="status_quguo">去过</string>
     <string name="status_shoucang">收藏</string>
 
+    <string name="accound_merger_title">合并账号</string>
+    <string name="accound_merger_body">是否将账号合并</string>
 
 </resources>

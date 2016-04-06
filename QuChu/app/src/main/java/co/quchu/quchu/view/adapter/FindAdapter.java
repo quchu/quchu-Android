@@ -14,7 +14,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.QuchuBean;
+import co.quchu.quchu.model.FindBean;
 import co.quchu.quchu.widget.TagCloudView;
 
 /**
@@ -22,11 +22,11 @@ import co.quchu.quchu.widget.TagCloudView;
  * email:437943145@qq.com
  * desc :
  */
-public class QuchuAdapter extends RecyclerView.Adapter<QuchuAdapter.ViewHold> {
+public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHold> {
 
-    private List<QuchuBean.ResultBean> result;
+    private List<FindBean.ResultEntity> result;
 
-    public QuchuAdapter(List<QuchuBean.ResultBean> result) {
+    public FindAdapter(List<FindBean.ResultEntity> result) {
         this.result = result;
     }
 
@@ -38,10 +38,12 @@ public class QuchuAdapter extends RecyclerView.Adapter<QuchuAdapter.ViewHold> {
 
     @Override
     public void onBindViewHolder(ViewHold holder, int position) {
-        QuchuBean.ResultBean bean = result.get(position);
+        FindBean.ResultEntity bean = result.get(position);
 
         holder.name.setText(bean.getName());
-        holder.simpleDraweeView.setImageURI(Uri.parse(bean.getAutorPhoto()));
+
+        if (bean.getImage().size() > 0)
+            holder.simpleDraweeView.setImageURI(Uri.parse(bean.getImage().get(0).getImgpath()));
         holder.address.setText(bean.getAddress());
     }
 

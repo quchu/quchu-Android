@@ -501,8 +501,8 @@ public class PhoneLoginFragment extends BaseFragment {
         UserLoginPresenter.userLogin(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
                 MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), new UserLoginListener() {
                     @Override
-                    public void loginSuccess() {
-                        ((UserLoginActivity) getActivity()).loginSuccess();
+                    public void loginSuccess(int type, String token, String appId) {
+                        ((UserLoginActivity) getActivity()).loginSuccess(type, token, appId);
                     }
                 });
     }

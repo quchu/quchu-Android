@@ -1,4 +1,4 @@
-package co.quchu.quchu.dialog.adapter;
+package co.quchu.quchu.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by admin on 2016/3/25.
@@ -44,7 +43,7 @@ public class ConfirmDialogFg extends BlurDialogFragment {
     private int mResContent;
 
 
-    public static ConfirmDialogFg newInstance(int resTitle,int resContent) {
+    public static ConfirmDialogFg newInstance(int resTitle, int resContent) {
         ConfirmDialogFg fragment = new ConfirmDialogFg();
         Bundle args = new Bundle();
         args.putInt(BUNDLE_KEY_ALERT_DIALOG_RES_TITLE, resTitle);
@@ -53,7 +52,7 @@ public class ConfirmDialogFg extends BlurDialogFragment {
         return fragment;
     }
 
-    public void setActionListener(OnActionListener onActionListener){
+    public void setActionListener(OnActionListener onActionListener) {
         this.mListener = onActionListener;
     }
 
@@ -88,11 +87,17 @@ public class ConfirmDialogFg extends BlurDialogFragment {
         return builder.create();
     }
 
+    public void setTitleString(String title) {
+        dialogLocationSelectedCityTv.setText(title);
+    }
+
+    public void setBody(String body) {
+        dialogLocationTv.setText(R.string.confirm_logout_content);
+    }
 
     public interface OnActionListener {
         void onClick(int index);
     }
-
 
 
     @Override
@@ -150,7 +155,7 @@ public class ConfirmDialogFg extends BlurDialogFragment {
                 index = INDEX_CANCEL;
                 break;
         }
-        if (null!=mListener){
+        if (null != mListener) {
             mListener.onClick(index);
         }
 

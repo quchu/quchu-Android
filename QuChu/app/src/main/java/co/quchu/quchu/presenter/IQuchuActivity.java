@@ -1,6 +1,6 @@
 package co.quchu.quchu.presenter;
 
-import co.quchu.quchu.model.QuchuBean;
+import co.quchu.quchu.model.FavoriteBean;
 
 /**
  * Created by no21 on 2016/4/5.
@@ -11,10 +11,7 @@ public interface IQuchuActivity {
     /**
      * 显示收藏
      */
-    void showFavorite(boolean isError, QuchuBean bean);
+    void showData(boolean isError, FavoriteBean bean);
 
-    /**
-     * 显示发现
-     */
-    void showFind(boolean isError, QuchuBean bean);
+
 }
