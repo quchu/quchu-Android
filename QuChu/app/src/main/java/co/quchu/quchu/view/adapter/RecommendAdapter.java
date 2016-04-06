@@ -122,9 +122,9 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 //            holder.detailStoreTagcloundTcv.setTags(tags);
         } else {
             //holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
-            holder.tag1.setVisibility(View.VISIBLE);
-            holder.tag2.setVisibility(View.VISIBLE);
-            holder.tag3.setVisibility(View.VISIBLE);
+            holder.tag1.setVisibility(View.GONE);
+            holder.tag2.setVisibility(View.GONE);
+            holder.tag3.setVisibility(View.GONE);
         }
         if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
             holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
