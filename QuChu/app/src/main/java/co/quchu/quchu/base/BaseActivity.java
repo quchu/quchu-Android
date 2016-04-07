@@ -164,20 +164,20 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
      * title bar 控制  start
      */
     public void initTitleBar() {
-        this.findViewById(R.id.title_back_rl).setOnClickListener(this);
+        this.findViewById(R.id.title_back_iv).setOnClickListener(this);
         MoreButtonView mvv = (MoreButtonView) this.findViewById(R.id.title_more_rl);
         mvv.setMoreClick(this);
     }
 
-    public void enableRightButton(){
-        if (null!=this.findViewById(R.id.title_more_rl))
-        this.findViewById(R.id.title_more_rl).setVisibility(View.VISIBLE);
+    public void enableRightButton() {
+        if (null != this.findViewById(R.id.title_more_rl))
+            this.findViewById(R.id.title_more_rl).setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.title_back_rl:
+            case R.id.title_back_iv:
                 this.finish();
                 break;
         }
@@ -187,8 +187,6 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
     public void moreClick() {
         this.startActivity(new Intent(this, MeActivity.class));
 //        ActManager.getAppManager().Back2MenusAct();
-
-
     }
 
     /**

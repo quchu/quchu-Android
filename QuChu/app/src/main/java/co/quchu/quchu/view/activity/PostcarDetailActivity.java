@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,8 +60,6 @@ public class PostcarDetailActivity extends BaseActivity {
     TextView itemRecommendCardPhotoNumTv;
     @Bind(R.id.root_cv)
     CardView rootCv;
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRl;
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
     @Bind(R.id.title_more_rl)

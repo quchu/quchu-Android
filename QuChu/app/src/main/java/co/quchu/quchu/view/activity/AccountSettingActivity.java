@@ -172,7 +172,15 @@ public class AccountSettingActivity extends BaseActivity {
         @Override
         public void selectedQuPhtot() {
             if (imageList != null) {
-                QAvatarSettingDialogFg qAvatarDIalogFg = QAvatarSettingDialogFg.newInstance(imageList);
+
+                QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
+                qAvatarDIalogFg.init(imageList, new QAvatarSettingDialogFg.OnItenSelected() {
+                    @Override
+                    public void itemSelected(int imageId) {
+                        updateAvatar(imageId);
+                    }
+                });
+//                QAvatarSettingDialogFg qAvatarDIalogFg = QAvatarSettingDialogFg.newInstance(imageList);
                 qAvatarDIalogFg.show(getFragmentManager(), "qAvatar");
             }
         }

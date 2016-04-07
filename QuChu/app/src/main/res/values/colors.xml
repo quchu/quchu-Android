@@ -80,4 +80,6 @@
 
 
     <color name="quchu_title_bar">#413e3e</color>
+    <color name="quchu_favorite_address_text">#b4b4b5</color>
+
 </resources>

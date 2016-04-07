@@ -13,14 +13,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="16dp"
             android:layout_toLeftOf="@id/simpleDraweeView"
             android:ellipsize="end"
             android:maxLines="1"
@@ -32,8 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
             android:layout_toLeftOf="@id/simpleDraweeView"
             card_view:tcvBackground="@drawable/shape_recommend_card_tag_bg"
             card_view:tcvBorder="8dp"
@@ -50,10 +50,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="16dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="5dp"
             android:layout_toLeftOf="@id/simpleDraweeView"
             android:ellipsize="end"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingBottom="16dp"
+            android:textColor="@color/quchu_favorite_address_text" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/simpleDraweeView"

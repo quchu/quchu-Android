@@ -46,14 +46,20 @@
 
             <RelativeLayout
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@mipmap/bg_head">
+                android:layout_height="100dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/head_circle"
+                    tools:ignore="ContentDescription" />
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/headImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="3dp"
+                    android:layout_centerInParent="true"
                     fresco:roundAsCircle="true" />
 
                 <ImageView
@@ -64,7 +70,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/ic_edit_head" />
+                    android:src="@mipmap/ic_edit_head"
+                    tools:ignore="ContentDescription" />
 
             </RelativeLayout>
 

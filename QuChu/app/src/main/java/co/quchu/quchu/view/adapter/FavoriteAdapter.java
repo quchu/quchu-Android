@@ -26,23 +26,39 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     private List<FavoriteBean.ResultBean> result;
 
+    private OnItemClickListener listener;
+
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     public FavoriteAdapter(List<FavoriteBean.ResultBean> result) {
         this.result = result;
     }
 
     @Override
     public ViewHold onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_favorite, parent, false);
         return new ViewHold(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHold holder, int position) {
-        FavoriteBean.ResultBean bean = result.get(position);
+        final FavoriteBean.ResultBean bean = result.get(position);
 
         holder.name.setText(bean.getName());
         holder.simpleDraweeView.setImageURI(Uri.parse(bean.getAutorPhoto()));
         holder.address.setText(bean.getAddress());
+
+
+        if (listener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.itemClick(bean);
+                }
+            });
+        }
     }
 
     @Override
@@ -64,5 +80,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnItemClickListener {
+        void itemClick(FavoriteBean.ResultBean item);
     }
 }

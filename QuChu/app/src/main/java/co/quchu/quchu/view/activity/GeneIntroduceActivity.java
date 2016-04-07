@@ -21,8 +21,6 @@ import co.quchu.quchu.utils.KeyboardUtils;
  * Date: 2015-10-28
  */
 public class GeneIntroduceActivity extends BaseActivity {
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRL;
     @Bind(R.id.title_more_rl)
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)
@@ -51,12 +49,12 @@ public class GeneIntroduceActivity extends BaseActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
-    @OnClick({R.id.title_back_rl, R.id.gene_introduce})
+    @OnClick({R.id.title_back_iv, R.id.gene_introduce})
     public void click(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         switch (v.getId()) {
-            case R.id.title_back_rl:
+            case R.id.title_back_iv:
                 this.finish();
                 break;
             case R.id.gene_introduce:

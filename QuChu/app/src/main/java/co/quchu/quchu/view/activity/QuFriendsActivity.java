@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
@@ -69,8 +68,6 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
     /**
      * title
      ***/
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRL;
     @Bind(R.id.title_more_rl)
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)

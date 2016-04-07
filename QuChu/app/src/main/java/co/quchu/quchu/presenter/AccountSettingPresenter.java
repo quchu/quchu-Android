@@ -28,8 +28,8 @@ import co.quchu.quchu.utils.StringUtils;
  * User: Chenhs
  * Date: 2016-01-21
  * 账户设置
- *  8336f98e7571483f21b11c13cf603268 正式
- *  ab3d26f0aa7f5fe92a6032a8837bbf2f debug
+ * 8336f98e7571483f21b11c13cf603268 正式
+ * ab3d26f0aa7f5fe92a6032a8837bbf2f debug
  */
 public class AccountSettingPresenter {
 
@@ -57,11 +57,11 @@ public class AccountSettingPresenter {
         });
     }
 
-    //  private static Bitmap uploadBitmap = null;
 
     private static void addImage2QiNiu(String filePath, String qiniuToken, UploadManager uploadManager, final UploadUserPhotoListener listener) {
+
         String defaulQiNiuFileName = "%d-%d.JPEG";
-        uploadBitmap = ImageUtils.getimage(filePath);
+        final Bitmap uploadBitmap = ImageUtils.getimage(filePath);
         if (uploadBitmap != null)
             uploadManager.put(ImageUtils.Bitmap2Bytes(uploadBitmap, 90), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
                     new UpCompletionHandler() {
@@ -72,7 +72,6 @@ public class AccountSettingPresenter {
                                 try {
                                     if (info.isOK()) {
                                         uploadBitmap.recycle();
-                                        uploadBitmap = null;
                                         String url = response.getString("key");
                                         listener.onSuccess(url);
                                     } else {
@@ -91,6 +90,7 @@ public class AccountSettingPresenter {
                             }, null));
     }
 
+
     public interface UploadUserPhotoListener {
         void onSuccess(String photoUrl);
 
@@ -99,15 +99,6 @@ public class AccountSettingPresenter {
 
     /**
      * 保存用户信息
-     *
-     * @param mContext
-     * @param userName
-     * @param userPhoto
-     * @param userGender
-     * @param userLocation
-     * @param userPw
-     * @param userRePw
-     * @param listener
      */
     public static void postUserInfo2Server(Context mContext, String userName, String userPhoto, String userGender, String userLocation, String userPw, String userRePw, final UploadUserPhotoListener listener) {
 
@@ -213,7 +204,7 @@ public class AccountSettingPresenter {
         });
     }
 
-    private static Bitmap uploadBitmap = null;
+//    private static Bitmap uploadBitmap = null;
 
     private static void addImage2QiNiu(Bitmap bitmapA, String qiniuToken, UploadManager uploadManager, final UploadUserPhotoListener listener) {
         String defaulQiNiuFileName = "%d-%d.JPEG";
