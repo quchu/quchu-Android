@@ -130,6 +130,8 @@ public class MeActivity extends BaseActivity implements ASUserPhotoDialogFg.User
                 startActivity(intent);
                 break;
             case R.id.footPrint://脚印
+                intent = new Intent(this, FootprintActivity.class);
+                startActivity(intent);
                 break;
             case R.id.friend://趣友圈
                 intent = new Intent(this, QuFriendsActivity.class);
@@ -237,7 +239,7 @@ public class MeActivity extends BaseActivity implements ASUserPhotoDialogFg.User
         AccountSettingPresenter.getQiNiuToken(this, path, new AccountSettingPresenter.UploadUserPhotoListener() {
             @Override
             public void onSuccess(String photoUrl) {
-                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/"+photoUrl,
+                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl,
                         AppContext.user.getGender(), "", "", "", new AccountSettingPresenter.UploadUserPhotoListener() {
                             @Override
                             public void onSuccess(String photoUrl) {
@@ -263,7 +265,7 @@ public class MeActivity extends BaseActivity implements ASUserPhotoDialogFg.User
         AccountSettingPresenter.getQiNiuToken(this, bitmap, new AccountSettingPresenter.UploadUserPhotoListener() {
             @Override
             public void onSuccess(String photoUrl) {
-                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/"+photoUrl,
+                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl,
                         AppContext.user.getGender(), "", "", "", new AccountSettingPresenter.UploadUserPhotoListener() {
                             @Override
                             public void onSuccess(String photoUrl) {

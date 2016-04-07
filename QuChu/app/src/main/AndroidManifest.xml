@@ -284,6 +284,10 @@
         <activity
             android:name=".view.activity.BindActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.FootprintActivity"
+            android:label="我的脚印"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
