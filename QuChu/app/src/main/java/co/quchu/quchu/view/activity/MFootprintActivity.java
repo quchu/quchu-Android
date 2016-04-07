@@ -17,10 +17,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.view.adapter.FootprintAdapter;
+import co.quchu.quchu.view.adapter.MFootprintAdapter;
 import co.quchu.quchu.widget.ScrollIndexView;
 
-public class FootprintActivity extends BaseActivity implements IFootprintActivity {
+public class MFootprintActivity extends BaseActivity implements IFootprintActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -47,7 +47,7 @@ public class FootprintActivity extends BaseActivity implements IFootprintActivit
         ButterKnife.bind(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new FootprintAdapter());
+        recyclerView.setAdapter(new MFootprintAdapter());
         initTitle();
 
         headViewBg.setImageURI(Uri.parse("http://h.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=3dc4538262d0f703e6e79dd83dca7d0b/7a899e510fb30f24f570e996c895d143ac4b03b8.jpg"));

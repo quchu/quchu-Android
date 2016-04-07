@@ -10,7 +10,7 @@ import android.widget.TextView;
  * email:437943145@qq.com
  * desc :
  */
-public class FootprintAdapter extends RecyclerView.Adapter<FootprintAdapter.ViewHold> {
+public class MFootprintAdapter extends RecyclerView.Adapter<MFootprintAdapter.ViewHold> {
     @Override
     public ViewHold onCreateViewHolder(ViewGroup parent, int viewType) {
         TextView view = new TextView(parent.getContext());
