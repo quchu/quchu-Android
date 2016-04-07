@@ -82,6 +82,11 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".view.activity.FootPrintActivity"
+            android:label="@string/foot_print"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.activity.FlickrActivity"
             android:label="@string/titlebar_word_flickr"
             android:screenOrientation="portrait" />

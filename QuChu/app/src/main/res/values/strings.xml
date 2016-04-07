@@ -120,5 +120,6 @@
 
     <string name="accound_merger_title">合并账号</string>
     <string name="accound_merger_body">是否将账号合并</string>
+    <string name="foot_print">脚印</string>
 
 </resources>

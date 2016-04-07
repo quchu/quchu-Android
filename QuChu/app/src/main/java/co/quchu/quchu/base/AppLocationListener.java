@@ -38,7 +38,6 @@ public class AppLocationListener implements AMapLocationListener {
                 LogUtils.json("城市信息=" + amapLocation.getCity() + "///省信息=" + amapLocation.getProvince());*/
                 currentCity=amapLocation.getCity();
 
-                Log.d("LOCA","amapLocation.getCity()" +amapLocation.getCity());
                 SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_CITY, amapLocation.getCity());
                 SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_PROVINCE, amapLocation.getProvince());
             } else {

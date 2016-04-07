@@ -18,7 +18,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginStart="@dimen/base_margin"
-            android:src="@mipmap/ic_recommed_title_location"
+            android:src="@drawable/ic_landscape"
             tools:ignore="ContentDescription" />
     </RelativeLayout>
 

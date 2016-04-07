@@ -178,6 +178,11 @@ public class RecommendActivity extends BaseActivity {
         hide(classifyFragment).show(recommendFragment).commit();
 
         } else {
+            rlSearchBar.setVisibility(View.VISIBLE);
+
+            transaction
+//                    .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out)
+                    .hide(recommendFragment).show(classifyFragment).commit();
 
             editText.animate()
                     .translationY(0)
@@ -187,17 +192,12 @@ public class RecommendActivity extends BaseActivity {
                     .withStartAction(new Runnable() {
                         @Override
                         public void run() {
-                            rlSearchBar.setVisibility(View.VISIBLE);
                         }
                     })
                     .start();
             recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             titleContentTv.setVisibility(View.INVISIBLE);
-
-            transaction
-//                    .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out)
-                    .hide(recommendFragment).show(classifyFragment).commit();
         }
         viewPagerIndex = index;
     }
