@@ -15,22 +15,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:visibility="visible"
-        >
+        android:visibility="visible">
 
         <EditText
-            android:background="@null"
             android:id="@+id/search_input_et"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_bar_heigh"
-            android:textColor="@color/white"
+            android:background="@null"
             android:hint="@string/search"
             android:textSize="@dimen/word_size_body"
             android:maxLines="1"
-            android:textColorHint="@color/translucent_white"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
-            />
+            android:textColor="@color/white"
+            android:textColorHint="@color/translucent_white" />
 
     </RelativeLayout>
 
@@ -39,7 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/search_bar">
-        <requestFocus/>
+
+        <requestFocus />
 
     </FrameLayout>
 

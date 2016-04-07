@@ -24,16 +24,15 @@ import co.quchu.quchu.widget.PostCardRecyclerView;
  */
 public class CareAboutFriendsActivity extends BaseActivity {
 
- /*   @Bind(R.id.care_about_friends_tv)
-    TextView careAboutFriendsTv;*/
+    /*   @Bind(R.id.care_about_friends_tv)
+       TextView careAboutFriendsTv;*/
     @Bind(R.id.atmosphere_rv)
- PostCardRecyclerView atmosphereRv;
+    PostCardRecyclerView atmosphereRv;
 
     /**
      * title
      ***/
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRL;
+
     @Bind(R.id.title_more_rl)
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)
@@ -47,8 +46,8 @@ public class CareAboutFriendsActivity extends BaseActivity {
         ButterKnife.bind(this);
         title_content_tv.setText(getTitle());
 
-        atmosphereRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
-     //   atmosphereRv.setAdapter(new DiscoverAdapter(this, model.getResult()));
+        atmosphereRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        //   atmosphereRv.setAdapter(new DiscoverAdapter(this, model.getResult()));
     }
 
     @Override
@@ -56,22 +55,24 @@ public class CareAboutFriendsActivity extends BaseActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
-    public void addOnBackPressedListener( PostCardRecyclerView.OnBackPressedListener onBackPressedListener ) {
-        if ( this.listeners.indexOf( onBackPressedListener ) == -1 ) {
-            this.listeners.add( onBackPressedListener );
+    public void addOnBackPressedListener(PostCardRecyclerView.OnBackPressedListener onBackPressedListener) {
+        if (this.listeners.indexOf(onBackPressedListener) == -1) {
+            this.listeners.add(onBackPressedListener);
         }
     }
+
     @Override
     public void onBackPressed() {
-        if ( this.listeners.size() > 0 ) {
-            for ( PostCardRecyclerView.OnBackPressedListener item : this.listeners ) {
-                if ( item.onBackPressed() ) {
+        if (this.listeners.size() > 0) {
+            for (PostCardRecyclerView.OnBackPressedListener item : this.listeners) {
+                if (item.onBackPressed()) {
                     return;
                 }
             }
         }
         super.onBackPressed();
     }
+
     @Override
     protected void onPause() {
         super.onPause();

@@ -46,8 +46,6 @@ public class FlickrActivity extends BaseActivity implements FlickrButtonGroup.Fl
     FlickrButtonGroup flickrFbg;
     @Bind(R.id.flickr_tsl)
     TextSubtabLayout flickrTsl;
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRL;
     @Bind(R.id.title_more_rl)
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)

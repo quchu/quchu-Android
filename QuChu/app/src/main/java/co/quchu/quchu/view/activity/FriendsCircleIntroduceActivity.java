@@ -29,12 +29,11 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
     RelativeLayout geneIntroduce;
     @Bind(R.id.gene_introduce_iv)
     ImageView geneIntroduceIv;
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRL;
     @Bind(R.id.title_more_rl)
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)
     TextView title_content_tv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +50,12 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
-    @OnClick({R.id.title_back_rl, R.id.gene_introduce})
+    @OnClick({R.id.title_back_iv, R.id.gene_introduce})
     public void click(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         switch (v.getId()) {
-            case R.id.title_back_rl:
+            case R.id.title_back_iv:
                 this.finish();
                 break;
             case R.id.gene_introduce:
@@ -95,6 +94,7 @@ public class FriendsCircleIntroduceActivity extends BaseActivity {
                 R.anim.in_stable);
         super.onResume();
     }
+
     @Override
     protected void onPause() {
         super.onPause();

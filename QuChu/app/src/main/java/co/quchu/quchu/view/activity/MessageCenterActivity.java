@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -20,7 +17,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.MessageModel;
 import co.quchu.quchu.presenter.MessageCenterPresenter;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.adapter.MessageCenterAdapter;
 
 /**
@@ -39,7 +35,7 @@ public class MessageCenterActivity extends BaseActivity {
     FrameLayout messageEmptyViewFl;
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
-    private List<MessageModel> messageList;
+    private MessageModel messageList;
     private MessageCenterAdapter adapter;
 
     @Override
@@ -50,17 +46,15 @@ public class MessageCenterActivity extends BaseActivity {
         initTitleBar();
         titleContentTv.setText(getTitle());
         messagesRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        messageList = new ArrayList<>();
-        adapter = new MessageCenterAdapter(this, messageList);
+        adapter = new MessageCenterAdapter(this, null);
         messagesRv.setAdapter(adapter);
         MessageCenterPresenter.getMessageList(this, new MessageCenterPresenter.MessageGetDataListener() {
             @Override
-            public void onSuccess(List<MessageModel> arrayList) {
-                LogUtils.json("message size ==" + arrayList.size());
+            public void onSuccess(MessageModel arrayList) {
                 messageList = arrayList;
                 messagesSrl.setVisibility(View.VISIBLE);
                 messageEmptyViewFl.setVisibility(View.GONE);
-                adapter.changeDateSet(messageList);
+                adapter.changeDateSet(messageList.getResult());
             }
 
             @Override
@@ -80,12 +74,14 @@ public class MessageCenterActivity extends BaseActivity {
     public void emptyClick(View view) {
         this.finish();
     }
+
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("MessageCenterActivity");
 
         super.onResume();
     }
+
     @Override
     protected void onPause() {
         super.onPause();

@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/title_bar_heigh"
-    android:background="@color/titleBackground">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/title_back_rl"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_heigh"
+        android:background="@color/titleBackground">
+
 
         <ImageView
             android:id="@+id/title_back_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:src="@drawable/ic_return" />
+
+            android:padding="16dp"
+            android:src="@mipmap/ic_back" />
+
+        <TextView
+            android:id="@+id/title_content_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/planet_text_color_white"
+            android:textSize="@dimen/word_title_body" />
+
+
+
+        <co.quchu.quchu.widget.MoreButtonView
+            android:id="@+id/title_more_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:paddingRight="16dp"
+            android:src="@mipmap/ic_title_more"
+            android:visibility="gone" />
+
+
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/title_content_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:textColor="@color/planet_text_color_white"
-        android:textSize="@dimen/word_title_body" />
-
-
-    <co.quchu.quchu.widget.MoreButtonView
-        android:id="@+id/title_more_rl"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="center"
-        android:paddingRight="16dp"
-        android:src="@mipmap/ic_title_more" />
-</RelativeLayout>
+</android.support.design.widget.AppBarLayout>

@@ -68,8 +68,6 @@ public class GeneActivity extends BaseActivity implements ViewTreeObserver.OnGlo
     RoundProgressView cateRpv;
     @Bind(R.id.gene_progress_gv)
     GridView geneProgressGv;
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRL;
     @Bind(R.id.title_more_rl)
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)

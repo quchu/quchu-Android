@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +30,6 @@ import co.quchu.quchu.widget.MoreButtonView;
  * 快速反馈
  */
 public class FeedbackActivity extends BaseActivity {
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRl;
     @Bind(R.id.title_back_iv)
     ImageView titleBackIv;
     @Bind(R.id.title_content_tv)
@@ -85,15 +82,16 @@ public class FeedbackActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.title_back_rl)
+    @OnClick(R.id.title_back_iv)
     public void feedClick(View view) {
         switch (view.getId()) {
-            case R.id.title_back_rl:
+            case R.id.title_back_iv:
                 this.finish();
                 break;
 
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();

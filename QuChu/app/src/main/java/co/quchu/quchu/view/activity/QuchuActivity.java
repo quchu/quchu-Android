@@ -22,37 +22,59 @@ public class QuchuActivity extends BaseActivity {
     @Bind(R.id.find)
     TextView find;
 
+    @Bind(R.id.title_content_tv)
+    TextView title;
+    @Bind(R.id.title_back_iv)
+    View back;
+    private FavoriteFragment favoriteFragment;
+    private FindFragment findFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quchu);
         ButterKnife.bind(this);
         initListener();
-        Favorite.callOnClick();
+        title.setText("趣处");
+
+        favoriteFragment = new FavoriteFragment();
+        findFragment = new FindFragment();
+        Favorite.setSelected(true);
+        getSupportFragmentManager().beginTransaction().add(R.id.container, favoriteFragment).commit();
+
     }
 
     private void initListener() {
         Favorite.setOnClickListener(this);
         find.setOnClickListener(this);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         switch (v.getId()) {
             case R.id.Favorite:
                 if (!Favorite.isSelected()) {
                     Favorite.setSelected(true);
                     find.setSelected(false);
-                    transaction.replace(R.id.container, new FavoriteFragment()).commit();
+                    transaction.hide(findFragment).show(favoriteFragment).commit();
                 }
                 break;
             case R.id.find:
                 if (!find.isSelected()) {
                     Favorite.setSelected(false);
                     find.setSelected(true);
-                    transaction.replace(R.id.container, new FindFragment()).commit();
+                    if (getSupportFragmentManager().findFragmentByTag("findFragment") == null) {
+                        transaction.add(R.id.container, findFragment, "findFragment").show(findFragment).hide(favoriteFragment).commit();
+                    } else {
+                        transaction.hide(favoriteFragment).show(findFragment).commit();
+                    }
                 }
                 break;
         }

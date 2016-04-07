@@ -15,7 +15,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.FindBean;
-import co.quchu.quchu.widget.TagCloudView;
 
 /**
  * Created by no21 on 2016/4/5.
@@ -26,25 +25,38 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHold> {
 
     private List<FindBean.ResultEntity> result;
 
+    private OnItenClickListener listener;
+
     public FindAdapter(List<FindBean.ResultEntity> result) {
         this.result = result;
     }
 
+    public void setListener(OnItenClickListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public ViewHold onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_find, parent, false);
         return new ViewHold(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHold holder, int position) {
-        FindBean.ResultEntity bean = result.get(position);
+    public void onBindViewHolder(ViewHold holder, final int position) {
+        final FindBean.ResultEntity bean = result.get(position);
 
         holder.name.setText(bean.getName());
 
         if (bean.getImage().size() > 0)
             holder.simpleDraweeView.setImageURI(Uri.parse(bean.getImage().get(0).getImgpath()));
         holder.address.setText(bean.getAddress());
+        if (listener != null)
+            holder.editContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.itemClick(bean);
+                }
+            });
     }
 
     @Override
@@ -55,8 +67,9 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHold> {
     class ViewHold extends RecyclerView.ViewHolder {
         @Bind(R.id.name)
         TextView name;
-        @Bind(R.id.tag)
-        TagCloudView tag;
+        @Bind(R.id.deitContent)
+        TextView editContent;
+
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
         @Bind(R.id.address)
@@ -66,5 +79,9 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHold> {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnItenClickListener {
+        void itemClick(FindBean.ResultEntity entity);
     }
 }

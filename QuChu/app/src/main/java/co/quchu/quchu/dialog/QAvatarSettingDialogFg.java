@@ -16,7 +16,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
-import co.quchu.quchu.view.activity.AccountSettingActivity;
 import co.quchu.quchu.view.adapter.SettingQAvatarGridAdapter;
 
 /**
@@ -31,21 +30,31 @@ public class QAvatarSettingDialogFg extends BlurDialogFragment {
     TextView dialogLocationSelectedCityTv;
     @Bind(R.id.dialog_location_rv)
     GridView dialogLocationRv;
+    private OnItenSelected listener;
 
-    /**
-     * Retrieve a new instance of the sample fragment.
-     *
-     * @param imageList
-     * @return well instantiated fragment.
-     * Serializable cityList
-     */
-    public static QAvatarSettingDialogFg newInstance(ArrayList<Integer> imageList) {
-        QAvatarSettingDialogFg fragment = new QAvatarSettingDialogFg();
+//    /**
+//     * Retrieve a new instance of the sample fragment.
+//     *
+//     * @param imageList
+//     * @return well instantiated fragment.
+//     * Serializable cityList
+//     */
+//    public static QAvatarSettingDialogFg newInstance(ArrayList<Integer> imageList, OnItenSelected listener) {
+//        QAvatarSettingDialogFg fragment = new QAvatarSettingDialogFg();
+//        Bundle args = new Bundle();
+//        args.putSerializable(CITY_LIST_MODEL, imageList);
+//        fragment.setArguments(args);
+//        listener = listener;
+//        return fragment;
+//    }
+
+    public void init(ArrayList<Integer> imageList, OnItenSelected listener) {
         Bundle args = new Bundle();
         args.putSerializable(CITY_LIST_MODEL, imageList);
-        fragment.setArguments(args);
-        return fragment;
+        setArguments(args);
+        this.listener = listener;
     }
+
 
     private ArrayList<Integer> imageList = null;
 
@@ -74,8 +83,9 @@ public class QAvatarSettingDialogFg extends BlurDialogFragment {
         dialogLocationRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (imageList != null) {
-                    ((AccountSettingActivity) getActivity()).updateAvatar(imageList.get(position));
+                if (imageList != null&&listener!=null) {
+                    listener.itemSelected(imageList.get(position));
+//                    ((AccountSettingActivity) getActivity()).updateAvatar(imageList.get(position));
                 }
                 QAvatarSettingDialogFg.this.dismiss();
             }
@@ -125,5 +135,7 @@ public class QAvatarSettingDialogFg extends BlurDialogFragment {
         ButterKnife.unbind(this);
     }
 
-
+    public interface OnItenSelected {
+        void itemSelected(int imageId);
+    }
 }

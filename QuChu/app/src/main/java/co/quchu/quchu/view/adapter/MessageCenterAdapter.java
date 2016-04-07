@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,10 +31,10 @@ import co.quchu.quchu.utils.KeyboardUtils;
 public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdapter.MessageCenterItemHolder> {
 
     private Context mContext;
-    private List<MessageModel> messageModelArrayList;
+    private List<MessageModel.ResultBean> messageModelArrayList;
 
 
-    public MessageCenterAdapter(Context mContext, List<MessageModel> messageList) {
+    public MessageCenterAdapter(Context mContext, List<MessageModel.ResultBean> messageList) {
         this.mContext = mContext;
         this.messageModelArrayList = messageList;
     }
@@ -48,7 +47,8 @@ public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdap
 
     @Override
     public void onBindViewHolder(MessageCenterItemHolder holder, int position) {
-        MessageModel model = messageModelArrayList.get(position);
+
+        MessageModel.ResultBean model = messageModelArrayList.get(position);
         holder.itemMessageFromAvator.setImageURI(Uri.parse(model.getFormPhoto()));
         holder.itemMessageDesTv.setText(model.getContent());
         holder.itemMessageUserNameTv.setText(model.getForm());
@@ -82,7 +82,7 @@ public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdap
         }
     }
 
-    public void changeDateSet(List<MessageModel> arrayList) {
+    public void changeDateSet(List<MessageModel.ResultBean> arrayList) {
         this.messageModelArrayList = arrayList;
         this.notifyDataSetChanged();
     }
@@ -123,9 +123,10 @@ public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdap
             switch (view.getId()) {
                 case R.id.item_message_follow_tv:
                     DialogUtil.showProgess(mContext, R.string.loading_dialog_text);
-                    MessageCenterPresenter.followMessageCenterFriends(mContext, messageModelArrayList.get(getPosition()).getFormId(), "yes".equals(messageModelArrayList.get(getPosition()).getCome()), new MessageCenterPresenter.MessageGetDataListener() {
+                    MessageCenterPresenter.followMessageCenterFriends(mContext, messageModelArrayList.get(getPosition()).getFormId(),
+                            "yes".equals(messageModelArrayList.get(getPosition()).getCome()), new MessageCenterPresenter.MessageGetDataListener() {
                         @Override
-                        public void onSuccess(List<MessageModel> arrayList) {
+                        public void onSuccess(MessageModel arrayList) {
                             if ("yes".equals(messageModelArrayList.get(getPosition()).getCome())) {
                                 messageModelArrayList.get(getPosition()).setCome("no");
                             } else {

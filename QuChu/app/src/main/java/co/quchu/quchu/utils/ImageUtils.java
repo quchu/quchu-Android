@@ -172,13 +172,19 @@ public class ImageUtils {
 
     public static void ShowImage(String uri, final SimpleDraweeView view) {
 
-        if (null==uri){
+        if (null == uri) {
             return;
         }
+        int width;
+        int height;
+
+        width = view.getWidth();
+        height = view.getHeight();
+
 
         ImageRequest imageRequest = ImageRequestBuilder
                 .newBuilderWithSource(Uri.parse(uri))
-                .setResizeOptions(new ResizeOptions(150, 150))//图片目标大小
+                .setResizeOptions(new ResizeOptions(width == 0 ? 150 : width, height == 0 ? 150 : height))//图片目标大小
                 .build();
 
         DraweeController controller = Fresco.newDraweeControllerBuilder()
