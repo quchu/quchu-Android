@@ -20,7 +20,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.view.adapter.MFootprintAdapter;
 import co.quchu.quchu.widget.ScrollIndexView;
 
-public class MFootprintActivity extends BaseActivity implements IFootprintActivity {
+public class MyFootprintActivity extends BaseActivity implements IFootprintActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
