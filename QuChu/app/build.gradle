@@ -11,7 +11,7 @@ android {
         targetSdkVersion 16
         versionCode 1005
         versionName "1.1.2"
-        renderscriptTargetApi 22
+        renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
     }
     lintOptions {
