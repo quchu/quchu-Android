@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
 
     defaultConfig {
@@ -106,9 +106,11 @@ android {
 repositories {
     maven { url "https://jitpack.io" }
 }
-String  supportVersion(){
+
+String supportVersion() {
     '23.3.0'
 }
+
 dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'

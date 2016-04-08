@@ -23,7 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 import co.quchu.quchu.widget.ScrollIndexView;
 
@@ -81,7 +80,6 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
                             Random randomh = new Random();
                             int h = randomh.nextInt(13);
                             int m = randomh.nextInt(61);
-                            LogUtils.e("当前时间是" + h + ":" + m);
                             scrollIndexView.startTimeAnamation(h, m);
                         }
                     });
