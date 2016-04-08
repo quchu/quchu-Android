@@ -7,13 +7,14 @@ android {
 
     defaultConfig {
         applicationId "co.quchu.quchu"
-        minSdkVersion 16
         targetSdkVersion 16
+        minSdkVersion 16
         versionCode 1005
         versionName "1.1.2"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
-        generatedDensities = ['xhdpi']
+        vectorDrawables.generatedDensities = ['xhdpi']
+        vectorDrawables.useSupportLibrary = true
     }
     lintOptions {
         abortOnError false

@@ -155,6 +155,7 @@
                        android:layout_height="wrap_content"
                        android:layout_marginLeft="@dimen/base_margin"
                        android:layout_marginRight="@dimen/base_margin"
+                       android:visibility="invisible"
                        android:orientation="horizontal"
                        >
 
