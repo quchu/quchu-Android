@@ -17,6 +17,5 @@
         card_view:failureImage="@mipmap/ic_image_empty"
         card_view:failureImageScaleType="focusCrop"
         card_view:actualImageScaleType="focusCrop"
-        card_view:placeholderImageScaleType="focusCrop"
-        card_view:roundedCornerRadius="4dp" />
+        card_view:placeholderImageScaleType="focusCrop"/>
 </LinearLayout>

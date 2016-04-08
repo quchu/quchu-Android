@@ -17,7 +17,6 @@
         android:textColor="@color/text_color_white"
         android:textSize="@dimen/word_subhead_size" />
 
-    <View style="@style/DetailHorizontalLine" />
 
     <TextView
         android:id="@+id/detail_store_business_hours_value_tv"

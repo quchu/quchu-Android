@@ -34,8 +34,6 @@
                 android:src="@mipmap/ic_detail_right_arrow" />
         </LinearLayout>
 
-        <View style="@style/DetailHorizontalLine" />
-
         <LinearLayout
             android:id="@+id/detail_store_phone_ll"
             android:layout_width="match_parent"

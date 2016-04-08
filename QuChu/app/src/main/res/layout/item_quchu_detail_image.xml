@@ -11,6 +11,9 @@
         android:id="@+id/item_card_image_sdv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        card_view:placeholderImage="@mipmap/ic_image_empty"
+        card_view:failureImage="@mipmap/ic_image_empty"
+        card_view:failureImageScaleType="focusCrop"
         card_view:actualImageScaleType="focusCrop"
         card_view:placeholderImageScaleType="focusCrop"/>
 
@@ -34,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Null"
-                android:layout_marginLeft="@dimen/half_margin"
+                android:layout_marginLeft="@dimen/base_margin"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/word_subhead_size"
                 />
@@ -45,8 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:background="@color/detail_avg_price_text_bg"
-                android:paddingLeft="@dimen/half_margin"
-                android:paddingRight="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
                 android:textColor="@color/text_color_white"
                 android:text="Null"
                 android:textSize="@dimen/word_size_body" />
@@ -57,8 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/quarter_margin"
-            android:layout_marginLeft="@dimen/half_margin"
             android:layout_marginTop="@dimen/quarter_margin"
+            android:layout_marginLeft="@dimen/base_margin"
             card_view:prb_clickable="false"
             card_view:prb_defaultRating="4"
             card_view:prb_tickSpacing="3dip"
@@ -71,10 +73,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/detail_avg_price_tv"
-            card_view:tcvBorder="8dp"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginBottom="@dimen/quarter_margin"
             card_view:tcvCanTagClick="false"
             card_view:tcvItemBorderHorizontal="10dp"
-            card_view:tcvItemBorderVertical="4dp"
             card_view:tcvRightResId="@null"
             card_view:tcvSingleLine="true"
             card_view:tcvTextColor="@color/text_color_white" />

@@ -17,7 +17,6 @@
         android:textColor="@color/text_color_white"
         android:textSize="@dimen/word_subhead_size" />
 
-    <View style="@style/DetailHorizontalLine" />
 
     <!--     <RelativeLayout
              android:layout_width="wrap_content"
