@@ -130,7 +130,7 @@ public class MeActivity extends BaseActivity implements ASUserPhotoDialogFg.User
                 startActivity(intent);
                 break;
             case R.id.footPrint://脚印
-                intent = new Intent(this, MFootprintActivity.class);
+                intent = new Intent(this, MyFootprintActivity.class);
                 startActivity(intent);
                 break;
             case R.id.friend://趣友圈
