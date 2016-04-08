@@ -1,34 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/base_margin"
     android:fitsSystemWindows="true"
+    android:background="@color/appBackground"
     android:orientation="vertical">
 
-    <!--   android:foreground="?attr/selectableItemBackground"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="@dimen/cardview_elevation"-->
-    <View
-        android:layout_width="0.1dp"
-        android:layout_height="@dimen/quarter_margin" />
-
-    <RelativeLayout
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/item_card_image_sdv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/ic_card_shadow_full_image_bg">
+        card_view:actualImageScaleType="focusCrop"
+        card_view:placeholderImageScaleType="focusCrop"/>
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/item_card_image_sdv"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onViewClick"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:background="@color/translucent_dark"
+        >
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:actualImageScaleType="focusCrop"
-            card_view:placeholderImageScaleType="focusCrop"
-            card_view:roundedCornerRadius="4dp" />
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/half_margin"
+            >
+            <TextView
+                android:id="@+id/detail_store_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Null"
+                android:layout_marginLeft="@dimen/half_margin"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/word_subhead_size"
+                />
+            <TextView
+                android:layout_alignTop="@id/detail_store_name_tv"
+                android:id="@+id/detail_avg_price_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@color/detail_avg_price_text_bg"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/base_margin"
+                android:textColor="@color/text_color_white"
+                android:text="Null"
+                android:textSize="@dimen/word_size_body" />
+        </RelativeLayout>
 
-    <View
-        android:layout_width="0.1dp"
-        android:layout_height="@dimen/quarter_margin" />
-</LinearLayout>
+        <co.quchu.quchu.widget.ratingbar.ProperRatingBar
+            android:id="@+id/detail_suggest_prb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/quarter_margin"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_marginTop="@dimen/quarter_margin"
+            card_view:prb_clickable="false"
+            card_view:prb_defaultRating="4"
+            card_view:prb_tickSpacing="3dip"
+            card_view:prb_tickNormalDrawable="@drawable/ic_like_fill"
+            card_view:prb_tickSelectedDrawable="@drawable/ic_like_fill_checked"
+            card_view:prb_totalTicks="5" />
+
+        <co.quchu.quchu.widget.TagCloudView
+            android:id="@+id/detail_store_tagclound_tcv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/detail_avg_price_tv"
+            card_view:tcvBorder="8dp"
+            card_view:tcvCanTagClick="false"
+            card_view:tcvItemBorderHorizontal="10dp"
+            card_view:tcvItemBorderVertical="4dp"
+            card_view:tcvRightResId="@null"
+            card_view:tcvSingleLine="true"
+            card_view:tcvTextColor="@color/text_color_white" />
+
+    </LinearLayout>
+
+</RelativeLayout>

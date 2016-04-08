@@ -45,13 +45,13 @@ import co.quchu.quchu.widget.RecommendTitleGroup;
  * 趣处分类、推荐
  */
 public class RecommendActivity extends BaseActivity {
-    @Bind(R.id.recommend_title_location_iv)
-    ImageView recommendTitleLocationIv;
+    @Bind(R.id.recommend_title_location_tv)
+    TextView recommendTitleLocationIv;
 
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
-    @Bind(R.id.recommend_title_more_rl)
-    MoreButtonView recommendTitleMoreRl;
+    @Bind(R.id.recommend_title_more_iv)
+    ImageView recommendTitleMoreRl;
     @Bind(R.id.recommend_title_center_rtg)
     RecommendTitleGroup recommendTitleCenterRtg;
     @Bind(R.id.search_bar)
@@ -90,7 +90,7 @@ public class RecommendActivity extends BaseActivity {
 //            }
 //        });
 
-        recommendTitleMoreRl.setMoreClick(this);
+        recommendTitleMoreRl.setOnClickListener(this);
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
@@ -169,7 +169,7 @@ public class RecommendActivity extends BaseActivity {
                     })
                     .start();
 
-            recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
+            //recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
             titleContentTv.setVisibility(View.INVISIBLE);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
 
@@ -195,7 +195,7 @@ public class RecommendActivity extends BaseActivity {
                         }
                     })
                     .start();
-            recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
+            //recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
             recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
             titleContentTv.setVisibility(View.INVISIBLE);
         }

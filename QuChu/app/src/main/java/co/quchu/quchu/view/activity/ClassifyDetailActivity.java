@@ -86,7 +86,6 @@ public class ClassifyDetailActivity extends BaseActivity implements RecommendAda
                 AppContext.selectedPlace = dCardList.get(position);
                 Intent intent = new Intent(this, QuchuDetailsActivity.class);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, dCardList.get(position).getPid());
-                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_POSITION, position);
                 this.startActivity(intent);
                 break;
             case R.id.item_recommend_card_collect_rl:

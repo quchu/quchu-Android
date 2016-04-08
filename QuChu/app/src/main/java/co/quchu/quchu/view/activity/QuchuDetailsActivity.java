@@ -53,24 +53,18 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     @Bind(R.id.detail_been_tv)
     TextView detailBeenTv;
-    @Bind(R.id.detail_button_group_out_ll)
-    LinearLayout detailButtonGroupOutLl;    //悬浮操作条
-    @Bind(R.id.detail_button_collect_out_iv)
-    ImageView detailButtonCollectOutIv;
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
     @Bind(R.id.detail_recyclerview)
     RecyclerView mRecyclerView;
 
     public static final String REQUEST_KEY_PID = "pid";
-    public static final String REQUEST_KEY_POSITION = "position";
 
-    private int pId, pPosition = 0;
+    private int pId = 0;
     public DetailModel dModel = new DetailModel();
     private GatherViewModel gatherViewModel;
     private long startViewTime = 0L;
     private QuchuDetailsAdapter mQuchuDetailAdapter;
-    int detailButtonGroupLlHeight = -1;
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -90,24 +84,6 @@ public class QuchuDetailsActivity extends BaseActivity {
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mQuchuDetailAdapter);
-        /**
-         *buttonGroup 控件位置计算 =图片高度+图片marginTop值16+图片上下view 高度8（各4）+ buttonGroup 的marginTop值８+阴影高度２
-         */
-        detailButtonGroupLlHeight = (int) ((AppContext.Width - StringUtils.dip2px(this, 28)) / 1.2f + StringUtils.dip2px(this, 34));
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            private int scrollTotal = 0;
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                scrollTotal += dy;
-                if (scrollTotal != 0 && detailButtonGroupLlHeight <= scrollTotal) {
-                    detailButtonGroupOutLl.setVisibility(View.VISIBLE);
-                } else {
-                    detailButtonGroupOutLl.setVisibility(View.GONE);
-                }
-            }
-        });
         startViewTime = System.currentTimeMillis();
     }
 
@@ -118,7 +94,6 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     private void initData() {
         pId = getIntent().getIntExtra(REQUEST_KEY_PID, -1);
-        pPosition = getIntent().getIntExtra(REQUEST_KEY_POSITION, 0);
         if (-1 == pId) {
             Toast.makeText(this, "该趣处已不存在!", Toast.LENGTH_SHORT).show();
         } else {
@@ -155,17 +130,12 @@ public class QuchuDetailsActivity extends BaseActivity {
 
 
     private void changeCollectState(boolean isCollect) {
-        if (isCollect) {
-            detailButtonCollectOutIv.setImageResource(R.mipmap.ic_detail_collect);
-        } else {
-            detailButtonCollectOutIv.setImageResource(R.mipmap.ic_detail_uncollect);
-        }
         dModel.setIsf(isCollect);
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 
 
-    @OnClick({R.id.detail_want_tv, R.id.detail_been_tv, R.id.detail_button_collect_out_rl, R.id.detail_button_share_out_rl, R.id.detail_button_add_postcard_out_rl})
+    @OnClick({R.id.detail_want_tv, R.id.detail_been_tv})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -198,7 +168,6 @@ public class QuchuDetailsActivity extends BaseActivity {
                     if (AppContext.user != null && dModel != null)
                         AppContext.gatherList.add(new GatherWantGoModel(AppContext.user.getUserId(), dModel.getPid()));
                     break;
-                case R.id.detail_button_add_postcard_out_rl:
                 case R.id.detail_button_add_postcard_rl:
 
                     //添加明信片
@@ -208,12 +177,10 @@ public class QuchuDetailsActivity extends BaseActivity {
                     intent.setClass(this, FootPrintActivity.class);
                     startActivity(intent);
                     break;
-                case R.id.detail_button_collect_out_rl:
                 case R.id.detail_button_collect_rl:
                     //收藏
                     setFavorite();
                     break;
-                case R.id.detail_button_share_out_rl:
                 case R.id.detail_button_share_rl:
                     //分享
                     try {

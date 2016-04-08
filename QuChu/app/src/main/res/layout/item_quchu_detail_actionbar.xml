@@ -5,8 +5,8 @@
     android:layout_height="@dimen/detail_button_group_height"
     android:gravity="center_vertical"
     android:layout_marginTop="@dimen/half_margin"
-    android:background="@mipmap/ic_card_shadow_bg"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
     <RelativeLayout
         android:id="@+id/detail_button_collect_rl"

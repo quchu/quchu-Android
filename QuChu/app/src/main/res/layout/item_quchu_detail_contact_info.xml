@@ -5,7 +5,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/half_margin"
-        android:background="@mipmap/ic_card_shadow_bg"
         android:orientation="vertical">
 
         <LinearLayout

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,8 +27,6 @@ public class FootPrintActivity extends BaseActivity {
     TextView titleContentTv;
     @Bind(R.id.rvFootPrint)
     RecyclerView rvFootPrint;
-    @Bind(R.id.flickr_fbg)
-    FlickrButtonGroup flickrFbg;
     FootPrintAdapter mAdapter;
 
     @Override
@@ -49,21 +48,8 @@ public class FootPrintActivity extends BaseActivity {
 
         mAdapter = new FootPrintAdapter(mData);
         rvFootPrint.setAdapter(mAdapter);
-        rvFootPrint.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL,false));
+        rvFootPrint.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
 
-        flickrFbg.setSelectedListener(new FlickrButtonGroup.FlickrOnSelectedistener() {
-            @Override
-            public void onViewsClick(int flag) {
-                switch (flag){
-                    case FlickrButtonGroup.SelectedL:
-                        rvFootPrint.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-                        break;
 
-                    case FlickrButtonGroup.SelectedR:
-                        rvFootPrint.setLayoutManager(new GridLayoutManager(getApplicationContext(),4));
-                        break;
-                }
-            }
-        });
     }
 }

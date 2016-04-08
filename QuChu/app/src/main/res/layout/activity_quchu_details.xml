@@ -63,92 +63,11 @@
         android:layout_height="match_parent"
         android:layout_above="@id/detail_bottom_group_ll"
         android:layout_below="@id/title_bar"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/detail_marginright"
         android:scrollbars="none"
         />
 
 
 
-    <LinearLayout
-        android:id="@+id/detail_button_group_out_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title_bar"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:background="@color/appBackground_dark"
-        android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/detail_button_group_height"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="2px"
-                android:layout_marginBottom="@dimen/quarter_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/detail_marginright"
-                android:background="@mipmap/ic_card_shadow_bg"
-                android:orientation="horizontal">
-
-                <RelativeLayout
-                    android:id="@+id/detail_button_collect_out_rl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/detail_button_collect_out_iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@mipmap/ic_detail_uncollect" />
-                </RelativeLayout>
-
-                <View
-                    style="@style/DetailVerticalLine"
-                    android:layout_marginBottom="@dimen/tow_dp_margin"
-                    android:layout_marginTop="@dimen/quarter_margin" />
-
-
-                <RelativeLayout
-                    android:id="@+id/detail_button_share_out_rl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@mipmap/ic_detail_share" />
-                </RelativeLayout>
-
-                <View
-                    style="@style/DetailVerticalLine"
-                    android:layout_marginBottom="@dimen/tow_dp_margin"
-                    android:layout_marginTop="@dimen/quarter_margin" />
-
-                <RelativeLayout
-                    android:id="@+id/detail_button_add_postcard_out_rl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@mipmap/ic_detail_add_postcard" />
-                </RelativeLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-
-    </LinearLayout>
 
 </RelativeLayout>
