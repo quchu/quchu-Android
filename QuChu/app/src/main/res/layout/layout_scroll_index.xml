@@ -22,9 +22,10 @@
 
 
     <TextView
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:text="10:40" />
+        android:text="00:00" />
 
 </RelativeLayout>

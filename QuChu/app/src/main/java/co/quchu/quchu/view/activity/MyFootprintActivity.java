@@ -1,5 +1,8 @@
 package co.quchu.quchu.view.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -9,14 +12,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 import co.quchu.quchu.widget.ScrollIndexView;
 
@@ -54,19 +61,34 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         headView.setImageURI(Uri.parse("res:///" + R.mipmap.ic_launcher));
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                //设置位置
-                int y = (int) recyclerView.getY();
-                int height = recyclerView.getLayoutManager().getHeight();
-                int firstPosition = recyclerView.getChildAdapterPosition(recyclerView.getChildAt(0));
-                int itemCount = recyclerView.getAdapter().getItemCount();
-                int yy = (int) (height * (firstPosition / (float) itemCount));
-                scrollIndexView.setY(yy + y);
-                //设置时钟
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    //设置位置
+
+                    float y = recyclerView.getY();
+                    int height = recyclerView.getLayoutManager().getHeight();
+                    int firstPosition = recyclerView.getChildAdapterPosition(recyclerView.getChildAt(0));
+                    int itemCount = recyclerView.getAdapter().getItemCount();
+                    int yy = (int) (height * (firstPosition / (float) itemCount));
+                    ObjectAnimator animation = ObjectAnimator.ofFloat(scrollIndexView, "translationY", scrollIndexView.getY(), yy + y);
+                    animation.setDuration(800);
+                    animation.setInterpolator(new DecelerateInterpolator());
+                    animation.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            //设置时钟
+                            Random randomh = new Random();
+                            int h = randomh.nextInt(13);
+                            int m = randomh.nextInt(61);
+                            LogUtils.e("当前时间是" + h + ":" + m);
+                            scrollIndexView.startTimeAnamation(h, m);
+                        }
+                    });
 
 
+                    animation.start();
+                }
             }
         });
     }

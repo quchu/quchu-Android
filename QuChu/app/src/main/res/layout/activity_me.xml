@@ -235,8 +235,8 @@
                 app:roundProgressBackground="@color/itemMask_black"
                 app:roundProgressColor="@color/planet_progress_yellow"
                 app:roundWidth="8dp"
-                app:textSize="@dimen/word_size_time"
-                app:textStyle="Word" />
+                app:textSize="@dimen/word_size_body"
+                app:textStyle="Num" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -266,8 +266,8 @@
                 app:roundProgressBackground="@color/itemMask_black"
                 app:roundProgressColor="@color/planet_progress_yellow"
                 app:roundWidth="8dp"
-                app:textSize="@dimen/word_size_time"
-                app:textStyle="Word" />
+                app:textSize="@dimen/word_size_body"
+                app:textStyle="Num" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -297,8 +297,8 @@
                 app:roundProgressBackground="@color/itemMask_black"
                 app:roundProgressColor="@color/planet_progress_yellow"
                 app:roundWidth="8dp"
-                app:textSize="@dimen/word_size_time"
-                app:textStyle="Word" />
+                app:textSize="@dimen/word_size_body"
+                app:textStyle="Num" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -328,8 +328,8 @@
                 app:roundProgressBackground="@color/itemMask_black"
                 app:roundProgressColor="@color/planet_progress_yellow"
                 app:roundWidth="8dp"
-                app:textSize="@dimen/word_size_time"
-                app:textStyle="Word" />
+                app:textSize="@dimen/word_size_body"
+                app:textStyle="Num" />
 
             <TextView
                 android:layout_width="wrap_content"

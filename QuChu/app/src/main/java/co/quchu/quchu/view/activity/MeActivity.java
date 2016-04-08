@@ -30,12 +30,14 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
+import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
+import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.widget.RoundProgressView;
 
-public class MeActivity extends BaseActivity implements ASUserPhotoDialogFg.UserPhotoOriginSelectedListener, GalleryFinal.OnHanlderResultCallback {
+public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhotoDialogFg.UserPhotoOriginSelectedListener, GalleryFinal.OnHanlderResultCallback {
 
     @Bind(R.id.back)
     ImageView back;
@@ -71,14 +73,17 @@ public class MeActivity extends BaseActivity implements ASUserPhotoDialogFg.User
     @Bind(R.id.name)
     TextView name;
 
+    private MeActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_me);
         ButterKnife.bind(this);
+        presenter = new MeActivityPresenter(this, this);
         initListener();
         initData();
+
     }
 
     private void initData() {
@@ -88,6 +93,8 @@ public class MeActivity extends BaseActivity implements ASUserPhotoDialogFg.User
             name.setText(AppContext.user.getFullname());
         }
         bgSimpleDraweeView.setImageURI(Uri.parse("res:///" + R.mipmap.bg_user));
+
+        presenter.getGene();
     }
 
     private void initListener() {
@@ -286,4 +293,21 @@ public class MeActivity extends BaseActivity implements ASUserPhotoDialogFg.User
         });
     }
 
+    @Override
+    public void initGene(MyGeneModel data) {
+        List<MyGeneModel.GenesEntity> genes = data.getGenes();
+        if (genes.size() > 3) {
+            curiosity.setProgress(genes.get(0).getWeight());
+//            curiosity.setProgressText((int) genes.get(0).getWeight() + "%");
+
+            eat.setProgress(genes.get(1).getWeight());
+//            eat.setProgressText((int) genes.get(1).getWeight() + "%");
+
+            art.setProgress(genes.get(2).getWeight());
+//            art.setProgressText((int) genes.get(2).getWeight() + "%");
+
+            money.setProgress(genes.get(3).getWeight());
+//            money.setProgressText((int) genes.get(3).getWeight() + "%");
+        }
+    }
 }

@@ -45,7 +45,7 @@ import co.quchu.quchu.widget.planetanimations.MovePath;
 import co.quchu.quchu.widget.planetanimations.MyAnimation;
 
 /**
- * GeneActivity
+ * 我的趣基因
  * User: Chenhs
  * Date: 2015-10-27
  */
