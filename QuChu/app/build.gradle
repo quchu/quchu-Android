@@ -13,6 +13,7 @@ android {
         versionName "1.1.2"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
+        generatedDensities = ['xhdpi']
     }
     lintOptions {
         abortOnError false

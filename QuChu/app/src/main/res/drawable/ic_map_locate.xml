@@ -1,5 +1,5 @@
-<vector android:height="@dimen/icon_size_48dp" android:viewportHeight="50.0"
-    android:viewportWidth="50.0" android:width="@dimen/icon_size_48dp" xmlns:android="http://schemas.android.com/apk/res/android">
+<vector android:height="48dp" android:viewportHeight="50.0"
+    android:viewportWidth="50.0" android:width="48dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="#FF000000" android:pathData="M-31.69,164.99h1079.39v1605.5h-1079.39z"/>
     <path android:fillColor="#B4B4B5" android:pathData="M25,0C11.19,0 0,11.19 0,25c0,13.81 11.19,25 25,25c13.81,0 25,-11.19 25,-25C50,11.19 38.81,0 25,0L25,0zM40.16,40.16c-3.63,3.63 -8.33,5.79 -13.37,6.2l-0.89,-7.08h-1.79l-0.88,7.07c-5.06,-0.41 -9.75,-2.58 -13.37,-6.2c-3.63,-3.63 -5.79,-8.33 -6.2,-13.37l7.07,-0.88v-1.79L3.65,23.23c0.41,-5.06 2.58,-9.75 6.2,-13.37c3.63,-3.63 8.33,-5.79 13.37,-6.2l0.88,7.07h1.79l0.88,-7.07c5.06,0.41 9.75,2.58 13.37,6.2c3.63,3.63 5.79,8.33 6.2,13.37l-7.07,0.88v1.79l7.07,0.88C45.94,31.83 43.77,36.53 40.16,40.16L40.16,40.16zM40.16,40.16"/>
 </vector>
