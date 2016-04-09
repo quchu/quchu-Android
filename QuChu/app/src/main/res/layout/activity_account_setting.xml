@@ -3,7 +3,6 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@color/appBackground"
     android:fitsSystemWindows="true">
 
@@ -11,280 +10,179 @@
         android:id="@+id/account_setting_title_bar"
         layout="@layout/title_bar" />
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/account_setting_title_bar"
-        android:background="@drawable/shape_activity_bg">
+        android:layout_margin="@dimen/base_margin"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="8dp"
+        card_view:cardPreventCornerOverlap="false">
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/base_margin"
-            card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="8dp"
-            card_view:cardPreventCornerOverlap="false">
+            android:orientation="vertical">
 
-            <ScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="always"
-                android:scrollbars="none">
+                android:layout_height="90dp">
 
-                <LinearLayout
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/account_setting_avatar_sdv"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    card_view:actualImageScaleType="focusCrop"
+                    card_view:roundAsCircle="true"
+                    card_view:roundingBorderColor="@color/black"
+                    card_view:roundingBorderWidth="3dp" />
+
+                <TextView
+                    android:id="@+id/account_setting_avatar_editer_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/account_setting_avatar_sdv"
+                    android:layout_marginTop="@dimen/quarter_margin"
+                    android:background="@color/black"
+                    android:paddingBottom="@dimen/tow_dp_margin"
+                    android:paddingLeft="@dimen/quarter_margin"
+                    android:paddingRight="@dimen/quarter_margin"
+                    android:paddingTop="@dimen/tow_dp_margin"
+                    android:text="编辑头像"
+                    android:textColor="@color/gene_textcolor_yellow"
+                    android:textSize="@dimen/word_size_body" />
+
+                <EditText
+                    android:id="@+id/account_setting_nickname_et"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/base_margin"
-                    android:orientation="vertical">
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_toRightOf="@id/account_setting_avatar_sdv"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="用户名"
+                    android:singleLine="true"
+                    android:textColor="@color/account_setting_text_hint_color"
+                    android:textColorHint="@color/account_setting_text_hint_color"
+                    android:textSize="@dimen/word_size_body" />
+
+                <View
+                    style="@style/AccountBHl"
+                    android:layout_alignParentBottom="false"
+                    android:layout_below="@id/account_setting_nickname_et"
+                    android:layout_marginLeft="40dp"
+                    android:layout_toRightOf="@id/account_setting_avatar_sdv" />
+
+                <TextView
+                    android:id="@+id/account_setting_gender_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/account_setting_nickname_et"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_toRightOf="@id/account_setting_avatar_sdv"
+                    android:drawableRight="@mipmap/ic_account_setting_right_arrow"
+                    android:gravity="center_vertical"
+                    android:text="男"
+                    android:textColor="@color/account_setting_text_hint_color"
+                    android:textSize="@dimen/word_size_body" />
+
+                <View
+                    style="@style/AccountBHl"
+                    android:layout_marginLeft="40dp"
+                    android:layout_toRightOf="@id/account_setting_avatar_sdv" />
 
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+            </RelativeLayout>
 
-                        <com.facebook.drawee.view.SimpleDraweeView
-                            android:id="@+id/account_setting_avatar_sdv"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_alignParentLeft="true"
-                            card_view:actualImageScaleType="focusCrop"
-                            card_view:roundAsCircle="true"
-                            card_view:roundingBorderColor="@color/black"
-                            card_view:roundingBorderWidth="3dp" />
+            <RelativeLayout
+                android:id="@+id/accounds"
+                android:layout_width="match_parent"
+                android:layout_height="44dp">
 
-                        <TextView
-                            android:id="@+id/account_setting_avatar_editer_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_below="@id/account_setting_avatar_sdv"
-                            android:layout_marginTop="@dimen/quarter_margin"
-                            android:background="@color/black"
-                            android:paddingBottom="@dimen/tow_dp_margin"
-                            android:paddingLeft="@dimen/quarter_margin"
-                            android:paddingRight="@dimen/quarter_margin"
-                            android:paddingTop="@dimen/tow_dp_margin"
-                            android:text="编辑头像"
-                            android:textColor="@color/gene_textcolor_yellow"
-                            android:textSize="@dimen/word_size_body" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="注册账号"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/word_subhead_size" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_alignTop="@id/account_setting_avatar_sdv"
-                            android:layout_marginLeft="40dp"
-                            android:layout_toRightOf="@id/account_setting_avatar_sdv"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/account_setting_nickname_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:background="@null"
-                                android:ellipsize="end"
-                                android:hint="用户名"
-                                android:singleLine="true"
-                                android:textColor="@color/account_setting_text_hint_color"
-                                android:textColorHint="@color/account_setting_text_hint_color"
-                                android:textSize="@dimen/word_size_body" />
-
-                            <View style="@style/AccountBHl" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_alignBottom="@id/account_setting_avatar_editer_tv"
-                            android:layout_marginLeft="40dp"
-                            android:layout_toRightOf="@id/account_setting_avatar_sdv"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/account_setting_gender_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:hint="男"
-                                android:textColor="@color/account_setting_text_hint_color"
-                                android:textSize="@dimen/word_size_body" />
-
-                            <View style="@style/AccountBHl" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:src="@mipmap/ic_account_setting_right_arrow" />
-
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/accounds"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="注册账号"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/word_subhead_size" />
-
-                        <TextView
-                            android:id="@+id/account_setting_phone_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/account_setting_phone_marginleft"
-                            android:textColor="@color/account_setting_text_hint_color"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View style="@style/AccountBHl" />
-                    </RelativeLayout>
+                <TextView
+                    android:id="@+id/account_setting_phone_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/account_setting_phone_marginleft"
+                    android:drawablePadding="16dp"
+                    android:drawableRight="@mipmap/ic_account_setting_right_arrow"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/account_setting_text_hint_color"
+                    android:textSize="@dimen/word_size_body" />
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/half_margin"
-                        android:text="所在城市"
-                        android:textColor="@color/account_setting_text_hint_color"
-                        android:textSize="@dimen/word_subhead_size" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/account_setting_location_iv"
-                            android:layout_width="48dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:paddingBottom="@dimen/half_margin"
-                            android:paddingTop="@dimen/half_margin"
-                            android:scaleType="center"
-                            android:src="@mipmap/ic_account_setting_location_icon" />
-
-                        <TextView
-                            android:id="@+id/account_setting_user_location"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/half_margin"
-                            android:layout_marginTop="@dimen/half_margin"
-                            android:layout_toLeftOf="@id/account_setting_location_iv"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/word_size_body" />
+                <View style="@style/AccountBHl" />
+            </RelativeLayout>
 
 
-                        <View style="@style/AccountBHl" />
-                    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_margin"
+                android:text="所在城市"
+                android:textColor="@color/account_setting_text_hint_color"
+                android:textSize="@dimen/word_subhead_size" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/half_margin"
-                        android:text="修改密码"
-                        android:textColor="@color/account_setting_text_hint_color"
-                        android:textSize="@dimen/word_subhead_size" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp">
-
-                        <TextView
-                            android:id="@+id/account_setting_newpwd_hint"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginBottom="@dimen/half_margin"
-                            android:layout_marginTop="@dimen/half_margin"
-                            android:text="新　密　码"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_below="@id/account_setting_newpwd_hint" />
-
-                        <EditText
-                            android:id="@+id/account_setting_new_pwd_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/account_setting_phone_marginleft"
-                            android:background="@null"
-                            android:hint="请输入新密码"
-                            android:inputType="textPassword"
-                            android:textColor="@color/account_setting_text_hint_color"
-                            android:textColorHint="@color/account_setting_text_hint_color"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View style="@style/AccountBHl" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp">
-
-                        <TextView
-                            android:id="@+id/account_setting_realpwd_hint"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginBottom="@dimen/half_margin"
-                            android:layout_marginTop="@dimen/half_margin"
-                            android:text="确认新密码"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_below="@id/account_setting_realpwd_hint" />
-
-                        <EditText
-                            android:id="@+id/account_setting_new_pwd_again_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/account_setting_phone_marginleft"
-                            android:background="@null"
-                            android:hint="请再次输入新密码"
-                            android:inputType="textPassword"
-                            android:textColor="@color/account_setting_text_hint_color"
-                            android:textColorHint="@color/account_setting_text_hint_color"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View style="@style/AccountBHl" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/account_setting_save_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/base_margin"
-                        android:background="@color/gene_textcolor_yellow"
-                        android:gravity="center"
-                        android:paddingBottom="@dimen/half_margin"
-                        android:paddingTop="@dimen/half_margin"
-                        android:text="保存以上修改"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/word_subhead_size" />
+            <TextView
+                android:id="@+id/account_setting_user_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/half_margin"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="@dimen/half_margin"
+                android:drawableRight="@mipmap/ic_account_setting_location_icon"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/word_size_body" />
 
 
-                </LinearLayout>
+            <View style="@style/AccountBHl" />
 
-            </ScrollView>
 
-        </android.support.v7.widget.CardView>
+            <include layout="@layout/layout_modiff_password" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/account_setting_save_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/base_margin"
+                android:background="@color/gene_textcolor_yellow"
+                android:gravity="center"
+                android:paddingBottom="@dimen/half_margin"
+                android:paddingTop="@dimen/half_margin"
+                android:text="保存以上修改"
+                android:textColor="@color/black"
+                android:textSize="@dimen/word_subhead_size" />
+
+
+            <TextView
+                android:id="@+id/exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="退出当前账号"
+                android:textColorHint="@color/account_setting_text_hint_color"
+                android:textSize="@dimen/word_size_time" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>

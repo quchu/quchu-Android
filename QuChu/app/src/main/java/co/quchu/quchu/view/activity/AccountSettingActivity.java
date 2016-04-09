@@ -31,10 +31,12 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.GenderSelectedDialogFg;
 import co.quchu.quchu.dialog.LocationSettingDialogFg;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
@@ -59,8 +61,6 @@ public class AccountSettingActivity extends BaseActivity {
     TextView titleContentTv;
     @Bind(R.id.account_setting_avatar_sdv)
     SimpleDraweeView accountSettingAvatarSdv;
-    @Bind(R.id.account_setting_avatar_editer_tv)
-    TextView accountSettingAvatarEditerTv;
     @Bind(R.id.account_setting_nickname_et)
     EditText accountSettingNicknameEt;
     @Bind(R.id.account_setting_gender_tv)
@@ -73,12 +73,9 @@ public class AccountSettingActivity extends BaseActivity {
     EditText accountSettingNewPwdEt;
     @Bind(R.id.account_setting_new_pwd_again_et)
     EditText accountSettingNewPwdAgainEt;
-//    @Bind(R.id.account_setting_location_iv)
-//    ImageView accountSettingLocationIv;
-//    @Bind(R.id.account_setting_save_tv)
-//    TextView accountSettingSaveTv;
-//    @Bind(R.id.accounds)
-//    RelativeLayout accounds;
+    @Bind(R.id.exit)
+    TextView exit;
+
 
     private ArrayList<Integer> imageList;
 
@@ -111,7 +108,6 @@ public class AccountSettingActivity extends BaseActivity {
             accountSettingPhoneTv.setText(AppContext.user.getUsername());
             newUserGender = AppContext.user.getGender();
             accountSettingGenderTv.setText(newUserGender);
-            //   SPUtils.getValueFromSPMap(this, AppKey.LOCATION_CITY)
             newUserLocation = AppContext.user.getLocation();
             accountSettingUserLocation.setText(newUserLocation);
         }
@@ -121,7 +117,7 @@ public class AccountSettingActivity extends BaseActivity {
     ArrayList<CityModel> genderList;
 
     @OnClick({R.id.account_setting_avatar_sdv, R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv
-            , R.id.account_setting_save_tv, R.id.account_setting_user_location, R.id.account_setting_location_iv, R.id.accounds})
+            , R.id.account_setting_save_tv, R.id.account_setting_user_location, R.id.accounds, R.id.exit})
     public void accountClick(View v) {
         switch (v.getId()) {
             case R.id.account_setting_avatar_sdv:
@@ -141,31 +137,48 @@ public class AccountSettingActivity extends BaseActivity {
                 genderDialogFg.show(getFragmentManager(), "gender");
                 break;
             case R.id.account_setting_user_location:
-            case R.id.account_setting_location_iv:
                 LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
                 locationDIalogFg.show(getFragmentManager(), "location");
                 break;
             case R.id.accounds:
-                Intent intent =new Intent(this,BindActivity.class);
+                final Intent intent = new Intent(this, BindActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.exit:
+                ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance(R.string.confirm, R.string.cancel);
+                confirmDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
+                    @Override
+                    public void onClick(int index) {
+                        if (index == ConfirmDialogFg.INDEX_OK) {
+                            VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
+                            vDialog.show(getFragmentManager(), "visitor");
+                            SPUtils.clearUserinfo(AppContext.mContext);
+                            AppContext.user = null;
+                            Intent intent1 = new Intent(AccountSettingActivity.this, UserLoginActivity.class);
+                            intent1.putExtra("IsVisitorLogin", true);
+                            intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent1);
+                        }
+                    }
+                });
+                confirmDialog.show(getFragmentManager(), "confirm");
                 break;
         }
     }
-
-    private final int REQUEST_CODE_GALLERY = 0x01;
-    private final int REQUEST_CODE_CAMERA = 0x02;
 
     //选中头像dialog 点击回调
     public ASUserPhotoDialogFg.UserPhotoOriginSelectedListener listener = new ASUserPhotoDialogFg.UserPhotoOriginSelectedListener() {
         @Override
         public void selectedCamare() {
             initGralley();
+            int REQUEST_CODE_CAMERA = 0x02;
             GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCallback);
         }
 
         @Override
         public void selectedAblum() {
             initGralley();
+            int REQUEST_CODE_GALLERY = 0x01;
             GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
         }
 
@@ -180,7 +193,6 @@ public class AccountSettingActivity extends BaseActivity {
                         updateAvatar(imageId);
                     }
                 });
-//                QAvatarSettingDialogFg qAvatarDIalogFg = QAvatarSettingDialogFg.newInstance(imageList);
                 qAvatarDIalogFg.show(getFragmentManager(), "qAvatar");
             }
         }
