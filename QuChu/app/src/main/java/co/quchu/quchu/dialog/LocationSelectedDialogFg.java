@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -20,6 +22,8 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
@@ -47,6 +51,7 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     TextView tvBottomTips;
 
     private ArrayList<CityModel> cityList;
+
 
     /**
      * Retrieve a new instance of the sample fragment.
@@ -91,6 +96,7 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
                 //保存数据 而后关闭
                 SPUtils.setCityId(CityId);
                 SPUtils.setCityName(cityName);
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED,null));
                 if (getActivity() instanceof RecommendActivity)
                     ((RecommendActivity) getActivity()).updateRecommend();
                 if (AppContext.gatherList == null)

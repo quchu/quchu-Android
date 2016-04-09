@@ -1,128 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/detail_icons_rl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
     android:layout_marginTop="@dimen/half_margin">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_marginBottom="@dimen/quarter_margin"
         android:layout_marginTop="@dimen/half_margin"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/ivParkingSlot"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:layout_weight="1"
+            android:src="@mipmap/ic_parking_slot"
+            />
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
+        <View style="@style/DetailVerticalLine" />
 
-                <RadioButton
-                    android:id="@+id/detail_box_rb"
-                    style="@style/DetailRadioButton"
-                    android:drawableTop="@drawable/rb_detail_box"
-                    android:text="包厢" />
-            </RelativeLayout>
-
-            <View style="@style/DetailVerticalLine" />
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
-
-                <RadioButton
-                    android:id="@+id/detail_mess_rb"
-                    style="@style/DetailRadioButton"
-                    android:drawableTop="@drawable/rb_detail_mess"
-                    android:text="堂食" />
-            </RelativeLayout>
-
-            <View style="@style/DetailVerticalLine" />
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
-
-                <RadioButton
-                    android:id="@+id/detail_takeout_rb"
-                    style="@style/DetailRadioButton"
-                    android:drawableTop="@drawable/rb_detail_takeout"
-                    android:text="外送" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/ivPrivateRoom"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="@dimen/half_margin"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:layout_weight="1"
+            android:src="@mipmap/ic_private_room"
+            />
+        <View style="@style/DetailVerticalLine" />
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
+        <ImageView
+            android:id="@+id/ivDeliver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:src="@mipmap/ic_diliver"
+            />
+        <View style="@style/DetailVerticalLine" />
 
-                <RadioButton
-                    android:id="@+id/detail_cash_rb"
-                    style="@style/DetailRadioButton"
-                    android:drawableTop="@drawable/rb_detail_cash"
-                    android:text="现金" />
-            </RelativeLayout>
+        <ImageView
+            android:id="@+id/ivParty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:src="@mipmap/ic_party"
+            />
+        <View style="@style/DetailVerticalLine" />
 
-            <View style="@style/DetailVerticalLine" />
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
-
-                <RadioButton
-                    android:id="@+id/detail_cardpay_rb"
-                    style="@style/DetailRadioButton"
-                    android:drawableTop="@drawable/rb_detail_cardpay"
-                    android:text="银行卡" />
-            </RelativeLayout>
-
-            <View style="@style/DetailVerticalLine" />
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
-
-                <RadioButton
-                    android:id="@+id/detail_zfb_rb"
-                    style="@style/DetailRadioButton"
-                    android:drawableTop="@drawable/rb_detail_zfb"
-                    android:text="支付宝" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
-
-                <RadioButton
-                    android:id="@+id/detail_wechat_rb"
-                    style="@style/DetailRadioButton"
-                    android:drawableTop="@drawable/rb_detail_wechat"
-                    android:text="微信支付" />
-            </RelativeLayout>
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/ivAliCredit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:src="@mipmap/ic_alicredit"
+            />
     </LinearLayout>
-</RelativeLayout>
+
+    <View
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        style="@style/DetailHorizontalLine" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivCash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:src="@mipmap/ic_cash"
+            />
+
+        <View style="@style/DetailVerticalLine" />
+
+        <ImageView
+            android:id="@+id/ivVisaCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:src="@mipmap/ic_visacard"
+            />
+        <View style="@style/DetailVerticalLine" />
+
+        <ImageView
+            android:id="@+id/ivAlipay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:src="@mipmap/ic_alipay"
+            />
+        <View style="@style/DetailVerticalLine" />
+
+        <ImageView
+            android:id="@+id/ivWechatPay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:src="@mipmap/ic_wechatpay"
+            />
+        <View style="@style/DetailVerticalLine" />
+
+        <ImageView
+            android:id="@+id/ivApplePay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/quarter_margin"
+            android:layout_marginRight="@dimen/quarter_margin"
+            android:src="@mipmap/ic_applepay"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        style="@style/DetailHorizontalLine"
+        />
+</LinearLayout>

@@ -5,65 +5,62 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginLeft="@dimen/base_margin"
+    android:layout_marginTop="@dimen/base_margin"
+    android:layout_marginRight="@dimen/base_margin"
     app:cardBackgroundColor="@color/lineBackground_gray"
-    card_view:cardCornerRadius="4dp"
+    card_view:cardCornerRadius="0dp"
     card_view:cardElevation="@dimen/cardview_elevation"
     card_view:cardPreventCornerOverlap="false">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp">
+        android:paddingLeft="@dimen/base_margin">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/base_margin"
             android:layout_toLeftOf="@id/simpleDraweeView"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/white"
-            android:textSize="@dimen/word_title_body" />
+            android:textSize="@dimen/word_subhead_size" />
 
         <co.quchu.quchu.widget.TagCloudView
             android:id="@+id/tag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
-            android:layout_marginTop="16dp"
-            android:layout_toLeftOf="@id/simpleDraweeView"
-            card_view:tcvBackground="@drawable/shape_recommend_card_tag_bg"
-            card_view:tcvBorder="8dp"
+            android:layout_marginTop="@dimen/half_margin"
             card_view:tcvCanTagClick="false"
-            card_view:tcvItemBorderHorizontal="1dp"
-            card_view:tcvItemBorderVertical="4dp"
+            card_view:tcvItemBorderHorizontal="10dp"
             card_view:tcvRightResId="@null"
-            card_view:tcvSingleLine="false"
+            card_view:tcvSingleLine="true"
             card_view:tcvTextColor="@color/text_color_white" />
 
         <TextView
             android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tag"
+            android:layout_marginTop="@dimen/half_margin"
+            android:layout_marginRight="@dimen/half_margin"
             android:layout_toLeftOf="@id/simpleDraweeView"
             android:ellipsize="end"
             android:maxLines="1"
-            android:paddingBottom="16dp"
+            android:layout_marginBottom="@dimen/base_margin"
             android:textColor="@color/quchu_favorite_address_text" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/simpleDraweeView"
             android:layout_width="130dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            fresco:viewAspectRatio="1" />
+            fresco:viewAspectRatio="1.3" />
 
     </RelativeLayout>
 

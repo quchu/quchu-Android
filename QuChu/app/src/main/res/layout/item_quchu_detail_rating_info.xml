@@ -1,38 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/half_margin"
-    android:orientation="vertical">
+    android:layout_marginTop="@dimen/base_margin"
+    android:orientation="horizontal">
 
 
-    <co.quchu.quchu.widget.HorizontalNumProgressBar
-        android:id="@+id/detail_progress_one"
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:gravity="center"
+      >
+      <co.quchu.quchu.widget.RoundProgressView
+          android:id="@+id/rpvItemLeft"
+          android:layout_width="80dp"
+          android:layout_height="80dp"
+          app:roundProgressBackground="@color/transparent"
+          app:roundProgressColor="@color/planet_progress_yellow"
+          app:roundColor = "@color/planet_progress_yellow"
+          app:roundWidth="4dp"
+          app:textSize="@dimen/word_size_body"
+          app:textStyle="Num" />
+  </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/base_margin"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
-        android:layout_marginTop="@dimen/half_margin" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        >
+    <co.quchu.quchu.widget.RoundProgressView
+        android:id="@+id/rpvItemMiddle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:roundProgressBackground="@color/transparent"
+        app:roundProgressColor="@color/planet_progress_yellow"
+        app:roundColor = "@color/planet_progress_yellow"
+        app:roundWidth="4dp"
+        app:textSize="@dimen/word_size_body"
+        app:textStyle="Num" />
+        </LinearLayout>
 
-    <co.quchu.quchu.widget.HorizontalNumProgressBar
-        android:id="@+id/detail_progress_tow"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/base_margin"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
-        android:layout_marginTop="@dimen/quarter_margin" />
-
-    <co.quchu.quchu.widget.HorizontalNumProgressBar
-        android:id="@+id/detail_progress_three"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/base_margin"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="@dimen/half_margin"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
-        android:layout_marginTop="@dimen/quarter_margin" />
-
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        >
+    <co.quchu.quchu.widget.RoundProgressView
+        android:id="@+id/rpvItemRight"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:roundProgressBackground="@color/transparent"
+        app:roundProgressColor="@color/planet_progress_yellow"
+        app:roundColor = "@color/planet_progress_yellow"
+        app:roundWidth="4dp"
+        app:textSize="@dimen/word_size_body"
+        app:textStyle="Num" />
+    </LinearLayout>
 </LinearLayout>

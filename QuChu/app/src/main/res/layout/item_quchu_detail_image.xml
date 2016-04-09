@@ -72,7 +72,6 @@
             android:id="@+id/detail_store_tagclound_tcv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/detail_avg_price_tv"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginBottom="@dimen/quarter_margin"
             card_view:tcvCanTagClick="false"

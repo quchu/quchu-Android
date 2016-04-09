@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:background="@color/appBackground"
     android:layout_marginTop="@dimen/half_margin"
     android:orientation="vertical"
     >
@@ -120,4 +119,10 @@
                 android:src="@mipmap/ic_detail_add_postcard" />
         </RelativeLayout>
     </RelativeLayout>
+
+    <View
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        style="@style/DetailHorizontalLine"
+        />
 </LinearLayout>

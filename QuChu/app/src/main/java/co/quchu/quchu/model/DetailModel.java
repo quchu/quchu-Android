@@ -43,20 +43,20 @@ public class DetailModel {
 
     private String activityInfo;
     private String activityInfoHtml;
-    private String address;
+    private String address = "";
     private String autor;
     private String autorPhoto;
-    private String businessHours;
+    private String businessHours = "";
     private String cover;
     private String latitude;
     private String longitude;
     private String name;
     private String net;
     private String price;
-    private String restDay;
+    private String restDay = "";
     private String rgb;
     private String tel;
-    private String traffic;
+    private String traffic = "";
     public String gdLatitude= "";
     public String gdLongitude= "";
     private boolean isActivity;
