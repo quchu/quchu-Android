@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_heigh"
-    tools:showIn="@layout/activity_recommend"
-    >
+    tools:showIn="@layout/activity_recommend">
 
     <RelativeLayout
         android:id="@+id/recommend_title_location_rl"
@@ -16,12 +15,12 @@
             android:layout_width="@dimen/toolbar_item_size"
             android:layout_height="@dimen/toolbar_item_size"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginStart="@dimen/base_margin"
+            android:gravity="center"
             android:text="Null"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginStart="@dimen/base_margin"/>
+            android:textSize="16sp" />
     </RelativeLayout>
 
     <TextView

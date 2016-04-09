@@ -47,7 +47,7 @@ public class GsonRequest<T> extends Request<T> {
     private Map<String, String> params;
     private String paramsJson;
     private boolean result;
-    private static RequestQueue queue;
+    public static RequestQueue queue;
     private Context context;
     private boolean showDialog;
 

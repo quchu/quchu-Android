@@ -2,7 +2,6 @@ package co.quchu.quchu.net;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -10,9 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,8 +36,7 @@ import co.quchu.quchu.view.activity.UserLoginActivity;
 
 public class NetService {
 
-    public static RequestQueue mRequestQueue = Volley
-            .newRequestQueue(AppContext.mContext, new OkHttpStack(new OkHttpClient()));
+    public static RequestQueue mRequestQueue = GsonRequest.queue;
 
     public static void addRequest(Request request, Object tag) {
         if (tag != null) {
@@ -136,7 +132,7 @@ public class NetService {
                 boolean result = false;
 
                 if (response.toString().length() > 4000) {
-                    LogUtils.jsonLong("NetService==",response.toString());
+                    LogUtils.jsonLong("NetService==", response.toString());
                 } else {
                     LogUtils.json("NetService==" + response.toString());
                 }

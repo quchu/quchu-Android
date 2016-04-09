@@ -64,10 +64,7 @@
     <dimen name="app_bar_height">280dp</dimen>
 
 
-
     <dimen name="toolbar_item_size">48dp</dimen>
-
-
 
 
     <dimen name="icon_size_24dp">24dp</dimen>
@@ -87,5 +84,7 @@
     <dimen name="icon_size_200dp">200dp</dimen>
     <dimen name="icon_size_20dp">20dp</dimen>
     <dimen name="icon_size_18dp">18dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
 
 </resources>

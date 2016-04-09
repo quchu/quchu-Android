@@ -288,6 +288,10 @@
             android:name=".view.activity.MyFootprintActivity"
             android:label="我的脚印"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.MyFootprintDetailActivity"
+            android:label="@string/title_activity_my_footprint_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

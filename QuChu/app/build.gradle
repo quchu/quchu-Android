@@ -98,7 +98,7 @@ android {
         }
     }
 
-    useLibrary 'org.apache.http.legacy'
+//    useLibrary 'org.apache.http.legacy'
     sourceSets.main {
         jniLibs.srcDirs = ['libs']
     }
@@ -115,21 +115,13 @@ dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':galleryfinal')
-//    compile "com.android.support:appcompat-v7:${supportVersion()}"
+    compile "com.android.support:appcompat-v7:${supportVersion()}"
     compile "com.android.support:cardview-v7:${supportVersion()}"
     compile "com.android.support:design:${supportVersion()}"
     compile "com.android.support:recyclerview-v7:${supportVersion()}"
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
-//    compile 'com.github.orhanobut:logger:1.12'
-    compile 'com.jakewharton:butterknife:7.0.1'
-//    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
-    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
-    compile 'com.qiniu:qiniu-android-sdk:7.0.+'
-    //七牛
-    compile 'com.facebook.rebound:rebound:0.3.8'//动画回弹效果
-    compile 'com.github.chrisbanes.photoview:library:1.2.3'
-    compile 'org.greenrobot:eventbus:3.0.0'
+    compile "com.android.support:support-v4:${supportVersion()}"
+
+    //动画回弹效果
     compile files('libs/weibosdkcore.jar')
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.2.jar')
@@ -138,11 +130,18 @@ dependencies {
     compile files('libs/AMap_Location_v2.3.0_20160112.jar')
     compile files('libs/Android_Map_V2.7.20151124.jar')
     compile files('libs/umeng-analytics-v5.6.4.jar')
-//    compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'com.he5ed.lib:volley:android-6.0.1_r5'
-    compile 'com.google.code.gson:gson:2.6'
-    compile 'com.facebook.fresco:webpsupport:0.9.0+'
-
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' // or 1.4-beta1
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
+    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
+    compile 'com.qiniu:qiniu-android-sdk:7.0.+'
+    compile 'com.facebook.rebound:rebound:0.3.8'
+    compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.he5ed.lib:volley:android-6.0.1_r5'
+    compile 'com.google.code.gson:gson:2.6'
+    compile 'com.facebook.fresco:fresco:0.9.0+'
+    compile 'com.facebook.fresco:webpsupport:0.9.0+'
 }

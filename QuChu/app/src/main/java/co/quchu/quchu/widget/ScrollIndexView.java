@@ -55,13 +55,16 @@ public class ScrollIndexView extends FrameLayout {
     private void init() {
         inflate(getContext(), R.layout.layout_scroll_index, this);
         ButterKnife.bind(this, this);
+        setVisibility(GONE);
     }
 
 
     public void startTimeAnamation(int hour, int min) {
 
+        if (hour == hourFirstTime && min == minFirstTime) {
+            return;
+        }
         time.setText(hour + ":" + min);
-
         //时
         RotateAnimation hourAnimation = new RotateAnimation(
                 hourFirstTime / 12 * 360, computeDegressHour(hour),
@@ -96,14 +99,15 @@ public class ScrollIndexView extends FrameLayout {
         if (hour < hourFirstTime) {
             offset = 360;
         }
-        return hour / 12 * 360 + offset;
+        return hour / 12 * 360+offset;
     }
 
     private float computeDegressMin(float Targethour, float TargetMin) {
         TargetMin %= 60;
         Targethour %= 12;
 
-        return TargetMin / 60 * 360 + (12 - Math.abs(hourFirstTime - Targethour)) * 360;
+//        return TargetMin / 60 * 360 + (12 - Math.abs(hourFirstTime - Targethour)) * 360;
+        return TargetMin / 60 * 360;
     }
 
 }

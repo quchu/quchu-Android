@@ -1,6 +1,5 @@
 package co.quchu.quchu.view.activity;
 
-import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,7 +34,6 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
-import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.RecommendTitleGroup;
 
 /**
@@ -121,6 +119,16 @@ public class RecommendActivity extends BaseActivity {
                     });
                 }
 
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.recommend_title_more_iv:
+                startActivity(new Intent(this, MeActivity.class));
                 break;
         }
     }
@@ -239,7 +247,6 @@ public class RecommendActivity extends BaseActivity {
         netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
         super.onResume();
         MobclickAgent.onPageStart("MainActivity");
-
 
 
     }
