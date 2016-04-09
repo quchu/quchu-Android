@@ -405,45 +405,23 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         }
 
         final Bitmap finalBm = bm;
-        fRecommendBimgTop.animate()
-                .alpha(.6f)
-                .alphaBy(1f)
-                .setDuration(800)
-                .setInterpolator(new DecelerateInterpolator())
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(android.animation.Animator animation) {
-                        fRecommendBimgTop.setAlpha(.9f);
 
-                        if (fRecommendBimgTop.getDrawable() instanceof ColorDrawable) {
-                            fRecommendBimgTop.setImageBitmap(null);
-                        } else {
-                            if (!(fRecommendBimgTop.getDrawable() instanceof ColorDrawable) && null != fRecommendBimgTop.getDrawable() && null != ((BitmapDrawable) fRecommendBimgTop.getDrawable()).getBitmap()) {
-                                ((BitmapDrawable) fRecommendBimgTop.getDrawable()).getBitmap().recycle();
-                                fRecommendBimgTop.setImageBitmap(null);
-                                System.gc();
-                            }
-                        }
-
-
-                        fRecommendBimgTop.setImageBitmap(finalBm);
-                        if (null != fRecommendBimgTop)
-                            fRecommendBimgTop.animate()
-                                    .alpha(1f)
-                                    .alphaBy(.6f)
-                                    .setInterpolator(new AccelerateInterpolator())
-                                    .setDuration(800)
-                                    .setListener(new AnimatorListenerAdapter() {
-                                        @Override
-                                        public void onAnimationEnd(android.animation.Animator animation) {
-                                            if (null != fRecommendBimgTop)
-                                                fRecommendBimgTop.setAlpha(1f);
-                                        }
-                                    })
-                                    .start();
+        fRecommendBimgTop.animate().alpha(.1f).setDuration(400).setInterpolator(new AccelerateInterpolator()).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                if (fRecommendBimgTop.getDrawable() instanceof ColorDrawable) {
+                    fRecommendBimgTop.setImageBitmap(null);
+                } else {
+                    if (!(fRecommendBimgTop.getDrawable() instanceof ColorDrawable) && null != fRecommendBimgTop.getDrawable() && null != ((BitmapDrawable) fRecommendBimgTop.getDrawable()).getBitmap()) {
+                        ((BitmapDrawable) fRecommendBimgTop.getDrawable()).getBitmap().recycle();
+                        fRecommendBimgTop.setImageBitmap(null);
+                        System.gc();
                     }
-                }).start();
-
+                }
+                fRecommendBimgTop.setImageBitmap(finalBm);
+                fRecommendBimgTop.animate().alpha(1).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+            }
+        }).start();
 
     }
 
