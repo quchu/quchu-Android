@@ -6,10 +6,12 @@
     <!-- 自定义属性-->
     <color name="titleBackground">#383635</color>
     <color name="appBackground">#383635</color>
+    <color name="appBackgroundTrans">#77383635</color>
     <color name="appBackground_dark">#2c2a2a</color>
     <color name="transparent">#00000000</color>
 
     <color name="translucent_white">#7fffffff</color>
+
     <color name="translucent_dark">#7f000000</color>
     <color name="planet_progress_yellow">#E4DB11</color>
     <color name="planet_progress_white">#dcdddd</color>

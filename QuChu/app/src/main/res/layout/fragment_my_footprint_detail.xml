@@ -1,8 +1,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<TextView
-    android:layout_width="wrap_content"
-    android:text="fdafas"
-    android:layout_height="wrap_content" />
+    android:layout_height="match_parent"
+    android:background="@color/appBackground">
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/draweeViewMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <RelativeLayout
+        android:id="@+id/container_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/appBackgroundTrans"
+        android:padding="16dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/headImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            fresco:roundAsCircle="true" />
+
+        <TextView
+            android:id="@+id/detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/headImage"
+            android:text="无家可归的嘴唇" />
+
+
+    </RelativeLayout>
 </RelativeLayout>

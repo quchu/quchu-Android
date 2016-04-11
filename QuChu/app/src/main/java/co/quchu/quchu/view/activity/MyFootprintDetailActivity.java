@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +19,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.view.fragment.FootprintDetailFragment;
 import co.quchu.quchu.widget.MoreButtonView;
 
-public class MyFootprintDetailActivity extends BaseActivity {
+public class MyFootprintDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
 
     @Bind(R.id.title_back_iv)
@@ -29,7 +30,8 @@ public class MyFootprintDetailActivity extends BaseActivity {
     MoreButtonView titleMoreRl;
     @Bind(R.id.container)
     ViewPager viewPager;
-    private List<Fragment> fragments;
+    private List<FootprintDetailFragment> fragments;
+    private PagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,26 +40,65 @@ public class MyFootprintDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         fragments = new ArrayList<>();
+        FootprintDetailFragment fragment = new FootprintDetailFragment();
+        fragment.firstPage = true;
+        fragments.add(fragment);
+        fragments.add(new FootprintDetailFragment());
         fragments.add(new FootprintDetailFragment());
         fragments.add(new FootprintDetailFragment());
         fragments.add(new FootprintDetailFragment());
 
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments);
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
 
-        viewPager.setAdapter(mSectionsPagerAdapter);
+        initListener();
     }
 
+    private void initListener() {
+        titleBackIv.setOnClickListener(this);
+
+        viewPager.addOnPageChangeListener(this);
+        viewPager.setAdapter(mPagerAdapter);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.title_back_iv:
+                finish();
+                break;
+        }
+    }
 
     @Override
     protected int activitySetup() {
         return TRANSITION_TYPE_LEFT;
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private List<Fragment> fragments;
+    }
 
-        public SectionsPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+    private int firstPagePosition;
+
+    @Override
+    public void onPageSelected(int position) {
+        fragments.get(position).showing();
+        fragments.get(firstPagePosition).hint();
+        firstPagePosition = position;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+
+    public class PagerAdapter extends FragmentPagerAdapter {
+        private List<FootprintDetailFragment> fragments;
+
+        public PagerAdapter(FragmentManager fm, List<FootprintDetailFragment> fragments) {
             super(fm);
             this.fragments = fragments;
         }

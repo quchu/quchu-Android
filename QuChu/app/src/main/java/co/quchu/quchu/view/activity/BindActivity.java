@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,6 +35,10 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
 
     public static final String TYPE_WEIBO = "weibo";
     public static final String TYPE_Wecha = "weixin";
+    @Bind(R.id.title_back_iv)
+    ImageView titleBackIv;
+    @Bind(R.id.title_content_tv)
+    TextView titleContentTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +46,13 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
         setContentView(R.layout.activity_bind);
         ButterKnife.bind(this);
         initListener();
+        titleContentTv.setText("绑定社交账号");
     }
 
     private void initListener() {
         bindSina.setOnClickListener(this);
         bindWecha.setOnClickListener(this);
-
+        titleBackIv.setOnClickListener(this);
         if (AppContext.user.isIsweixin()) {
             bindWecha.setText("取消绑定我的微信");
         }
@@ -57,6 +64,9 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.title_back_iv:
+                finish();
+                break;
             case R.id.bind_wecha:
                 if (AppContext.user.isIsweixin()) {
                     unBind(TYPE_Wecha);
