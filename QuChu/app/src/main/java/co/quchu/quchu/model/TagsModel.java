@@ -51,4 +51,20 @@ public class TagsModel {
     public void setSend(boolean send) {
         isSend = send;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TagsModel tagsModel = (TagsModel) o;
+
+        return tagId == tagsModel.tagId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return tagId;
+    }
 }

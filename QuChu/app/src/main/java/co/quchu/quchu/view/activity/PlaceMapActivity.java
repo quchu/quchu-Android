@@ -9,6 +9,7 @@ import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -43,6 +44,7 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.adapter.AMapNearbyVPAdapter;
 
 /**
  * Created by Administrator on 2016/1/24.
@@ -57,6 +59,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         AMapLocationListener {
     MapView mapView;
     RelativeLayout about_us_title_back_rl;
+    ViewPager mVPNearby;
     private OnLocationChangedListener mListener;
     private AMap aMap;
     private AMapLocationClient mlocationClient;
@@ -71,6 +74,11 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_map);
         mapView = (MapView) findViewById(R.id.place_map_mv);
+        mVPNearby = (ViewPager) findViewById(R.id.vpNearby);
+        mVPNearby.setAdapter(new AMapNearbyVPAdapter());
+        mVPNearby.setClipToPadding(false);
+        mVPNearby.setPadding(40,0,40,20);
+        mVPNearby.setPageMargin(20);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         TextView title_right_navigate_tv = (TextView) findViewById(R.id.title_right_navigate_tv);
         about_us_title_back_rl = (RelativeLayout) findViewById(R.id.about_us_title_back_rl);
@@ -200,6 +208,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
     private void setUpMap() {
 
+
+        aMap.getUiSettings().setZoomControlsEnabled(false);
         aMap.setLocationSource(this);// 设置定位监听
 //        aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
