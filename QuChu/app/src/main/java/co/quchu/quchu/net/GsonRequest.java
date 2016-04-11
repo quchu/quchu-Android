@@ -69,6 +69,20 @@ public class GsonRequest<T> extends Request<T> {
         this.type = type;
     }
 
+    public GsonRequest(String url, @NonNull Class<T> entity, Map<String, String> params, ResponseListener<T> listener) {
+        super(Method.GET, url, listener);
+        this.listener = listener;
+        this.params = params;
+        this.entity = entity;
+    }
+
+    public GsonRequest(String url, @NonNull Type type, Map<String, String> params, ResponseListener<T> listener) {
+        super(Method.GET, url, listener);
+        this.listener = listener;
+        this.params = params;
+        this.type = type;
+    }
+
     public GsonRequest(int method, String url, Map<String, String> params, @NonNull Class<T> entity, ResponseListener<T> listener) {
         super(method, url, listener);
         this.listener = listener;
@@ -105,6 +119,15 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected final Map<String, String> getParams() throws AuthFailureError {
+        StringBuilder encodedParams = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            encodedParams.append(entry.getKey());
+            encodedParams.append('=');
+            encodedParams.append(entry.getValue());
+            encodedParams.append("/n");
+        }
+
+        LogUtils.e("请求参数" + encodedParams.toString());
         return params;
     }
 

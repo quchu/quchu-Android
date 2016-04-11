@@ -155,18 +155,7 @@
 
             <include layout="@layout/layout_modiff_password" />
 
-            <TextView
-                android:id="@+id/account_setting_save_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/base_margin"
-                android:background="@color/gene_textcolor_yellow"
-                android:gravity="center"
-                android:paddingBottom="@dimen/half_margin"
-                android:paddingTop="@dimen/half_margin"
-                android:text="保存以上修改"
-                android:textColor="@color/black"
-                android:textSize="@dimen/word_subhead_size" />
+            <include layout="@layout/layout_bind_photo_number" />
 
 
             <TextView

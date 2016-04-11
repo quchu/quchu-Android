@@ -17,29 +17,39 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:background="#f7f7f7"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="新浪微博" />
+                android:text="新浪微博"
+                android:textColor="#a3a3a3" />
 
             <Button
                 android:id="@+id/bind_sina"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="新浪微博" />
+                android:background="@drawable/shape_weibo_bg"
+                android:text="绑定微博"
+                android:textColor="#f29600"
+                android:textSize="@dimen/word_size_body" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="微信" />
+                android:layout_marginTop="32dp"
+                android:text="微信"
+                android:textColor="#a3a3a3" />
 
             <Button
                 android:id="@+id/bind_wecha"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="绑定微信" />
+                android:background="@drawable/shape_wecha_bg"
+                android:text="绑定微信"
+                android:textColor="#8dc21f" />
 
         </LinearLayout>
 

@@ -128,11 +128,11 @@ public class PhoneLoginFragment extends BaseFragment {
     };
 
     private int mAuthCounter = 60;
-    private String mAuthDesc = "%ds后重新获取";
 
     private void counterText() {
         if (getauthcodeLoginTv != null) {
             if (mAuthCounter > 0) {
+                String mAuthDesc = "%ds后重新获取";
                 getauthcodeLoginTv.setText(String.format(mAuthDesc, mAuthCounter));
                 mAuthCounter--;
                 handler.sendMessageDelayed(handler.obtainMessage(0x02), 1000);

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +57,7 @@ import co.quchu.quchu.utils.StringUtils;
  * User: Chenhs
  * Date: 2015-12-04
  */
-public class AccountSettingActivity extends BaseActivity {
+public class AccountSettingActivity extends BaseActivity implements IAccountSettingActivity {
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
     @Bind(R.id.account_setting_avatar_sdv)
@@ -73,17 +74,31 @@ public class AccountSettingActivity extends BaseActivity {
     EditText accountSettingNewPwdEt;
     @Bind(R.id.account_setting_new_pwd_again_et)
     EditText accountSettingNewPwdAgainEt;
-    @Bind(R.id.exit)
-    TextView exit;
+
+    @Bind(R.id.modiff_passwordWord)
+    RelativeLayout modiffPasswordWord;
+    @Bind(R.id.photo_number)
+    EditText photoNumber;
+    @Bind(R.id.authCode)
+    EditText authCode;
+    @Bind(R.id.password)
+    EditText password;
+    @Bind(R.id.container_bind_number)
+    RelativeLayout containerBindNumber;
+
+    @Bind(R.id.getAuthCode)
+    TextView getAuthCode;
 
 
     private ArrayList<Integer> imageList;
+    private AccountSettingPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_setting);
         ButterKnife.bind(this);
+        presenter = new AccountSettingPresenter(this, this);
         initTitleBar();
         userInfoBinding();
         imageList = AccountSettingPresenter.getQAvatar();
@@ -111,22 +126,32 @@ public class AccountSettingActivity extends BaseActivity {
             newUserLocation = AppContext.user.getLocation();
             accountSettingUserLocation.setText(newUserLocation);
         }
+        if (AppContext.user != null && AppContext.user.isIsweibo() || AppContext.user.isIsweixin()) {
+            modiffPasswordWord.setVisibility(View.GONE);
+            containerBindNumber.setVisibility(View.VISIBLE);
+        }
 
     }
 
     ArrayList<CityModel> genderList;
 
     @OnClick({R.id.account_setting_avatar_sdv, R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv
-            , R.id.account_setting_save_tv, R.id.account_setting_user_location, R.id.accounds, R.id.exit})
+            , R.id.saveUserInfo, R.id.account_setting_user_location, R.id.accounds, R.id.exit, R.id.getAuthCode, R.id.bindPhotoNumber})
     public void accountClick(View v) {
         switch (v.getId()) {
+            case R.id.bindPhotoNumber:
+                presenter.bindPhotoNumber(authCode.getText().toString().trim(), password.getText().toString().trim());
+                break;
+            case R.id.getAuthCode:
+                presenter.getAuthCode(getAuthCode, photoNumber.getText().toString().trim());
+                break;
             case R.id.account_setting_avatar_sdv:
             case R.id.account_setting_avatar_editer_tv:
                 ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
                 photoDialogFg.setOnOriginListener(listener);
                 photoDialogFg.show(getFragmentManager(), "photo");
                 break;
-            case R.id.account_setting_save_tv:
+            case R.id.saveUserInfo:
                 saveUserChange();
                 break;
             case R.id.account_setting_gender_tv:
@@ -258,7 +283,7 @@ public class AccountSettingActivity extends BaseActivity {
         if (StringUtils.isEmpty(newUserPw) && newUserPwAgain.equals(newUserPw) || (newUserPw.equals(newUserPwAgain) && newUserPw.length() > 6)) {
             DialogUtil.showProgess(this, R.string.loading_dialog_text);
             if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
-                AccountSettingPresenter.getQiNiuToken(this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
+                presenter.getQiNiuToken(AccountSettingActivity.this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
                         putUserInfo("http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl);
@@ -283,7 +308,7 @@ public class AccountSettingActivity extends BaseActivity {
     }
 
     public void putUserInfo(String photoUrl) {
-        AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this,
+        presenter.postUserInfo2Server(AccountSettingActivity.this,
                 newUserNickName, photoUrl, newUserGender, newUserLocation, newUserPw, newUserPwAgain, new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
@@ -344,7 +369,7 @@ public class AccountSettingActivity extends BaseActivity {
     public void updateAvatar(int avatarId) {
         bitmaps = BitmapFactory.decodeResource(getResources(), avatarId);
         LogUtils.json("bitmap ==null?=" + (bitmaps == null));
-        AccountSettingPresenter.getQiNiuToken(this, bitmaps, new AccountSettingPresenter.UploadUserPhotoListener() {
+        presenter.getQiNiuToken(AccountSettingActivity.this, bitmaps, new AccountSettingPresenter.UploadUserPhotoListener() {
             @Override
             public void onSuccess(String photoUrl) {
                 newUserPhoto = "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl;
