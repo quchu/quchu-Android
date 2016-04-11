@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:background="@color/appBackground_dark">
+
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@+id/title_bar"
+        android:background="@mipmap/shadow_bottom" />
+
+    <co.quchu.quchu.widget.TagCloudView
+        android:id="@+id/detail_store_tagclound_tcv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginBottom="@dimen/quarter_margin"
+        card_view:tcvCanTagClick="false"
+        card_view:tcvItemBorderHorizontal="10dp"
+        card_view:tcvRightResId="@null"
+        card_view:tcvSingleLine="true"
+        android:layout_below="@id/title_bar"
+        card_view:tcvTextColor="@color/text_color_white" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="@dimen/quarter_margin"
+        android:id="@+id/detail_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/detail_store_tagclound_tcv"
+        android:scrollbars="none"
+        />
+
+
+
+
+
+</RelativeLayout>

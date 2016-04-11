@@ -8,29 +8,47 @@ package co.quchu.quchu.model;
 public class TagsModel {
     private String zh;
     private String en;
+    private int tagId;
+    private String code;
     private boolean isSend;
-
-    public void setZh(String zh) {
-        this.zh = zh;
-    }
-
-    public void setEn(String en) {
-        this.en = en;
-    }
-
-    public void setIsSend(boolean isSend) {
-        this.isSend = isSend;
-    }
 
     public String getZh() {
         return zh;
+    }
+
+    public void setZh(String zh) {
+        this.zh = zh;
     }
 
     public String getEn() {
         return en;
     }
 
-    public boolean isIsSend() {
+    public void setEn(String en) {
+        this.en = en;
+    }
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public boolean isSend() {
         return isSend;
+    }
+
+    public void setSend(boolean send) {
+        isSend = send;
     }
 }

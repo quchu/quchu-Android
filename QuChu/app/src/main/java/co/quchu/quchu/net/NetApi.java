@@ -11,6 +11,7 @@ public class NetApi {
     public static String RELEASE_HOST = "http://www.quchu.co/app-main-service";
     public static String HOST_UAT = "http://uat.quchu.co/app-main-service";
     public static String HOST_SIT = "http://sit.quchu.co/app-main-service";
+    public static final String HOST_KANYUN = "http://sit.quchu.co/app-main-service-test";
 //    public static String HOST_SIT = "http://192.168.1.134:8080/app-main-service";
 
     //  public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
@@ -91,6 +92,7 @@ public class NetApi {
 
 
     public static final String getCategoryTags = HOST + "/place/getCategoryTags?cityId=%d";  //获取tag 列表
+    public static String getNearby = HOST_KANYUN + "/place/nearPlaces?tagIds=%s&cityId=%d&latitude=%s&longitude=%s&pagesNo=%d";
 
     /****  Get end  ****/
 
