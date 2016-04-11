@@ -6,16 +6,11 @@ import co.quchu.quchu.BuildConfig;
  * netApi
  */
 public interface NetApi {
-    // public static boolean isDebug = false;
-    // public static String DEBUG_HOST = "http://203.195.139.22:8080/appservices";
     String RELEASE_HOST = "http://www.quchu.co/app-main-service";
     String HOST_UAT = "http://uat.quchu.co/app-main-service";
     String HOST_SIT = "http://sit.quchu.co/app-main-service";
-//    public static String HOST_SIT = "http://192.168.1.134:8080/app-main-service";
-
-    //  public static String DEBUG_HOST = "http://119.29.108.45:8080/appservices";
-    //     String HOST = "http://www.paimeilv.com/appservices";
-    // String HOST = location_HOST;
+    String HOST_KANYUN = "http://sit.quchu.co/app-main-service-test";
+    //    public static String HOST_SIT = "http://192.168.1.134:8080/app-main-service";
     String HOST = BuildConfig.API_SERVER == 0 ? RELEASE_HOST : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;
     /****
      * Get start
@@ -91,6 +86,7 @@ public interface NetApi {
 
 
     String getCategoryTags = HOST + "/place/getCategoryTags?cityId=%d";  //获取tag 列表
+    String getNearby = HOST_KANYUN + "/place/nearPlaces?tagIds=%s&cityId=%d&latitude=%s&longitude=%s&pagesNo=%d";
 
     /****  Get end  ****/
 

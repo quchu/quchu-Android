@@ -1,13 +1,10 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +37,7 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
+import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 
 
 /**
@@ -84,6 +82,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mQuchuDetailAdapter);
+
         startViewTime = System.currentTimeMillis();
     }
 
@@ -103,6 +102,12 @@ public class QuchuDetailsActivity extends BaseActivity {
                 public void getDetailData(DetailModel model) {
                     dModel.copyFrom(model);
                     mQuchuDetailAdapter.notifyDataSetChanged();
+                    mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
+                        @Override
+                        public void onLoadMore(int current_page) {
+                            startActivity(new Intent(QuchuDetailsActivity.this,NearbyActivity.class));
+                        }
+                    });
                     bindingDetailData();
                     DialogUtil.dismissProgess();
                 }
