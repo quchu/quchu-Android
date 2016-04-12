@@ -77,10 +77,10 @@
                 app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="我的脚印"
+                    android:text="我的脚印      "
                     android:textColor="@color/white"
                     android:textSize="@dimen/word_title_body" />
             </android.support.v7.widget.Toolbar>

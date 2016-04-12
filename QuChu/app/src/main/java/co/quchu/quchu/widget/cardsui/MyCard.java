@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -185,7 +184,7 @@ public class MyCard extends Card {
                         item_postcard_user_guide_view.setVisibility(View.GONE);
                         Intent intent = new Intent(mContext, PostCardImageActivity.class);
                         Bundle mBundle = new Bundle();
-                        mBundle.putSerializable("pCardModel", item);
+                        mBundle.putParcelable("pCardModel", item);
                         intent.putExtras(mBundle);
                         mContext.startActivity(intent);
                     }
@@ -200,7 +199,7 @@ public class MyCard extends Card {
                     if (item.getImglist().size() > 0) {
                         Intent intent = new Intent(mContext, PostCardImageActivity.class);
                         Bundle mBundle = new Bundle();
-                        mBundle.putSerializable("pCardModel", item);
+                        mBundle.putParcelable("pCardModel", item);
                         intent.putExtras(mBundle);
                         mContext.startActivity(intent);
                     }
@@ -210,7 +209,7 @@ public class MyCard extends Card {
                         Intent intent = new Intent(mContext, AddPostCardActivity.class).putExtra("pName", item.getPlcaeName());
                         intent.putExtra("pId", item.getPlaceId());
                         Bundle mBundle = new Bundle();
-                        mBundle.putSerializable("pCardModel", item);
+                        mBundle.putParcelable("pCardModel", item);
                         intent.putExtras(mBundle);
                         mContext.startActivity(intent);
                     } else {

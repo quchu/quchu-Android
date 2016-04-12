@@ -1,12 +1,15 @@
 package co.quchu.quchu.view.adapter;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,7 +20,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.MyFootprintBean;
+import co.quchu.quchu.model.PostCardItemModel;
 
 /**
  * Created by no21 on 2016/4/7.
@@ -26,10 +29,10 @@ import co.quchu.quchu.model.MyFootprintBean;
  */
 public class MyFootprintAdapter extends RecyclerView.Adapter<MyFootprintAdapter.ViewHold> {
 
-    private List<MyFootprintBean> data;
+    private List<PostCardItemModel> data;
     private OnItemClickListener listener;
 
-    public MyFootprintAdapter(List<MyFootprintBean> data, OnItemClickListener listener) {
+    public MyFootprintAdapter(List<PostCardItemModel> data, OnItemClickListener listener) {
         this.data = data;
         this.listener = listener;
     }
@@ -43,21 +46,61 @@ public class MyFootprintAdapter extends RecyclerView.Adapter<MyFootprintAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHold holder, int position) {
-        Uri uri = Uri.parse("http://h.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=3dc4538262d0f703e6e79dd83dca7d0b/7a899e510fb30f24f570e996c895d143ac4b03b8.jpg");
 
-        holder.simpleDraweeView.setImageURI(uri);
-        holder.headView.setImageURI(uri);
+        final PostCardItemModel model = data.get(position);
+
+        float ratio = (float) model.getWidth() / model.getHeight();
+        holder.simpleDraweeView.setAspectRatio(ratio);
+
+        holder.simpleDraweeView.setImageURI(Uri.parse(model.getPlcaeCover()));
+        holder.headView.setImageURI(Uri.parse(model.getAutorPhoto()));
+
+        StringBuilder text1 = new StringBuilder();
+        text1.append(model.getAutor());
+        text1.append(":");
+        int index1 = text1.length();
+        text1.append(" 在 ");
+        int index2 = text1.length();
+        text1.append(model.getAddress());
+        int index3 = text1.length();
+
+        SpannableStringBuilder builder = new SpannableStringBuilder(text1.toString());
+
+        builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), 0, index1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        builder.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), index1, index2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), index2, index3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        holder.name.setText(builder);
+
+
+        StringBuilder text2 = new StringBuilder();
+        text2.append(model.getTime());
+        text2.append(" 来至 ");
+        text2.append(model.getPlcaeAddress());
+
+        SpannableStringBuilder builder2 = new SpannableStringBuilder(text2.toString());
+        builder2.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), 0, text2.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        holder.timeAndAddress.setText(builder2);
+
+
         holder.simpleDraweeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.itemClick(null);
+                listener.itemClick(model);
             }
         });
+
+//        holder.itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                holder.line.getLayoutParams().height = holder.itemView.getHeight();
+//                holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//            }
+//        });
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return data == null ? 0 : data.size();
     }
 
     static class ViewHold extends RecyclerView.ViewHolder {
@@ -81,22 +124,22 @@ public class MyFootprintAdapter extends RecyclerView.Adapter<MyFootprintAdapter.
         public ViewHold(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            if (itemHeight != 0) {
-                line.getLayoutParams().height = itemHeight;
-            } else {
-                itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        itemHeight = itemView.getHeight();
-                        line.getLayoutParams().height = itemHeight;
-                        itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
-                });
-            }
+//            if (itemHeight != 0) {
+//                line.getLayoutParams().height = itemHeight;
+//            } else {
+//                itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//                    @Override
+//                    public void onGlobalLayout() {
+//                        itemHeight = itemView.getHeight();
+//                        line.getLayoutParams().height = itemHeight;
+//                        itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//                    }
+//                });
+//            }
         }
     }
 
     public interface OnItemClickListener {
-        void itemClick(MyFootprintBean bean);
+        void itemClick(PostCardItemModel bean);
     }
 }

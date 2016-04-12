@@ -50,7 +50,7 @@ public class PostCardPhotoFg extends Fragment {
     public static PostCardPhotoFg newInstance(PostCardItemModel pModel) {
         Bundle args = new Bundle();
         PostCardPhotoFg fragment = new PostCardPhotoFg();
-        args.putSerializable(POST_CARD_MODEL, pModel);
+        args.putParcelable(POST_CARD_MODEL, pModel);
         fragment.setArguments(args);
         return fragment;
     }

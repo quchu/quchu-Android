@@ -78,7 +78,7 @@ public interface NetApi {
     String delFollowFriends = HOST + "/sns/delFollow?followId=%d";  //取消关注
     String getMyUserInfo = HOST + "/personal/getUser";  //获取自己用户信息
     String getUserInfo = HOST + "/personal/getUserInfo?userId=%d";  //获取自己用户信息
-    String getUserCardList = HOST + "/place/getUserCardList?userId=%d&pageno=%d";  //获取某个用户的明信片
+    String getUserCardList = HOST + "/place/getUserCardList";  //获取某个用户的明信片
     String getUsercenterFavoriteList = HOST + "/place/getFavoriteList?userId=%d&pageno=%d";  //获取某个用户收藏的趣处列表
     String getFollow = HOST + "/place/getFollow?userId=%d&pageno=%d&head=no&type=%s";  //获取某个用户收藏的趣处列表
 

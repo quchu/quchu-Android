@@ -71,7 +71,7 @@ public class PostCardDetailFg extends Fragment {
         Bundle args = new Bundle();
 
         PostCardDetailFg fragment = new PostCardDetailFg();
-        args.putSerializable(POST_CARD_MODEL, pModel);
+        args.putParcelable(POST_CARD_MODEL, pModel);
         fragment.setArguments(args);
         return fragment;
     }

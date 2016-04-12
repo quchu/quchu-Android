@@ -129,7 +129,7 @@ public class PostcarDetailActivity extends BaseActivity {
                     Intent intent = new Intent(this, AddPostCardActivity.class).putExtra("pName", item.getPlcaeName());
                     intent.putExtra("pId", item.getPlaceId());
                     Bundle mBundle = new Bundle();
-                    mBundle.putSerializable("pCardModel", item);
+                    mBundle.putParcelable("pCardModel", item);
                     intent.putExtras(mBundle);
                     startActivity(intent);
                 } else {
@@ -150,7 +150,7 @@ public class PostcarDetailActivity extends BaseActivity {
                 if (item.getImglist().size() > 0) {
                     Intent intent = new Intent(this, PostCardImageActivity.class);
                     Bundle mBundle = new Bundle();
-                    mBundle.putSerializable("pCardModel", item);
+                    mBundle.putParcelable("pCardModel", item);
                     intent.putExtras(mBundle);
                     startActivity(intent);
                 }

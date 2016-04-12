@@ -1,5 +1,6 @@
 package co.quchu.quchu.widget;
 
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -30,6 +31,9 @@ public class ScrollIndexView extends FrameLayout {
     @Bind(R.id.time)
     TextView time;
 
+    private ObjectAnimator animationIn;
+    private ObjectAnimator animatorOut;
+
     public ScrollIndexView(Context context) {
         super(context);
         init();
@@ -55,9 +59,18 @@ public class ScrollIndexView extends FrameLayout {
     private void init() {
         inflate(getContext(), R.layout.layout_scroll_index, this);
         ButterKnife.bind(this, this);
-        setVisibility(GONE);
-    }
+        setAlpha(0);
 
+        animationIn = ObjectAnimator.ofFloat(this, "alpha", 0, 1);
+        animationIn.setDuration(800);
+        animationIn.setInterpolator(new DecelerateInterpolator());
+
+        animatorOut = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
+        animatorOut.setDuration(800);
+        animatorOut.setInterpolator(new DecelerateInterpolator());
+        animatorOut.setStartDelay(1000);
+
+    }
 
     public void startTimeAnamation(int hour, int min) {
 
@@ -99,7 +112,7 @@ public class ScrollIndexView extends FrameLayout {
         if (hour < hourFirstTime) {
             offset = 360;
         }
-        return hour / 12 * 360+offset;
+        return hour / 12 * 360 + offset;
     }
 
     private float computeDegressMin(float Targethour, float TargetMin) {
@@ -110,4 +123,14 @@ public class ScrollIndexView extends FrameLayout {
         return TargetMin / 60 * 360;
     }
 
+    public void show() {
+        animatorOut.cancel();
+        animationIn.start();
+
+    }
+
+    public void hide() {
+        animationIn.cancel();
+        animatorOut.start();
+    }
 }

@@ -191,7 +191,7 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
                         Intent intent = new Intent(mContext, AddPostCardActivity.class).putExtra("pName", arrayList.get(getPosition()).getPlcaeName());
                         intent.putExtra("pId", arrayList.get(getPosition()).getPlaceId());
                         Bundle mBundle = new Bundle();
-                        mBundle.putSerializable("pCardModel", arrayList.get(getPosition()));
+                        mBundle.putParcelable("pCardModel", arrayList.get(getPosition()));
                         intent.putExtras(mBundle);
                         mContext.startActivity(intent);
                     } else {
@@ -202,7 +202,7 @@ public class PlacePostCardListAdapter extends RecyclerView.Adapter<PlacePostCard
                     if (arrayList.get(getPosition()).getImglist().size() > 0) {
                         Intent intent = new Intent(mContext, PostCardImageActivity.class);
                         Bundle mBundle = new Bundle();
-                        mBundle.putSerializable("pCardModel", arrayList.get(getPosition()));
+                        mBundle.putParcelable("pCardModel", arrayList.get(getPosition()));
                         intent.putExtras(mBundle);
                         mContext.startActivity(intent);
                     }

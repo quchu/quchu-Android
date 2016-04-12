@@ -1,13 +1,14 @@
 package co.quchu.quchu.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * PostCardImageListModel
  * User: Chenhs
  * Date: 2015-12-30
  */
-public class PostCardImageListModel implements Serializable {
+public class PostCardImageListModel implements Parcelable {
 
     private int height;
     private int imgId;
@@ -72,4 +73,45 @@ public class PostCardImageListModel implements Serializable {
     public int getWidth() {
         return width;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.height);
+        dest.writeInt(this.imgId);
+        dest.writeByte(isCover ? (byte) 1 : (byte) 0);
+        dest.writeByte(isf ? (byte) 1 : (byte) 0);
+        dest.writeString(this.path);
+        dest.writeString(this.rgb);
+        dest.writeInt(this.width);
+    }
+
+    public PostCardImageListModel() {
+    }
+
+    protected PostCardImageListModel(Parcel in) {
+        this.height = in.readInt();
+        this.imgId = in.readInt();
+        this.isCover = in.readByte() != 0;
+        this.isf = in.readByte() != 0;
+        this.path = in.readString();
+        this.rgb = in.readString();
+        this.width = in.readInt();
+    }
+
+    public static final Creator<PostCardImageListModel> CREATOR = new Creator<PostCardImageListModel>() {
+        @Override
+        public PostCardImageListModel createFromParcel(Parcel source) {
+            return new PostCardImageListModel(source);
+        }
+
+        @Override
+        public PostCardImageListModel[] newArray(int size) {
+            return new PostCardImageListModel[size];
+        }
+    };
 }

@@ -1,6 +1,9 @@
 package co.quchu.quchu.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +11,7 @@ import java.util.List;
  * User: Chenhs
  * Date: 2015-12-30
  */
-public class PostCardItemModel implements Serializable {
+public class PostCardItemModel implements Parcelable {
     private String address;
     private String autor;
     private int autorId;
@@ -228,6 +231,85 @@ public class PostCardItemModel implements Serializable {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.address);
+        dest.writeString(this.autor);
+        dest.writeInt(this.autorId);
+        dest.writeString(this.autorPhoto);
+        dest.writeInt(this.cardId);
+        dest.writeString(this.comment);
+        dest.writeInt(this.favoNum);
+        dest.writeInt(this.height);
+        dest.writeByte(isf ? (byte) 1 : (byte) 0);
+        dest.writeByte(isme ? (byte) 1 : (byte) 0);
+        dest.writeByte(isp ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.placeId);
+        dest.writeString(this.placeAddress);
+        dest.writeString(this.placeCover);
+        dest.writeString(this.placeName);
+        dest.writeString(this.plcaeAddress);
+        dest.writeString(this.plcaeCover);
+        dest.writeString(this.plcaeName);
+        dest.writeInt(this.praiseNum);
+        dest.writeString(this.rgb);
+        dest.writeFloat(this.score);
+        dest.writeString(this.tel);
+        dest.writeString(this.time);
+        dest.writeInt(this.width);
+        dest.writeByte(issys ? (byte) 1 : (byte) 0);
+        dest.writeList(this.imglist);
+    }
+
+    public PostCardItemModel() {
+    }
+
+    protected PostCardItemModel(Parcel in) {
+        this.address = in.readString();
+        this.autor = in.readString();
+        this.autorId = in.readInt();
+        this.autorPhoto = in.readString();
+        this.cardId = in.readInt();
+        this.comment = in.readString();
+        this.favoNum = in.readInt();
+        this.height = in.readInt();
+        this.isf = in.readByte() != 0;
+        this.isme = in.readByte() != 0;
+        this.isp = in.readByte() != 0;
+        this.placeId = in.readInt();
+        this.placeAddress = in.readString();
+        this.placeCover = in.readString();
+        this.placeName = in.readString();
+        this.plcaeAddress = in.readString();
+        this.plcaeCover = in.readString();
+        this.plcaeName = in.readString();
+        this.praiseNum = in.readInt();
+        this.rgb = in.readString();
+        this.score = in.readFloat();
+        this.tel = in.readString();
+        this.time = in.readString();
+        this.width = in.readInt();
+        this.issys = in.readByte() != 0;
+        this.imglist = new ArrayList<PostCardImageListModel>();
+        in.readList(this.imglist, PostCardImageListModel.class.getClassLoader());
+    }
+
+    public static final Creator<PostCardItemModel> CREATOR = new Creator<PostCardItemModel>() {
+        @Override
+        public PostCardItemModel createFromParcel(Parcel source) {
+            return new PostCardItemModel(source);
+        }
+
+        @Override
+        public PostCardItemModel[] newArray(int size) {
+            return new PostCardItemModel[size];
+        }
+    };
 }
 
 
