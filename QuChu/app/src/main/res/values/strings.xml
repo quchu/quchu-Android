@@ -51,6 +51,8 @@
     <string name="text_planet_stroll">逛店</string>
     <string name="text_planet_cate">美食</string>
 
+
+    <string name="hint_add_footprint">每个故事d都应该有个精彩的开头...</string>
     <!-- ********** 氛围 ********* -->
 
 
@@ -128,5 +130,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nearby_quchu">附近全部趣处</string>
     <string name="tags_filter_title">筛选</string>
+    <string name="add_foot_print">添加脚印</string>
 
 </resources>

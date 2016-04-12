@@ -100,9 +100,11 @@ public class RecommendActivity extends BaseActivity {
         selection.add(true);
         selection.add(false);
 
+        startActivity(new Intent(RecommendActivity.this,AddFootprintActivity.class));
+
 
         TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(data,selection);
-        tagsFilterDialog.show(getFragmentManager(),"");
+        //tagsFilterDialog.show(getFragmentManager(),"");
 
 
         recommendTitleLocationIv.setText(SPUtils.getCityName());
