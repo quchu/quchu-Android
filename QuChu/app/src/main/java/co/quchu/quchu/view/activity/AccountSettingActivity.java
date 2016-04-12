@@ -265,6 +265,7 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
         GalleryFinal.cleanCacheFile();
     }
 

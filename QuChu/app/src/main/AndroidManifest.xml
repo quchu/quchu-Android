@@ -84,12 +84,11 @@
         <activity
             android:name=".view.activity.FootPrintActivity"
             android:label="@string/foot_print"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.AddFootprintActivity"
             android:label="@string/add_foot_print"
-            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.FlickrActivity"

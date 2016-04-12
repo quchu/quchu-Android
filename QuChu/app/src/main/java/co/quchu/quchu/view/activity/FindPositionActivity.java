@@ -230,4 +230,10 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             adapter.notifyDataSetChanged();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 }

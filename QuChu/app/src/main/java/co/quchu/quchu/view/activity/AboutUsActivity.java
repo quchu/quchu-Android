@@ -73,4 +73,10 @@ public class AboutUsActivity extends BaseActivity {
         super.onResume();
         MobclickAgent.onPageStart("AboutUsActivity");
     }
+
+    @Override
+    protected void onDestroy() {
+        ButterKnife.unbind(this);
+        super.onDestroy();
+    }
 }
