@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -129,12 +128,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         if (actionBar != null) {
             actionBar.setTitle("");
             actionBar.setDisplayHomeAsUpEnabled(true);
-            for (int i = 0, j = toolbar.getChildCount(); i < j; i++) {
-                if (toolbar.getChildAt(i) instanceof ImageButton) {
-                    ((ImageButton) toolbar.getChildAt(i)).setImageResource(R.mipmap.ic_back);
-                    break;
-                }
-            }
+            actionBar.setHomeAsUpIndicator(R.mipmap.ic_back);
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +154,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
     public void initData(boolean isError, List<PostCardItemModel> data) {
         errorView.himeView();
         if (isError) {
+            recyclerView.setVisibility(View.INVISIBLE);
             errorView.showViewDefault(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -168,6 +163,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
                 }
             });
         } else if (data.size() == 0) {
+            recyclerView.setVisibility(View.INVISIBLE);
             errorView.showView("您还没有脚印哦~~", "到别处看看", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -175,9 +171,12 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
                 }
             });
         } else {
+            recyclerView.setVisibility(View.VISIBLE);
             this.data = data;
             MyFootprintAdapter adapter = new MyFootprintAdapter(data, this);
             recyclerView.setAdapter(adapter);
         }
+
+
     }
 }

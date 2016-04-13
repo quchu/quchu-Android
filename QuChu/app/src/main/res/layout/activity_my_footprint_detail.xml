@@ -42,6 +42,7 @@
             android:id="@+id/detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/headImage"
             android:text="无家可归的嘴唇" />
     </RelativeLayout>
@@ -55,8 +56,8 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="0dp"
             android:id="@+id/supportContainer"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center">

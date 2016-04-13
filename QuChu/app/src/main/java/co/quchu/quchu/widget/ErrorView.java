@@ -3,7 +3,6 @@ package co.quchu.quchu.widget;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,7 +22,6 @@ public class ErrorView extends FrameLayout {
     ImageView loadingView;
     LinearLayout refreshLayout;
     private AnimationDrawable drawable;
-    private View rootView;
 
     public ErrorView(Context context) {
         super(context);
@@ -42,7 +40,7 @@ public class ErrorView extends FrameLayout {
 
     private void init(Context context) {
         inflate(context, R.layout.empty_view, this);
-        rootView = findViewById(R.id.rootView);
+        setVisibility(GONE);
         massageView = (TextView) findViewById(R.id.massage);
         actionButtton = (TextView) findViewById(R.id.action_buttton);
         loadingView = (ImageView) findViewById(R.id.loadingView);
@@ -51,7 +49,7 @@ public class ErrorView extends FrameLayout {
     }
 
     public void showView(String massage, String actionString, OnClickListener actionListener) {
-        rootView.setVisibility(VISIBLE);
+        setVisibility(VISIBLE);
         refreshLayout.setVisibility(VISIBLE);
         loadingView.setVisibility(INVISIBLE);
         massageView.setText(massage);
@@ -60,14 +58,14 @@ public class ErrorView extends FrameLayout {
     }
 
     public void showLoading() {
-        rootView.setVisibility(VISIBLE);
+        setVisibility(VISIBLE);
         refreshLayout.setVisibility(INVISIBLE);
         loadingView.setVisibility(VISIBLE);
         drawable.start();
     }
 
     public void showViewDefault(OnClickListener actionListener) {
-        rootView.setVisibility(VISIBLE);
+        setVisibility(VISIBLE);
         refreshLayout.setVisibility(VISIBLE);
         loadingView.setVisibility(INVISIBLE);
         massageView.setText("网络发送异常了~~");
@@ -82,5 +80,4 @@ public class ErrorView extends FrameLayout {
         actionButtton.setOnClickListener(null);
         drawable.stop();
     }
-
 }

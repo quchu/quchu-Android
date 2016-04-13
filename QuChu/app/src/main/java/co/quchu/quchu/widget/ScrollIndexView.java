@@ -31,6 +31,8 @@ public class ScrollIndexView extends FrameLayout {
     @Bind(R.id.time)
     TextView time;
 
+    private float positionY;//上一次动画执行View的位置 时钟旋转动画
+
     private ObjectAnimator animationIn;
     private ObjectAnimator animatorOut;
 
@@ -96,6 +98,7 @@ public class ScrollIndexView extends FrameLayout {
 
         hourFirstTime = hour;
         minFirstTime = min;
+        positionY = getY();
     }
 
     private float computeDegressHour(float hour) {
@@ -104,15 +107,25 @@ public class ScrollIndexView extends FrameLayout {
         if (hour < hourFirstTime) {
             offset = 360;
         }
+        if (positionY > getY()) {//时间倒着转
+            offset = -360;
+        }
+        if (hour == hourFirstTime) {
+            offset = 0;
+        }
         return hour / 12 * 360 + offset;
     }
 
     private float computeDegressMin(float Targethour, float TargetMin) {
         TargetMin %= 60;
-        Targethour %= 12;
-
+//        Targethour %= 12;
 //        return TargetMin / 60 * 360 + (12 - Math.abs(hourFirstTime - Targethour)) * 360;
-        return TargetMin / 60 * 360;
+        float offset = 0;
+        if (positionY > getY()) {//时间倒着转
+            offset = -360;
+        }
+
+        return TargetMin / 60 * 360 + offset;
     }
 
     public void show() {

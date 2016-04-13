@@ -169,20 +169,20 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
         return TRANSITION_TYPE_LEFT;
     }
 
-    private final int REQUEST_CODE_GALLERY = 0x01;
-    private final int REQUEST_CODE_CAMERA = 0x02;
     //趣头像
     private ArrayList<Integer> imageList;
 
     @Override
     public void selectedCamare() {
         initGralley();
+        int REQUEST_CODE_CAMERA = 0x02;
         GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, this);
     }
 
     @Override
     public void selectedAblum() {
         initGralley();
+        int REQUEST_CODE_GALLERY = 0x01;
         GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, functionConfig, this);
     }
 

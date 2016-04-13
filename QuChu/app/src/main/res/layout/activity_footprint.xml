@@ -47,7 +47,9 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="30dp"
                     android:layout_marginLeft="40dp"
-                    fresco:roundAsCircle="true" />
+                    fresco:roundAsCircle="true"
+                    fresco:roundingBorderColor="@color/planet_progress_yellow"
+                    fresco:roundingBorderWidth="2dp" />
 
                 <TextView
                     android:id="@+id/name"
@@ -79,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="我的脚印      "
+                    android:text="我的脚印          "
                     android:textColor="@color/white"
                     android:textSize="@dimen/word_title_body" />
             </android.support.v7.widget.Toolbar>

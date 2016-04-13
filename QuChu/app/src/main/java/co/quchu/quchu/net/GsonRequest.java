@@ -133,28 +133,25 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
-        T t = null;
+        T t;
         try {
             String json = new String(networkResponse.data, HttpHeaderParser.parseCharset(networkResponse.headers, "utf-8"));
 
             LogUtils.e("原始数据为" + json);
             JSONObject jsonObject = new JSONObject(json);
             result = jsonObject.getBoolean("result");
-            if (result) {
-                //结果正确
-                String data;
-                data = jsonObject.getString("data");
-                if (entity != null || type != null) {
-                    Gson gson = new Gson();
-                    t = gson.fromJson(data, entity != null ? entity : type);
-                } else {
-                    t = (T) data;
-                }
+
+            //结果正确
+            String data = jsonObject.getString("data");
+            if (entity != null || type != null) {
+                Gson gson = new Gson();
+                t = gson.fromJson(data, entity != null ? entity : type);
             } else {
-                msg = jsonObject.getString("msg");
-                exception = jsonObject.getString("exception");
-                LogUtils.e("网络返回Result为false:" + json);
+                t = (T) data;
             }
+
+            msg = jsonObject.getString("msg");
+            exception = jsonObject.getString("exception");
             return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
         } catch (Exception e) {
             e.printStackTrace();

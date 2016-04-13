@@ -61,7 +61,7 @@ public class MyFootprintAdapter extends RecyclerView.Adapter<MyFootprintAdapter.
         int index1 = text1.length();
         text1.append(" 在 ");
         int index2 = text1.length();
-        text1.append(model.getAddress());
+        text1.append(model.getPlcaeName());
         int index3 = text1.length();
 
         SpannableStringBuilder builder = new SpannableStringBuilder(text1.toString());
