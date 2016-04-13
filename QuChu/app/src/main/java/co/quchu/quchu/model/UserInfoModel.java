@@ -1,13 +1,14 @@
 package co.quchu.quchu.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * UserInfoModel
  * User: Chenhs
  * Date: 2015-11-30
  */
-public class UserInfoModel implements Serializable {
+public class UserInfoModel implements Parcelable {
 
     /**
      * fullname : 觉得解放军了一下下了了一个月后面
@@ -27,12 +28,22 @@ public class UserInfoModel implements Serializable {
     private boolean isweibo;
     private boolean isweixin;
     private boolean isVisitors;
-    private String location="";
+    private String location = "";
     private String photo;
     private String token;
     private int userId;
     private String username;
     private String type;
+    private int age;// 来趣处的总共多少年
+    private int cardCount;// 脚印的个数
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getCardCount() {
+        return cardCount;
+    }
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
@@ -45,6 +56,7 @@ public class UserInfoModel implements Serializable {
     public void setIsweibo(boolean isweibo) {
         this.isweibo = isweibo;
     }
+
     public void setIsVisitors(boolean isVisitors) {
         this.isVisitors = isVisitors;
     }
@@ -92,6 +104,7 @@ public class UserInfoModel implements Serializable {
     public boolean isIsweixin() {
         return isweixin;
     }
+
     public boolean isIsVisitors() {
         return isVisitors;
     }
@@ -119,4 +132,57 @@ public class UserInfoModel implements Serializable {
     public String getType() {
         return type;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.fullname);
+        dest.writeString(this.gender);
+        dest.writeByte(isweibo ? (byte) 1 : (byte) 0);
+        dest.writeByte(isweixin ? (byte) 1 : (byte) 0);
+        dest.writeByte(isVisitors ? (byte) 1 : (byte) 0);
+        dest.writeString(this.location);
+        dest.writeString(this.photo);
+        dest.writeString(this.token);
+        dest.writeInt(this.userId);
+        dest.writeString(this.username);
+        dest.writeString(this.type);
+        dest.writeInt(this.age);
+        dest.writeInt(this.cardCount);
+    }
+
+    public UserInfoModel() {
+    }
+
+    protected UserInfoModel(Parcel in) {
+        this.fullname = in.readString();
+        this.gender = in.readString();
+        this.isweibo = in.readByte() != 0;
+        this.isweixin = in.readByte() != 0;
+        this.isVisitors = in.readByte() != 0;
+        this.location = in.readString();
+        this.photo = in.readString();
+        this.token = in.readString();
+        this.userId = in.readInt();
+        this.username = in.readString();
+        this.type = in.readString();
+        this.age = in.readInt();
+        this.cardCount = in.readInt();
+    }
+
+    public static final Creator<UserInfoModel> CREATOR = new Creator<UserInfoModel>() {
+        @Override
+        public UserInfoModel createFromParcel(Parcel source) {
+            return new UserInfoModel(source);
+        }
+
+        @Override
+        public UserInfoModel[] newArray(int size) {
+            return new UserInfoModel[size];
+        }
+    };
 }

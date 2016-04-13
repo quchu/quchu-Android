@@ -20,6 +20,14 @@ android {
         abortOnError false
         checkReleaseBuilds false
     }
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include 'x86', 'x86_64', 'arm64-v8a', 'armeabi-v7a', 'armeabi'
+//            universalApk false
+//        }
+//    }
     buildTypes {
 
         release {
@@ -141,7 +149,7 @@ dependencies {
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.he5ed.lib:volley:android-6.0.1_r5'
-    compile 'com.google.code.gson:gson:2.6'
+    compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.facebook.fresco:fresco:0.9.0+'
     compile 'com.facebook.fresco:webpsupport:0.9.0+'
 }

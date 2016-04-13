@@ -18,7 +18,6 @@
             android:id="@+id/simpleDraweeView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            fresco:placeholderImage="@drawable/ic_folder_check"
             fresco:viewAspectRatio="0.75" />
     </android.support.v7.widget.CardView>
 
@@ -36,7 +35,6 @@
             android:id="@+id/headView"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            fresco:placeholderImage="@drawable/ic_folder_check"
             fresco:roundAsCircle="true" />
 
         <TextView
@@ -46,7 +44,6 @@
             android:layout_alignTop="@id/headView"
             android:layout_marginLeft="6dp"
             android:layout_toRightOf="@id/headView"
-            android:text="无家可归的嘴唇"
             android:textColor="@color/white"
             android:textSize="@dimen/word_size_time" />
 
@@ -58,7 +55,6 @@
             android:layout_marginLeft="6dp"
             android:layout_marginTop="3dp"
             android:layout_toRightOf="@id/headView"
-            android:text="无家可归的嘴唇"
             android:textColor="#878686"
             android:textSize="@dimen/word_size_minimum" />
     </RelativeLayout>

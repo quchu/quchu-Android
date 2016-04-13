@@ -55,16 +55,15 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@id/headView"
                     android:layout_marginTop="16dp"
-                    android:layout_toRightOf="@id/headView"
-                    android:text="无家可归的嘴唇" />
+                    android:layout_toRightOf="@id/headView" />
 
                 <TextView
+                    android:id="@+id/ageAndCound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/name"
                     android:layout_marginTop="16dp"
-                    android:layout_toRightOf="@id/headView"
-                    android:text="4年,80个脚印" />
+                    android:layout_toRightOf="@id/headView" />
             </RelativeLayout>
 
 
@@ -107,6 +106,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right" />
+
+        <co.quchu.quchu.widget.ErrorView
+            android:id="@+id/errorView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 
 

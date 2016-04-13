@@ -61,6 +61,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     public static final String REQUEST_KEY_ID = "id";
     public static final String REQUEST_KEY_POSITION = "position";
     public static final String REQUEST_KEY_IMAGE_LIST = "imageList";
+    public static final String REQUEST_KEY_ENTITY = "entity";//编辑 脚印实体
     private String positionText;
     private String descText;
     private String nameText;

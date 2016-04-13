@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -24,6 +25,7 @@ import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
+import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.ScrollIndexView;
 
 public class MyFootprintActivity extends BaseActivity implements IFootprintActivity, MyFootprintAdapter.OnItemClickListener {
@@ -41,6 +43,10 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
     TextView name;
     @Bind(R.id.scrollIndexView)
     ScrollIndexView scrollIndexView;
+    @Bind(R.id.ageAndCound)
+    TextView ageAndCound;
+    @Bind(R.id.errorView)
+    ErrorView errorView;
     private MyFootprintPresenter presenter;
 
     private List<PostCardItemModel> data;
@@ -57,9 +63,8 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         initTitle();
         presenter = new MyFootprintPresenter(this, this);
         presenter.getMyFoiotrintList();
-        headViewBg.setImageURI(Uri.parse("res:///" + R.mipmap.bg_user));
-        headView.setImageURI(Uri.parse(AppContext.user.getPhoto()));
-        initAnimation();
+        errorView.showLoading();
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean isIdle = true;
 
@@ -105,26 +110,31 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
                         break;
                     }
                 }
-
-
             }
         });
     }
 
-    private void initAnimation() {
-
-
-    }
-
-
     private void initTitle() {
+        String builder = String.valueOf(AppContext.user.getAge()) +
+                "年," +
+                AppContext.user.getCardCount() +
+                "个脚印";
+        name.setText(AppContext.user.getFullname());
+        ageAndCound.setText(builder);
+        headViewBg.setImageURI(Uri.parse("res:///" + R.mipmap.bg_user));
+        headView.setImageURI(Uri.parse(AppContext.user.getPhoto()));
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle("");
-            actionBar.setLogo(R.mipmap.ic_back);
-            actionBar.setDisplayHomeAsUpEnabled(false);
-
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            for (int i = 0, j = toolbar.getChildCount(); i < j; i++) {
+                if (toolbar.getChildAt(i) instanceof ImageButton) {
+                    ((ImageButton) toolbar.getChildAt(i)).setImageResource(R.mipmap.ic_back);
+                    break;
+                }
+            }
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +158,22 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
 
     @Override
     public void initData(boolean isError, List<PostCardItemModel> data) {
-        if (isError || data.size() == 0) {
+        errorView.himeView();
+        if (isError) {
+            errorView.showViewDefault(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    errorView.showLoading();
+                    presenter.getMyFoiotrintList();
+                }
+            });
+        } else if (data.size() == 0) {
+            errorView.showView("您还没有脚印哦~~", "到别处看看", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
         } else {
             this.data = data;
             MyFootprintAdapter adapter = new MyFootprintAdapter(data, this);

@@ -145,12 +145,14 @@ public class PostCardPresenter {
         NetService.get(mContext, urlStr, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                listener.onSuccess(null);
+                if (listener != null)
+                    listener.onSuccess(null);
             }
 
             @Override
             public boolean onError(String error) {
-                listener.onError("");
+                if (listener != null)
+                    listener.onError("");
                 return false;
             }
         });

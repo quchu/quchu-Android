@@ -124,18 +124,7 @@ public class MyFootprintAdapter extends RecyclerView.Adapter<MyFootprintAdapter.
         public ViewHold(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-//            if (itemHeight != 0) {
-//                line.getLayoutParams().height = itemHeight;
-//            } else {
-//                itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//                    @Override
-//                    public void onGlobalLayout() {
-//                        itemHeight = itemView.getHeight();
-//                        line.getLayoutParams().height = itemHeight;
-//                        itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//                    }
-//                });
-//            }
+
         }
     }
 

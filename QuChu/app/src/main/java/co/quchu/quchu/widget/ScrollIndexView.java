@@ -61,14 +61,6 @@ public class ScrollIndexView extends FrameLayout {
         ButterKnife.bind(this, this);
         setAlpha(0);
 
-        animationIn = ObjectAnimator.ofFloat(this, "alpha", 0, 1);
-        animationIn.setDuration(800);
-        animationIn.setInterpolator(new DecelerateInterpolator());
-
-        animatorOut = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
-        animatorOut.setDuration(800);
-        animatorOut.setInterpolator(new DecelerateInterpolator());
-        animatorOut.setStartDelay(1000);
 
     }
 
@@ -124,13 +116,23 @@ public class ScrollIndexView extends FrameLayout {
     }
 
     public void show() {
-        animatorOut.cancel();
+        if (animatorOut != null)
+            animatorOut.cancel();
+
+        animationIn = ObjectAnimator.ofFloat(this, "alpha", getAlpha(), 1);
+        animationIn.setDuration(500);
+        animationIn.setInterpolator(new DecelerateInterpolator());
         animationIn.start();
 
     }
 
     public void hide() {
-        animationIn.cancel();
+        if (animationIn != null)
+            animationIn.cancel();
+        animatorOut = ObjectAnimator.ofFloat(this, "alpha", getAlpha(), 0);
+        animatorOut.setDuration(500);
+        animatorOut.setInterpolator(new DecelerateInterpolator());
+        animatorOut.setStartDelay(1000);
         animatorOut.start();
     }
 }
