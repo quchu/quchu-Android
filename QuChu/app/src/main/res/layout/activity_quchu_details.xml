@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground_dark">
 
-    <include
-        layout="@layout/cp_enhanced_toolbar" />
+        <include
+            layout="@layout/cp_enhanced_toolbar" />
 
 
 
@@ -76,11 +76,10 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="@dimen/quarter_margin"
         android:id="@+id/detail_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/detail_bottom_group_ll"
+        android:layout_above="@+id/detail_bottom_group_ll"
         android:layout_below="@+id/enhancedToolbar"
         android:scrollbars="none"
         />

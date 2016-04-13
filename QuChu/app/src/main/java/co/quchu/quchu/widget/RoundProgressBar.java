@@ -263,18 +263,23 @@ public class RoundProgressBar extends View {
         if (progress < 0) {
             throw new IllegalArgumentException("progress not less than 0");
         }
-        if (progressStyle == AnimationProgressStyle) {
-            if (progress > max) {
-                this.progress = max;
-                handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
-            } else if (progress <= max) {
-                this.progress = progress;
-                handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
-            }
-        } else {
-            this.progress = drawProgress = progress >= max ? max : progress;
-            postInvalidate();
-        }
+//        if (progressStyle == AnimationProgressStyle) {
+//            if (progress > max) {
+//                this.progress = max;
+//                handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
+//            } else if (progress <= max) {
+//                this.progress = progress;
+//                handler.sendMessageDelayed(handler.obtainMessage(0), AnimationInterval);
+//            }
+//        } else {
+//        }
+
+        setProgressWithoutTheFuckingAnimation(progress);
+    }
+
+    public synchronized void setProgressWithoutTheFuckingAnimation(int progress) {
+        this.progress = drawProgress = progress >= max ? max : progress;
+        postInvalidate();
     }
 
     public int getCricleColor() {

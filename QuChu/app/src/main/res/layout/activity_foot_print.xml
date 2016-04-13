@@ -6,14 +6,13 @@
     android:orientation="vertical">
 
     <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
+        layout="@layout/cp_enhanced_toolbar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFootPrint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar" />
+        android:layout_below="@+id/enhancedToolbar" />
 
 
 

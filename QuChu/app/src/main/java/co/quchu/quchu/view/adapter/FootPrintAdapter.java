@@ -23,8 +23,11 @@ public class FootPrintAdapter extends RecyclerView.Adapter<FootPrintAdapter.View
 
     List<String> mData;
 
-    public FootPrintAdapter(List<String> mData) {
+    public OnItemClickListener mOnItemClickListener;
+
+    public FootPrintAdapter(List<String> mData,OnItemClickListener onItemClickListener) {
         this.mData = mData;
+        this.mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class FootPrintAdapter extends RecyclerView.Adapter<FootPrintAdapter.View
     private int mFinalAnimatedIndex = -1;
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         if (position>mFinalAnimatedIndex) {
             mFinalAnimatedIndex = position;
@@ -53,6 +56,19 @@ public class FootPrintAdapter extends RecyclerView.Adapter<FootPrintAdapter.View
         }
         holder.sdv.setAspectRatio(1);
         holder.sdv.setImageResource(R.mipmap.ic_launcher);
+
+        holder.sdv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null!=mOnItemClickListener){
+                    mOnItemClickListener.onItemClick(position);
+                }
+            }
+        });
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
     }
 
     @Override

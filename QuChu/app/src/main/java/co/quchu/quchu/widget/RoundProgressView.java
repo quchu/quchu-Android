@@ -98,6 +98,10 @@ public class RoundProgressView extends RelativeLayout {
         bar.setProgress((int) progress);
     }
 
+    public void setProgressWithoutFuckingAnimation(Integer integer) {
+        bar.setProgressWithoutTheFuckingAnimation(integer);
+    }
+
     public void setProgress( int progress) {
 bar.setProgress(progress);
     }
@@ -306,4 +310,6 @@ bar.setProgress(progress);
     public void setTextStyle(int textStyle) {
         bar.setTextStyle(textStyle);
     }
+
+
 }

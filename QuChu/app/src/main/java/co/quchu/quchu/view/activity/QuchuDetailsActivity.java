@@ -26,10 +26,12 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ShareDialogFg;
+import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
@@ -76,6 +78,14 @@ public class QuchuDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         getEnhancedToolbar().getRightTv().setText(R.string.pre_order);
         getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
+        getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null!=dModel&&null!=dModel.getNet()&&null!=dModel.getNet()){
+                    WebViewActivity.enterActivity(QuchuDetailsActivity.this,dModel.getNet(),dModel.getName());
+                }
+            }
+        });
 
         initData();
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
@@ -145,6 +155,28 @@ public class QuchuDetailsActivity extends BaseActivity {
             return;
         if (dModel != null) {
             switch (v.getId()) {
+                case R.id.tvQuguo:
+                            ArrayList<TagsModel> data = new ArrayList<>();
+                            for (int i = 0; i < 19; i++) {
+                                TagsModel tag = new TagsModel();
+                                tag.setCode(String.valueOf(i));
+                                tag.setEn("EN"+i);
+                                tag.setZh("标签"+ (i%7==0?"凑数":""));
+                                tag.setTagId(i*1000);
+                                data.add(tag);
+                            }
+                            ArrayList<Boolean> selection = new ArrayList<>();
+                            selection.add(false);
+                            selection.add(true);
+                            selection.add(false);
+                            selection.add(true);
+                            selection.add(false);
+                            TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(data,selection);
+                            tagsFilterDialog.show(getFragmentManager(),"");
+                    break;
+                case R.id.tvFootPrint:
+                    startActivity(new Intent(QuchuDetailsActivity.this,FootPrintActivity.class));
+                    break;
                /* case R.id.detail_store_phone_ll:
                     callPhone();
                     break;*/

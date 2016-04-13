@@ -78,6 +78,7 @@ public class MyFootprintDetailActivity extends BaseActivity {
 
     private void initData() {
         bean = getIntent().getParcelableExtra(REQUEST_KEY_MODEL);
+        if (null==bean){return;}
         titleContentTv.setText(bean.getTime());
         headImage.setImageURI(Uri.parse(bean.getAutorPhoto()));
 

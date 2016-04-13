@@ -188,6 +188,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ActionViewHolder) holder).detail_button_add_postcard_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).detail_button_collect_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).detail_button_share_rl.setOnClickListener(mOnItemClickListener);
+            ((ActionViewHolder) holder).tvFootprint.setOnClickListener(mOnItemClickListener);
+            ((ActionViewHolder) holder).tvQuguo.setOnClickListener(mOnItemClickListener);
         } else if (holder instanceof ContactInfoViewHolder) {
             if (null == mData.getTraffic() || StringUtils.isEmpty(mData.getTraffic())) {
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址：" + mData.getAddress());
@@ -211,11 +213,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (holder instanceof RatingInfoViewHolder) {
             if (null != mData.getGenes() && mData.getGenes().size() >= 3) {
                 ((RatingInfoViewHolder) holder).rpvItemLeft.setProgressText(mData.getGenes().get(0).getKey());
-                ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress(Integer.valueOf(mData.getGenes().get(0).getValue()));
+                ((RatingInfoViewHolder) holder).rpvItemLeft.setProgressWithoutFuckingAnimation(Integer.valueOf(mData.getGenes().get(0).getValue()));
                 ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgressText(mData.getGenes().get(1).getKey());
-                ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress(Integer.valueOf(mData.getGenes().get(1).getValue()));
+                ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgressWithoutFuckingAnimation(Integer.valueOf(mData.getGenes().get(1).getValue()));
                 ((RatingInfoViewHolder) holder).rpvItemRight.setProgressText(mData.getGenes().get(2).getKey());
-                ((RatingInfoViewHolder) holder).rpvItemRight.setProgress(Integer.valueOf(mData.getGenes().get(2).getValue()));
+                ((RatingInfoViewHolder) holder).rpvItemRight.setProgressWithoutFuckingAnimation(Integer.valueOf(mData.getGenes().get(2).getValue()));
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {
             ((AdditionalInfoViewHolder) holder).ivParkingSlot.setAlpha(.5f);
@@ -366,6 +368,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         RelativeLayout detail_button_share_rl;
         @Bind(R.id.detail_button_add_postcard_rl)
         RelativeLayout detail_button_add_postcard_rl;
+
+        @Bind(R.id.tvFootPrint)
+        TextView tvFootprint;
+        @Bind(R.id.tvQuguo)
+        TextView tvQuguo;
 
         ActionViewHolder(View view) {
             super(view);

@@ -84,23 +84,7 @@ public class RecommendActivity extends BaseActivity {
         }
 
 
-//        ArrayList<TagsModel> data = new ArrayList<>();
-//        for (int i = 0; i < 19; i++) {
-//            TagsModel tag = new TagsModel();
-//            tag.setCode(String.valueOf(i));
-//            tag.setEn("EN"+i);
-//            tag.setZh("标签"+ (i%7==0?"凑数":""));
-//            tag.setTagId(i*1000);
-//            data.add(tag);
-//        }
-//        ArrayList<Boolean> selection = new ArrayList<>();
-//        selection.add(false);
-//        selection.add(true);
-//        selection.add(false);
-//        selection.add(true);
-//        selection.add(false);
-//        TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(data,selection);
-//        tagsFilterDialog.show(getFragmentManager(),"");
+
 
 
         recommendTitleLocationIv.setText(SPUtils.getCityName());

@@ -18,6 +18,7 @@
           android:id="@+id/rpvItemLeft"
           android:layout_width="80dp"
           android:layout_height="80dp"
+          app:progressStyle="Default"
           app:roundProgressBackground="@color/transparent"
           app:roundProgressColor="@color/planet_progress_yellow"
           app:roundColor = "@color/planet_progress_yellow"
@@ -40,6 +41,7 @@
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/planet_progress_yellow"
         app:roundColor = "@color/planet_progress_yellow"
+        app:progressStyle="Default"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />
@@ -58,6 +60,7 @@
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/planet_progress_yellow"
         app:roundColor = "@color/planet_progress_yellow"
+        app:progressStyle="Default"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />
