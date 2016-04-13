@@ -27,13 +27,6 @@
             android:textColor="@color/planet_text_color_white"
             android:textSize="@dimen/word_title_body" />
 
-
-        <TextView
-            android:id="@+id/tvRight"
-            android:layout_alignParentRight="true"
-            android:layout_width="@dimen/toolbar_item_size"
-            android:layout_height="@dimen/toolbar_item_size" />
-
         <co.quchu.quchu.widget.MoreButtonView
             android:id="@+id/title_more_rl"
             android:layout_width="wrap_content"

@@ -51,8 +51,6 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     @Bind(R.id.detail_been_tv)
     TextView detailBeenTv;
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
     @Bind(R.id.detail_recyclerview)
     RecyclerView mRecyclerView;
 
@@ -76,8 +74,9 @@ public class QuchuDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quchu_details);
         ButterKnife.bind(this);
-        initTitleBar();
-        titleContentTv.setText(getTitle());
+        getEnhancedToolbar().getRightTv().setText(R.string.pre_order);
+        getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
+
         initData();
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));

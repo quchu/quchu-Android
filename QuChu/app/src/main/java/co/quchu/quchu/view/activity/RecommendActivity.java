@@ -125,7 +125,7 @@ public class RecommendActivity extends BaseActivity {
         UmengUpdateAgent.setUpdateCheckConfig(true);
 
 
-        startActivity(new Intent(RecommendActivity.this,AddFootprintActivity.class));
+//        startActivity(new Intent(RecommendActivity.this,AddFootprintActivity.class));
     }
 
     @Override

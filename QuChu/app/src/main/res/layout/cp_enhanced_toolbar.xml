@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<co.quchu.quchu.base.EnhancedToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:id="@+id/enhancedToolbar"
+    android:gravity="center_vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorPrimary"
+    app:popupTheme="@style/AppTheme.PopupOverlay" />

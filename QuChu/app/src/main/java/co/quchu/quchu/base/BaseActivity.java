@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
@@ -165,6 +166,30 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         this.findViewById(R.id.title_back_iv).setOnClickListener(this);
         MoreButtonView mvv = (MoreButtonView) this.findViewById(R.id.title_more_rl);
         mvv.setMoreClick(this);
+    }
+
+    public EnhancedToolbar getEnhancedToolbar(){
+        return null==enhancedToolbar?initToolbar():enhancedToolbar;
+    }
+    private EnhancedToolbar enhancedToolbar;
+
+    private EnhancedToolbar initToolbar(){
+        if (null!=findViewById(R.id.enhancedToolbar)){
+            enhancedToolbar = (EnhancedToolbar) findViewById(R.id.enhancedToolbar);
+            enhancedToolbar.getLeftIv().setImageResource(R.mipmap.ic_back);
+            enhancedToolbar.getLeftIv().setScaleType(ImageView.ScaleType.CENTER);
+            enhancedToolbar.getLeftIv().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+            enhancedToolbar.getTitleTv().setText(getTitle());
+            setSupportActionBar(enhancedToolbar);
+            return enhancedToolbar;
+        }else{
+            return null;
+        }
     }
 
     public void enableRightButton() {

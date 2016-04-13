@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item type="id" name="scrollview"/>
+    <item type="id" name="toolbar_tv_left"/>
+    <item type="id" name="toolbar_tv_right"/>
+    <item type="id" name="toolbar_iv_left"/>
+    <item type="id" name="toolbar_iv_right"/>
+    <item type="id" name="toolbar_tv_title"/>
+    <item type="id" name="toolbar_v_custom"/>
+
 </resources>

@@ -27,6 +27,7 @@ import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.ImageUpload;
