@@ -202,7 +202,9 @@ public class QuchuDetailsActivity extends BaseActivity {
                             tagsFilterDialog.show(getFragmentManager(),"");
                     break;
                 case R.id.tvFootPrint:
-                    startActivity(new Intent(QuchuDetailsActivity.this,FootPrintActivity.class));
+                    Intent footPrintIntent = new Intent(QuchuDetailsActivity.this,FootPrintActivity.class);
+                    footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_ID,dModel.getPid());
+                    startActivity(footPrintIntent);
                     break;
                /* case R.id.detail_store_phone_ll:
                     callPhone();
