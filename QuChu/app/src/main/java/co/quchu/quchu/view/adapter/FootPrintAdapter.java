@@ -2,11 +2,13 @@ package co.quchu.quchu.view.adapter;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -15,18 +17,19 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.FootprintModel;
 
 /**
  * Created by Nico on 16/4/7.
  */
 public class FootPrintAdapter extends RecyclerView.Adapter<FootPrintAdapter.ViewHolder> {
 
-    List<String> mData;
+    List<FootprintModel> mData;
 
     public OnItemClickListener mOnItemClickListener;
 
-    public FootPrintAdapter(List<String> mData,OnItemClickListener onItemClickListener) {
-        this.mData = mData;
+    public FootPrintAdapter(List<FootprintModel> pData,OnItemClickListener onItemClickListener) {
+        this.mData = pData;
         this.mOnItemClickListener = onItemClickListener;
     }
 
@@ -39,6 +42,7 @@ public class FootPrintAdapter extends RecyclerView.Adapter<FootPrintAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
 
         if (position>mFinalAnimatedIndex) {
             mFinalAnimatedIndex = position;
@@ -54,8 +58,13 @@ public class FootPrintAdapter extends RecyclerView.Adapter<FootPrintAdapter.View
             int delay = 10 * position;
             animator.setStartDelay(delay);
         }
-        holder.sdv.setAspectRatio(1);
-        holder.sdv.setImageResource(R.mipmap.ic_launcher);
+
+        double imgWidth = mData.get(position).getWidth();
+        double imgHeight = mData.get(position).getHeight();
+        double aspectRatio = imgWidth/imgHeight;
+
+        holder.sdv.setAspectRatio((float) aspectRatio);
+        holder.sdv.setImageURI(Uri.parse(mData.get(position).getPlaceCover()));
 
         holder.sdv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +82,7 @@ public class FootPrintAdapter extends RecyclerView.Adapter<FootPrintAdapter.View
 
     @Override
     public int getItemCount() {
+
         return null != mData ? mData.size() : 0;
     }
 

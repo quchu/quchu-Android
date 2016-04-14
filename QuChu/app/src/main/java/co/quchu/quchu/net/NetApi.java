@@ -87,6 +87,7 @@ public interface NetApi {
 
     String getCategoryTags = HOST + "/place/getCategoryTags?cityId=%d";  //获取tag 列表
     String getNearby = HOST_KANYUN + "/place/nearPlaces?tagIds=%s&cityId=%d&latitude=%s&longitude=%s&pagesNo=%d";
+    String getFootprint = HOST_KANYUN + "/place/getCardList?pId=%d&pageno=%d";
 
     /****  Get end  ****/
 

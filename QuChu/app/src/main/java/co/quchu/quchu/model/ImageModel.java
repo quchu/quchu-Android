@@ -4,11 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * PostCardImageListModel
+ * ImageModel
  * User: Chenhs
  * Date: 2015-12-30
  */
-public class PostCardImageListModel implements Parcelable {
+public class ImageModel implements Parcelable {
 
     private int height;
     private int imgId;
@@ -90,10 +90,10 @@ public class PostCardImageListModel implements Parcelable {
         dest.writeInt(this.width);
     }
 
-    public PostCardImageListModel() {
+    public ImageModel() {
     }
 
-    protected PostCardImageListModel(Parcel in) {
+    protected ImageModel(Parcel in) {
         this.height = in.readInt();
         this.imgId = in.readInt();
         this.isCover = in.readByte() != 0;
@@ -103,15 +103,15 @@ public class PostCardImageListModel implements Parcelable {
         this.width = in.readInt();
     }
 
-    public static final Creator<PostCardImageListModel> CREATOR = new Creator<PostCardImageListModel>() {
+    public static final Creator<ImageModel> CREATOR = new Creator<ImageModel>() {
         @Override
-        public PostCardImageListModel createFromParcel(Parcel source) {
-            return new PostCardImageListModel(source);
+        public ImageModel createFromParcel(Parcel source) {
+            return new ImageModel(source);
         }
 
         @Override
-        public PostCardImageListModel[] newArray(int size) {
-            return new PostCardImageListModel[size];
+        public ImageModel[] newArray(int size) {
+            return new ImageModel[size];
         }
     };
 }

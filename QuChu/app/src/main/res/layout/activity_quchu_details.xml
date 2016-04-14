@@ -80,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/detail_bottom_group_ll"
-        android:layout_below="@+id/enhancedToolbar"
+        android:layout_below="@+id/appbar"
         android:scrollbars="none"
         />
 

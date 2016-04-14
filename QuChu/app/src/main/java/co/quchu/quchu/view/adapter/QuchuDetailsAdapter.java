@@ -1,5 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -41,16 +44,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private DetailModel mData;
     private View.OnClickListener mOnItemClickListener;
     public static final int BLOCK_INDEX = 7;
+    private OnLoadMoreListener mLoadMoreListener;
+    private boolean mOnLoadingMore = false;
 
-    public QuchuDetailsAdapter(Activity activity, DetailModel dModel, View.OnClickListener onClickListener) {
-        if (null == onClickListener) {
-            throw new IllegalArgumentException("OnClickListener Cannot be null");
-        }
-        mAnchorActivity = activity;
-        mData = dModel;
-        mLayoutInflater = LayoutInflater.from(activity);
-        mOnItemClickListener = onClickListener;
-    }
 
     protected static final int LAYOUT_TYPE_INTRO_IMAGE = 0x0001;
     protected static final int LAYOUT_TYPE_ACTIONBAR = 0x0002;
@@ -64,6 +60,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     protected static final int LAYOUT_TYPE_IMAGE = 0x0010;
     protected static final int LAYOUT_TYPE_NEARBY = 0x0011;
     protected static final int LAYOUT_TYPE_BLANK = 0x0012;
+    private static final int LAYOUT_TYPE_LOAD_MORE = 0x1001;
+
 
     protected static final int VIEW_TYPES[] = new int[]{
             LAYOUT_TYPE_INTRO_IMAGE,
@@ -76,7 +74,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LAYOUT_TYPE_BLANK,
             LAYOUT_TYPE_BLANK,
             LAYOUT_TYPE_IMAGE,
-            LAYOUT_TYPE_NEARBY
+            LAYOUT_TYPE_NEARBY,
+            LAYOUT_TYPE_LOAD_MORE
     };
 
     protected static final int VIEW_TYPES_PARTY[] = new int[]{
@@ -90,21 +89,41 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LAYOUT_TYPE_PARTY_STARTER_INFO,
             LAYOUT_TYPE_PARTY_INFO,
             LAYOUT_TYPE_IMAGE,
-            LAYOUT_TYPE_NEARBY
+            LAYOUT_TYPE_NEARBY,
+            LAYOUT_TYPE_LOAD_MORE
     };
 
 
+    public QuchuDetailsAdapter(Activity activity, DetailModel dModel, View.OnClickListener onClickListener) {
+        if (null == onClickListener) {
+            throw new IllegalArgumentException("OnClickListener Cannot be null");
+        }
+        mAnchorActivity = activity;
+        mData = dModel;
+        mLayoutInflater = LayoutInflater.from(activity);
+        mOnItemClickListener = onClickListener;
+    }
+
+
+    public void setLoadMoreListener(OnLoadMoreListener pListener){
+        mLoadMoreListener = pListener;
+    }
+
+    public interface OnLoadMoreListener {
+        void onLoadMore();
+    }
+
     @Override
     public int getItemViewType(int position) {
-
         if (position <= (BLOCK_INDEX + 1)) {
             return null != mData && mData.isIsActivity() ? VIEW_TYPES_PARTY[position] : VIEW_TYPES[position];
         } else if (position >= (BLOCK_INDEX + 1) && position < (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
             return LAYOUT_TYPE_IMAGE;
-        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
+        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1)) && position < (mData.getImglist().size()+BLOCK_INDEX+1+mData.getNearPlace().size())) {
             return LAYOUT_TYPE_NEARBY;
+        } else {
+            return LAYOUT_TYPE_LOAD_MORE;
         }
-        return LAYOUT_TYPE_IMAGE;
     }
 
 
@@ -146,6 +165,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
             case LAYOUT_TYPE_NEARBY:
                 return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_favorite, parent, false));
+            case LAYOUT_TYPE_LOAD_MORE:
+                return new LoadMoreViewHolder(mLayoutInflater.inflate(R.layout.cp_loadmore,parent,false));
             default:
                 return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
         }
@@ -173,16 +194,27 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
             //TODO For some reason ,TagCloudView can cause laggy in this activity ,Consider using recyclerview for instead
-            ((IntroImageViewHolder) holder).TagCloudView.setVisibility(View.VISIBLE);
             if (null != mData.getTags() && mData.getTags().size() > 0) {
-                ArrayList<String> tags = new ArrayList<>();
                 for (int i = 0; i < mData.getTags().size(); i++) {
-                    tags.add(mData.getTags().get(i).getZh());
+                    switch (i){
+                        case 0:
+                            ((IntroImageViewHolder) holder).tag1.setText(mData.getTags().get(i).getZh());
+                            ((IntroImageViewHolder) holder).tag1.setVisibility(View.VISIBLE);
+                            break;
+                        case 1:
+                            ((IntroImageViewHolder) holder).tag2.setText(mData.getTags().get(i).getZh());
+                            ((IntroImageViewHolder) holder).tag2.setVisibility(View.VISIBLE);
+                            break;
+                        case 2:
+                            ((IntroImageViewHolder) holder).tag3.setText(mData.getTags().get(i).getZh());
+                            ((IntroImageViewHolder) holder).tag3.setVisibility(View.VISIBLE);
+                            break;
+                    }
                 }
-                ((IntroImageViewHolder) holder).TagCloudView.setTags(tags);
             } else {
-                ((IntroImageViewHolder) holder).TagCloudView.setTags(null);
-                ((IntroImageViewHolder) holder).TagCloudView.setVisibility(View.GONE);
+                ((IntroImageViewHolder) holder).tag1.setVisibility(View.INVISIBLE);
+                ((IntroImageViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
+                ((IntroImageViewHolder) holder).tag3.setVisibility(View.INVISIBLE);
             }
         } else if (holder instanceof ActionViewHolder) {
             ((ActionViewHolder) holder).detail_button_collect_iv.setImageResource(mData.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect);
@@ -310,7 +342,28 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                ((NearByViewHolder) holder).recyclerview.setOnTouchListener(listener);
 
             }
+        } else if (holder instanceof LoadMoreViewHolder){
+            if (null!=mLoadMoreListener){
+                mOnLoadingMore = true;
+                mLoadMoreListener.onLoadMore();
+            }
+
+            if (mOnLoadingMore){
+                ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore,"rotation",0,360);
+                rotation.setInterpolator(new LinearInterpolator());
+                rotation.setRepeatMode(ValueAnimator.RESTART);
+                rotation.setRepeatCount(ValueAnimator.INFINITE);
+                rotation.setDuration(1500);
+                rotation.start();
+            }else{
+                ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
+            }
         }
+    }
+
+    public void finishLoadMore(){
+        mOnLoadingMore = false;
+        notifyDataSetChanged();
     }
 
 
@@ -337,7 +390,18 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (null != mData && null != mData.getNearPlace()) {
             basicCount += mData.getNearPlace().size();
         }
+        basicCount+=1;
         return basicCount;
+    }
+
+    public static class LoadMoreViewHolder extends RecyclerView.ViewHolder{
+        @Bind(R.id.ivIndicator)
+        ImageView ivLoadMore;
+
+        LoadMoreViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this,view);
+        }
     }
 
     public static class IntroImageViewHolder extends RecyclerView.ViewHolder {
@@ -347,10 +411,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ProperRatingBar detail_suggest_prb;
         @Bind(R.id.detail_avg_price_tv)
         TextView detail_avg_price_tv;
-        @Bind(R.id.detail_store_tagclound_tcv)
-        TagCloudView TagCloudView;
         @Bind(R.id.item_card_image_sdv)
         SimpleDraweeView simpleDraweeView;
+
+        @Bind(R.id.recommend_tag1)
+        TextView tag1;
+        @Bind(R.id.recommend_tag2)
+        TextView tag2;
+        @Bind(R.id.recommend_tag3)
+        TextView tag3;
 
         IntroImageViewHolder(View view) {
             super(view);

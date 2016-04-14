@@ -31,7 +31,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ShareDialogFg;
-import co.quchu.quchu.model.PostCardImageListModel;
+import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.view.fragment.FootprintDetailFragment;
@@ -108,7 +108,7 @@ public class MyFootprintDetailActivity extends BaseActivity {
         detail.setText(builder);
 
         List<FootprintDetailFragment> fragments = new ArrayList<>();
-        for (PostCardImageListModel item : bean.getImglist()) {
+        for (ImageModel item : bean.getImglist()) {
             Bundle bund = new Bundle();
             bund.putParcelable(FootprintDetailFragment.REQUEST_KEY_IMAGE_ENTITY, item);
             FootprintDetailFragment fragment = new FootprintDetailFragment();

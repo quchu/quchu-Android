@@ -75,7 +75,7 @@ public class NearbyActivity extends BaseActivity {
 
         }
         mIsLoading = true;
-        NearbyPresenter.getNearbyData(getApplicationContext(), SPUtils.getCityId(), mTagsInfo, SPUtils.getLatitude(), SPUtils.getLongitude(), 0, new NearbyPresenter.getNearbyDataListener() {
+        NearbyPresenter.getNearbyData(getApplicationContext(), SPUtils.getCityId(), mTagsInfo, SPUtils.getLatitude(), SPUtils.getLongitude(), mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
             @Override
             public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
                 mMaxPageNo = pMaxPageNo;

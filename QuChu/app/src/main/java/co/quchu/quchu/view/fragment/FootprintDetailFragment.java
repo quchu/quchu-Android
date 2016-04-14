@@ -13,7 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
-import co.quchu.quchu.model.PostCardImageListModel;
+import co.quchu.quchu.model.ImageModel;
 
 
 public class FootprintDetailFragment extends BaseFragment {
@@ -23,7 +23,7 @@ public class FootprintDetailFragment extends BaseFragment {
     SimpleDraweeView draweeViewMain;
     private View rootView;
     public boolean firstPage;
-    private PostCardImageListModel bean;
+    private ImageModel bean;
 
     public static final String REQUEST_KEY_IMAGE_ENTITY = "ENTITY";
 

@@ -14,7 +14,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.PostCardImageListModel;
+import co.quchu.quchu.model.ImageModel;
 
 /**
  * PostCardImageAdapter
@@ -23,13 +23,13 @@ import co.quchu.quchu.model.PostCardImageListModel;
  */
 public class PostCardImageAdapter extends BaseAdapter {
 
-    private List<PostCardImageListModel> imglist;
+    private List<ImageModel> imglist;
     private Context mContext;
     public PostCardImageAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setData(List<PostCardImageListModel> imglist) {
+    public void setData(List<ImageModel> imglist) {
         this.imglist = imglist;
         notifyDataSetChanged();
     }

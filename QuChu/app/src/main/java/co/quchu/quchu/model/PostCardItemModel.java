@@ -52,7 +52,7 @@ public class PostCardItemModel implements Parcelable {
         this.issys = issys;
     }
 
-    private List<PostCardImageListModel> imglist;
+    private List<ImageModel> imglist;
 
     public void setAddress(String address) {
         this.address = address;
@@ -138,7 +138,7 @@ public class PostCardItemModel implements Parcelable {
         this.width = width;
     }
 
-    public void setImglist(List<PostCardImageListModel> imglist) {
+    public void setImglist(List<ImageModel> imglist) {
         this.imglist = imglist;
     }
 
@@ -226,7 +226,7 @@ public class PostCardItemModel implements Parcelable {
         return width;
     }
 
-    public List<PostCardImageListModel> getImglist() {
+    public List<ImageModel> getImglist() {
         return imglist;
     }
 
@@ -295,8 +295,8 @@ public class PostCardItemModel implements Parcelable {
         this.time = in.readString();
         this.width = in.readInt();
         this.issys = in.readByte() != 0;
-        this.imglist = new ArrayList<PostCardImageListModel>();
-        in.readList(this.imglist, PostCardImageListModel.class.getClassLoader());
+        this.imglist = new ArrayList<ImageModel>();
+        in.readList(this.imglist, ImageModel.class.getClassLoader());
     }
 
     public static final Creator<PostCardItemModel> CREATOR = new Creator<PostCardItemModel>() {

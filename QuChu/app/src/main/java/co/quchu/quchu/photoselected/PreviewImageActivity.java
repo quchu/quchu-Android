@@ -33,7 +33,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.PostCardImageListModel;
+import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -67,12 +67,12 @@ public class PreviewImageActivity extends BaseActivity implements OnPageChangeLi
     RelativeLayout MainView;
 
     private int index = 0;
-    private ArrayList<PostCardImageListModel> ImgList;
+    private ArrayList<ImageModel> ImgList;
     private SamplePagerAdapter pagerAdapter;
     private int type;
     protected ImageBDInfo bdInfo;
     private int showingIndex = 0;
-    PostCardImageListModel imageInfo;
+    ImageModel imageInfo;
     PostCardItemModel model;
 
     @Override
@@ -98,7 +98,7 @@ public class PreviewImageActivity extends BaseActivity implements OnPageChangeLi
         type = getIntent().getIntExtra("type", 0);
         model = (PostCardItemModel) getIntent().getSerializableExtra("data");
         bdInfo = (ImageBDInfo) getIntent().getSerializableExtra("bdinfo");
-        ImgList = (ArrayList<PostCardImageListModel>) model.getImglist();
+        ImgList = (ArrayList<ImageModel>) model.getImglist();
         imageInfo = ImgList.get(index);
 
         /**
@@ -141,7 +141,7 @@ public class PreviewImageActivity extends BaseActivity implements OnPageChangeLi
 
     @Override
     public void onPageSelected(int arg0) {
-        PostCardImageListModel info = ImgList.get(arg0);
+        ImageModel info = ImgList.get(arg0);
         if (AppContext.user.getUserId() == model.getAutorId()) {
             previewCollectIv.setVisibility(View.GONE);
         } else {

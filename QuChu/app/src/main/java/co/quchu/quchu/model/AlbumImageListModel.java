@@ -3,7 +3,6 @@ package co.quchu.quchu.model;
 import java.io.Serializable;
 
 /**
- * PostCardImageListModel
  * User: Chenhs
  * Date: 2015-12-30
  * 相册照片

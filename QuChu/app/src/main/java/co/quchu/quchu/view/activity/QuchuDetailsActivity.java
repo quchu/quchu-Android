@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +60,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     public static final String REQUEST_KEY_PID = "pid";
 
+    private boolean mLoadingMore = false;
     private int pId = 0;
     public DetailModel dModel = new DetailModel();
     private GatherViewModel gatherViewModel;
@@ -89,6 +92,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
         initData();
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mQuchuDetailAdapter);
 
@@ -111,12 +115,35 @@ public class QuchuDetailsActivity extends BaseActivity {
                 public void getDetailData(DetailModel model) {
                     dModel.copyFrom(model);
                     mQuchuDetailAdapter.notifyDataSetChanged();
-                    mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
+                    mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
                         @Override
-                        public void onLoadMore(int current_page) {
-                            startActivity(new Intent(QuchuDetailsActivity.this,NearbyActivity.class));
+                        public void onLoadMore() {
+                            if (mLoadingMore){
+                                return;
+                            }
+                            mLoadingMore = true;
+                            //TODO load nearby stuff
+                            mRecyclerView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(new Intent(QuchuDetailsActivity.this,NearbyActivity.class));
+
+                                }
+                            },1500l);
+
                         }
                     });
+//                    mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
+//                        @Override
+//                        public void onLoadMore(int current_page) {
+//                            ImageView ivLoadMore = new ImageView(getApplicationContext());
+//                            ivLoadMore.setImageResource(R.drawable.ic_refresh);
+//
+//                            mRecyclerView.addView(ivLoadMore,mRecyclerView.getChildCount());
+//                            ivLoadMore.animate().rotation(36000).setDuration(360).start();
+//                            //startActivity(new Intent(QuchuDetailsActivity.this,NearbyActivity.class));
+//                        }
+//                    });
                     bindingDetailData();
                     DialogUtil.dismissProgess();
                 }
