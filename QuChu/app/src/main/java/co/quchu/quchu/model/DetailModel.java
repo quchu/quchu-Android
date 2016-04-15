@@ -68,38 +68,21 @@ public class DetailModel {
     private int height;
     private float suggest;
     private int myCardId;                   //明信片ID -1为未创建明信片
-    /**
-     * key : 美食
-     * value : 79
-     */
     private List<GenesEntity> genes;
-    /**
-     * zh : 现金
-     */
     private List<IconsEntity> icons;
-    /**
-     * cid : 15
-     * cindex : 0
-     * height : 451
-     * imgpath : http://7xo7et.com1.z0.glb.clouddn.com/5@1?imageMogr2/format/webp
-     * width : 675
-     */
     private List<ImglistEntity> imglist;
-    /**
-     * zh : 闽菜
-     */
     private List<TagsEntity> tags;
+    private List<NearPlace> recommendPlaces;
 
 
     public List<NearPlace> getNearPlace() {
-        return nearPlace;
+        return recommendPlaces;
     }
 
     public void setNearPlace(List<NearPlace> nearPlace) {
-        this.nearPlace = nearPlace;
+        this.recommendPlaces = nearPlace;
     }
 
-    private List<NearPlace>nearPlace;
 
 
 
@@ -162,12 +145,12 @@ public class DetailModel {
         tags.addAll(objTarget.getTags());
 
 
-        if (null==nearPlace){
-            nearPlace = new ArrayList<>();
+        if (null==recommendPlaces){
+            recommendPlaces = new ArrayList<>();
         }else{
-            nearPlace.clear();
+            recommendPlaces.clear();
         }
-        nearPlace.addAll(objTarget.getNearPlace());
+        recommendPlaces.addAll(objTarget.getNearPlace());
 
 
     }
@@ -437,6 +420,15 @@ public class DetailModel {
         private int height;
         private String imgpath;
         private int width;
+        private String words;
+
+        public String getWords() {
+            return words;
+        }
+
+        public void setWords(String words) {
+            this.words = words;
+        }
 
         public void setCid(int cid) {
             this.cid = cid;
@@ -492,24 +484,59 @@ public class DetailModel {
     }
 
     public static class NearPlace{
-        private List<Places> places;
+        private int placeId;
+        private String cover;
+        private String name;
+        private String address;
+        private boolean isActivity;
+        private List<TagsModel> tags;
 
-        public String getTag() {
-            return tag;
+        public int getPlaceId() {
+            return placeId;
         }
 
-        public void setTag(String tag) {
-            this.tag = tag;
+        public void setPlaceId(int placeId) {
+            this.placeId = placeId;
         }
 
-        private String tag;
-
-        public List<Places> getPlaces() {
-            return places;
+        public String getCover() {
+            return cover;
         }
 
-        public void setPlaces(List<Places> places) {
-            this.places = places;
+        public void setCover(String cover) {
+            this.cover = cover;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public boolean isActivity() {
+            return isActivity;
+        }
+
+        public void setActivity(boolean activity) {
+            isActivity = activity;
+        }
+
+        public List<TagsModel> getTags() {
+            return tags;
+        }
+
+        public void setTags(List<TagsModel> tags) {
+            this.tags = tags;
         }
     }
 

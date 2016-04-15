@@ -313,17 +313,17 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (null != mData.getImglist()) {
                     imgIndex -= mData.getImglist().size();
                 }
-                if (null == mData.getNearPlace().get(imgIndex - 1).getPlaces() || null == mData.getNearPlace().get(imgIndex - 1).getPlaces().get(0)) {
+                if (null == mData.getNearPlace().get(imgIndex - 1) || null == mData.getNearPlace().get(imgIndex - 1)) {
                     return;
                 }
-                ((NearbyViewHolder) holder).tvName.setText(mData.getNearPlace().get(imgIndex - 1).getPlaces().get(0).getName());
+                ((NearbyViewHolder) holder).tvName.setText(mData.getNearPlace().get(imgIndex - 1).getName());
                 List<String> s = new ArrayList<>();
                 s.add("TAG 1");
                 s.add("TAG 2");
                 s.add("TAG 3");
                 ((NearbyViewHolder) holder).tcvTag.setTags(s);
                 ((NearbyViewHolder) holder).tvAddress.setText("Address");
-                ((NearbyViewHolder) holder).sdvImage.setImageURI(Uri.parse(mData.getNearPlace().get(imgIndex - 1).getPlaces().get(0).getCover()));
+                ((NearbyViewHolder) holder).sdvImage.setImageURI(Uri.parse(mData.getNearPlace().get(imgIndex - 1).getCover()));
 //                int imgIndex = position - BLOCK_INDEX;
 //                if (null != mData.getImglist()) {
 //                    imgIndex -= mData.getImglist().size();

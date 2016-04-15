@@ -8,8 +8,7 @@ import co.quchu.quchu.BuildConfig;
 public interface NetApi {
     String RELEASE_HOST = "http://www.quchu.co/app-main-service";
     String HOST_UAT = "http://uat.quchu.co/app-main-service";
-    String HOST_SIT = "http://sit.quchu.co/app-main-service";
-    String HOST_KANYUN = "http://sit.quchu.co/app-main-service-test";
+    String HOST_SIT = "http://sit.quchu.co/app-main-service-test";
     //    public static String HOST_SIT = "http://192.168.1.134:8080/app-main-service";
     String HOST = BuildConfig.API_SERVER == 0 ? RELEASE_HOST : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;
     /****
@@ -43,7 +42,7 @@ public interface NetApi {
     String getDefaultPlaceList = HOST + "/place/getPlaceList?tagsEn=%s&cityId=%d&latitude=%s&longitude=%s&pageno=%d";// 1.1 根据tag获取趣处 列表
     String GetCityList = HOST + "/place/getCityList";  //获取城市列表  或验证城市
     String Seach = HOST + "/search?value=%s&pageno=%d";  //搜索 value=搜索内容  gageno=分页页码
-    String getDetail = HOST + "/place/GetPlace?pId=%d";  //获取趣处详情信息 pid=趣处id
+    String getDetail = HOST + "/place/getPlace?pId=%d";  //获取趣处详情信息 pid=趣处id
     String getUserOutPlace = HOST + "/operate/userOutPlace?pId=%d";  //趣处详情 去过
     String delUserOutPlace = HOST + "/operate/delUserOutPlace?pId=%d";  //趣处详情 撤销去过
     String FavTypeImg = "image";
@@ -86,8 +85,8 @@ public interface NetApi {
 
 
     String getCategoryTags = HOST + "/place/getCategoryTags?cityId=%d";  //获取tag 列表
-    String getNearby = HOST_KANYUN + "/place/nearPlaces?tagIds=%s&cityId=%d&latitude=%s&longitude=%s&pagesNo=%d";
-    String getFootprint = HOST_KANYUN + "/place/getCardList?pId=%d&pageno=%d";
+    String getNearby = HOST + "/place/nearPlaces?tagIds=%s&cityId=%d&latitude=%s&longitude=%s&pagesNo=%d";
+    String getFootprint = HOST + "/place/getCardList?pId=%d&pageno=%d";
 
     /****  Get end  ****/
 
@@ -101,7 +100,8 @@ public interface NetApi {
     String FeedBack = HOST + "/sns/feedback?value=%s"; //意见反馈
     String saveOrUpdateCard = HOST + "/operate/saveOrUpdateCard"; //意见反馈
     String updateUser = HOST + "/personal/updateUser"; //修改用户设置
-    String VisitorRegiester = HOST + "/mregister?visitors=1&equip=%s";
+    ///TODO
+    String VisitorRegiester = "http://sit.quchu.co/app-main-service" + "/mregister?visitors=1&equip=%s";
     String findPosition = HOST + "/operate/proposalPlace?place.pId=%s&place.pname=%s&place.paddress=%s&place.profile=%s&place.pimage=%s";//发现趣处
 
     String accoundMerger = HOST + "/oauth/userMerge";//账号合并
