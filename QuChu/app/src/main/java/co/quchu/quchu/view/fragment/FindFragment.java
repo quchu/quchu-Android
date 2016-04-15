@@ -21,6 +21,7 @@ import co.quchu.quchu.model.FindBean;
 import co.quchu.quchu.presenter.IFindFragment;
 import co.quchu.quchu.presenter.QuchuPresenter;
 import co.quchu.quchu.view.activity.FindPositionActivity;
+import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FindAdapter;
 import co.quchu.quchu.widget.ErrorView;
 
@@ -29,12 +30,15 @@ import co.quchu.quchu.widget.ErrorView;
  * email:437943145@qq.com
  * desc :发现
  */
-public class FindFragment extends BaseFragment implements IFindFragment, FindAdapter.OnItenClickListener {
+public class FindFragment extends BaseFragment implements IFindFragment, FindAdapter.OnItenClickListener, AdapterBase.OnLoadmoreListener {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.errorView)
     ErrorView errorView;
     private QuchuPresenter presenter;
+    private int pageCount;
+    private int pagesNo;
+    private FindAdapter adapter;
 
     @Nullable
     @Override
@@ -67,11 +71,15 @@ public class FindFragment extends BaseFragment implements IFindFragment, FindAda
                 @Override
                 public void onClick(View v) {
                     presenter.getFindData(1, FindFragment.this);
+                    errorView.showLoading();
                 }
             });
             recyclerView.setVisibility(View.GONE);
         } else {
-            FindAdapter adapter = new FindAdapter(bean.getResult());
+            pageCount = bean.getPageCount();
+            pagesNo = bean.getPagesNo();
+            adapter = new FindAdapter(bean.getResult());
+            adapter.setLoadmoreListener(this);
             adapter.setListener(this);
             errorView.himeView();
             recyclerView.setVisibility(View.VISIBLE);
@@ -79,6 +87,18 @@ public class FindFragment extends BaseFragment implements IFindFragment, FindAda
         }
 
 
+    }
+
+    @Override
+    public void showMoredata(boolean isError, FindBean bean) {
+        if (isError) {
+            adapter.setLoadMoreEnable(false);
+        } else {
+            pagesNo = bean.getPagesNo();
+            pageCount = bean.getPageCount();
+            adapter.setLoadmoreing(false);
+            adapter.addData(bean.getResult());
+        }
     }
 
     @Override
@@ -102,5 +122,15 @@ public class FindFragment extends BaseFragment implements IFindFragment, FindAda
         intent.putExtra(FindPositionActivity.REQUEST_KEY_DESC, desc);
         intent.putParcelableArrayListExtra(FindPositionActivity.REQUEST_KEY_IMAGE_LIST, photos);
         startActivity(intent);
+    }
+
+    @Override
+    public void onLoadmore() {
+//        if (pagesNo < pageCount) {
+        presenter.getFindMoreData(pagesNo + 1, this);
+//        } else {
+//            adapter.setLoadMoreEnable(false);
+//        }
+
     }
 }

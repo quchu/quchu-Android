@@ -1,11 +1,19 @@
 package co.quchu.quchu.view.adapter;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 
 /**
@@ -14,19 +22,35 @@ import co.quchu.quchu.R;
  * desc:
  */
 public class AdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
 
     private static final int ITEM_VIEW_TYPE_FOOTER = -1;
+    private boolean loadmoreing;
+    private OnLoadmoreListener loadmoreListener;
+    private boolean loadMoreEnable = true;
 
+    public void setLoadmoreListener(OnLoadmoreListener loadmoreListener) {
+        this.loadmoreListener = loadmoreListener;
+    }
 
-    public AdapterWrapper(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+    public void setLoadMoreEnable(boolean loadMoreEnable) {
+        this.loadMoreEnable = loadMoreEnable;
+        notifyDataSetChanged();
+    }
+
+    public void showRetry(View.OnClickListener listener) {
+
+    }
+
+    public AdapterWrapper(RecyclerView.Adapter adapter) {
         this.adapter = adapter;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM_VIEW_TYPE_FOOTER) {
-            View view = View.inflate(parent.getContext(), R.layout.item_foot_loadmore, null);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_loadmore, parent, false);
             return new ViewHold(view);
         }
         return adapter.onCreateViewHolder(parent, viewType);
@@ -40,17 +64,27 @@ public class AdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
-        if (position == getItemCount() - 1) {
-//            (ViewHold) holder
+        if (loadMoreEnable && position == getItemCount() - 1) {
+            ObjectAnimator rotation = ObjectAnimator.ofFloat(((ViewHold) holder).loadView, "rotation", 0, 360);
+            rotation.setInterpolator(new LinearInterpolator());
+            rotation.setRepeatMode(ValueAnimator.RESTART);
+            rotation.setRepeatCount(ValueAnimator.INFINITE);
+            rotation.setDuration(1500);
+            rotation.start();
+            if (!loadmoreing && loadmoreListener != null) {
+                loadmoreing = true;
+                loadmoreListener.onLoadmore();
+            }
+
         } else {
-            adapter.onBindViewHolder(holder, --position, payloads);
+            adapter.onBindViewHolder(holder, position, payloads);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-//        if (position == 0)
-//            return ITEM_VIEW_TYPE_HEAD;
+        if (loadMoreEnable && position == getItemCount() - 1)
+            return ITEM_VIEW_TYPE_FOOTER;
         return adapter.getItemViewType(position);
     }
 
@@ -61,7 +95,10 @@ public class AdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return adapter.getItemCount() + 1;
+        if (loadMoreEnable)
+            return adapter.getItemCount() + 1;
+        else
+            return adapter.getItemCount();
     }
 
     @Override
@@ -110,9 +147,18 @@ public class AdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     static class ViewHold extends RecyclerView.ViewHolder {
+        @Bind(R.id.ivIndicator)
+        ImageView loadView;
+        @Bind(R.id.textView)
+        TextView retryView;
 
         public ViewHold(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnLoadmoreListener {
+        void onLoadmore();
     }
 }

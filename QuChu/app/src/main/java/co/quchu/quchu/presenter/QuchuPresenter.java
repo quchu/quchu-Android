@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.android.volley.VolleyError;
 
-import co.quchu.quchu.model.FindBean;
 import co.quchu.quchu.model.FavoriteBean;
+import co.quchu.quchu.model.FindBean;
 import co.quchu.quchu.model.QuchuModel;
 import co.quchu.quchu.net.ResponseListener;
 
@@ -39,6 +39,24 @@ public class QuchuPresenter {
         });
     }
 
+
+    //获取收藏
+    public void getFavoriteMoreData(int pageNo, final IFavoriteFragment view) {
+        model.getFavoriteData(pageNo, new ResponseListener<FavoriteBean>() {
+
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                view.showMoreData(true, null);
+            }
+
+            @Override
+            public void onResponse(FavoriteBean response, boolean result, @Nullable String exception, @Nullable String msg) {
+                view.showMoreData(false, response);
+            }
+        });
+    }
+
+
     //获取发现
     public void getFindData(int pageNo, final IFindFragment view) {
 
@@ -54,8 +72,23 @@ public class QuchuPresenter {
                 view.showData(false, response);
             }
         });
-
     }
 
+    //获取发现
+    public void getFindMoreData(int pageNo, final IFindFragment view) {
+
+
+        model.getFindData(pageNo, new ResponseListener<FindBean>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                view.showMoredata(true, null);
+            }
+
+            @Override
+            public void onResponse(FindBean response, boolean result, @Nullable String exception, @Nullable String msg) {
+                view.showMoredata(false, response);
+            }
+        });
+    }
 
 }

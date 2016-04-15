@@ -11,4 +11,6 @@ public interface IFavoriteFragment {
 
 
     void showData(boolean isError, FavoriteBean bean);
+
+    void showMoreData(boolean isError, FavoriteBean bean);
 }

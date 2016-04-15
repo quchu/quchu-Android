@@ -21,7 +21,7 @@ import co.quchu.quchu.model.FindBean;
  * email:437943145@qq.com
  * desc :
  */
-public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHold> {
+public class FindAdapter extends AdapterBase<FindAdapter.ViewHold> {
 
     private List<FindBean.ResultEntity> result;
 
@@ -31,18 +31,24 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHold> {
         this.result = result;
     }
 
+    public void addData(List<FindBean.ResultEntity> result) {
+        if (this.result != null) {
+            this.result.addAll(result);
+            notifyDataSetChanged();
+        }
+    }
+
     public void setListener(OnItenClickListener listener) {
         this.listener = listener;
     }
 
     @Override
-    public ViewHold onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_find, parent, false);
-        return new ViewHold(view);
+    public int getCount() {
+        return result == null ? 0 : result.size();
     }
 
     @Override
-    public void onBindViewHolder(ViewHold holder, final int position) {
+    public void onBindView(ViewHold holder, int position) {
         final FindBean.ResultEntity bean = result.get(position);
 
         holder.name.setText(bean.getName());
@@ -60,8 +66,9 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHold> {
     }
 
     @Override
-    public int getItemCount() {
-        return result == null ? 0 : result.size();
+    public ViewHold onCreateView(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_find, parent, false);
+        return new ViewHold(view);
     }
 
     class ViewHold extends RecyclerView.ViewHolder {

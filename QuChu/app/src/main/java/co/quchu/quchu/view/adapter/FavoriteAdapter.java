@@ -22,7 +22,7 @@ import co.quchu.quchu.widget.TagCloudView;
  * email:437943145@qq.com
  * desc :
  */
-public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHold> {
+public class FavoriteAdapter extends AdapterBase<FavoriteAdapter.ViewHold> {
 
     private List<FavoriteBean.ResultBean> result;
 
@@ -36,14 +36,21 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         this.result = result;
     }
 
+    public void addData(List<FavoriteBean.ResultBean> result) {
+        if (this.result != null) {
+            this.result.addAll(result);
+            notifyDataSetChanged();
+        }
+    }
+
+
     @Override
-    public ViewHold onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_favorite, parent, false);
-        return new ViewHold(view);
+    public int getCount() {
+        return result == null ? 0 : result.size();
     }
 
     @Override
-    public void onBindViewHolder(ViewHold holder, int position) {
+    public void onBindView(ViewHold holder, int position) {
         final FavoriteBean.ResultBean bean = result.get(position);
 
         holder.name.setText(bean.getName());
@@ -62,8 +69,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     }
 
     @Override
-    public int getItemCount() {
-        return result == null ? 0 : result.size();
+    public ViewHold onCreateView(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_favorite, parent, false);
+        return new ViewHold(view);
     }
 
     class ViewHold extends RecyclerView.ViewHolder {

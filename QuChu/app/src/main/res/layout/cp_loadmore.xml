@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center"
-    android:padding="@dimen/half_margin"
-    android:layout_height="wrap_content">
+    android:orientation="vertical"
+    android:padding="@dimen/half_margin">
 
     <ImageView
         android:id="@+id/ivIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_load_more_indicator"
-        />
+        android:src="@drawable/ic_load_more_indicator" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="点击重试"
+        android:visibility="invisible" />
 </LinearLayout>

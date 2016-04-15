@@ -11,4 +11,5 @@ public interface IFindFragment {
 
 
     void showData(boolean isError, FindBean bean);
+    void showMoredata(boolean isError, FindBean bean);
 }
