@@ -10,6 +10,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -19,47 +21,81 @@ import co.quchu.quchu.R;
  * email:437943145@qq.com
  * desc :
  */
-public abstract class AdapterBase<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
     private static final int ITEM_VIEW_TYPE_FOOTER = -1;
-    private boolean loadmoreing;
+    private boolean loadMoreing;
     private OnLoadmoreListener loadmoreListener;
-    private boolean loadMoreEnable = true;
+    private boolean loadMoreEnable = false;
+    protected List<DT> data;
+    protected OnItemClickListener<DT> itemClickListener;
+
+    public void setItemClickListener(OnItemClickListener<DT> itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public void initData(List<DT> data) {
+        this.data = data;
+        loadMoreEnable = !(data == null || data.size() < 10);
+        notifyDataSetChanged();
+    }
+
+    public void addMoreData(List<DT> data) {
+        loadMoreing = false;
+        if (data == null || data.size() == 0) {
+            loadMoreEnable = false;
+        } else if (this.data != null) {
+            this.data.addAll(data);
+        }
+        notifyDataSetChanged();
+
+    }
 
     public void setLoadmoreListener(OnLoadmoreListener loadmoreListener) {
         this.loadmoreListener = loadmoreListener;
     }
 
-    public void setLoadmoreing(boolean loadmoreing) {
-        this.loadmoreing = loadmoreing;
-    }
 
     public void setLoadMoreEnable(boolean loadMoreEnable) {
-        this.loadMoreEnable = loadMoreEnable;
-        if (!loadMoreEnable)
+        if (this.loadMoreEnable != loadMoreEnable) {
+            this.loadMoreEnable = loadMoreEnable;
             notifyDataSetChanged();
+        }
     }
 
     @Override
     public final VH onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM_VIEW_TYPE_FOOTER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_loadmore, parent, false);
-            return (VH) new ViewHold(view);
+            return (VH) new LoadMoreViewHolder(view);
         } else
             return onCreateView(parent, viewType);
     }
 
     @Override
     public final void onBindViewHolder(VH holder, int position) {
-        if (holder instanceof ViewHold) {
-            ObjectAnimator rotation = ObjectAnimator.ofFloat(((ViewHold) holder).loadView, "rotation", 0, 360);
-            rotation.setInterpolator(new LinearInterpolator());
-            rotation.setRepeatMode(ValueAnimator.RESTART);
-            rotation.setRepeatCount(ValueAnimator.INFINITE);
-            rotation.setDuration(1500);
-            rotation.start();
-            if (!loadmoreing && loadmoreListener != null) {
-                loadmoreing = true;
-                loadmoreListener.onLoadmore();
+        if (holder instanceof LoadMoreViewHolder) {
+            LoadMoreViewHolder loadMoreHold = (LoadMoreViewHolder) holder;
+            if (loadMoreEnable) {
+                loadMoreHold.retryView.setText("加载中~~");
+                loadMoreHold.itemView.setVisibility(View.VISIBLE);
+                ObjectAnimator rotation = ObjectAnimator.ofFloat(loadMoreHold.loadView, "rotation", 0, 360);
+                rotation.setInterpolator(new LinearInterpolator());
+                rotation.setRepeatMode(ValueAnimator.RESTART);
+                rotation.setRepeatCount(ValueAnimator.INFINITE);
+                rotation.setDuration(1500);
+                rotation.start();
+                if (!loadMoreing && loadmoreListener != null) {
+                    loadMoreing = true;
+                    loadmoreListener.onLoadmore();
+                }
+            } else {
+                loadMoreHold.loadView.clearAnimation();
+                loadMoreHold.loadView.setVisibility(View.INVISIBLE);
+                if (position == 0) {
+                    loadMoreHold.retryView.setText("");
+                } else {
+                    loadMoreHold.retryView.setText("没有更多了~~");
+                }
             }
         } else {
             onBindView(holder, position);
@@ -68,22 +104,21 @@ public abstract class AdapterBase<VH extends RecyclerView.ViewHolder> extends Re
 
     @Override
     public final int getItemCount() {
-        if (loadMoreEnable) {
-            return getCount() + 1;
-        } else {
-            return getCount();
-        }
+        return getCount() + 1;
+
     }
 
     @Override
     public final int getItemViewType(int position) {
-        if (loadMoreEnable && position == getItemCount() - 1) {
+        if (position == getItemCount() - 1) {
             return ITEM_VIEW_TYPE_FOOTER;
         }
         return getItemType();
     }
 
-    public abstract int getCount();
+    public int getCount() {
+        return data == null ? 0 : data.size();
+    }
 
     public abstract void onBindView(VH holder, int position);
 
@@ -97,16 +132,19 @@ public abstract class AdapterBase<VH extends RecyclerView.ViewHolder> extends Re
         void onLoadmore();
     }
 
-    static class ViewHold extends RecyclerView.ViewHolder {
+    static class LoadMoreViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.ivIndicator)
         ImageView loadView;
         @Bind(R.id.textView)
         TextView retryView;
 
-        public ViewHold(View itemView) {
+        public LoadMoreViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
+    public interface OnItemClickListener<DT> {
+        void itemClick(DT item, int type, int position);
+    }
 }

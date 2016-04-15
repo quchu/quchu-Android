@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -27,26 +25,11 @@ import co.quchu.quchu.model.PostCardItemModel;
  * email:437943145@qq.com
  * desc :
  */
-public class MyFootprintAdapter extends RecyclerView.Adapter<MyFootprintAdapter.ViewHold> {
+public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootprintAdapter.ViewHold> {
 
-    private List<PostCardItemModel> data;
-    private OnItemClickListener listener;
-
-    public MyFootprintAdapter(List<PostCardItemModel> data, OnItemClickListener listener) {
-        this.data = data;
-        this.listener = listener;
-    }
 
     @Override
-    public ViewHold onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_footprint, parent, false);
-
-        return new ViewHold(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final ViewHold holder, int position) {
-
+    public void onBindView(ViewHold holder, final int position) {
         final PostCardItemModel model = data.get(position);
 
         float ratio = (float) model.getWidth() / model.getHeight();
@@ -81,26 +64,22 @@ public class MyFootprintAdapter extends RecyclerView.Adapter<MyFootprintAdapter.
         builder2.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), 0, text2.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         holder.timeAndAddress.setText(builder2);
 
+        if (itemClickListener != null) {
+            holder.simpleDraweeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.itemClick(model,0, position);
+                }
+            });
+        }
 
-        holder.simpleDraweeView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.itemClick(model);
-            }
-        });
-
-//        holder.itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                holder.line.getLayoutParams().height = holder.itemView.getHeight();
-//                holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//            }
-//        });
     }
 
     @Override
-    public int getItemCount() {
-        return data == null ? 0 : data.size();
+    public ViewHold onCreateView(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_footprint, parent, false);
+
+        return new ViewHold(view);
     }
 
     static class ViewHold extends RecyclerView.ViewHolder {

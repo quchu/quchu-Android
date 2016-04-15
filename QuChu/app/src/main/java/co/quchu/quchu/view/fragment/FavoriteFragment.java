@@ -26,13 +26,12 @@ import co.quchu.quchu.widget.ErrorView;
  * email:437943145@qq.com
  * desc :收藏
  */
-public class FavoriteFragment extends BaseFragment implements IFavoriteFragment, FavoriteAdapter.OnItemClickListener, AdapterBase.OnLoadmoreListener {
+public class FavoriteFragment extends BaseFragment implements IFavoriteFragment, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean> {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.errorView)
     ErrorView errorView;
     private QuchuPresenter presenter;
-    private int pageCount;
     private int pagesNo;
     private FavoriteAdapter adapter;
 
@@ -74,11 +73,11 @@ public class FavoriteFragment extends BaseFragment implements IFavoriteFragment,
                 });
             } else {
                 pagesNo = bean.getPagesNo();
-                pageCount = bean.getPageCount();
 
-                adapter = new FavoriteAdapter(bean.getResult());
+                adapter = new FavoriteAdapter();
+                adapter.initData(bean.getResult());
                 adapter.setLoadmoreListener(this);
-                adapter.setListener(this);
+                adapter.setItemClickListener(this);
                 errorView.himeView();
                 recyclerView.setVisibility(View.VISIBLE);
                 recyclerView.setAdapter(adapter);
@@ -93,22 +92,20 @@ public class FavoriteFragment extends BaseFragment implements IFavoriteFragment,
                 adapter.setLoadMoreEnable(false);
             } else {
                 pagesNo = bean.getPagesNo();
-                pageCount = bean.getPageCount();
-                adapter.addData(bean.getResult());
+                adapter.addMoreData(bean.getResult());
             }
         }
-    }
-
-
-    @Override
-    public void itemClick(FavoriteBean.ResultBean item) {
-        Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
-        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
-        startActivity(intent);
     }
 
     @Override
     public void onLoadmore() {
         presenter.getFavoriteMoreData(pagesNo + 1, this);
+    }
+
+    @Override
+    public void itemClick(FavoriteBean.ResultBean item,int type, int position) {
+        Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
+        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
+        startActivity(intent);
     }
 }

@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -22,47 +20,23 @@ import co.quchu.quchu.widget.TagCloudView;
  * email:437943145@qq.com
  * desc :
  */
-public class FavoriteAdapter extends AdapterBase<FavoriteAdapter.ViewHold> {
-
-    private List<FavoriteBean.ResultBean> result;
-
-    private OnItemClickListener listener;
-
-    public void setListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public FavoriteAdapter(List<FavoriteBean.ResultBean> result) {
-        this.result = result;
-    }
-
-    public void addData(List<FavoriteBean.ResultBean> result) {
-        if (this.result != null) {
-            this.result.addAll(result);
-            notifyDataSetChanged();
-        }
-    }
+public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, FavoriteAdapter.ViewHold> {
 
 
     @Override
-    public int getCount() {
-        return result == null ? 0 : result.size();
-    }
-
-    @Override
-    public void onBindView(ViewHold holder, int position) {
-        final FavoriteBean.ResultBean bean = result.get(position);
+    public void onBindView(ViewHold holder, final int position) {
+        final FavoriteBean.ResultBean bean = data.get(position);
 
         holder.name.setText(bean.getName());
         holder.simpleDraweeView.setImageURI(Uri.parse(bean.getAutorPhoto()));
         holder.address.setText(bean.getAddress());
         holder.tag.setTags(bean.getTagsString());
 
-        if (listener != null) {
+        if (itemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.itemClick(bean);
+                    itemClickListener.itemClick(bean,0, position);
                 }
             });
         }
@@ -90,7 +64,5 @@ public class FavoriteAdapter extends AdapterBase<FavoriteAdapter.ViewHold> {
         }
     }
 
-    public interface OnItemClickListener {
-        void itemClick(FavoriteBean.ResultBean item);
-    }
+
 }

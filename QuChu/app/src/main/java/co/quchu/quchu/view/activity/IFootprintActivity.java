@@ -1,8 +1,6 @@
 package co.quchu.quchu.view.activity;
 
-import java.util.List;
-
-import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.model.PostCardModel;
 
 /**
  * Created by no21 on 2016/4/7.
@@ -12,5 +10,6 @@ import co.quchu.quchu.model.PostCardItemModel;
 public interface IFootprintActivity {
 
 
-    void initData(boolean isError, List<PostCardItemModel> data);
+    void initData(boolean isError, PostCardModel data);
+    void initMoreData(boolean isError, PostCardModel data);
 }

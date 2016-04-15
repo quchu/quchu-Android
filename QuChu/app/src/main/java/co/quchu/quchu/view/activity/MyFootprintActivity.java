@@ -20,14 +20,16 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.ScrollIndexView;
 
-public class MyFootprintActivity extends BaseActivity implements IFootprintActivity, MyFootprintAdapter.OnItemClickListener {
+public class MyFootprintActivity extends BaseActivity implements IFootprintActivity, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel> {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -49,6 +51,8 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
     private MyFootprintPresenter presenter;
 
     private List<PostCardItemModel> data;
+    private MyFootprintAdapter adapter;
+    private int pagesNo;
 
 
     @Override
@@ -60,6 +64,11 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         recyclerView.setHasFixedSize(false);
 
         initTitle();
+        adapter = new MyFootprintAdapter();
+        adapter.setLoadmoreListener(this);
+        recyclerView.setAdapter(adapter);
+        adapter.setItemClickListener(this);
+
         presenter = new MyFootprintPresenter(this, this);
         presenter.getMyFoiotrintList();
         errorView.showLoading();
@@ -143,15 +152,9 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         return TRANSITION_TYPE_LEFT;
     }
 
-    @Override
-    public void itemClick(PostCardItemModel bean) {
-        Intent intent = new Intent(this, MyFootprintDetailActivity.class);
-        intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, bean);
-        startActivity(intent);
-    }
 
     @Override
-    public void initData(boolean isError, List<PostCardItemModel> data) {
+    public void initData(boolean isError, PostCardModel data) {
         errorView.himeView();
         if (isError) {
             recyclerView.setVisibility(View.INVISIBLE);
@@ -162,7 +165,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
                     presenter.getMyFoiotrintList();
                 }
             });
-        } else if (data.size() == 0) {
+        } else if (data.getResult().size() == 0) {
             recyclerView.setVisibility(View.INVISIBLE);
             errorView.showView("您还没有脚印哦~~", "到别处看看", new View.OnClickListener() {
                 @Override
@@ -171,12 +174,32 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
                 }
             });
         } else {
+            pagesNo = data.getPagesNo();
             recyclerView.setVisibility(View.VISIBLE);
-            this.data = data;
-            MyFootprintAdapter adapter = new MyFootprintAdapter(data, this);
-            recyclerView.setAdapter(adapter);
+            this.data = data.getResult();
+            adapter.initData(data.getResult());
         }
+    }
 
+    @Override
+    public void initMoreData(boolean isError, PostCardModel data) {
+        if (isError) {
+            adapter.setLoadMoreEnable(false);
+        } else {
+            pagesNo = data.getPagesNo();
+            adapter.addMoreData(data.getResult());
+        }
+    }
 
+    @Override
+    public void onLoadmore() {
+        presenter.getMoreMyFoiotrintList(pagesNo + 1);
+    }
+
+    @Override
+    public void itemClick(PostCardItemModel item, int type, int position) {
+        Intent intent = new Intent(this, MyFootprintDetailActivity.class);
+        intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, item);
+        startActivity(intent);
     }
 }

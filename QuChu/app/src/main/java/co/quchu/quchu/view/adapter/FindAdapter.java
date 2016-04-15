@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -21,46 +19,21 @@ import co.quchu.quchu.model.FindBean;
  * email:437943145@qq.com
  * desc :
  */
-public class FindAdapter extends AdapterBase<FindAdapter.ViewHold> {
+public class FindAdapter extends AdapterBase<FindBean.ResultEntity, FindAdapter.ViewHold> {
 
-    private List<FindBean.ResultEntity> result;
-
-    private OnItenClickListener listener;
-
-    public FindAdapter(List<FindBean.ResultEntity> result) {
-        this.result = result;
-    }
-
-    public void addData(List<FindBean.ResultEntity> result) {
-        if (this.result != null) {
-            this.result.addAll(result);
-            notifyDataSetChanged();
-        }
-    }
-
-    public void setListener(OnItenClickListener listener) {
-        this.listener = listener;
-    }
 
     @Override
-    public int getCount() {
-        return result == null ? 0 : result.size();
-    }
-
-    @Override
-    public void onBindView(ViewHold holder, int position) {
-        final FindBean.ResultEntity bean = result.get(position);
-
+    public void onBindView(ViewHold holder, final int position) {
+        final FindBean.ResultEntity bean = data.get(position);
         holder.name.setText(bean.getName());
-
         if (bean.getImage().size() > 0)
             holder.simpleDraweeView.setImageURI(Uri.parse(bean.getImage().get(0).getImgpath()));
         holder.address.setText(bean.getAddress());
-        if (listener != null)
+        if (itemClickListener != null)
             holder.editContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.itemClick(bean);
+                    itemClickListener.itemClick(bean,0, position);
                 }
             });
     }
@@ -86,9 +59,5 @@ public class FindAdapter extends AdapterBase<FindAdapter.ViewHold> {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-    }
-
-    public interface OnItenClickListener {
-        void itemClick(FindBean.ResultEntity entity);
     }
 }
