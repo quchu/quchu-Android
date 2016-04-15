@@ -18,21 +18,35 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.finalteam.toolsfinal.StringUtils;
 import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
+import co.quchu.quchu.analysis.GatherRateModel;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.ImageModel;
+import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.ImageUpload;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.photoselected.Bimp;
+import co.quchu.quchu.presenter.PostCardPresenter;
+import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.FindPositionAdapter;
 import co.quchu.quchu.widget.SelectedImagePopWin;
 
@@ -44,12 +58,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     EditText etContent;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind(R.id.tv)
-    TextView tv;
     @Bind(R.id.tvPickFromMap)
     TextView tvPickFromMap;
-    @Bind(R.id.llBottomArea)
-    LinearLayout llBottomArea;
     List<PhotoInfo> photoInfos;
 
 
@@ -57,16 +67,10 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     private FindPositionAdapter adapter;
     private PhotoInfo tackImage;
 
-    public static final String REQUEST_KEY_NAME = "name";
-    public static final String REQUEST_KEY_DESC = "desc";
     public static final String REQUEST_KEY_ID = "id";
-    public static final String REQUEST_KEY_POSITION = "position";
-    public static final String REQUEST_KEY_IMAGE_LIST = "imageList";
-    public static final String REQUEST_KEY_ENTITY = "entity";//编辑 脚印实体
-    private String positionText;
-    private String descText;
-    private String nameText;
-    private int id;
+    public static final String REQUEST_KEY_ENTITY = "entity";
+    private int pId;
+    private PostCardItemModel mData;
 
     @Override
     protected int activitySetup() {
@@ -78,8 +82,15 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_footprint);
         ButterKnife.bind(this);
+
+        Intent intent = getIntent();
+        pId = intent.getIntExtra(REQUEST_KEY_ID, -1);
+        mData = (PostCardItemModel) getIntent().getSerializableExtra(REQUEST_KEY_ENTITY);
+        mIsEdit = mData==null?false:true;
+        pId = mData==null?pId:mData.getPlaceId();
+        getEnhancedToolbar().getRightTv().setText(R.string.save);
+        getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.load_progress_yellow));
         init();
-        restore();
     }
 
     @Override
@@ -88,30 +99,21 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         ButterKnife.unbind(this);
     }
 
-    /**
-     * 修改的时候恢复文件
-     */
-    private void restore() {
-        Intent intent = getIntent();
-        id = intent.getIntExtra(REQUEST_KEY_ID, -1);
-        ArrayList<PhotoInfo> imageList = intent.getParcelableArrayListExtra(REQUEST_KEY_IMAGE_LIST);
-        nameText = intent.getStringExtra(REQUEST_KEY_NAME);
-        descText = intent.getStringExtra(REQUEST_KEY_DESC);
-        positionText = intent.getStringExtra(REQUEST_KEY_POSITION);
-
-//        name.setText(nameText);
-//        detail.setText(descText);
-//        position.setText(positionText);
-        if (imageList != null) {
-            photoInfos.addAll(imageList);
-            adapter.notifyDataSetChanged();
-        }
-
-    }
 
     private void init() {
-        etContent.setText("");
         photoInfos = new ArrayList<>();
+        if (null!=mData){
+            for (int i = 0; i < mData.getImglist().size(); i++) {
+                PhotoInfo photoModel = new PhotoInfo();
+                photoModel.setHeight(mData.getImglist().get(i).getHeight());
+                photoModel.setWidth(mData.getImglist().get(i).getWidth());
+                photoModel.setPhotoPath(mData.getImglist().get(i).getPath());
+                photoModel.setPhotoId(mData.getImglist().get(i).getImgId());
+                photoInfos.add(photoModel);
+            }
+            adapter.notifyDataSetChanged();
+        }
+        etContent.setText(null!=mData?mData.getComment():"");
         tackImage = new PhotoInfo();
         tackImage.setPhotoPath("res:///" + R.mipmap.ic_add_photo_image);
         photoInfos.add(tackImage);
@@ -122,14 +124,11 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         adapter.setListener(this);
 
         recyclerView.setAdapter(adapter);
-        tv.setOnClickListener(new View.OnClickListener() {
+        getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                nameText = AddFootprintActivity.this.name.getText().toString().trim();
-//                positionText = AddFootprintActivity.this.position.getText().toString().trim();
-//                descText = detail.getText().toString().trim();
-                if (TextUtils.isEmpty(nameText) || TextUtils.isEmpty(positionText)) {
-                    Toast.makeText(AddFootprintActivity.this, "名称和地址不能为空", Toast.LENGTH_SHORT).show();
+                if (null==etContent.getText() || StringUtils.isBlank(etContent.getText().toString())){
+                    Toast.makeText(AddFootprintActivity.this, "你还没输入内容", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -147,7 +146,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                         @Override
                         public void finish(String result) {
                             init();
-                            sendToServer(nameText, positionText, descText, result);
+                            saveCard(pId,etContent.getText().toString(), result);
                         }
 
                         @Override
@@ -158,38 +157,13 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                     });
                 } else {
                     DialogUtil.showProgess(AddFootprintActivity.this, "上传中");
-                    sendToServer(nameText, positionText, descText, "");
+                    saveCard(pId,etContent.getText().toString(), "");
                 }
             }
         });
+
     }
 
-
-    private void sendToServer(String name, String position, String desc, String Images) {
-        String url;
-        if (id != -1) {
-            url = String.format(NetApi.findPosition, String.valueOf(id), name, position, desc, Images);
-        } else {
-            url = String.format(NetApi.findPosition, "", name, position, desc, Images);
-        }
-
-
-        GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url, null, new ResponseListener<Object>() {
-            @Override
-            public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                DialogUtil.dismissProgessDirectly();
-            }
-
-            @Override
-            public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
-                Toast.makeText(AddFootprintActivity.this, "增加趣处成功", Toast.LENGTH_SHORT).show();
-                DialogUtil.dismissProgessDirectly();
-                init();
-            }
-        });
-        request.start(this, null);
-    }
 
     @Override
     public void itemClick(boolean isDelete, int position, final PhotoInfo photoInfo) {
@@ -228,5 +202,25 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         }
     }
 
+    private void saveCard(final int pId, String comment, String imgs) {
+        PostCardPresenter.sacePostCard(this, pId, 0, comment, imgs, new PostCardPresenter.MyPostCardListener() {
+            @Override
+            public void onSuccess(PostCardModel model) {
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_QUCHU_DETAIL_UPDATED, pId));
+                DialogUtil.dismissProgessDirectly();
+                if (Bimp.imglist.size() > 0) {
+                    Toast.makeText(AddFootprintActivity.this, "脚印修改成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddFootprintActivity.this, "脚印添加成功!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onError(String error) {
+                DialogUtil.dismissProgessDirectly();
+            }
+        });
+    }
 
 }

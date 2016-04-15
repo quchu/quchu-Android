@@ -132,5 +132,6 @@
     <string name="tags_filter_title">筛选</string>
     <string name="add_foot_print">添加脚印</string>
     <string name="pre_order">预定</string>
+    <string name="save">保存</string>
 
 </resources>

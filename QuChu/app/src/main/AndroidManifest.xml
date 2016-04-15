@@ -99,21 +99,8 @@
             android:label="@string/titlebar_word_feedback"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.PostCardActivity"
-            android:label="@string/titlebar_word_postcard"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.AddPostCardActivity"
-            android:label="@string/titlebar_word_add_postcard"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".view.activity.FavoriteActivity"
             android:label="@string/titlebar_word_favorite"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.PalceMyPostCardActivity"
-            android:label="@string/titlebar_word_place_my_postcard"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.FavoritePlaceActivity"
@@ -124,16 +111,8 @@
             android:label="@string/webview_redirecting"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.PlacePostCardActivity"
-            android:label="@string/titlebar_word_place_postcard"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.MessageCenterActivity"
             android:label="@string/titlebar_word_message_center"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.PostCardDetailActivity"
-            android:label="@string/titlebar_word_my_postcard"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.AboutUsActivity"
@@ -153,16 +132,8 @@
             android:label="@string/nearby_quchu"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.UserPostCardActivity"
-            android:label="@string/titlebar_word_user_postcard"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.UserCenterActivity"
             android:label="@string/titlebar_word_user_center"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.PostCardFromImageActivity"
-            android:label="@string/titlebar_word_pcfromimage"
             android:screenOrientation="portrait" />
         <!-- 关注的 -->
         <activity
@@ -184,9 +155,6 @@
             android:screenOrientation="portrait" />
         <!-- 账户设置 -->
         <!-- 趣处小图浏览界面 -->
-        <activity
-            android:name=".view.activity.PostCardImageActivity"
-            android:screenOrientation="portrait" />
         <!-- 趣处小图浏览界面 -->
         <!-- 趣处 预定 -->
         <activity
@@ -274,9 +242,6 @@
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity
-            android:name=".view.activity.PostcarDetailActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.ClassifyDetailActivity"
             android:screenOrientation="portrait" />

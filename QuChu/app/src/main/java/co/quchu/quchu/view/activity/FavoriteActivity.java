@@ -97,16 +97,16 @@ public class FavoriteActivity extends BaseActivity {
                                 startActivity(intent);
                             }
                         });
-                        favoritePostcardGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                //跳转
-                                if (model.getCard() != null && model.getCard().getData().size() > 0)
-                                    startActivity(new Intent(FavoriteActivity.this, PostCardActivity.class).putExtra("isFavoritePostCard", true));
-                                else
-                                    Toast.makeText(FavoriteActivity.this, "暂未收藏明信片!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+//                        favoritePostcardGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                //跳转
+//                                if (model.getCard() != null && model.getCard().getData().size() > 0)
+//                                    startActivity(new Intent(FavoriteActivity.this, PostCardActivity.class).putExtra("isFavoritePostCard", true));
+//                                else
+//                                    Toast.makeText(FavoriteActivity.this, "暂未收藏明信片!", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
                     }
                     DialogUtil.dismissProgess();
                 }
@@ -137,11 +137,11 @@ public class FavoriteActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.favorite_postcard_cv:
 //            case R.id.favorite_postcard_gvcv:
-                if (model.getCard() != null && model.getCard().getData().size() > 0)
-                    startActivity(new Intent(this, PostCardActivity.class).putExtra("isFavoritePostCard", true));
-                else
-                    Toast.makeText(this, "暂未收藏明信片!", Toast.LENGTH_SHORT).show();
-                break;
+//                if (model.getCard() != null && model.getCard().getData().size() > 0)
+//                    startActivity(new Intent(this, PostCardActivity.class).putExtra("isFavoritePostCard", true));
+//                else
+//                    Toast.makeText(this, "暂未收藏明信片!", Toast.LENGTH_SHORT).show();
+//                break;
             case R.id.favorite_place_cv:
 //            case R.id.favorite_place_name_gvcv:
                 startActivity(new Intent(this, FavoritePlaceActivity.class));

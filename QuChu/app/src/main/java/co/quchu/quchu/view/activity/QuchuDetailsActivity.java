@@ -127,7 +127,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                                 @Override
                                 public void run() {
                                     startActivity(new Intent(QuchuDetailsActivity.this,NearbyActivity.class));
-
+                                    mLoadingMore = false;
                                 }
                             },1500l);
 
@@ -280,29 +280,7 @@ public class QuchuDetailsActivity extends BaseActivity {
      */
     private void userBeen() {
 
-        Intent intent = new Intent(this, AddPostCardActivity.class);
-        intent.putExtra("pName", dModel.getName());
-        intent.putExtra("pId", dModel.getPid());
-        if (dModel.isIsout()) {
-
-            //Edit post card
-        } else {
-
-            //Create new one
-        }
-        startActivity(intent);
-//        InterestingDetailPresenter.getUserOutPlace(this, pId, dModel.isIsout(), new InterestingDetailPresenter.DetailDataListener() {
-//            @Override
-//            public void onSuccessCall(String str) {
-//                dModel.setIsout(!dModel.isIsout());
-//                changeBottomBeenBg(dModel.isIsout());
-//            }
-//
-//            @Override
-//            public void onErrorCall(String str) {
-//
-//            }
-//        });
+        //TODO
     }
 
     /**

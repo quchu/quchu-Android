@@ -100,9 +100,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             case R.id.user_center_favorite_ll:
                 startActivity(new Intent(UserCenterActivity.this, FavoritePlaceActivity.class).putExtra("userId", userInfo.userId));
                 break;
-            case R.id.user_center_postcard_ll:
-                startActivity(new Intent(UserCenterActivity.this, UserPostCardActivity.class).putExtra("userId", userInfo.userId));
-                break;
             case R.id.user_center_following_tv:
                 startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class).putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWING));
                 break;

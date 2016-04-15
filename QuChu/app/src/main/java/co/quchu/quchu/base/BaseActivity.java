@@ -14,7 +14,6 @@ import com.umeng.analytics.MobclickAgent;
 import co.quchu.quchu.R;
 import co.quchu.quchu.photoselected.PreviewImageActivity;
 import co.quchu.quchu.view.activity.MenusActivity;
-import co.quchu.quchu.view.activity.PostcarDetailActivity;
 import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
@@ -93,20 +92,16 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
     public void finish() {
         super.finish();
 
-        if (!(this instanceof PostcarDetailActivity)) {
-
-            if (this instanceof MenusActivity) {
-                overridePendingTransition(R.anim.out_bottom_to_top,
-                        R.anim.out_bottom_to_top);
-            } else if (this instanceof PreviewImageActivity) {
-                overridePendingTransition(R.anim.in_alpha,
-                        R.anim.out_alpha);
-            } else {
-                overridePendingTransition(R.anim.in_stable,
-                        R.anim.out_push_left_to_right);
-            }
+        if (this instanceof MenusActivity) {
+            overridePendingTransition(R.anim.out_bottom_to_top,
+                    R.anim.out_bottom_to_top);
+        } else if (this instanceof PreviewImageActivity) {
+            overridePendingTransition(R.anim.in_alpha,
+                    R.anim.out_alpha);
+        } else {
+            overridePendingTransition(R.anim.in_stable,
+                    R.anim.out_push_left_to_right);
         }
-
     }
 
     @Override
