@@ -49,7 +49,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         holder.name.setText(bean.getName());
         holder.simpleDraweeView.setImageURI(Uri.parse(bean.getAutorPhoto()));
         holder.address.setText(bean.getAddress());
-
+        holder.tag.setTags(bean.getTagsString());
 
         if (listener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -79,7 +79,7 @@ public interface NetApi {
     String getMyUserInfo = HOST + "/personal/getUser";  //获取自己用户信息
     String getUserInfo = HOST + "/personal/getUserInfo?userId=%d";  //获取自己用户信息
     String getUserCardList = HOST + "/place/getUserCardList";  //获取某个用户的明信片
-    String getUsercenterFavoriteList = HOST + "/place/getFavoriteList?userId=%d&pageno=%d";  //获取某个用户收藏的趣处列表
+    String getUsercenterFavoriteList = HOST_KANYUN + "/place/getFavoriteList?userId=%d&pageno=%d";  //获取某个用户收藏的趣处列表
     String getFollow = HOST + "/place/getFollow?userId=%d&pageno=%d&head=no&type=%s";  //获取某个用户收藏的趣处列表
 
     String getCurrentUserFollowers = HOST + "/personal/getFollow?head=%s&type=%s&pageno=%d";  //获取当前用户的关注列表
