@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/appBackground"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
@@ -20,35 +20,35 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_height="0dp">
+        android:orientation="vertical">
+
         <com.ogaclejapan.smarttablayout.SmartTabLayout
             android:id="@+id/qu_friends_tab_stl"
             android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            android:layout_height="48dp"
-            app:stl_indicatorWithoutPadding="true"
-            app:stl_indicatorInFront="false"
-            app:stl_indicatorInterpolation="smart"
-            app:stl_indicatorGravity="bottom"
-            app:stl_indicatorColor="@color/gene_textcolor_yellow"
-            app:stl_indicatorThickness="2dp"
-            app:stl_indicatorCornerRadius="1dp"
-            app:stl_underlineColor="@color/lineBackground_gray"
-            app:stl_underlineThickness="1dp"
-            app:stl_dividerColor="@color/lineBackground_gray"
-            app:stl_dividerThickness="1dp"
+            app:stl_clickable="true"
             app:stl_defaultTabBackground="?attr/selectableItemBackground"
             app:stl_defaultTabTextAllCaps="false"
             app:stl_defaultTabTextColor="@color/friends_custom_tab"
-            app:stl_defaultTabTextSize="@dimen/word_subhead_size"
             app:stl_defaultTabTextHorizontalPadding="@dimen/base_margin"
             app:stl_defaultTabTextMinWidth="8dp"
+            app:stl_defaultTabTextSize="@dimen/word_subhead_size"
             app:stl_distributeEvenly="true"
-            app:stl_clickable="true"
-            />
+            app:stl_dividerColor="@color/lineBackground_gray"
+            app:stl_dividerThickness="1dp"
+            app:stl_indicatorColor="@color/gene_textcolor_yellow"
+            app:stl_indicatorCornerRadius="1dp"
+            app:stl_indicatorGravity="bottom"
+            app:stl_indicatorInFront="false"
+            app:stl_indicatorInterpolation="smart"
+            app:stl_indicatorThickness="2dp"
+            app:stl_indicatorWithoutPadding="true"
+            app:stl_underlineColor="@color/lineBackground_gray"
+            app:stl_underlineThickness="1dp" />
         <!--
               app:stl_overlineColor="@color/lineBackground_gray"
             app:stl_overlineThickness="1dp"
@@ -58,9 +58,7 @@
             android:id="@+id/qu_friends_vp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/qu_friends_tab_stl"
-            android:overScrollMode="always"
-            />
+            android:overScrollMode="always" />
     </LinearLayout>
 
 

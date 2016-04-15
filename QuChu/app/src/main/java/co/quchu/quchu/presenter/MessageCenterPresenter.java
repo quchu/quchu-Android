@@ -23,35 +23,7 @@ import co.quchu.quchu.utils.LogUtils;
 public class MessageCenterPresenter {
 
     public static void getMessageList(Context mContext, final MessageGetDataListener listener) {
-//        NetService.get(mContext, NetApi.getMessageList, new IRequestListener() {
-//            @Override
-//            public void onSuccess(JSONObject response) {
-//                LogUtils.json("Message==" + response);
-//                try {
-//                    if (response.has("result") && !"null".equals(response.getString("result")) && !StringUtils.isEmpty(response.getString("result")) && response.getJSONArray("result").length() > 0) {
-//                        JSONArray arrayList = response.getJSONArray("result");
-//                        ArrayList<MessageModel> messageList = new ArrayList<MessageModel>();
-//                        Gson gson = new Gson();
-//                        for (int i = 0; i < arrayList.length(); i++) {
-//                            MessageModel model = gson.fromJson(arrayList.getString(i), MessageModel.class);
-//                            messageList.add(model);
-//                        }
-//                        listener.onSuccess(messageList);
-//                    } else {
-//                        listener.onError();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    listener.onError();
-//                }
-//            }
-//
-//            @Override
-//            public boolean onError(String error) {
-//                listener.onError();
-//                return false;
-//            }
-//        });
+
 
         GsonRequest<MessageModel> request = new GsonRequest<>(NetApi.getMessageList, MessageModel.class, new ResponseListener<MessageModel>() {
             @Override

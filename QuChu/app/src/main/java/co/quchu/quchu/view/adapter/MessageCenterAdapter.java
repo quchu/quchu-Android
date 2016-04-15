@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,27 +26,17 @@ import co.quchu.quchu.utils.KeyboardUtils;
  * User: Chenhs
  * Date: 2016-01-12
  */
-public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdapter.MessageCenterItemHolder> {
+public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, MessageCenterAdapter.MessageCenterItemHolder> {
 
     private Context mContext;
-    private List<MessageModel.ResultBean> messageModelArrayList;
 
-
-    public MessageCenterAdapter(Context mContext, List<MessageModel.ResultBean> messageList) {
+    public MessageCenterAdapter(Context mContext) {
         this.mContext = mContext;
-        this.messageModelArrayList = messageList;
     }
 
     @Override
-    public MessageCenterItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MessageCenterItemHolder holder = new MessageCenterItemHolder(LayoutInflater.from(mContext).inflate(R.layout.item_message_center_follow, parent, false));
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(MessageCenterItemHolder holder, int position) {
-
-        MessageModel.ResultBean model = messageModelArrayList.get(position);
+    public void onBindView(MessageCenterItemHolder holder, int position) {
+        MessageModel.ResultBean model = data.get(position);
         holder.itemMessageFromAvator.setImageURI(Uri.parse(model.getFormPhoto()));
         holder.itemMessageDesTv.setText(model.getContent());
         holder.itemMessageUserNameTv.setText(model.getForm());
@@ -82,17 +70,9 @@ public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdap
         }
     }
 
-    public void changeDateSet(List<MessageModel.ResultBean> arrayList) {
-        this.messageModelArrayList = arrayList;
-        this.notifyDataSetChanged();
-    }
-
     @Override
-    public int getItemCount() {
-        if (messageModelArrayList == null)
-            return 0;
-        else
-            return messageModelArrayList.size();
+    public MessageCenterItemHolder onCreateView(ViewGroup parent, int viewType) {
+        return new MessageCenterItemHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_center_follow, parent, false));
     }
 
     public class MessageCenterItemHolder extends RecyclerView.ViewHolder {
@@ -123,24 +103,24 @@ public class MessageCenterAdapter extends RecyclerView.Adapter<MessageCenterAdap
             switch (view.getId()) {
                 case R.id.item_message_follow_tv:
                     DialogUtil.showProgess(mContext, R.string.loading_dialog_text);
-                    MessageCenterPresenter.followMessageCenterFriends(mContext, messageModelArrayList.get(getPosition()).getFormId(),
-                            "yes".equals(messageModelArrayList.get(getPosition()).getCome()), new MessageCenterPresenter.MessageGetDataListener() {
-                        @Override
-                        public void onSuccess(MessageModel arrayList) {
-                            if ("yes".equals(messageModelArrayList.get(getPosition()).getCome())) {
-                                messageModelArrayList.get(getPosition()).setCome("no");
-                            } else {
-                                messageModelArrayList.get(getPosition()).setCome("yes");
-                            }
-                            notifyDataSetChanged();
-                            DialogUtil.dismissProgess();
-                        }
+                    MessageCenterPresenter.followMessageCenterFriends(mContext, data.get(getPosition()).getFormId(),
+                            "yes".equals(data.get(getPosition()).getCome()), new MessageCenterPresenter.MessageGetDataListener() {
+                                @Override
+                                public void onSuccess(MessageModel arrayList) {
+                                    if ("yes".equals(data.get(getPosition()).getCome())) {
+                                        data.get(getPosition()).setCome("no");
+                                    } else {
+                                        data.get(getPosition()).setCome("yes");
+                                    }
+                                    notifyDataSetChanged();
+                                    DialogUtil.dismissProgess();
+                                }
 
-                        @Override
-                        public void onError() {
-                            DialogUtil.dismissProgess();
-                        }
-                    });
+                                @Override
+                                public void onError() {
+                                    DialogUtil.dismissProgess();
+                                }
+                            });
                     break;
             }
         }

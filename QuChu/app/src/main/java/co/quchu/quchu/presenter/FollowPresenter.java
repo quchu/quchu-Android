@@ -1,7 +1,9 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -9,11 +11,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import co.quchu.quchu.model.FollowUserModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -26,6 +31,25 @@ import co.quchu.quchu.utils.StringUtils;
 public class FollowPresenter {
     public static final int TAFOLLOWING = 0x01;//TA关注的
     public static final int TAFOLLOWERS = 0x02;//关注TA的
+
+
+    public static void getMyFollow(Context context, int userId, String type, boolean head, int pageNo) {
+        String uri = String.format(Locale.CHINA, NetApi.getFollow, userId, pageNo, type);
+        GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+
+            }
+
+            @Override
+            public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
+
+            }
+        });
+
+        request.start(context, null);
+    }
+
 
     /**
      * 获取关注列表
@@ -65,12 +89,12 @@ public class FollowPresenter {
                                 }
                                 if (callBack != null)
                                     callBack.onSuccess(lists);
-                            }else {
+                            } else {
                                 if (callBack != null)
                                     callBack.onError();
                             }
                         }
-                    }else {
+                    } else {
                         if (callBack != null)
                             callBack.onError();
                     }
@@ -93,20 +117,20 @@ public class FollowPresenter {
     /**
      * 获取个人关注列表
      *
-     * @param requestAdditionalInfo     是否需要头部信息？wtf is it
-     * @param followType 关注类型
-     * @param pageNo     页码
-     * @param callBack   请求回调
+     * @param requestAdditionalInfo 是否需要头部信息？wtf is it
+     * @param followType            关注类型
+     * @param pageNo                页码
+     * @param callBack              请求回调
      */
-    public static void getCurrentUserFollowers(Context mContext,boolean requestAdditionalInfo, int followType, int pageNo, final GetFollowCallBack callBack) {
+    public static void getCurrentUserFollowers(Context mContext, boolean requestAdditionalInfo, int followType, int pageNo, final GetFollowCallBack callBack) {
         String followUrl = "";
-        String strValue = requestAdditionalInfo?"yes":"no";
+        String strValue = requestAdditionalInfo ? "yes" : "no";
         switch (followType) {
             case TAFOLLOWING://TA关注的
-                followUrl = String.format(NetApi.getCurrentUserFollowers,strValue, "host",pageNo);
+                followUrl = String.format(NetApi.getCurrentUserFollowers, strValue, "host", pageNo);
                 break;
             case TAFOLLOWERS://关注TA的
-                followUrl = String.format(NetApi.getCurrentUserFollowers,strValue,"follow",pageNo);
+                followUrl = String.format(NetApi.getCurrentUserFollowers, strValue, "follow", pageNo);
                 break;
         }
         if (StringUtils.isEmpty(followUrl))
@@ -129,12 +153,12 @@ public class FollowPresenter {
                                 }
                                 if (callBack != null)
                                     callBack.onSuccess(lists);
-                            }else {
+                            } else {
                                 if (callBack != null)
                                     callBack.onError();
                             }
                         }
-                    }else {
+                    } else {
                         if (callBack != null)
                             callBack.onError();
                     }

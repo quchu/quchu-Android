@@ -1,41 +1,34 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.MessageModel;
 import co.quchu.quchu.presenter.MessageCenterPresenter;
 import co.quchu.quchu.view.adapter.MessageCenterAdapter;
+import co.quchu.quchu.widget.ErrorView;
 
 /**
  * MessageCenterActivity
  * User: Chenhs
  * Date: 2016-01-11
  */
-public class MessageCenterActivity extends BaseActivity {
+public class MessageCenterActivity extends BaseActivity implements MessageCenterPresenter.MessageGetDataListener {
     @Bind(R.id.messages_rv)
     RecyclerView messagesRv;
-    @Bind(R.id.messages_srl)
-    SwipeRefreshLayout messagesSrl;
-    @Bind(R.id.action_buttton)
-    TextView emptyViewOtherTv;
-    @Bind(R.id.message_empty_view_fl)
-    FrameLayout messageEmptyViewFl;
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
-    private MessageModel messageList;
+    @Bind(R.id.errorView)
+    ErrorView errorView;
     private MessageCenterAdapter adapter;
 
     @Override
@@ -45,24 +38,11 @@ public class MessageCenterActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitleBar();
         titleContentTv.setText(getTitle());
+        errorView.showLoading();
         messagesRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        adapter = new MessageCenterAdapter(this, null);
+        adapter = new MessageCenterAdapter(this);
         messagesRv.setAdapter(adapter);
-        MessageCenterPresenter.getMessageList(this, new MessageCenterPresenter.MessageGetDataListener() {
-            @Override
-            public void onSuccess(MessageModel arrayList) {
-                messageList = arrayList;
-                messagesSrl.setVisibility(View.VISIBLE);
-                messageEmptyViewFl.setVisibility(View.GONE);
-                adapter.changeDateSet(messageList.getResult());
-            }
-
-            @Override
-            public void onError() {
-                messageEmptyViewFl.setVisibility(View.VISIBLE);
-                messagesSrl.setVisibility(View.GONE);
-            }
-        });
+        MessageCenterPresenter.getMessageList(this, this);
     }
 
     @Override
@@ -70,10 +50,6 @@ public class MessageCenterActivity extends BaseActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
-    @OnClick(R.id.action_buttton)
-    public void emptyClick(View view) {
-        this.finish();
-    }
 
     @Override
     protected void onResume() {
@@ -86,5 +62,22 @@ public class MessageCenterActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd("MessageCenterActivity");
+    }
+
+    @Override
+    public void onSuccess(MessageModel arrayList) {
+        errorView.himeView();
+        adapter.initData(arrayList.getResult());
+    }
+
+    @Override
+    public void onError() {
+        errorView.showViewDefault(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                errorView.showLoading();
+                MessageCenterPresenter.getMessageList(MessageCenterActivity.this, MessageCenterActivity.this);
+            }
+        });
     }
 }

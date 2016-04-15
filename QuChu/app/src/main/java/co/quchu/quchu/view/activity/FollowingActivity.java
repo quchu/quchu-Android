@@ -45,7 +45,7 @@ public class FollowingActivity extends BaseActivity implements View.OnClickListe
         userId = getIntent().getIntExtra("UserId", 0x01);
         setTitleContentView();
         list = new ArrayList<>();
-        adatper = new FriendsAdatper(this, list);
+        adatper = new FriendsAdatper(this);
         adatper.setIsInnerClick(true);
         followRv.setLayoutManager(new LinearLayoutManager(this));
         callBack = new FriendsListCallBack();
