@@ -22,7 +22,7 @@ import co.quchu.quchu.widget.pull2zoomview.PullToZoomScrollViewEx;
 
 /**
  * UserCenterActivity
- * User: Chenhs
+ * User: 个人主页
  * Date: 2016-02-23
  */
 public class UserCenterActivity extends BaseActivity implements View.OnClickListener {
@@ -110,6 +110,13 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             case R.id.user_center_foucsable_tv:
                 followSomebody();
                 break;
+            case R.id.user_center_postcard_ll://脚印
+                Intent intent = new Intent(this, MyFootprintActivity.class);
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_ID, userId);
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_AGE, userInfo.getAge());
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_COUND, userInfo.getCardNum());
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_PHOTO, userInfo.getPhoto());
+                startActivity(intent);
 
         }
         super.onClick(v);

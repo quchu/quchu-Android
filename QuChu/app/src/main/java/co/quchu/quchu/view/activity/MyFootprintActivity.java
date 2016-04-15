@@ -29,6 +29,9 @@ import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.ScrollIndexView;
 
+/**
+ * 我的脚印,如果没有穿id参数 默认显示自己的
+ */
 public class MyFootprintActivity extends BaseActivity implements IFootprintActivity, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel> {
 
     @Bind(R.id.toolbar)
@@ -54,6 +57,11 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
     private MyFootprintAdapter adapter;
     private int pagesNo;
 
+    public static final String REQUEST_KEY_USER_ID = "userId";
+    public static final String REQUEST_KEY_USER_AGE = "age";
+    public static final String REQUEST_KEY_USER_PHOTO = "photo";
+    public static final String REQUEST_KEY_USER_FOOTER_COUND = "cound";
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         ButterKnife.bind(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(false);
+        userId = getIntent().getIntExtra(REQUEST_KEY_USER_ID, AppContext.user.getUserId());
 
         initTitle();
         adapter = new MyFootprintAdapter();
@@ -70,7 +79,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         adapter.setItemClickListener(this);
 
         presenter = new MyFootprintPresenter(this, this);
-        presenter.getMyFoiotrintList();
+        presenter.getMyFoiotrintList(userId);
         errorView.showLoading();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -123,14 +132,18 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
     }
 
     private void initTitle() {
-        String builder = String.valueOf(AppContext.user.getAge()) +
+        int age = getIntent().getIntExtra(REQUEST_KEY_USER_AGE, 0);
+        int cound = getIntent().getIntExtra(REQUEST_KEY_USER_FOOTER_COUND, 0);
+        String uri = getIntent().getStringExtra(REQUEST_KEY_USER_PHOTO);
+
+        String builder = String.valueOf(age) +
                 "年," +
-                AppContext.user.getCardCount() +
+                cound +
                 "个脚印";
         name.setText(AppContext.user.getFullname());
         ageAndCound.setText(builder);
         headViewBg.setImageURI(Uri.parse("res:///" + R.mipmap.bg_user));
-        headView.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+        headView.setImageURI(Uri.parse(uri+""));
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -162,7 +175,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
                 @Override
                 public void onClick(View v) {
                     errorView.showLoading();
-                    presenter.getMyFoiotrintList();
+                    presenter.getMyFoiotrintList(userId);
                 }
             });
         } else if (data.getResult().size() == 0) {
@@ -193,7 +206,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
 
     @Override
     public void onLoadmore() {
-        presenter.getMoreMyFoiotrintList(pagesNo + 1);
+        presenter.getMoreMyFoiotrintList(userId, pagesNo + 1);
     }
 
     @Override

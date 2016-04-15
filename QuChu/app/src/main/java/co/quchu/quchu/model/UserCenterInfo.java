@@ -36,6 +36,23 @@ public class UserCenterInfo {
     private Object location;
     private String name = "";
     private String photo = "";
+    private int age;
+
+    public String getBackImgs() {
+        return backImgs;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public boolean isFollow() {
+        return isFollow;
+    }
+
+    public int getAge() {
+        return age;
+    }
 
     public void setBackImg(String backImg) {
         this.backImgs = backImg;

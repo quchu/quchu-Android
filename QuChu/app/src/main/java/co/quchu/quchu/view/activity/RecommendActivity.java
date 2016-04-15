@@ -21,7 +21,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,10 +31,8 @@ import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
-import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
@@ -82,9 +79,6 @@ public class RecommendActivity extends BaseActivity {
         if (isGuide) {
             startActivity(new Intent(this, PlanetActivity.class));
         }
-
-
-
 
 
         recommendTitleLocationIv.setText(SPUtils.getCityName());
@@ -146,7 +140,12 @@ public class RecommendActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.recommend_title_more_iv:
-                startActivity(new Intent(this, MeActivity.class));
+                Intent intent = new Intent(this, MeActivity.class);
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_ID, AppContext.user.getUserId());
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_AGE, AppContext.user.getAge());
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_COUND, AppContext.user.getCardCount());
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_PHOTO, AppContext.user.getPhoto());
+                startActivity(intent);
                 break;
         }
     }
