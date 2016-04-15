@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.net.Uri;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -27,6 +28,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.ImageModel;
+import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.RoundProgressView;
@@ -173,15 +176,37 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
+
+
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (null == mData) {
             return;
         }
         if (holder instanceof IntroImageViewHolder) {
-            if (null != mData.getCover()) {
-                ((IntroImageViewHolder) holder).simpleDraweeView.setImageURI(Uri.parse(mData.getCover()));
-                ((IntroImageViewHolder) holder).simpleDraweeView.setAspectRatio(1.2f);
+            if (null != mData.getImglist()) {
+                List<ImageModel> imageSet = new ArrayList<>();
+                for (int i = 0; i < mData.getImglist().size() && i<=3; i++) {
+                    imageSet.add(mData.getImglist().get(i).convert2ImageModel());
+                }
+                ((IntroImageViewHolder) holder).vpGallery.setAdapter(new GalleryAdapter(imageSet,((IntroImageViewHolder) holder).vpGallery.getContext()));
+                final int size = imageSet.size();
+                ((IntroImageViewHolder) holder).tvGalleryIndicator.setText(1 +" of "+size);
+                ((IntroImageViewHolder) holder).vpGallery.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        ((IntroImageViewHolder) holder).tvGalleryIndicator.setText(position+1 +" of "+size);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {}
+                });
+                ((IntroImageViewHolder) holder).vpGallery.setOnTouchListener(listener);
+                //((IntroImageViewHolder) holder).simpleDraweeView.setImageURI(Uri.parse(mData.getCover()));
+                //((IntroImageViewHolder) holder).simpleDraweeView.setAspectRatio(1.2f);
             }
 
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
@@ -318,11 +343,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 ((NearbyViewHolder) holder).tvName.setText(mData.getNearPlace().get(imgIndex - 1).getName());
                 List<String> s = new ArrayList<>();
-                s.add("TAG 1");
-                s.add("TAG 2");
-                s.add("TAG 3");
+                List<TagsModel> tags = mData.getNearPlace().get(imgIndex-1).getTags();
+                if (null!=tags && tags.size()>0)
+                for (int i = 0; i < tags.size(); i++) {
+                    s.add(tags.get(i).getZh());
+                }
                 ((NearbyViewHolder) holder).tcvTag.setTags(s);
-                ((NearbyViewHolder) holder).tvAddress.setText("Address");
+                ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex-1).getAddress());
                 ((NearbyViewHolder) holder).sdvImage.setImageURI(Uri.parse(mData.getNearPlace().get(imgIndex - 1).getCover()));
 //                int imgIndex = position - BLOCK_INDEX;
 //                if (null != mData.getImglist()) {
@@ -370,12 +397,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private View.OnTouchListener listener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (((RecyclerView) v).getChildCount() >= 0) {
-                if (((RecyclerView) v).getChildAt(0).getLeft() - mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin) == 0) {
-                    ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(true);
-                } else {
-                    ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(false);
-                }
+            if (((ViewPager) v).getCurrentItem() != 0) {
+                ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(false);
+            }else{
+                ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(true);
             }
             return false;
         }
@@ -411,8 +436,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ProperRatingBar detail_suggest_prb;
         @Bind(R.id.detail_avg_price_tv)
         TextView detail_avg_price_tv;
-        @Bind(R.id.item_card_image_sdv)
-        SimpleDraweeView simpleDraweeView;
+        @Bind(R.id.vpGallery)
+        ViewPager vpGallery;
+        @Bind(R.id.tvGalleryIndicator)
+        TextView tvGalleryIndicator;
 
         @Bind(R.id.recommend_tag1)
         TextView tag1;
@@ -621,7 +648,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //
 //        @Override
 //        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            return new NearbyItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_detail_nearby_item, parent, false));
+//            return new NearbyItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout., parent, false));
 //        }
 //
 //        @Override

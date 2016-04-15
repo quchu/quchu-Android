@@ -6,20 +6,15 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/item_card_image_sdv"
+    <co.quchu.quchu.widget.WrapContentViewPager
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:placeholderImage="@mipmap/ic_image_empty"
-        card_view:failureImage="@mipmap/ic_image_empty"
-        card_view:failureImageScaleType="focusCrop"
-        card_view:actualImageScaleType="focusCrop"
-        card_view:placeholderImageScaleType="focusCrop"/>
+        android:id="@+id/vpGallery"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onViewClick"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:background="@color/translucent_dark"
@@ -67,8 +62,9 @@
             card_view:prb_tickSelectedDrawable="@drawable/ic_like_fill_checked"
             card_view:prb_totalTicks="5" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
@@ -101,6 +97,7 @@
                 android:paddingRight="@dimen/half_margin"
                 android:textSize="@dimen/word_size_time"
                 android:visibility="invisible"
+                android:layout_toRightOf="@id/recommend_tag1"
                 android:background="@drawable/shape_lineframe_white"
                 />
             <TextView
@@ -115,10 +112,21 @@
                 android:paddingRight="@dimen/half_margin"
                 android:textSize="@dimen/word_size_time"
                 android:visibility="invisible"
+                android:layout_toRightOf="@id/recommend_tag2"
                 android:background="@drawable/shape_lineframe_white"
                 />
-
-        </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2 of 4"
+                android:id="@+id/tvGalleryIndicator"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:drawablePadding="@dimen/quarter_margin"
+                android:drawableLeft="@mipmap/ic_gallery_indicator_small"
+                />
+        </RelativeLayout>
 
     </LinearLayout>
 

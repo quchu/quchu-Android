@@ -422,6 +422,16 @@ public class DetailModel {
         private int width;
         private String words;
 
+
+        public ImageModel convert2ImageModel(){
+            ImageModel imageModel = new ImageModel();
+            imageModel.setPath(imgpath);
+            imageModel.setImgId(cid);
+            imageModel.setHeight(height);
+            imageModel.setWidth(width);
+            return imageModel;
+        }
+
         public String getWords() {
             return words;
         }
