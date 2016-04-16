@@ -85,9 +85,11 @@ public class WeiboHelper {
 
     }
 
+    private boolean isLogin;
 
-    public void weiboLogin(Activity context) {
+    public void weiboLogin(Activity context, boolean isLogin) {
         this.activity = context;
+        this.isLogin = isLogin;
         mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
         mSsoHandler = new SsoHandler(activity, mAuthInfo);
         mSsoHandler.authorize(new AuthListener());
@@ -109,7 +111,11 @@ public class WeiboHelper {
             String uid = values.getString("uid");
 
             LogUtils.json("uid==" + uid);
-            regiest2Server(access_token, uid);
+            if (isLogin) {
+                regiest2Server(access_token, uid);
+            } else {
+                listener.loginSuccess(3, access_token, uid);
+            }
             LogUtils.json("access_token==" + access_token);
             mCode = _weibo_transaction;
         }
@@ -129,7 +135,7 @@ public class WeiboHelper {
             @Override
             public void onSuccess(JSONObject response) {
                 UserInfoHelper.saveUserInfo(response);
-                listener.loginSuccess(3,token,uid);
+                listener.loginSuccess(3, token, uid);
 
                 LogUtils.json("skdf" + response.toString());
 

@@ -102,7 +102,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     }
 
     public void sinaLogin() {
-        new WeiboHelper(this, this).weiboLogin(this);
+        new WeiboHelper(this, this).weiboLogin(this, true);
     }
 
     public void weixinLogin() {
@@ -140,10 +140,10 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     }
 
     public void enterApp() {
-        //   startActivity(new Intent(this, RecommendActivity.class));
+        startActivity(new Intent(this, RecommendActivity.class));
 
         Toast.makeText(getApplicationContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
-        this.finish();
+//        this.finish();
     }
 
     /**

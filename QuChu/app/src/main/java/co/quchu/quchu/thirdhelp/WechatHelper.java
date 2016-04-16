@@ -31,30 +31,34 @@ import co.quchu.quchu.utils.StringUtils;
  * Date: 2015-11-30
  */
 public class WechatHelper {
-    private IWXAPI api;
+    private static IWXAPI api;
     private Activity mActivity;
     public static final String WECHAT_APP_ID = "wx812a0a8cd108d233";
     private static final String APPSECRET = "b38180312951c88c3c24a5223e53daac";
 
-    public Activity getmActivity() {
-        return mActivity;
-    }
-
+    /**
+     * 他内部重新创建了实例  没静态不行啊  坑爹的
+     */
     private static UserLoginListener listener;
+
 
     public WechatHelper(Activity activity, UserLoginListener listener) {
         mActivity = activity;
-        api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
-                false);
-        api.registerApp(WECHAT_APP_ID);
         this.listener = listener;
+        init();
     }
 
     public WechatHelper(Activity activity) {
         mActivity = activity;
-        api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
-                false);
-        api.registerApp(WECHAT_APP_ID);
+        init();
+    }
+
+    private void init() {
+        if (api == null) {
+            api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
+                    false);
+            api.registerApp(WECHAT_APP_ID);
+        }
     }
 
     public IWXAPI getApi() {
@@ -62,11 +66,6 @@ public class WechatHelper {
     }
 
     public void login() {
-        if (api == null && mActivity != null) {
-            api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
-                    false);
-            api.registerApp(WECHAT_APP_ID);
-        }
         if (!api.isWXAppInstalled()) {
             Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
             return;
@@ -77,12 +76,20 @@ public class WechatHelper {
         api.sendReq(req);
     }
 
+    public static boolean isBind = false;
+
+    public void bind() {
+        isBind = true;
+        login();
+    }
+
+
     public void actionFromWX(SendAuth.Resp resp) {
 
         int errCode = resp.errCode;
         switch (errCode) {
             case 0:// 同意授权
-                LogUtils.json("openId=" + resp.openId + "///state=" + resp.state + "//code==" + resp.code + ";lang;" + resp.lang + "//country" + resp.country);
+                LogUtils.json("同意授权openId=" + resp.openId + "///state=" + resp.state + "//code==" + resp.code + ";lang;" + resp.lang + "//country" + resp.country);
                 getWechatToken(resp.code);
                 break;
             case -2:// 取消授权
@@ -105,7 +112,12 @@ public class WechatHelper {
                     String openid = response.getString("openid");
                     if (!StringUtils.isEmpty(access_token) && !StringUtils.isEmpty(openid)) {
                         LogUtils.json("access_token != null");
-                        regiestWechat2Server(access_token, openid);
+                        if (isBind) {
+                            listener.loginSuccess(2, access_token, openid);
+                        } else {
+                            LogUtils.json("注册");
+                            regiestWechat2Server(access_token, openid);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -139,9 +151,8 @@ public class WechatHelper {
         });
     }
 
-    public static void shareFriends(Activity activity, String shareUrl, String title,
+    public static void shareFriends(Activity mActivity, String shareUrl, String title,
                                     boolean isShare4Friends) {
-        Activity mActivity = activity;
         IWXAPI api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
                 false);
         api.registerApp(WECHAT_APP_ID);

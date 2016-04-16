@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
@@ -73,14 +74,16 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
                 if (AppContext.user.isIsweixin()) {
                     unBind(TYPE_Wecha);
                 } else {
-                    new WechatHelper(this, this).login();
+                    WechatHelper.isBind = true;
+                    WechatHelper helper = new WechatHelper(this, this);
+                    helper.bind();
                 }
                 break;
             case R.id.bind_sina:
                 if (AppContext.user.isIsweibo()) {
                     unBind(TYPE_WEIBO);
                 } else {
-                    new WeiboHelper(this, this).weiboLogin(this);
+                    new WeiboHelper(this, this).weiboLogin(this, false);
                 }
                 break;
         }
@@ -94,33 +97,90 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
 
     @Override
     public void loginSuccess(int type, String token, String appId) {
+        switch (type) {
+            case 2://微信
+                bind(true, token, appId);
+                break;
+            case 3://微bo
+                bind(false, token, appId);
+                break;
+        }
+    }
+
+    private void merger(final int type, final String token, final String appId) {
+
+
+        final ConfirmDialogFg dialogFg = ConfirmDialogFg.newInstance();
+        dialogFg.setTitleString("合并数据");
+        dialogFg.setBody("是否将两个账号数据合并 ");
+        dialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+            @Override
+            public void onClick(int index) {
+                dialogFg.dismiss();
+                if (index == 1) {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("open_type", type + "");
+                    params.put("open_token", token);
+                    params.put("open_id", appId);
+                    params.put("token", SPUtils.getUserToken(BindActivity.this));
+
+                    LogUtils.e("open_type:" + type + "open_token:" + token + "open_id:" + appId);
+
+                    GsonRequest request = new GsonRequest<>(Request.Method.POST, NetApi.accoundMerger, params, Object.class, new ResponseListener<Object>() {
+                        @Override
+                        public void onErrorResponse(@Nullable VolleyError error) {
+                            Toast.makeText(BindActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
+                            Toast.makeText(BindActivity.this, "合并成功", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                    request.start(AppContext.mContext, null);
+                }
+            }
+        });
+        dialogFg.show(getFragmentManager(), null);
+
+
+    }
+
+    private void bind(final boolean isWecha, final String token, final String appId) {
         Map<String, String> params = new HashMap<>();
+        params.put("token", token);
+        params.put("openId", appId);
+        params.put("type", "bind");
+        params.put("accesstoken", SPUtils.getUserToken(this));
 
-        params.put("open_type", type + "");
-        params.put("open_token", token);
-        params.put("open_id", appId);
-        params.put("token", SPUtils.getUserToken(this));
-
-        LogUtils.e("open_type:" + type + "open_token:" + token + "open_id:" + appId);
-
-        GsonRequest request = new GsonRequest<>(Request.Method.POST, NetApi.accoundMerger, params, Object.class, new ResponseListener<Object>() {
+        GsonRequest<Object> request = new GsonRequest<>(isWecha ? NetApi.WechatBind : NetApi.WeiboBind, Object.class, params, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(BindActivity.this, "绑定失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BindActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
-                Toast.makeText(BindActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
+            public void onResponse(Object response, boolean isNull, @Nullable String exception, @Nullable String msg) {
+                if ("已被绑定".equals(msg)) {
+                    Toast.makeText(BindActivity.this, "绑定失败", Toast.LENGTH_SHORT).show();
+                } else {
+                    AppContext.user.setIsweixin(true);
+                    // TODO: 2016/4/16    提醒数据绑定
+                    merger(isWecha ? 2 : 3, token, appId);
+                }
 
             }
         });
-        request.start(AppContext.mContext, null);
+        request.start(this, null);
     }
+
 
     private void unBind(final String type) {
         Map<String, String> params = new HashMap<>();
         params.put("type", type);
+        params.put("accesstoken", SPUtils.getUserToken(this));
+
         GsonRequest<Object> request = new GsonRequest<>(NetApi.unBindThrid, Object.class, params, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
@@ -137,6 +197,5 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
             }
         });
         request.start(this, null);
-
     }
 }

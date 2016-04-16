@@ -23,9 +23,9 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
-import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
@@ -100,13 +100,14 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                 break;
             case R.id.menu_user_logout_tv:
 
+                ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance();
+                confirmDialog.setTitleString("确认退出?");
+                confirmDialog.setBody("退出后将以游客模式登陆");
 
-
-                ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance(R.string.confirm,R.string.cancel);
                 confirmDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
                     @Override
                     public void onClick(int index) {
-                        if (index==ConfirmDialogFg.INDEX_OK){
+                        if (index == ConfirmDialogFg.INDEX_OK) {
                             VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
                             vDialog.show(getFragmentManager(), "visitor");
                             SPUtils.clearUserinfo(AppContext.mContext);
@@ -116,7 +117,7 @@ public class MenusActivity extends BaseActivity implements MoreButtonView.MoreCl
                         }
                     }
                 });
-                confirmDialog.show(getFragmentManager(),"confirm");
+                confirmDialog.show(getFragmentManager(), "confirm");
 
 
                 break;

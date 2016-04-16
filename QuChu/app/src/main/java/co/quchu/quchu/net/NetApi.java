@@ -27,9 +27,9 @@ public interface NetApi {
     String AlbumTypeNew = "new";
     String GetCaptcha = HOST + "/mregister/getCaptcha?username=%s&method=%s"; //获取验证码 register=注册  reset=重置密码
     String WeiboLogin = HOST + "/oauth/checkWeibo?token=%s&openId=%s&equip=%s&type=login"; //微博注册/登录 token=微博返回的token openid= 微博返回的uid  equip=设备uuid
-    String WeiboBind = HOST + "/oauth/checkWeibo?token=%s&openId=%s&equip=%s&type=bind&accesstoken=%s"; //账号绑定微博   accesstoken=服务器返回的用户token
+    String WeiboBind = HOST + "/oauth/checkWeibo"; //账号绑定微博   accesstoken=服务器返回的用户token
     String WechatLogin = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=login"; //微信注册登录   accesstoken=服务器返回的用户token
-    String WechatBind = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=bind&accesstoken=%s"; //微信绑定   accesstoken=服务器返回的用户token
+    String WechatBind = HOST + "/oauth/checkWeixin"; //微信绑定   accesstoken=服务器返回的用户token
 
     String UserStar = HOST + "/personal/getUserStar"; //我的趣星球
     String getMessageList = HOST + "/personal/getMessageList"; //消息中心

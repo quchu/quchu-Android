@@ -36,20 +36,15 @@ public class ConfirmDialogFg extends BlurDialogFragment {
 
     private OnActionListener mListener;
 
-    public static final String BUNDLE_KEY_ALERT_DIALOG_RES_TITLE = "BUNDLE_KEY_ALERT_DIALOG_RES_TITLE";
-    public static final String BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT = "BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT";
+//    public static final String BUNDLE_KEY_ALERT_DIALOG_RES_TITLE = "BUNDLE_KEY_ALERT_DIALOG_RES_TITLE";
+//    public static final String BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT = "BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT";
+//
+//    private int mResTitle;
+//    private int mResContent;
 
-    private int mResTitle;
-    private int mResContent;
 
-
-    public static ConfirmDialogFg newInstance(int resTitle, int resContent) {
-        ConfirmDialogFg fragment = new ConfirmDialogFg();
-        Bundle args = new Bundle();
-        args.putInt(BUNDLE_KEY_ALERT_DIALOG_RES_TITLE, resTitle);
-        args.putInt(BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT, resContent);
-        fragment.setArguments(args);
-        return fragment;
+    public static ConfirmDialogFg newInstance() {
+        return new ConfirmDialogFg();
     }
 
     public void setActionListener(OnActionListener onActionListener) {
@@ -59,9 +54,6 @@ public class ConfirmDialogFg extends BlurDialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Bundle args = getArguments();
-        mResTitle = args.getInt(BUNDLE_KEY_ALERT_DIALOG_RES_TITLE);
-        mResContent = args.getInt(BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT);
     }
 
     @Override
@@ -80,8 +72,8 @@ public class ConfirmDialogFg extends BlurDialogFragment {
         builder.setView(view);
         dialogLocationSelectedCityTv.setText(R.string.confirm_logout_title);
         dialogLocationTv.setText(R.string.confirm_logout_content);
-        dialogLocationSubmitTv.setText(mResTitle);
-        dialogLocationCancelTv.setText(mResContent);
+        dialogLocationSubmitTv.setText("确定");
+        dialogLocationCancelTv.setText("取消");
 
         //StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
         return builder.create();
@@ -92,7 +84,7 @@ public class ConfirmDialogFg extends BlurDialogFragment {
     }
 
     public void setBody(String body) {
-        dialogLocationTv.setText(R.string.confirm_logout_content);
+        dialogLocationTv.setText(body);
     }
 
     public interface OnActionListener {
