@@ -24,15 +24,15 @@ import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.view.PageLoadListener;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
-import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.ScrollIndexView;
 
 /**
  * 我的脚印,如果没有穿id参数 默认显示自己的
  */
-public class MyFootprintActivity extends BaseActivity implements IFootprintActivity, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel> {
+public class MyFootprintActivity extends BaseActivity implements PageLoadListener<PostCardModel>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel> {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -49,13 +49,11 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
     ScrollIndexView scrollIndexView;
     @Bind(R.id.ageAndCound)
     TextView ageAndCound;
-    @Bind(R.id.errorView)
-    ErrorView errorView;
     private MyFootprintPresenter presenter;
 
     private List<PostCardItemModel> data;
     private MyFootprintAdapter adapter;
-    private int pagesNo;
+    private int pagesNo = 1;
 
     public static final String REQUEST_KEY_USER_ID = "userId";
     public static final String REQUEST_KEY_USER_AGE = "age";
@@ -79,8 +77,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         adapter.setItemClickListener(this);
 
         presenter = new MyFootprintPresenter(this, this);
-        presenter.getMyFoiotrintList(userId);
-        errorView.showLoading();
+        presenter.getMoreMyFoiotrintList(userId, pagesNo);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean isIdle = true;
@@ -143,7 +140,7 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         name.setText(AppContext.user.getFullname());
         ageAndCound.setText(builder);
         headViewBg.setImageURI(Uri.parse("res:///" + R.mipmap.bg_user));
-        headView.setImageURI(Uri.parse(uri+""));
+        headView.setImageURI(Uri.parse(uri + ""));
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -167,44 +164,6 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
 
 
     @Override
-    public void initData(boolean isError, PostCardModel data) {
-        errorView.himeView();
-        if (isError) {
-            recyclerView.setVisibility(View.INVISIBLE);
-            errorView.showViewDefault(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    errorView.showLoading();
-                    presenter.getMyFoiotrintList(userId);
-                }
-            });
-        } else if (data.getResult().size() == 0) {
-            recyclerView.setVisibility(View.INVISIBLE);
-            errorView.showView("您还没有脚印哦~~", "到别处看看", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        } else {
-            pagesNo = data.getPagesNo();
-            recyclerView.setVisibility(View.VISIBLE);
-            this.data = data.getResult();
-            adapter.initData(data.getResult());
-        }
-    }
-
-    @Override
-    public void initMoreData(boolean isError, PostCardModel data) {
-        if (isError) {
-            adapter.setLoadMoreEnable(false);
-        } else {
-            pagesNo = data.getPagesNo();
-            adapter.addMoreData(data.getResult());
-        }
-    }
-
-    @Override
     public void onLoadmore() {
         presenter.getMoreMyFoiotrintList(userId, pagesNo + 1);
     }
@@ -215,4 +174,30 @@ public class MyFootprintActivity extends BaseActivity implements IFootprintActiv
         intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, item);
         startActivity(intent);
     }
+
+    @Override
+    public void initData(PostCardModel data) {
+        pagesNo = data.getPagesNo();
+        recyclerView.setVisibility(View.VISIBLE);
+        this.data = data.getResult();
+        adapter.initData(data.getResult());
+    }
+
+    @Override
+    public void moreData(PostCardModel data) {
+        pagesNo = data.getPagesNo();
+        adapter.addMoreData(data.getResult());
+    }
+
+    @Override
+    public void nullData() {
+        adapter.setLoadMoreEnable(false);
+    }
+
+    @Override
+    public void netError(int pageNo, String massage) {
+        adapter.setLoadMoreEnable(false);
+    }
+
+
 }

@@ -18,23 +18,20 @@ import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FindBean;
-import co.quchu.quchu.presenter.IFindFragment;
 import co.quchu.quchu.presenter.QuchuPresenter;
+import co.quchu.quchu.view.PageLoadListener;
 import co.quchu.quchu.view.activity.FindPositionActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FindAdapter;
-import co.quchu.quchu.widget.ErrorView;
 
 /**
  * Created by no21 on 2016/4/6.
  * email:437943145@qq.com
  * desc :发现
  */
-public class FindFragment extends BaseFragment implements IFindFragment, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FindBean.ResultEntity> {
+public class FindFragment extends BaseFragment implements PageLoadListener<FindBean>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FindBean.ResultEntity> {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind(R.id.errorView)
-    ErrorView errorView;
     private QuchuPresenter presenter;
     private int pagesNo;
     private FindAdapter adapter;
@@ -57,7 +54,6 @@ public class FindFragment extends BaseFragment implements IFindFragment, Adapter
         adapter.setItemClickListener(this);
 
         recyclerView.setAdapter(adapter);
-        errorView.showLoading();
         presenter.getFindData(1, this);
     }
 
@@ -67,45 +63,13 @@ public class FindFragment extends BaseFragment implements IFindFragment, Adapter
         ButterKnife.unbind(this);
     }
 
-
-    @Override
-    public void showData(boolean isError, FindBean bean) {
-
-        if (isError) {
-            errorView.showViewDefault(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    presenter.getFindData(1, FindFragment.this);
-                    errorView.showLoading();
-                }
-            });
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            pagesNo = bean.getPagesNo();
-            adapter.initData(bean.getResult());
-            errorView.himeView();
-            recyclerView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void showMoredata(boolean isError, FindBean bean) {
-        if (isError) {
-            adapter.setLoadMoreEnable(false);
-        } else {
-            pagesNo = bean.getPagesNo();
-            adapter.addMoreData(bean.getResult());
-        }
-    }
-
-
     @Override
     public void onLoadmore() {
-        presenter.getFindMoreData(pagesNo + 1, this);
+        presenter.getFindData(pagesNo + 1, this);
     }
 
     @Override
-    public void itemClick(FindBean.ResultEntity entity, int type,int position) {
+    public void itemClick(FindBean.ResultEntity entity, int type, int position) {
         String address = entity.getAddress();
         String name = entity.getName();
         int pId = entity.getPId();
@@ -125,5 +89,29 @@ public class FindFragment extends BaseFragment implements IFindFragment, Adapter
         intent.putExtra(FindPositionActivity.REQUEST_KEY_DESC, desc);
         intent.putParcelableArrayListExtra(FindPositionActivity.REQUEST_KEY_IMAGE_LIST, photos);
         startActivity(intent);
+    }
+
+    @Override
+    public void initData(FindBean bean) {
+        pagesNo = bean.getPagesNo();
+        adapter.initData(bean.getResult());
+    }
+
+    @Override
+    public void moreData(FindBean data) {
+        pagesNo = data.getPagesNo();
+        adapter.addMoreData(data.getResult());
+    }
+
+    @Override
+    public void nullData() {
+        adapter.setLoadMoreEnable(false);
+    }
+
+    @Override
+    public void netError(final int pagesNo, String massage) {
+        // TODO: 2016/4/16   加载更多网络异常
+        adapter.setLoadMoreEnable(false);
+
     }
 }

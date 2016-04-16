@@ -8,7 +8,7 @@ import co.quchu.quchu.BuildConfig;
 public interface NetApi {
     String RELEASE_HOST = "http://www.quchu.co/app-main-service";
     String HOST_UAT = "http://uat.quchu.co/app-main-service";
-    String HOST_SIT = "http://sit.quchu.co/app-main-service-test";
+    String HOST_SIT = "http://sit.quchu.co/app-main-service";
     //    public static String HOST_SIT = "http://192.168.1.134:8080/app-main-service";
     String HOST = BuildConfig.API_SERVER == 0 ? RELEASE_HOST : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;
     /****

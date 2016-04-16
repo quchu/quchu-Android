@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
@@ -45,6 +46,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.ImageUtils;
@@ -140,7 +142,18 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
     public void accountClick(View v) {
         switch (v.getId()) {
             case R.id.bindPhotoNumber:
-                presenter.bindPhotoNumber(authCode.getText().toString().trim(), password.getText().toString().trim());
+                presenter.bindPhotoNumber(authCode.getText().toString().trim(), password.getText().toString().trim(), new CommonListener<Object>() {
+                    @Override
+                    public void successListener(Object response) {
+                        modiffPasswordWord.setVisibility(View.VISIBLE);
+                        containerBindNumber.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void errorListener(VolleyError error, String exception, String msg) {
+                                //无需处理
+                    }
+                });
                 break;
             case R.id.getAuthCode:
                 presenter.getAuthCode(getAuthCode, photoNumber.getText().toString().trim());

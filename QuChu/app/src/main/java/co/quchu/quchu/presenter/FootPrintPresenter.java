@@ -15,7 +15,6 @@ import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
-import co.quchu.quchu.view.activity.IFootprintActivity;
 
 /**
  * Created by no21 on 2016/4/7.
@@ -23,17 +22,10 @@ import co.quchu.quchu.view.activity.IFootprintActivity;
  * desc :
  */
 public class FootPrintPresenter {
-    private Context context;
 
-    private IFootprintActivity view;
 
-    public FootPrintPresenter(Context context, IFootprintActivity view) {
-        this.context = context;
-        this.view = view;
-    }
-
-    public static void getFootprint(Context context, int pId,int pageNo, final GetFootprintDataListener listener) {
-        NetService.get(context, String.format(NetApi.getFootprint, pId,pageNo), new IRequestListener() {
+    public static void getFootprint(Context context, int pId, int pageNo, final GetFootprintDataListener listener) {
+        NetService.get(context, String.format(NetApi.getFootprint, pId, pageNo), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 if (response != null && response.has("result") && response.has("pageCount")) {
@@ -42,12 +34,13 @@ public class FootPrintPresenter {
                     List<FootprintModel> footprintModelList = null;
                     try {
                         maxPageNo = response.getInt("pageCount");
-                        footprintModelList = gson.fromJson(response.getString("result"), new TypeToken<List<FootprintModel>>(){}.getType());
+                        footprintModelList = gson.fromJson(response.getString("result"), new TypeToken<List<FootprintModel>>() {
+                        }.getType());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    listener.getFootprint(footprintModelList,maxPageNo);
+                    listener.getFootprint(footprintModelList, maxPageNo);
                 }
             }
 

@@ -25,6 +25,8 @@ import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
+import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 
 public class BindActivity extends BaseActivity implements UserLoginListener {
 
@@ -97,6 +99,9 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
         params.put("open_type", type + "");
         params.put("open_token", token);
         params.put("open_id", appId);
+        params.put("token", SPUtils.getUserToken(this));
+
+        LogUtils.e("open_type:" + type + "open_token:" + token + "open_id:" + appId);
 
         GsonRequest request = new GsonRequest<>(Request.Method.POST, NetApi.accoundMerger, params, Object.class, new ResponseListener<Object>() {
             @Override

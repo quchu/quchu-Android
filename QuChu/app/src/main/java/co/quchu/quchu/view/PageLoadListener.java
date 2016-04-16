@@ -19,4 +19,9 @@ public interface PageLoadListener<DT> {
      * @param data
      */
     void moreData(DT data);
+
+    void nullData();
+
+    void netError(int pageNo, String massage);
+
 }

@@ -124,7 +124,7 @@ public class GsonRequest<T> extends Request<T> {
             encodedParams.append(entry.getKey());
             encodedParams.append('=');
             encodedParams.append(entry.getValue());
-            encodedParams.append("/n");
+            encodedParams.append("\n");
         }
 
         LogUtils.e("请求参数" + encodedParams.toString());
@@ -133,23 +133,23 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
-        T t;
+        T t = null;
         try {
             String json = new String(networkResponse.data, HttpHeaderParser.parseCharset(networkResponse.headers, "utf-8"));
 
             LogUtils.e("原始数据为" + json);
             JSONObject jsonObject = new JSONObject(json);
             result = jsonObject.getBoolean("result");
-
-            //结果正确
-            String data = jsonObject.getString("data");
-            if (entity != null || type != null) {
-                Gson gson = new Gson();
-                t = gson.fromJson(data, entity != null ? entity : type);
-            } else {
-                t = (T) data;
+            if (result) {
+                //结果正确
+                String data = jsonObject.getString("data");
+                if (entity != null || type != null) {
+                    Gson gson = new Gson();
+                    t = gson.fromJson(data, entity != null ? entity : type);
+                } else {
+                    t = (T) data;
+                }
             }
-
             msg = jsonObject.getString("msg");
             exception = jsonObject.getString("exception");
             return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
@@ -200,11 +200,13 @@ public class GsonRequest<T> extends Request<T> {
                     listener.onErrorResponse(new NetworkError());
                     break;
             }
-        } else if (t == null) {
+        } else if (t == null && result) {
             // TODO: 2016/3/23  没有数据了
-            listener.onErrorResponse(new NetworkError());
+//            listener.onErrorResponse(new NetworkError());
+            listener.onResponse(null, true, exception, msg);
+            LogUtils.e("空数据");
         } else {
-            listener.onResponse(t, result, exception, msg);
+            listener.onResponse(t, false, exception, msg);
         }
     }
 

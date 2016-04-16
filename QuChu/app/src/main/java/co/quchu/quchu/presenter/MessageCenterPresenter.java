@@ -14,6 +14,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.view.PageLoadListener;
 
 /**
  * MessageCenterPresenter
@@ -22,24 +23,32 @@ import co.quchu.quchu.utils.LogUtils;
  */
 public class MessageCenterPresenter {
 
-    public static void getMessageList(Context mContext, final MessageGetDataListener listener) {
+    public static void getMessageList(Context mContext, final int pageNo, final PageLoadListener<MessageModel> listener) {
 
 
         GsonRequest<MessageModel> request = new GsonRequest<>(NetApi.getMessageList, MessageModel.class, new ResponseListener<MessageModel>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                listener.onError();
+                listener.netError(pageNo, "");
             }
 
             @Override
             public void onResponse(MessageModel response, boolean result, @Nullable String exception, @Nullable String msg) {
-                listener.onSuccess(response);
+                if (result) {
+                    listener.nullData();
+                } else if (pageNo == 1) {
+                    listener.initData(response);
+                } else {
+                    listener.moreData(response);
+                }
             }
         });
         request.start(mContext, null);
 
 
     }
+
+
 
     public interface MessageGetDataListener {
         void onSuccess(MessageModel arrayList);

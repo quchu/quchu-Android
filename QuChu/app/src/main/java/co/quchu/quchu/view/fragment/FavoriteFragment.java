@@ -14,25 +14,22 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FavoriteBean;
-import co.quchu.quchu.presenter.IFavoriteFragment;
 import co.quchu.quchu.presenter.QuchuPresenter;
+import co.quchu.quchu.view.PageLoadListener;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FavoriteAdapter;
-import co.quchu.quchu.widget.ErrorView;
 
 /**
  * Created by no21 on 2016/4/6.
  * email:437943145@qq.com
  * desc :收藏
  */
-public class FavoriteFragment extends BaseFragment implements IFavoriteFragment, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean> {
+public class FavoriteFragment extends BaseFragment implements PageLoadListener<FavoriteBean>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean> {
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind(R.id.errorView)
-    ErrorView errorView;
     private QuchuPresenter presenter;
-    private int pagesNo;
+    private int pagesNo = 1;
     private FavoriteAdapter adapter;
 
     @Nullable
@@ -47,8 +44,11 @@ public class FavoriteFragment extends BaseFragment implements IFavoriteFragment,
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
         presenter = new QuchuPresenter(getActivity());
-        presenter.getFavoriteData(1, this);
-        errorView.showLoading();
+        adapter = new FavoriteAdapter();
+        adapter.setLoadmoreListener(this);
+        adapter.setItemClickListener(this);
+        recyclerView.setAdapter(adapter);
+        presenter.getFavoriteData(pagesNo, this);
     }
 
     @Override
@@ -58,54 +58,37 @@ public class FavoriteFragment extends BaseFragment implements IFavoriteFragment,
     }
 
     @Override
-    public void showData(boolean isError, FavoriteBean bean) {
-
-        if (isVisible()) {
-            if (isError) {
-                recyclerView.setVisibility(View.GONE);
-
-                errorView.showViewDefault(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        errorView.showLoading();
-                        presenter.getFavoriteData(1, FavoriteFragment.this);
-                    }
-                });
-            } else {
-                pagesNo = bean.getPagesNo();
-
-                adapter = new FavoriteAdapter();
-                adapter.initData(bean.getResult());
-                adapter.setLoadmoreListener(this);
-                adapter.setItemClickListener(this);
-                errorView.himeView();
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView.setAdapter(adapter);
-            }
-        }
-    }
-
-    @Override
-    public void showMoreData(boolean isError, FavoriteBean bean) {
-        if (isVisible()) {
-            if (isError) {
-                adapter.setLoadMoreEnable(false);
-            } else {
-                pagesNo = bean.getPagesNo();
-                adapter.addMoreData(bean.getResult());
-            }
-        }
-    }
-
-    @Override
     public void onLoadmore() {
-        presenter.getFavoriteMoreData(pagesNo + 1, this);
+        presenter.getFavoriteData(pagesNo + 1, this);
     }
 
     @Override
-    public void itemClick(FavoriteBean.ResultBean item,int type, int position) {
+    public void itemClick(FavoriteBean.ResultBean item, int type, int position) {
         Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
         startActivity(intent);
+    }
+
+    @Override
+    public void initData(FavoriteBean bean) {
+        adapter.initData(bean.getResult());
+        pagesNo = bean.getPagesNo();
+
+    }
+
+    @Override
+    public void moreData(FavoriteBean data) {
+        pagesNo = data.getPagesNo();
+        adapter.addMoreData(data.getResult());
+    }
+
+    @Override
+    public void nullData() {
+        adapter.setLoadMoreEnable(false);
+    }
+
+    @Override
+    public void netError(final int pagesNo, String massage) {
+        adapter.setLoadMoreEnable(false);
     }
 }

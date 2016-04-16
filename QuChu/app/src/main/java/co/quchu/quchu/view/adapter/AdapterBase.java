@@ -25,7 +25,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     private static final int ITEM_VIEW_TYPE_FOOTER = -1;
     private boolean loadMoreing;
     private OnLoadmoreListener loadmoreListener;
-    private boolean loadMoreEnable = false;
+    private boolean loadMoreEnable = true;
     protected List<DT> data;
     protected OnItemClickListener<DT> itemClickListener;
 
@@ -91,11 +91,9 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
             } else {
                 loadMoreHold.loadView.clearAnimation();
                 loadMoreHold.loadView.setVisibility(View.INVISIBLE);
-                if (position == 0) {
-                    loadMoreHold.retryView.setText("");
-                } else {
-                    loadMoreHold.retryView.setText("没有更多了~~");
-                }
+
+                loadMoreHold.retryView.setText("没有更多了~~");
+
             }
         } else {
             onBindView(holder, position);

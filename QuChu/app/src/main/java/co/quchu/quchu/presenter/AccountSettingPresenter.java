@@ -113,12 +113,11 @@ public class AccountSettingPresenter {
         request.start(context, null);
     }
 
-    public void bindPhotoNumber(String authCode, String password) {
+    public void bindPhotoNumber(String authCode, String password, final CommonListener<Object> listener) {
         if (TextUtils.isEmpty(photoNumber) || authCode.trim().length() < 4) {
             Toast.makeText(context, "请先获取验证码", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (password.trim().length() >= 6) {
 
             Map<String, String> params = new HashMap<>();
@@ -134,7 +133,12 @@ public class AccountSettingPresenter {
 
                 @Override
                 public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
-                    Toast.makeText(context, "绑定成功", Toast.LENGTH_SHORT).show();
+                    if (result) {
+                    listener.successListener(response);
+                        Toast.makeText(context, "绑定成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "msg", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
             request.start(context, null);

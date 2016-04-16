@@ -140,6 +140,7 @@ public class MyFootprintDetailActivity extends BaseActivity {
                         if (event.getX() - x < 100 && event.getY() - y < 100) {
                             animation();
                         }
+
                         break;
                 }
                 return false;

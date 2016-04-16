@@ -12,7 +12,7 @@ import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
-import co.quchu.quchu.view.activity.IFootprintActivity;
+import co.quchu.quchu.view.PageLoadListener;
 
 /**
  * Created by no21 on 2016/4/12.
@@ -21,35 +21,14 @@ import co.quchu.quchu.view.activity.IFootprintActivity;
  */
 public class MyFootprintPresenter {
     private Context context;
-    private IFootprintActivity view;
+    private PageLoadListener<PostCardModel> view;
 
-    public MyFootprintPresenter(Context context, IFootprintActivity view) {
+    public MyFootprintPresenter(Context context, PageLoadListener<PostCardModel> view) {
         this.context = context;
         this.view = view;
     }
 
-    public void getMyFoiotrintList(int userId) {
-
-        Map<String, String> params = new HashMap<>();
-        params.put("userId", String.valueOf(userId));
-        params.put("pageno", "1");
-
-        GsonRequest<PostCardModel> request = new GsonRequest<>(NetApi.getUserCardList, PostCardModel.class, params, new ResponseListener<PostCardModel>() {
-            @Override
-            public void onErrorResponse(@Nullable VolleyError error) {
-
-                view.initData(true, null);
-            }
-
-            @Override
-            public void onResponse(PostCardModel response, boolean result, @Nullable String exception, @Nullable String msg) {
-                view.initData(false, response);
-            }
-        });
-        request.start(context, null);
-    }
-
-    public void getMoreMyFoiotrintList(int userId, int pageNo) {
+    public void getMoreMyFoiotrintList(int userId, final int pageNo) {
 
         Map<String, String> params = new HashMap<>();
         params.put("userId", String.valueOf(userId));
@@ -59,12 +38,20 @@ public class MyFootprintPresenter {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
 
-                view.initData(true, null);
+                view.netError(pageNo, null);
             }
 
             @Override
             public void onResponse(PostCardModel response, boolean result, @Nullable String exception, @Nullable String msg) {
-                view.initData(false, response);
+                if (result) {
+                    view.nullData();
+                } else if (pageNo == 1) {
+                    view.initData(response);
+                } else {
+                    view.moreData(response);
+                }
+
+
             }
         });
         request.start(context, null);
