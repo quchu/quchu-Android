@@ -50,7 +50,7 @@ public class NearbyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby);
         ButterKnife.bind(this);
-        initTitleBar();
+        getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_tags_filter);
         titleContentTv.setText(getTitle());
         mAdapter = new NearbyAdapter(mData);
         detailRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
@@ -66,20 +66,21 @@ public class NearbyActivity extends BaseActivity {
 
     private void loadData(final boolean loadMore) {
         if (mIsLoading) return;
-        if (mCurrentPageNo == mMaxPageNo) return;
+        if (mCurrentPageNo >= mMaxPageNo &&mMaxPageNo !=-1) return;
         if (!loadMore){
             mData.clear();
             mCurrentPageNo = 1;
         }else if (mCurrentPageNo<mMaxPageNo){
             mCurrentPageNo +=1;
-
         }
         mIsLoading = true;
         NearbyPresenter.getNearbyData(getApplicationContext(), SPUtils.getCityId(), mTagsInfo, SPUtils.getLatitude(), SPUtils.getLongitude(), mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
             @Override
             public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
-                mMaxPageNo = pMaxPageNo;
-                mData.addAll(model);
+                if (mMaxPageNo==-1){
+                    mMaxPageNo = pMaxPageNo;
+                }
+                mData.addAll(model.size(),model);
                 mAdapter.notifyDataSetChanged();
                 mIsLoading = false;
             }

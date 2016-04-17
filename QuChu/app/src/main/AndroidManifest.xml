@@ -115,6 +115,11 @@
             android:label="@string/titlebar_word_message_center"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".view.activity.PickingQuchuActivity"
+            android:label="@string/picking_quchu"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".view.activity.AboutUsActivity"
             android:label="@string/titlebar_word_about_us"
             android:screenOrientation="portrait" />
@@ -129,7 +134,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.NearbyActivity"
-            android:label="@string/nearby_quchu"
+            android:label="@string/nearby_quchu_all"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.UserCenterActivity"

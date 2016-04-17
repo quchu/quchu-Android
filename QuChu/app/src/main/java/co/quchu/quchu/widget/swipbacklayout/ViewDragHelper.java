@@ -1104,6 +1104,9 @@ public class ViewDragHelper {
             case MotionEvent.ACTION_MOVE: {
                 // First to cross a touch slop over a draggable view wins. Also
                 // report edge drags.
+                if (null==mInitialMotionX){
+                    break;
+                }
                 final int pointerCount = MotionEventCompat.getPointerCount(ev);
                 for (int i = 0; i < pointerCount; i++) {
                     final int pointerId = MotionEventCompat.getPointerId(ev, i);

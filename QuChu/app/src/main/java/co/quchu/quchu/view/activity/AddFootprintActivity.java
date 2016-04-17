@@ -48,6 +48,7 @@ import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.FindPositionAdapter;
+import co.quchu.quchu.view.adapter.PickingQuchuAdapter;
 import co.quchu.quchu.widget.SelectedImagePopWin;
 
 /**
@@ -71,6 +72,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     public static final String REQUEST_KEY_ENTITY = "entity";
     private int pId;
     private PostCardItemModel mData;
+    private int REQUEST_PICKING_QUCHU = 0x0001;
 
     @Override
     protected int activitySetup() {
@@ -83,14 +85,31 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         setContentView(R.layout.activity_add_footprint);
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        pId = intent.getIntExtra(REQUEST_KEY_ID, -1);
+        pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
         mData = (PostCardItemModel) getIntent().getSerializableExtra(REQUEST_KEY_ENTITY);
         mIsEdit = mData==null?false:true;
         pId = mData==null?pId:mData.getPlaceId();
         getEnhancedToolbar().getRightTv().setText(R.string.save);
         getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.load_progress_yellow));
+        tvPickFromMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddFootprintActivity.this, PickingQuchuActivity.class);
+                startActivityForResult(intent,REQUEST_PICKING_QUCHU);
+            }
+        });
         init();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==REQUEST_PICKING_QUCHU && resultCode==RESULT_OK && null!=data){
+            pId = data.getIntExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_ID,-1);
+            //pName = data.getStringExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_ID);
+            init();
+            //TODO request refresh data
+        }
     }
 
     @Override

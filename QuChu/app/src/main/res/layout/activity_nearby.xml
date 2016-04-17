@@ -6,14 +6,7 @@
     android:background="@color/appBackground_dark">
 
     <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:layout_below="@+id/title_bar"
-        android:background="@mipmap/shadow_bottom" />
+        layout="@layout/cp_enhanced_toolbar"/>
 
     <co.quchu.quchu.widget.TagCloudView
         android:id="@+id/detail_store_tagclound_tcv"
@@ -25,7 +18,7 @@
         card_view:tcvItemBorderHorizontal="10dp"
         card_view:tcvRightResId="@null"
         card_view:tcvSingleLine="true"
-        android:layout_below="@id/title_bar"
+        android:layout_below="@id/appbar"
         card_view:tcvTextColor="@color/text_color_white" />
 
 
@@ -37,9 +30,5 @@
         android:layout_below="@id/detail_store_tagclound_tcv"
         android:scrollbars="none"
         />
-
-
-
-
 
 </RelativeLayout>

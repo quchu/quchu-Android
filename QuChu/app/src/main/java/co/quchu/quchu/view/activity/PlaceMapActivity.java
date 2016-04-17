@@ -4,14 +4,11 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,10 +20,12 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
@@ -35,10 +34,16 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.umeng.analytics.MobclickAgent;
 
 import java.net.URISyntaxException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.NavigateSelectedDialogFg;
+import co.quchu.quchu.model.NearbyMapModel;
+import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
@@ -68,21 +73,23 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     String placeTitle, placeAddressStr = "";
     LatLng placeAddress;
     LatLng myAddress;
+    List<NearbyMapModel> mDataSet = new ArrayList<>();
+    AMapNearbyVPAdapter mAdapter;
+    TextView tvTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_map);
+        tvTitle = (TextView) findViewById(R.id.title_content_tv);
         mapView = (MapView) findViewById(R.id.place_map_mv);
         mVPNearby = (ViewPager) findViewById(R.id.vpNearby);
-        mVPNearby.setAdapter(new AMapNearbyVPAdapter());
-        mVPNearby.setClipToPadding(false);
-        mVPNearby.setPadding(40,0,40,20);
-        mVPNearby.setPageMargin(20);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         TextView title_right_navigate_tv = (TextView) findViewById(R.id.title_right_navigate_tv);
         about_us_title_back_rl = (RelativeLayout) findViewById(R.id.about_us_title_back_rl);
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
+        tvTitle.setText(R.string.nearby_quchu);
         currentPosition.setOnClickListener(this);
         about_us_title_back_rl.setOnClickListener(this);
         if (aMap == null) {
@@ -114,7 +121,103 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
+        mAdapter = new AMapNearbyVPAdapter(mDataSet, new AMapNearbyVPAdapter.OnMapItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+            }
+        });
+        mVPNearby.setAdapter(mAdapter);
+        mVPNearby.setClipToPadding(false);
+        mVPNearby.setPadding(40,0,40,20);
+        mVPNearby.setPageMargin(20);
+        mVPNearby.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(position).getLatitude()),Double.valueOf(mDataSet.get(position).getLongitude()));
+                CameraUpdate s = CameraUpdateFactory.changeLatLng(latLng);
+
+                aMap.animateCamera(s);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+        DialogUtil.showProgess(this,R.string.loading_dialog_text);
+//        NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", SPUtils.getLatitude(), SPUtils.getLongitude(), new CommonListener<List<NearbyMapModel>>() {
+//            @Override
+//            public void successListener(List<NearbyMapModel> response) {
+//                mDataSet.addAll(mDataSet);
+//                mAdapter.notifyDataSetChanged();
+//                DialogUtil.dismissProgess();
+//            }
+//
+//            @Override
+//            public void errorListener(VolleyError error, String exception, String msg) {
+//                DialogUtil.dismissProgess();
+//
+//            }
+//        });
+
+        for (int i = 0; i < 5; i++) {
+
+            List<TagsModel> tags = new ArrayList<TagsModel>();
+            for (int j = 0; j < 5; j++) {
+                TagsModel model = new TagsModel();
+                switch (j){
+                    case 0:
+                        model.setZh("清新");
+                        break;
+                    case 1:
+                        model.setZh("书店");
+                        break;
+                    case 2:
+                        model.setZh("逛街");
+                        break;
+                    case 3:
+                        model.setZh("文艺");
+                        break;
+                    case 4:
+                        model.setZh("神秘");
+                        break;
+                }
+                tags.add(model);
+            }
+            NearbyMapModel nearbyMapModel = new NearbyMapModel();
+            nearbyMapModel.setCover("http://img3.imgtn.bdimg.com/it/u=1604706481,3962528280&fm=21&gp=0.jpg");
+            nearbyMapModel.setName("Name"+i);
+            nearbyMapModel.setAddress("厦门,中山路/轮渡,32 How"+i);
+            nearbyMapModel.setLongitude((118.09427777263+(i/1000d))+"");
+            nearbyMapModel.setLatitude((24.466288171628+(i/1000d))+"");
+            nearbyMapModel.setTags(tags);
+            mDataSet.add(nearbyMapModel);
+            DialogUtil.dismissProgess();
+        }
+        mAdapter.notifyDataSetChanged();
+
+        initMarks();
+
+    }
+
+    private void initMarks() {
+        for (int i = 0; i < mDataSet.size(); i++) {
+            float distance =AMapUtils.calculateLineDistance(new LatLng(gdlat, gdlon),
+                    new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()), Double.valueOf(mDataSet.get(i).getLongitude())));
+            String strDistance = "距离当前趣处："+new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
+            LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()),Double.valueOf(mDataSet.get(i).getLongitude()));
+            aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getName())
+                    .snippet(strDistance)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_target))
+                    .perspective(true).draggable(false).period(50));
+        }
     }
 
     @Override

@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     android:background="@color/appBackground"
+    android:animateLayoutChanges="true"
     android:fitsSystemWindows="true">
 
     <include
@@ -13,18 +13,24 @@
     <RelativeLayout
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/title_bar_heigh"
         android:layout_below="@+id/title"
+        android:animateLayoutChanges="true"
         android:visibility="visible">
 
-        <EditText
+        <TextView
             android:id="@+id/search_input_et"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/title_bar_heigh"
-            android:background="@null"
-            android:hint="@string/search"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_search_quchu"
+            android:text="@string/search"
             android:textSize="@dimen/word_size_body"
             android:maxLines="1"
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
             android:textColor="@color/white"

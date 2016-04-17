@@ -26,10 +26,10 @@ import co.quchu.quchu.utils.SPUtils;
 public class SearchPresenter {
     public static void searchFromService(Context context, String seachStr, int pageNum, final SearchResultListener listener) {
 
+        System.out.println(String.format(NetApi.Seach, seachStr, pageNum));
         NetService.get(context, String.format(NetApi.Seach, seachStr, pageNum), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                LogUtils.json("////search=="+response);
                 try {
          //           if (response.has("result") && !StringUtils.isEmpty(response.getString("result"))) {
                     if (response!=null) {
@@ -42,7 +42,8 @@ public class SearchPresenter {
                                 model = gson.fromJson(array.getString(i), RecommendModel.class);
                                 arrayList.add(model);
                             }
-                            listener.successResult(arrayList);
+                            int maxPageNo = response.getInt("pageCount");
+                            listener.successResult(arrayList,maxPageNo);
                         }else {
                             listener.errorNull();
                         }
@@ -68,7 +69,7 @@ public class SearchPresenter {
     }
 
     public interface SearchResultListener {
-        void successResult(ArrayList<RecommendModel> arrayList);
+        void successResult(ArrayList<RecommendModel> arrayList,int maxPageNo);
 
         void errorNull();
     }

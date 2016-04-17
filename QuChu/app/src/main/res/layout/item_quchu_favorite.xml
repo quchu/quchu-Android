@@ -37,6 +37,7 @@
             android:layout_below="@id/name"
             android:layout_marginTop="@dimen/half_margin"
             card_view:tcvCanTagClick="false"
+            android:layout_toLeftOf="@id/simpleDraweeView"
             card_view:tcvItemBorderHorizontal="10dp"
             card_view:tcvRightResId="@null"
             card_view:tcvSingleLine="true"

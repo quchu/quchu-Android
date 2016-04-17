@@ -290,7 +290,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((AdditionalInfoViewHolder) holder).ivApplePay.setAlpha(.5f);
             if (!mData.isIsActivity()) {
                 ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.VISIBLE);
-                //TODO
+                //TODO revert it
             } else {
                 ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.GONE);
             }
@@ -342,13 +342,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     return;
                 }
                 ((NearbyViewHolder) holder).tvName.setText(mData.getNearPlace().get(imgIndex - 1).getName());
-                List<String> s = new ArrayList<>();
+                List<String> strTags = new ArrayList<>();
                 List<TagsModel> tags = mData.getNearPlace().get(imgIndex-1).getTags();
-                if (null!=tags && tags.size()>0)
-                for (int i = 0; i < tags.size(); i++) {
-                    s.add(tags.get(i).getZh());
+                if (null!=tags && tags.size()>0){
+                    for (int i = 0; i < tags.size(); i++) {
+                        strTags.add(tags.get(i).getZh());
+                    }
                 }
-                ((NearbyViewHolder) holder).tcvTag.setTags(s);
+
+                ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
                 ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex-1).getAddress());
                 ((NearbyViewHolder) holder).sdvImage.setImageURI(Uri.parse(mData.getNearPlace().get(imgIndex - 1).getCover()));
 //                int imgIndex = position - BLOCK_INDEX;

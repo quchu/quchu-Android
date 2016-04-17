@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -61,7 +60,7 @@ public class RecommendActivity extends BaseActivity {
     @Bind(R.id.search_bar)
     RelativeLayout rlSearchBar;
     @Bind(R.id.search_input_et)
-    EditText editText;
+    TextView tvSearch;
 
     public long firstTime = 0;
     private ArrayList<CityModel> list;
@@ -85,8 +84,7 @@ public class RecommendActivity extends BaseActivity {
         recommendFragment = new RecommendFragment();
         classifyFragment = new ClassifyFragment();
 
-        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
 
         initView();
         enableRightButton();
@@ -101,7 +99,12 @@ public class RecommendActivity extends BaseActivity {
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
-
+        tvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RecommendActivity.this,SearchActivity.class));
+            }
+        });
 
 //        startActivity(new Intent(RecommendActivity.this,AddFootprintActivity.class));
     }
@@ -181,8 +184,8 @@ public class RecommendActivity extends BaseActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
-            editText.animate()
-                    .translationY(-editText.getHeight())
+            tvSearch.animate()
+                    .translationY(-tvSearch.getHeight())
                     .alpha(0)
                     .setDuration(300)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -209,7 +212,7 @@ public class RecommendActivity extends BaseActivity {
 //                    .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out)
                     .hide(recommendFragment).show(classifyFragment).commit();
 
-            editText.animate()
+            tvSearch.animate()
                     .translationY(0)
                     .alpha(1)
                     .setDuration(300)

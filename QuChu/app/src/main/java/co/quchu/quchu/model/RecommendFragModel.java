@@ -33,8 +33,7 @@ public class RecommendFragModel implements IRecommendFragModel {
     public void getTab(final CommonListener<List<TagsModel>> listener) {
         String uri = String.format(NetApi.getCategoryTags, SPUtils.getCityId());
 
-        GsonRequest<List<TagsModel>> request = new GsonRequest<>(Request.Method.GET, uri, new TypeToken<List<TagsModel>>() {
-        }.getType(), new ResponseListener<List<TagsModel>>() {
+        GsonRequest<List<TagsModel>> request = new GsonRequest<>(Request.Method.GET, uri, new TypeToken<List<TagsModel>>() {}.getType(), new ResponseListener<List<TagsModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 listener.errorListener(error, "", "");

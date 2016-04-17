@@ -10,13 +10,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/shape_activity_bg">
 
-        <co.quchu.quchu.widget.VerTextView
-            android:id="@+id/search_result_isnull_vtv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="4dp"
-            android:visibility="invisible" />
 
         <LinearLayout
             android:id="@+id/search_title_bar_ll"
@@ -137,8 +130,6 @@
                 android:id="@+id/search_result_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/dialog_margin"
-                android:layout_marginRight="@dimen/dialog_margin"
                 android:layout_marginTop="@dimen/base_margin"
                 android:overScrollMode="always" />
 

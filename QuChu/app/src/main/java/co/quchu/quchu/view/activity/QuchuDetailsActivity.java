@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
-import android.widget.ImageView;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +40,7 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
-import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
+import co.quchu.quchu.widget.HidingScrollListener;
 
 
 /**
@@ -57,14 +56,15 @@ public class QuchuDetailsActivity extends BaseActivity {
     TextView detailBeenTv;
     @Bind(R.id.detail_recyclerview)
     RecyclerView mRecyclerView;
+    @Bind(R.id.detail_bottom_group_ll)
+    View detail_bottom_group_ll;
 
     public static final String REQUEST_KEY_PID = "pid";
-
-    private boolean mLoadingMore = false;
+    private long startViewTime = 0L;
     private int pId = 0;
+    private boolean mLoadingMore = false;
     public DetailModel dModel = new DetailModel();
     private GatherViewModel gatherViewModel;
-    private long startViewTime = 0L;
     private QuchuDetailsAdapter mQuchuDetailAdapter;
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
@@ -104,6 +104,8 @@ public class QuchuDetailsActivity extends BaseActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
+
+
     private void initData() {
         pId = getIntent().getIntExtra(REQUEST_KEY_PID, -1);
         if (-1 == pId) {
@@ -114,6 +116,9 @@ public class QuchuDetailsActivity extends BaseActivity {
                 @Override
                 public void getDetailData(DetailModel model) {
                     dModel.copyFrom(model);
+                    if (null != dModel.getImglist() && dModel.getImglist().size()>1) {
+                        getSwipeBackLayout().setEnableGesture(false);
+                    }
                     mQuchuDetailAdapter.notifyDataSetChanged();
                     mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
                         @Override
@@ -131,6 +136,19 @@ public class QuchuDetailsActivity extends BaseActivity {
                                 }
                             },1500l);
 
+                        }
+                    });
+
+                    mRecyclerView.setOnScrollListener(new HidingScrollListener() {
+
+                        @Override
+                        public void onHide() {
+                            detail_bottom_group_ll.animate().translationY(detail_bottom_group_ll.getHeight()).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(500).start();
+                        }
+
+                        @Override
+                        public void onShow() {
+                            detail_bottom_group_ll.animate().translationY(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(500).start();
                         }
                     });
 //                    mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
@@ -151,6 +169,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         }
         gatherViewModel = new GatherViewModel(pId + "");
     }
+
 
     private void bindingDetailData() {
         changeBottomBeenBg(dModel.isIsout());

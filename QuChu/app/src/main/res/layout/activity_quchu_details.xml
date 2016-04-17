@@ -2,18 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/appBackground_dark">
 
         <include
             layout="@layout/cp_enhanced_toolbar" />
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/detail_recyclerview"
+        android:layout_below="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        />
 
     <LinearLayout
+        android:layout_alignParentBottom="true"
         android:id="@+id/detail_bottom_group_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="@color/appBackground_dark"
         android:orientation="horizontal">
 
@@ -73,18 +82,6 @@
             android:textColor="@color/gene_textcolor_yellow"
             android:textSize="@dimen/word_size_body" />
     </LinearLayout>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/detail_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/detail_bottom_group_ll"
-        android:layout_below="@+id/appbar"
-        android:scrollbars="none"
-        />
-
-
 
 
 
