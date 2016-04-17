@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.ImageModel;
-import co.quchu.quchu.model.SimpleQuchuDetailAnlysisModel;
+import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.SimpleUserModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.utils.StringUtils;
@@ -68,7 +68,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<SimpleUserModel> mVisitedUsers = new ArrayList<>();
     private int mVisitedUsersAvatarSize = -1;
     private int mVisitedUsersAvatarMargin;
-    private SimpleQuchuDetailAnlysisModel mAnlysisModel;
+    private SimpleQuchuDetailAnalysisModel mAnalysisModel;
 
 
 
@@ -127,8 +127,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mLoadMoreListener = pListener;
     }
 
-    public void updateVisitorAnlysis(SimpleQuchuDetailAnlysisModel response) {
-        mAnlysisModel = response;
+    public void updateVisitorAnalysis(SimpleQuchuDetailAnalysisModel response) {
+        mAnalysisModel = response;
         notifyDataSetChanged();
     }
 
@@ -310,18 +310,19 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.clearComposingText();
             }
         } else if (holder instanceof RatingInfoViewHolder) {
-            if (null != mAnlysisModel) {
-                for (int i = 0; i < mAnlysisModel.getResult().size(); i++) {
-                    System.out.println(mAnlysisModel.getResult().get(i).getZh());
+            if (null != mAnalysisModel) {
+                for (int i = 0; i < mAnalysisModel.getResult().size(); i++) {
+                    System.out.println(mAnalysisModel.getResult().get(i).getZh());
                 }
-                ((RatingInfoViewHolder) holder).rpvItemLeft.setProgressWithoutFuckingAnimation((Float.valueOf(mAnlysisModel.getResult().get(0).getCount())/mAnlysisModel.getUserOutCount())*100);
-                ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgressWithoutFuckingAnimation((Float.valueOf(mAnlysisModel.getResult().get(1).getCount())/mAnlysisModel.getUserOutCount())*100);
-                ((RatingInfoViewHolder) holder).rpvItemRight.setProgressWithoutFuckingAnimation((Float.valueOf(mAnlysisModel.getResult().get(2).getCount())/mAnlysisModel.getUserOutCount())*100);
-                ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnlysisModel.getResult().get(0).getZh());
-                ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnlysisModel.getResult().get(1).getZh());
-                ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnlysisModel.getResult().get(2).getZh());
+                ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((Float.valueOf(mAnalysisModel.getResult().get(0).getCount())/ mAnalysisModel.getUserOutCount())*100);
+                ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((Float.valueOf(mAnalysisModel.getResult().get(1).getCount())/ mAnalysisModel.getUserOutCount())*100);
+                ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((Float.valueOf(mAnalysisModel.getResult().get(2).getCount())/ mAnalysisModel.getUserOutCount())*100);
+                ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
+                ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
+                ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {
+
             ((AdditionalInfoViewHolder) holder).ivParkingSlot.setAlpha(.5f);
             ((AdditionalInfoViewHolder) holder).ivPrivateRoom.setAlpha(.5f);
             ((AdditionalInfoViewHolder) holder).ivDeliver.setAlpha(.5f);

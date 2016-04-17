@@ -90,7 +90,7 @@ public interface NetApi {
     String getFootprint = HOST + "/place/getCardList?pId=%d&pageno=%d";
     String getSearchResult = HOST + "/place/getSelectPlaces?cityId=%d&name=%d";
     String getVisitedUsers = HOST + "/place/userOut?placeId=%d";
-    String getVisitorAnlysis = HOST + "/place/tagsCount?placeId=%d";
+    String getVisitorAnalysis = HOST + "/place/tagsCount?placeId=%d";
 
     /****  Get end  ****/
 

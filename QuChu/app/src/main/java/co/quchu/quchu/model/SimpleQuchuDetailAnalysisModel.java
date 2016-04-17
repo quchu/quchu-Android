@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Nikolai on 2016/4/17.
  */
-public class SimpleQuchuDetailAnlysisModel  {
+public class SimpleQuchuDetailAnalysisModel {
 
     private int userOutCount;
     private List<TagsModel> result;

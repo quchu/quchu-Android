@@ -34,7 +34,7 @@ import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.model.SimpleQuchuDetailAnlysisModel;
+import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.SimpleUserModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.CommonListener;
@@ -117,11 +117,11 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
         });
 
-        InterestingDetailPresenter.getVisitorAnlysis(getApplicationContext(), pId, new CommonListener<SimpleQuchuDetailAnlysisModel>() {
+        InterestingDetailPresenter.getVisitorAnalysis(getApplicationContext(), pId, new CommonListener<SimpleQuchuDetailAnalysisModel>() {
             @Override
-            public void successListener(SimpleQuchuDetailAnlysisModel response) {
+            public void successListener(SimpleQuchuDetailAnalysisModel response) {
                 if (null!=response){
-                    mQuchuDetailAdapter.updateVisitorAnlysis(response);
+                    mQuchuDetailAdapter.updateVisitorAnalysis(response);
                 }
             }
 
