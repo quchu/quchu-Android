@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.ImageModel;
+import co.quchu.quchu.model.SimpleQuchuDetailAnlysisModel;
+import co.quchu.quchu.model.SimpleUserModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
@@ -40,16 +43,6 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
  * Created by admin on 2016/3/7.
  */
 public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-
-    private LayoutInflater mLayoutInflater;
-    private Activity mAnchorActivity;
-    private DetailModel mData;
-    private View.OnClickListener mOnItemClickListener;
-    public static final int BLOCK_INDEX = 7;
-    private OnLoadMoreListener mLoadMoreListener;
-    private boolean mOnLoadingMore = false;
-
 
     protected static final int LAYOUT_TYPE_INTRO_IMAGE = 0x0001;
     protected static final int LAYOUT_TYPE_ACTIONBAR = 0x0002;
@@ -64,6 +57,19 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     protected static final int LAYOUT_TYPE_NEARBY = 0x0011;
     protected static final int LAYOUT_TYPE_BLANK = 0x0012;
     private static final int LAYOUT_TYPE_LOAD_MORE = 0x1001;
+
+    private LayoutInflater mLayoutInflater;
+    private Activity mAnchorActivity;
+    private DetailModel mData;
+    private View.OnClickListener mOnItemClickListener;
+    public static final int BLOCK_INDEX = 7;
+    private OnLoadMoreListener mLoadMoreListener;
+    private boolean mOnLoadingMore = false;
+    private List<SimpleUserModel> mVisitedUsers = new ArrayList<>();
+    private int mVisitedUsersAvatarSize = -1;
+    private int mVisitedUsersAvatarMargin;
+    private SimpleQuchuDetailAnlysisModel mAnlysisModel;
+
 
 
     protected static final int VIEW_TYPES[] = new int[]{
@@ -105,11 +111,25 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mData = dModel;
         mLayoutInflater = LayoutInflater.from(activity);
         mOnItemClickListener = onClickListener;
+        mVisitedUsersAvatarSize = mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.visited_users_avatar_size);
+        mVisitedUsersAvatarMargin = mAnchorActivity.getResources().getDimensionPixelOffset(R.dimen.base_margin);
+    }
+
+    public void updateVisitedUsers(List<SimpleUserModel> pUsers){
+        mVisitedUsers.clear();
+        System.out.println("pUsers.size()" +pUsers.size());
+        mVisitedUsers.addAll(pUsers);
+        notifyDataSetChanged();
     }
 
 
     public void setLoadMoreListener(OnLoadMoreListener pListener){
         mLoadMoreListener = pListener;
+    }
+
+    public void updateVisitorAnlysis(SimpleQuchuDetailAnlysisModel response) {
+        mAnlysisModel = response;
+        notifyDataSetChanged();
     }
 
     public interface OnLoadMoreListener {
@@ -248,6 +268,27 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ActionViewHolder) holder).detail_button_share_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).tvFootprint.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).tvQuguo.setOnClickListener(mOnItemClickListener);
+            ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
+
+            LinearLayout.LayoutParams lpVisitedUsersAvatar;
+            for (int i = 0; i < mVisitedUsers.size(); i++) {
+                System.out.println(mVisitedUsers.get(i).getUserPhoneUrl());
+                SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
+                sdv.setImageURI(Uri.parse(mVisitedUsers.get(i).getUserPhoneUrl()));
+                RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
+                roundingParams.setRoundAsCircle(true);
+                sdv.getHierarchy().setRoundingParams(roundingParams);
+                if (i>0){
+                    lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
+                    lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin,0,0,0);
+                }else{
+                    lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
+                    lpVisitedUsersAvatar.setMargins(0,0,0,0);
+                }
+                ((ActionViewHolder) holder).llVisitedUsers.addView(sdv,lpVisitedUsersAvatar);
+                sdv.requestLayout();
+            }
+            ((ActionViewHolder) holder).llVisitedUsers.invalidate();
         } else if (holder instanceof ContactInfoViewHolder) {
             if (null == mData.getTraffic() || StringUtils.isEmpty(mData.getTraffic())) {
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址：" + mData.getAddress());
@@ -269,13 +310,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.clearComposingText();
             }
         } else if (holder instanceof RatingInfoViewHolder) {
-            if (null != mData.getGenes() && mData.getGenes().size() >= 3) {
-                ((RatingInfoViewHolder) holder).rpvItemLeft.setProgressText(mData.getGenes().get(0).getKey());
-                ((RatingInfoViewHolder) holder).rpvItemLeft.setProgressWithoutFuckingAnimation(Integer.valueOf(mData.getGenes().get(0).getValue()));
-                ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgressText(mData.getGenes().get(1).getKey());
-                ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgressWithoutFuckingAnimation(Integer.valueOf(mData.getGenes().get(1).getValue()));
-                ((RatingInfoViewHolder) holder).rpvItemRight.setProgressText(mData.getGenes().get(2).getKey());
-                ((RatingInfoViewHolder) holder).rpvItemRight.setProgressWithoutFuckingAnimation(Integer.valueOf(mData.getGenes().get(2).getValue()));
+            if (null != mAnlysisModel) {
+                for (int i = 0; i < mAnlysisModel.getResult().size(); i++) {
+                    System.out.println(mAnlysisModel.getResult().get(i).getZh());
+                }
+                ((RatingInfoViewHolder) holder).rpvItemLeft.setProgressWithoutFuckingAnimation((Float.valueOf(mAnlysisModel.getResult().get(0).getCount())/mAnlysisModel.getUserOutCount())*100);
+                ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgressWithoutFuckingAnimation((Float.valueOf(mAnlysisModel.getResult().get(1).getCount())/mAnlysisModel.getUserOutCount())*100);
+                ((RatingInfoViewHolder) holder).rpvItemRight.setProgressWithoutFuckingAnimation((Float.valueOf(mAnlysisModel.getResult().get(2).getCount())/mAnlysisModel.getUserOutCount())*100);
+                ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnlysisModel.getResult().get(0).getZh());
+                ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnlysisModel.getResult().get(1).getZh());
+                ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnlysisModel.getResult().get(2).getZh());
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {
             ((AdditionalInfoViewHolder) holder).ivParkingSlot.setAlpha(.5f);
@@ -467,6 +511,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         RelativeLayout detail_button_share_rl;
         @Bind(R.id.detail_button_add_postcard_rl)
         RelativeLayout detail_button_add_postcard_rl;
+        @Bind(R.id.llVisitedUsers)
+        LinearLayout llVisitedUsers;
 
         @Bind(R.id.tvFootPrint)
         TextView tvFootprint;
@@ -504,6 +550,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         RoundProgressView rpvItemMiddle;
         @Bind(R.id.rpvItemRight)
         RoundProgressView rpvItemRight;
+
+        @Bind(R.id.tvRatingLeft)
+        TextView tvRatingLeft;
+        @Bind(R.id.tvRatingRight)
+        TextView tvRatingRight;
+        @Bind(R.id.tvRatingMiddle)
+        TextView tvRatingMiddle;
 
         RatingInfoViewHolder(View view) {
             super(view);

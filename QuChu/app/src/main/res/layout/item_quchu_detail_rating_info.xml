@@ -13,6 +13,7 @@
       android:layout_height="wrap_content"
       android:layout_weight="1"
       android:gravity="center"
+      android:orientation="vertical"
       >
       <co.quchu.quchu.widget.RoundProgressView
           android:id="@+id/rpvItemLeft"
@@ -25,6 +26,14 @@
           app:roundWidth="4dp"
           app:textSize="@dimen/word_size_body"
           app:textStyle="Num" />
+      <TextView
+          android:id="@+id/tvRatingLeft"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/load_progress_yellow"
+          android:gravity="center"
+          android:layout_marginTop="@dimen/quarter_margin"
+          />
   </LinearLayout>
 
 
@@ -33,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
+        android:orientation="vertical"
         >
     <co.quchu.quchu.widget.RoundProgressView
         android:id="@+id/rpvItemMiddle"
@@ -45,6 +55,14 @@
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />
+        <TextView
+            android:id="@+id/tvRatingMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/load_progress_yellow"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/quarter_margin"
+            />
         </LinearLayout>
 
     <LinearLayout
@@ -52,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
+        android:orientation="vertical"
         >
     <co.quchu.quchu.widget.RoundProgressView
         android:id="@+id/rpvItemRight"
@@ -64,5 +83,13 @@
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />
+        <TextView
+            android:id="@+id/tvRatingRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/load_progress_yellow"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/quarter_margin"
+            />
     </LinearLayout>
 </LinearLayout>

@@ -179,7 +179,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
                     if (mMaxPageNo==-1){
                         mMaxPageNo = maxPageNo;
                     }
-                    resultList.addAll(resultList.size(),arrayList);
+                    resultList.addAll(arrayList);
 
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(

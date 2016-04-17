@@ -8,7 +8,7 @@ import co.quchu.quchu.BuildConfig;
 public interface NetApi {
     String RELEASE_HOST = "http://www.quchu.co/app-main-service";
     String HOST_UAT = "http://uat.quchu.co/app-main-service";
-    String HOST_SIT = "http://sit.quchu.co/app-main-service";
+    String HOST_SIT = "http://sit.quchu.co/app-main-service-test/";
     //    public static String HOST_SIT = "http://192.168.1.134:8080/app-main-service";
     String HOST = BuildConfig.API_SERVER == 0 ? RELEASE_HOST : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;
     /****
@@ -89,6 +89,8 @@ public interface NetApi {
     String getMapNearby = HOST + "/place/nearbyMapPlaces?name=%s&cityId=%d&latitude=%s&longitude=%s";
     String getFootprint = HOST + "/place/getCardList?pId=%d&pageno=%d";
     String getSearchResult = HOST + "/place/getSelectPlaces?cityId=%d&name=%d";
+    String getVisitedUsers = HOST + "/place/userOut?placeId=%d";
+    String getVisitorAnlysis = HOST + "/place/tagsCount?placeId=%d";
 
     /****  Get end  ****/
 

@@ -155,11 +155,13 @@ public class EnhancedToolbar extends Toolbar {
                 v = new ImageView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem));
                 lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 lp.addRule(RelativeLayout.CENTER_VERTICAL);
+                ((ImageView)v).setScaleType(ImageView.ScaleType.CENTER);
                 break;
             case TYPE_RIGHT_IV:
                 v = new ImageView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem));
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 lp.addRule(RelativeLayout.CENTER_VERTICAL);
+                ((ImageView)v).setScaleType(ImageView.ScaleType.CENTER);
                 break;
             case TYPE_TITLE_TV:
                 v = new TextView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem_TitleTextView));

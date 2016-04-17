@@ -1,16 +1,29 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.NearbyItemModel;
+import co.quchu.quchu.model.NearbyMapModel;
+import co.quchu.quchu.model.SimpleQuchuDetailAnlysisModel;
+import co.quchu.quchu.model.SimpleUserModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 
 /**
  * InterestingDetailPresenter
@@ -90,4 +103,45 @@ public class InterestingDetailPresenter {
 
         void onErrorCall(String str);
     }
+
+
+    public static void getVisitedUsers(Context context, int cityId,final CommonListener<List<SimpleUserModel>> listener) {
+        String url = String.format(NetApi.getVisitedUsers,cityId);
+        NetService.get(context, url, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                try {
+                    List<SimpleUserModel> result = new Gson().fromJson(response.getString("result"),new TypeToken<List<SimpleUserModel>>(){}.getType());
+                    listener.successListener(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    listener.errorListener(new VolleyError("error"), e.getMessage(), "");
+                }
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.errorListener(new VolleyError("error"), "", "");
+                return false;
+            }
+        });
+    }
+
+    public static void getVisitorAnlysis(Context context, int cityId,final CommonListener<SimpleQuchuDetailAnlysisModel> listener) {
+        String url = String.format(NetApi.getVisitorAnlysis,cityId);
+        NetService.get(context, url, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                SimpleQuchuDetailAnlysisModel result = new Gson().fromJson(response.toString(),SimpleQuchuDetailAnlysisModel.class);
+                listener.successListener(result);
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.errorListener(new VolleyError("error"), "", "");
+                return false;
+            }
+        });
+    }
+
 }

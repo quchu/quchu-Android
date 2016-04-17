@@ -11,6 +11,7 @@ public class TagsModel {
     private int tagId;
     private String code;
     private boolean isSend;
+    private int count;
 
     public String getZh() {
         return zh;
@@ -50,6 +51,14 @@ public class TagsModel {
 
     public void setSend(boolean send) {
         isSend = send;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     @Override

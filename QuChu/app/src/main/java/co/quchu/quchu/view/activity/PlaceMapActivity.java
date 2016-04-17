@@ -31,6 +31,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
 import java.net.URISyntaxException;
@@ -44,6 +45,8 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.NavigateSelectedDialogFg;
 import co.quchu.quchu.model.NearbyMapModel;
 import co.quchu.quchu.model.TagsModel;
+import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
@@ -152,58 +155,58 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
 
         DialogUtil.showProgess(this,R.string.loading_dialog_text);
-//        NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", SPUtils.getLatitude(), SPUtils.getLongitude(), new CommonListener<List<NearbyMapModel>>() {
-//            @Override
-//            public void successListener(List<NearbyMapModel> response) {
-//                mDataSet.addAll(mDataSet);
-//                mAdapter.notifyDataSetChanged();
-//                DialogUtil.dismissProgess();
-//            }
-//
-//            @Override
-//            public void errorListener(VolleyError error, String exception, String msg) {
-//                DialogUtil.dismissProgess();
-//
-//            }
-//        });
-
-        for (int i = 0; i < 5; i++) {
-
-            List<TagsModel> tags = new ArrayList<TagsModel>();
-            for (int j = 0; j < 5; j++) {
-                TagsModel model = new TagsModel();
-                switch (j){
-                    case 0:
-                        model.setZh("清新");
-                        break;
-                    case 1:
-                        model.setZh("书店");
-                        break;
-                    case 2:
-                        model.setZh("逛街");
-                        break;
-                    case 3:
-                        model.setZh("文艺");
-                        break;
-                    case 4:
-                        model.setZh("神秘");
-                        break;
-                }
-                tags.add(model);
+        NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", SPUtils.getLatitude(), SPUtils.getLongitude(), new CommonListener<List<NearbyMapModel>>() {
+            @Override
+            public void successListener(List<NearbyMapModel> response) {
+                mDataSet.addAll(mDataSet);
+                mAdapter.notifyDataSetChanged();
+                initMarks();
+                DialogUtil.dismissProgess();
             }
-            NearbyMapModel nearbyMapModel = new NearbyMapModel();
-            nearbyMapModel.setCover("http://img3.imgtn.bdimg.com/it/u=1604706481,3962528280&fm=21&gp=0.jpg");
-            nearbyMapModel.setName("Name"+i);
-            nearbyMapModel.setAddress("厦门,中山路/轮渡,32 How"+i);
-            nearbyMapModel.setLongitude((118.09427777263+(i/1000d))+"");
-            nearbyMapModel.setLatitude((24.466288171628+(i/1000d))+"");
-            nearbyMapModel.setTags(tags);
-            mDataSet.add(nearbyMapModel);
-            DialogUtil.dismissProgess();
-        }
-        mAdapter.notifyDataSetChanged();
 
-        initMarks();
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                DialogUtil.dismissProgess();
+
+            }
+        });
+
+//        for (int i = 0; i < 5; i++) {
+//
+//            List<TagsModel> tags = new ArrayList<TagsModel>();
+//            for (int j = 0; j < 5; j++) {
+//                TagsModel model = new TagsModel();
+//                switch (j){
+//                    case 0:
+//                        model.setZh("清新");
+//                        break;
+//                    case 1:
+//                        model.setZh("书店");
+//                        break;
+//                    case 2:
+//                        model.setZh("逛街");
+//                        break;
+//                    case 3:
+//                        model.setZh("文艺");
+//                        break;
+//                    case 4:
+//                        model.setZh("神秘");
+//                        break;
+//                }
+//                tags.add(model);
+//            }
+//            NearbyMapModel nearbyMapModel = new NearbyMapModel();
+//            nearbyMapModel.setCover("http://img3.imgtn.bdimg.com/it/u=1604706481,3962528280&fm=21&gp=0.jpg");
+//            nearbyMapModel.setName("Name"+i);
+//            nearbyMapModel.setAddress("厦门,中山路/轮渡,32 How"+i);
+//            nearbyMapModel.setLongitude((118.09427777263+(i/1000d))+"");
+//            nearbyMapModel.setLatitude((24.466288171628+(i/1000d))+"");
+//            nearbyMapModel.setTags(tags);
+//            mDataSet.add(nearbyMapModel);
+//            DialogUtil.dismissProgess();
+//        }
+//        mAdapter.notifyDataSetChanged();
+
 
     }
 

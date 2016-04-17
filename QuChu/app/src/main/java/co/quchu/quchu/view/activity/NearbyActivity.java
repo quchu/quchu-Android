@@ -27,12 +27,6 @@ import co.quchu.quchu.widget.TagCloudView;
 public class NearbyActivity extends BaseActivity {
 
 
-    @Bind(R.id.title_back_iv)
-    ImageView titleBackIv;
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
-    @Bind(R.id.title_more_rl)
-    MoreButtonView titleMoreRl;
     @Bind(R.id.detail_recyclerview)
     RecyclerView detailRecyclerview;
     @Bind(R.id.detail_store_tagclound_tcv)
@@ -51,7 +45,6 @@ public class NearbyActivity extends BaseActivity {
         setContentView(R.layout.activity_nearby);
         ButterKnife.bind(this);
         getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_tags_filter);
-        titleContentTv.setText(getTitle());
         mAdapter = new NearbyAdapter(mData);
         detailRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
         detailRecyclerview.setAdapter(mAdapter);
@@ -80,7 +73,7 @@ public class NearbyActivity extends BaseActivity {
                 if (mMaxPageNo==-1){
                     mMaxPageNo = pMaxPageNo;
                 }
-                mData.addAll(model.size(),model);
+                mData.addAll(model);
                 mAdapter.notifyDataSetChanged();
                 mIsLoading = false;
             }
