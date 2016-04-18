@@ -29,6 +29,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
+import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.photoselected.FrescoImageLoader;
@@ -47,8 +48,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
     SimpleDraweeView bgSimpleDraweeView;
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
-    @Bind(R.id.changeHeadImage)
-    ImageView changeHeadImage;
 
     @Bind(R.id.quchu)
     LinearLayout quchu;
@@ -101,7 +100,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
         back.setOnClickListener(this);
         setting.setOnClickListener(this);
         headImage.setOnClickListener(this);
-        changeHeadImage.setOnClickListener(this);
         quchu.setOnClickListener(this);
         footPrint.setOnClickListener(this);
         friend.setOnClickListener(this);
@@ -125,13 +123,13 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
                 startActivity(intent);
                 break;
             case R.id.headImage:
+                MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;
-            case R.id.changeHeadImage:
-                ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
-                photoDialogFg.setOnOriginListener(this);
-                photoDialogFg.show(getFragmentManager(), "photo");
-
-                break;
+//            case R.id.changeHeadImage:
+//                ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
+//                photoDialogFg.setOnOriginListener(this);
+//                photoDialogFg.show(getFragmentManager(), "photo");
+//                break;
             case R.id.quchu://趣处
                 intent = new Intent(this, QuchuActivity.class);
                 startActivity(intent);

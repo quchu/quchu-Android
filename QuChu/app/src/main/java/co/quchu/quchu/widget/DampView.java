@@ -64,7 +64,6 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         if (dyUnconsumed != 0)
             getContentView().setTranslationY(getContentView().getTranslationY() - dyUnconsumed / 3);
-
     }
 
     private View getContentView() {

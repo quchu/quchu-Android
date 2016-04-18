@@ -38,6 +38,15 @@ public class PostCardItemModel implements Parcelable {
     private String time;
     private int width;
     private boolean issys = false;
+    private List<ImageModel> imglist;
+
+
+    public void addImageModel(ImageModel item) {
+        if (imglist == null) {
+            imglist = new ArrayList<>();
+        }
+        imglist.add(item);
+    }
 
     /**
      * imgId : 469
@@ -52,7 +61,6 @@ public class PostCardItemModel implements Parcelable {
         this.issys = issys;
     }
 
-    private List<ImageModel> imglist;
 
     public void setAddress(String address) {
         this.address = address;
@@ -191,15 +199,15 @@ public class PostCardItemModel implements Parcelable {
     }
 
     public String getPlcaeAddress() {
-        return placeAddress==null?plcaeAddress:placeAddress;
+        return placeAddress == null ? plcaeAddress : placeAddress;
     }
 
     public String getPlcaeCover() {
-        return placeCover==null?plcaeCover:placeCover;
+        return placeCover == null ? plcaeCover : placeCover;
     }
 
     public String getPlcaeName() {
-        return placeName==null?plcaeName:placeName;
+        return placeName == null ? plcaeName : placeName;
     }
 
     public int getPraiseNum() {

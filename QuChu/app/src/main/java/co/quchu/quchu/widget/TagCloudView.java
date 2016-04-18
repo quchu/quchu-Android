@@ -20,7 +20,7 @@ import co.quchu.quchu.R;
 /**
  * Created by NeXT on 15-7-29.
  */
-public class TagCloudView extends ViewGroup{
+public class TagCloudView extends ViewGroup {
 
     private static final String TAG = TagCloudView.class.getSimpleName();
     private static final int TYPE_TEXT_NORMAL = 1;
@@ -40,7 +40,7 @@ public class TagCloudView extends ViewGroup{
     private int mTagBorderVer;
 
     private int mTagResId;
-/*    private int mRightImageResId;*/
+    /*    private int mRightImageResId;*/
     private boolean mSingleLine;
     private boolean mShowRightImage;
     private boolean mShowEndText;
@@ -63,7 +63,7 @@ public class TagCloudView extends ViewGroup{
     private static final int DEFAULT_TEXT_BORDER_VERTICAL = 5;
 
     private static final int DEFAULT_TAG_RESID = R.layout.item_tag;
-/*    private static final int DEFAULT_RIGHT_IMAGE = R.mipmap.arrow_right;*/
+    /*    private static final int DEFAULT_RIGHT_IMAGE = R.mipmap.arrow_right;*/
     private static final boolean DEFAULT_SINGLE_LINE = false;
     private static final boolean DEFAULT_SHOW_RIGHT_IMAGE = false;
     private static final boolean DEFAULT_SHOW_END_TEXT = true;
@@ -122,6 +122,7 @@ public class TagCloudView extends ViewGroup{
 
     /**
      * 计算 ChildView 宽高
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
@@ -162,6 +163,7 @@ public class TagCloudView extends ViewGroup{
 
     /**
      * 初始化 singleLine 模式需要的视图
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
@@ -208,6 +210,7 @@ public class TagCloudView extends ViewGroup{
 
     /**
      * 为 singleLine 模式布局，并计算视图高度
+     *
      * @param totalWidth
      * @param totalHeight
      * @return
@@ -237,7 +240,7 @@ public class TagCloudView extends ViewGroup{
                 totalWidth += childWidth + mTagBorderHor;
             }
 
-            if ((child.getTag() != null) && ((int)child.getTag() == TYPE_TEXT_NORMAL)) {
+            if ((child.getTag() != null) && ((int) child.getTag() == TYPE_TEXT_NORMAL)) {
                 if (totalWidth + mTagBorderHor + mViewBorder + mViewBorder + endTextWidth + imageWidth < sizeWidth) {
                     child.layout(
                             totalWidth - childWidth + mTagBorderVer,
@@ -274,6 +277,7 @@ public class TagCloudView extends ViewGroup{
 
     /**
      * 为 multiLine 模式布局，并计算视图高度
+     *
      * @param totalWidth
      * @param totalHeight
      * @return
@@ -292,7 +296,7 @@ public class TagCloudView extends ViewGroup{
                 totalHeight = childHeight + mViewBorder;
             }
             // + marginLeft 保证最右侧与 ViewGroup 右边距有边界
-            if (totalWidth + mTagBorderHor + mViewBorder> sizeWidth) {
+            if (totalWidth + mTagBorderHor + mViewBorder > sizeWidth) {
                 totalWidth = mViewBorder;
                 totalHeight += childHeight + mTagBorderVer;
                 child.layout(
@@ -319,7 +323,7 @@ public class TagCloudView extends ViewGroup{
         int totalChildWidth = 0;
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            if (child.getTag() != null && (int)child.getTag() == TYPE_TEXT_NORMAL) {
+            if (child.getTag() != null && (int) child.getTag() == TYPE_TEXT_NORMAL) {
                 totalChildWidth += child.getMeasuredWidth() + mViewBorder;
             }
         }
@@ -371,7 +375,7 @@ public class TagCloudView extends ViewGroup{
         this.onTagClickListener = onTagClickListener;
     }
 
-    public interface OnTagClickListener{
+    public interface OnTagClickListener {
         void onTagClick(int position);
     }
 

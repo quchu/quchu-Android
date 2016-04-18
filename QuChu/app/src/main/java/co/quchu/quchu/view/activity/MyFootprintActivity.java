@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -22,9 +23,9 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
+import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 import co.quchu.quchu.widget.ScrollIndexView;
@@ -118,9 +119,10 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
                     View view = recyclerView.getChildAt(i);
                     if (view.getY() + view.getHeight() >= scrollIndexView.getY()) {
                         int position = recyclerView.getChildAdapterPosition(view);
-                        String time = data.get(position).getTime();
-
-                        scrollIndexView.startTimeAnamation(DateUtils.getHour(time), DateUtils.getMin(time));
+                        if (adapter.getData().size() > position) {
+                            String time = adapter.getData().get(position).getTime();
+                            scrollIndexView.startTimeAnamation(DateUtils.getHour(time), DateUtils.getMin(time));
+                        }
                         break;
                     }
                 }
@@ -171,7 +173,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     @Override
     public void itemClick(PostCardItemModel item, int type, int position) {
         Intent intent = new Intent(this, MyFootprintDetailActivity.class);
-        intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, item);
+        intent.putParcelableArrayListExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, (ArrayList) adapter.getData());
         startActivity(intent);
     }
 

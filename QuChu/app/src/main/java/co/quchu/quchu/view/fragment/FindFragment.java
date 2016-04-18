@@ -33,7 +33,7 @@ public class FindFragment extends BaseFragment implements PageLoadListener<FindB
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     private QuchuPresenter presenter;
-    private int pagesNo;
+    private int pagesNo=1;
     private FindAdapter adapter;
 
     @Nullable
@@ -54,7 +54,7 @@ public class FindFragment extends BaseFragment implements PageLoadListener<FindB
         adapter.setItemClickListener(this);
 
         recyclerView.setAdapter(adapter);
-        presenter.getFindData(1, this);
+        presenter.getFindData(pagesNo, this);
     }
 
     @Override

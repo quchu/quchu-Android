@@ -53,6 +53,10 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
 
     }
 
+    public List<DT> getData() {
+        return data;
+    }
+
     public void setLoadmoreListener(OnLoadmoreListener loadmoreListener) {
         this.loadmoreListener = loadmoreListener;
     }
