@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +14,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.model.NearbyItemModel;
+import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.NearbyAdapter;
@@ -45,6 +48,29 @@ public class NearbyActivity extends BaseActivity {
         setContentView(R.layout.activity_nearby);
         ButterKnife.bind(this);
         getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_tags_filter);
+        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<TagsModel> data = new ArrayList<>();
+                            for (int i = 0; i < 19; i++) {
+                                TagsModel tag = new TagsModel();
+                                tag.setCode(String.valueOf(i));
+                                tag.setEn("EN"+i);
+                                tag.setZh("标签"+ (i%7==0?"凑数":""));
+                                tag.setTagId(i*1000);
+                                data.add(tag);
+                            }
+                            ArrayList<Boolean> selection = new ArrayList<>();
+                            selection.add(false);
+                            selection.add(true);
+                            selection.add(false);
+                            selection.add(true);
+                            selection.add(false);
+                            TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(data,selection);
+                            tagsFilterDialog.show(getFragmentManager(),"");
+
+            }
+        });
         mAdapter = new NearbyAdapter(mData);
         detailRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
         detailRecyclerview.setAdapter(mAdapter);

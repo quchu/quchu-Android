@@ -16,7 +16,9 @@ import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.view.adapter.DiscoverDetailPagerAdapter;
 import co.quchu.quchu.view.adapter.RecommendAdapterLite;
 
-public class ClassifyDetailActivity extends BaseActivity {
+
+
+public class ClassifyDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     @Bind(R.id.vpContent)
     ViewPager vpContent;
@@ -40,6 +42,7 @@ public class ClassifyDetailActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        vpContent.setOnPageChangeListener(this);
         vpContent.setAdapter(mAdapter);
         vpContent.setClipToPadding(false);
         vpContent.setPadding(80,40,80,40);
@@ -66,6 +69,7 @@ public class ClassifyDetailActivity extends BaseActivity {
             public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
                 mData.clear();
                 mData.addAll(arrayList);
+                getSwipeBackLayout().setEnableGesture(false);
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -79,5 +83,30 @@ public class ClassifyDetailActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if (position==0){
+            getSwipeBackLayout().setEnableGesture(true);
+        }else{
+            getSwipeBackLayout().setEnableGesture(false);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (null!=vpContent){
+            vpContent.removeOnPageChangeListener(this);
+        }
+        super.onDestroy();
+    }
 }

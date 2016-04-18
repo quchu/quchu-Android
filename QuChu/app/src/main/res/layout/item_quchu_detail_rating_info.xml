@@ -17,8 +17,8 @@
       >
       <co.quchu.quchu.widget.RoundProgressView
           android:id="@+id/rpvItemLeft"
-          android:layout_width="80dp"
-          android:layout_height="80dp"
+          android:layout_width="60dp"
+          android:layout_height="60dp"
           app:progressStyle="Default"
           app:roundProgressBackground="@color/transparent"
           app:roundProgressColor="@color/planet_progress_yellow"
@@ -46,8 +46,8 @@
         >
     <co.quchu.quchu.widget.RoundProgressView
         android:id="@+id/rpvItemMiddle"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/planet_progress_yellow"
         app:roundColor = "@color/planet_progress_yellow"
@@ -74,8 +74,8 @@
         >
     <co.quchu.quchu.widget.RoundProgressView
         android:id="@+id/rpvItemRight"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/planet_progress_yellow"
         app:roundColor = "@color/planet_progress_yellow"

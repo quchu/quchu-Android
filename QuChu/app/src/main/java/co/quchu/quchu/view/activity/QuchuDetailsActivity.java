@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -63,7 +64,10 @@ public class QuchuDetailsActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.detail_bottom_group_ll)
     View detail_bottom_group_ll;
+    @Bind(R.id.appbar)
+    AppBarLayout appbar;
 
+    private long mLastAnimated = -1;
     public static final String REQUEST_KEY_PID = "pid";
     private long startViewTime = 0L;
     private int pId = 0;
@@ -176,12 +180,45 @@ public class QuchuDetailsActivity extends BaseActivity {
 
                         @Override
                         public void onHide() {
-                            detail_bottom_group_ll.animate().translationY(detail_bottom_group_ll.getHeight()).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(500).start();
+                            if((System.currentTimeMillis()-mLastAnimated)<555){return;}
+                            detail_bottom_group_ll.animate()
+                                    .translationY(detail_bottom_group_ll.getHeight())
+                                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                                    .setDuration(500)
+                                    .start();
+                            appbar.animate()
+                                    .translationY(-appbar.getHeight())
+                                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                                    .setDuration(500).withStartAction(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            appbar.setVisibility(View.GONE);
+                                            detail_bottom_group_ll.setVisibility(View.GONE);
+                                            mLastAnimated = System.currentTimeMillis();
+                                        }
+                                    }).start();
                         }
 
                         @Override
                         public void onShow() {
-                            detail_bottom_group_ll.animate().translationY(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(500).start();
+                            if((System.currentTimeMillis()-mLastAnimated)<555){return;}
+                            detail_bottom_group_ll.animate()
+                                    .translationY(0)
+                                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                                    .setDuration(500)
+                                    .start();
+                            appbar.animate()
+                                    .translationY(0)
+                                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                                    .setDuration(500).withStartAction(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            appbar.setVisibility(View.VISIBLE);
+                                            detail_bottom_group_ll.setVisibility(View.VISIBLE);
+                                            mLastAnimated = System.currentTimeMillis();
+                                        }
+                                    })
+                                    .start();
                         }
                     });
 //                    mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
