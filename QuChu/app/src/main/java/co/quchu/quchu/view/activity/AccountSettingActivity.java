@@ -183,9 +183,7 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
                 startActivity(intent);
                 break;
             case R.id.exit:
-                ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance();
-                confirmDialog.setTitleString("确认退出?");
-                confirmDialog.setBody("退出后将以游客模式登陆");
+                ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance("确认退出?", "退出后将以游客模式登陆");
                 confirmDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
                     @Override
                     public void onClick(int index) {

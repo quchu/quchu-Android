@@ -9,7 +9,6 @@ import co.quchu.quchu.model.FavoriteBean;
 import co.quchu.quchu.model.FindBean;
 import co.quchu.quchu.model.QuchuModel;
 import co.quchu.quchu.net.ResponseListener;
-import co.quchu.quchu.view.PageLoadListener;
 
 /**
  * Created by no21 on 2016/4/5.
@@ -35,7 +34,7 @@ public class QuchuPresenter {
 
             @Override
             public void onResponse(FavoriteBean response, boolean result, @Nullable String exception, @Nullable String msg) {
-                if (result) {
+                if (response==null) {
                     view.nullData();
                 } else if (pageNo == 1) {
                     view.initData(response);
@@ -59,7 +58,7 @@ public class QuchuPresenter {
 
             @Override
             public void onResponse(FindBean response, boolean result, @Nullable String exception, @Nullable String msg) {
-                if (result) {
+                if (response==null) {
                     view.nullData();
                 } else if (pageNo == 1) {
                     view.initData(response);

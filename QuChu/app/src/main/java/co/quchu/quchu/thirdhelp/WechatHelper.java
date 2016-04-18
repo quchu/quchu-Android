@@ -1,6 +1,7 @@
 package co.quchu.quchu.thirdhelp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
@@ -32,40 +33,39 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class WechatHelper {
     private static IWXAPI api;
-    private Activity mActivity;
+    private static Context mActivity;
     public static final String WECHAT_APP_ID = "wx812a0a8cd108d233";
     private static final String APPSECRET = "b38180312951c88c3c24a5223e53daac";
+    private static WechatHelper instance;
+
+    private WechatHelper() {
+    }
 
     /**
      * 他内部重新创建了实例  没静态不行啊  坑爹的
      */
-    private static UserLoginListener listener;
+    private UserLoginListener listener;
 
 
-    public WechatHelper(Activity activity, UserLoginListener listener) {
-        mActivity = activity;
-        this.listener = listener;
-        init();
-    }
+    public static WechatHelper getInstance(Context context) {
+        mActivity = context.getApplicationContext();
 
-    public WechatHelper(Activity activity) {
-        mActivity = activity;
-        init();
-    }
-
-    private void init() {
-        if (api == null) {
+        if (instance == null) {
+            instance = new WechatHelper();
             api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
                     false);
             api.registerApp(WECHAT_APP_ID);
         }
+        return instance;
+
     }
 
     public IWXAPI getApi() {
         return api;
     }
 
-    public void login() {
+    public void login(UserLoginListener listener) {
+        this.listener = listener;
         if (!api.isWXAppInstalled()) {
             Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
             return;
@@ -76,11 +76,19 @@ public class WechatHelper {
         api.sendReq(req);
     }
 
-    public static boolean isBind = false;
+    private boolean isBind = false;
 
-    public void bind() {
+    public void bind(UserLoginListener listener) {
         isBind = true;
-        login();
+        this.listener = listener;
+        if (!api.isWXAppInstalled()) {
+            Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "quchu";
+        api.sendReq(req);
     }
 
 

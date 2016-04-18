@@ -59,7 +59,7 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
 
             @Override
             public void onError() {
-
+                mAdapter.setLoadMoreEnable(false);
             }
         });
     }
@@ -80,7 +80,7 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
 
             @Override
             public void onError() {
-                mAdapter.addMoreData(null);
+                mAdapter.setLoadMoreEnable(false);
 
             }
         });

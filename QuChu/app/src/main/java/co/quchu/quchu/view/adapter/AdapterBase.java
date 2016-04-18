@@ -23,7 +23,7 @@ import co.quchu.quchu.R;
  */
 public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
     private static final int ITEM_VIEW_TYPE_FOOTER = -1;
-    private boolean loadMoreing;
+    private boolean loadMoreing = true;
     private OnLoadmoreListener loadmoreListener;
     private boolean loadMoreEnable = true;
     protected List<DT> data;
@@ -35,6 +35,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
 
     public void initData(List<DT> data) {
         this.data = data;
+        loadMoreing = false;
         loadMoreEnable = !(data == null || data.size() < 10);
         notifyDataSetChanged();
     }
@@ -45,6 +46,8 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
             loadMoreEnable = false;
         } else if (this.data != null) {
             this.data.addAll(data);
+        } else {
+            this.data = data;
         }
         notifyDataSetChanged();
 
@@ -56,6 +59,8 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
 
 
     public void setLoadMoreEnable(boolean loadMoreEnable) {
+        loadMoreing = false;
+
         if (this.loadMoreEnable != loadMoreEnable) {
             this.loadMoreEnable = loadMoreEnable;
             notifyDataSetChanged();

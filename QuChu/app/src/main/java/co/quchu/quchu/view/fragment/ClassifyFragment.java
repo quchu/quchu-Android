@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,6 +29,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.ClassifyDetailActivity;
 import co.quchu.quchu.view.adapter.ClassifyAdapter;
 import co.quchu.quchu.view.adapter.ClassifyDecoration;
+import co.quchu.quchu.widget.DampView;
 import co.quchu.quchu.widget.ErrorView;
 
 /**
@@ -41,6 +43,8 @@ public class ClassifyFragment extends BaseFragment {
     RecyclerView recyclerView;
     @Bind(R.id.errorView)
     ErrorView errorView;
+    @Bind(R.id.dampView)
+    DampView dampView;
     private ClassifyAdapter cAdapter;
 
     @Nullable
@@ -60,12 +64,12 @@ public class ClassifyFragment extends BaseFragment {
      */
     public void getRootTagsData() {
 
-        String uri = String.format(NetApi.getRootTags, SPUtils.getCityId());
+        String uri = String.format(Locale.CHINA, NetApi.getRootTags, SPUtils.getCityId());
         GsonRequest<List<ClassifyModel>> request = new GsonRequest<>(uri, new TypeToken<List<ClassifyModel>>() {
         }.getType(), new ResponseListener<List<ClassifyModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                recyclerView.setVisibility(View.GONE);
+                dampView.setVisibility(View.GONE);
                 DialogUtil.dismissProgessDirectly();
                 errorView.showViewDefault(new View.OnClickListener() {
                     @Override
@@ -79,7 +83,7 @@ public class ClassifyFragment extends BaseFragment {
             @Override
             public void onResponse(final List<ClassifyModel> response, boolean result, @Nullable String exception, @Nullable String msg) {
                 DialogUtil.dismissProgessDirectly();
-                recyclerView.setVisibility(View.VISIBLE);
+                dampView.setVisibility(View.VISIBLE);
                 errorView.himeView();
 
 

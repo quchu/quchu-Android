@@ -106,7 +106,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     }
 
     public void weixinLogin() {
-        new WechatHelper(this, this).login();
+        WechatHelper.getInstance(this).login(this);
     }
 
     @Override
@@ -122,10 +122,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
     @Override
     public void loginSuccess(int type, String token, String appId) {
-        if (AppContext.user != null && AppContext.user.isIsVisitors()) {
-        } else {
-            enterApp();
-        }
+        enterApp();
         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS, null));
     }
 

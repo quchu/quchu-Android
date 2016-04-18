@@ -1,4 +1,4 @@
-package co.quchu.quchu.view;
+package co.quchu.quchu.presenter;
 
 /**
  * Created by no21 on 2016/4/15.

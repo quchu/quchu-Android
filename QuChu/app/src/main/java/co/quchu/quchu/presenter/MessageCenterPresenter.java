@@ -14,7 +14,6 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.view.PageLoadListener;
 
 /**
  * MessageCenterPresenter
@@ -34,7 +33,7 @@ public class MessageCenterPresenter {
 
             @Override
             public void onResponse(MessageModel response, boolean result, @Nullable String exception, @Nullable String msg) {
-                if (result) {
+                 if (response == null) {
                     listener.nullData();
                 } else if (pageNo == 1) {
                     listener.initData(response);
@@ -47,7 +46,6 @@ public class MessageCenterPresenter {
 
 
     }
-
 
 
     public interface MessageGetDataListener {

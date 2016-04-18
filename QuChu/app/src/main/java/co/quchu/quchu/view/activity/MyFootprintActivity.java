@@ -24,7 +24,7 @@ import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.view.PageLoadListener;
+import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 import co.quchu.quchu.widget.ScrollIndexView;

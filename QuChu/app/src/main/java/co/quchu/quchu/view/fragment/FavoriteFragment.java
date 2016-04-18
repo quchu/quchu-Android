@@ -15,7 +15,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FavoriteBean;
 import co.quchu.quchu.presenter.QuchuPresenter;
-import co.quchu.quchu.view.PageLoadListener;
+import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FavoriteAdapter;

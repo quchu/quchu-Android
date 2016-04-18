@@ -36,15 +36,17 @@ public class ConfirmDialogFg extends BlurDialogFragment {
 
     private OnActionListener mListener;
 
-//    public static final String BUNDLE_KEY_ALERT_DIALOG_RES_TITLE = "BUNDLE_KEY_ALERT_DIALOG_RES_TITLE";
-//    public static final String BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT = "BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT";
-//
-//    private int mResTitle;
-//    private int mResContent;
+    public static final String BUNDLE_KEY_ALERT_DIALOG_RES_TITLE = "BUNDLE_KEY_ALERT_DIALOG_RES_TITLE";
+    public static final String BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT = "BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT";
 
 
-    public static ConfirmDialogFg newInstance() {
-        return new ConfirmDialogFg();
+    public static ConfirmDialogFg newInstance(String title, String mResContent) {
+        ConfirmDialogFg fg = new ConfirmDialogFg();
+        Bundle bundle = new Bundle();
+        bundle.putString(BUNDLE_KEY_ALERT_DIALOG_RES_TITLE, title);
+        bundle.putString(BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT, mResContent);
+        fg.setArguments(bundle);
+        return fg;
     }
 
     public void setActionListener(OnActionListener onActionListener) {
@@ -70,8 +72,9 @@ public class ConfirmDialogFg extends BlurDialogFragment {
         ButterKnife.bind(this, view);
 
         builder.setView(view);
-        dialogLocationSelectedCityTv.setText(R.string.confirm_logout_title);
-        dialogLocationTv.setText(R.string.confirm_logout_content);
+        Bundle bundle = getArguments();
+        dialogLocationSelectedCityTv.setText(bundle.getString(BUNDLE_KEY_ALERT_DIALOG_RES_TITLE));
+        dialogLocationTv.setText(bundle.getString(BUNDLE_KEY_ALERT_DIALOG_RES_CONTENT));
         dialogLocationSubmitTv.setText("确定");
         dialogLocationCancelTv.setText("取消");
 
@@ -79,13 +82,6 @@ public class ConfirmDialogFg extends BlurDialogFragment {
         return builder.create();
     }
 
-    public void setTitleString(String title) {
-        dialogLocationSelectedCityTv.setText(title);
-    }
-
-    public void setBody(String body) {
-        dialogLocationTv.setText(body);
-    }
 
     public interface OnActionListener {
         void onClick(int index);

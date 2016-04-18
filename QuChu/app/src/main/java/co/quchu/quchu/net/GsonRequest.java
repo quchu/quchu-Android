@@ -10,7 +10,6 @@ import android.text.TextUtils;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -133,23 +132,22 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
-        T t = null;
+        T t;
         try {
             String json = new String(networkResponse.data, HttpHeaderParser.parseCharset(networkResponse.headers, "utf-8"));
 
             LogUtils.e("原始数据为" + json);
             JSONObject jsonObject = new JSONObject(json);
             result = jsonObject.getBoolean("result");
-            if (result) {
-                //结果正确
-                String data = jsonObject.getString("data");
-                if (entity != null || type != null) {
-                    Gson gson = new Gson();
-                    t = gson.fromJson(data, entity != null ? entity : type);
-                } else {
-                    t = (T) data;
-                }
+
+            String data = jsonObject.getString("data");
+            if (entity != null || type != null) {
+                Gson gson = new Gson();
+                t = gson.fromJson(data, entity != null ? entity : type);
+            } else {
+                t = (T) data;
             }
+
             msg = jsonObject.getString("msg");
             exception = jsonObject.getString("exception");
             return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
@@ -175,39 +173,37 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected void deliverResponse(T t) {
-        if (showDialog) {
+         if (showDialog) {
             DialogUtil.dismissProgessDirectly();
         }
-        if (!result && !TextUtils.isEmpty(msg)) {
+        if (!TextUtils.isEmpty(msg)) {
             switch (msg) {
                 case "1077":
                     reLogin();
                     LogUtils.e("登录令牌错误");
-                    break;
+                    return;
                 case "1078":
                     reLogin();
                     LogUtils.e("空值异常");
-                    break;
+                    return;
                 case "1079":
                     reLogin();
                     LogUtils.e("登录令牌失效");
-                    break;
+                    return;
                 case "1080":
                     reLogin();
                     LogUtils.e("登录令牌失效,游客没有权限进行相关操作");
-                    break;
-                default:
-                    listener.onErrorResponse(new NetworkError());
-                    break;
+                    return;
             }
-        } else if (t == null && result) {
-            // TODO: 2016/3/23  没有数据了
-//            listener.onErrorResponse(new NetworkError());
-            listener.onResponse(null, true, exception, msg);
-            LogUtils.e("空数据");
-        } else {
-            listener.onResponse(t, false, exception, msg);
         }
+//        if (t == null && result) {
+//            // TODO: 2016/3/23  没有数据了
+////            listener.onErrorResponse(new NetworkError());
+//            listener.onResponse(null, true, exception, msg);
+//            LogUtils.e("空数据");
+//        } else {
+        listener.onResponse(t, result, exception, msg);
+//        }
     }
 
     @Override

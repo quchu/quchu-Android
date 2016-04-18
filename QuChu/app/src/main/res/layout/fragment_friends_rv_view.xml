@@ -4,11 +4,17 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_firends_rv"
+    <co.quchu.quchu.widget.DampView
+        android:id="@+id/dampView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="always" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_firends_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="always" />
+    </co.quchu.quchu.widget.DampView>
 
     <co.quchu.quchu.widget.ErrorView
         android:id="@+id/errorView"

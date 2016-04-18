@@ -12,7 +12,6 @@ import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
-import co.quchu.quchu.view.PageLoadListener;
 
 /**
  * Created by no21 on 2016/4/12.
@@ -43,7 +42,7 @@ public class MyFootprintPresenter {
 
             @Override
             public void onResponse(PostCardModel response, boolean result, @Nullable String exception, @Nullable String msg) {
-                if (result) {
+                if (response==null) {
                     view.nullData();
                 } else if (pageNo == 1) {
                     view.initData(response);

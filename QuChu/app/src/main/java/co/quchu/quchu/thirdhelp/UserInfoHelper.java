@@ -34,4 +34,14 @@ public class UserInfoHelper {
             }
         }
     }
+
+    public static void saveUserInfo(UserInfoModel userInfo) {
+        if (userInfo != null) {
+            SPUtils.clearUserinfo(AppContext.mContext);
+            String json = new Gson().toJson(userInfo);
+            SPUtils.setUserInfo(AppContext.mContext, json);
+            AppContext.user = userInfo;
+
+        }
+    }
 }
