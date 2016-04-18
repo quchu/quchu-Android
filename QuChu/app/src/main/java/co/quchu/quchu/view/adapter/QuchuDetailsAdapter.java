@@ -33,6 +33,7 @@ import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.SimpleUserModel;
 import co.quchu.quchu.model.TagsModel;
+import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.widget.RoundProgressView;
@@ -65,7 +66,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final int BLOCK_INDEX = 7;
     private OnLoadMoreListener mLoadMoreListener;
     private boolean mOnLoadingMore = false;
-    private List<SimpleUserModel> mVisitedUsers = new ArrayList<>();
+    private VisitedUsersModel mVisitedUsers;
     private int mVisitedUsersAvatarSize = -1;
     private int mVisitedUsersAvatarMargin;
     private SimpleQuchuDetailAnalysisModel mAnalysisModel;
@@ -115,10 +116,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mVisitedUsersAvatarMargin = mAnchorActivity.getResources().getDimensionPixelOffset(R.dimen.base_margin);
     }
 
-    public void updateVisitedUsers(List<SimpleUserModel> pUsers){
-        mVisitedUsers.clear();
-        System.out.println("pUsers.size()" +pUsers.size());
-        mVisitedUsers.addAll(pUsers);
+    public void updateVisitedUsers(VisitedUsersModel pUsers){
+        mVisitedUsers = pUsers;
         notifyDataSetChanged();
     }
 
@@ -269,26 +268,34 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ActionViewHolder) holder).tvFootprint.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).tvQuguo.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
-
-            LinearLayout.LayoutParams lpVisitedUsersAvatar;
-            for (int i = 0; i < mVisitedUsers.size(); i++) {
-                System.out.println(mVisitedUsers.get(i).getUserPhoneUrl());
-                SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
-                sdv.setImageURI(Uri.parse(mVisitedUsers.get(i).getUserPhoneUrl()));
-                RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
-                roundingParams.setRoundAsCircle(true);
-                sdv.getHierarchy().setRoundingParams(roundingParams);
-                if (i>0){
-                    lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
-                    lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin,0,0,0);
-                }else{
-                    lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
-                    lpVisitedUsersAvatar.setMargins(0,0,0,0);
-                }
-                ((ActionViewHolder) holder).llVisitedUsers.addView(sdv,lpVisitedUsersAvatar);
-                sdv.requestLayout();
+            if (mData.getCardCount()>0){
+                ((ActionViewHolder) holder).tvFootprint.setText("脚印 "+mData.getCardCount());
+            }else {
+                ((ActionViewHolder) holder).tvFootprint.setText(R.string.foot_print);
             }
-            ((ActionViewHolder) holder).llVisitedUsers.invalidate();
+            if (null!=mVisitedUsers){
+                ((ActionViewHolder) holder).tvVisitorCount.setText(mVisitedUsers.getUserOutCount()+"人去过");
+                LinearLayout.LayoutParams lpVisitedUsersAvatar;
+                for (int i = 0; i < mVisitedUsers.getResult().size(); i++) {
+                    SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
+                    sdv.setImageURI(Uri.parse(mVisitedUsers.getResult().get(i).getUserPhoneUrl()));
+                    RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
+                    roundingParams.setRoundAsCircle(true);
+                    sdv.getHierarchy().setRoundingParams(roundingParams);
+                    if (i>0){
+                        lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
+                        lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin,0,0,0);
+                    }else{
+                        lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
+                        lpVisitedUsersAvatar.setMargins(0,0,0,0);
+                    }
+                    ((ActionViewHolder) holder).llVisitedUsers.addView(sdv,lpVisitedUsersAvatar);
+                    sdv.requestLayout();
+                }
+                ((ActionViewHolder) holder).llVisitedUsers.invalidate();
+            }
+
+
         } else if (holder instanceof ContactInfoViewHolder) {
             if (null == mData.getTraffic() || StringUtils.isEmpty(mData.getTraffic())) {
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址：" + mData.getAddress());
@@ -514,6 +521,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         RelativeLayout detail_button_add_postcard_rl;
         @Bind(R.id.llVisitedUsers)
         LinearLayout llVisitedUsers;
+        @Bind(R.id.tvVisitorCount)
+        TextView tvVisitorCount;
 
         @Bind(R.id.tvFootPrint)
         TextView tvFootprint;

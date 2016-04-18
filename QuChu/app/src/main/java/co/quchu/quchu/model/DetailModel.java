@@ -73,7 +73,15 @@ public class DetailModel {
     private List<ImglistEntity> imglist;
     private List<TagsEntity> tags;
     private List<NearPlace> recommendPlaces;
+    private int cardCount;
 
+    public int getCardCount() {
+        return cardCount;
+    }
+
+    public void setCardCount(int cardCount) {
+        this.cardCount = cardCount;
+    }
 
     public List<NearPlace> getNearPlace() {
         return recommendPlaces;

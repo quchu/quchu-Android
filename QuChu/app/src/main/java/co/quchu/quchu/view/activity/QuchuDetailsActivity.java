@@ -38,6 +38,7 @@ import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.SimpleUserModel;
 import co.quchu.quchu.model.TagsModel;
+import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -107,10 +108,10 @@ public class QuchuDetailsActivity extends BaseActivity {
 
         startViewTime = System.currentTimeMillis();
 
-        InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId, new CommonListener<List<SimpleUserModel>>() {
+        InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId, new CommonListener<VisitedUsersModel>() {
             @Override
-            public void successListener(List<SimpleUserModel> response) {
-                if (null!=response&&response.size()>0){
+            public void successListener(VisitedUsersModel response) {
+                if (null!=response){
                     mQuchuDetailAdapter.updateVisitedUsers(response);
                 }
             }

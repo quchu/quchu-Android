@@ -15,6 +15,7 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.SimpleUserModel;
+import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -99,18 +100,13 @@ public class InterestingDetailPresenter {
     }
 
 
-    public static void getVisitedUsers(Context context, int cityId,final CommonListener<List<SimpleUserModel>> listener) {
+    public static void getVisitedUsers(Context context, int cityId,final CommonListener<VisitedUsersModel> listener) {
         String url = String.format(NetApi.getVisitedUsers,cityId);
         NetService.get(context, url, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                try {
-                    List<SimpleUserModel> result = new Gson().fromJson(response.getString("result"),new TypeToken<List<SimpleUserModel>>(){}.getType());
-                    listener.successListener(result);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    listener.errorListener(new VolleyError("error"), e.getMessage(), "");
-                }
+                VisitedUsersModel result = new Gson().fromJson(response.toString(),VisitedUsersModel.class);
+                listener.successListener(result);
             }
 
             @Override
