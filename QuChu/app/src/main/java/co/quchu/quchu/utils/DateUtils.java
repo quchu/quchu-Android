@@ -54,6 +54,14 @@ public class DateUtils {
         return sf.format(d);
     }
 
+    public static String getDateToString(String format, long time) {
+        Date d = new Date(time);
+        SimpleDateFormat sf = new SimpleDateFormat(format, Locale.CHINA);
+        sf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return sf.format(d);
+    }
+
+
     public static String getUTCTime() {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.CHINA);
         fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)));
@@ -107,6 +115,7 @@ public class DateUtils {
         }
         return 0;
     }
+
     public static int getMin(String time) {
         try {
             return Integer.parseInt(time.substring(14, 16));

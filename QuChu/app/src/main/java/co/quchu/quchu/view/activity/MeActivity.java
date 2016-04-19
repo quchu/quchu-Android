@@ -31,7 +31,9 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.MyGeneModel;
+import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
 import co.quchu.quchu.presenter.MeActivityPresenter;
@@ -81,8 +83,13 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
         ButterKnife.bind(this);
         presenter = new MeActivityPresenter(this, this);
         initListener();
-        initData();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
     }
 
     private void initData() {
@@ -119,11 +126,19 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
                 finish();
                 break;
             case R.id.setting://设置
-                intent = new Intent(this, AccountSettingActivity.class);
-                startActivity(intent);
+                MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;
             case R.id.headImage:
-                MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
+                UserInfoModel user = AppContext.user;
+                if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
+                    //游客
+                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
+                    dialogFg.show(getFragmentManager(), "");
+                } else {
+                    intent = new Intent(this, AccountSettingActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
 //            case R.id.changeHeadImage:
 //                ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();

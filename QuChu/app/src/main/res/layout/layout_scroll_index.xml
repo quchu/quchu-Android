@@ -29,6 +29,6 @@
         android:layout_marginTop="3dp"
         android:text="00:00"
         android:textColor="@color/white"
-        android:textSize="@dimen/word_size_time" />
+        android:textSize="@dimen/word_size_minimum" />
 
 </RelativeLayout>

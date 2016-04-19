@@ -27,13 +27,12 @@ public class MyFootprintPresenter {
         this.view = view;
     }
 
-    public void getMoreMyFoiotrintList(int userId, final int pageNo) {
+    public void getMoreMyFoiotrintList(final int pageNo) {
 
         Map<String, String> params = new HashMap<>();
-        params.put("userId", String.valueOf(userId));
         params.put("pageno", String.valueOf(pageNo));
 
-        GsonRequest<PostCardModel> request = new GsonRequest<>(NetApi.getUserCardList, PostCardModel.class, params, new ResponseListener<PostCardModel>() {
+        GsonRequest<PostCardModel> request = new GsonRequest<>(NetApi.GetCardList, PostCardModel.class, params, new ResponseListener<PostCardModel>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
 
@@ -42,7 +41,7 @@ public class MyFootprintPresenter {
 
             @Override
             public void onResponse(PostCardModel response, boolean result, @Nullable String exception, @Nullable String msg) {
-                if (response==null) {
+                if (response == null) {
                     view.nullData();
                 } else if (pageNo == 1) {
                     view.initData(response);

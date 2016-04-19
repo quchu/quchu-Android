@@ -14,6 +14,8 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.DateUtils;
+import co.quchu.quchu.utils.LogUtils;
 
 /**
  * Created by no21 on 2016/4/7.
@@ -29,7 +31,7 @@ public class ScrollIndexView extends FrameLayout {
     float hourFirstTime;
     float minFirstTime;
     @Bind(R.id.time)
-    TextView time;
+    TextView textView;
 
     private float positionY;//上一次动画执行View的位置 时钟旋转动画
 
@@ -66,12 +68,36 @@ public class ScrollIndexView extends FrameLayout {
 
     }
 
-    public void startTimeAnamation(int hour, int min) {
+    public void startTimeAnamation(String time) {
+        int hour = DateUtils.getHour(time);
+        int min = DateUtils.getMin(time);
+        StringBuilder builder = new StringBuilder();
+        if (hour < 12) {
+            builder.append("上午");
+        } else {
+            builder.append("下午");
+        }
 
+        builder.append(hour % 12);
+        builder.append(":");
+        builder.append(min);
+        builder.append("\n");
+
+        long timeStamp = DateUtils.getTimeStamp(time);
+        String data = DateUtils.getDateToString("yyyy年MM月dd日", timeStamp);
+        builder.append(data);
+
+        textView.setText(builder.toString());
+        startTimeAnamation(hour, min);
+    }
+
+    private void startTimeAnamation(float hour, float min) {
+
+        hour %= 12;
+        min %= 60;
         if (hour == hourFirstTime && min == minFirstTime) {
             return;
         }
-        time.setText(hour + ":" + min);
         //时
         RotateAnimation hourAnimation = new RotateAnimation(
                 hourFirstTime / 12 * 360, computeDegressHour(hour),
@@ -81,11 +107,13 @@ public class ScrollIndexView extends FrameLayout {
         hourAnimation.setDuration(600);
         hourAnimation.setFillAfter(true);
         hourAnimation.setInterpolator(new DecelerateInterpolator());
+
+        LogUtils.e("hour--" + hourFirstTime / 12 * 360 + ":" + computeDegressHour(hour));
+
         //分
-        min %= 60;
 
         RotateAnimation minAnimation = new RotateAnimation(
-                min / 60 * 360, computeDegressMin(hour, min),
+                minFirstTime / 60 * 360, computeDegressMin(min),
                 RotateAnimation.RELATIVE_TO_SELF, .5f,
                 RotateAnimation.RELATIVE_TO_SELF, .86f);
 
@@ -93,9 +121,13 @@ public class ScrollIndexView extends FrameLayout {
         minAnimation.setFillAfter(true);
         minAnimation.setInterpolator(new DecelerateInterpolator());
 
+        hourView.clearAnimation();
+        minView.clearAnimation();
+
         hourView.startAnimation(hourAnimation);
         minView.startAnimation(minAnimation);
 
+        LogUtils.e("min--" + min / 60 * 360 + ":" + computeDegressMin(min));
         hourFirstTime = hour;
         minFirstTime = min;
         positionY = getY();
@@ -104,11 +136,18 @@ public class ScrollIndexView extends FrameLayout {
     private float computeDegressHour(float hour) {
         hour %= 12;
         float offset = 0;
-        if (hour < hourFirstTime) {
-            offset = 360;
-        }
+
         if (positionY > getY()) {//时间倒着转
             offset = -360;
+            if (hour < hourFirstTime) {//时间减小
+                offset = 0;
+            }
+        } else {//时间正着转
+            offset = 0;
+            if (hour < hourFirstTime) {//时间减小
+                offset = 360;
+            }
+
         }
         if (hour == hourFirstTime) {
             offset = 0;
@@ -116,14 +155,25 @@ public class ScrollIndexView extends FrameLayout {
         return hour / 12 * 360 + offset;
     }
 
-    private float computeDegressMin(float Targethour, float TargetMin) {
-        TargetMin %= 60;
-//        Targethour %= 12;
-//        return TargetMin / 60 * 360 + (12 - Math.abs(hourFirstTime - Targethour)) * 360;
-        float offset = 0;
+    private float computeDegressMin(float TargetMin) {
+        float offset;
+
         if (positionY > getY()) {//时间倒着转
             offset = -360;
+            if (TargetMin < minFirstTime) {//时间减小
+                offset = 0;
+            }
+        } else {//时间正着转
+            offset = 0;
+            if (TargetMin < minFirstTime) {//时间减小
+                offset = 360;
+            }
+
         }
+        if (TargetMin == minFirstTime) {
+            offset = 0;
+        }
+
 
         return TargetMin / 60 * 360 + offset;
     }

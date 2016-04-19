@@ -24,7 +24,6 @@ import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
-import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
@@ -60,7 +59,6 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     public static final String REQUEST_KEY_USER_AGE = "age";
     public static final String REQUEST_KEY_USER_PHOTO = "photo";
     public static final String REQUEST_KEY_USER_FOOTER_COUND = "cound";
-    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +67,6 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         ButterKnife.bind(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(false);
-        userId = getIntent().getIntExtra(REQUEST_KEY_USER_ID, AppContext.user.getUserId());
 
         initTitle();
         adapter = new MyFootprintAdapter();
@@ -78,7 +75,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         adapter.setItemClickListener(this);
 
         presenter = new MyFootprintPresenter(this, this);
-        presenter.getMoreMyFoiotrintList(userId, pagesNo);
+        presenter.getMoreMyFoiotrintList(pagesNo);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean isIdle = true;
@@ -121,7 +118,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
                         int position = recyclerView.getChildAdapterPosition(view);
                         if (adapter.getData().size() > position) {
                             String time = adapter.getData().get(position).getTime();
-                            scrollIndexView.startTimeAnamation(DateUtils.getHour(time), DateUtils.getMin(time));
+                            scrollIndexView.startTimeAnamation(time);
                         }
                         break;
                     }
@@ -167,7 +164,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
 
     @Override
     public void onLoadmore() {
-        presenter.getMoreMyFoiotrintList(userId, pagesNo + 1);
+        presenter.getMoreMyFoiotrintList(pagesNo + 1);
     }
 
     @Override

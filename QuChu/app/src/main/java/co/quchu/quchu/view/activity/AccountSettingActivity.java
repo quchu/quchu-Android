@@ -7,11 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
@@ -46,7 +44,6 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
-import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.ImageUtils;
@@ -76,20 +73,10 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
     EditText accountSettingNewPwdEt;
     @Bind(R.id.account_setting_new_pwd_again_et)
     EditText accountSettingNewPwdAgainEt;
-
-    @Bind(R.id.modiff_passwordWord)
-    RelativeLayout modiffPasswordWord;
-    @Bind(R.id.photo_number)
-    EditText photoNumber;
-    @Bind(R.id.authCode)
-    EditText authCode;
-    @Bind(R.id.password)
-    EditText password;
-    @Bind(R.id.container_bind_number)
-    RelativeLayout containerBindNumber;
-
-    @Bind(R.id.getAuthCode)
-    TextView getAuthCode;
+    @Bind(R.id.bindPhoto)
+    TextView bindPhoto;
+    @Bind(R.id.lineBindPhone)
+    View lineBindPhone;
 
 
     private ArrayList<Integer> imageList;
@@ -128,36 +115,18 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
             newUserLocation = AppContext.user.getLocation();
             accountSettingUserLocation.setText(newUserLocation);
         }
-        if (AppContext.user != null && AppContext.user.isIsweibo() || AppContext.user.isIsweixin()) {
-            modiffPasswordWord.setVisibility(View.GONE);
-            containerBindNumber.setVisibility(View.VISIBLE);
+        if (!AppContext.user.isIsVisitors()) {
+            bindPhoto.setVisibility(View.GONE);
+            lineBindPhone.setVisibility(View.GONE);
         }
-
     }
 
     ArrayList<CityModel> genderList;
 
     @OnClick({R.id.account_setting_avatar_sdv, R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv
-            , R.id.saveUserInfo, R.id.account_setting_user_location, R.id.accounds, R.id.exit, R.id.getAuthCode, R.id.bindPhotoNumber})
+            , R.id.saveUserInfo, R.id.account_setting_user_location, R.id.bindAccound, R.id.exit, R.id.bindPhoto})
     public void accountClick(View v) {
         switch (v.getId()) {
-            case R.id.bindPhotoNumber:
-                presenter.bindPhotoNumber(authCode.getText().toString().trim(), password.getText().toString().trim(), new CommonListener<Object>() {
-                    @Override
-                    public void successListener(Object response) {
-                        modiffPasswordWord.setVisibility(View.VISIBLE);
-                        containerBindNumber.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void errorListener(VolleyError error, String exception, String msg) {
-                        //无需处理
-                    }
-                });
-                break;
-            case R.id.getAuthCode:
-                presenter.getAuthCode(getAuthCode, photoNumber.getText().toString().trim());
-                break;
             case R.id.account_setting_avatar_sdv:
             case R.id.account_setting_avatar_editer_tv:
                 ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
@@ -178,9 +147,14 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
                 LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
                 locationDIalogFg.show(getFragmentManager(), "location");
                 break;
-            case R.id.accounds:
+            case R.id.bindAccound:
                 final Intent intent = new Intent(this, BindActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.bindPhoto:
+                Intent intent1 = new Intent(this, BindPhotoNumActivity.class);
+                startActivity(intent1);
+
                 break;
             case R.id.exit:
                 ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance("确认退出?", "退出后将以游客模式登陆");
