@@ -89,10 +89,10 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
         ButterKnife.bind(this);
         presenter = new AccountSettingPresenter(this, this);
         initTitleBar();
-        userInfoBinding();
         imageList = AccountSettingPresenter.getQAvatar();
 
     }
+
 
     @Override
     protected int activitySetup() {
@@ -384,6 +384,7 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
 
     @Override
     protected void onResume() {
+        userInfoBinding();
         super.onResume();
         MobclickAgent.onPageStart("AccountSettingActivity");
     }
