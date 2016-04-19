@@ -36,12 +36,10 @@ public class UserInfoHelper {
     }
 
     public static void saveUserInfo(UserInfoModel userInfo) {
-        if (userInfo != null) {
-            SPUtils.clearUserinfo(AppContext.mContext);
-            String json = new Gson().toJson(userInfo);
-            SPUtils.setUserInfo(AppContext.mContext, json);
-            AppContext.user = userInfo;
+        LogUtils.e("保存前的用户信息" + userInfo);
+        String json = new Gson().toJson(userInfo);
+        SPUtils.setUserInfo(AppContext.mContext, json);
+        LogUtils.e("保存后的用户信息" + userInfo);
 
-        }
     }
 }

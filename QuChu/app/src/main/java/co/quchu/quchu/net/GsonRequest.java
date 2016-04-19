@@ -41,7 +41,7 @@ public class GsonRequest<T> extends Request<T> {
     private Class<T> entity;
     private Type type;
     private String msg;
-    private String exception;
+    private String errorCode;
     private ResponseListener<T> listener;
     private Map<String, String> params;
     private String paramsJson;
@@ -149,7 +149,7 @@ public class GsonRequest<T> extends Request<T> {
             }
 
             msg = jsonObject.getString("msg");
-            exception = jsonObject.getString("exception");
+            errorCode = jsonObject.getString("errorCode");
             return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,7 +173,7 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected void deliverResponse(T t) {
-         if (showDialog) {
+        if (showDialog) {
             DialogUtil.dismissProgessDirectly();
         }
         if (!TextUtils.isEmpty(msg)) {
@@ -196,14 +196,7 @@ public class GsonRequest<T> extends Request<T> {
                     return;
             }
         }
-//        if (t == null && result) {
-//            // TODO: 2016/3/23  没有数据了
-////            listener.onErrorResponse(new NetworkError());
-//            listener.onResponse(null, true, exception, msg);
-//            LogUtils.e("空数据");
-//        } else {
-        listener.onResponse(t, result, exception, msg);
-//        }
+        listener.onResponse(t, result, errorCode, msg);
     }
 
     @Override

@@ -185,4 +185,23 @@ public class UserInfoModel implements Parcelable {
             return new UserInfoModel[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "UserInfoModel{" +
+                "fullname='" + fullname + '\'' +
+                ", gender='" + gender + '\'' +
+                ", isweibo=" + isweibo +
+                ", isweixin=" + isweixin +
+                ", isVisitors=" + isVisitors +
+                ", location='" + location + '\'' +
+                ", photo='" + photo + '\'' +
+                ", token='" + token + '\'' +
+                ", userId=" + userId +
+                ", username='" + username + '\'' +
+                ", type='" + type + '\'' +
+                ", age=" + age +
+                ", cardCount=" + cardCount +
+                '}';
+    }
 }

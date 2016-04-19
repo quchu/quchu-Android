@@ -20,7 +20,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
-import co.quchu.quchu.model.BindEntity;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
@@ -75,7 +74,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
                 break;
             case R.id.bind_wecha:
                 if (AppContext.user.isIsweixin()) {
-                    unBind(TYPE_Wecha);
+                    unBind(true, TYPE_Wecha);
                 } else {
                     WechatHelper helper = WechatHelper.getInstance(this);
                     helper.bind(this);
@@ -83,7 +82,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
                 break;
             case R.id.bind_sina:
                 if (AppContext.user.isIsweibo()) {
-                    unBind(TYPE_WEIBO);
+                    unBind(false, TYPE_WEIBO);
                 } else {
                     new WeiboHelper(this, this).weiboLogin(this, false);
                 }
@@ -156,33 +155,61 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
         params.put("type", "bind");
         params.put("accesstoken", SPUtils.getUserToken(this));
 
-        GsonRequest<BindEntity> request = new GsonRequest<>(isWecha ? NetApi.WechatBind : NetApi.WeiboBind, BindEntity.class, params, new ResponseListener<BindEntity>() {
+        GsonRequest<Object> request = new GsonRequest<>(isWecha ? NetApi.WechatBind : NetApi.WeiboBind, Object.class, params, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 Toast.makeText(BindActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onResponse(BindEntity response, boolean isNull, @Nullable String exception, @Nullable String msg) {
-                if (!response.isResult()) {
-                    Toast.makeText(BindActivity.this, "该账号已被绑定", Toast.LENGTH_SHORT).show();
+            public void onResponse(Object response, boolean isNull, String exception, @Nullable String msg) {
+                if (isNull) {
+                    Toast.makeText(BindActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
+                    saveInfo(true, isWecha);
                 } else {
-                    UserInfoModel user = AppContext.user;
-                    if (isWecha) {
-                        user.setIsweixin(true);
+                    if (exception.equals("10132")) {
+                        saveInfo(true, isWecha);
+
+                        merger(isWecha ? 2 : 3, token, appId);
                     } else {
-                        user.setIsweibo(true);
+                        Toast.makeText(BindActivity.this, "该账号不允许绑定", Toast.LENGTH_SHORT).show();
                     }
-                    UserInfoHelper.saveUserInfo(user);
-                    merger(isWecha ? 2 : 3, token, appId);
                 }
             }
         });
         request.start(this, null);
     }
 
+    /**
+     * 绑定成功后更新数据
+     *
+     * @param isWecha 是不是绑定了微信
+     */
+    private void saveInfo(boolean isBind, boolean isWecha) {
+        UserInfoModel user = AppContext.user;
+        if (isWecha) {
+            user.setIsweixin(isBind);
+        } else {
+            user.setIsweibo(isBind);
+        }
 
-    private void unBind(final String type) {
+        UserInfoHelper.saveUserInfo(user);
+        if (isBind) {
+            if (isWecha) {
+                bindWecha.setText("取消绑定我的微信");
+            } else {
+                bindSina.setText("取消绑定我的微博");
+            }
+        } else {
+            if (isWecha) {
+                bindWecha.setText("绑定我的微信");
+            } else {
+                bindSina.setText("绑定我的微博");
+            }
+        }
+    }
+
+    private void unBind(final boolean isWache, final String type) {
         Map<String, String> params = new HashMap<>();
         params.put("type", type);
         params.put("accesstoken", SPUtils.getUserToken(this));
@@ -196,13 +223,17 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
             @Override
             public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
                 if (result) {
-                    if (type.equals(TYPE_Wecha)) {
+                    LogUtils.e("解绑的type为" + type);
+                    Toast.makeText(BindActivity.this, "解绑成功", Toast.LENGTH_SHORT).show();
+                    if (isWache) {
                         bindWecha.setText("绑定我的微信");
+                        saveInfo(false, true);
                     } else {
                         bindSina.setText("绑定我的微博");
+                        saveInfo(false, false);
                     }
                 } else {
-                    Toast.makeText(BindActivity.this, exception, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BindActivity.this, "该账号不允许解除绑定", Toast.LENGTH_SHORT).show();
                 }
             }
         });

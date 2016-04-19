@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_weibo_bg"
-                android:text="绑定微博"
+                android:text="绑定我的微博"
                 android:textColor="#f29600"
                 android:textSize="@dimen/word_size_body" />
 
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_wecha_bg"
-                android:text="绑定微信"
+                android:text="绑定我的微信"
                 android:textColor="#8dc21f" />
 
         </LinearLayout>
