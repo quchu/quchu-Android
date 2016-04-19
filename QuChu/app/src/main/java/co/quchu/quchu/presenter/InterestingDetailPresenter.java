@@ -136,6 +136,23 @@ public class InterestingDetailPresenter {
         });
     }
 
+    public static void updateVisitedInfo(Context context, int pId,int score,String tagIds, final CommonListener<VisitedInfoModel> pListener){
+        NetService.get(context, String.format(NetApi.getVisitedInfo, pId), new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                VisitedInfoModel visitedInfoModel = new Gson().fromJson(response.toString(),VisitedInfoModel.class);
+                pListener.successListener(visitedInfoModel);
+
+            }
+
+            @Override
+            public boolean onError(String error) {
+                pListener.errorListener(new VolleyError(error),"","");
+                return false;
+            }
+        });
+    }
+
 
     public static void getVisitorAnalysis(Context context, int cityId, final CommonListener<SimpleQuchuDetailAnalysisModel> listener) {
         String url = String.format(NetApi.getVisitorAnalysis,cityId);

@@ -133,6 +133,7 @@ public class GsonRequest<T> extends Request<T> {
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
         T t;
+        System.out.println(getUrl());
         try {
             String json = new String(networkResponse.data, HttpHeaderParser.parseCharset(networkResponse.headers, "utf-8"));
 

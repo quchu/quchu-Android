@@ -112,7 +112,8 @@ public interface NetApi {
     String accoundMerger = HOST + "/oauth/userMerge";//账号合并
     String bindPhoneNumber = HOST + "/personal/bindPhoneNumber";//绑定手机号
     String unBindThrid = HOST + "/oauth/delbind";
-    String getVersionInfo = HOST + "/public/getVersion";
-    String getVisitedInfo = HOST +"/operate/outView";
+    String getVersionInfo = HOST + "/public/getVersion";//查看版本信息
+    String getVisitedInfo = HOST +"/operate/outView";//获得评价内容
+    String updateVisitedInfo = HOST + "/operate/userOutPlace";//更新评价
     /****************** POST *******************/
 }

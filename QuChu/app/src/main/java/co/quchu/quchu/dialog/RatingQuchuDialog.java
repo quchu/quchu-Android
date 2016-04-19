@@ -46,6 +46,7 @@ public class RatingQuchuDialog extends BlurDialogFragment {
 
     private List<TagsModel> mDataset;
     private float mRating;
+    private RatingQuchuDialogAdapter adapter;
 
 
     /**
@@ -73,7 +74,6 @@ public class RatingQuchuDialog extends BlurDialogFragment {
     }
 
 
-    private RatingQuchuDialogAdapter adapter;
 
     @NonNull
     @Override
