@@ -24,6 +24,13 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:textColor="@color/text_color_white"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:freezesText="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
                 android:textSize="@dimen/word_size_body" />
 
         </LinearLayout>

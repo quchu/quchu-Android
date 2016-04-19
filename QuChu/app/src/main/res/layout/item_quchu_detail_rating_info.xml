@@ -62,7 +62,7 @@
             android:textColor="@color/load_progress_yellow"
             android:gravity="center"
             android:layout_marginTop="@dimen/quarter_margin"
-            />
+            />TagsFilterDialog
         </LinearLayout>
 
     <LinearLayout

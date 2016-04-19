@@ -92,7 +92,6 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println(requestCode +"|"+resultCode+"|"+(null==data));
         if (requestCode == REQUEST_PICKING_QUCHU && resultCode == RESULT_OK && null != data) {
             pId = data.getIntExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_ID, -1);
             pName = data.getStringExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_NAME);

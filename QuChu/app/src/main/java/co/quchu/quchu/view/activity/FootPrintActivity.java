@@ -17,6 +17,7 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.presenter.FootPrintPresenter;
 import co.quchu.quchu.view.adapter.FootPrintAdapter;
+import co.quchu.quchu.widget.SpacesItemDecoration;
 
 /**
  * Created by Nico on 16/4/7.
@@ -67,6 +68,7 @@ public class FootPrintActivity extends BaseActivity {
                 startActivity(new Intent(FootPrintActivity.this,MyFootprintDetailActivity.class));
             }
         });
+        rvFootPrint.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
         rvFootPrint.setAdapter(mAdapter);
         rvFootPrint.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tvTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="你的建议会帮助0位趣星人"
+        android:layout_above="@+id/prbRating"
+        android:textColor="@color/white"
+        />
+
+
+    <co.quchu.quchu.widget.ratingbar.ProperRatingBar
+        android:id="@+id/prbRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/quarter_margin"
+        android:layout_marginTop="@dimen/quarter_margin"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_above="@+id/tvTagsLabel"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/base_margin"
+        app:prb_clickable="true"
+        app:prb_defaultRating="4"
+        app:prb_tickSpacing="3dip"
+        app:prb_tickNormalDrawable="@drawable/ic_like_fill"
+        app:prb_tickSelectedDrawable="@drawable/ic_like_fill_checked"
+        app:prb_totalTicks="5" />
+
+
+
+
+    <TextView
+        android:id="@+id/tvTagsLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="值得称赞的地方"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:layout_marginBottom="@dimen/base_margin"
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvTags"
+        android:layout_below="@id/tvTagsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="5"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:layout_marginRight="@dimen/dialog_margin"
+        tools:listitem="@layout/item_tags_filter"
+        />
+
+    <ImageView
+        android:id="@+id/ivFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_confirm"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dialog_margin"
+        />
+</RelativeLayout>

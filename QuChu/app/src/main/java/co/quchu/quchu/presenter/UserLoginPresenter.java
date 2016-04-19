@@ -177,7 +177,7 @@ public class UserLoginPresenter {
      * 游客注册
      */
     public static void visitorRegiest(Context context, final UserNameUniqueListener listener) {
-        NetService.post(context, String.format(NetApi.VisitorRegiester, StringUtils.getMyUUID()), null, new IRequestListener() {
+        NetService.post(context, String.format(NetApi.visitorRegiester, StringUtils.getMyUUID()), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("visitorRegiest=" + response.toString());

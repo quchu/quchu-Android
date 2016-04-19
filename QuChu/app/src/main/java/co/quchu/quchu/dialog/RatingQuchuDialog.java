@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,19 +20,25 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.dialog.adapter.TagsFilterDialogAdapter;
 import co.quchu.quchu.model.TagsModel;
+import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
  * Created by Nico on 16/4/11.
  */
 
-public class TagsFilterDialog extends BlurDialogFragment {
+public class RatingQuchuDialog extends BlurDialogFragment {
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
     private static final String BUNDLE_KEY_TAGS = "BUNDLE_KEY_TAGS";
     private static final String BUNDLE_KEY_TAGS_SELECTION = "BUNDLE_KEY_TAGS_SELECTION";
-    @Bind(R.id.tvTitle)
-    TextView tvTitle;
+    private static final String BUNDLE_KEY_TAGS_RATING = "BUNDLE_KEY_TAGS_RATING";
+    @Bind(R.id.tvTips)
+    TextView tvTips;
+    @Bind(R.id.prbRating)
+    ProperRatingBar prbRating;
+    @Bind(R.id.tvTagsLabel)
+    TextView tvTagsLabel;
     @Bind(R.id.rvTags)
     RecyclerView rvTags;
     @Bind(R.id.ivFinish)
@@ -43,6 +47,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
 
     private List<TagsModel> mDataset;
     private List<Boolean> mSelection;
+    private float mRating;
 
 
     /**
@@ -52,11 +57,12 @@ public class TagsFilterDialog extends BlurDialogFragment {
      * @return well instantiated fragment.
      * Serializable cityList
      */
-    public static TagsFilterDialog newInstance(ArrayList<TagsModel> list, ArrayList<Boolean> selection) {
-        TagsFilterDialog fragment = new TagsFilterDialog();
+    public static RatingQuchuDialog newInstance(int rating,ArrayList<TagsModel> list, ArrayList<Boolean> selection) {
+        RatingQuchuDialog fragment = new RatingQuchuDialog();
         Bundle args = new Bundle();
         args.putSerializable(BUNDLE_KEY_TAGS, list);
         args.putSerializable(BUNDLE_KEY_TAGS_SELECTION, selection);
+        args.putFloat(BUNDLE_KEY_TAGS_RATING,rating);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,6 +73,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
         Bundle args = getArguments();
         mDataset = (ArrayList<TagsModel>) args.getSerializable(BUNDLE_KEY_TAGS);
         mSelection = (List<Boolean>) args.getSerializable(BUNDLE_KEY_TAGS_SELECTION);
+        mRating = args.getFloat(BUNDLE_KEY_TAGS_RATING);
         if (null == mSelection || mSelection.size() != mDataset.size()) {
             mSelection = new ArrayList<>();
             for (int i = 0; i < mDataset.size(); i++) {
@@ -83,7 +90,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_tags_filter, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_rating_quchu, null);
         ButterKnife.bind(this, view);
         Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(view);
@@ -98,6 +105,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
             }
         });
         rvTags.setAdapter(adapter);
+        prbRating.setRating(mRating);
         ivFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

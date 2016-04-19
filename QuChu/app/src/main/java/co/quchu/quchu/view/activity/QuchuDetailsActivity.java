@@ -29,6 +29,7 @@ import co.quchu.quchu.analysis.GatherWantGoModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
@@ -279,23 +280,29 @@ public class QuchuDetailsActivity extends BaseActivity {
         if (dModel != null) {
             switch (v.getId()) {
                 case R.id.tvQuguo:
-                            ArrayList<TagsModel> data = new ArrayList<>();
-                            for (int i = 0; i < 19; i++) {
-                                TagsModel tag = new TagsModel();
-                                tag.setCode(String.valueOf(i));
-                                tag.setEn("EN"+i);
-                                tag.setZh("标签"+ (i%7==0?"凑数":""));
-                                tag.setTagId(i*1000);
-                                data.add(tag);
+                            if (!AppContext.user.isIsVisitors()) {
+                                VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
+                                vDialog.show(getFragmentManager(), "visitor");
+                            } else {
+                                ArrayList<TagsModel> data = new ArrayList<>();
+                                for (int i = 0; i < 3; i++) {
+                                    TagsModel tag = new TagsModel();
+                                    tag.setCode(String.valueOf(i));
+                                    tag.setEn("EN"+i);
+                                    tag.setZh("标签"+ (i%7==0?"凑数":""));
+                                    tag.setTagId(i*1000);
+                                    data.add(tag);
+                                }
+                                ArrayList<Boolean> selection = new ArrayList<>();
+                                selection.add(false);
+                                selection.add(true);
+                                selection.add(false);
+                                selection.add(true);
+                                selection.add(false);
+                                RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(3,data,selection);
+                                tagsFilterDialog.show(getFragmentManager(),"");
                             }
-                            ArrayList<Boolean> selection = new ArrayList<>();
-                            selection.add(false);
-                            selection.add(true);
-                            selection.add(false);
-                            selection.add(true);
-                            selection.add(false);
-                            TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(data,selection);
-                            tagsFilterDialog.show(getFragmentManager(),"");
+
                     break;
                 case R.id.tvFootPrint:
                     Intent footPrintIntent = new Intent(QuchuDetailsActivity.this,FootPrintActivity.class);
@@ -306,16 +313,6 @@ public class QuchuDetailsActivity extends BaseActivity {
                /* case R.id.detail_store_phone_ll:
                     callPhone();
                     break;*/
-                case R.id.detail_been_tv:
-
-                    if (AppContext.user.isIsVisitors()) {
-                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
-                        vDialog.show(getFragmentManager(), "visitor");
-                    } else {
-                        userBeen();//用户去过
-                    }
-
-                    break;
                 case R.id.detail_want_tv:
                     //用户想去
                     if (dModel.isIsf()) {

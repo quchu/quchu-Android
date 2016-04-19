@@ -134,11 +134,17 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             }
 
             @Override
-            public void onPageSelected(int position) {
+            public void onPageSelected(final int position) {
                 LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(position).getLatitude()),Double.valueOf(mDataSet.get(position).getLongitude()));
                 CameraUpdate s = CameraUpdateFactory.changeLatLng(latLng);
 
                 aMap.animateCamera(s);
+                mVPNearby.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMarks.get(position).showInfoWindow();
+                    }
+                },250l);
             }
 
             @Override
@@ -204,16 +210,18 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private List<Marker> mMarks = new ArrayList<>();
     private void initMarks() {
+        mMarks.clear();
         for (int i = 0; i < mDataSet.size(); i++) {
             float distance =AMapUtils.calculateLineDistance(new LatLng(gdlat, gdlon),
                     new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()), Double.valueOf(mDataSet.get(i).getLongitude())));
             String strDistance = "距离当前趣处："+new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
             LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()),Double.valueOf(mDataSet.get(i).getLongitude()));
-            aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getName())
+            mMarks.add(aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getName())
                     .snippet(strDistance)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_target))
-                    .perspective(true).draggable(false).period(50));
+                    .perspective(true).draggable(false).period(50)));
         }
     }
 

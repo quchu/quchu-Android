@@ -105,11 +105,13 @@ public interface NetApi {
     String saveOrUpdateCard = HOST + "/operate/saveOrUpdateCard"; //意见反馈
     String updateUser = HOST + "/personal/updateUser"; //修改用户设置
     ///TODO
-    String VisitorRegiester = "http://sit.quchu.co/app-main-service" + "/mregister?visitors=1&equip=%s";
+    String visitorRegiester = "http://sit.quchu.co/app-main-service" + "/mregister?visitors=1&equip=%s";
+    String checkIfForceUpdate = HOST + "/public/getIsUpdate";
     String findPosition = HOST + "/operate/proposalPlace?place.pId=%s&place.pname=%s&place.paddress=%s&place.profile=%s&place.pimage=%s";//发现趣处
 
     String accoundMerger = HOST + "/oauth/userMerge";//账号合并
     String bindPhoneNumber = HOST + "/personal/bindPhoneNumber";//绑定手机号
     String unBindThrid = HOST + "/oauth/delbind";
+    String getVersionInfo = HOST + "/public/getVersion";
     /****************** POST *******************/
 }

@@ -90,4 +90,15 @@ public class AppKey {
      * 菜单页是否需要刷新
      */
     public static final String IS_MENU_NEED_REFRESH = "is_menu_need_refresh";
+
+
+    /**
+     * 是否强制更新
+     */
+    public static final String SPF_KEY_FORCE_UPDATE = "SPF_KEY_FORCE_UPDATE";
+
+    /**
+     * 强制更新说明
+     */
+    public static final String SPF_KEY_FORCE_UPDATE_REASON = "SPF_KEY_FORCE_UPDATE_REASON";
 }

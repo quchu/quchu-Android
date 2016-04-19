@@ -87,6 +87,27 @@ public class SPUtils {
         return value;
     }
 
+    public static boolean getForceUpdateIfNecessary(Context context){
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE,false);
+    }
+
+    public static void setForceUpdateIfNecessary(Context context,boolean forceUpdate){
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        preferences.edit().putBoolean(AppKey.SPF_KEY_FORCE_UPDATE,forceUpdate).commit();
+    }
+    public static String getForceUpdateReason(Context context){
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        return preferences.getString(AppKey.SPF_KEY_FORCE_UPDATE_REASON,"");
+    }
+
+    public static void setForceUpdateReason(Context context,String reason){
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_REASON,reason).commit();
+    }
+
+
+
     /**
      * 获取String
      */
