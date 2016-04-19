@@ -63,17 +63,14 @@ public class NearbyPresenter {
     public static void getMapNearbyData(Context context, int cityId,String name,double latitude,double longitude,final CommonListener<List<NearbyMapModel>> listener) {
 
         String url = String.format(NetApi.getMapNearby,name,cityId,String.valueOf(latitude),String.valueOf(longitude));
-        System.out.println(url);
         GsonRequest<List<NearbyMapModel>> request = new GsonRequest<>(Request.Method.GET,url, new TypeToken<List<NearbyMapModel>>(){}.getType(), new ResponseListener<List<NearbyMapModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                System.out.println("error" + error.getMessage());
                 listener.errorListener(error, "", "");
             }
 
             @Override
             public void onResponse(List<NearbyMapModel> response, boolean result, @Nullable String exception, @Nullable String msg) {
-                System.out.println("success "+ response.size());
                 listener.successListener(response);
             }
         });

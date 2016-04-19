@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -71,8 +72,10 @@ public class PickingQuchuActivity extends BaseActivity {
                 intent.putExtra(BUNDLE_KEY_PICKING_RESULT_ID,mData.get(position).getId());
                 intent.putExtra(BUNDLE_KEY_PICKING_RESULT_NAME,mData.get(position).getName());
                 setResult(RESULT_OK,intent);
+                finish();
             }
         });
+        mRvContent.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
         mRvContent.setAdapter(mAdapter);
         mTextWatcher = new TextWatcher() {
             @Override
@@ -101,7 +104,6 @@ public class PickingQuchuActivity extends BaseActivity {
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-
             }
         });
     }

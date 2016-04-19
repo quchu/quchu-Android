@@ -300,6 +300,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                 case R.id.tvFootPrint:
                     Intent footPrintIntent = new Intent(QuchuDetailsActivity.this,FootPrintActivity.class);
                     footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_ID,dModel.getPid());
+                    footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_NAME,dModel.getName());
                     startActivity(footPrintIntent);
                     break;
                /* case R.id.detail_store_phone_ll:

@@ -53,8 +53,10 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     private PhotoInfo tackImage;
 
     public static final String REQUEST_KEY_ID = "id";
+    public static final String REQUEST_KEY_NAME = "name";
     public static final String REQUEST_KEY_ENTITY = "entity";
     private int pId;
+    private String pName;
     private PostCardItemModel mData;
     private int REQUEST_PICKING_QUCHU = 0x0001;
 
@@ -70,6 +72,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         ButterKnife.bind(this);
 
         pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
+        pName = getIntent().getStringExtra(REQUEST_KEY_NAME);
         //数据是重新封装过的,如果部分属性丢失请返回前面页面添加
         mData = (PostCardItemModel) getIntent().getSerializableExtra(REQUEST_KEY_ENTITY);
         mIsEdit = mData != null;
@@ -89,11 +92,12 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == REQUEST_PICKING_QUCHU && resultCode == RESULT_OK && null != data) {
+        System.out.println(requestCode +"|"+resultCode+"|"+(null==data));
+        if (requestCode == REQUEST_PICKING_QUCHU && resultCode == RESULT_OK && null != data) {
             pId = data.getIntExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_ID, -1);
-            //pName = data.getStringExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_ID);
+            pName = data.getStringExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_NAME);
+            System.out.println(pName);
             init();
-            //TODO request refresh data
         }
     }
 
@@ -126,6 +130,11 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         adapter = new FindPositionAdapter();
         adapter.setImages(photoInfos);
         adapter.setListener(this);
+        if (null==mData){
+            tvPickFromMap.setText("在 "+pName);
+        }else{
+            pId = mData.getPlaceId();
+        }
 
         recyclerView.setAdapter(adapter);
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {

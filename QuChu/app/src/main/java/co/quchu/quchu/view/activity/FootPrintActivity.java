@@ -31,7 +31,9 @@ public class FootPrintActivity extends BaseActivity {
     private List<FootprintModel> mData = new ArrayList<>();
     private boolean mIsLoading = false;
     private int mQuchuId;
+    private String mQuchuName;
     public static final String BUNDLE_KEY_QUCHU_ID = "BUNDLE_KEY_QUCHU_ID";
+    public static final String BUNDLE_KEY_QUCHU_NAME = "BUNDLE_KEY_QUCHU_NAME";
 
     @Override
     protected int activitySetup() {
@@ -44,11 +46,15 @@ public class FootPrintActivity extends BaseActivity {
         setContentView(R.layout.activity_foot_print);
         ButterKnife.bind(this);
         mQuchuId = getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID,-1);
+        mQuchuName = getIntent().getStringExtra(BUNDLE_KEY_QUCHU_NAME);
         getEnhancedToolbar().getRightIv().setImageResource(R.drawable.gf_ic_preview);
         getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(FootPrintActivity.this,AddFootprintActivity.class));
+                Intent intent = new Intent(FootPrintActivity.this,AddFootprintActivity.class);
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID,mQuchuId);
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME,mQuchuName);
+                startActivity(intent);
             }
         });
 
