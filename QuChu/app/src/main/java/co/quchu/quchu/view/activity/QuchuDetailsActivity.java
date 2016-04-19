@@ -67,6 +67,10 @@ public class QuchuDetailsActivity extends BaseActivity {
     View detail_bottom_group_ll;
     @Bind(R.id.appbar)
     AppBarLayout appbar;
+    @Bind(R.id.ivFavorite)
+    View vFavorite;
+    @Bind(R.id.ivShare)
+    View vShare;
 
     private long mLastAnimated = -1;
     public static final String REQUEST_KEY_PID = "pid";
@@ -99,6 +103,8 @@ public class QuchuDetailsActivity extends BaseActivity {
                 }
             }
         });
+
+
 
         initData();
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
@@ -266,7 +272,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.detail_want_tv, R.id.detail_been_tv})
+    @OnClick({R.id.detail_want_tv, R.id.detail_been_tv,R.id.ivShare,R.id.ivFavorite})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -332,11 +338,11 @@ public class QuchuDetailsActivity extends BaseActivity {
                     intent.setClass(this, FootPrintActivity.class);
                     startActivity(intent);
                     break;
-                case R.id.detail_button_collect_rl:
+                case R.id.ivFavorite:
                     //收藏
                     setFavorite();
                     break;
-                case R.id.detail_button_share_rl:
+                case R.id.ivShare:
                     //分享
                     try {
                         ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);

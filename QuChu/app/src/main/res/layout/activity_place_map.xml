@@ -5,56 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/map_title_bar_ll"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_heigh"
-        android:background="@color/appBackground"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:id="@+id/about_us_title_back_rl"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:src="@mipmap/ic_title_back" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/title_content_tv"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/planet_text_color_white"
-            android:textSize="@dimen/word_title_body" />
-
-
-        <TextView
-            android:id="@+id/title_right_navigate_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/base_margin"
-            android:paddingRight="@dimen/base_margin"
-            android:text="导航"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/word_subhead_size" />
-    </LinearLayout>
+    <include
+        layout="@layout/cp_enhanced_toolbar"
+        />
 
 
     <com.amap.api.maps.MapView
         android:id="@+id/place_map_mv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/map_title_bar_ll" />
+        android:layout_below="@id/appbar" />
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
@@ -71,7 +31,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/map_title_bar_ll"
+        android:layout_below="@id/appbar"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:src="@mipmap/icon_current_position"

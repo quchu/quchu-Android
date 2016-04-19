@@ -167,6 +167,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.PlaceMapActivity"
+            android:label="@string/nearby_quchu"
             android:screenOrientation="portrait" />
 
         <!-- 用户登录 -->

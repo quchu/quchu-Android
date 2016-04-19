@@ -65,42 +65,36 @@ import co.quchu.quchu.view.adapter.AMapNearbyVPAdapter;
  */
 public class PlaceMapActivity extends BaseActivity implements View.OnClickListener, LocationSource, AMap.OnMapLoadedListener,
         AMapLocationListener {
-    MapView mapView;
-    RelativeLayout about_us_title_back_rl;
-    ViewPager mVPNearby;
     private OnLocationChangedListener mListener;
     private AMap aMap;
     private AMapLocationClient mlocationClient;
-
     double lat = 0, lont = 0, gdlon = 0, gdlat = 0;
-    String placeTitle, placeAddressStr = "";
-    LatLng placeAddress;
-    LatLng myAddress;
-    List<NearbyMapModel> mDataSet = new ArrayList<>();
-    AMapNearbyVPAdapter mAdapter;
-    TextView tvTitle;
+    private List<NearbyMapModel> mDataSet = new ArrayList<>();
+    private AMapNearbyVPAdapter mAdapter;
+    private String placeTitle, placeAddressStr = "";
+    private LatLng placeAddress;
+    private LatLng myAddress;
+    private MapView mapView;
+    private ViewPager mVPNearby;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_map);
-        tvTitle = (TextView) findViewById(R.id.title_content_tv);
         mapView = (MapView) findViewById(R.id.place_map_mv);
         mVPNearby = (ViewPager) findViewById(R.id.vpNearby);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
-        TextView title_right_navigate_tv = (TextView) findViewById(R.id.title_right_navigate_tv);
-        about_us_title_back_rl = (RelativeLayout) findViewById(R.id.about_us_title_back_rl);
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
-        tvTitle.setText(R.string.nearby_quchu);
         currentPosition.setOnClickListener(this);
-        about_us_title_back_rl.setOnClickListener(this);
         if (aMap == null) {
             aMap = mapView.getMap();
             setUpMap();
         }
         initData();
-        title_right_navigate_tv.setOnClickListener(new View.OnClickListener() {
+
+        getEnhancedToolbar().getRightTv().setText(R.string.navigation);
+        getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavigateSelectedDialogFg navigateDialogFg = NavigateSelectedDialogFg.newInstance();
@@ -158,7 +152,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", SPUtils.getLatitude(), SPUtils.getLongitude(), new CommonListener<List<NearbyMapModel>>() {
             @Override
             public void successListener(List<NearbyMapModel> response) {
-                mDataSet.addAll(mDataSet);
+                mDataSet.addAll(response);
                 mAdapter.notifyDataSetChanged();
                 initMarks();
                 DialogUtil.dismissProgess();

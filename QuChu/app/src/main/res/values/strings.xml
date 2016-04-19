@@ -136,5 +136,6 @@
     <string name="save">保存</string>
     <string name="picking_quchu">查找趣处</string>
     <string name="hint_picking_quchu">输入关键字</string>
+    <string name="navigation">导航</string>
 
 </resources>

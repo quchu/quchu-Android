@@ -261,10 +261,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((IntroImageViewHolder) holder).tag3.setVisibility(View.INVISIBLE);
             }
         } else if (holder instanceof ActionViewHolder) {
-            ((ActionViewHolder) holder).detail_button_collect_iv.setImageResource(mData.isIsf() ? R.mipmap.ic_detail_collect : R.mipmap.ic_detail_uncollect);
+
             ((ActionViewHolder) holder).detail_button_add_postcard_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).detail_button_collect_rl.setOnClickListener(mOnItemClickListener);
-            ((ActionViewHolder) holder).detail_button_share_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).tvFootprint.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).tvQuguo.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
