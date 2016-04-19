@@ -17,7 +17,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,14 +30,13 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.dialog.ShareDialogFg;
-import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
-import co.quchu.quchu.model.SimpleUserModel;
 import co.quchu.quchu.model.TagsModel;
+import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
@@ -81,6 +79,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     public DetailModel dModel = new DetailModel();
     private GatherViewModel gatherViewModel;
     private QuchuDetailsAdapter mQuchuDetailAdapter;
+    private VisitedInfoModel mVisitedInfoModel;
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -134,6 +133,20 @@ public class QuchuDetailsActivity extends BaseActivity {
             public void successListener(SimpleQuchuDetailAnalysisModel response) {
                 if (null!=response){
                     mQuchuDetailAdapter.updateVisitorAnalysis(response);
+                }
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+
+            }
+        });
+
+        InterestingDetailPresenter.getVisitedInfo(getApplicationContext(), pId, new CommonListener<VisitedInfoModel>() {
+            @Override
+            public void successListener(VisitedInfoModel response) {
+                if (null!=response){
+                    mVisitedInfoModel = response;
                 }
             }
 
@@ -280,28 +293,14 @@ public class QuchuDetailsActivity extends BaseActivity {
         if (dModel != null) {
             switch (v.getId()) {
                 case R.id.tvQuguo:
-                            if (!AppContext.user.isIsVisitors()) {
-                                VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
-                                vDialog.show(getFragmentManager(), "visitor");
-                            } else {
-                                ArrayList<TagsModel> data = new ArrayList<>();
-                                for (int i = 0; i < 3; i++) {
-                                    TagsModel tag = new TagsModel();
-                                    tag.setCode(String.valueOf(i));
-                                    tag.setEn("EN"+i);
-                                    tag.setZh("标签"+ (i%7==0?"凑数":""));
-                                    tag.setTagId(i*1000);
-                                    data.add(tag);
-                                }
-                                ArrayList<Boolean> selection = new ArrayList<>();
-                                selection.add(false);
-                                selection.add(true);
-                                selection.add(false);
-                                selection.add(true);
-                                selection.add(false);
-                                RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(3,data,selection);
-                                tagsFilterDialog.show(getFragmentManager(),"");
-                            }
+                    //TODO if (AppContext.user.isIsVisitors()) {
+                    if (!AppContext.user.isIsVisitors()) {
+                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
+                        vDialog.show(getFragmentManager(), "visitor");
+                    } else if(null!=mVisitedInfoModel){
+                        RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getScore(),mVisitedInfoModel.getResult());
+                        tagsFilterDialog.show(getFragmentManager(),"");
+                    }
 
                     break;
                 case R.id.tvFootPrint:
@@ -310,9 +309,6 @@ public class QuchuDetailsActivity extends BaseActivity {
                     footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_NAME,dModel.getName());
                     startActivity(footPrintIntent);
                     break;
-               /* case R.id.detail_store_phone_ll:
-                    callPhone();
-                    break;*/
                 case R.id.detail_want_tv:
                     //用户想去
                     if (dModel.isIsf()) {
@@ -328,8 +324,6 @@ public class QuchuDetailsActivity extends BaseActivity {
                         AppContext.gatherList.add(new GatherWantGoModel(AppContext.user.getUserId(), dModel.getPid()));
                     break;
                 case R.id.detail_button_add_postcard_rl:
-
-                    //添加明信片
                     Intent intent = new Intent();
                     intent.putExtra("pId", dModel.getPid());
                     //intent.putExtra("pName", dModel.getName());
@@ -367,14 +361,6 @@ public class QuchuDetailsActivity extends BaseActivity {
                     break;
             }
         }
-    }
-
-    /**
-     * 是否去过
-     */
-    private void userBeen() {
-
-        //TODO
     }
 
     /**

@@ -18,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
-import co.quchu.quchu.dialog.adapter.TagsFilterDialogAdapter;
+import co.quchu.quchu.dialog.adapter.RatingQuchuDialogAdapter;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -31,7 +31,6 @@ public class RatingQuchuDialog extends BlurDialogFragment {
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
     private static final String BUNDLE_KEY_TAGS = "BUNDLE_KEY_TAGS";
-    private static final String BUNDLE_KEY_TAGS_SELECTION = "BUNDLE_KEY_TAGS_SELECTION";
     private static final String BUNDLE_KEY_TAGS_RATING = "BUNDLE_KEY_TAGS_RATING";
     @Bind(R.id.tvTips)
     TextView tvTips;
@@ -46,7 +45,6 @@ public class RatingQuchuDialog extends BlurDialogFragment {
 
 
     private List<TagsModel> mDataset;
-    private List<Boolean> mSelection;
     private float mRating;
 
 
@@ -57,11 +55,10 @@ public class RatingQuchuDialog extends BlurDialogFragment {
      * @return well instantiated fragment.
      * Serializable cityList
      */
-    public static RatingQuchuDialog newInstance(int rating,ArrayList<TagsModel> list, ArrayList<Boolean> selection) {
+    public static RatingQuchuDialog newInstance(int rating,ArrayList<TagsModel> list) {
         RatingQuchuDialog fragment = new RatingQuchuDialog();
         Bundle args = new Bundle();
         args.putSerializable(BUNDLE_KEY_TAGS, list);
-        args.putSerializable(BUNDLE_KEY_TAGS_SELECTION, selection);
         args.putFloat(BUNDLE_KEY_TAGS_RATING,rating);
         fragment.setArguments(args);
         return fragment;
@@ -72,18 +69,11 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         super.onAttach(activity);
         Bundle args = getArguments();
         mDataset = (ArrayList<TagsModel>) args.getSerializable(BUNDLE_KEY_TAGS);
-        mSelection = (List<Boolean>) args.getSerializable(BUNDLE_KEY_TAGS_SELECTION);
         mRating = args.getFloat(BUNDLE_KEY_TAGS_RATING);
-        if (null == mSelection || mSelection.size() != mDataset.size()) {
-            mSelection = new ArrayList<>();
-            for (int i = 0; i < mDataset.size(); i++) {
-                mSelection.add(false);
-            }
-        }
     }
 
 
-    private TagsFilterDialogAdapter adapter;
+    private RatingQuchuDialogAdapter adapter;
 
     @NonNull
     @Override
@@ -97,10 +87,10 @@ public class RatingQuchuDialog extends BlurDialogFragment {
 
         initSelected();
         rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 4));
-        adapter = new TagsFilterDialogAdapter(mDataset, mSelection, new TagsFilterDialogAdapter.OnItemSelectedListener() {
+        adapter = new RatingQuchuDialogAdapter(mDataset, new RatingQuchuDialogAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(int index) {
-                mSelection.set(index, !mSelection.get(index));
+                mDataset.get(index).setPraise(!mDataset.get(index).isPraise());
                 adapter.notifyDataSetChanged();
             }
         });

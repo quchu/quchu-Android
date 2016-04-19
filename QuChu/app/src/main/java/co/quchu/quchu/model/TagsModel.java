@@ -12,6 +12,15 @@ public class TagsModel {
     private String code;
     private boolean isSend;
     private int count;
+    private boolean isPraise;
+
+    public boolean isPraise() {
+        return isPraise;
+    }
+
+    public void setPraise(boolean praise) {
+        isPraise = praise;
+    }
 
     public String getZh() {
         return zh;

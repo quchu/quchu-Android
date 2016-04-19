@@ -33,6 +33,7 @@ import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.SimpleUserModel;
 import co.quchu.quchu.model.TagsModel;
+import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
@@ -130,6 +131,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mAnalysisModel = response;
         notifyDataSetChanged();
     }
+
 
     public interface OnLoadMoreListener {
         void onLoadMore();

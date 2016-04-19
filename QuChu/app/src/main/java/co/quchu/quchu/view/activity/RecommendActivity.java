@@ -33,6 +33,7 @@ import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.RecommendPresenter;
+import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
@@ -40,6 +41,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 import co.quchu.quchu.widget.RecommendTitleGroup;
+import cz.msebera.android.httpclient.util.VersionInfo;
 
 /**
  * RecommendActivity
@@ -107,6 +109,8 @@ public class RecommendActivity extends BaseActivity {
         });
 
 //        startActivity(new Intent(RecommendActivity.this,AddFootprintActivity.class));
+
+        VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
     }
 
     @Override

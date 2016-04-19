@@ -113,5 +113,6 @@ public interface NetApi {
     String bindPhoneNumber = HOST + "/personal/bindPhoneNumber";//绑定手机号
     String unBindThrid = HOST + "/oauth/delbind";
     String getVersionInfo = HOST + "/public/getVersion";
+    String getVisitedInfo = HOST +"/operate/outView";
     /****************** POST *******************/
 }

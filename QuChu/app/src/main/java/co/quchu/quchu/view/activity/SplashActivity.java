@@ -1,6 +1,8 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -89,6 +91,11 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     boolean mAnimationEnd = false;
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 
     @Override
     public void onScrollChanged() {
@@ -303,26 +310,40 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
         AppContext.initLocation();
         ButterKnife.bind(this);
 
+        mTvVersion.setText(getVersionName());
         //大屏幕不执行动画
         if (ScreenUtils.getScreenHeight(getApplicationContext())>3204){
             mShowGuide = false;
         }
 
+        mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
+
         if (!mShowGuide){
-            mTvAppName.setVisibility(View.GONE);
-            mTvCopyRight.setVisibility(View.GONE);
-            mTvVersion.setVisibility(View.GONE);
             //mRelativeLayout.removeView(mScrollView);
-            System.gc();
             mIvBgSec.setAdjustViewBounds(true);
             mIvBgSec.setAlpha(1f);
             mTvTips.setVisibility(View.GONE);
             mVSpace.setVisibility(View.GONE);
+
+
+            final AnimatorSet animatorSetText = new AnimatorSet();
+            animatorSetText.playTogether(
+                    ObjectAnimator.ofFloat(mIvAppIcon,"alpha",0,1),
+                    ObjectAnimator.ofFloat(mTvAppName, "translationY", mTvAppName.getTranslationY()/1.4f,0),
+                    ObjectAnimator.ofFloat(mTvCopyRight, "translationX", mHalfWidth,0),
+                    ObjectAnimator.ofFloat(mTvVersion, "translationY", mTvVersion.getTranslationY(),0),
+                    ObjectAnimator.ofFloat(mTvAppName, "alpha", 0, 1),
+                    ObjectAnimator.ofFloat(mTvCopyRight, "alpha", 0, 1),
+                    ObjectAnimator.ofFloat(mTvVersion, "alpha", 0, 1)
+            );
+            animatorSetText.setDuration(500);
+            animatorSetText.setStartDelay(500);
+            animatorSetText.setInterpolator(new AccelerateDecelerateInterpolator());
+            animatorSetText.start();
+
+            mViewBg.setAlpha(1);
             initLogic();
         }else{
-
-
-            mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
             mIvArrow.setImageResource(R.mipmap.ic_wide_arrow);
             mIvBgSec.setImageResource(R.mipmap.background_fth);
             mIvCloudRight.setImageResource(R.mipmap.cloud_right);
@@ -383,17 +404,20 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
 
     }
 
-    private void initLogic() {
+    public String getVersionName(){
+        String versionName = "1.0.0";
+        try {
 
-
-
-
-
-        if (Constants.ISSTARTINGPKG) {
-            mIvBg.setImageResource(R.mipmap.ic_splash_bg_360);
-        } else {
-            mIvBg.setImageResource(R.mipmap.ic_splash_bg);
+            PackageInfo pInfo = null;
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
+        return versionName;
+    }
+
+    private void initLogic() {
         mAnimationEnd = true;
         if (AppContext.user != null) {
             new EnterAppTask().execute(viewDuration);

@@ -15,7 +15,9 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.SimpleUserModel;
+import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -116,6 +118,24 @@ public class InterestingDetailPresenter {
             }
         });
     }
+
+    public static void getVisitedInfo(Context context, int pId, final CommonListener<VisitedInfoModel> pListener){
+        NetService.get(context, String.format(NetApi.getVisitedInfo, pId), new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                VisitedInfoModel visitedInfoModel = new Gson().fromJson(response.toString(),VisitedInfoModel.class);
+                pListener.successListener(visitedInfoModel);
+
+            }
+
+            @Override
+            public boolean onError(String error) {
+                pListener.errorListener(new VolleyError(error),"","");
+                return false;
+            }
+        });
+    }
+
 
     public static void getVisitorAnalysis(Context context, int cityId, final CommonListener<SimpleQuchuDetailAnalysisModel> listener) {
         String url = String.format(NetApi.getVisitorAnalysis,cityId);
