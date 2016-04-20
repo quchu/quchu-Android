@@ -118,6 +118,31 @@ public class TagCloudView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int childCount = getChildCount();
+        if (mSingleLine) {
+            //当前行总宽度
+            int width = getWidth() - getPaddingRight() - getPaddingLeft();
+            //当前行布局完成的宽度
+            int currentWidth = 0;
+            int baseLeft = getPaddingLeft();
+            for (int i = 0; i < childCount; i++) {
+                View childView = getChildAt(i);
+                //如果当前tag没有超过 父view的宽度
+                if ((currentWidth + childView.getMeasuredWidth() + mTagBorderHor) < width) {
+                    int left = baseLeft;
+                    int top = getPaddingTop() + getPaddingTop();
+                    int bottom = top + childView.getMeasuredHeight();
+                    int right = left + childView.getMeasuredWidth();
+
+                    childView.layout(left, top, right, bottom);
+                    baseLeft = left + childView.getMeasuredWidth() + mTagBorderHor;
+                    currentWidth += childView.getMeasuredWidth() + mTagBorderHor;
+                } else {
+                    //tag位置超过当前行最大宽度
+                    childView.setVisibility(GONE);
+                }
+            }
+        }
     }
 
     /**
@@ -146,7 +171,7 @@ public class TagCloudView extends ViewGroup {
         int totalHeight = mTagBorderVer;
 
         if (mSingleLine) {
-            totalHeight = getSingleTotalHeight(totalWidth, totalHeight);
+            totalHeight = getSingleTotalHeight(sizeWidth, sizeHeight);
         } else {
             totalHeight = getMultiTotalHeight(totalWidth, totalHeight);
         }
@@ -168,44 +193,34 @@ public class TagCloudView extends ViewGroup {
      * @param heightMeasureSpec
      */
     private void initSingleLineView(int widthMeasureSpec, int heightMeasureSpec) {
-        if (!mSingleLine) {
-            return;
-        }
-   /*     if (mShowRightImage) {
-            imageView = new ImageView(getContext());
-            imageView.setImageResource(mRightImageResId);
-            imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            measureChild(imageView, widthMeasureSpec, heightMeasureSpec);
-            imageWidth = imageView.getMeasuredWidth();
-            imageHeight = imageView.getMeasuredHeight();
-            addView(imageView);
-        }*/
-
-        if (mShowEndText) {
-            endText = (TextView) mInflater.inflate(mTagResId, null);
-            if (mTagResId == DEFAULT_TAG_RESID) {
-                endText.setBackgroundResource(mBackground);
-                endText.setTextSize(TypedValue.COMPLEX_UNIT_SP, mTagSize);
-                endText.setTextColor(mTagColor);
-            }
-            @SuppressLint("DrawAllocation")
-            LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            endText.setLayoutParams(layoutParams);
-            endText.setText(endTextString == null || endTextString.equals("") ? DEFAULT_END_TEXT_STRING : endTextString);
-            measureChild(endText, widthMeasureSpec, heightMeasureSpec);
-            endTextHeight = endText.getMeasuredHeight();
-            endTextWidth = endText.getMeasuredWidth();
-            addView(endText);
-            endText.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onTagClickListener != null) {
-                        onTagClickListener.onTagClick(-1);
-                    }
-                }
-            });
-        }
+//        if (!mSingleLine) {
+//            return;
+//        }
+//
+//        if (mShowEndText) {
+//            endText = (TextView) mInflater.inflate(mTagResId, null);
+//            if (mTagResId == DEFAULT_TAG_RESID) {
+//                endText.setBackgroundResource(mBackground);
+//                endText.setTextSize(TypedValue.COMPLEX_UNIT_SP, mTagSize);
+//                endText.setTextColor(mTagColor);
+//            }
+//            @SuppressLint("DrawAllocation")
+//            LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//            endText.setLayoutParams(layoutParams);
+//            endText.setText(endTextString == null || endTextString.equals("") ? DEFAULT_END_TEXT_STRING : endTextString);
+//            measureChild(endText, widthMeasureSpec, heightMeasureSpec);
+//            endTextHeight = endText.getMeasuredHeight();
+//            endTextWidth = endText.getMeasuredWidth();
+//            addView(endText);
+//            endText.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (onTagClickListener != null) {
+//                        onTagClickListener.onTagClick(-1);
+//                    }
+//                }
+//            });
+//        }
     }
 
     /**
@@ -216,63 +231,78 @@ public class TagCloudView extends ViewGroup {
      * @return
      */
     private int getSingleTotalHeight(int totalWidth, int totalHeight) {
-        int childWidth;
-        int childHeight;
+        int childCount = getChildCount();
+//        int maxWidth = getMeasuredWidth();
+        int maxHeight = getPaddingBottom() + getPaddingTop();
 
-        totalWidth += mViewBorder;
-
-        int textTotalWidth = getTextTotalWidth();
-        if (textTotalWidth < sizeWidth - imageWidth) {
-            endText = null;
-            endTextWidth = 0;
-        }
-
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            childWidth = child.getMeasuredWidth();
-            childHeight = child.getMeasuredHeight();
-
-
-            if (i == 0) {
-                totalWidth += childWidth;
-                totalHeight = childHeight + mViewBorder;
+        int currentWidth = 0;
+        for (int i = 0; i < childCount; i++) {
+            View childView = getChildAt(i);
+            if ((currentWidth += childView.getMeasuredWidth()) < totalWidth) {
+                maxHeight = Math.max(maxHeight, childView.getMeasuredHeight());
             } else {
-                totalWidth += childWidth + mTagBorderHor;
-            }
-
-            if ((child.getTag() != null) && ((int) child.getTag() == TYPE_TEXT_NORMAL)) {
-                if (totalWidth + mTagBorderHor + mViewBorder + mViewBorder + endTextWidth + imageWidth < sizeWidth) {
-                    child.layout(
-                            totalWidth - childWidth + mTagBorderVer,
-                            totalHeight - childHeight,
-                            totalWidth + mTagBorderVer,
-                            totalHeight);
-                } else {
-                    totalWidth -= childWidth + mViewBorder;
-                    break;
-                }
+                return maxHeight;
             }
         }
-
-        if (endText != null) {
-            endText.layout(
-                    totalWidth + mViewBorder + mTagBorderVer,
-                    totalHeight - endTextHeight,
-                    totalWidth + mViewBorder + mTagBorderVer + endTextWidth,
-                    totalHeight);
-        }
-
-        totalHeight += mViewBorder;
-
-        if (imageView != null) {
-            imageView.layout(
-                    sizeWidth - imageWidth - mViewBorder,
-                    (totalHeight - imageHeight) / 2,
-                    sizeWidth - mViewBorder,
-                    (totalHeight - imageHeight) / 2 + imageHeight);
-        }
-
-        return totalHeight;
+        return maxHeight;
+//
+//        int childWidth;
+//        int childHeight;
+//
+//        totalWidth += mViewBorder;
+//
+//        int textTotalWidth = getTextTotalWidth();
+//        if (textTotalWidth < sizeWidth - imageWidth) {
+//            endText = null;
+//            endTextWidth = 0;
+//        }
+//
+//        for (int i = 0; i < getChildCount(); i++) {
+//            View child = getChildAt(i);
+//            childWidth = child.getMeasuredWidth();
+//            childHeight = child.getMeasuredHeight();
+//
+//
+//            if (i == 0) {
+//                totalWidth += childWidth;
+//                totalHeight = childHeight + mViewBorder;
+//            } else {
+//                totalWidth += childWidth + mTagBorderHor;
+//            }
+//
+//            if ((child.getTag() != null) && ((int) child.getTag() == TYPE_TEXT_NORMAL)) {
+//                if (totalWidth + mTagBorderHor + mViewBorder + mViewBorder + endTextWidth + imageWidth < sizeWidth) {
+//                    child.layout(
+//                            totalWidth - childWidth + mTagBorderVer,
+//                            totalHeight - childHeight,
+//                            totalWidth + mTagBorderVer,
+//                            totalHeight);
+//                } else {
+//                    totalWidth -= childWidth + mViewBorder;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        if (endText != null) {
+//            endText.layout(
+//                    totalWidth + mViewBorder + mTagBorderVer,
+//                    totalHeight - endTextHeight,
+//                    totalWidth + mViewBorder + mTagBorderVer + endTextWidth,
+//                    totalHeight);
+//        }
+//
+//        totalHeight += mViewBorder;
+//
+//        if (imageView != null) {
+//            imageView.layout(
+//                    sizeWidth - imageWidth - mViewBorder,
+//                    (totalHeight - imageHeight) / 2,
+//                    sizeWidth - mViewBorder,
+//                    (totalHeight - imageHeight) / 2 + imageHeight);
+//        }
+//
+//        return totalHeight;
     }
 
     /**
