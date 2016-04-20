@@ -114,8 +114,8 @@ public interface NetApi {
     String bindPhoneNumber = HOST + "/personal/bindPhoneNumber";//绑定手机号
     String unBindThrid = HOST + "/oauth/delbind";
     String getVersionInfo = HOST + "/public/getVersion";//查看版本信息
-    String getVisitedInfo = HOST +"/operate/outView";//获得评价内容
-    String updateRatingInfo = HOST + "/operate/userOutPlace";//更新评价
+    String getVisitedInfo = HOST +"/operate/outView?placeId=%d";//获得评价内容
+    String updateRatingInfo = HOST + "/operate/userOutPlace?placeId=%d";//更新评价
     String getFilterTags = HOST + "/public/getCategoryTags";//获得筛选标签
     /****************** POST *******************/
 }
