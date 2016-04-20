@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.TagsModel;
@@ -78,8 +79,20 @@ public class NearbyActivity extends BaseActivity {
                                 }
                                 mStrFilterPattern = mStrFilterPattern.substring(0,mStrFilterPattern.length()-1);
                             }
-                            loadData(false);
-                            mCurrentPageNo = 1;
+
+                            DialogUtil.showProgess(NearbyActivity.this,R.string.loading_dialog_text);
+                            NearbyPresenter.getNearbyData(getApplicationContext(),mRecommendPlaceIds,mStrFilterPattern,0,mPlaceId,SPUtils.getCityId(),SPUtils.getLatitude(),SPUtils.getLongitude(),mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
+                                @Override
+                                public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
+                                    mData.clear();
+                                    if (mMaxPageNo==-1){
+                                        mMaxPageNo = pMaxPageNo;
+                                    }
+                                    mData.addAll(model);
+                                    mAdapter.notifyDataSetChanged();
+                                    DialogUtil.dismissProgess();
+                                }
+                            });
                         }
                     });
                 }
@@ -131,19 +144,24 @@ public class NearbyActivity extends BaseActivity {
             mData.clear();
             mCurrentPageNo = 1;
         }else if (mCurrentPageNo<mMaxPageNo){
+
             mCurrentPageNo +=1;
         }
+        DialogUtil.showProgess(this,R.string.loading_dialog_text);
+
         mIsLoading = true;
 
         NearbyPresenter.getNearbyData(getApplicationContext(),mRecommendPlaceIds,mStrFilterPattern,0,mPlaceId,SPUtils.getCityId(),SPUtils.getLatitude(),SPUtils.getLongitude(),mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
             @Override
             public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
+                System.out.println("7");
                 if (mMaxPageNo==-1){
                     mMaxPageNo = pMaxPageNo;
                 }
                 mData.addAll(model);
                 mAdapter.notifyDataSetChanged();
                 mIsLoading = false;
+                DialogUtil.dismissProgess();
             }
         });
     }

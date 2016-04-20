@@ -9,7 +9,7 @@ public interface NetApi {
     String RELEASE_HOST = "http://www.quchu.co/app-main-service";
     String HOST_UAT = "http://uat.quchu.co/app-main-service";
 
-    String HOST_SIT = "http://sit.quchu.co/app-main-service-test";
+    String HOST_SIT = "http://sit.quchu.co/app-main-service";
 
     String HOST = BuildConfig.API_SERVER == 0 ? RELEASE_HOST : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;
     /****
@@ -106,7 +106,7 @@ public interface NetApi {
     String saveOrUpdateCard = HOST + "/operate/saveOrUpdateCard"; //意见反馈
     String updateUser = HOST + "/personal/updateUser"; //修改用户设置
     ///TODO
-    String visitorRegiester = "http://sit.quchu.co/app-main-service" + "/mregister?visitors=1&equip=%s";
+    String visitorRegiester = HOST + "/mregister?visitors=1&equip=%s";
     String checkIfForceUpdate = HOST + "/public/getIsUpdate";
     String findPosition = HOST + "/operate/proposalPlace?place.pId=%s&place.pname=%s&place.paddress=%s&place.profile=%s&place.pimage=%s";//发现趣处
 
