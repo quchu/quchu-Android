@@ -1,11 +1,13 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -170,6 +172,7 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
                             intent1.putExtra("IsVisitorLogin", true);
                             intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent1);
+                            SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);
                         }
                     }
                 });
@@ -385,6 +388,8 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
     @Override
     protected void onResume() {
         userInfoBinding();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(accountSettingNicknameEt.getWindowToken(), 0);
         super.onResume();
         MobclickAgent.onPageStart("AccountSettingActivity");
     }

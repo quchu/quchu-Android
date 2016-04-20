@@ -4,20 +4,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +42,9 @@ import co.quchu.quchu.widget.planetanimations.MyAnimation;
  * Date: 2015-11-09
  * 趣星人
  */
-public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.OnGlobalLayoutListener{
+public class QuFriendsActivity extends BaseActivity {
     @Bind(R.id.planet_avatar_icon)
     ImageView planetAvatarIcon;
-    @Bind(R.id.mid_luncher)
-    FrameLayout midLuncher;
     @Bind(R.id.design_rpv)
     RoundProgressView designRpv;
     @Bind(R.id.pavilion_rpv)
@@ -61,24 +57,15 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
     RoundProgressView cateRpv;
     @Bind(R.id.planet_gene_tv)
     TextView planetGeneTv;
-    @Bind(R.id.qu_friends_tab_stl)
-    SmartTabLayout quFriendsTabStl;
     @Bind(R.id.qu_friends_vp)
     ViewPager quFriendsVp;
-    /**
-     * title
-     ***/
+
     @Bind(R.id.title_more_rl)
     RelativeLayout titleMoreRl;
     @Bind(R.id.title_content_tv)
     TextView title_content_tv;
-    public static final String BUNDLE_KEY_SUBSCRIBERS = "BUNDLE_KEY_SUBSCRIBERS";
-    public static final String BUNDLE_KEY_FOLLOWERS = "BUNDLE_KEY_FOLLOWERS";
-    public static final String BUNDLE_KEY_FROM_SUBSCRIBE = "BUNDLE_KEY_FROM_SUBSCRIBE";
-    private int mSubscribers;
-    private int mFollowers;
-    private boolean mFromSubscribe = false;
-    private int AnimationDuration = 160 * 1000;
+    @Bind(R.id.tabLayout)
+    TabLayout tabLayout;
     private AnimatorSet animatorSet;
     private boolean isShowing = true;
 
@@ -89,47 +76,51 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
         setContentView(R.layout.activity_qu_friends);
         ButterKnife.bind(this);
         initTitleBar();
-        mSubscribers = getIntent().getIntExtra(BUNDLE_KEY_SUBSCRIBERS,0);
-        mFollowers = getIntent().getIntExtra(BUNDLE_KEY_FOLLOWERS,0);
-        mFromSubscribe = getIntent().getBooleanExtra(BUNDLE_KEY_FROM_SUBSCRIBE,false);
-        mSubscribers = mSubscribers<0?0:mSubscribers;
-        mFollowers = mFollowers<0?0:mFollowers;
         titleMoreRl.setVisibility(View.INVISIBLE);
         title_content_tv.setText(getTitle().toString());
         planetGeneTv.setText(getResources().getString(R.string.text_planet_discover_friends));
         StringUtils.alterBoldTextColor(planetGeneTv, 4, 7, R.color.gene_textcolor_yellow);
 
+
+        tabLayout.addTab(tabLayout.newTab().setText("我关注的"));
+        tabLayout.addTab(tabLayout.newTab().setText("关注我的"));
+
         Bundle bundleSub = new Bundle();
         Bundle bundleFlr = new Bundle();
-        bundleSub.putBoolean(FriendsFollowerFg.BUNDLE_KEY_IS_SUBSCRIBE,true);
-        bundleFlr.putBoolean(FriendsFollowerFg.BUNDLE_KEY_IS_SUBSCRIBE,false);
+        bundleSub.putBoolean(FriendsFollowerFg.BUNDLE_KEY_IS_SUBSCRIBE, true);
+        bundleFlr.putBoolean(FriendsFollowerFg.BUNDLE_KEY_IS_SUBSCRIBE, false);
         planetAvatarIcon.setImageURI(Uri.parse(AppContext.user.getPhoto()));
 
-        final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add(String.format(getString(R.string.text_friends_following), mSubscribers), FriendsFollowerFg.class,bundleSub)
-                .add(String.format(getString(R.string.text_friends_follower),mFollowers), FriendsFollowerFg.class,bundleFlr)
-                .create());
+        FriendsFollowerFg fragment1 = new FriendsFollowerFg();
+        fragment1.setArguments(bundleSub);
+        FriendsFollowerFg fragment2 = new FriendsFollowerFg();
+        fragment2.setArguments(bundleFlr);
 
-        quFriendsVp.setAdapter(adapter);
-        quFriendsTabStl.setViewPager(quFriendsVp);
-        quFriendsVp.setPageTransformer(true, new RotatePageTransformer());
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(fragment1);
+        fragments.add(fragment2);
+        quFriendsVp.setAdapter(new fragmentAdapter(getSupportFragmentManager(), fragments));
 
-        quFriendsTabStl.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onTabSelected(TabLayout.Tab tab) {
+                quFriendsVp.setCurrentItem(tab.getPosition(), false);
             }
 
             @Override
-            public void onPageSelected(int position) {
+            public void onTabUnselected(TabLayout.Tab tab) {
 
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
+
+
+        quFriendsVp.setPageTransformer(true, new RotatePageTransformer());
+
 
         pavilionRpv.setProgressText("");
         designRpv.setProgressText("");
@@ -146,7 +137,7 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
         FollowPresenter.getCurrentUserFollowers(getApplicationContext(), false, FollowPresenter.TAFOLLOWING, 1, new FollowPresenter.GetFollowCallBack() {
             @Override
             public void onSuccess(ArrayList<FollowUserModel> lists) {
-                if (null==lists){
+                if (null == lists) {
                     return;
                 }
                 for (int i = 0; i < lists.size(); i++) {
@@ -182,26 +173,33 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
             }
         });
 
-
-
-        quFriendsVp.setCurrentItem(mFromSubscribe?0:1);
-        ViewTreeObserver vto = planetAvatarIcon.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(this);
+        initAnimation();
     }
+
+    class fragmentAdapter extends FragmentPagerAdapter {
+        List<Fragment> fragments;
+
+        public fragmentAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm);
+            this.fragments = fragments;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments == null ? 0 : fragments.size();
+        }
+    }
+
 
     @Override
     protected int activitySetup() {
         return TRANSITION_TYPE_LEFT;
     }
-
-    @Override
-    public void onGlobalLayout() {
-//        int heigh = midLuncher.getHeight() / 2;
-        midLuncher.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-        initAnimation();
-    }
-
-
 
 
     /**
@@ -212,10 +210,7 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
     public void initAnimation() {
         final MovePath movePath = new MovePath();
         List animationList = new ArrayList();  //动画集合
-        DisplayMetrics dm = new DisplayMetrics();
-        //获取屏幕信息
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int screenWidth = dm.widthPixels;
+
         //movePath.getCircleData 获取圆形移动路径
         List lis4t = movePath.getCircleData(designRpv, new float[]{StringUtils.dip2px(this, -26), StringUtils.dip2px(this, 88)});
         List list2 = movePath.getCircleData(pavilionRpv, new float[]{StringUtils.dip2px(this, -108), StringUtils.dip2px(this, 14)});
@@ -224,15 +219,16 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
         List list5 = movePath.getCircleData(cateRpv, new float[]{StringUtils.dip2px(this, 126), 0});
         MyAnimation moveAnimation = new MyAnimation();
         //将5个button 的移动动画加入list集合中
-        animationList.add(moveAnimation.setTranslation(designRpv, (List) lis4t.get(0), (List) lis4t.get(1), AnimationDuration));
-        animationList.add(moveAnimation.setTranslation(pavilionRpv, (List) list2.get(0), (List) list2.get(1), AnimationDuration));
+        int animationDuration = 160 * 1000;
+        animationList.add(moveAnimation.setTranslation(designRpv, (List) lis4t.get(0), (List) lis4t.get(1), animationDuration));
+        animationList.add(moveAnimation.setTranslation(pavilionRpv, (List) list2.get(0), (List) list2.get(1), animationDuration));
 
-        animationList.add(moveAnimation.setTranslation(atmosphereRpv, (List) list3.get(0), (List) list3.get(1), AnimationDuration));
-        animationList.add(moveAnimation.setTranslation(strollRpv, (List) list1.get(0), (List) list1.get(1), AnimationDuration));
-        animationList.add(moveAnimation.setTranslation(cateRpv, (List) list5.get(0), (List) list5.get(1), AnimationDuration));
+        animationList.add(moveAnimation.setTranslation(atmosphereRpv, (List) list3.get(0), (List) list3.get(1), animationDuration));
+        animationList.add(moveAnimation.setTranslation(strollRpv, (List) list1.get(0), (List) list1.get(1), animationDuration));
+        animationList.add(moveAnimation.setTranslation(cateRpv, (List) list5.get(0), (List) list5.get(1), animationDuration));
 
         animatorSet = moveAnimation.playTogether(animationList); //动画集合
-        animatorSet.setDuration(AnimationDuration);
+        animatorSet.setDuration(animationDuration);
         animatorSet.setInterpolator(new BezierInterpolators(0.03f, 0.08f, 0.1f, 0.1f));
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -257,7 +253,7 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
 
             }
         });
-        if (myHandler!=null)
+        if (myHandler != null)
             myHandler.sendMessageDelayed(myHandler.obtainMessage(0), 0);
     }
 
@@ -284,16 +280,6 @@ public class QuFriendsActivity extends BaseActivity implements ViewTreeObserver.
             super.handleMessage(msg);
         }
     };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
 
     @Override
     protected void onDestroy() {

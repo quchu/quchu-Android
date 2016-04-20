@@ -13,7 +13,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.photoselected.PreviewImageActivity;
-import co.quchu.quchu.view.activity.MenusActivity;
 import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
@@ -92,10 +91,11 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
     public void finish() {
         super.finish();
 
-        if (this instanceof MenusActivity) {
-            overridePendingTransition(R.anim.out_bottom_to_top,
-                    R.anim.out_bottom_to_top);
-        } else if (this instanceof PreviewImageActivity) {
+//        if (this instanceof MenusActivity) {
+//            overridePendingTransition(R.anim.out_bottom_to_top,
+//                    R.anim.out_bottom_to_top);
+//        } else
+        if (this instanceof PreviewImageActivity) {
             overridePendingTransition(R.anim.in_alpha,
                     R.anim.out_alpha);
         } else {
@@ -114,10 +114,10 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
     @Override
     protected void onResume() {
         super.onResume();
-        if (this instanceof MenusActivity) {
-            overridePendingTransition(R.anim.in_top_to_bottom,
-                    R.anim.in_stable);
-        }
+//        if (this instanceof MenusActivity) {
+//            overridePendingTransition(R.anim.in_top_to_bottom,
+//                    R.anim.in_stable);
+//        }
         MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);
     }
@@ -163,13 +163,14 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         mvv.setMoreClick(this);
     }
 
-    public EnhancedToolbar getEnhancedToolbar(){
-        return null==enhancedToolbar?initToolbar():enhancedToolbar;
+    public EnhancedToolbar getEnhancedToolbar() {
+        return null == enhancedToolbar ? initToolbar() : enhancedToolbar;
     }
+
     private EnhancedToolbar enhancedToolbar;
 
-    private EnhancedToolbar initToolbar(){
-        if (null!=findViewById(R.id.enhancedToolbar)){
+    private EnhancedToolbar initToolbar() {
+        if (null != findViewById(R.id.enhancedToolbar)) {
             enhancedToolbar = (EnhancedToolbar) findViewById(R.id.enhancedToolbar);
             enhancedToolbar.getLeftIv().setImageResource(R.mipmap.ic_back);
             enhancedToolbar.getLeftIv().setScaleType(ImageView.ScaleType.CENTER);
@@ -182,7 +183,7 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
             enhancedToolbar.getTitleTv().setText(getTitle());
             setSupportActionBar(enhancedToolbar);
             return enhancedToolbar;
-        }else{
+        } else {
             return null;
         }
     }

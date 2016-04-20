@@ -93,11 +93,17 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View childView = getChildAt(i);
+            int width = MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY);
+            int height = MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY);
+            measureChild(childView, width, height);
+        }
+    }
 
-        getContentView().measure(MeasureSpec.makeMeasureSpec(
-                getMeasuredWidth() - getPaddingLeft() - getPaddingRight(),
-                MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
-                getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
-
+    @Override
+    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
+        return super.onNestedFling(target, velocityX, velocityY, consumed);
     }
 }

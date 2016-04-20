@@ -6,7 +6,7 @@ package co.quchu.quchu.utils;
  * Date: 2015-10-19
  * SharedPreferencesUtils Key汇总
  */
-public class AppKey {
+public interface AppKey {
     /**
      * sharedPreference 文件名
      */
@@ -101,4 +101,9 @@ public class AppKey {
      * 强制更新说明
      */
     public static final String SPF_KEY_FORCE_UPDATE_REASON = "SPF_KEY_FORCE_UPDATE_REASON";
+
+    /**
+     * 当前登陆的类型 微信 手机 游客 微博
+     */
+    String LOGIN_TYPE = "login_type";
 }

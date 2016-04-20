@@ -79,6 +79,7 @@ public class NearbyActivity extends BaseActivity {
                                 mStrFilterPattern = mStrFilterPattern.substring(0,mStrFilterPattern.length()-1);
                             }
                             loadData(false);
+                            mCurrentPageNo = 1;
                         }
                     });
                 }

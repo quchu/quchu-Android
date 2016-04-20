@@ -13,7 +13,7 @@ android {
         versionName "1.1.4"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
-        vectorDrawables.generatedDensities = ['xhdpi']
+        vectorDrawables.generatedDensities = ['xhdpi','xxhdpi','hdpi']
         vectorDrawables.useSupportLibrary = true
     }
     lintOptions {
@@ -142,8 +142,8 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
-    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
+//    compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
+//    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
     compile 'com.qiniu:qiniu-android-sdk:7.0.+'
     compile 'com.facebook.rebound:rebound:0.3.8'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'

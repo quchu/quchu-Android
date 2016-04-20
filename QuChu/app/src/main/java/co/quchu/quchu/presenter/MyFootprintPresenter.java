@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
@@ -27,12 +28,14 @@ public class MyFootprintPresenter {
         this.view = view;
     }
 
-    public void getMoreMyFoiotrintList(final int pageNo) {
+    public void getMoreMyFoiotrintList(int userId, final int pageNo) {
 
         Map<String, String> params = new HashMap<>();
         params.put("pageno", String.valueOf(pageNo));
+        params.put("userId", String.valueOf(userId));
 
-        GsonRequest<PostCardModel> request = new GsonRequest<>(NetApi.GetCardList, PostCardModel.class, params, new ResponseListener<PostCardModel>() {
+        String uri = userId == AppContext.user.getUserId() ? NetApi.GetCardList : NetApi.getUserCardList;
+        GsonRequest<PostCardModel> request = new GsonRequest<>(uri, PostCardModel.class, params, new ResponseListener<PostCardModel>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
 

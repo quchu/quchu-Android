@@ -74,7 +74,11 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
                 break;
             case R.id.bind_wecha:
                 if (AppContext.user.isIsweixin()) {
-                    unBind(true, TYPE_Wecha);
+                    if (SPUtils.getLoginType().equals(SPUtils.LOGIN_TYPE_WEIXIN)) {
+                        Toast.makeText(this, "当前登录账号不能解绑", Toast.LENGTH_SHORT).show();
+                    } else {
+                        unBind(true, TYPE_Wecha);
+                    }
                 } else {
                     WechatHelper helper = WechatHelper.getInstance(this);
                     helper.bind(this);
@@ -82,7 +86,11 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
                 break;
             case R.id.bind_sina:
                 if (AppContext.user.isIsweibo()) {
-                    unBind(false, TYPE_WEIBO);
+                    if (SPUtils.getLoginType().equals(SPUtils.LOGIN_TYPE_WEIBO)) {
+                        Toast.makeText(this, "当前登录账号不能解绑", Toast.LENGTH_SHORT).show();
+                    } else {
+                        unBind(false, TYPE_WEIBO);
+                    }
                 } else {
                     new WeiboHelper(this, this).weiboLogin(this, false);
                 }

@@ -40,7 +40,7 @@ public class UserGuideFragment extends BaseFragment {
     public void startGuide(View view) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
-        getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra("isGuide", true));
+        getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
         getActivity().finish();
     }
 

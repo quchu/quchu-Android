@@ -116,6 +116,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_AGE, userInfo.getAge());
                 intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_COUND, userInfo.getCardNum());
                 intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_PHOTO, userInfo.getPhoto());
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_TITLE, userInfo.getName() + "的脚印");
                 startActivity(intent);
 
         }

@@ -83,6 +83,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
         adapter = new TagsFilterDialogAdapter(mDataset,  new TagsFilterDialogAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(int index) {
+                mDataset.get(index).setPraise(!mDataset.get(index).isPraise());
                 adapter.notifyDataSetChanged();
             }
         });

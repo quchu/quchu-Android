@@ -143,12 +143,12 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 //        this.finish();
     }
 
-    /**
-     * 进入引导
-     */
-    public void starGuideView() {
-        startActivity(new Intent(this, PlanetActivity.class));
-    }
+//    /**
+//     * 进入引导
+//     */
+//    public void starGuideView() {
+//        startActivity(new Intent(this, PlanetActivity.class));
+//    }
 
 
 }
