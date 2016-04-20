@@ -91,7 +91,7 @@ public class FootPrintActivity extends BaseActivity {
         FootPrintPresenter.getFootprint(getApplicationContext(), mQuchuId, mCurrentPageNo, new FootPrintPresenter.GetFootprintDataListener() {
             @Override
             public void getFootprint(List<FootprintModel> model, int pMaxPageNo) {
-                System.out.println("getFootPrint");
+
                 mMaxPageNo = pMaxPageNo;
                 mData.addAll(model);
                 mData.addAll(model);

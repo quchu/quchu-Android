@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -65,7 +66,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private DetailModel mData;
     private View.OnClickListener mOnItemClickListener;
     public static final int BLOCK_INDEX = 7;
-    private OnLoadMoreListener mLoadMoreListener;
     private boolean mOnLoadingMore = false;
     private VisitedUsersModel mVisitedUsers;
     private int mVisitedUsersAvatarSize = -1;
@@ -123,16 +123,17 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public void setLoadMoreListener(OnLoadMoreListener pListener){
-        mLoadMoreListener = pListener;
-    }
 
     public void updateVisitorAnalysis(SimpleQuchuDetailAnalysisModel response) {
         mAnalysisModel = response;
         notifyDataSetChanged();
     }
 
+    public void setLoadMoreListener(OnLoadMoreListener pListener){
+        mLoadMoreListener = pListener;
+    }
 
+    private OnLoadMoreListener mLoadMoreListener;
     public interface OnLoadMoreListener {
         void onLoadMore();
     }
@@ -226,8 +227,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     public void onPageScrollStateChanged(int state) {}
                 });
                 ((IntroImageViewHolder) holder).vpGallery.setOnTouchListener(listener);
-                //((IntroImageViewHolder) holder).simpleDraweeView.setImageURI(Uri.parse(mData.getCover()));
-                //((IntroImageViewHolder) holder).simpleDraweeView.setAspectRatio(1.2f);
             }
 
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
@@ -407,30 +406,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
                 ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex-1).getAddress());
                 ((NearbyViewHolder) holder).sdvImage.setImageURI(Uri.parse(mData.getNearPlace().get(imgIndex - 1).getCover()));
-//                int imgIndex = position - BLOCK_INDEX;
-//                if (null != mData.getImglist()) {
-//                    imgIndex -= mData.getImglist().size();
-//                }
-//
-//                ((NearByViewHolder) holder).textView.setText(mData.getNearPlace().get(imgIndex - 1).getTag());
-//                ((NearByViewHolder) holder).recyclerview.setLayoutManager(new LinearLayoutManager(mAnchorActivity, LinearLayoutManager.HORIZONTAL, false));
-//                ((NearByViewHolder) holder).recyclerview.setAdapter(new NearbySpotAdapter(mData.getNearPlace().get(imgIndex - 1).getPlaces()));
-//                if (null != ((NearByViewHolder) holder).recyclerview.getTag() && ((boolean) ((NearByViewHolder) holder).recyclerview.getTag())) {
-//
-//                } else {
-//                    ((NearByViewHolder) holder).recyclerview.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin)));
-//                    ((NearByViewHolder) holder).recyclerview.setTag(true);
-//                }
-//
-//                ((NearByViewHolder) holder).recyclerview.setOnTouchListener(listener);
 
             }
         } else if (holder instanceof LoadMoreViewHolder){
             if (null!=mLoadMoreListener){
-                mOnLoadingMore = true;
                 mLoadMoreListener.onLoadMore();
             }
-
             if (mOnLoadingMore){
                 ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore,"rotation",0,360);
                 rotation.setInterpolator(new LinearInterpolator());
@@ -441,12 +422,17 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }else{
                 ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
             }
+
+
         }
     }
 
     public void finishLoadMore(){
         mOnLoadingMore = false;
-        notifyDataSetChanged();
+    }
+
+    public void startLoadMore(){
+        mOnLoadingMore = true;
     }
 
 
@@ -657,30 +643,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-//    public static class NearByViewHolder extends RecyclerView.ViewHolder {
-//        @Bind(R.id.recyclerview)
-//        RecyclerView recyclerview;
-//        @Bind(R.id.tvTagName)
-//        TextView textView;
-//
-//        NearByViewHolder(View view) {
-//            super(view);
-//            ButterKnife.bind(this, view);
-//        }
-//    }
-
-//    public static class NearbyItemViewHolder extends RecyclerView.ViewHolder {
-//        @Bind(R.id.ivImage)
-//        SimpleDraweeView ivImage;
-//        @Bind(R.id.tvName)
-//        TextView tvName;
-//
-//        NearbyItemViewHolder(View view) {
-//            super(view);
-//            ButterKnife.bind(this, view);
-//            view.setLayoutParams(new ViewGroup.LayoutParams((int) (AppContext.Width / 3.5f), (int) (AppContext.Width / 3.5f)));
-//        }
-//    }
 
     public static class BlankViewHolder extends RecyclerView.ViewHolder {
         BlankViewHolder(View view) {
@@ -704,48 +666,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-
-//    class NearbySpotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-//
-//        List<DetailModel.Places> mData;
-//
-//        public NearbySpotAdapter(List<DetailModel.Places> data) {
-//            this.mData = data;
-//        }
-//
-//        @Override
-//        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            return new NearbyItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout., parent, false));
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-//            ((NearbyItemViewHolder) holder).tvName.setText(mData.get(position).getName());
-//            if (null != mData.get(position).getCover()) {
-//
-//                ((NearbyItemViewHolder) holder).ivImage.setImageURI(Uri.parse(mData.get(position).getCover()));
-//                ((NearbyItemViewHolder) holder).ivImage.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if (!KeyboardUtils.isFastDoubleClick()) {
-//                            mAnchorActivity.startActivity(new Intent(mAnchorActivity, QuchuDetailsActivity.class).putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid()));
-//                        }
-//
-//                    }
-//                });
-//            }
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            if (null != mData) {
-//                return mData.size();
-//            } else {
-//                return 0;
-//            }
-//        }
-//
-//    }
 
 
 }

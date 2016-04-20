@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.TagsModel;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.NearbyAdapter;
@@ -34,43 +37,59 @@ public class NearbyActivity extends BaseActivity {
     RecyclerView detailRecyclerview;
     @Bind(R.id.detail_store_tagclound_tcv)
     TagCloudView tagCloudView;
-
     NearbyAdapter mAdapter;
     private int mMaxPageNo = -1;
     private int mCurrentPageNo = 1;
-    private String mTagsInfo;
     private List<NearbyItemModel> mData = new ArrayList<>();
     private boolean mIsLoading = false;
+    public static final String BUNDLE_KEY_PID = "BUNDLE_KEY_PID";
+    public static final String BUNDLE_KEY_RECOMMEND_PIDS = "BUNDLE_KEY_RECOMMEND_PIDS";
+    public static final String BUNDLE_KEY_DATA = "BUNDLE_KEY_DATA";
+    private int mPlaceId;
+    private String mRecommendPlaceIds;
+    private String mStrFilterPattern;
+    private ArrayList<TagsModel> mFilterTags = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby);
-        ButterKnife.bind(this);
+        mStrFilterPattern = "";
         getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_tags_filter);
         getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<TagsModel> data = new ArrayList<>();
-                            for (int i = 0; i < 19; i++) {
-                                TagsModel tag = new TagsModel();
-                                tag.setCode(String.valueOf(i));
-                                tag.setEn("EN"+i);
-                                tag.setZh("标签"+ (i%7==0?"凑数":""));
-                                tag.setTagId(i*1000);
-                                data.add(tag);
+                if (mFilterTags.size()>0){
+                    TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(mFilterTags);
+                    tagsFilterDialog.show(getFragmentManager(),"");
+                    tagsFilterDialog.setPickingListener(new TagsFilterDialog.OnFinishPickingListener() {
+                        @Override
+                        public void onFinishPicking(List<TagsModel> selection) {
+
+                            mStrFilterPattern = "";
+
+                            if (selection.size()==1){
+                                mStrFilterPattern += selection.get(0).getTagId();
+                            }else{
+                                for (int i = 0; i < selection.size(); i++) {
+                                    mStrFilterPattern+=selection.get(i).getTagId();
+                                    mStrFilterPattern+="|";
+                                }
+                                mStrFilterPattern = mStrFilterPattern.substring(0,mStrFilterPattern.length()-1);
                             }
-                            ArrayList<Boolean> selection = new ArrayList<>();
-                            selection.add(false);
-                            selection.add(true);
-                            selection.add(false);
-                            selection.add(true);
-                            selection.add(false);
-                            TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(data,selection);
-                            tagsFilterDialog.show(getFragmentManager(),"");
+                            loadData(false);
+                        }
+                    });
+                }
 
             }
         });
+        mPlaceId = getIntent().getIntExtra(BUNDLE_KEY_PID,-1);
+        mRecommendPlaceIds = getIntent().getStringExtra(BUNDLE_KEY_RECOMMEND_PIDS);
+        mData.addAll((List<NearbyItemModel>)getIntent().getSerializableExtra(BUNDLE_KEY_DATA));
+
+        ButterKnife.bind(this);
         mAdapter = new NearbyAdapter(mData);
         detailRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
         detailRecyclerview.setAdapter(mAdapter);
@@ -80,8 +99,29 @@ public class NearbyActivity extends BaseActivity {
                 loadData(true);
             }
         });
-        loadData(false);
+
+        loadFilterData();
+        //loadData(false);
     }
+
+
+
+    private void loadFilterData(){
+        NearbyPresenter.getFilterData(getApplicationContext(), new CommonListener<List<TagsModel>>() {
+            @Override
+            public void successListener(List<TagsModel> response) {
+                mFilterTags.clear();
+                mFilterTags.addAll(response);
+
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+
+            }
+        });
+    }
+
 
     private void loadData(final boolean loadMore) {
         if (mIsLoading) return;
@@ -93,7 +133,8 @@ public class NearbyActivity extends BaseActivity {
             mCurrentPageNo +=1;
         }
         mIsLoading = true;
-        NearbyPresenter.getNearbyData(getApplicationContext(), SPUtils.getCityId(), mTagsInfo, SPUtils.getLatitude(), SPUtils.getLongitude(), mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
+
+        NearbyPresenter.getNearbyData(getApplicationContext(),mRecommendPlaceIds,mStrFilterPattern,0,mPlaceId,SPUtils.getCityId(),SPUtils.getLatitude(),SPUtils.getLongitude(),mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
             @Override
             public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
                 if (mMaxPageNo==-1){

@@ -4,20 +4,14 @@ import android.content.Context;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
-import co.quchu.quchu.model.SimpleUserModel;
 import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
-import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -136,18 +130,17 @@ public class InterestingDetailPresenter {
         });
     }
 
-    public static void updateVisitedInfo(Context context, int pId,int score,String tagIds, final CommonListener<VisitedInfoModel> pListener){
-        NetService.get(context, String.format(NetApi.getVisitedInfo, pId), new IRequestListener() {
+    public static void updateRatingInfo(Context context, int pId,int score,String tagIds,final DetailDataListener listener){
+        NetService.get(context, String.format(NetApi.updateRatingInfo, pId), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                VisitedInfoModel visitedInfoModel = new Gson().fromJson(response.toString(),VisitedInfoModel.class);
-                pListener.successListener(visitedInfoModel);
+                listener.onSuccessCall("");
 
             }
 
             @Override
             public boolean onError(String error) {
-                pListener.errorListener(new VolleyError(error),"","");
+                listener.onErrorCall("");
                 return false;
             }
         });

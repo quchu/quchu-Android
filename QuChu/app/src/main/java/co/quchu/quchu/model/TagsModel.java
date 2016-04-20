@@ -1,11 +1,13 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
+
 /**
  * Created by linqipeng on 2016/3/4 09:42
  * email:437943145@qq.com
  * desc: 首页tablayout数据实体
  */
-public class TagsModel {
+public class TagsModel implements Serializable{
     private String zh;
     private String en;
     private int tagId;

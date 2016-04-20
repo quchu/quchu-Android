@@ -8,8 +8,8 @@ import co.quchu.quchu.BuildConfig;
 public interface NetApi {
     String RELEASE_HOST = "http://www.quchu.co/app-main-service";
     String HOST_UAT = "http://uat.quchu.co/app-main-service";
-    //    String HOST_SIT = "http://sit.quchu.co/app-main-service-test";
-    public static String HOST_SIT = "http://192.168.1.134:8080/appservices";
+    String HOST_SIT = "http://sit.quchu.co/app-main-service-test";
+    //public static String HOST_SIT = "http://192.168.1.134:8080/appservices";
     String HOST = BuildConfig.API_SERVER == 0 ? RELEASE_HOST : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;
     /****
      * Get start
@@ -85,7 +85,7 @@ public interface NetApi {
 
 
     String getCategoryTags = HOST + "/place/getCategoryTags?cityId=%d";  //获取tag 列表
-    String getNearby = HOST + "/place/nearPlaces?tagIds=%s&cityId=%d&latitude=%s&longitude=%s&pagesNo=%d";
+    String getNearby = HOST + "/place/nearPlaces?cityId=%d&latitude=%s&longitude=%s&pagesNo=%d&recommendPlaceIds=%s&categoryTagIds=%s&isFirst=%d&placeId=%d";
     String getMapNearby = HOST + "/place/nearbyMapPlaces?name=%s&cityId=%d&latitude=%s&longitude=%s";
     String getFootprint = HOST + "/place/getCardList?pId=%d&pageno=%d";
     String getSearchResult = HOST + "/place/getSelectPlaces?cityId=%d&name=%d";
@@ -114,6 +114,7 @@ public interface NetApi {
     String unBindThrid = HOST + "/oauth/delbind";
     String getVersionInfo = HOST + "/public/getVersion";//查看版本信息
     String getVisitedInfo = HOST +"/operate/outView";//获得评价内容
-    String updateVisitedInfo = HOST + "/operate/userOutPlace";//更新评价
+    String updateRatingInfo = HOST + "/operate/userOutPlace";//更新评价
+    String getFilterTags = HOST + "/public/getCategoryTags";//获得筛选标签
     /****************** POST *******************/
 }

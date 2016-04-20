@@ -34,8 +34,9 @@ import co.quchu.quchu.net.ResponseListener;
  * Date: 2015-12-13
  */
 public class NearbyPresenter {
-    public static void getNearbyData(Context context, int cityId,String tags,double latitude,double longitude,int pageNo, final getNearbyDataListener listener) {
-        NetService.get(context, String.format(NetApi.getNearby, tags,cityId,String.valueOf(latitude),String.valueOf(longitude),pageNo), new IRequestListener() {
+    public static void getNearbyData(Context context,String recommendPlaceIds,String categoryTagIds,int isFirst,int placeId, int cityId,double latitude,double longitude,int pageNo, final getNearbyDataListener listener) {
+        String url = String.format(NetApi.getNearby,cityId,String.valueOf(latitude),String.valueOf(longitude),pageNo,recommendPlaceIds,categoryTagIds,isFirst,placeId);
+        NetService.get(context, url, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 if (response != null && response.has("result") && response.has("pageCount")) {
@@ -71,6 +72,23 @@ public class NearbyPresenter {
 
             @Override
             public void onResponse(List<NearbyMapModel> response, boolean result, @Nullable String exception, @Nullable String msg) {
+                listener.successListener(response);
+            }
+        });
+        request.start(context, null);
+
+    }
+
+    public static void getFilterData(Context context,final CommonListener<List<TagsModel>> listener) {
+
+        GsonRequest<List<TagsModel>> request = new GsonRequest<>(Request.Method.GET,NetApi.getFilterTags, new TypeToken<List<TagsModel>>(){}.getType(), new ResponseListener<List<TagsModel>>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                listener.errorListener(error, "", "");
+            }
+
+            @Override
+            public void onResponse(List<TagsModel> response, boolean result, @Nullable String exception, @Nullable String msg) {
                 listener.successListener(response);
             }
         });

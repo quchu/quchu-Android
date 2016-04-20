@@ -19,13 +19,11 @@ import co.quchu.quchu.model.TagsModel;
 public class TagsFilterDialogAdapter extends RecyclerView.Adapter<TagsFilterDialogAdapter.ViewHolder> {
 
     List<TagsModel> mData;
-    List<Boolean> mSelection;
 
     private OnItemSelectedListener mListener;
 
-    public TagsFilterDialogAdapter(List<TagsModel> pData, List<Boolean> pSelection, OnItemSelectedListener pListener) {
+    public TagsFilterDialogAdapter(List<TagsModel> pData, OnItemSelectedListener pListener) {
         this.mData = pData;
-        this.mSelection = pSelection;
         this.mListener = pListener;
     }
 
@@ -37,8 +35,8 @@ public class TagsFilterDialogAdapter extends RecyclerView.Adapter<TagsFilterDial
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvTag.setText(mData.get(position).getZh());
-        holder.tvTag.setBackgroundResource(mSelection.get(position)?R.drawable.shape_lineframe_white_fill:R.drawable.shape_lineframe_white);
-        int color = holder.tvTag.getResources().getColor(mSelection.get(position)?R.color.appBackground:R.color.white);
+        holder.tvTag.setBackgroundResource(mData.get(position).isPraise()?R.drawable.shape_lineframe_white_fill:R.drawable.shape_lineframe_white);
+        int color = holder.tvTag.getResources().getColor(mData.get(position).isPraise()?R.color.appBackground:R.color.white);
         holder.tvTag.setTextColor(color);
 
         holder.tvTag.setOnClickListener(new View.OnClickListener() {

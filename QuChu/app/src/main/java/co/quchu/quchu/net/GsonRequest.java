@@ -150,7 +150,9 @@ public class GsonRequest<T> extends Request<T> {
             }
 
             msg = jsonObject.getString("msg");
-            errorCode = jsonObject.getString("errorCode");
+            if (jsonObject.has("errorCode")){
+                errorCode = jsonObject.getString("errorCode");
+            }
             return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
         } catch (Exception e) {
             e.printStackTrace();

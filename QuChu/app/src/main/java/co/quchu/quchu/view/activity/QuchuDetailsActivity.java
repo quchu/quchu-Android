@@ -16,7 +16,9 @@ import com.umeng.analytics.MobclickAgent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +35,7 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
@@ -40,6 +43,7 @@ import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
+import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
@@ -86,6 +90,8 @@ public class QuchuDetailsActivity extends BaseActivity {
             detailClick(v);
         }
     };
+    boolean mIsRatingRunning = false;
+    boolean mIsLoadMoreRunning = false;
 
 
     @Override
@@ -184,15 +190,9 @@ public class QuchuDetailsActivity extends BaseActivity {
                             if (mLoadingMore){
                                 return;
                             }
+
                             mLoadingMore = true;
-                            //TODO load nearby stuff
-                            mRecyclerView.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    startActivity(new Intent(QuchuDetailsActivity.this,NearbyActivity.class));
-                                    mLoadingMore = false;
-                                }
-                            },1500l);
+                            loadMore(null,null,1,dModel.getPid(),SPUtils.getCityId(),SPUtils.getLatitude(),SPUtils.getLongitude());
 
                         }
                     });
@@ -201,7 +201,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
                         @Override
                         public void onHide() {
-                            if((System.currentTimeMillis()-mLastAnimated)<555){return;}
+                            if((System.currentTimeMillis()-mLastAnimated)<500){return;}
                             detail_bottom_group_ll.animate()
                                     .translationY(detail_bottom_group_ll.getHeight())
                                     .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -242,17 +242,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                                     .start();
                         }
                     });
-//                    mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager)mRecyclerView.getLayoutManager()) {
-//                        @Override
-//                        public void onLoadMore(int current_page) {
-//                            ImageView ivLoadMore = new ImageView(getApplicationContext());
-//                            ivLoadMore.setImageResource(R.drawable.ic_refresh);
-//
-//                            mRecyclerView.addView(ivLoadMore,mRecyclerView.getChildCount());
-//                            ivLoadMore.animate().rotation(36000).setDuration(360).start();
-//                            //startActivity(new Intent(QuchuDetailsActivity.this,NearbyActivity.class));
-//                        }
-//                    });
+
                     bindingDetailData();
                     DialogUtil.dismissProgess();
                 }
@@ -286,20 +276,96 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.detail_want_tv, R.id.detail_been_tv,R.id.ivShare,R.id.ivFavorite})
+    private void loadMore(String recommendPids, String cateIds, int isFirst, final int pid, int cid, double lat, double lon){
+        if (mIsLoadMoreRunning) return;
+        mIsLoadMoreRunning = true;
+
+        mQuchuDetailAdapter.startLoadMore();
+        NearbyPresenter.getNearbyData(getApplicationContext(),recommendPids,cateIds,isFirst,pid,cid,lat,lon,1, new NearbyPresenter.getNearbyDataListener() {
+            @Override
+            public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
+                Intent intent = new Intent(QuchuDetailsActivity.this,NearbyActivity.class);
+
+                String pids = "";
+                List<DetailModel.NearPlace> places = dModel.getNearPlace();
+
+                if (places.size()==1){
+                    pids += places.get(0).getPlaceId();
+                }else{
+                    for (int i = 0; i < places.size(); i++) {
+                        pids+=places.get(i).getPlaceId();
+                        pids+="|";
+                    }
+                    pids = pids.substring(0,pids.length()-1);
+                }
+
+                intent.putExtra(NearbyActivity.BUNDLE_KEY_DATA, (Serializable) model);
+                intent.putExtra(NearbyActivity.BUNDLE_KEY_PID, dModel.getPid());
+                intent.putExtra(NearbyActivity.BUNDLE_KEY_RECOMMEND_PIDS, pids);
+                mQuchuDetailAdapter.finishLoadMore();
+                startActivity(intent);
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIsLoadMoreRunning = false;
+                        mLoadingMore = false;
+                    }
+                },500);
+            }
+        });
+    }
+
+
+
+    private void ratingQuchu(List<TagsModel> selection,int score){
+        String strTags = "";
+        if (selection.size()==1){
+            strTags += selection.get(0).getTagId();
+        }else{
+            for (int i = 0; i < selection.size(); i++) {
+                strTags += selection.get(i).getTagId();
+                strTags += "|";
+            }
+            strTags = strTags.substring(0,strTags.length()-1);
+        }
+        if (mIsRatingRunning)return;
+        mIsRatingRunning = true;
+        InterestingDetailPresenter.updateRatingInfo(getApplicationContext(), dModel.getPid(), score, strTags, new InterestingDetailPresenter.DetailDataListener() {
+            @Override
+            public void onSuccessCall(String str) {
+                Toast.makeText(getApplicationContext(),"评价成功",Toast.LENGTH_LONG).show();
+                mIsRatingRunning = false;
+            }
+
+            @Override
+            public void onErrorCall(String str) {
+                mIsRatingRunning = false;
+            }});
+
+    }
+
+        @OnClick({R.id.detail_want_tv, R.id.detail_been_tv,R.id.ivShare,R.id.ivFavorite})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         if (dModel != null) {
             switch (v.getId()) {
                 case R.id.tvQuguo:
-                    //TODO if (AppContext.user.isIsVisitors()) {
-                    if (!AppContext.user.isIsVisitors()) {
+
+                    if (AppContext.user.isIsVisitors()) {
                         VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
                         vDialog.show(getFragmentManager(), "visitor");
                     } else if(null!=mVisitedInfoModel){
                         RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getScore(),mVisitedInfoModel.getResult());
                         tagsFilterDialog.show(getFragmentManager(),"");
+                        tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
+                            @Override
+                            public void onFinishPicking(List<TagsModel> selection,int score) {
+                                if (null!=selection){
+                                    ratingQuchu(selection,score);
+                                }
+                            }
+                        });
                     }
 
                     break;

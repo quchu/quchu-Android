@@ -10,7 +10,7 @@ android {
         targetSdkVersion 16
         minSdkVersion 16
         versionCode 1005
-        versionName "1.1.2"
+        versionName "1.1.4"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
         vectorDrawables.generatedDensities = ['xhdpi']

@@ -1,11 +1,12 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Nico on 16/4/11.
  */
-public class NearbyItemModel {
+public class NearbyItemModel implements Serializable {
     private int placeId;
     private String cover;
     private String name;

@@ -32,7 +32,6 @@ public class TagsFilterDialog extends BlurDialogFragment {
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
     private static final String BUNDLE_KEY_TAGS = "BUNDLE_KEY_TAGS";
-    private static final String BUNDLE_KEY_TAGS_SELECTION = "BUNDLE_KEY_TAGS_SELECTION";
     @Bind(R.id.tvTitle)
     TextView tvTitle;
     @Bind(R.id.rvTags)
@@ -41,8 +40,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
     ImageView ivFinish;
 
 
-    private List<TagsModel> mDataset;
-    private List<Boolean> mSelection;
+    private ArrayList<TagsModel> mDataset;
 
 
     /**
@@ -52,11 +50,10 @@ public class TagsFilterDialog extends BlurDialogFragment {
      * @return well instantiated fragment.
      * Serializable cityList
      */
-    public static TagsFilterDialog newInstance(ArrayList<TagsModel> list, ArrayList<Boolean> selection) {
+    public static TagsFilterDialog newInstance(ArrayList<TagsModel> list) {
         TagsFilterDialog fragment = new TagsFilterDialog();
         Bundle args = new Bundle();
         args.putSerializable(BUNDLE_KEY_TAGS, list);
-        args.putSerializable(BUNDLE_KEY_TAGS_SELECTION, selection);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,13 +63,6 @@ public class TagsFilterDialog extends BlurDialogFragment {
         super.onAttach(activity);
         Bundle args = getArguments();
         mDataset = (ArrayList<TagsModel>) args.getSerializable(BUNDLE_KEY_TAGS);
-        mSelection = (List<Boolean>) args.getSerializable(BUNDLE_KEY_TAGS_SELECTION);
-        if (null == mSelection || mSelection.size() != mDataset.size()) {
-            mSelection = new ArrayList<>();
-            for (int i = 0; i < mDataset.size(); i++) {
-                mSelection.add(false);
-            }
-        }
     }
 
 
@@ -90,10 +80,9 @@ public class TagsFilterDialog extends BlurDialogFragment {
 
         initSelected();
         rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 4));
-        adapter = new TagsFilterDialogAdapter(mDataset, mSelection, new TagsFilterDialogAdapter.OnItemSelectedListener() {
+        adapter = new TagsFilterDialogAdapter(mDataset,  new TagsFilterDialogAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(int index) {
-                mSelection.set(index, !mSelection.get(index));
                 adapter.notifyDataSetChanged();
             }
         });
@@ -101,6 +90,9 @@ public class TagsFilterDialog extends BlurDialogFragment {
         ivFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (null!=mListener){
+                    mListener.onFinishPicking(mDataset);
+                }
                 dismiss();
             }
         });
@@ -159,6 +151,14 @@ public class TagsFilterDialog extends BlurDialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+    private OnFinishPickingListener mListener;
+    public interface OnFinishPickingListener{
+        void onFinishPicking(List<TagsModel> selection);
+    }
+
+    public void setPickingListener(OnFinishPickingListener pListener){
+        mListener = pListener;
     }
 }
 

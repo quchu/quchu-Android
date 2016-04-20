@@ -85,7 +85,6 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(view);
 
-        initSelected();
         rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapter = new RatingQuchuDialogAdapter(mDataset, new RatingQuchuDialogAdapter.OnItemSelectedListener() {
             @Override
@@ -99,11 +98,24 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         ivFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (null!=mListener){
+                    mListener.onFinishPicking(mDataset,prbRating.getRating());
+                }
                 dismiss();
             }
         });
         return dialog;
     }
+
+    public interface OnFinishPickingListener{
+        void onFinishPicking(List<TagsModel> selection,int score);
+    }
+
+    public void setPickingListener(OnFinishPickingListener pListener){
+        mListener = pListener;
+    }
+
+    private OnFinishPickingListener mListener;
 
     @Override
     public void onResume() {
@@ -121,10 +133,6 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         if (adapter != null && rvTags != null) {
             adapter.notifyDataSetChanged();
         }
-    }
-
-    private void initSelected() {
-
     }
 
 
