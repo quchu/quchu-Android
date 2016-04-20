@@ -74,7 +74,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
         pName = getIntent().getStringExtra(REQUEST_KEY_NAME);
         //数据是重新封装过的,如果部分属性丢失请返回前面页面添加
-        mData = (PostCardItemModel) getIntent().getSerializableExtra(REQUEST_KEY_ENTITY);
+        mData = getIntent().getParcelableExtra(REQUEST_KEY_ENTITY);
         mIsEdit = mData != null;
         pId = mData == null ? pId : mData.getPlaceId();
         getEnhancedToolbar().getRightTv().setText(R.string.save);
@@ -109,6 +109,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
 
     private void init() {
         photoInfos = new ArrayList<>();
+        adapter = new FindPositionAdapter();
         if (null != mData) {
             for (int i = 0; i < mData.getImglist().size(); i++) {
                 PhotoInfo photoModel = new PhotoInfo();
@@ -126,12 +127,13 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         photoInfos.add(tackImage);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        adapter = new FindPositionAdapter();
+
         adapter.setImages(photoInfos);
         adapter.setListener(this);
-        if (null==mData){
-            tvPickFromMap.setText("在 "+pName);
-        }else{
+        if (null == mData) {
+            tvPickFromMap.setText("在 " + pName);
+        } else {
+            tvPickFromMap.setText("在 " + mData.getPlcaeName());
             pId = mData.getPlaceId();
         }
 

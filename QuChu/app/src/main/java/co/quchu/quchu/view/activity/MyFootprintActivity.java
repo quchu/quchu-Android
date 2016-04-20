@@ -77,7 +77,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         userId = getIntent().getIntExtra(REQUEST_KEY_USER_ID, AppContext.user.getUserId());
 
         presenter = new MyFootprintPresenter(this, this);
-        presenter.getMoreMyFoiotrintList(userId,pagesNo);
+        presenter.getMoreMyFoiotrintList(userId, pagesNo);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean isIdle = true;
@@ -156,12 +156,13 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
 
     @Override
     public void onLoadmore() {
-        presenter.getMoreMyFoiotrintList(userId,pagesNo + 1);
+        presenter.getMoreMyFoiotrintList(userId, pagesNo + 1);
     }
 
     @Override
     public void itemClick(PostCardItemModel item, int type, int position) {
         Intent intent = new Intent(this, MyFootprintDetailActivity.class);
+        intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_POSITION, position);
         intent.putParcelableArrayListExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, (ArrayList) adapter.getData());
         startActivity(intent);
     }

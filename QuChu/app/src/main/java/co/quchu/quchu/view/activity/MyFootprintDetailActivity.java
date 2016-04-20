@@ -49,6 +49,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     ViewPager viewPager;
 
     public static final String REQUEST_KEY_MODEL = "modelList";
+    public static final String REQUEST_KEY_POSITION = "clickPosition";
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
     @Bind(R.id.detail)
@@ -84,14 +85,16 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
 //
         if (entity.autoId != AppContext.user.getUserId()) {//如果不是自己的脚印
             edit.setVisibility(View.GONE);
+        } else {
+            edit.setVisibility(View.VISIBLE);
         }
         if (!entity.isP) {//当前登录用户是否已经点赞
             support.setImageResource(R.drawable.ic_light_like);
+        } else {
+            support.setImageResource(R.drawable.ic_light_like_fill);
         }
         supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
         detail.setText(entity.builder);
-
-
     }
 
     @Override
@@ -125,15 +128,22 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     }
 
     List<Entity> data;
+    //图片进来需要移动到的位置
+    int pageInintPosition;
 
     private void initData() {
         beanList = getIntent().getParcelableArrayListExtra(REQUEST_KEY_MODEL);
+        int position = getIntent().getIntExtra(REQUEST_KEY_POSITION, 0);
         if (null == beanList || beanList.size() == 0) {
             return;
         }
         data = new ArrayList<>();
-        for (PostCardItemModel bean : beanList) {
+        for (int i = 0, s = beanList.size(); i < s; i++) {
+            PostCardItemModel bean = beanList.get(i);
             Entity entity = null;
+            if (i == position) {
+                pageInintPosition = data.size();
+            }
             for (ImageModel item : bean.getImglist()) {
                 entity = new Entity();
                 entity.autoId = bean.getAutorId();
@@ -173,9 +183,12 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         viewPager.setAdapter(mPagerAdapter);
         viewPager.addOnPageChangeListener(this);
 
-        if (data.size() > 0) {
+        if (data.size() > pageInintPosition) {
+            viewPager.setCurrentItem(pageInintPosition);
+        } else {
             onPageSelected(0);
         }
+
     }
 
     private void initListener() {
@@ -244,13 +257,18 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
                 Intent intent = new Intent(this, AddFootprintActivity.class);
                 PostCardItemModel bean = new PostCardItemModel();
                 int cardId = data.get(selectedPosition).cardId;
+
                 for (Entity item : data) {
                     if (item.cardId == cardId) {
                         bean.addImageModel(item.image);
+                        bean.setPlaceId(item.PlcaeId);
+                        bean.setPlcaeName(item.PlcaeName);
+                        bean.setComment(item.Comment);
                     }
                 }
-
                 intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, bean);
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, bean.getPlcaeName());
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, bean.getPlaceId());
                 startActivity(intent);
                 break;
         }
@@ -294,7 +312,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
             bund.putParcelable(FootprintDetailFragment.REQUEST_KEY_IMAGE_ENTITY, fragments.get(position).image);
             FootprintDetailFragment fragment = new FootprintDetailFragment();
             fragment.setArguments(bund);
-
 
             return fragment;
         }

@@ -28,7 +28,7 @@
         android:layout_below="@id/cardView"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/shape_bg_fillet"
+        android:background="@mipmap/ic_myfootprint"
         android:padding="6dp">
 
         <com.facebook.drawee.view.SimpleDraweeView

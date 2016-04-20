@@ -57,6 +57,7 @@
                 android:layout_marginTop="@dimen/base_margin"
                 android:layout_weight="1"
                 android:background="@color/load_progress_yellow"
+                android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
                 android:padding="@dimen/half_margin"
