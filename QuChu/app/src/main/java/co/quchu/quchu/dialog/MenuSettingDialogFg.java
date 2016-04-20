@@ -16,7 +16,6 @@ import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.view.activity.AboutUsActivity;
 import co.quchu.quchu.view.activity.FeedbackActivity;
-import co.quchu.quchu.view.activity.MenusActivity;
 
 /**
  * LocationSelectedDialogFg
@@ -103,8 +102,8 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
                 //    getActivity().finish();
                 break;
             case R.id.dialog_menu_setting_update_tv:
-                if (getActivity() instanceof MenusActivity)
-                    ((MenusActivity) getActivity()).checkUpdate();
+//                if (getActivity() instanceof MenusActivity)
+//                    ((MenusActivity) getActivity()).checkUpdate();
                 MenuSettingDialogFg.this.dismiss();
                 break;
         }

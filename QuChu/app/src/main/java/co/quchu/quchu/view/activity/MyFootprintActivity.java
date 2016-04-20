@@ -3,10 +3,8 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +18,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
@@ -34,8 +33,8 @@ import co.quchu.quchu.widget.ScrollIndexView;
  */
 public class MyFootprintActivity extends BaseActivity implements PageLoadListener<PostCardModel>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel> {
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    //    @Bind(R.id.toolbar)
+//    EnhancedToolbar toolbar;
     @Bind(R.id.headViewBg)
     SimpleDraweeView headViewBg;
     @Bind(R.id.recyclerView)
@@ -59,6 +58,8 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     public static final String REQUEST_KEY_USER_AGE = "age";
     public static final String REQUEST_KEY_USER_PHOTO = "photo";
     public static final String REQUEST_KEY_USER_FOOTER_COUND = "cound";
+    public static final String REQUEST_KEY_USER_FOOTER_TITLE = "title";
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +74,10 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         adapter.setLoadmoreListener(this);
         recyclerView.setAdapter(adapter);
         adapter.setItemClickListener(this);
+        userId = getIntent().getIntExtra(REQUEST_KEY_USER_ID, AppContext.user.getUserId());
 
         presenter = new MyFootprintPresenter(this, this);
-        presenter.getMoreMyFoiotrintList(pagesNo);
+        presenter.getMoreMyFoiotrintList(userId,pagesNo);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean isIdle = true;
@@ -128,10 +130,12 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     }
 
     private void initTitle() {
+        EnhancedToolbar toolbar = getEnhancedToolbar();
         int age = getIntent().getIntExtra(REQUEST_KEY_USER_AGE, 0);
         int cound = getIntent().getIntExtra(REQUEST_KEY_USER_FOOTER_COUND, 0);
         String uri = getIntent().getStringExtra(REQUEST_KEY_USER_PHOTO);
-
+        String title = getIntent().getStringExtra(REQUEST_KEY_USER_FOOTER_TITLE);
+        toolbar.getTitleTv().setText(title);
         String builder = String.valueOf(age) +
                 "年," +
                 cound +
@@ -142,18 +146,6 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         headView.setImageURI(Uri.parse(uri + ""));
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("");
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.mipmap.ic_back);
-        }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     @Override
@@ -164,7 +156,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
 
     @Override
     public void onLoadmore() {
-        presenter.getMoreMyFoiotrintList(pagesNo + 1);
+        presenter.getMoreMyFoiotrintList(userId,pagesNo + 1);
     }
 
     @Override

@@ -24,6 +24,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -147,6 +148,7 @@ public class WechatHelper {
                 LogUtils.json(response.toString());
                 UserInfoHelper.saveUserInfo(response);
                 if (null != listener) {
+                    SPUtils.putLoginType(SPUtils.LOGIN_TYPE_WEIXIN);
                     listener.loginSuccess(2, token, appId);
                 }
 

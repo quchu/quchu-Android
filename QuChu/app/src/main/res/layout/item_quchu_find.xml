@@ -43,14 +43,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/deitContent"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:layout_toLeftOf="@id/simpleDraweeView"
             android:ellipsize="end"
+            android:gravity="center_vertical"
             android:maxLines="1"
-            android:paddingBottom="16dp"
-            android:text="dff"
             android:textColor="@color/quchu_favorite_address_text" />
 
         <com.facebook.drawee.view.SimpleDraweeView

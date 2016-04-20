@@ -77,9 +77,9 @@ public class RecommendActivity extends BaseActivity {
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
         isGuide = getIntent().getBooleanExtra("isGuide", false);
-        if (isGuide) {
-            startActivity(new Intent(this, PlanetActivity.class));
-        }
+//        if (isGuide) {
+//            startActivity(new Intent(this, PlanetActivity.class));
+//        }
 
 
         recommendTitleLocationIv.setText(SPUtils.getCityName());
@@ -148,10 +148,7 @@ public class RecommendActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.recommend_title_more_iv:
                 Intent intent = new Intent(this, MeActivity.class);
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_ID, AppContext.user.getUserId());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_AGE, AppContext.user.getAge());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_COUND, AppContext.user.getCardCount());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_PHOTO, AppContext.user.getPhoto());
+
                 startActivity(intent);
                 break;
         }

@@ -35,6 +35,7 @@ import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 
@@ -502,6 +503,7 @@ public class PhoneLoginFragment extends BaseFragment {
                 MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), new UserLoginListener() {
                     @Override
                     public void loginSuccess(int type, String token, String appId) {
+                        SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
                         ((UserLoginActivity) getActivity()).loginSuccess(type, token, appId);
                     }
                 });

@@ -69,22 +69,12 @@
             </RelativeLayout>
 
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <co.quchu.quchu.base.EnhancedToolbar
+                android:id="@+id/enhancedToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:gravity="center"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="我的脚印          "
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/word_title_body" />
-            </android.support.v7.widget.Toolbar>
+                app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
 
 
         </android.support.design.widget.CollapsingToolbarLayout>

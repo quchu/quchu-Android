@@ -30,6 +30,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -114,6 +115,7 @@ public class WeiboHelper {
             if (isLogin) {
                 regiest2Server(access_token, uid);
             } else {
+                SPUtils.putLoginType(SPUtils.LOGIN_TYPE_WEIBO);
                 listener.loginSuccess(3, access_token, uid);
             }
             LogUtils.json("access_token==" + access_token);

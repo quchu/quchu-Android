@@ -20,6 +20,10 @@ public class SPUtils {
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor edit;
 
+    public static final String LOGIN_TYPE_WEIXIN = "weixin";
+    public static final String LOGIN_TYPE_WEIBO = "weibo";
+    public static final String LOGIN_TYPE_PHONE = "phone";
+
     /**
      * 存储布尔值
      */
@@ -87,25 +91,25 @@ public class SPUtils {
         return value;
     }
 
-    public static boolean getForceUpdateIfNecessary(Context context){
+    public static boolean getForceUpdateIfNecessary(Context context) {
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE,false);
+        return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE, false);
     }
 
-    public static void setForceUpdateIfNecessary(Context context,boolean forceUpdate){
+    public static void setForceUpdateIfNecessary(Context context, boolean forceUpdate) {
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        preferences.edit().putBoolean(AppKey.SPF_KEY_FORCE_UPDATE,forceUpdate).commit();
-    }
-    public static String getForceUpdateReason(Context context){
-        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        return preferences.getString(AppKey.SPF_KEY_FORCE_UPDATE_REASON,"");
+        preferences.edit().putBoolean(AppKey.SPF_KEY_FORCE_UPDATE, forceUpdate).commit();
     }
 
-    public static void setForceUpdateReason(Context context,String reason){
+    public static String getForceUpdateReason(Context context) {
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_REASON,reason).commit();
+        return preferences.getString(AppKey.SPF_KEY_FORCE_UPDATE_REASON, "");
     }
 
+    public static void setForceUpdateReason(Context context, String reason) {
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_REASON, reason).commit();
+    }
 
 
     /**
@@ -179,7 +183,7 @@ public class SPUtils {
 
     public static void setUserInfo(Context context, String userToken) {
         putValueToSPMap(context, AppKey.USERINFO, userToken);
-        AppContext.user=new Gson().fromJson(userToken, UserInfoModel.class);
+        AppContext.user = new Gson().fromJson(userToken, UserInfoModel.class);
 
 
     }
@@ -234,6 +238,16 @@ public class SPUtils {
         putBooleanToSPMap(AppContext.mContext, AppKey.IS_PLANET_GUIDE, true);
 
     }
+
+    public static String getLoginType() {
+        return getValueFromSPMap(AppContext.mContext, AppKey.LOGIN_TYPE);
+    }
+
+    public static void putLoginType(String type) {
+        putValueToSPMap(AppContext.mContext, AppKey.LOGIN_TYPE, type);
+    }
+
+
 }
 
 
