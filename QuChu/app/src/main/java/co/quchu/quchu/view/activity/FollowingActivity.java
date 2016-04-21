@@ -22,13 +22,11 @@ import co.quchu.quchu.view.adapter.FriendsAdatper;
  * Date: 2016-03-01
  * TA关注的  /我关注的
  */
-public class FollowingActivity extends BaseActivity implements View.OnClickListener {
+public class FollowingActivity extends BaseActivity  {
     public static final int TAFOLLOWING = 0x01;//TA关注的
     public static final int TAFOLLOWERS = 0x02;//关注TA的
     @Bind(R.id.follow_rv)
     RecyclerView followRv;
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
     private int followType = 0x01, userId = 0;
     private ArrayList<FollowUserModel> list;
 
@@ -40,7 +38,7 @@ public class FollowingActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
         ButterKnife.bind(this);
-        initTitleBar();
+        getEnhancedToolbar();
         followType = getIntent().getIntExtra("FollowType", 0x01);
         userId = getIntent().getIntExtra("UserId", 0x01);
         setTitleContentView();
@@ -59,18 +57,14 @@ public class FollowingActivity extends BaseActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-    }
 
     private void setTitleContentView() {
         switch (followType) {
             case TAFOLLOWING://TA关注的
-                titleContentTv.setText("TA关注的");
+                getEnhancedToolbar().getTitleTv().setText("TA关注的");
                 break;
             case TAFOLLOWERS://关注TA的
-                titleContentTv.setText("关注TA的");
+                getEnhancedToolbar().getTitleTv().setText("关注TA的");
                 break;
         }
     }

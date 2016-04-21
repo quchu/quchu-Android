@@ -34,7 +34,6 @@ import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.IAccountSettingActivity;
 
 /**
  * AccountSettingPresenter
@@ -47,7 +46,6 @@ import co.quchu.quchu.view.activity.IAccountSettingActivity;
 public class AccountSettingPresenter {
 
     private Context context;
-    private IAccountSettingActivity view;
     private static final int AUTH_CODE = 1;
 
     private TextView authView;
@@ -57,9 +55,8 @@ public class AccountSettingPresenter {
     //点击获取验证码后保存
     private String photoNumber;
 
-    public AccountSettingPresenter(Context context, IAccountSettingActivity view) {
+    public AccountSettingPresenter(Context context) {
         this.context = context;
-        this.view = view;
     }
 
 
