@@ -58,7 +58,7 @@ import co.quchu.quchu.utils.StringUtils;
  * User: Chenhs
  * Date: 2015-12-04
  */
-public class AccountSettingActivity extends BaseActivity implements IAccountSettingActivity {
+public class AccountSettingActivity extends BaseActivity {
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
     @Bind(R.id.account_setting_avatar_sdv)
@@ -89,7 +89,7 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_setting);
         ButterKnife.bind(this);
-        presenter = new AccountSettingPresenter(this, this);
+        presenter = new AccountSettingPresenter(this);
         getEnhancedToolbar();
         imageList = AccountSettingPresenter.getQAvatar();
 
