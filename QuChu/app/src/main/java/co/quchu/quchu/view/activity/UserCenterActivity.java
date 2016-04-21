@@ -42,7 +42,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_center);
-        initTitleBar();
+        getEnhancedToolbar();
         ((TextView) findViewById(R.id.title_content_tv)).setText(getTitle());
         loadViewForCode();
         userId = getIntent().getIntExtra("USERID", 0);
