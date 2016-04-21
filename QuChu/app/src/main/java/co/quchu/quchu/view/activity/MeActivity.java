@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -60,16 +63,26 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
     @Bind(R.id.massage)
     LinearLayout massage;
 
-    @Bind(R.id.curiosity)
-    RoundProgressView curiosity;
-    @Bind(R.id.eat)
-    RoundProgressView eat;
-    @Bind(R.id.art)
-    RoundProgressView art;
-    @Bind(R.id.money)
-    RoundProgressView money;
+    @Bind(R.id.rpv1)
+    RoundProgressView rpv1;
+    @Bind(R.id.rpv2)
+    RoundProgressView rpv2;
+    @Bind(R.id.rpv3)
+    RoundProgressView rpv3;
+    @Bind(R.id.rpv4)
+    RoundProgressView rpv4;
     @Bind(R.id.findPosition)
     CardView findPosition;
+    @Bind(R.id.tvLabel1)
+    TextView tvLabel1;
+    @Bind(R.id.tvLabel2)
+    TextView tvLabel2;
+    @Bind(R.id.tvLabel3)
+    TextView tvLabel3;
+    @Bind(R.id.tvLabel4)
+    TextView tvLabel4;
+    @Bind(R.id.tvUserNickName)
+    TextView tvUserNickName;
 
     @Bind(R.id.name)
     TextView name;
@@ -112,10 +125,10 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
         footPrint.setOnClickListener(this);
         friend.setOnClickListener(this);
         massage.setOnClickListener(this);
-        curiosity.setOnClickListener(this);
-        art.setOnClickListener(this);
-        money.setOnClickListener(this);
-        eat.setOnClickListener(this);
+        rpv1.setOnClickListener(this);
+        rpv2.setOnClickListener(this);
+        rpv3.setOnClickListener(this);
+        rpv4.setOnClickListener(this);
         findPosition.setOnClickListener(this);
     }
 
@@ -315,16 +328,33 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
     @Override
     public void initGene(MyGeneModel data) {
         List<MyGeneModel.GenesEntity> genes = data.getGenes();
-        if (genes.size() > 3) {
-            curiosity.setProgress(genes.get(0).getWeight());
-
-            eat.setProgress(genes.get(1).getWeight());
-
-            art.setProgress(genes.get(2).getWeight());
-
-            money.setProgress(genes.get(3).getWeight());
-
-
+        for (int i = 0; i < genes.size(); i++) {
+            double progress = genes.get(i).getWeight();
+            String label = genes.get(i).getZh();
+            switch (i){
+                case 0:
+                    tvUserNickName.setText(genes.get(i).getMark());
+                    rpv1.setProgress(progress);
+                    tvLabel1.setText(label);
+                    break;
+                case 1:
+                    rpv2.setProgress(progress);
+                    tvLabel2.setText(label);
+                    break;
+                case 2:
+                    rpv3.setProgress(progress);
+                    tvLabel3.setText(label);
+                    break;
+                case 3:
+                    rpv4.setProgress(progress);
+                    tvLabel4.setText(label);
+                    break;
+            }
         }
+
+
+
+
+
     }
 }

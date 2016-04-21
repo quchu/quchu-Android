@@ -73,6 +73,7 @@
                 android:textColor="@color/white" />
 
             <Button
+                android:id="@+id/tvUserNickName"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
@@ -216,7 +217,7 @@
             android:orientation="vertical">
 
             <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/curiosity"
+                android:id="@+id/rpv1"
                 android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:gravity="center"
@@ -227,6 +228,7 @@
                 app:textStyle="Num" />
 
             <TextView
+                android:id="@+id/tvLabel1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -247,7 +249,7 @@
             android:orientation="vertical">
 
             <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/eat"
+                android:id="@+id/rpv2"
                 android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:gravity="center"
@@ -258,6 +260,7 @@
                 app:textStyle="Num" />
 
             <TextView
+                android:id="@+id/tvLabel2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -278,7 +281,7 @@
             android:orientation="vertical">
 
             <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/art"
+                android:id="@+id/rpv3"
                 android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:gravity="center"
@@ -289,6 +292,7 @@
                 app:textStyle="Num" />
 
             <TextView
+                android:id="@+id/tvLabel3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -309,7 +313,7 @@
             android:orientation="vertical">
 
             <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/money"
+                android:id="@+id/rpv4"
                 android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:gravity="center"
@@ -320,6 +324,7 @@
                 app:textStyle="Num" />
 
             <TextView
+                android:id="@+id/tvLabel4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

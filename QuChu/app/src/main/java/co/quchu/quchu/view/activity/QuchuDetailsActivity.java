@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -98,6 +99,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     public static final String FROM_TYPE_SUBJECT = "detail_subject_t";//从发现进来的
     public static final String FROM_TYPE_RECOM = "detail_recommendation_t";//从详情页推荐进来的
     public static final String FROM_TYPE_PROFILE = "detail_profile_t";//从用户收藏进来的
+    public static final String BUNDLE_KEY_DATA_MODEL = "BUNDLE_KEY_DATA_MODEL";
     private String from;
 
 
@@ -120,6 +122,10 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
         });
 
+
+        if (null!=savedInstanceState){
+            dModel = (DetailModel) savedInstanceState.getSerializable(BUNDLE_KEY_DATA_MODEL);
+        }
 
         initData();
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
@@ -178,93 +184,105 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putSerializable(BUNDLE_KEY_DATA_MODEL,dModel);
+    }
+
+
     private void initData() {
         pId = getIntent().getIntExtra(REQUEST_KEY_PID, -1);
         if (-1 == pId) {
             Toast.makeText(this, "该趣处已不存在!", Toast.LENGTH_SHORT).show();
         } else {
-            DialogUtil.showProgess(this, "数据加载中...");
-            InterestingDetailPresenter.getInterestingData(this, pId, new InterestingDetailPresenter.getDetailDataListener() {
-                @Override
-                public void getDetailData(DetailModel model) {
-                    dModel.copyFrom(model);
-                    if (null != dModel.getImglist() && dModel.getImglist().size() > 1) {
-                        getSwipeBackLayout().setEnableGesture(false);
+            if (dModel==null||StringUtils.isEmpty(dModel.getName())){
+
+                DialogUtil.showProgess(this, "数据加载中...");
+                InterestingDetailPresenter.getInterestingData(this, pId, new InterestingDetailPresenter.getDetailDataListener() {
+                    @Override
+                    public void getDetailData(DetailModel model) {
+                        bindingDetailData(model);
+                        DialogUtil.dismissProgess();
                     }
-                    mQuchuDetailAdapter.notifyDataSetChanged();
-                    mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
-                        @Override
-                        public void onLoadMore() {
-                            if (mLoadingMore) {
-                                return;
-                            }
+                });
+            }else{
+                bindingDetailData(dModel);
+            }
 
-                            mLoadingMore = true;
-                            loadMore(null, null, 1, dModel.getPid(), SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude());
-
-                        }
-                    });
-
-                    mRecyclerView.setOnScrollListener(new HidingScrollListener() {
-
-                        @Override
-                        public void onHide() {
-                            if ((System.currentTimeMillis() - mLastAnimated) < 500) {
-                                return;
-                            }
-                            detail_bottom_group_ll.animate()
-                                    .translationY(detail_bottom_group_ll.getHeight())
-                                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                                    .setDuration(500)
-                                    .start();
-                            appbar.animate()
-                                    .translationY(-appbar.getHeight())
-                                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                                    .setDuration(500).withStartAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    appbar.setVisibility(View.GONE);
-                                    detail_bottom_group_ll.setVisibility(View.GONE);
-                                    mLastAnimated = System.currentTimeMillis();
-                                }
-                            }).start();
-                        }
-
-                        @Override
-                        public void onShow() {
-                            if ((System.currentTimeMillis() - mLastAnimated) < 555) {
-                                return;
-                            }
-                            detail_bottom_group_ll.animate()
-                                    .translationY(0)
-                                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                                    .setDuration(500)
-                                    .start();
-                            appbar.animate()
-                                    .translationY(0)
-                                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                                    .setDuration(500).withStartAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    appbar.setVisibility(View.VISIBLE);
-                                    detail_bottom_group_ll.setVisibility(View.VISIBLE);
-                                    mLastAnimated = System.currentTimeMillis();
-                                }
-                            })
-                                    .start();
-                        }
-                    });
-
-                    bindingDetailData();
-                    DialogUtil.dismissProgess();
-                }
-            });
         }
         gatherViewModel = new GatherViewModel(pId + "");
     }
 
 
-    private void bindingDetailData() {
+    private void bindingDetailData(DetailModel model) {
+        dModel.copyFrom(model);
+        if (null != dModel.getImglist() && dModel.getImglist().size() > 1) {
+            getSwipeBackLayout().setEnableGesture(false);
+        }
+        mQuchuDetailAdapter.notifyDataSetChanged();
+        mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (mLoadingMore) {
+                    return;
+                }
+
+                mLoadingMore = true;
+                loadMore(null, null, 1, dModel.getPid(), SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude());
+
+            }
+        });
+
+        mRecyclerView.setOnScrollListener(new HidingScrollListener() {
+
+            @Override
+            public void onHide() {
+                if ((System.currentTimeMillis() - mLastAnimated) < 500) {
+                    return;
+                }
+                detail_bottom_group_ll.animate()
+                        .translationY(detail_bottom_group_ll.getHeight())
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .start();
+                appbar.animate()
+                        .translationY(-appbar.getHeight())
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(500).withStartAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        appbar.setVisibility(View.GONE);
+                        detail_bottom_group_ll.setVisibility(View.GONE);
+                        mLastAnimated = System.currentTimeMillis();
+                    }
+                }).start();
+            }
+
+            @Override
+            public void onShow() {
+                if ((System.currentTimeMillis() - mLastAnimated) < 555) {
+                    return;
+                }
+                detail_bottom_group_ll.animate()
+                        .translationY(0)
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .start();
+                appbar.animate()
+                        .translationY(0)
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(500).withStartAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        appbar.setVisibility(View.VISIBLE);
+                        detail_bottom_group_ll.setVisibility(View.VISIBLE);
+                        mLastAnimated = System.currentTimeMillis();
+                    }
+                })
+                        .start();
+            }
+        });
         changeCollectState(dModel.isIsf());
     }
 

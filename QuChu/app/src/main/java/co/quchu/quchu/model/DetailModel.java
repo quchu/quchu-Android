@@ -1,5 +1,6 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * User: Chenhs
  * Date: 2015-12-13
  */
-public class DetailModel {
+public class DetailModel implements Serializable{
 
     /**
      * activityInfo : 本次活动主要针对领基础的绘画爱好者,来之前一定要先预约哦
@@ -159,6 +160,8 @@ public class DetailModel {
             recommendPlaces.clear();
         }
         recommendPlaces.addAll(objTarget.getNearPlace());
+
+        cardCount = objTarget.getCardCount();
 
 
     }
@@ -389,7 +392,7 @@ public class DetailModel {
         return tags;
     }
 
-    public static class GenesEntity {
+    public static class GenesEntity implements Serializable{
         private String key;
         private String value;
 
@@ -410,7 +413,7 @@ public class DetailModel {
         }
     }
 
-    public static class IconsEntity {
+    public static class IconsEntity implements Serializable {
         private String zh;
 
         public void setZh(String zh) {
@@ -422,7 +425,7 @@ public class DetailModel {
         }
     }
 
-    public static class ImglistEntity {
+    public static class ImglistEntity implements Serializable {
         private int cid;
         private int cindex;
         private int height;
@@ -489,7 +492,7 @@ public class DetailModel {
         }
     }
 
-    public static class TagsEntity {
+    public static class TagsEntity  implements Serializable{
         private String zh;
 
         public void setZh(String zh) {
@@ -501,7 +504,7 @@ public class DetailModel {
         }
     }
 
-    public static class NearPlace{
+    public static class NearPlace implements Serializable{
         private int placeId;
         private String cover;
         private String name;
