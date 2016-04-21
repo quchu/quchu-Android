@@ -120,7 +120,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 startActivity(intent);
 
         }
-        super.onClick(v);
     }
 
     private void bindView() {

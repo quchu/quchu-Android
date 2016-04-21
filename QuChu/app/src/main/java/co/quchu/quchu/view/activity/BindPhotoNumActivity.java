@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
@@ -31,7 +31,7 @@ import co.quchu.quchu.net.ResponseListener;
  * email:437943145@qq.com
  * desc : 绑定手机号
  */
-public class BindPhotoNumActivity extends BaseActivity {
+public class BindPhotoNumActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.photo_number)
     EditText photoNumber;
     @Bind(R.id.getAuthCode)
@@ -46,10 +46,6 @@ public class BindPhotoNumActivity extends BaseActivity {
     TextView bindPhotoNumber;
 
     private static final int AUTH_CODE = 1;
-    @Bind(R.id.title_back_iv)
-    ImageView titleBackIv;
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
 
     private MyHandle handle;
     private static final String mAuthDesc = "秒后重新获取";
@@ -65,19 +61,14 @@ public class BindPhotoNumActivity extends BaseActivity {
         setContentView(R.layout.layout_bind_photo_number);
         ButterKnife.bind(this);
         ininListener();
-        titleContentTv.setText("绑定手机号");
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        toolbar.getTitleTv().setText("绑定手机号");
     }
 
     private void ininListener() {
 
         getAuthCode.setOnClickListener(this);
         bindPhotoNumber.setOnClickListener(this);
-        titleBackIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
     }
 

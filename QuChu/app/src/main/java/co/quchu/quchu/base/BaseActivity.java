@@ -25,7 +25,7 @@ import co.quchu.quchu.widget.swipbacklayout.Utils;
  * Date: 2015-10-19
  * activity 基类
  */
-public abstract class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase, View.OnClickListener {
+public abstract class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
     protected String TAG = getClass().getName();
@@ -170,17 +170,6 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
             return enhancedToolbar;
         } else {
             return null;
-        }
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.title_back_iv:
-                this.finish();
-
-                break;
         }
     }
 
