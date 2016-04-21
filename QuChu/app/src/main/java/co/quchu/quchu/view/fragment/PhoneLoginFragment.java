@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sina.weibo.sdk.utils.MD5;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -481,6 +482,8 @@ public class PhoneLoginFragment extends BaseFragment {
                         public void isUnique(JSONObject msg) {
                             LogUtils.json("user regiest " + msg);
                             UserInfoHelper.saveUserInfo(msg);
+                            MobclickAgent.onEvent(getContext(), "register_c");
+
                             ((UserLoginActivity) getActivity()).userRegiestSuccess();
 
                         }
@@ -504,6 +507,7 @@ public class PhoneLoginFragment extends BaseFragment {
                     @Override
                     public void loginSuccess(int type, String token, String appId) {
                         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
+                        MobclickAgent.onEvent(getContext(), "loginphone_c");
                         ((UserLoginActivity) getActivity()).loginSuccess(type, token, appId);
                     }
                 });

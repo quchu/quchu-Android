@@ -1,6 +1,5 @@
 package co.quchu.quchu.view.fragment;
 
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,6 +28,7 @@ import com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.Postprocessor;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -90,6 +90,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     public static final String MESSAGE_KEY_BITMAP = "MESSAGE_KEY_BITMAP";
     private boolean mFragmentStoped;
     private int dataCount = -1;
+
+    private String from = QuchuDetailsActivity.FROM_TYPE_HOME;
 
     Bitmap mSourceBitmap;
     private int index;
@@ -172,7 +174,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                pageNums=1;
+                pageNums = 1;
                 presenter.initTabData(true, selectedTag);
             }
         });
@@ -188,12 +190,16 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     @Override
     public void OnPageChanged(int oldPosition, int newPosition) {
         LogUtils.json("newPosition-> " + newPosition + " oldPosition-> " + oldPosition
-                + " cardList.size()" + (cardList.size() )+ " pageNums-> "+pageNums +" pageCounts-> "+pageCounts);
+                + " cardList.size()" + (cardList.size()) + " pageNums-> " + pageNums + " pageCounts-> " + pageCounts);
 
-        if (newPosition > oldPosition && cardList.size()<dataCount) {
+        MobclickAgent.onEvent(getContext(), "recommendation_c");
+        if (newPosition > oldPosition) {
+            MobclickAgent.onEvent(getContext(), "slideright_c");
+        }
+        if (newPosition > oldPosition && cardList.size() < dataCount) {
             if (newPosition == cardList.size() - 2 && !isLoading) {
                 isLoading = true;
-                presenter.loadMore(selectedTag, (cardList.size()/10)+1);
+                presenter.loadMore(selectedTag, (cardList.size() / 10) + 1);
             } else if (isLoading) {
                 DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
             }
@@ -204,7 +210,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     }
 
 
-    private int pageCounts, pageNums=1;
+    private int pageCounts, pageNums = 1;
     private int hasChangePosition = 0;
 
     @Override
@@ -215,8 +221,17 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 AppContext.selectedPlace = cardList.get(position);
                 hasChangePosition = position;
                 if (!KeyboardUtils.isFastDoubleClick()) {
+                    if (from.equals(QuchuDetailsActivity.FROM_TYPE_HOME)) {
+                        MobclickAgent.onEvent(getContext(), "detail_home_c");
+                    } else {
+                        MobclickAgent.onEvent(getContext(), "detail_tag_c");
+                    }
+
+
+                    MobclickAgent.onEvent(getActivity(), "detail_c");
                     Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(position).getPid());
+                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, from);
                     startActivity(intent);
                 }
                 break;
@@ -306,10 +321,18 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    from = QuchuDetailsActivity.FROM_TYPE_HOME;
+                } else {
+                    from = QuchuDetailsActivity.FROM_TYPE_TAG;
+                }
+
+
                 TextView view = (TextView) tab.getCustomView();
                 if (view != null) {
                     view.setTextSize(15);
                 }
+                MobclickAgent.onEvent(getContext(), "tag_c");
                 selectedTag = tagList.get(tab.getPosition()).getEn();
                 LogUtils.json("selectedTag=" + selectedTag);
                 presenter.initTabData(false, selectedTag);
@@ -340,7 +363,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     @Override
     public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum, int rowCount) {
 
-        dataCount = rowCount>0?rowCount:-1;
+        dataCount = rowCount > 0 ? rowCount : -1;
 
         if (null == refreshLayout) {
             return;
@@ -442,6 +465,15 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     public void onResume() {
         super.onResume();
         mFragmentStoped = false;
+        MobclickAgent.onPageStart("detail_home_t");
+        MobclickAgent.onResume(getContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("detail_home_t");
+        MobclickAgent.onPause(getContext());
     }
 
     @Override

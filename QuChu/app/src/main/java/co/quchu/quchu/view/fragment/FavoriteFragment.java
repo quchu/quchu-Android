@@ -9,13 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FavoriteBean;
-import co.quchu.quchu.presenter.QuchuPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
+import co.quchu.quchu.presenter.QuchuPresenter;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FavoriteAdapter;
@@ -64,8 +66,10 @@ public class FavoriteFragment extends BaseFragment implements PageLoadListener<F
 
     @Override
     public void itemClick(FavoriteBean.ResultBean item, int type, int position) {
+        MobclickAgent.onEvent(getContext(), "detail_profile_c");
         Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
+        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_PROFILE);
         startActivity(intent);
     }
 

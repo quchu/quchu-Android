@@ -23,7 +23,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.Postprocessor;
 
-import org.greenrobot.eventbus.EventBus;
+import com.umeng.analytics.MobclickAgent;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -37,11 +37,8 @@ import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
-import co.quchu.quchu.utils.DeviceUtils;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.view.adapter.DiscoverDetailPagerAdapter;
-import co.quchu.quchu.view.adapter.RecommendAdapterLite;
-
 
 
 public class ClassifyDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
@@ -66,7 +63,6 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
     private boolean mFragmentStoped;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +73,7 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
             @Override
             public void onClick(View v) {
                 mClickTimes += 1;
-                if (mClickTimes>=5){
+                if (mClickTimes >= 5) {
                     getVersionInfo();
                 }
 
@@ -86,14 +82,16 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
                     public void run() {
                         mClickTimes = 0;
                     }
-                },1500);
+                }, 1500);
             }
         });
 
         mAdapter = new DiscoverDetailPagerAdapter(mData, this, new DiscoverDetailPagerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                MobclickAgent.onEvent(ClassifyDetailActivity.this, "detail_subject_c");
                 Intent intent = new Intent(ClassifyDetailActivity.this, QuchuDetailsActivity.class);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM,QuchuDetailsActivity.FROM_TYPE_SUBJECT);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid());
                 System.out.println(mData.get(position).getPid());
                 startActivity(intent);
@@ -102,7 +100,7 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
         vpContent.setOnPageChangeListener(this);
         vpContent.setAdapter(mAdapter);
         vpContent.setClipToPadding(false);
-        vpContent.setPadding(80,40,80,40);
+        vpContent.setPadding(80, 40, 80, 40);
         vpContent.setPageMargin(40);
         getDataSetFromServer();
     }
@@ -113,14 +111,14 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
     }
 
 
-    public void getVersionInfo(){
+    public void getVersionInfo() {
         if (mNetworkBusy) return;
         mNetworkBusy = true;
         VersionInfoPresenter.getVersionInfo(getApplicationContext(), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 mNetworkBusy = false;
-                ConfirmDialogFg.newInstance("版本信息",response.toString()).show(getFragmentManager(),"");
+                ConfirmDialogFg.newInstance("版本信息", response.toString()).show(getFragmentManager(), "");
             }
 
             @Override
@@ -260,9 +258,10 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
 
     @Override
     public void onPageSelected(int position) {
-        if (position==0){
+        MobclickAgent.onEvent(this, "discovery_c");
+        if (position == 0) {
             getSwipeBackLayout().setEnableGesture(true);
-        }else{
+        } else {
             getSwipeBackLayout().setEnableGesture(false);
         }
         currentIndex = position;

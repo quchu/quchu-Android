@@ -76,6 +76,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     private long mLastAnimated = -1;
     public static final String REQUEST_KEY_PID = "pid";
+    public static final String REQUEST_KEY_FROM = "from";
     private long startViewTime = 0L;
     private int pId = 0;
     private boolean mLoadingMore = false;
@@ -92,23 +93,32 @@ public class QuchuDetailsActivity extends BaseActivity {
     boolean mIsRatingRunning = false;
     boolean mIsLoadMoreRunning = false;
 
+    public static final String FROM_TYPE_HOME = "detail_home_t";//从智能推荐进来的
+    public static final String FROM_TYPE_TAG = "detail_tag_t";//从其他类别进来的
+    public static final String FROM_TYPE_SUBJECT = "detail_subject_t";//从发现进来的
+    public static final String FROM_TYPE_RECOM = "detail_recommendation_t";//从详情页推荐进来的
+    public static final String FROM_TYPE_PROFILE = "detail_profile_t";//从用户收藏进来的
+    private String from;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quchu_details);
         ButterKnife.bind(this);
+        from = getIntent().getStringExtra(REQUEST_KEY_FROM);
+
         getEnhancedToolbar().getRightTv().setText(R.string.pre_order);
         getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=dModel&&null!=dModel.getNet()&&null!=dModel.getNet()){
-                    WebViewActivity.enterActivity(QuchuDetailsActivity.this,dModel.getNet(),dModel.getName());
+                if (null != dModel && null != dModel.getNet() && null != dModel.getNet()) {
+                    MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
+                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
                 }
             }
         });
-
 
 
         initData();
@@ -122,7 +132,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId, new CommonListener<VisitedUsersModel>() {
             @Override
             public void successListener(VisitedUsersModel response) {
-                if (null!=response){
+                if (null != response) {
                     mQuchuDetailAdapter.updateVisitedUsers(response);
                 }
             }
@@ -136,7 +146,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         InterestingDetailPresenter.getVisitorAnalysis(getApplicationContext(), pId, new CommonListener<SimpleQuchuDetailAnalysisModel>() {
             @Override
             public void successListener(SimpleQuchuDetailAnalysisModel response) {
-                if (null!=response){
+                if (null != response) {
                     mQuchuDetailAdapter.updateVisitorAnalysis(response);
                 }
             }
@@ -150,7 +160,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         InterestingDetailPresenter.getVisitedInfo(getApplicationContext(), pId, new CommonListener<VisitedInfoModel>() {
             @Override
             public void successListener(VisitedInfoModel response) {
-                if (null!=response){
+                if (null != response) {
                     mVisitedInfoModel = response;
                 }
             }
@@ -168,7 +178,6 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-
     private void initData() {
         pId = getIntent().getIntExtra(REQUEST_KEY_PID, -1);
         if (-1 == pId) {
@@ -179,19 +188,19 @@ public class QuchuDetailsActivity extends BaseActivity {
                 @Override
                 public void getDetailData(DetailModel model) {
                     dModel.copyFrom(model);
-                    if (null != dModel.getImglist() && dModel.getImglist().size()>1) {
+                    if (null != dModel.getImglist() && dModel.getImglist().size() > 1) {
                         getSwipeBackLayout().setEnableGesture(false);
                     }
                     mQuchuDetailAdapter.notifyDataSetChanged();
                     mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
                         @Override
                         public void onLoadMore() {
-                            if (mLoadingMore){
+                            if (mLoadingMore) {
                                 return;
                             }
 
                             mLoadingMore = true;
-                            loadMore(null,null,1,dModel.getPid(),SPUtils.getCityId(),SPUtils.getLatitude(),SPUtils.getLongitude());
+                            loadMore(null, null, 1, dModel.getPid(), SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude());
 
                         }
                     });
@@ -200,7 +209,9 @@ public class QuchuDetailsActivity extends BaseActivity {
 
                         @Override
                         public void onHide() {
-                            if((System.currentTimeMillis()-mLastAnimated)<500){return;}
+                            if ((System.currentTimeMillis() - mLastAnimated) < 500) {
+                                return;
+                            }
                             detail_bottom_group_ll.animate()
                                     .translationY(detail_bottom_group_ll.getHeight())
                                     .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -210,18 +221,20 @@ public class QuchuDetailsActivity extends BaseActivity {
                                     .translationY(-appbar.getHeight())
                                     .setInterpolator(new AccelerateDecelerateInterpolator())
                                     .setDuration(500).withStartAction(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            appbar.setVisibility(View.GONE);
-                                            detail_bottom_group_ll.setVisibility(View.GONE);
-                                            mLastAnimated = System.currentTimeMillis();
-                                        }
-                                    }).start();
+                                @Override
+                                public void run() {
+                                    appbar.setVisibility(View.GONE);
+                                    detail_bottom_group_ll.setVisibility(View.GONE);
+                                    mLastAnimated = System.currentTimeMillis();
+                                }
+                            }).start();
                         }
 
                         @Override
                         public void onShow() {
-                            if((System.currentTimeMillis()-mLastAnimated)<555){return;}
+                            if ((System.currentTimeMillis() - mLastAnimated) < 555) {
+                                return;
+                            }
                             detail_bottom_group_ll.animate()
                                     .translationY(0)
                                     .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -231,13 +244,13 @@ public class QuchuDetailsActivity extends BaseActivity {
                                     .translationY(0)
                                     .setInterpolator(new AccelerateDecelerateInterpolator())
                                     .setDuration(500).withStartAction(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            appbar.setVisibility(View.VISIBLE);
-                                            detail_bottom_group_ll.setVisibility(View.VISIBLE);
-                                            mLastAnimated = System.currentTimeMillis();
-                                        }
-                                    })
+                                @Override
+                                public void run() {
+                                    appbar.setVisibility(View.VISIBLE);
+                                    detail_bottom_group_ll.setVisibility(View.VISIBLE);
+                                    mLastAnimated = System.currentTimeMillis();
+                                }
+                            })
                                     .start();
                         }
                     });
@@ -263,29 +276,29 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-    private void loadMore(String recommendPids, String cateIds, int isFirst, final int pid, int cid, double lat, double lon){
+    private void loadMore(String recommendPids, String cateIds, int isFirst, final int pid, int cid, double lat, double lon) {
         if (mIsLoadMoreRunning) return;
         mIsLoadMoreRunning = true;
 
         mQuchuDetailAdapter.startLoadMore();
-        NearbyPresenter.getNearbyData(getApplicationContext(),recommendPids,cateIds,isFirst,pid,cid,lat,lon,1, new NearbyPresenter.getNearbyDataListener() {
+        NearbyPresenter.getNearbyData(getApplicationContext(), recommendPids, cateIds, isFirst, pid, cid, lat, lon, 1, new NearbyPresenter.getNearbyDataListener() {
             @Override
             public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
-                Intent intent = new Intent(QuchuDetailsActivity.this,NearbyActivity.class);
+                Intent intent = new Intent(QuchuDetailsActivity.this, NearbyActivity.class);
 
                 String pids = "";
                 List<DetailModel.NearPlace> places = dModel.getNearPlace();
 
-                if (places.size()==1){
+                if (places.size() == 1) {
                     pids += places.get(0).getPlaceId();
-                }else{
+                } else {
                     for (int i = 0; i < places.size(); i++) {
-                        pids+=places.get(i).getPlaceId();
-                        pids+="|";
+                        pids += places.get(i).getPlaceId();
+                        pids += "|";
                     }
-                    pids = pids.substring(0,pids.length()-1);
+                    pids = pids.substring(0, pids.length() - 1);
                 }
-
+                MobclickAgent.onEvent(QuchuDetailsActivity.this, "allrecommendation_c");
                 intent.putExtra(NearbyActivity.BUNDLE_KEY_DATA, (Serializable) model);
                 intent.putExtra(NearbyActivity.BUNDLE_KEY_PID, dModel.getPid());
                 intent.putExtra(NearbyActivity.BUNDLE_KEY_RECOMMEND_PIDS, pids);
@@ -297,41 +310,41 @@ public class QuchuDetailsActivity extends BaseActivity {
                         mIsLoadMoreRunning = false;
                         mLoadingMore = false;
                     }
-                },500);
+                }, 500);
             }
         });
     }
 
 
-
-    private void ratingQuchu(List<TagsModel> selection,int score){
+    private void ratingQuchu(List<TagsModel> selection, int score) {
         String strTags = "";
-        if (selection.size()==1){
+        if (selection.size() == 1) {
             strTags += selection.get(0).getTagId();
-        }else{
+        } else {
             for (int i = 0; i < selection.size(); i++) {
                 strTags += selection.get(i).getTagId();
                 strTags += "|";
             }
-            strTags = strTags.substring(0,strTags.length()-1);
+            strTags = strTags.substring(0, strTags.length() - 1);
         }
-        if (mIsRatingRunning)return;
+        if (mIsRatingRunning) return;
         mIsRatingRunning = true;
         InterestingDetailPresenter.updateRatingInfo(getApplicationContext(), dModel.getPid(), score, strTags, new InterestingDetailPresenter.DetailDataListener() {
             @Override
             public void onSuccessCall(String str) {
-                Toast.makeText(getApplicationContext(),"评价成功",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "评价成功", Toast.LENGTH_LONG).show();
                 mIsRatingRunning = false;
             }
 
             @Override
             public void onErrorCall(String str) {
                 mIsRatingRunning = false;
-            }});
+            }
+        });
 
     }
 
-        @OnClick({R.id.ivShare,R.id.ivFavorite})
+    @OnClick({R.id.ivShare,R.id.ivFavorite})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -350,9 +363,9 @@ public class QuchuDetailsActivity extends BaseActivity {
                         tagsFilterDialog.show(getFragmentManager(),"");
                         tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
                             @Override
-                            public void onFinishPicking(List<TagsModel> selection,int score) {
-                                if (null!=selection){
-                                    ratingQuchu(selection,score);
+                            public void onFinishPicking(List<TagsModel> selection, int score) {
+                                if (null != selection) {
+                                    ratingQuchu(selection, score);
                                 }
                             }
                         });
@@ -360,9 +373,9 @@ public class QuchuDetailsActivity extends BaseActivity {
 
                     break;
                 case R.id.tvFootPrint:
-                    Intent footPrintIntent = new Intent(QuchuDetailsActivity.this,FootPrintActivity.class);
-                    footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_ID,dModel.getPid());
-                    footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_NAME,dModel.getName());
+                    Intent footPrintIntent = new Intent(QuchuDetailsActivity.this, FootPrintActivity.class);
+                    footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_ID, dModel.getPid());
+                    footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_NAME, dModel.getName());
                     startActivity(footPrintIntent);
                     break;
 //                case R.id.detail_want_tv:
@@ -403,6 +416,8 @@ public class QuchuDetailsActivity extends BaseActivity {
                 case R.id.detail_store_address_ll:
 
                     if (!"台北".equals(SPUtils.getCityName())) {
+                        MobclickAgent.onEvent(this, "map_c");
+
                         Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
                         mapIntent.putExtra("lat", dModel.getLatitude());
                         mapIntent.putExtra("lon", dModel.getLongitude());
@@ -491,23 +506,22 @@ public class QuchuDetailsActivity extends BaseActivity {
                 Toast.makeText(QuchuDetailsActivity.this, "还没找到去往你心里的路...", Toast.LENGTH_SHORT).show();
             } else {
                 LogUtils.json("webview ==");
-                WebViewActivity.enterActivity(QuchuDetailsActivity.this,dModel.getNet(),dModel.getName());
+                WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
             }
         }
     }
 
     @Override
     protected void onResume() {
-        MobclickAgent.onPageStart("PlaceDetailActivity");
-
+        MobclickAgent.onPageStart(from);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
+        MobclickAgent.onPageEnd(from);
         super.onPause();
 
-        MobclickAgent.onPageEnd("PlaceDetailActivity");
     }
 
     @Override

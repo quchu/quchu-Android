@@ -13,10 +13,10 @@ import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.google.gson.Gson;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
-import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.utils.AppUtil;
@@ -28,7 +28,6 @@ public class AppContext extends Application {
     public static Context mContext;
     public static UserInfoModel user;//用户信息
 
-    public static PlacePostCardModel ppcModel;//趣处明信片信息 用户返回后刷新
     // 屏幕宽度
     public static float Width = 0;
     // 屏幕高度
@@ -38,8 +37,6 @@ public class AppContext extends Application {
     public static boolean dCardListNeedUpdate = false;
 
     public static String token = "";
-
-
 
 
     private RefWatcher refWatcher;
@@ -56,29 +53,18 @@ public class AppContext extends Application {
         refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
         token = SPUtils.getUserToken(getApplicationContext());
-
-
-   /*     AnalyticsConfig.setChannel("quchu_360");
-        LogUtils.json("userinfo=" + SPUtils.getUserInfo(mContext));
-        LogUtils.json("userToken=" + SPUtils.getUserToken(mContext));*/
-
-
+//禁用页面自动统计
+        MobclickAgent.openActivityDurationTrack(false);
         ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
                 .build();
         Fresco.initialize(getApplicationContext(), imagePipelineConfig);
-//        GenericDraweeHierarchyBuilder builder =
-//                new GenericDraweeHierarchyBuilder(getResources());
-//        GenericDraweeHierarchy hierarchy = builder
-//                .setFadeDuration(300)
-//                .build();
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
             LogUtils.json(SPUtils.getUserInfo(this));
             user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
 
         }
         gatherList = new ArrayList<>();
-//        initImageLoader();
         initWidths();
     }
 
@@ -89,21 +75,6 @@ public class AppContext extends Application {
         Height = dm.heightPixels;
     }
 
-//    private void initImageLoader() {
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//                mContext).threadPriority(Thread.NORM_PRIORITY - 2)
-//                .denyCacheImageMultipleSizesInMemory()
-//                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-//                .tasksProcessingOrder(QueueProcessingType.LIFO)
-//                .memoryCacheSize(2 * 1024 * 1024) //缓存到内存的最大数据
-//                .memoryCacheSize(50 * 1024 * 1024) //设置内存缓存的大小
-//                .diskCacheFileCount(200)
-//                .writeDebugLogs() // Remove for release app
-//                .build();
-//        // Initialize ImageLoader with configuration.
-//        ImageLoader.getInstance().init(config);
-//        //    SPUtils.initGuideIndex();
-//    }
 
     @Override
     public void onTerminate() {

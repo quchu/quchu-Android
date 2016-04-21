@@ -41,21 +41,12 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
-            if (AppContext.user == null)
-                AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
-            enterApp();
-        } else {*/
         setContentView(R.layout.activity_user_login);
         IsVisitorLogin = getIntent().getBooleanExtra("IsVisitorLogin", false);
         transaction = getSupportFragmentManager().beginTransaction();
-         /*       transaction.setCustomAnimations(R.anim.in_push_right_to_left,R.anim.out_push_left_to_right);*/
-        // transaction.replace(R.id.user_login_fl, new UserGuideFragment());
 
         transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
-             /*   transaction.addToBackStack(null);*/
         transaction.commitAllowingStateLoss();
-     /*   }*/
     }
 
     @Override
@@ -102,10 +93,13 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     }
 
     public void sinaLogin() {
+        MobclickAgent.onEvent(this, "pop_loginweibo_c");
         new WeiboHelper(this, this).weiboLogin(this, true);
     }
 
     public void weixinLogin() {
+        MobclickAgent.onEvent(this, "pop_ loginwechat_c");
+
         WechatHelper.getInstance(this).login(this);
     }
 
@@ -140,15 +134,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         startActivity(new Intent(this, RecommendActivity.class));
 
         Toast.makeText(getApplicationContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
-//        this.finish();
     }
-
-//    /**
-//     * 进入引导
-//     */
-//    public void starGuideView() {
-//        startActivity(new Intent(this, PlanetActivity.class));
-//    }
 
 
 }

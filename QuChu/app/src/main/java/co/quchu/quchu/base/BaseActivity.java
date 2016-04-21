@@ -107,18 +107,12 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(TAG);
         MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        if (this instanceof MenusActivity) {
-//            overridePendingTransition(R.anim.in_top_to_bottom,
-//                    R.anim.in_stable);
-//        }
-        MobclickAgent.onPageStart(TAG);
         MobclickAgent.onResume(this);
     }
 

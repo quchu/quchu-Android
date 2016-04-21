@@ -41,7 +41,6 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 import co.quchu.quchu.widget.RecommendTitleGroup;
-import cz.msebera.android.httpclient.util.VersionInfo;
 
 /**
  * RecommendActivity
@@ -104,7 +103,7 @@ public class RecommendActivity extends BaseActivity {
         tvSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RecommendActivity.this,SearchActivity.class));
+                startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
             }
         });
 
@@ -124,6 +123,7 @@ public class RecommendActivity extends BaseActivity {
             return;
         switch (view.getId()) {
             case R.id.recommend_title_location_rl:
+                MobclickAgent.onEvent(this, "location_c");
                 if (list != null) {
                     showCityDialog();
                 } else {
@@ -147,6 +147,7 @@ public class RecommendActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.recommend_title_more_iv:
+                MobclickAgent.onEvent(this, "Profile_c");
                 Intent intent = new Intent(this, MeActivity.class);
 
                 startActivity(intent);
@@ -205,7 +206,6 @@ public class RecommendActivity extends BaseActivity {
             transaction.
 //                    setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out).
         hide(classifyFragment).show(recommendFragment).commit();
-
         } else {
             rlSearchBar.setVisibility(View.VISIBLE);
 
@@ -267,7 +267,7 @@ public class RecommendActivity extends BaseActivity {
         resumeUpdateDataTimes = 0;
         netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
         super.onResume();
-        MobclickAgent.onPageStart("MainActivity");
+        MobclickAgent.onPageStart("RecommendActivity");
 
 
     }
@@ -275,7 +275,7 @@ public class RecommendActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("MainActivity");
+        MobclickAgent.onPageEnd("RecommendActivity");
     }
 
 

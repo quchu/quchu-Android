@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.analytics.MobclickAgent;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -118,6 +121,11 @@ public class ClassifyFragment extends BaseFragment {
                                 default:
                                     title = model.getZh();
                             }
+                            Map<String, String> p = new HashMap<>();
+                            p.put("classify_name", title);
+                            MobclickAgent.onEvent(getActivity(), "subject_u", p);
+
+
                             Intent intent = new Intent(getActivity(), ClassifyDetailActivity.class);
                             intent.putExtra(ClassifyDetailActivity.PARAMETER_TITLE, title);
                             startActivity(intent);
