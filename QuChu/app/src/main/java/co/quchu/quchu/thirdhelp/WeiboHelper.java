@@ -26,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -138,7 +139,7 @@ public class WeiboHelper {
             @Override
             public void onSuccess(JSONObject response) {
                 UserInfoHelper.saveUserInfo(response);
-                MobclickAgent.onEvent(activity,"loginweibo_c");
+                MobclickAgent.onProfileSignIn("loginweibo_c", AppContext.user.getUserId() + "");
                 listener.loginSuccess(3, token, uid);
 
                 LogUtils.json("skdf" + response.toString());

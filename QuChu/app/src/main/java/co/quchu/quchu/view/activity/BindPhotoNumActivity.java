@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -176,5 +177,17 @@ public class BindPhotoNumActivity extends BaseActivity {
         } else {
             Toast.makeText(BindPhotoNumActivity.this, "密码长度必须大于六位", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("connectphone");
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("connectphone");
+        super.onResume();
     }
 }

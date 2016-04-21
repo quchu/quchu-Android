@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -229,6 +229,18 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             }
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("lookfornew");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("lookfornew");
+        super.onPause();
     }
 
     @Override

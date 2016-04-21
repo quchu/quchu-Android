@@ -143,4 +143,16 @@ public class ClassifyFragment extends BaseFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+    @Override
+    public void onResume() {
+        MobclickAgent.onPageStart("h_discovery");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        MobclickAgent.onPageEnd("h_discovery");
+        super.onPause();
+    }
 }

@@ -30,6 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
@@ -507,7 +508,7 @@ public class PhoneLoginFragment extends BaseFragment {
                     @Override
                     public void loginSuccess(int type, String token, String appId) {
                         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
-                        MobclickAgent.onEvent(getContext(), "loginphone_c");
+                        MobclickAgent.onProfileSignIn("loginphone_c", AppContext.user.getUserId() + "");
                         ((UserLoginActivity) getActivity()).loginSuccess(type, token, appId);
                     }
                 });

@@ -150,7 +150,7 @@ public class WechatHelper {
                 UserInfoHelper.saveUserInfo(response);
                 if (null != listener) {
                     SPUtils.putLoginType(SPUtils.LOGIN_TYPE_WEIXIN);
-                    MobclickAgent.onEvent(mActivity,"loginwechat_c");
+                    MobclickAgent.onProfileSignIn("loginwechat_c", AppContext.user.getUserId() + "");
                     listener.loginSuccess(2, token, appId);
                 }
 

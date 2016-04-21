@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,11 +58,11 @@ public class RatingQuchuDialog extends BlurDialogFragment {
      * @return well instantiated fragment.
      * Serializable cityList
      */
-    public static RatingQuchuDialog newInstance(int rating,ArrayList<TagsModel> list) {
+    public static RatingQuchuDialog newInstance(int rating, ArrayList<TagsModel> list) {
         RatingQuchuDialog fragment = new RatingQuchuDialog();
         Bundle args = new Bundle();
         args.putSerializable(BUNDLE_KEY_TAGS, list);
-        args.putFloat(BUNDLE_KEY_TAGS_RATING,rating);
+        args.putFloat(BUNDLE_KEY_TAGS_RATING, rating);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,7 +74,6 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         mDataset = (ArrayList<TagsModel>) args.getSerializable(BUNDLE_KEY_TAGS);
         mRating = args.getFloat(BUNDLE_KEY_TAGS_RATING);
     }
-
 
 
     @NonNull
@@ -98,8 +99,8 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         ivFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=mListener){
-                    mListener.onFinishPicking(mDataset,prbRating.getRating());
+                if (null != mListener) {
+                    mListener.onFinishPicking(mDataset, prbRating.getRating());
                 }
                 dismiss();
             }
@@ -107,11 +108,11 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         return dialog;
     }
 
-    public interface OnFinishPickingListener{
-        void onFinishPicking(List<TagsModel> selection,int score);
+    public interface OnFinishPickingListener {
+        void onFinishPicking(List<TagsModel> selection, int score);
     }
 
-    public void setPickingListener(OnFinishPickingListener pListener){
+    public void setPickingListener(OnFinishPickingListener pListener) {
         mListener = pListener;
     }
 
@@ -119,11 +120,15 @@ public class RatingQuchuDialog extends BlurDialogFragment {
 
     @Override
     public void onResume() {
+        MobclickAgent.onPageStart("evaluate");
+        MobclickAgent.onResume(prbRating.getContext());
         super.onResume();
     }
 
     @Override
     public void onPause() {
+        MobclickAgent.onPageEnd("evaluate");
+        MobclickAgent.onPause(prbRating.getContext());
         super.onPause();
     }
 

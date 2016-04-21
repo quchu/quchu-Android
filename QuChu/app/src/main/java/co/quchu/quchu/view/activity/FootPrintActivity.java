@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,32 +48,30 @@ public class FootPrintActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foot_print);
         ButterKnife.bind(this);
-        mQuchuId = getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID,-1);
+        mQuchuId = getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID, -1);
         mQuchuName = getIntent().getStringExtra(BUNDLE_KEY_QUCHU_NAME);
         getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_dismiss_dialog);
         getEnhancedToolbar().getRightIv().setRotation(45);
         getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FootPrintActivity.this,AddFootprintActivity.class);
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID,mQuchuId);
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME,mQuchuName);
+                Intent intent = new Intent(FootPrintActivity.this, AddFootprintActivity.class);
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mQuchuId);
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mQuchuName);
                 startActivity(intent);
             }
         });
 
 
-
-
         mAdapter = new FootPrintAdapter(mData, new FootPrintAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                startActivity(new Intent(FootPrintActivity.this,MyFootprintDetailActivity.class));
+                startActivity(new Intent(FootPrintActivity.this, MyFootprintDetailActivity.class));
             }
         });
         rvFootPrint.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
         rvFootPrint.setAdapter(mAdapter);
-        rvFootPrint.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        rvFootPrint.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
 
         loadData(false);
@@ -80,12 +80,12 @@ public class FootPrintActivity extends BaseActivity {
     private void loadData(final boolean loadMore) {
         if (mIsLoading) return;
         if (mCurrentPageNo == mMaxPageNo) return;
-        if (!loadMore){
+        if (!loadMore) {
             mData.clear();
             mCurrentPageNo = 1;
-            DialogUtil.showProgess(this,R.string.loading_dialog_text);
-        }else if (mCurrentPageNo<mMaxPageNo){
-            mCurrentPageNo +=1;
+            DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        } else if (mCurrentPageNo < mMaxPageNo) {
+            mCurrentPageNo += 1;
 
         }
         mIsLoading = true;
@@ -97,7 +97,7 @@ public class FootPrintActivity extends BaseActivity {
                 mData.addAll(model);
                 mAdapter.notifyDataSetChanged();
                 mIsLoading = false;
-                if (DialogUtil.isDialogShowing()){
+                if (DialogUtil.isDialogShowing()) {
                     DialogUtil.dismissProgess();
                 }
 
@@ -110,5 +110,17 @@ public class FootPrintActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("pic");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("pic");
+        super.onPause();
     }
 }

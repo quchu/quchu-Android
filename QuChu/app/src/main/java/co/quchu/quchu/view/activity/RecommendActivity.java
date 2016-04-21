@@ -267,15 +267,6 @@ public class RecommendActivity extends BaseActivity {
         resumeUpdateDataTimes = 0;
         netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
         super.onResume();
-        MobclickAgent.onPageStart("RecommendActivity");
-
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("RecommendActivity");
     }
 
 

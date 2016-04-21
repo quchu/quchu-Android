@@ -52,15 +52,15 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
 
     @Override
     protected void onResume() {
-        MobclickAgent.onPageStart("MessageCenterActivity");
+        MobclickAgent.onPageStart("messages");
 
         super.onResume();
     }
 
     @Override
     protected void onPause() {
+        MobclickAgent.onPageEnd("messages");
         super.onPause();
-        MobclickAgent.onPageEnd("MessageCenterActivity");
     }
 
 

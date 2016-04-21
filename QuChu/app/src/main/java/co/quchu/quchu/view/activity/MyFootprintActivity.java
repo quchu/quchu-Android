@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,6 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     TextView ageAndCound;
     private MyFootprintPresenter presenter;
 
-    private List<PostCardItemModel> data;
     private MyFootprintAdapter adapter;
     private int pagesNo = 1;
 
@@ -67,7 +67,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         setContentView(R.layout.activity_footprint);
         ButterKnife.bind(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(false);
+        recyclerView.setHasFixedSize(true);
 
         initTitle();
         adapter = new MyFootprintAdapter();
@@ -171,7 +171,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     public void initData(PostCardModel data) {
         pagesNo = data.getPagesNo();
         recyclerView.setVisibility(View.VISIBLE);
-        this.data = data.getResult();
+        List<PostCardItemModel> data1 = data.getResult();
         adapter.initData(data.getResult());
     }
 
@@ -191,5 +191,15 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         adapter.setLoadMoreEnable(false);
     }
 
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("my pic");
+        super.onResume();
+    }
 
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("my pic");
+        super.onPause();
+    }
 }

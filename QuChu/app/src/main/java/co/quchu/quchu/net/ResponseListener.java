@@ -26,5 +26,5 @@ public interface ResponseListener<T> extends Response.ErrorListener {
      * @param errorCode result为false的时候才会解析这个数据
      * @param msg       result为false的时候才会解析这个数据
      */
-    void onResponse(T response, boolean isNull, String errorCode, @Nullable String msg);
+    void onResponse(T response, boolean result, String errorCode, @Nullable String msg);
 }
