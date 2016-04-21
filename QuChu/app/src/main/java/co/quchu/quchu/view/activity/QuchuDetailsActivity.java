@@ -229,7 +229,18 @@ public class QuchuDetailsActivity extends BaseActivity {
                 }
 
                 mLoadingMore = true;
-                loadMore(null, null, 1, dModel.getPid(), SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude());
+                String s ="";
+                if (dModel.getNearPlace().size()==1){
+                    s += dModel.getNearPlace().get(0).getPlaceId();
+                }else {
+                    for (int i = 0; i < dModel.getNearPlace().size(); i++) {
+                        s+= dModel.getNearPlace().get(i).getPlaceId();
+                        s+= "|";
+                    }
+                    s = s.substring(0,s.length()-1);
+                }
+
+                loadMore(s, null, 1, dModel.getPid(), SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude());
 
             }
         });

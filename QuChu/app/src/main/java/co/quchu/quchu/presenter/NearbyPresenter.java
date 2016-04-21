@@ -36,6 +36,7 @@ import co.quchu.quchu.net.ResponseListener;
 public class NearbyPresenter {
     public static void getNearbyData(Context context,String recommendPlaceIds,String categoryTagIds,int isFirst,int placeId, int cityId,double latitude,double longitude,int pageNo, final getNearbyDataListener listener) {
         String url = String.format(NetApi.getNearby,cityId,String.valueOf(latitude),String.valueOf(longitude),pageNo,recommendPlaceIds,categoryTagIds,isFirst,placeId);
+        System.out.println(url);
         NetService.get(context, url, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {

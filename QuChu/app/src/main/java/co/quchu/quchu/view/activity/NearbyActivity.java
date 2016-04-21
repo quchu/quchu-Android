@@ -64,7 +64,7 @@ public class NearbyActivity extends BaseActivity {
                     tagsFilterDialog.show(getFragmentManager(), "");
                     tagsFilterDialog.setPickingListener(new TagsFilterDialog.OnFinishPickingListener() {
                         @Override
-                        public void onFinishPicking(List<TagsModel> selection) {
+                        public void onFinishPicking(List<TagsModel> selection,boolean selectAll) {
 
                             mStrFilterPattern = "";
 
@@ -76,6 +76,10 @@ public class NearbyActivity extends BaseActivity {
                                     mStrFilterPattern += "|";
                                 }
                                 mStrFilterPattern = mStrFilterPattern.substring(0, mStrFilterPattern.length() - 1);
+                            }
+
+                            if (selectAll){
+                                mStrFilterPattern = "";
                             }
 
                             DialogUtil.showProgess(NearbyActivity.this, R.string.loading_dialog_text);

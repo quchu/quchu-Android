@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +40,9 @@ public class TagsFilterDialog extends BlurDialogFragment {
     RecyclerView rvTags;
     @Bind(R.id.ivFinish)
     ImageView ivFinish;
+
+    @Bind(R.id.cbSelectAll)
+    CheckBox cbSelectAll;
 
 
     private ArrayList<TagsModel> mDataset;
@@ -92,9 +97,20 @@ public class TagsFilterDialog extends BlurDialogFragment {
             @Override
             public void onClick(View v) {
                 if (null!=mListener){
-                    mListener.onFinishPicking(mDataset);
+                    mListener.onFinishPicking(mDataset,cbSelectAll.isChecked());
                 }
                 dismiss();
+            }
+        });
+
+        cbSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                for (int i = 0; i < mDataset.size(); i++) {
+                    mDataset.get(i).setPraise(isChecked);
+                }
+                adapter.notifyDataSetChanged();
             }
         });
         return dialog;
@@ -155,7 +171,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
     }
     private OnFinishPickingListener mListener;
     public interface OnFinishPickingListener{
-        void onFinishPicking(List<TagsModel> selection);
+        void onFinishPicking(List<TagsModel> selection,boolean selectAll);
     }
 
     public void setPickingListener(OnFinishPickingListener pListener){
