@@ -18,7 +18,7 @@
         card_view:tcvItemBorderHorizontal="10dp"
         card_view:tcvRightResId="@null"
         card_view:tcvSingleLine="true"
-        android:layout_below="@id/appbar"
+        android:layout_below="@+id/appbar"
         card_view:tcvTextColor="@color/text_color_white" />
 
 

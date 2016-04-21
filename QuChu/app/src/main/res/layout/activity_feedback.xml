@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground">
 
+
     <include
-        android:id="@+id/feedback_title_bar"
-        layout="@layout/title_bar" />
+        layout="@layout/cp_enhanced_toolbar" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/feedback_title_bar"
+        android:layout_below="@+id/appbar"
         android:layout_margin="@dimen/base_margin"
         android:foreground="?attr/selectableItemBackground"
         card_view:cardCornerRadius="8dp"

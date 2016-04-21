@@ -10,7 +10,7 @@
         android:id="@+id/layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/appbar"
+        android:layout_below="@+id/appbar"
         android:layout_marginTop="@dimen/half_margin"
         android:text="绑定手机号"
         android:textColor="@color/account_setting_text_hint_color"
