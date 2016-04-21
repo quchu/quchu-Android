@@ -52,42 +52,5 @@
             android:background="@color/appBackground_dark"
             android:src="@mipmap/ic_share_quchu"
             />
-
-        <TextView
-            android:id="@+id/detail_been_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/half_margin"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/quarter_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            android:layout_weight="1"
-            android:background="@drawable/shape_detail_bottom_bg"
-            android:gravity="center"
-            android:text="去过"
-            android:visibility="gone"
-            android:textColor="@color/gene_textcolor_yellow"
-            android:textSize="@dimen/word_size_body" />
-
-        <TextView
-            android:id="@+id/detail_want_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/half_margin"
-            android:layout_marginLeft="@dimen/quarter_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            android:layout_weight="1"
-            android:background="@drawable/shape_detail_bottom_bg"
-            android:gravity="center"
-            android:text="想去"
-            android:visibility="gone"
-            android:textColor="@color/gene_textcolor_yellow"
-            android:textSize="@dimen/word_size_body" />
     </LinearLayout>
-
-
-
 </LinearLayout>

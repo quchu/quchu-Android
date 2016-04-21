@@ -46,7 +46,7 @@ public class FootPrintPresenter {
 
             @Override
             public boolean onError(String error) {
-                DialogUtil.dismissProgess();
+                listener.getFootprint(null, 0);
                 return false;
             }
         });

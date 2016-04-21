@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,8 +63,6 @@ import co.quchu.quchu.widget.HidingScrollListener;
 public class QuchuDetailsActivity extends BaseActivity {
 
 
-    @Bind(R.id.detail_been_tv)
-    TextView detailBeenTv;
     @Bind(R.id.detail_recyclerview)
     RecyclerView mRecyclerView;
     @Bind(R.id.detail_bottom_group_ll)
@@ -71,7 +70,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     @Bind(R.id.appbar)
     AppBarLayout appbar;
     @Bind(R.id.ivFavorite)
-    View vFavorite;
+    ImageView vFavorite;
     @Bind(R.id.ivShare)
     View vShare;
 
@@ -253,25 +252,13 @@ public class QuchuDetailsActivity extends BaseActivity {
 
 
     private void bindingDetailData() {
-        changeBottomBeenBg(dModel.isIsout());
         changeCollectState(dModel.isIsf());
-
-    }
-
-
-    private void changeBottomBeenBg(boolean isOut) {
-        if (isOut) {
-            detailBeenTv.setTextColor(getResources().getColor(R.color.black));
-            detailBeenTv.setBackgroundResource(R.drawable.shape_detail_bottom_full_bg);
-        } else {
-            detailBeenTv.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
-            detailBeenTv.setBackgroundResource(R.drawable.shape_detail_bottom_bg);
-        }
     }
 
 
     private void changeCollectState(boolean isCollect) {
         dModel.setIsf(isCollect);
+        vFavorite.setImageResource(isCollect?R.mipmap.ic_star_stroke:R.mipmap.ic_star_fill);
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 
@@ -344,7 +331,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     }
 
-        @OnClick({R.id.detail_want_tv, R.id.detail_been_tv,R.id.ivShare,R.id.ivFavorite})
+        @OnClick({R.id.ivShare,R.id.ivFavorite})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -352,10 +339,12 @@ public class QuchuDetailsActivity extends BaseActivity {
             switch (v.getId()) {
                 case R.id.tvQuguo:
 
-                    if (AppContext.user.isIsVisitors()) {
-                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
-                        vDialog.show(getFragmentManager(), "visitor");
-                    } else if(null!=mVisitedInfoModel){
+//                    if (AppContext.user.isIsVisitors()) {
+//                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
+//                        vDialog.show(getFragmentManager(), "visitor");
+//                    } else
+
+                    if(null!=mVisitedInfoModel){
                         RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getScore(),mVisitedInfoModel.getResult());
                         tagsFilterDialog.show(getFragmentManager(),"");
                         tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
@@ -375,20 +364,20 @@ public class QuchuDetailsActivity extends BaseActivity {
                     footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_NAME,dModel.getName());
                     startActivity(footPrintIntent);
                     break;
-                case R.id.detail_want_tv:
-                    //用户想去
-                    if (dModel.isIsf()) {
-                        // startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
-                        WebViewActivity.enterActivity(QuchuDetailsActivity.this,dModel.getNet(),dModel.getName());
-                    } else {
-                        WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
-                        lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
-                    }
-                    if (AppContext.gatherList == null)
-                        AppContext.gatherList = new ArrayList<>();
-                    if (AppContext.user != null && dModel != null)
-                        AppContext.gatherList.add(new GatherWantGoModel(AppContext.user.getUserId(), dModel.getPid()));
-                    break;
+//                case R.id.detail_want_tv:
+//                    //用户想去
+//                    if (dModel.isIsf()) {
+//                        // startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
+//                        WebViewActivity.enterActivity(QuchuDetailsActivity.this,dModel.getNet(),dModel.getName());
+//                    } else {
+//                        WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
+//                        lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
+//                    }
+//                    if (AppContext.gatherList == null)
+//                        AppContext.gatherList = new ArrayList<>();
+//                    if (AppContext.user != null && dModel != null)
+//                        AppContext.gatherList.add(new GatherWantGoModel(AppContext.user.getUserId(), dModel.getPid()));
+//                    break;
                 case R.id.detail_button_add_postcard_rl:
                     Intent intent = new Intent();
                     intent.putExtra("pId", dModel.getPid());
@@ -538,7 +527,6 @@ public class QuchuDetailsActivity extends BaseActivity {
         if (event.getFlag() == EventFlags.EVENT_QUCHU_DETAIL_UPDATED && null != dModel) {
             if ((Integer) event.getContent() == dModel.getPid()) {
                 dModel.setMyCardId((Integer) event.getContent());
-                changeBottomBeenBg(true);
             }
         }
     }

@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -306,22 +307,20 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(mOnItemClickListener);
             if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
-                StringTokenizer token = new StringTokenizer(mData.getTel(), " ");
-                StringBuffer phoneHtml = new StringBuffer();
-                while (token.hasMoreTokens()) {
-                    String phoneNum = token.nextToken();
-                    phoneHtml.append("<font color=#dcdddd><a href=\"tel:").append(phoneNum).append("\">").append(phoneNum).append("</a> </font>  ");
-                }
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：" + Html.fromHtml(phoneHtml.toString()));
+//                StringTokenizer token = new StringTokenizer(mData.getTel(), " ");
+//                StringBuffer phoneHtml = new StringBuffer();
+//                while (token.hasMoreTokens()) {
+//                    String phoneNum = token.nextToken();
+//                    phoneHtml.append("<font color=#ff4444><a href=\"tel:").append(phoneNum).append("\">").append(phoneNum).append("</a> </font>  ");
+//                }
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：" + mData.getTel());
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setMovementMethod(LinkMovementMethod.getInstance());
+                Linkify.addLinks(((ContactInfoViewHolder) holder).detail_store_phone_tv, Linkify.ALL);
             } else {
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.clearComposingText();
             }
         } else if (holder instanceof RatingInfoViewHolder) {
-            if (null != mAnalysisModel) {
-                for (int i = 0; i < mAnalysisModel.getResult().size(); i++) {
-                    System.out.println(mAnalysisModel.getResult().get(i).getZh());
-                }
+            if (null != mAnalysisModel &&null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size()>0) {
                 ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((Float.valueOf(mAnalysisModel.getResult().get(0).getCount())/ mAnalysisModel.getUserOutCount())*100);
                 ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((Float.valueOf(mAnalysisModel.getResult().get(1).getCount())/ mAnalysisModel.getUserOutCount())*100);
                 ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((Float.valueOf(mAnalysisModel.getResult().get(2).getCount())/ mAnalysisModel.getUserOutCount())*100);

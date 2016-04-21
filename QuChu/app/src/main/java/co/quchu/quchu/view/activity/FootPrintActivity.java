@@ -94,8 +94,6 @@ public class FootPrintActivity extends BaseActivity {
 
                 mMaxPageNo = pMaxPageNo;
                 mData.addAll(model);
-                mData.addAll(model);
-                mData.addAll(model);
                 mAdapter.notifyDataSetChanged();
                 mIsLoading = false;
                 if (DialogUtil.isDialogShowing()){
