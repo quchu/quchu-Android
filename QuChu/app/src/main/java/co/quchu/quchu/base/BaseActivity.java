@@ -13,7 +13,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.photoselected.PreviewImageActivity;
-import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
@@ -26,7 +25,7 @@ import co.quchu.quchu.widget.swipbacklayout.Utils;
  * Date: 2015-10-19
  * activity 基类
  */
-public abstract class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase, View.OnClickListener, MoreButtonView.MoreClicklistener {
+public abstract class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase, View.OnClickListener {
     private SwipeBackActivityHelper mHelper;
     protected SwipeBackLayout mSwipeBackLayout;
     protected String TAG = getClass().getName();
@@ -148,14 +147,6 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         getSwipeBackLayout().scrollToFinishActivity();
     }
 
-    /**
-     * title bar 控制  start
-     */
-    public void initTitleBar() {
-        this.findViewById(R.id.title_back_iv).setOnClickListener(this);
-        MoreButtonView mvv = (MoreButtonView) this.findViewById(R.id.title_more_rl);
-        mvv.setMoreClick(this);
-    }
 
     public EnhancedToolbar getEnhancedToolbar() {
         return null == enhancedToolbar ? initToolbar() : enhancedToolbar;
@@ -182,10 +173,6 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         }
     }
 
-    public void enableRightButton() {
-        if (null != this.findViewById(R.id.title_more_rl))
-            this.findViewById(R.id.title_more_rl).setVisibility(View.VISIBLE);
-    }
 
     @Override
     public void onClick(View v) {
@@ -197,10 +184,6 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         }
     }
 
-    @Override
-    public void moreClick() {
-//        ActManager.getAppManager().Back2MenusAct();
-    }
 
     /**
      * title bar 控制  end

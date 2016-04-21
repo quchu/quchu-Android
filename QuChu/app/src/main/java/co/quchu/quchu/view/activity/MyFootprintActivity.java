@@ -51,7 +51,6 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     TextView ageAndCound;
     private MyFootprintPresenter presenter;
 
-    private List<PostCardItemModel> data;
     private MyFootprintAdapter adapter;
     private int pagesNo = 1;
 
@@ -68,7 +67,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         setContentView(R.layout.activity_footprint);
         ButterKnife.bind(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(false);
+        recyclerView.setHasFixedSize(true);
 
         initTitle();
         adapter = new MyFootprintAdapter();
@@ -172,7 +171,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     public void initData(PostCardModel data) {
         pagesNo = data.getPagesNo();
         recyclerView.setVisibility(View.VISIBLE);
-        this.data = data.getResult();
+        List<PostCardItemModel> data1 = data.getResult();
         adapter.initData(data.getResult());
     }
 

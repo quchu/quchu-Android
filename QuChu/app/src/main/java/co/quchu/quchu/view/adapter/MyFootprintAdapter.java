@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
 
 
     @Override
-    public void onBindView(ViewHold holder, final int position) {
+    public void onBindView(final ViewHold holder, final int position) {
         final PostCardItemModel model = data.get(position);
 
         float ratio = (float) model.getWidth() / model.getHeight();
@@ -68,11 +69,17 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
             holder.simpleDraweeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClick(model,0, position);
+                    itemClickListener.itemClick(model, 0, position);
                 }
             });
         }
-
+        holder.itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                holder.line.getLayoutParams().height = holder.itemView.getHeight();
+            }
+        });
     }
 
     @Override
