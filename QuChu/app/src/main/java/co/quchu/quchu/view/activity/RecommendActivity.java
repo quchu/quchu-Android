@@ -48,7 +48,7 @@ import co.quchu.quchu.widget.RecommendTitleGroup;
  * Date: 2015-12-07
  * 趣处分类、推荐
  */
-public class RecommendActivity extends BaseActivity {
+public class RecommendActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.recommend_title_location_tv)
     TextView recommendTitleLocationIv;
 
@@ -88,13 +88,6 @@ public class RecommendActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
 
         initView();
-        enableRightButton();
-//        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-//            @Override
-//            public void hasCityList(ArrayList<CityModel> list) {
-//                RecommendActivity.this.list = list;
-//            }
-//        });
 
         recommendTitleMoreRl.setOnClickListener(this);
         UmengUpdateAgent.setUpdateListener(null);
@@ -144,7 +137,6 @@ public class RecommendActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-        super.onClick(v);
         switch (v.getId()) {
             case R.id.recommend_title_more_iv:
                 MobclickAgent.onEvent(this, "Profile_c");

@@ -42,10 +42,10 @@ public class WebViewActivity extends BaseActivity {
     public static final String TAG = "WebViewActivity";
 
 
-    public static void enterActivity(Activity from,String url,String title){
-        Intent intent = new Intent(from,WebViewActivity.class);
-        intent.putExtra(BUNDLE_KEY_WEBVIEW_URL,url);
-        intent.putExtra(BUNDLE_KEY_WEBVIEW_TITLE,title);
+    public static void enterActivity(Activity from, String url, String title) {
+        Intent intent = new Intent(from, WebViewActivity.class);
+        intent.putExtra(BUNDLE_KEY_WEBVIEW_URL, url);
+        intent.putExtra(BUNDLE_KEY_WEBVIEW_TITLE, title);
         from.startActivity(intent);
     }
 
@@ -54,12 +54,13 @@ public class WebViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         ButterKnife.bind(this);
-        initTitleBar();
+        getEnhancedToolbar();
+
         mTvTitle.setText(getTitle());
-        mWebChromeClient = new WebChromeClient(){
+        mWebChromeClient = new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
-                if (null==mPageTitle&&!StringUtils.isEmpty(title)){
+                if (null == mPageTitle && !StringUtils.isEmpty(title)) {
                     mTvTitle.setText(title);
                 }
             }
@@ -71,13 +72,13 @@ public class WebViewActivity extends BaseActivity {
 
         mUrl = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_URL);
         mPageTitle = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_TITLE);
-        mTvTitle.setText(!StringUtils.isEmpty(mPageTitle)?mPageTitle:"");
+        mTvTitle.setText(!StringUtils.isEmpty(mPageTitle) ? mPageTitle : "");
 
-        if (!StringUtils.isEmpty(mUrl) && URLUtil.isValidUrl(mUrl)){
-            Log.d(TAG,mUrl);
+        if (!StringUtils.isEmpty(mUrl) && URLUtil.isValidUrl(mUrl)) {
+            Log.d(TAG, mUrl);
             mWebView.loadUrl(mUrl);
             DialogUtil.showProgess(WebViewActivity.this, R.string.loading_dialog_text);
-        }else{
+        } else {
             showErrorToast();
         }
 
@@ -90,22 +91,22 @@ public class WebViewActivity extends BaseActivity {
     }
 
     private void showErrorToast() {
-        if (DialogUtil.isDialogShowing()){
+        if (DialogUtil.isDialogShowing()) {
             DialogUtil.dismissProgess();
         }
-        Toast.makeText(WebViewActivity.this,R.string.error_invalid_arguments,Toast.LENGTH_SHORT).show();
+        Toast.makeText(WebViewActivity.this, R.string.error_invalid_arguments, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onBackPressed() {
         if (mWebView.canGoBack()) {
             mWebView.goBack();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
 
-    private class SimpleWebViewClient extends WebViewClient{
+    private class SimpleWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
@@ -122,21 +123,21 @@ public class WebViewActivity extends BaseActivity {
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
             super.onReceivedSslError(view, handler, error);
             showErrorToast();
-            Log.d(TAG,"onReceivedSslError");
+            Log.d(TAG, "onReceivedSslError");
         }
 
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
             showErrorToast();
-            Log.d(TAG,"onReceivedError");
+            Log.d(TAG, "onReceivedError");
         }
 
         @Override
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-            super.onReceivedHttpError(view, request , errorResponse);
+            super.onReceivedHttpError(view, request, errorResponse);
             showErrorToast();
-            Log.d(TAG,"onReceivedHttpError");
+            Log.d(TAG, "onReceivedHttpError");
         }
     }
 }

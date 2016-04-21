@@ -17,7 +17,7 @@ import co.quchu.quchu.view.fragment.FindFragment;
 /**
  * 趣处 包含我收藏的和我发现的
  */
-public class QuchuActivity extends BaseActivity {
+public class QuchuActivity extends BaseActivity implements View.OnClickListener {
 
     @Bind(R.id.Favorite)
     TextView Favorite;

@@ -90,7 +90,7 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
         setContentView(R.layout.activity_account_setting);
         ButterKnife.bind(this);
         presenter = new AccountSettingPresenter(this, this);
-        initTitleBar();
+        getEnhancedToolbar();
         imageList = AccountSettingPresenter.getQAvatar();
 
     }

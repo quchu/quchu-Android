@@ -26,7 +26,7 @@ import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.widget.RoundProgressView;
 
-public class MeActivity extends BaseActivity implements IMeActivity {
+public class MeActivity extends BaseActivity implements IMeActivity, View.OnClickListener {
 
     @Bind(R.id.back)
     ImageView back;

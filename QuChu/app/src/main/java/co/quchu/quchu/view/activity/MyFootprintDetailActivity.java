@@ -38,7 +38,7 @@ import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.view.fragment.FootprintDetailFragment;
 
-public class MyFootprintDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class MyFootprintDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
 
 
     @Bind(R.id.container)
