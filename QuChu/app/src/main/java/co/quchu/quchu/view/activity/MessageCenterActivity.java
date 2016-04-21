@@ -3,7 +3,6 @@ package co.quchu.quchu.view.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -11,6 +10,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.MessageModel;
 import co.quchu.quchu.presenter.MessageCenterPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
@@ -25,8 +25,6 @@ import co.quchu.quchu.view.adapter.MessageCenterAdapter;
 public class MessageCenterActivity extends BaseActivity implements PageLoadListener<MessageModel>, AdapterBase.OnLoadmoreListener {
     @Bind(R.id.messages_rv)
     RecyclerView messagesRv;
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
     private MessageCenterAdapter adapter;
     private int pagesNo = 1;
 
@@ -35,8 +33,8 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_center);
         ButterKnife.bind(this);
-        initTitleBar();
-        titleContentTv.setText(getTitle());
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        toolbar.getTitleTv().setText(getTitle());
         messagesRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new MessageCenterAdapter(this);
         adapter.setLoadmoreListener(this);
