@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_bar"
-        android:layout_below="@id/image_grid_title_bar"
+        android:layout_below="@+id/appbar"
         android:background="@drawable/shape_activity_bg"
         android:orientation="vertical">
 

@@ -5,15 +5,15 @@
     android:background="@color/appBackground"
     android:fitsSystemWindows="true">
 
+
     <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
+        layout="@layout/cp_enhanced_toolbar" />
 
     <RelativeLayout
         android:id="@+id/swipe_refresh_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar"
+        android:layout_below="@+id/appbar"
         android:background="@drawable/shape_activity_bg">
 
         <android.support.v7.widget.RecyclerView
@@ -36,7 +36,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/half_margin"
-        android:layout_below="@id/title_bar"
+        android:layout_below="@+id/appbar"
         android:background="@drawable/shape_shadow_toptobottom" />
 
 

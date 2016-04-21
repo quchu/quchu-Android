@@ -4,13 +4,12 @@
     android:background="@color/appBackground"
     android:orientation="vertical">
 
-    <
     <include layout="@layout/cp_enhanced_toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appbar"
+        android:layout_below="@+id/appbar"
         android:background="@drawable/shape_activity_bg">
 
         <GridView

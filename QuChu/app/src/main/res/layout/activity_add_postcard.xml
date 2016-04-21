@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground">
 
+
     <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
+        layout="@layout/cp_enhanced_toolbar" />
 
     <RelativeLayout
         android:id="@+id/add_postcard_group_ll"
@@ -37,7 +37,7 @@
         android:id="@+id/add_postcard_top_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_bar"
+        android:layout_below="@+id/appbar"
         android:background="@color/detail_subtitle_bg"
         android:orientation="vertical"
         android:visibility="visible">

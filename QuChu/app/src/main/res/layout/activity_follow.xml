@@ -6,13 +6,12 @@
     android:fitsSystemWindows="true">
 
     <include
-        android:id="@+id/account_setting_title_bar"
-        layout="@layout/title_bar" />
+        layout="@layout/cp_enhanced_toolbar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/follow_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/shape_activity_bg"
-        android:layout_below="@id/account_setting_title_bar" />
+        android:layout_below="@+id/appbar" />
 </RelativeLayout>
