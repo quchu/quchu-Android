@@ -5,15 +5,13 @@
     android:background="@color/appBackground"
     android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <RelativeLayout
         android:id="@+id/swipe_refresh_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar"
+        android:layout_below="@id/appbar"
         android:background="@drawable/shape_activity_bg">
 
         <android.support.v7.widget.RecyclerView
@@ -22,22 +20,9 @@
             android:layout_height="match_parent"
             android:overScrollMode="always" />
 
-        <FrameLayout
-            android:id="@+id/favorite_place_empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
 
-            <include layout="@layout/empty_view" />
-        </FrameLayout>
+        <include layout="@layout/empty_view" />
     </RelativeLayout>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/half_margin"
-        android:layout_below="@id/title_bar"
-        android:background="@drawable/shape_shadow_toptobottom" />
 
 
 </RelativeLayout>
