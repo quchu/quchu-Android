@@ -122,7 +122,7 @@
 
     <string name="accound_merger_title">合并账号</string>
     <string name="accound_merger_body">是否将账号合并</string>
-    <string name="foot_print">脚印照片墙</string>
+    <string name="foot_print">脚印</string>
     <string name="title_activity_my_footprint_detail">MyFootprintDetailActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
 

@@ -325,7 +325,9 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
             String label = genes.get(i).getZh();
             switch (i){
                 case 0:
-                    tvUserNickName.setText(genes.get(i).getMark());
+                    if (null!=genes.get(i).getMark()){
+                        tvUserNickName.setText(genes.get(i).getMark());
+                    }
                     rpv1.setProgress(progress);
                     tvLabel1.setText(label);
                     break;

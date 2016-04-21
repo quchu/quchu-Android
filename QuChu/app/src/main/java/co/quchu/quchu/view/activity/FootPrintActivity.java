@@ -48,7 +48,8 @@ public class FootPrintActivity extends BaseActivity {
         ButterKnife.bind(this);
         mQuchuId = getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID,-1);
         mQuchuName = getIntent().getStringExtra(BUNDLE_KEY_QUCHU_NAME);
-        getEnhancedToolbar().getRightIv().setImageResource(R.drawable.gf_ic_preview);
+        getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_dismiss_dialog);
+        getEnhancedToolbar().getRightIv().setRotation(45);
         getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
