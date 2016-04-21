@@ -12,6 +12,7 @@ import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -149,6 +150,7 @@ public class WechatHelper {
                 UserInfoHelper.saveUserInfo(response);
                 if (null != listener) {
                     SPUtils.putLoginType(SPUtils.LOGIN_TYPE_WEIXIN);
+                    MobclickAgent.onEvent(mActivity,"loginwechat_c");
                     listener.loginSuccess(2, token, appId);
                 }
 

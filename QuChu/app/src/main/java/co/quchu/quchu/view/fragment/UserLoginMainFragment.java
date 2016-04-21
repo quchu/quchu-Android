@@ -1,6 +1,5 @@
 package co.quchu.quchu.view.fragment;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,10 +36,6 @@ import co.quchu.quchu.view.activity.UserLoginActivity;
  * Date: 2015-11-25
  */
 public class UserLoginMainFragment extends BaseFragment implements View.OnClickListener {
-    /*   @Bind(R.id.user_login_main_circle_iv)
-       ImageView userLoginMainCircleIv;
-       @Bind(R.id.user_login_main_cwv)
-       CircleWaveView userLoginMainCwv;*/
     @Bind(R.id.user_login_main_weibo_tv)
     TextView userLoginMainWeiboTv;
     @Bind(R.id.user_login_main_weibo_ll)
@@ -64,8 +60,6 @@ public class UserLoginMainFragment extends BaseFragment implements View.OnClickL
     AnimatorSet animatorSet, animatorSets;
     private long aDuration = 2000L;
 
-    private float phoneViewStartY = 0;
-    private float phoneViewEndY = 0;
 
     private float emptyY = 0f, phoneViewY = 0f;
 
@@ -78,15 +72,6 @@ public class UserLoginMainFragment extends BaseFragment implements View.OnClickL
         StringUtils.alterTextColor(userLoginMainWechatTv, 0, 2, R.color.white);
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            userLoginMainPhoneLl.getViewTreeObserver().addOnDrawListener(new ViewTreeObserver.OnDrawListener() {
-                @Override
-                public void onDraw() {
-                    phoneViewStartY = userLoginMainPhoneLl.getY();
-                    phoneViewEndY = userLoginEmptyV.getY();
-                }
-            });
-        }
         userLoginEmptyV.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -101,24 +86,7 @@ public class UserLoginMainFragment extends BaseFragment implements View.OnClickL
                     phoneViewY = userLoginMainPhoneLl.getY();
             }
         });
-      /*  view.findViewById(R.id.user_login_visitor_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
-                UserLoginPresenter.visitorRegiest(getActivity(), new UserLoginPresenter.UserNameUniqueListener() {
-                    @Override
-                    public void isUnique(JSONObject msg) {
-                        DialogUtil.dismissProgess();
-                        ((UserLoginActivity) getActivity()).enterApp();
-                    }
 
-                    @Override
-                    public void notUnique(String msg) {
-
-                    }
-                });
-            }
-        });*/
         return view;
     }
 
@@ -325,6 +293,8 @@ public class UserLoginMainFragment extends BaseFragment implements View.OnClickL
                 }
                 break;
             case R.id.user_login_main_phone_ll:
+                MobclickAgent.onEvent(getContext(), "pop_registerphone_c");
+
                 transitionAnimation();
                 break;
         }

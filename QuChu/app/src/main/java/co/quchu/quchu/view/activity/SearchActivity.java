@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -84,7 +86,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         searchInputEt.post(new Runnable() {
             @Override
             public void run() {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(searchInputEt, 0);
             }
         });
@@ -136,6 +138,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
 
         super.onResume();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -161,22 +164,29 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
 
     private void seachStr(String str, final boolean loadMore) {
         if (mIsLoading) return;
-        if (mCurrentPageNo >= mMaxPageNo &&mMaxPageNo !=-1) return;
-        if (!loadMore){
+        if (mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
+        if (!loadMore) {
             resultList.clear();
             mCurrentPageNo = 1;
-        }else if (mCurrentPageNo<mMaxPageNo){
-            mCurrentPageNo +=1;
+        } else if (mCurrentPageNo < mMaxPageNo) {
+            mCurrentPageNo += 1;
         }
         mIsLoading = true;
         if (NetUtil.isNetworkConnected(this))
             DialogUtil.showProgess(this, R.string.loading_dialog_text);
+
+        //统计搜索关键字
+        Map<String, String> p = new HashMap<>();
+        p.put("search_keyword", str);
+        MobclickAgent.onEvent(this, "search_type", p);
+
+
         SearchPresenter.searchFromService(this, str, mCurrentPageNo, new SearchPresenter.SearchResultListener() {
             @Override
-            public void successResult(ArrayList<RecommendModel> arrayList,int maxPageNo) {
+            public void successResult(ArrayList<RecommendModel> arrayList, int maxPageNo) {
 
                 if (arrayList != null && arrayList.size() > 0) {
-                    if (mMaxPageNo==-1){
+                    if (mMaxPageNo == -1) {
                         mMaxPageNo = maxPageNo;
                     }
                     resultList.addAll(arrayList);
@@ -344,10 +354,10 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         resultList = new ArrayList<RecommendModel>();
         resultAdapter = new SearchAdapter(this);
         searchResultRv.setAdapter(resultAdapter);
-        searchResultRv.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager)searchResultRv.getLayoutManager()) {
+        searchResultRv.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) searchResultRv.getLayoutManager()) {
             @Override
             public void onLoadMore(int current_page) {
-                seachStr(searchInputEt.getText().toString(),true);
+                seachStr(searchInputEt.getText().toString(), true);
             }
         });
     }

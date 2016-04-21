@@ -61,8 +61,10 @@ public class FavoritePlaceActivity extends BaseActivity {
             public void onCardLick(View view, int position) {
                 switch (view.getId()) {
                     case R.id.root_cv:
+                        MobclickAgent.onEvent(FavoritePlaceActivity.this,"detail_profile_c");
                         Intent intent = new Intent();
                         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, model.getResult().get(position).getPid());
+                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM,QuchuDetailsActivity.FROM_TYPE_PROFILE);
                         intent.setClass(FavoritePlaceActivity.this, QuchuDetailsActivity.class);
                         startActivity(intent);
                         break;

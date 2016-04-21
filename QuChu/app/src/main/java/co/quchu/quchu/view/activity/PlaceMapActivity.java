@@ -11,8 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -44,7 +42,6 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.NavigateSelectedDialogFg;
 import co.quchu.quchu.model.NearbyMapModel;
-import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.AppUtil;
@@ -135,6 +132,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onPageSelected(final int position) {
+                MobclickAgent.onEvent(PlaceMapActivity.this,"maplist_c");
                 LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(position).getLatitude()),Double.valueOf(mDataSet.get(position).getLongitude()));
                 CameraUpdate s = CameraUpdateFactory.changeLatLng(latLng);
 
