@@ -94,12 +94,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         }
     }*/
 
-    /**
-     * This class contains all butterknife-injected Views & Layouts from layout file 'item_atmosphere_view.xml'
-     * for easy to all layout elements.
-     *
-     * @author ButterKnifeZelezny, plugin for Android Studio by Avast Developers (http://github.com/avast)
-     */
+
     public class SearchHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.item_search_history_delete_rl)

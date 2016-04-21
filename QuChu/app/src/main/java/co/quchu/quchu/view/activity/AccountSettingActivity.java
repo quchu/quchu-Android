@@ -32,6 +32,7 @@ import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -59,8 +60,6 @@ import co.quchu.quchu.utils.StringUtils;
  * Date: 2015-12-04
  */
 public class AccountSettingActivity extends BaseActivity {
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
     @Bind(R.id.account_setting_avatar_sdv)
     SimpleDraweeView accountSettingAvatarSdv;
     @Bind(R.id.account_setting_nickname_et)
@@ -90,7 +89,9 @@ public class AccountSettingActivity extends BaseActivity {
         setContentView(R.layout.activity_account_setting);
         ButterKnife.bind(this);
         presenter = new AccountSettingPresenter(this);
-        getEnhancedToolbar();
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        toolbar.getTitleTv().setText(getTitle());
+
         imageList = AccountSettingPresenter.getQAvatar();
 
     }
@@ -102,7 +103,7 @@ public class AccountSettingActivity extends BaseActivity {
     }
 
     private void userInfoBinding() {
-        titleContentTv.setText(getTitle());
+
         if (AppContext.user == null) {
             if (!StringUtils.isEmpty(SPUtils.getUserInfo(this)))
                 AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
