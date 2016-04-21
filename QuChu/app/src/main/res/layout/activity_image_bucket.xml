@@ -4,14 +4,13 @@
     android:background="@color/appBackground"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/image_bucket_title_bar"
-        layout="@layout/title_bar" />
+    <
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/image_bucket_title_bar"
+        android:layout_below="@id/appbar"
         android:background="@drawable/shape_activity_bg">
 
         <GridView

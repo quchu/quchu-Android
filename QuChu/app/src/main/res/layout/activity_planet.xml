@@ -5,14 +5,13 @@
     android:background="@color/appBackground"
     android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/planet_title"
-        layout="@layout/title_bar" />
+
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/planet_title"
+        android:layout_below="@id/appbar"
         android:orientation="vertical">
 
         <include

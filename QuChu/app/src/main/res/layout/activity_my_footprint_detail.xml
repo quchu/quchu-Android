@@ -8,15 +8,14 @@
     android:orientation="vertical"
     tools:context="co.quchu.quchu.view.activity.MyFootprintDetailActivity">
 
-    <include
-        android:id="@+id/title_layout"
-        layout="@layout/title_bar" />
+
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_layout"
+        android:layout_below="@id/appbar"
         android:layout_marginBottom="40dp"
         android:clickable="true"
         android:descendantFocusability="blocksDescendants"

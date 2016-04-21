@@ -6,15 +6,13 @@
     android:fitsSystemWindows="true"
    >
 
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
+    <include layout="@layout/cp_enhanced_toolbar" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/atmosphere_rv"
             android:layout_width="match_parent"
             android:overScrollMode="always"
             android:layout_height="match_parent"
-            android:layout_below="@id/title_bar"
+            android:layout_below="@id/appbar"
             android:background="@drawable/shape_activity_bg" />
         <View
             android:layout_width="match_parent"

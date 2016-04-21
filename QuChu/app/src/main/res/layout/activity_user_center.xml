@@ -4,13 +4,12 @@
     android:layout_height="match_parent"
     android:background="@color/appBackground">
 
-    <include
-        android:id="@+id/feedback_title_bar"
-        layout="@layout/title_bar" />
+
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <co.quchu.quchu.widget.pull2zoomview.PullToZoomScrollViewEx
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/feedback_title_bar" />
+        android:layout_below="@id/appbar" />
 </RelativeLayout>

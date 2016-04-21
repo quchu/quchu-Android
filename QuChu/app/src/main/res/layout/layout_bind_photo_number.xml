@@ -4,17 +4,13 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="16dp">
 
-    <include
-        android:id="@+id/toolBar"
-        layout="@layout/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <TextView
         android:id="@+id/layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolBar"
+        android:layout_below="@id/appbar"
         android:layout_marginTop="@dimen/half_margin"
         android:text="绑定手机号"
         android:textColor="@color/account_setting_text_hint_color"

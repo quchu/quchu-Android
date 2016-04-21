@@ -3,13 +3,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
+
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <WebView
         android:id="@+id/webView"
-        android:layout_below="@+id/title_bar"
+        android:layout_below="@id/appbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
