@@ -28,7 +28,6 @@ import co.quchu.galleryfinal.GalleryFinal;
 import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.ImageUpload;
@@ -50,6 +49,8 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     @Bind(R.id.commit)
     TextView commit;
     List<PhotoInfo> photoInfos;
+    @Bind(R.id.close)
+    ImageView close;
     private FindPositionAdapter adapter;
     private PhotoInfo tackImage;
 
@@ -68,18 +69,12 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_position);
         ButterKnife.bind(this);
-
-        EnhancedToolbar toolbar = getEnhancedToolbar();
-
-        ImageView imageView = toolbar.getRightIv();
-        imageView.setImageResource(R.mipmap.ic_menus_title_more);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
         init();
 
         restore();

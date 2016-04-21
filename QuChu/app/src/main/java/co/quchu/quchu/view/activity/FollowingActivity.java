@@ -3,7 +3,6 @@ package co.quchu.quchu.view.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -11,6 +10,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.FollowUserModel;
 import co.quchu.quchu.presenter.FollowPresenter;
 import co.quchu.quchu.view.adapter.FriendsAdatper;
@@ -26,20 +26,19 @@ public class FollowingActivity extends BaseActivity {
     public static final int TAFOLLOWERS = 0x02;//关注TA的
     @Bind(R.id.follow_rv)
     RecyclerView followRv;
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
     private int followType = 0x01, userId = 0;
     private ArrayList<FollowUserModel> list;
 
     FriendsAdatper adatper;
     FriendsListCallBack callBack;
+    private EnhancedToolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
         ButterKnife.bind(this);
-        getEnhancedToolbar();
+        toolbar = getEnhancedToolbar();
         followType = getIntent().getIntExtra("FollowType", 0x01);
         userId = getIntent().getIntExtra("UserId", 0x01);
         setTitleContentView();
@@ -61,10 +60,10 @@ public class FollowingActivity extends BaseActivity {
     private void setTitleContentView() {
         switch (followType) {
             case TAFOLLOWING://TA关注的
-                titleContentTv.setText("TA关注的");
+                toolbar.getTitleTv().setText("TA关注的");
                 break;
             case TAFOLLOWERS://关注TA的
-                titleContentTv.setText("关注TA的");
+                toolbar.getTitleTv().setText("关注TA的");
                 break;
         }
     }

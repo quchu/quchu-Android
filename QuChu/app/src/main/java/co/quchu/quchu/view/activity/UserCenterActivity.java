@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.presenter.UserCenterPresenter;
@@ -29,7 +30,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     TextView userCenterFollowingTv;
     TextView userCenterFollowedTv;
     TextView userCenterPnumTv;
-    TextView userCenterFavoritenumTv;
+//    TextView userCenterFavoritenumTv;
     SimpleDraweeView ivZoom;
     SimpleDraweeView userCenterUserIconSdv;
     TextView userCenterUserNicknameTv;
@@ -42,8 +43,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_center);
-        getEnhancedToolbar();
-        ((TextView) findViewById(R.id.title_content_tv)).setText(getTitle());
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        toolbar.getTitleTv().setText(getTitle());
+
         loadViewForCode();
         userId = getIntent().getIntExtra("USERID", 0);
         scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
@@ -70,7 +72,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         userCenterFollowingTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_following_tv);
         userCenterFollowedTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_followed_tv);
         userCenterPnumTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_pnum_tv);
-        userCenterFavoritenumTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_favoritenum_tv);
         initData();
     }
 
@@ -127,7 +128,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         userCenterUserIconSdv.setImageURI(Uri.parse(userInfo.getPhoto()));
         updateIsFollow();
         userCenterPnumTv.setText(userInfo.getCardNum() + "");
-        userCenterFavoritenumTv.setText(userInfo.getFovPlaceNum() + "");
+//        userCenterFavoritenumTv.setText(userInfo.getFovPlaceNum() + "");
         userCenterUserNicknameTv.setText(userInfo.getName() + "");
         if (null != userInfo.getLocation() && StringUtils.isEmpty(userInfo.getLocation().toString())) {
             userCenterDescTv.setText(String.format(getResources().getString(R.string.usercenter_desc_text, userInfo.getGender(), userInfo.getLocation())));
@@ -137,7 +138,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         userCenterFollowedTv.setText(String.format(getResources().getString(R.string.usercenter_follow_text), userInfo.getFollowNum()));
         userCenterFollowingTv.setText(String.format(getResources().getString(R.string.usercenter_host_text), userInfo.getHostNum()));
         scrollView.getRootView().findViewById(R.id.user_center_postcard_ll).setOnClickListener(this);
-        scrollView.getRootView().findViewById(R.id.user_center_favorite_ll).setOnClickListener(this);
         userCenterFollowingTv.setOnClickListener(this);
         userCenterFollowedTv.setOnClickListener(this);
         userCenterFoucsableTv.setOnClickListener(this);

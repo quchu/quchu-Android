@@ -8,21 +8,14 @@
     android:orientation="vertical"
     tools:context="co.quchu.quchu.view.activity.FindPositionActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <co.quchu.quchu.widget.MoreButtonView
-            android:id="@+id/recommend_title_more_rl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingRight="16dp"
-            android:src="@mipmap/ic_title_more" />
-
-    </RelativeLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="16dp"
+        android:id="@+id/close"
+        android:padding="8dp"
+        android:src="@mipmap/ic_menus_title_more" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -74,11 +67,11 @@
                         android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@null"
                         android:gravity="center"
                         android:hint="填写趣处名称"
-                        android:minHeight="@dimen/subTabLayoutHeight"
-                        android:background="@null"
                         android:maxLines="1"
+                        android:minHeight="@dimen/subTabLayoutHeight"
                         android:textSize="@dimen/word_size_time" />
 
                 </LinearLayout>
@@ -106,11 +99,11 @@
                         android:id="@+id/position"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:minHeight="@dimen/subTabLayoutHeight"
                         android:background="@null"
+                        android:gravity="center"
                         android:hint="填写趣处地址"
                         android:maxLines="1"
+                        android:minHeight="@dimen/subTabLayoutHeight"
                         android:textSize="@dimen/word_size_time" />
 
                 </LinearLayout>
@@ -125,11 +118,11 @@
                     android:id="@+id/detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minLines="3"
                     android:layout_marginTop="5dp"
                     android:background="@null"
                     android:gravity="top"
                     android:hint="写两行以上的内容,更容易被我们采纳~"
+                    android:minLines="3"
                     android:textSize="@dimen/word_size_body" />
 
                 <android.support.v7.widget.RecyclerView
@@ -144,8 +137,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
                     android:background="#f4e727"
-                    android:text="提交"
                     android:gravity="center"
+                    android:text="提交"
                     android:textColor="@color/black"
                     android:textSize="@dimen/word_size_time" />
             </LinearLayout>
