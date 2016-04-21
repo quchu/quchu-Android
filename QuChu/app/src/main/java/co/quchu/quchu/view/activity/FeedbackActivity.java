@@ -21,7 +21,6 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.MoreButtonView;
 
 /**
  * FeedbackActivity
@@ -30,12 +29,8 @@ import co.quchu.quchu.widget.MoreButtonView;
  * 快速反馈
  */
 public class FeedbackActivity extends BaseActivity {
-    @Bind(R.id.title_back_iv)
-    ImageView titleBackIv;
     @Bind(R.id.title_content_tv)
     TextView titleContentTv;
-    @Bind(R.id.title_more_rl)
-    MoreButtonView titleMoreRl;
     @Bind(R.id.feedback_hint_tv)
     TextView feedbackHintTv;
     @Bind(R.id.feedback_editer_bet)
@@ -47,14 +42,12 @@ public class FeedbackActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
         ButterKnife.bind(this);
-        titleContentTv.setText(getTitle());
-        titleMoreRl.setImage(R.mipmap.ic_feed_back_submit);
-        titleMoreRl.isNeedAnimation(false);
+        getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_feed_back_submit);
         feedbackHintTv.setText(String.format(feedBackStr, AppUtil.getVerName(this)));
         //  titleBackIv.setImageDrawable(getResources().getDrawable(R.mipmap.ic_menus_title_more));
-        titleMoreRl.setMoreClick(new MoreButtonView.MoreClicklistener() {
+        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void moreClick() {
+            public void onClick(View v) {
                 if (StringUtils.isEmpty(feedbackEditerBet.getText().toString())) {
                     Toast.makeText(FeedbackActivity.this, "请填写您在使用趣处过程中产生的任何疑问、反馈或建议", Toast.LENGTH_SHORT).show();
                 } else {
@@ -74,6 +67,8 @@ public class FeedbackActivity extends BaseActivity {
                 }
             }
         });
+
+
     }
 
     @Override
@@ -81,16 +76,6 @@ public class FeedbackActivity extends BaseActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
-
-    @OnClick(R.id.title_back_iv)
-    public void feedClick(View view) {
-        switch (view.getId()) {
-            case R.id.title_back_iv:
-                this.finish();
-                break;
-
-        }
-    }
 
     @Override
     protected void onPause() {

@@ -24,10 +24,6 @@ public class QuchuActivity extends BaseActivity {
     @Bind(R.id.find)
     TextView find;
 
-    @Bind(R.id.title_content_tv)
-    TextView title;
-    @Bind(R.id.title_back_iv)
-    View back;
     private FavoriteFragment favoriteFragment;
     private FindFragment findFragment;
 
@@ -37,7 +33,7 @@ public class QuchuActivity extends BaseActivity {
         setContentView(R.layout.activity_quchu);
         ButterKnife.bind(this);
         initListener();
-        title.setText("趣处");
+        getEnhancedToolbar().getTitleTv().setText("趣处");
 
         favoriteFragment = new FavoriteFragment();
         findFragment = new FindFragment();
@@ -49,12 +45,6 @@ public class QuchuActivity extends BaseActivity {
     private void initListener() {
         Favorite.setOnClickListener(this);
         find.setOnClickListener(this);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     @Override
