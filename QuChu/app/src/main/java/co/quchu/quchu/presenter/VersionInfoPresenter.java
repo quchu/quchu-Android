@@ -1,45 +1,63 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.android.volley.VolleyError;
 
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.SPUtils;
 
 /**
  * 查看服务器信息
- * */
+ */
 public class VersionInfoPresenter {
 
     public static void getVersionInfo(Context context, IRequestListener listener) {
         NetService.get(context, NetApi.getVersionInfo, null, listener);
     }
 
-    public static void getIfForceUpdate(final Context context){
-        NetService.get(context, NetApi.checkIfForceUpdate, null, new IRequestListener() {
-            @Override
-            public void onSuccess(JSONObject response) {
+    public static void getIfForceUpdate(final Context context) {
+//        NetService.get(context, NetApi.checkIfForceUpdate, null, new IRequestListener() {
+//            @Override
+//            public void onSuccess(JSONObject response) {
+//
+//                if (null != response && response.has("result")) {
+//                    try {
+//                        if (response.getBoolean("result")) {
+//                            SPUtils.setForceUpdateIfNecessary(context, response.getBoolean("result"));
+//                            SPUtils.setForceUpdateReason(context, response.getString("msg"));
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public boolean onError(String error) {
+//                return false;
+//            }
+//        });
 
-                if (null!=response && response.has("result")){
-                    try {
-                        if (response.getBoolean("result")){
-                            SPUtils.setForceUpdateIfNecessary(context,response.getBoolean("result"));
-                            SPUtils.setForceUpdateReason(context,response.getString("msg"));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+        GsonRequest<String> request = new GsonRequest<>(NetApi.checkIfForceUpdate, null, new ResponseListener<String>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+            }
+
+            @Override
+            public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
+                if (result) {
+                    SPUtils.setForceUpdateIfNecessary(context, true);
+                    SPUtils.setForceUpdateReason(context, msg);
                 }
             }
-
-            @Override
-            public boolean onError(String error) {
-                return false;
-            }
         });
+        request.start(context, null);
+
     }
 }
