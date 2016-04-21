@@ -61,10 +61,6 @@ public class QuFriendsActivity extends BaseActivity {
     @Bind(R.id.qu_friends_vp)
     ViewPager quFriendsVp;
 
-    @Bind(R.id.title_more_rl)
-    RelativeLayout titleMoreRl;
-    @Bind(R.id.title_content_tv)
-    TextView title_content_tv;
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
     private AnimatorSet animatorSet;
@@ -76,9 +72,7 @@ public class QuFriendsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qu_friends);
         ButterKnife.bind(this);
-        initTitleBar();
-        titleMoreRl.setVisibility(View.INVISIBLE);
-        title_content_tv.setText(getTitle().toString());
+        getEnhancedToolbar().getTitleTv().setText(getTitle().toString());
         planetGeneTv.setText(getResources().getString(R.string.text_planet_discover_friends));
         StringUtils.alterBoldTextColor(planetGeneTv, 4, 7, R.color.gene_textcolor_yellow);
 

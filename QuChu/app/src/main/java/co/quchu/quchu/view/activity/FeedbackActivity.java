@@ -40,8 +40,6 @@ public class FeedbackActivity extends BaseActivity {
         setContentView(R.layout.activity_feedback);
         ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
-
-        toolbar.getTitleTv().setText(getTitle());
         feedbackHintTv.setText(String.format(feedBackStr, AppUtil.getVerName(this)));
 
         TextView textView = toolbar.getRightTv();

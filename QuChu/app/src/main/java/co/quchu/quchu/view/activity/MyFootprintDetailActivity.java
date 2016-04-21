@@ -41,10 +41,6 @@ import co.quchu.quchu.view.fragment.FootprintDetailFragment;
 public class MyFootprintDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
 
-    @Bind(R.id.title_back_iv)
-    ImageView titleBackIv;
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
     @Bind(R.id.container)
     ViewPager viewPager;
 
@@ -80,7 +76,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         selectedPosition = position;
         Entity entity = data.get(position);
 
-        titleContentTv.setText(entity.time);
+        getEnhancedToolbar().getTitleTv().setText(entity.time);
         headImage.setImageURI(Uri.parse(entity.head));
 //
         if (entity.autoId != AppContext.user.getUserId()) {//如果不是自己的脚印
@@ -122,6 +118,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_footprint_detail);
+        getEnhancedToolbar();
         ButterKnife.bind(this);
         initListener();
         initData();
@@ -234,7 +231,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     }
 
     private void initListener() {
-        titleBackIv.setOnClickListener(this);
         supportContainer.setOnClickListener(this);
         edit.setOnClickListener(this);
         share.setOnClickListener(this);
@@ -264,9 +260,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.title_back_iv:
-                finish();
-                break;
             case R.id.supportContainer://点赞
                 final Entity entity = data.get(selectedPosition);
 
