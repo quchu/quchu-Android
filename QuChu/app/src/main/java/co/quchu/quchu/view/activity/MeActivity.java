@@ -115,6 +115,7 @@ public class MeActivity extends BaseActivity implements IMeActivity {
     @Override
     public void onClick(View v) {
         Intent intent;
+        UserInfoModel user = AppContext.user;
         switch (v.getId()) {
             case R.id.back:
                 finish();
@@ -123,7 +124,6 @@ public class MeActivity extends BaseActivity implements IMeActivity {
                 MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;
             case R.id.headImage:
-                UserInfoModel user = AppContext.user;
                 if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
                     //游客
                     VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
@@ -144,17 +144,29 @@ public class MeActivity extends BaseActivity implements IMeActivity {
                 startActivity(intent);
                 break;
             case R.id.footPrint://脚印
-                intent = new Intent(this, MyFootprintActivity.class);
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_ID, AppContext.user.getUserId());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_AGE, AppContext.user.getAge());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_COUND, AppContext.user.getCardCount());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_PHOTO, AppContext.user.getPhoto());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_TITLE, "我的脚印");
-                startActivity(intent);
+                if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
+                    //游客
+                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
+                    dialogFg.show(getFragmentManager(), "");
+                } else {
+                    intent = new Intent(this, MyFootprintActivity.class);
+                    intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_ID, AppContext.user.getUserId());
+                    intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_AGE, AppContext.user.getAge());
+                    intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_COUND, AppContext.user.getCardCount());
+                    intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_PHOTO, AppContext.user.getPhoto());
+                    intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_TITLE, "我的脚印");
+                    startActivity(intent);
+                }
                 break;
             case R.id.friend://趣友圈
-                intent = new Intent(this, QuFriendsActivity.class);
-                startActivity(intent);
+                if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
+                    //游客
+                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
+                    dialogFg.show(getFragmentManager(), "");
+                } else {
+                    intent = new Intent(this, QuFriendsActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.massage://消息中心
                 intent = new Intent(this, MessageCenterActivity.class);
