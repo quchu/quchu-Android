@@ -13,6 +13,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.FollowUserModel;
 import co.quchu.quchu.presenter.FollowPresenter;
+import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FriendsAdatper;
 
 /**
@@ -21,17 +22,16 @@ import co.quchu.quchu.view.adapter.FriendsAdatper;
  * Date: 2016-03-01
  * TA关注的  /我关注的
  */
-public class FollowingActivity extends BaseActivity {
+public class FollowingActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener {
     public static final int TAFOLLOWING = 0x01;//TA关注的
     public static final int TAFOLLOWERS = 0x02;//关注TA的
     @Bind(R.id.follow_rv)
     RecyclerView followRv;
     private int followType = 0x01, userId = 0;
-    private ArrayList<FollowUserModel> list;
 
     FriendsAdatper adatper;
-    FriendsListCallBack callBack;
     private EnhancedToolbar toolbar;
+    private int pageNo = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +42,22 @@ public class FollowingActivity extends BaseActivity {
         followType = getIntent().getIntExtra("FollowType", 0x01);
         userId = getIntent().getIntExtra("UserId", 0x01);
         setTitleContentView();
-        list = new ArrayList<>();
         adatper = new FriendsAdatper(this);
         adatper.setIsInnerClick(true);
+        adatper.setLoadmoreListener(this);
         followRv.setLayoutManager(new LinearLayoutManager(this));
-        callBack = new FriendsListCallBack();
         followRv.setAdapter(adatper);
-        FollowPresenter.getFollowsList(this, userId, followType, 1, callBack);
+        FollowPresenter.getFollowsList(this, userId, followType, pageNo, new FollowPresenter.GetFollowCallBack() {
+            @Override
+            public void onSuccess(ArrayList<FollowUserModel> lists) {
+                adatper.initData(lists);
+            }
+
+            @Override
+            public void onError() {
+                adatper.setLoadMoreEnable(false);
+            }
+        });
     }
 
     @Override
@@ -68,19 +77,22 @@ public class FollowingActivity extends BaseActivity {
         }
     }
 
-    class FriendsListCallBack implements FollowPresenter.GetFollowCallBack {
+    @Override
+    public void onLoadmore() {
+        FollowPresenter.getFollowsList(this, userId, followType, pageNo + 1, new FollowPresenter.GetFollowCallBack() {
+            @Override
+            public void onSuccess(ArrayList<FollowUserModel> lists) {
+                pageNo++;
+                adatper.addMoreData(lists);
 
-        @Override
-        public void onSuccess(ArrayList<FollowUserModel> lists) {
-            if (list == null)
-                list = new ArrayList<FollowUserModel>();
-            list.addAll(lists);
-            adatper.notifyDataSetChanged();
-        }
+            }
 
-        @Override
-        public void onError() {
-
-        }
+            @Override
+            public void onError() {
+                adatper.setLoadMoreEnable(false);
+            }
+        });
     }
+
+
 }

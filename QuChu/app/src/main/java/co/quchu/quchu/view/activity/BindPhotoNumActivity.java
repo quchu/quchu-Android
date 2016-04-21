@@ -117,7 +117,9 @@ public class BindPhotoNumActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
-
+                if (!result) {
+                    Toast.makeText(BindPhotoNumActivity.this, "手机号已被使用", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         request.start(this, null);
@@ -149,18 +151,19 @@ public class BindPhotoNumActivity extends BaseActivity implements View.OnClickLi
             params.put("captcha", authCode);
             params.put("password", password);
 
-            GsonRequest<Object> request = new GsonRequest<>(Request.Method.GET, NetApi.bindPhoneNumber, params, Object.class, new ResponseListener<Object>() {
+            GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, NetApi.bindPhoneNumber, params, Object.class, new ResponseListener<Object>() {
                 @Override
                 public void onErrorResponse(@Nullable VolleyError error) {
-                    Toast.makeText(BindPhotoNumActivity.this, "绑定失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BindPhotoNumActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
                     if (result) {
                         Toast.makeText(BindPhotoNumActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
-                        Toast.makeText(BindPhotoNumActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(BindPhotoNumActivity.this, "请勿重复绑定", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
