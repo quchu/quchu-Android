@@ -337,6 +337,7 @@ public class QuchuDetailsActivity extends BaseActivity {
             return;
         if (dModel != null) {
             switch (v.getId()) {
+
                 case R.id.tvQuguo:
 
 //                    if (AppContext.user.isIsVisitors()) {

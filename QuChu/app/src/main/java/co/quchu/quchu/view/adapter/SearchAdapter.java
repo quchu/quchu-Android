@@ -73,8 +73,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         return holder;
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+
     @Override
-    public void onBindViewHolder(RecommendHolder holder, int position) {
+    public void onBindViewHolder(RecommendHolder holder, final int position) {
         this.holder = holder;
         model = arrayList.get(position);
         holder.tvName.setText(model.getName());
@@ -88,7 +92,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         holder.tcvTag.setTags(strTags);
         holder.tvAddress.setText(model.getAddress());
         holder.sdvImage.setImageURI(Uri.parse(model.getCover()));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null!=mListener){
+                    mListener.onClick(position);
+                }
+            }
+        });
 
+    }
+
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener{
+        void onClick(int position);
     }
 
 

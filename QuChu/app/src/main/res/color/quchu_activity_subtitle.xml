@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:color="@color/white" android:state_selected="true" />
-    <item android:color="@color/appBackground_dark" android:state_selected="false" />
+    <item android:color="@color/translucent_white" android:state_selected="false" />
 
 </selector>

@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -343,6 +344,14 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         searchResultRv.setLayoutManager(layoutManager);
         resultList = new ArrayList<RecommendModel>();
         resultAdapter = new SearchAdapter(this);
+        resultAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(SearchActivity.this,QuchuDetailsActivity.class);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID,resultList.get(position).getPid());
+                startActivity(intent);
+            }
+        });
         searchResultRv.setAdapter(resultAdapter);
         searchResultRv.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager)searchResultRv.getLayoutManager()) {
             @Override

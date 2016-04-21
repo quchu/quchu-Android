@@ -9,6 +9,7 @@
     android:layout_marginTop="@dimen/base_margin"
     android:layout_marginRight="@dimen/base_margin"
     app:cardBackgroundColor="@color/lineBackground_gray"
+    android:id="@+id/cvRoot"
     card_view:cardCornerRadius="0dp"
     card_view:cardElevation="@dimen/cardview_elevation"
     card_view:cardPreventCornerOverlap="false">
