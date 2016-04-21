@@ -180,14 +180,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
                 intent = new Intent(this, MessageCenterActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.curiosity:
-                break;
-            case R.id.eat:
-                break;
-            case R.id.art:
-                break;
-            case R.id.money:
-                break;
             case R.id.findPosition://发现新去处
                 intent = new Intent(this, FindPositionActivity.class);
                 startActivity(intent);
