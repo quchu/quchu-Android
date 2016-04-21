@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -294,4 +295,15 @@ public class QuFriendsActivity extends BaseActivity {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("social");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("social");
+        super.onPause();
+    }
 }

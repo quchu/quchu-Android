@@ -382,7 +382,7 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("AccountSettingActivity");
+        MobclickAgent.onPageEnd("edit");
     }
 
     @Override
@@ -391,6 +391,6 @@ public class AccountSettingActivity extends BaseActivity implements IAccountSett
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(accountSettingNicknameEt.getWindowToken(), 0);
         super.onResume();
-        MobclickAgent.onPageStart("AccountSettingActivity");
+        MobclickAgent.onPageStart("edit");
     }
 }

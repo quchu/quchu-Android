@@ -1,46 +1,32 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.galleryfinal.CoreConfig;
-import co.quchu.galleryfinal.FunctionConfig;
-import co.quchu.galleryfinal.GalleryFinal;
-import co.quchu.galleryfinal.model.PhotoInfo;
-import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
-import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.photoselected.FrescoImageLoader;
-import co.quchu.quchu.presenter.AccountSettingPresenter;
 import co.quchu.quchu.presenter.MeActivityPresenter;
-import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.widget.RoundProgressView;
 
-public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhotoDialogFg.UserPhotoOriginSelectedListener, GalleryFinal.OnHanlderResultCallback {
+public class MeActivity extends BaseActivity implements IMeActivity {
 
     @Bind(R.id.back)
     ImageView back;
@@ -89,8 +75,15 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
 
     @Override
     protected void onResume() {
+        MobclickAgent.onPageStart("profile");
         super.onResume();
         initData();
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("profile");
+        super.onPause();
     }
 
     private void initData() {
@@ -188,129 +181,129 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
         return TRANSITION_TYPE_LEFT;
     }
 
-    //趣头像
-    private ArrayList<Integer> imageList;
-
-    @Override
-    public void selectedCamare() {
-        initGralley();
-        int REQUEST_CODE_CAMERA = 0x02;
-        GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, this);
-    }
-
-    @Override
-    public void selectedAblum() {
-        initGralley();
-        int REQUEST_CODE_GALLERY = 0x01;
-        GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, functionConfig, this);
-    }
-
-    @Override
-    public void selectedQuPhtot() {
-        if (imageList == null) {
-            imageList = AccountSettingPresenter.getQAvatar();
-        }
-        QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
-        qAvatarDIalogFg.init(imageList, new QAvatarSettingDialogFg.OnItenSelected() {
-            @Override
-            public void itemSelected(int imageId) {
-                headImage.setImageURI(Uri.parse("res:///" + imageId));
-                uploadHeadToService(imageId);
-            }
-        });
-        qAvatarDIalogFg.show(getFragmentManager(), "qAvatar");
-    }
-
-    private FunctionConfig functionConfig;
-
-    private void initGralley() {
-        FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
-        functionConfigBuilder.setEnableEdit(false);
-        functionConfigBuilder.setEnableCrop(true);
-        functionConfigBuilder.setEnableRotate(true);
-        functionConfigBuilder.setEnablePreview(false);
-        functionConfigBuilder.setForceCrop(false);//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
-        functionConfigBuilder.setForceCropEdit(true);
-        functionConfigBuilder.setRotateReplaceSource(true);
-        functionConfig = functionConfigBuilder.build();
-        CoreConfig coreConfig = new CoreConfig.Builder(this, new FrescoImageLoader(this), null)
-                .setDebug(BuildConfig.DEBUG)
-                .setFunctionConfig(functionConfig)
-                .setPauseOnScrollListener(null)
-                .setNoAnimcation(true)
-                .build();
-        GalleryFinal.init(coreConfig);
-    }
-
-    //照片选择成功
-    @Override
-    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-        if (resultList.size() > 0) {
-            String path = resultList.get(0).getPhotoPath();
-            if (!TextUtils.isEmpty(path)) {
-//                headImage.setImageURI(Uri.fromFile(new File(path)));
-                ImageUtils.ShowImage("file://" + path, headImage);
-                uploadHeadToService(path);
-            }
-        }
-    }
-
-    @Override
-    public void onHanlderFailure(int requestCode, String errorMsg) {
-        Toast.makeText(this, "图片保存失败", Toast.LENGTH_SHORT).show();
-    }
-
-
-    private void uploadHeadToService(String path) {
-        AccountSettingPresenter.getQiNiuToken(this, path, new AccountSettingPresenter.UploadUserPhotoListener() {
-            @Override
-            public void onSuccess(String photoUrl) {
-                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl,
-                        AppContext.user.getGender(), "", "", "", new AccountSettingPresenter.UploadUserPhotoListener() {
-                            @Override
-                            public void onSuccess(String photoUrl) {
-                            }
-
-                            @Override
-                            public void onError() {
-                                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-            }
-
-            @Override
-            public void onError() {
-                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void uploadHeadToService(int ImageId) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), ImageId);
-        AccountSettingPresenter.getQiNiuToken(this, bitmap, new AccountSettingPresenter.UploadUserPhotoListener() {
-            @Override
-            public void onSuccess(String photoUrl) {
-                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl,
-                        AppContext.user.getGender(), "", "", "", new AccountSettingPresenter.UploadUserPhotoListener() {
-                            @Override
-                            public void onSuccess(String photoUrl) {
-                            }
-
-                            @Override
-                            public void onError() {
-                                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-            }
-
-            @Override
-            public void onError() {
-                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    //趣头像
+//    private ArrayList<Integer> imageList;
+//
+//    @Override
+//    public void selectedCamare() {
+//        initGralley();
+//        int REQUEST_CODE_CAMERA = 0x02;
+//        GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, this);
+//    }
+//
+//    @Override
+//    public void selectedAblum() {
+//        initGralley();
+//        int REQUEST_CODE_GALLERY = 0x01;
+//        GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, functionConfig, this);
+//    }
+//
+//    @Override
+//    public void selectedQuPhtot() {
+//        if (imageList == null) {
+//            imageList = AccountSettingPresenter.getQAvatar();
+//        }
+//        QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
+//        qAvatarDIalogFg.init(imageList, new QAvatarSettingDialogFg.OnItenSelected() {
+//            @Override
+//            public void itemSelected(int imageId) {
+//                headImage.setImageURI(Uri.parse("res:///" + imageId));
+//                uploadHeadToService(imageId);
+//            }
+//        });
+//        qAvatarDIalogFg.show(getFragmentManager(), "qAvatar");
+//    }
+//
+//    private FunctionConfig functionConfig;
+//
+//    private void initGralley() {
+//        FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
+//        functionConfigBuilder.setEnableEdit(false);
+//        functionConfigBuilder.setEnableCrop(true);
+//        functionConfigBuilder.setEnableRotate(true);
+//        functionConfigBuilder.setEnablePreview(false);
+//        functionConfigBuilder.setForceCrop(false);//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
+//        functionConfigBuilder.setForceCropEdit(true);
+//        functionConfigBuilder.setRotateReplaceSource(true);
+//        functionConfig = functionConfigBuilder.build();
+//        CoreConfig coreConfig = new CoreConfig.Builder(this, new FrescoImageLoader(this), null)
+//                .setDebug(BuildConfig.DEBUG)
+//                .setFunctionConfig(functionConfig)
+//                .setPauseOnScrollListener(null)
+//                .setNoAnimcation(true)
+//                .build();
+//        GalleryFinal.init(coreConfig);
+//    }
+//
+//    //照片选择成功
+//    @Override
+//    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+//        if (resultList.size() > 0) {
+//            String path = resultList.get(0).getPhotoPath();
+//            if (!TextUtils.isEmpty(path)) {
+////                headImage.setImageURI(Uri.fromFile(new File(path)));
+//                ImageUtils.ShowImage("file://" + path, headImage);
+//                uploadHeadToService(path);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void onHanlderFailure(int requestCode, String errorMsg) {
+//        Toast.makeText(this, "图片保存失败", Toast.LENGTH_SHORT).show();
+//    }
+//
+//
+//    private void uploadHeadToService(String path) {
+//        AccountSettingPresenter.getQiNiuToken(this, path, new AccountSettingPresenter.UploadUserPhotoListener() {
+//            @Override
+//            public void onSuccess(String photoUrl) {
+//                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl,
+//                        AppContext.user.getGender(), "", "", "", new AccountSettingPresenter.UploadUserPhotoListener() {
+//                            @Override
+//                            public void onSuccess(String photoUrl) {
+//                            }
+//
+//                            @Override
+//                            public void onError() {
+//                                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+//
+//                            }
+//                        });
+//            }
+//
+//            @Override
+//            public void onError() {
+//                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+//
+//    private void uploadHeadToService(int ImageId) {
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), ImageId);
+//        AccountSettingPresenter.getQiNiuToken(this, bitmap, new AccountSettingPresenter.UploadUserPhotoListener() {
+//            @Override
+//            public void onSuccess(String photoUrl) {
+//                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl,
+//                        AppContext.user.getGender(), "", "", "", new AccountSettingPresenter.UploadUserPhotoListener() {
+//                            @Override
+//                            public void onSuccess(String photoUrl) {
+//                            }
+//
+//                            @Override
+//                            public void onError() {
+//                                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+//
+//                            }
+//                        });
+//            }
+//
+//            @Override
+//            public void onError() {
+//                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     @Override
     public void initGene(MyGeneModel data) {
@@ -327,4 +320,5 @@ public class MeActivity extends BaseActivity implements IMeActivity, ASUserPhoto
 
         }
     }
+
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,5 +192,15 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         adapter.setLoadMoreEnable(false);
     }
 
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("my pic");
+        super.onResume();
+    }
 
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("my pic");
+        super.onPause();
+    }
 }

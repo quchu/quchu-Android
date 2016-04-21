@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -85,5 +87,15 @@ public class QuchuActivity extends BaseActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("collection");
+        super.onResume();
+    }
 
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("collection");
+        super.onPause();
+    }
 }

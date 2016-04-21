@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -236,4 +238,15 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         });
     }
 
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("uploadpic");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("uploadpic");
+        super.onPause();
+    }
 }

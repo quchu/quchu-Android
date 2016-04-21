@@ -122,7 +122,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         });
         mVPNearby.setAdapter(mAdapter);
         mVPNearby.setClipToPadding(false);
-        mVPNearby.setPadding(40,0,40,20);
+        mVPNearby.setPadding(40, 0, 40, 20);
         mVPNearby.setPageMargin(20);
         mVPNearby.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -132,8 +132,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onPageSelected(final int position) {
-                MobclickAgent.onEvent(PlaceMapActivity.this,"maplist_c");
-                LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(position).getLatitude()),Double.valueOf(mDataSet.get(position).getLongitude()));
+                MobclickAgent.onEvent(PlaceMapActivity.this, "maplist_c");
+                LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(position).getLatitude()), Double.valueOf(mDataSet.get(position).getLongitude()));
                 CameraUpdate s = CameraUpdateFactory.changeLatLng(latLng);
 
                 aMap.animateCamera(s);
@@ -142,7 +142,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                     public void run() {
                         mMarks.get(position).showInfoWindow();
                     }
-                },250l);
+                }, 250l);
             }
 
             @Override
@@ -152,7 +152,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         });
 
 
-        DialogUtil.showProgess(this,R.string.loading_dialog_text);
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
         NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", SPUtils.getLatitude(), SPUtils.getLongitude(), new CommonListener<List<NearbyMapModel>>() {
             @Override
             public void successListener(List<NearbyMapModel> response) {
@@ -209,13 +209,14 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     }
 
     private List<Marker> mMarks = new ArrayList<>();
+
     private void initMarks() {
         mMarks.clear();
         for (int i = 0; i < mDataSet.size(); i++) {
-            float distance =AMapUtils.calculateLineDistance(new LatLng(gdlat, gdlon),
+            float distance = AMapUtils.calculateLineDistance(new LatLng(gdlat, gdlon),
                     new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()), Double.valueOf(mDataSet.get(i).getLongitude())));
-            String strDistance = "距离当前趣处："+new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
-            LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()),Double.valueOf(mDataSet.get(i).getLongitude()));
+            String strDistance = "距离当前趣处：" + new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
+            LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()), Double.valueOf(mDataSet.get(i).getLongitude()));
             mMarks.add(aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getName())
                     .snippet(strDistance)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_target))
@@ -367,10 +368,9 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
      */
     @Override
     protected void onResume() {
+        MobclickAgent.onPageStart("map");
         super.onResume();
         mapView.onResume();
-
-        MobclickAgent.onPageStart("PlaceMapActivity");
     }
 
     /**
@@ -378,10 +378,10 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
      */
     @Override
     protected void onPause() {
+        MobclickAgent.onPageEnd("map");
         super.onPause();
         mapView.onPause();
         deactivate();
-        MobclickAgent.onPageEnd("PlaceMapActivity");
     }
 
     /**

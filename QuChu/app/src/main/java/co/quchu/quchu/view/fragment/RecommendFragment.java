@@ -463,17 +463,15 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Override
     public void onResume() {
+        MobclickAgent.onPageStart("h_recommendtion");
         super.onResume();
         mFragmentStoped = false;
-        MobclickAgent.onPageStart("detail_home_t");
-        MobclickAgent.onResume(getContext());
     }
 
     @Override
     public void onPause() {
+        MobclickAgent.onPageEnd("h_recommendtion");
         super.onPause();
-        MobclickAgent.onPageEnd("detail_home_t");
-        MobclickAgent.onPause(getContext());
     }
 
     @Override

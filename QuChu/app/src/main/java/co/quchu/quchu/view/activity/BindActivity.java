@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -246,5 +247,17 @@ public class BindActivity extends BaseActivity implements UserLoginListener {
             }
         });
         request.start(this, null);
+    }
+
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("connectsocial");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("connectsocial");
+        super.onPause();
     }
 }
