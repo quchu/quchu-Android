@@ -16,7 +16,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
- * FlickrButtonGroup
  * User: Chenhs
  * Date: 2015-11-12
  * 控件为三个button 左中右

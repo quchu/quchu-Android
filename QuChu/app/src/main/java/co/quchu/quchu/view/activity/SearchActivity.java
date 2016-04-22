@@ -55,7 +55,6 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     LinearLayout searchTitleBarLl;
     @Bind(R.id.search_history_rv)
     RecyclerView searchHistoryRv;
-    /*  InnerListView searchHistoryRv;*/
     @Bind(R.id.search_history_clear_rl)
     RelativeLayout searchHistoryClearRl;
     @Bind(R.id.search_history_fl)
@@ -98,34 +97,12 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         return TRANSITION_TYPE_LEFT;
     }
 
-//
-//    private void showNoneResultFrame() {
-//        searchResultIsnullVtv.setVisibility(View.VISIBLE);
-//        searchResultIsnullVtv.setFontSize(60);             // 设定字体尺寸
-//        searchResultIsnullVtv.setIsOpenUnderLine(false);     // 设定开启下划线
-//        /*searchResultIsnullVtv.setUnderLineColor(Color.RED); // 设定下划线颜色
-//        searchResultIsnullVtv.setUnderLineWidth(3);         // 设定下划线宽度*/
-//        searchResultIsnullVtv.setUnderLineSpacing(30);      // 设定下划线到字的间距
-//        searchResultIsnullVtv.setTextStartAlign(VerTextView.RIGHT); // 从右侧或左侧开始排版
-//        searchResultIsnullVtv.setTextColor(getResources().getColor(R.color.load_progress_gray));           // 设定字体颜色
-//        searchResultIsnullVtv.setText("啦啦：啦啊 \n呼呼 \n哈");
-//    }
+
 
     private void initHistory() {
 
         searchModel = SearchHistoryUtil.getSearchHistory();
-      /*  if (searchModel == null) {
-            searchModel = new SearchModel();
-            ArrayList<SearchModel.SearchListEntity> hlist = new ArrayList<SearchModel.SearchListEntity>();
-            SearchModel.SearchListEntity entity1;
-            for (int i = 0; i < 10; i++) {
-                entity1 = new SearchModel.SearchListEntity();
-                entity1.setSerachStr("来拉" + i);
-                hlist.add(entity1);
-            }
 
-            searchModel.setSearchList(hlist);
-        }*/
         if (searchModel != null && searchModel.getSearchList().size() > 0) {
             showHistory();
         } else {
