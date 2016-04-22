@@ -70,10 +70,10 @@ public class FootPrintActivity extends BaseActivity {
                 Intent intent = new Intent(FootPrintActivity.this, MyFootprintDetailActivity.class);
                 ArrayList<PostCardItemModel> mBundleData = new ArrayList<>();
                 for (int i = 0; i < mData.size(); i++) {
-                    mBundleData.add(mData.get(position).convertToCompatModel());
+                    mBundleData.add(mData.get(i).convertToCompatModel());
                 }
-                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_POSITION,position);
-                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL,mBundleData);
+                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_POSITION, position);
+                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, mBundleData);
                 startActivity(intent);
             }
         });

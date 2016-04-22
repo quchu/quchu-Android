@@ -91,6 +91,14 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         }
         supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
         detail.setText(entity.builder);
+
+        //禁用滑动退出
+        if (position > 0) {
+            getSwipeBackLayout().setEnableGesture(false);
+        } else {
+            getSwipeBackLayout().setEnableGesture(true);
+        }
+
     }
 
     @Override

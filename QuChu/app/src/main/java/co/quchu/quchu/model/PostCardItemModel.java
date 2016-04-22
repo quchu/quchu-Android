@@ -6,11 +6,6 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * PostCardItemModel
- * User: Chenhs
- * Date: 2015-12-30
- */
 public class PostCardItemModel implements Parcelable {
     private String address;
     private String autor;
@@ -27,7 +22,6 @@ public class PostCardItemModel implements Parcelable {
     private String placeAddress;
     private String placeCover;
     private String placeName;
-
     private String plcaeAddress;
     private String plcaeCover;
     private String plcaeName;
