@@ -2,6 +2,7 @@ package co.quchu.quchu.net;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -51,6 +52,7 @@ public class NetService {
 
     public static void post(Context cont, String pUrl, JSONObject params,
                             IRequestListener pListener) {
+        Log.d("NetService",pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //     NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
@@ -78,6 +80,7 @@ public class NetService {
     }
 
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
+        Log.d("NetService",pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //  NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
@@ -90,6 +93,7 @@ public class NetService {
     }
 
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
+        Log.d("NetService",pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //    NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");

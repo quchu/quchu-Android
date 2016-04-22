@@ -23,6 +23,7 @@ import co.quchu.quchu.net.NetService;
  */
 public class InterestingDetailPresenter {
     public static void getInterestingData(Context context, int pId, final getDetailDataListener listener) {
+
         NetService.get(context, String.format(NetApi.getDetail, pId), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {

@@ -75,7 +75,6 @@ public class RecommendFragModel implements IRecommendFragModel {
         String urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(), type,
                 SPUtils.getLatitude(), SPUtils.getLongitude(), pageNumber);
         LogUtils.json(urlStr);
-
         GsonRequest<RecommendModelNew> request = new GsonRequest<>(urlStr, RecommendModelNew.class, new ResponseListener<RecommendModelNew>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {

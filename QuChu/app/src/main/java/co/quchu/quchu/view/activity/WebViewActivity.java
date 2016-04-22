@@ -28,8 +28,6 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class WebViewActivity extends BaseActivity {
 
-    @Bind(R.id.title_content_tv)
-    TextView mTvTitle;
     @Bind(R.id.webView)
     WebView mWebView;
 
@@ -56,12 +54,11 @@ public class WebViewActivity extends BaseActivity {
         ButterKnife.bind(this);
         getEnhancedToolbar();
 
-        mTvTitle.setText(getTitle());
         mWebChromeClient = new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 if (null == mPageTitle && !StringUtils.isEmpty(title)) {
-                    mTvTitle.setText(title);
+                    getEnhancedToolbar().getTitleTv().setText(title);
                 }
             }
         };
@@ -72,7 +69,8 @@ public class WebViewActivity extends BaseActivity {
 
         mUrl = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_URL);
         mPageTitle = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_TITLE);
-        mTvTitle.setText(!StringUtils.isEmpty(mPageTitle) ? mPageTitle : "");
+        System.out.println(mUrl+"|"+mPageTitle);
+        getEnhancedToolbar().getTitleTv().setText(!StringUtils.isEmpty(mPageTitle) ? mPageTitle : "");
 
         if (!StringUtils.isEmpty(mUrl) && URLUtil.isValidUrl(mUrl)) {
             Log.d(TAG, mUrl);

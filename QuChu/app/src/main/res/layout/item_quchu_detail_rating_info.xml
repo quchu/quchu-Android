@@ -19,10 +19,9 @@
           android:id="@+id/rpvItemLeft"
           android:layout_width="60dp"
           android:layout_height="60dp"
-          app:progressStyle="Default"
           app:roundProgressBackground="@color/transparent"
           app:roundProgressColor="@color/planet_progress_yellow"
-          app:roundColor = "@color/planet_progress_yellow"
+          app:roundColor = "@color/translucent_white"
           app:roundWidth="4dp"
           app:textSize="@dimen/word_size_body"
           app:textStyle="Num" />
@@ -50,8 +49,7 @@
         android:layout_height="60dp"
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/planet_progress_yellow"
-        app:roundColor = "@color/planet_progress_yellow"
-        app:progressStyle="Default"
+        app:roundColor = "@color/translucent_white"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />
@@ -62,7 +60,7 @@
             android:textColor="@color/load_progress_yellow"
             android:gravity="center"
             android:layout_marginTop="@dimen/quarter_margin"
-            />TagsFilterDialog
+            />
         </LinearLayout>
 
     <LinearLayout
@@ -78,8 +76,7 @@
         android:layout_height="60dp"
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/planet_progress_yellow"
-        app:roundColor = "@color/planet_progress_yellow"
-        app:progressStyle="Default"
+        app:roundColor = "@color/translucent_white"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />

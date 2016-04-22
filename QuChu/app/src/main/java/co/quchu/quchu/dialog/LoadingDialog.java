@@ -34,6 +34,11 @@ public class LoadingDialog extends Dialog {
         tv_load.setText(mText);
     }
 
+    @Override
+    public void onBackPressed() {
+        dismiss();
+    }
+
     public void setText(String text) {
         mText = text;
         tv_load.setText(mText);

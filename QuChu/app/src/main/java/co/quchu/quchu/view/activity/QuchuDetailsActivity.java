@@ -31,6 +31,7 @@ import co.quchu.quchu.analysis.GatherViewModel;
 import co.quchu.quchu.analysis.GatherWantGoModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.dialog.ShareDialogFg;
@@ -115,9 +116,12 @@ public class QuchuDetailsActivity extends BaseActivity {
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != dModel && null != dModel.getNet() && null != dModel.getNet()) {
+                if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet()) ) {
                     MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
                     WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
+                }else{
+                    MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
+                    WebViewActivity.enterActivity(QuchuDetailsActivity.this,"http://www.dianping.com",dModel.getName());
                 }
             }
         });
