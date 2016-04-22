@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
+    android:background="@color/appBackground"
     android:orientation="vertical">
 
     <include
@@ -45,7 +46,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/appBackground_dark"
             android:paddingBottom="@dimen/half_margin"
             android:paddingTop="@dimen/half_margin"
             android:src="@mipmap/ic_share_quchu" />

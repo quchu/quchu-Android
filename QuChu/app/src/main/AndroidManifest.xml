@@ -189,7 +189,8 @@
         <!-- 高德地图 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="8d635450932036faf3681a8960d884fa" />
+
+            android:value="${AMAP_DEBUG_KEY}" />
         <!--
         正式版的key"8d635450932036faf3681a8960d884fa"
         />
