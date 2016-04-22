@@ -427,19 +427,21 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             }
         } else if (holder instanceof LoadMoreViewHolder){
+            if (holder.itemView.getVisibility()==View.GONE){return;}
             if (null!=mLoadMoreListener){
                 mLoadMoreListener.onLoadMore();
             }
 
-            ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore,"rotation",0,360);
-            rotation.setInterpolator(new LinearInterpolator());
-            rotation.setRepeatMode(ValueAnimator.RESTART);
-            rotation.setRepeatCount(ValueAnimator.INFINITE);
-            rotation.setDuration(1500);
-            rotation.start();
-
             if (!mOnLoadingMore){
                 ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
+                ((LoadMoreViewHolder) holder).itemView.setVisibility(View.GONE);
+            }else{
+                ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore,"rotation",0,360);
+                rotation.setInterpolator(new LinearInterpolator());
+                rotation.setRepeatMode(ValueAnimator.RESTART);
+                rotation.setRepeatCount(ValueAnimator.INFINITE);
+                rotation.setDuration(1500);
+                rotation.start();
             }
 
 

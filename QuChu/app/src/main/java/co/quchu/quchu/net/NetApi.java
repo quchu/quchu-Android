@@ -108,7 +108,7 @@ public interface NetApi {
     ///TODO
     String visitorRegiester = HOST + "/mregister?visitors=1&equip=%s";
     String checkIfForceUpdate = HOST + "/public/getIsUpdate";
-    String findPosition = HOST + "/operate/proposalPlace?place.pId=%s&place.pname=%s&place.paddress=%s&place.profile=%s&place.pimage=%s";//发现趣处
+    String findPosition = HOST + "/operate/proposalPlace?place.pId=%s&place.pname=%s&place.paddress=%s&place.profile=%s";//发现趣处
 
     String accoundMerger = HOST + "/oauth/userMerge";//账号合并
     String bindPhoneNumber = HOST + "/personal/bindPhoneNumber";//绑定手机号

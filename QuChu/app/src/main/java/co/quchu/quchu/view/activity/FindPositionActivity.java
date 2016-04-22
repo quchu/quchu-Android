@@ -20,7 +20,9 @@ import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -167,13 +169,16 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private void sendToServer(String name, String position, String desc, String Images) {
         String url;
         if (id != -1) {
-            url = String.format(NetApi.findPosition, String.valueOf(id), name, position, desc, Images);
+            url = String.format(NetApi.findPosition, String.valueOf(id), name, position, desc);
         } else {
-            url = String.format(NetApi.findPosition, "", name, position, desc, Images);
+            url = String.format(NetApi.findPosition, "", name, position, desc);
         }
 
+        Map<String, String> map = new HashMap<>();
+        map.put("place.pimage",Images);
 
-        GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url, null, new ResponseListener<Object>() {
+
+        GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url,map, null, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();

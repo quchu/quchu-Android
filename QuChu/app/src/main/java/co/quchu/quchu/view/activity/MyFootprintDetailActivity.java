@@ -75,8 +75,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     public void onPageSelected(int position) {
         selectedPosition = position;
         Entity entity = data.get(position);
-
-        getEnhancedToolbar().getTitleTv().setText(entity.time);
         headImage.setImageURI(Uri.parse(entity.head));
 //
         if (entity.autoId != AppContext.user.getUserId()) {//如果不是自己的脚印
@@ -126,7 +124,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_footprint_detail);
-        getEnhancedToolbar();
+        getEnhancedToolbar().getTitleTv().setText("");
         ButterKnife.bind(this);
         initListener();
         initData();
