@@ -29,16 +29,10 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="bottom"
+                android:background="@mipmap/bg_user"
                 android:fitsSystemWindows="true"
-                android:gravity="center"
                 app:layout_collapseMode="parallax">
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/headViewBg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/headView"
@@ -56,6 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@id/headView"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_toRightOf="@id/headView" />
 
@@ -64,8 +59,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/name"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_toRightOf="@id/headView" />
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="80dp"
+                    android:background="@color/lineBackground_gray" />
             </RelativeLayout>
 
 
@@ -85,13 +88,19 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/appBackground"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="80dp"
+            android:background="@color/lineBackground_gray" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/appBackground" />
+            android:layout_height="match_parent" />
 
         <co.quchu.quchu.widget.ScrollIndexView
             android:id="@+id/scrollIndexView"

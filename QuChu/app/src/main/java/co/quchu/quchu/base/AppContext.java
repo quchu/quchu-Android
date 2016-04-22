@@ -57,6 +57,7 @@ public class AppContext extends Application {
         MobclickAgent.openActivityDurationTrack(false);
         ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
+                .setWebpSupportEnabled(true)
                 .build();
         Fresco.initialize(getApplicationContext(), imagePipelineConfig);
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {

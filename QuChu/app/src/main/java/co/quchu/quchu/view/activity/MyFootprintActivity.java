@@ -34,10 +34,6 @@ import co.quchu.quchu.widget.ScrollIndexView;
  */
 public class MyFootprintActivity extends BaseActivity implements PageLoadListener<PostCardModel>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel> {
 
-    //    @Bind(R.id.toolbar)
-//    EnhancedToolbar toolbar;
-    @Bind(R.id.headViewBg)
-    SimpleDraweeView headViewBg;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
 
@@ -112,6 +108,9 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
                 if (targetPosition > recyclerView.getY() + recyclerView.getHeight() - scrollIndexView.getHeight()) {
                     targetPosition = recyclerView.getY() + recyclerView.getHeight() - scrollIndexView.getHeight();
                 }
+                if (targetPosition < recyclerView.getY()) {
+                    targetPosition = recyclerView.getY();
+                }
 
                 scrollIndexView.setY(targetPosition);
                 for (int i = 0, size = recyclerView.getChildCount(); i < size; i++) {
@@ -142,7 +141,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
                 "个脚印";
         name.setText(AppContext.user.getFullname());
         ageAndCound.setText(builder);
-        headViewBg.setImageURI(Uri.parse("res:///" + R.mipmap.bg_user));
+//        headViewBg.setImageURI(Uri.parse("res:///" + R.mipmap.bg_user));
         headView.setImageURI(Uri.parse(uri + ""));
         setSupportActionBar(toolbar);
 

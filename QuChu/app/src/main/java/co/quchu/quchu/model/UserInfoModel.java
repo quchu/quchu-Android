@@ -36,6 +36,11 @@ public class UserInfoModel implements Parcelable {
     private String type;
     private int age;// 来趣处的总共多少年
     private int cardCount;// 脚印的个数
+    private boolean isphone;//是否绑定手机号
+
+    public boolean isphone() {
+        return isphone;
+    }
 
     public int getAge() {
         return age;

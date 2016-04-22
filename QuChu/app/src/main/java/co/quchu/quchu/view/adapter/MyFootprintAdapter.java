@@ -2,7 +2,6 @@ package co.quchu.quchu.view.adapter;
 
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -10,8 +9,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -73,13 +70,7 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
                 }
             });
         }
-        holder.itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                holder.line.getLayoutParams().height = holder.itemView.getHeight();
-            }
-        });
+
     }
 
     @Override
@@ -92,20 +83,13 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
     static class ViewHold extends RecyclerView.ViewHolder {
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
-        @Bind(R.id.cardView)
-        CardView cardView;
         @Bind(R.id.headView)
         SimpleDraweeView headView;
         @Bind(R.id.name)
         TextView name;
         @Bind(R.id.timeAndAddress)
         TextView timeAndAddress;
-        @Bind(R.id.containerNone)
-        RelativeLayout containerNone;
-        @Bind(R.id.line)
-        View line;
 
-        static int itemHeight;
 
         public ViewHold(final View itemView) {
             super(itemView);

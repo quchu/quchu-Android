@@ -118,7 +118,7 @@ public class AccountSettingActivity extends BaseActivity {
             newUserLocation = AppContext.user.getLocation();
             accountSettingUserLocation.setText(newUserLocation);
         }
-        if (AppContext.user.isIsVisitors()) {
+        if (AppContext.user.isphone()) {
             bindPhoto.setVisibility(View.GONE);
             lineBindPhone.setVisibility(View.GONE);
         }

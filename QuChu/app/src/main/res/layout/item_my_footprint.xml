@@ -59,12 +59,6 @@
             android:textSize="@dimen/word_size_minimum" />
     </RelativeLayout>
 
-    <View
-        android:id="@+id/line"
-        android:layout_width="3dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="50dp"
-        android:background="#4a4645" />
 
     <View
         android:layout_width="match_parent"
