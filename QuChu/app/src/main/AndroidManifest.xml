@@ -55,7 +55,6 @@
         <activity
             android:name=".view.activity.QuFriendsActivity"
             android:label="@string/titlebar_word_qu_friends"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.FootPrintActivity"
