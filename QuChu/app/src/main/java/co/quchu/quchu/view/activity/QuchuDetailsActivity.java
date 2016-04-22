@@ -139,20 +139,15 @@ public class QuchuDetailsActivity extends BaseActivity {
 
         startViewTime = System.currentTimeMillis();
 
-        InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId, new CommonListener<VisitedUsersModel>() {
-            @Override
-            public void successListener(VisitedUsersModel response) {
-                if (null != response) {
-                    mQuchuDetailAdapter.updateVisitedUsers(response);
-                }
-            }
+        getVisitors();
 
-            @Override
-            public void errorListener(VolleyError error, String exception, String msg) {
+        getVisitorsAnlysis();
 
-            }
-        });
+        getRatingInfo();
 
+    }
+
+    private void getVisitorsAnlysis() {
         InterestingDetailPresenter.getVisitorAnalysis(getApplicationContext(), pId, new CommonListener<SimpleQuchuDetailAnalysisModel>() {
             @Override
             public void successListener(SimpleQuchuDetailAnalysisModel response) {
@@ -162,11 +157,25 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
 
             @Override
-            public void errorListener(VolleyError error, String exception, String msg) {
-
-            }
+            public void errorListener(VolleyError error, String exception, String msg) {}
         });
+    }
 
+    private void getVisitors() {
+        InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId, new CommonListener<VisitedUsersModel>() {
+            @Override
+            public void successListener(VisitedUsersModel response) {
+                if (null != response) {
+                    mQuchuDetailAdapter.updateVisitedUsers(response);
+                }
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {}
+        });
+    }
+
+    private void getRatingInfo(){
         InterestingDetailPresenter.getVisitedInfo(getApplicationContext(), pId, new CommonListener<VisitedInfoModel>() {
             @Override
             public void successListener(VisitedInfoModel response) {
@@ -176,9 +185,7 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
 
             @Override
-            public void errorListener(VolleyError error, String exception, String msg) {
-
-            }
+            public void errorListener(VolleyError error, String exception, String msg) {}
         });
     }
 
@@ -354,8 +361,10 @@ public class QuchuDetailsActivity extends BaseActivity {
             strTags += selection.get(0).getTagId();
         } else {
             for (int i = 0; i < selection.size(); i++) {
-                strTags += selection.get(i).getTagId();
-                strTags += "|";
+                if (selection.get(i).isPraise()){
+                    strTags += selection.get(i).getTagId();
+                    strTags += "|";
+                }
             }
             strTags = strTags.substring(0, strTags.length() - 1);
         }
@@ -575,6 +584,11 @@ public class QuchuDetailsActivity extends BaseActivity {
             if ((Integer) event.getContent() == dModel.getPid()) {
                 dModel.setMyCardId((Integer) event.getContent());
             }
+        }
+
+        if (event.getFlag() == EventFlags.EVENT_QUCHU_RATING_UPDATE){
+            getRatingInfo();
+            getVisitors();
         }
     }
 }

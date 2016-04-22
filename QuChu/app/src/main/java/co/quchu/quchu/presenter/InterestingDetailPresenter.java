@@ -132,7 +132,7 @@ public class InterestingDetailPresenter {
     }
 
     public static void updateRatingInfo(Context context, int pId,int score,String tagIds,final DetailDataListener listener){
-        NetService.get(context, String.format(NetApi.updateRatingInfo, pId), new IRequestListener() {
+        NetService.get(context, String.format(NetApi.updateRatingInfo, pId,tagIds,score), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 listener.onSuccessCall("");

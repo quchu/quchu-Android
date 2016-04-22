@@ -115,7 +115,7 @@ public interface NetApi {
     String unBindThrid = HOST + "/oauth/delbind";
     String getVersionInfo = HOST + "/public/getVersion";//查看版本信息
     String getVisitedInfo = HOST +"/operate/outView?placeId=%d";//获得评价内容
-    String updateRatingInfo = HOST + "/operate/userOutPlace?placeId=%d";//更新评价
+    String updateRatingInfo = HOST + "/operate/userOutPlace?pId=%d&tagIds=%s&score=%d";//更新评价
     String getFilterTags = HOST + "/public/getCategoryTags";//获得筛选标签
     /****************** POST *******************/
 }
