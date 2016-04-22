@@ -17,7 +17,6 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
- * UserEnterAppFragment
  * User: Chenhs
  * Date: 2015-11-30
  */
