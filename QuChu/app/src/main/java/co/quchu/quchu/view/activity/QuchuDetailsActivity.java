@@ -476,35 +476,30 @@ public class QuchuDetailsActivity extends BaseActivity {
      * 收藏
      */
     private void setFavorite() {
-        if (AppContext.user.isIsVisitors()) {
-            VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
-            vDialog.show(getFragmentManager(), "visitor");
-        } else {
-            InterestingDetailPresenter.setDetailFavorite(this, pId, dModel.isIsf(), new InterestingDetailPresenter.DetailDataListener() {
-                @Override
-                public void onSuccessCall(String str) {
-                    dModel.setIsf(!dModel.isIsf());
-                    changeCollectState(dModel.isIsf());
-                    if (AppContext.selectedPlace != null) {
-                        AppContext.selectedPlace.setIsf(dModel.isIsf());
-                        AppContext.dCardListNeedUpdate = true;
-                    }
-                    if (dModel.isIsf()) {
-                        Toast.makeText(QuchuDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
-                        if (AppContext.gatherList == null)
-                            AppContext.gatherList = new ArrayList<>();
-                        AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid()));
-                    } else {
-                        Toast.makeText(QuchuDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
-                    }
+        InterestingDetailPresenter.setDetailFavorite(this, pId, dModel.isIsf(), new InterestingDetailPresenter.DetailDataListener() {
+            @Override
+            public void onSuccessCall(String str) {
+                dModel.setIsf(!dModel.isIsf());
+                changeCollectState(dModel.isIsf());
+                if (AppContext.selectedPlace != null) {
+                    AppContext.selectedPlace.setIsf(dModel.isIsf());
+                    AppContext.dCardListNeedUpdate = true;
                 }
-
-                @Override
-                public void onErrorCall(String str) {
-
+                if (dModel.isIsf()) {
+                    Toast.makeText(QuchuDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+                    if (AppContext.gatherList == null)
+                        AppContext.gatherList = new ArrayList<>();
+                    AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid()));
+                } else {
+                    Toast.makeText(QuchuDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onErrorCall(String str) {
+
+            }
+        });
     }
 
 

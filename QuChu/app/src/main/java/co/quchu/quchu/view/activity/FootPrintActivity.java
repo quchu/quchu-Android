@@ -100,11 +100,14 @@ public class FootPrintActivity extends BaseActivity {
         FootPrintPresenter.getFootprint(getApplicationContext(), mQuchuId, mCurrentPageNo, new FootPrintPresenter.GetFootprintDataListener() {
             @Override
             public void getFootprint(List<FootprintModel> model, int pMaxPageNo) {
+                if (null!=mData&&mData.size()>0){
 
-                mMaxPageNo = pMaxPageNo;
-                mData.addAll(model);
-                mAdapter.notifyDataSetChanged();
-                mIsLoading = false;
+                    mMaxPageNo = pMaxPageNo;
+
+                    mData.addAll(model);
+                    mAdapter.notifyDataSetChanged();
+                    mIsLoading = false;
+                }
                 if (DialogUtil.isDialogShowing()) {
                     DialogUtil.dismissProgess();
                 }

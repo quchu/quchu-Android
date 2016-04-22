@@ -27,10 +27,10 @@ public class FootPrintPresenter {
         NetService.get(context, String.format(NetApi.getFootprint, pId, pageNo), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
+                int maxPageNo = -1;
+                List<FootprintModel> footprintModelList = null;
                 if (response != null && response.has("result") && response.has("pageCount")) {
-                    int maxPageNo = -1;
                     Gson gson = new Gson();
-                    List<FootprintModel> footprintModelList = null;
                     try {
                         maxPageNo = response.getInt("pageCount");
                         footprintModelList = gson.fromJson(response.getString("result"), new TypeToken<List<FootprintModel>>() {
@@ -39,8 +39,8 @@ public class FootPrintPresenter {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    listener.getFootprint(footprintModelList, maxPageNo);
                 }
+                listener.getFootprint(footprintModelList, maxPageNo);
             }
 
             @Override
