@@ -775,11 +775,11 @@ public class SwipeRefreshLayout extends ViewGroup {
      * triggers a refresh should implement this interface.
      */
     public interface OnRefreshListener {
-        public void onRefresh();
+        void onRefresh();
     }
 
     public interface OnLoadListener {
-        public void onLoad();
+        void onLoad();
     }
 
     public void setMode(Mode mode)
@@ -792,7 +792,7 @@ public class SwipeRefreshLayout extends ViewGroup {
         this.loadNoFull = load;
     }
 
-    public static enum Mode {
+    public enum Mode {
         /**
          * Disable all Pull-to-Refresh gesture and Refreshing handling
          */

@@ -15,7 +15,6 @@ import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by linqipeng on 2016/2/26 11:18

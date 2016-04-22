@@ -103,7 +103,7 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
 		 * @param token
 		 *            The optional token passed to this object's constructor.
 		 */
-		public void onDismiss(View view, Object token, int index);
+		void onDismiss(View view, Object token, int index);
 	}
 
 	/**

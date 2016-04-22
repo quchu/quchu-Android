@@ -34,7 +34,6 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.base.Constants;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.RecommendPresenter;

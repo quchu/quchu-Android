@@ -16,7 +16,6 @@ import com.nineoldandroids.animation.ObjectAnimator;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 
 /**

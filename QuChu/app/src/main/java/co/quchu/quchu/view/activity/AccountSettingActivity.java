@@ -273,7 +273,7 @@ public class AccountSettingActivity extends BaseActivity {
         if (StringUtils.isEmpty(newUserPw) && newUserPwAgain.equals(newUserPw) || (newUserPw.equals(newUserPwAgain) && newUserPw.length() > 6)) {
             DialogUtil.showProgess(this, R.string.loading_dialog_text);
             if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
-                presenter.getQiNiuToken(AccountSettingActivity.this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
+                AccountSettingPresenter.getQiNiuToken(AccountSettingActivity.this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
                         putUserInfo("http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl);
@@ -298,7 +298,7 @@ public class AccountSettingActivity extends BaseActivity {
     }
 
     public void putUserInfo(String photoUrl) {
-        presenter.postUserInfo2Server(AccountSettingActivity.this,
+        AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this,
                 newUserNickName, photoUrl, newUserGender, newUserLocation, newUserPw, newUserPwAgain, new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
@@ -359,7 +359,7 @@ public class AccountSettingActivity extends BaseActivity {
     public void updateAvatar(int avatarId) {
         bitmaps = BitmapFactory.decodeResource(getResources(), avatarId);
         LogUtils.json("bitmap ==null?=" + (bitmaps == null));
-        presenter.getQiNiuToken(AccountSettingActivity.this, bitmaps, new AccountSettingPresenter.UploadUserPhotoListener() {
+        AccountSettingPresenter.getQiNiuToken(AccountSettingActivity.this, bitmaps, new AccountSettingPresenter.UploadUserPhotoListener() {
             @Override
             public void onSuccess(String photoUrl) {
                 newUserPhoto = "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl;

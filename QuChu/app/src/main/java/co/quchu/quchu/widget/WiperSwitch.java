@@ -228,7 +228,7 @@ public class WiperSwitch extends View {
     }
 
     public void moveToDest(final boolean toRight) {
-        ValueAnimator toDestAnim = ValueAnimator.ofInt(new int[]{this.frontRect_left, toRight ? this.max_left : this.min_left});
+        ValueAnimator toDestAnim = ValueAnimator.ofInt(this.frontRect_left, toRight ? this.max_left : this.min_left);
         toDestAnim.setDuration(500L);
         toDestAnim.setInterpolator(new AccelerateDecelerateInterpolator());
         toDestAnim.start();

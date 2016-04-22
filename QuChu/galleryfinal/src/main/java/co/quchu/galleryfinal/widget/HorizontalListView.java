@@ -638,7 +638,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
         // Cache off the measure spec
         mHeightMeasureSpec = heightMeasureSpec;
-    };
+    }
 
     /**
      * Determine the Max X position. This is the farthest that the user can scroll the screen. Until the last adapter item has been
@@ -1089,7 +1089,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
                 }
             }
         }
-    };
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -1150,7 +1150,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     /**
      * This listener is used to allow notification when the HorizontalListView is running low on data to display.
      */
-    public static interface RunningOutOfDataListener {
+    public interface RunningOutOfDataListener {
         /** Called when the HorizontalListView is running out of data and has reached at least the provided threshold. */
         void onRunningOutOfData();
     }
@@ -1186,7 +1186,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
      * Interface definition for a callback to be invoked when the view scroll state has changed.
      */
     public interface OnScrollStateChangedListener {
-        public enum ScrollState {
+        enum ScrollState {
             /**
              * The view is not scrolling. Note navigating the list using the trackball counts as being
              * in the idle state since these transitions are not animated.
@@ -1210,7 +1210,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
          *
          * @param scrollState The current scroll state.
          */
-        public void onScrollStateChanged(ScrollState scrollState);
+        void onScrollStateChanged(ScrollState scrollState);
     }
 
     /**

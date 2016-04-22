@@ -32,12 +32,7 @@
     <string name="following">我关注的</string>
     <string name="follower">关注我的</string>
     <!-- ********** 趣基因 ********* -->
-    <array name="MyGene">
-        <item>探索基因</item>
-        <item>吃货基因</item>
-        <item>艺术基因</item>
-        <item>土豪基因</item>
-    </array>
+
     <string name="subtitle_word_gene_introduce">什么是趣基因?</string>
     <string name="subtitle_word_friends_introduce">什么是趣友圈?</string>
     <string name="subtitle_word_care_about_friends_introduce">最关心我的趣星人</string>

@@ -401,11 +401,7 @@ public class MovePath {
         Log.i(TAG, "isBoundary move x y"+coordinate[0]+","+coordinate[1]);
         float x=coordinate[0];
         float y=coordinate[1];
-        if(x+viewFourCoordinate[0]>0&&x+viewFourCoordinate[2]<windowsWight&&y+viewFourCoordinate[1]>0&&y+viewFourCoordinate[5]<windowsHeight){
-            return true;
-        }else {
-            return false;
-        }
+        return x + viewFourCoordinate[0] > 0 && x + viewFourCoordinate[2] < windowsWight && y + viewFourCoordinate[1] > 0 && y + viewFourCoordinate[5] < windowsHeight;
     }
 
 

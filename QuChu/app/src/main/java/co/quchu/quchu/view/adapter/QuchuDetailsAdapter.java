@@ -8,10 +8,8 @@ import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,7 +25,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,9 +32,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
-import co.quchu.quchu.model.SimpleUserModel;
 import co.quchu.quchu.model.TagsModel;
-import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
@@ -420,6 +415,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     public void onClick(View v) {
 
                         Intent intent = new Intent(mAnchorActivity,QuchuDetailsActivity.class);
+                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM,QuchuDetailsActivity.FROM_TYPE_RECOM);
                         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID,pid);
                         mAnchorActivity.startActivity(intent);
                     }

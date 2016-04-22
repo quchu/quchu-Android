@@ -12,7 +12,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.NearbyMapModel;
 import co.quchu.quchu.model.TagsModel;

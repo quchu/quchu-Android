@@ -1,9 +1,6 @@
 package co.quchu.quchu.widget;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-
-import co.quchu.quchu.utils.DeviceUtils;
 
 /**
  * Created by Nikolai on 2016/4/17.

@@ -26,7 +26,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
 
     public interface OnWxShareListenter {
-        public void upMissionSucces();
+        void upMissionSucces();
     }
 
     public void setOnWxShareListenter(OnWxShareListenter listener) {

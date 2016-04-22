@@ -103,18 +103,6 @@
     </style>
     <!-- 详情界面 便利标签 radiobutton 风格 -->
 
-    <style name="DetailRadioButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_centerInParent">true</item>
-        <item name="android:button">@null</item>
-        <item name="android:checked">false</item>
-        <item name="android:clickable">false</item>
-        <item name="android:gravity">center</item>
-        <item name="android:singleLine">false</item>
-        <item name="android:textColor">@color/rb_detail_textcolor_seletcer</item>
-        <item name="android:textSize">@dimen/word_size_time</item>
-    </style>
 
     <style name="BlurDialogFragment.Default.Animation" parent="@android:style/Animation.Activity">
         <item name="android:windowEnterAnimation">@anim/default_dialog_in</item>

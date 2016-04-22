@@ -1,45 +1,24 @@
 package co.quchu.quchu.view.adapter;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
 import com.facebook.drawee.view.SimpleDraweeView;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.model.TagsModel;
-import co.quchu.quchu.net.IRequestListener;
-import co.quchu.quchu.net.NetApi;
-import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.FlyMeUtils;
-import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.QuchuDetailsActivity;
-import co.quchu.quchu.widget.HorizontalNumProgressBar;
 import co.quchu.quchu.widget.TagCloudView;
-import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
  * RecommendAdapter

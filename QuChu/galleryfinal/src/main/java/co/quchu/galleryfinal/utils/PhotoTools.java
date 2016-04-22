@@ -19,7 +19,6 @@ package co.quchu.galleryfinal.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;

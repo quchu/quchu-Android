@@ -37,7 +37,6 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.DraweeHolder;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.image.CloseableStaticBitmap;
 import com.facebook.imagepipeline.image.ImageInfo;
@@ -82,10 +81,7 @@ public class FrescoImageLoader implements co.quchu.galleryfinal.ImageLoader {
 
             @Override
             public boolean verifyDrawable(Drawable dr) {
-                if (dr == draweeHolder.getHierarchy().getTopLevelDrawable()) {
-                    return true;
-                }
-                return false;
+                return dr == draweeHolder.getHierarchy().getTopLevelDrawable();
             }
         });
         Uri uri = new Uri.Builder()

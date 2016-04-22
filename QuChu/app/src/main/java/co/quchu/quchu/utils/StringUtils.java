@@ -299,8 +299,7 @@ public class StringUtils {
         if (!StringUtils.isEmpty(value)) {
             try {
                 Double.parseDouble(value);
-                if (value.contains(".")) return true;
-                return false;
+                return value.contains(".");
             } catch (NumberFormatException e) {
                 return false;
             } finally {

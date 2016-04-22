@@ -29,7 +29,7 @@ public class RecycleViewBitmapUtils {
                     recycleViewGroup((ViewGroup) subView);
                 } else {
                     if (subView instanceof ImageView) {
-                        recycleImageView((ImageView) subView);
+                        recycleImageView(subView);
                     }
                 }
             }

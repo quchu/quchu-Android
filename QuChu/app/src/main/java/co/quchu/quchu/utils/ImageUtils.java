@@ -180,8 +180,6 @@ public class ImageUtils {
 
         width = view.getWidth();
         height = view.getHeight();
-
-
         ImageRequest imageRequest = ImageRequestBuilder
                 .newBuilderWithSource(Uri.parse(uri))
                 .setResizeOptions(new ResizeOptions(width == 0 ? 150 : width, height == 0 ? 150 : height))//图片目标大小

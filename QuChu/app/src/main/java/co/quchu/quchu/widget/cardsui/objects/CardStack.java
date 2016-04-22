@@ -190,9 +190,7 @@ private int clickIndex=-1;
             return false;
         }
 
-        if (card.convert(convertCardView))
-            return true;
-        return false;
+        return card.convert(convertCardView);
     }
 
     public Card remove(int index) {

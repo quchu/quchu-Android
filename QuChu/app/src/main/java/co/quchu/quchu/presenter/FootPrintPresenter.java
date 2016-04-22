@@ -10,7 +10,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;

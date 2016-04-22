@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.view.WindowManager;
 
 import co.quchu.quchu.base.AppContext;
 

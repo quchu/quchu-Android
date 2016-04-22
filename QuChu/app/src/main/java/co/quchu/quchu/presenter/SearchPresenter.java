@@ -16,7 +16,6 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.SPUtils;
 
 /**
  * SearchPresenter

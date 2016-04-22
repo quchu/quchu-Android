@@ -12,24 +12,20 @@ import android.text.style.DynamicDrawableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import co.quchu.galleryfinal.utils.ImageUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**

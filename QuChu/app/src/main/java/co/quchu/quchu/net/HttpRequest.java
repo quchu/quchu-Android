@@ -98,7 +98,7 @@ public class HttpRequest extends JsonObjectRequest {
         return _Body;
     }
 
-    public static enum HttpMethod {
+    public enum HttpMethod {
         GET("GET"), POST("POST"), PUT("PUT"), HEAD("HEAD"), MOVE("MOVE"), COPY(
                 "COPY"), DELETE("DELETE"), OPTIONS("OPTIONS"), TRACE("TRACE"), CONNECT(
                 "CONNECT");

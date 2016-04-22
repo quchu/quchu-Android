@@ -258,7 +258,7 @@ public class SwipeBackLayout extends FrameLayout {
         mListeners.remove(listener);
     }
 
-    public static interface SwipeListener {
+    public interface SwipeListener {
         /**
          * Invoke when state change
          *
@@ -268,7 +268,7 @@ public class SwipeBackLayout extends FrameLayout {
          * @see #STATE_DRAGGING
          * @see #STATE_SETTLING
          */
-        public void onScrollStateChange(int state, float scrollPercent);
+        void onScrollStateChange(int state, float scrollPercent);
 
         /**
          * Invoke when edge touched
@@ -278,12 +278,12 @@ public class SwipeBackLayout extends FrameLayout {
          * @see #EDGE_RIGHT
          * @see #EDGE_BOTTOM
          */
-        public void onEdgeTouch(int edgeFlag);
+        void onEdgeTouch(int edgeFlag);
 
         /**
          * Invoke when scroll percent over the threshold for the first time
          */
-        public void onScrollOverThreshold();
+        void onScrollOverThreshold();
     }
 
     /**

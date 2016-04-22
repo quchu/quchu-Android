@@ -39,11 +39,7 @@ public class SearchModel {
             searchList.remove(index);
         }
         LogUtils.json("start  size=" + searchList.size() + "///index=" + index);
-        if (searchList.size() == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return searchList.size() == 0;
     }
 
     public ArrayList<SearchListEntity> removeAllSearchHistory() {

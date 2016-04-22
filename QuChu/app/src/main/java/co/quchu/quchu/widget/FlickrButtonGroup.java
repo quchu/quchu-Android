@@ -279,7 +279,7 @@ public class FlickrButtonGroup extends RelativeLayout implements View.OnClickLis
      * 选择结果回调
      */
     public interface FlickrOnSelectedistener {
-        public void onViewsClick(int flag);
+        void onViewsClick(int flag);
     }
 
     private void setViewsClickable(boolean isClickable) {

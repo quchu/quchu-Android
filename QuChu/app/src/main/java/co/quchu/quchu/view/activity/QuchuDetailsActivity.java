@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -28,10 +27,8 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.analysis.GatherViewModel;
-import co.quchu.quchu.analysis.GatherWantGoModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.dialog.ShareDialogFg;

@@ -11,15 +11,11 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.NearbyMapModel;
-import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.model.SimpleQuchuSearchResultModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.net.GsonRequest;

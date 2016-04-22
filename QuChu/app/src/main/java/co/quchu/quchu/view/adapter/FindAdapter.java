@@ -26,14 +26,17 @@ public class FindAdapter extends AdapterBase<FindBean.ResultEntity, FindAdapter.
     public void onBindView(ViewHold holder, final int position) {
         final FindBean.ResultEntity bean = data.get(position);
         holder.name.setText(bean.getName());
-        if (bean.getImage().size() > 0)
+        if (bean.getImage().size() > 0) {
             holder.simpleDraweeView.setImageURI(Uri.parse(bean.getImage().get(0).getImgpath()));
+        } else {
+            holder.simpleDraweeView.setImageURI(Uri.EMPTY);
+        }
         holder.address.setText(bean.getAddress());
         if (itemClickListener != null)
             holder.editContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClick(bean,0, position);
+                    itemClickListener.itemClick(bean, 0, position);
                 }
             });
     }

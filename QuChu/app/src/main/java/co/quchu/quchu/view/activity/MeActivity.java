@@ -5,8 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import co.quchu.galleryfinal.utils.ImageUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
@@ -32,19 +33,17 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     ImageView back;
     @Bind(R.id.setting)
     ImageView setting;
-    @Bind(R.id.bg_simpleDraweeView)
-    SimpleDraweeView bgSimpleDraweeView;
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
 
     @Bind(R.id.quchu)
-    LinearLayout quchu;
+    FrameLayout quchu;
     @Bind(R.id.footPrint)
-    LinearLayout footPrint;
+    FrameLayout footPrint;
     @Bind(R.id.friend)
-    LinearLayout friend;
+    FrameLayout friend;
     @Bind(R.id.massage)
-    LinearLayout massage;
+    FrameLayout massage;
 
     @Bind(R.id.rpv1)
     RoundProgressView rpv1;
@@ -80,14 +79,13 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         ButterKnife.bind(this);
         presenter = new MeActivityPresenter(this, this);
         initListener();
-
+        initData();
     }
 
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("profile");
         super.onResume();
-        initData();
     }
 
     @Override
@@ -99,11 +97,10 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     private void initData() {
 
         if (AppContext.user != null) {
-            headImage.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+            ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+
             name.setText(AppContext.user.getFullname());
         }
-        bgSimpleDraweeView.setImageURI(Uri.parse("res:///" + R.mipmap.bg_user));
-
         presenter.getGene();
     }
 
@@ -144,11 +141,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 }
 
                 break;
-//            case R.id.changeHeadImage:
-//                ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
-//                photoDialogFg.setOnOriginListener(this);
-//                photoDialogFg.show(getFragmentManager(), "photo");
-//                break;
             case R.id.quchu://趣处
                 intent = new Intent(this, QuchuActivity.class);
                 startActivity(intent);
@@ -195,129 +187,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         return TRANSITION_TYPE_BOTTOM;
     }
 
-//    //趣头像
-//    private ArrayList<Integer> imageList;
-//
-//    @Override
-//    public void selectedCamare() {
-//        initGralley();
-//        int REQUEST_CODE_CAMERA = 0x02;
-//        GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, this);
-//    }
-//
-//    @Override
-//    public void selectedAblum() {
-//        initGralley();
-//        int REQUEST_CODE_GALLERY = 0x01;
-//        GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, functionConfig, this);
-//    }
-//
-//    @Override
-//    public void selectedQuPhtot() {
-//        if (imageList == null) {
-//            imageList = AccountSettingPresenter.getQAvatar();
-//        }
-//        QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
-//        qAvatarDIalogFg.init(imageList, new QAvatarSettingDialogFg.OnItenSelected() {
-//            @Override
-//            public void itemSelected(int imageId) {
-//                headImage.setImageURI(Uri.parse("res:///" + imageId));
-//                uploadHeadToService(imageId);
-//            }
-//        });
-//        qAvatarDIalogFg.show(getFragmentManager(), "qAvatar");
-//    }
-//
-//    private FunctionConfig functionConfig;
-//
-//    private void initGralley() {
-//        FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
-//        functionConfigBuilder.setEnableEdit(false);
-//        functionConfigBuilder.setEnableCrop(true);
-//        functionConfigBuilder.setEnableRotate(true);
-//        functionConfigBuilder.setEnablePreview(false);
-//        functionConfigBuilder.setForceCrop(false);//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
-//        functionConfigBuilder.setForceCropEdit(true);
-//        functionConfigBuilder.setRotateReplaceSource(true);
-//        functionConfig = functionConfigBuilder.build();
-//        CoreConfig coreConfig = new CoreConfig.Builder(this, new FrescoImageLoader(this), null)
-//                .setDebug(BuildConfig.DEBUG)
-//                .setFunctionConfig(functionConfig)
-//                .setPauseOnScrollListener(null)
-//                .setNoAnimcation(true)
-//                .build();
-//        GalleryFinal.init(coreConfig);
-//    }
-//
-//    //照片选择成功
-//    @Override
-//    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-//        if (resultList.size() > 0) {
-//            String path = resultList.get(0).getPhotoPath();
-//            if (!TextUtils.isEmpty(path)) {
-////                headImage.setImageURI(Uri.fromFile(new File(path)));
-//                ImageUtils.ShowImage("file://" + path, headImage);
-//                uploadHeadToService(path);
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void onHanlderFailure(int requestCode, String errorMsg) {
-//        Toast.makeText(this, "图片保存失败", Toast.LENGTH_SHORT).show();
-//    }
-//
-//
-//    private void uploadHeadToService(String path) {
-//        AccountSettingPresenter.getQiNiuToken(this, path, new AccountSettingPresenter.UploadUserPhotoListener() {
-//            @Override
-//            public void onSuccess(String photoUrl) {
-//                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl,
-//                        AppContext.user.getGender(), "", "", "", new AccountSettingPresenter.UploadUserPhotoListener() {
-//                            @Override
-//                            public void onSuccess(String photoUrl) {
-//                            }
-//
-//                            @Override
-//                            public void onError() {
-//                                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-//
-//                            }
-//                        });
-//            }
-//
-//            @Override
-//            public void onError() {
-//                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-//
-//    private void uploadHeadToService(int ImageId) {
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), ImageId);
-//        AccountSettingPresenter.getQiNiuToken(this, bitmap, new AccountSettingPresenter.UploadUserPhotoListener() {
-//            @Override
-//            public void onSuccess(String photoUrl) {
-//                AccountSettingPresenter.postUserInfo2Server(MeActivity.this, AppContext.user.getUsername(), "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl,
-//                        AppContext.user.getGender(), "", "", "", new AccountSettingPresenter.UploadUserPhotoListener() {
-//                            @Override
-//                            public void onSuccess(String photoUrl) {
-//                            }
-//
-//                            @Override
-//                            public void onError() {
-//                                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-//
-//                            }
-//                        });
-//            }
-//
-//            @Override
-//            public void onError() {
-//                Toast.makeText(MeActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
     @Override
     public void initGene(MyGeneModel data) {
@@ -347,8 +216,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                     break;
             }
         }
-
-
     }
 
 }

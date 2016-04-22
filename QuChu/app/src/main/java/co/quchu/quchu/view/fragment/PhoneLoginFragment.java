@@ -371,7 +371,6 @@ public class PhoneLoginFragment extends BaseFragment {
             inputManager.showSoftInput(phoneLoginPnumEt, 0);
         }
 
-        ;
     };
     long startTime = 0l;
 

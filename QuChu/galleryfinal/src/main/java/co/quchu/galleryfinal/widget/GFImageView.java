@@ -30,10 +30,10 @@ public class GFImageView extends ImageView {
         mOnImageViewListener = listener;
     }
 
-    public static interface OnImageViewListener {
-        public void onDetach();
-        public void onAttach();
-        public boolean verifyDrawable(Drawable dr) ;
+    public interface OnImageViewListener {
+        void onDetach();
+        void onAttach();
+        boolean verifyDrawable(Drawable dr) ;
     }
 
     @Override

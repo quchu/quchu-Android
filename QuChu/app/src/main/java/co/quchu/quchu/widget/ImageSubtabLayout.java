@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.textcounter.CounterView;
 

@@ -1,6 +1,5 @@
 package co.quchu.galleryfinal;
 
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;

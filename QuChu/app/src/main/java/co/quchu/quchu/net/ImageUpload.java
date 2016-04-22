@@ -21,7 +21,6 @@ import java.util.Locale;
 
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.ImageUtils;
-import co.quchu.quchu.utils.LogUtils;
 
 /**
  * Created by linqipeng on 2016/3/15 17:21

@@ -17,11 +17,11 @@ package co.quchu.galleryfinal.widget.zoonview;
 
 public interface OnGestureListener {
 
-    public void onDrag(float dx, float dy);
+    void onDrag(float dx, float dy);
 
-    public void onFling(float startX, float startY, float velocityX,
-                        float velocityY);
+    void onFling(float startX, float startY, float velocityX,
+                 float velocityY);
 
-    public void onScale(float scaleFactor, float focusX, float focusY);
+    void onScale(float scaleFactor, float focusX, float focusY);
 
 }

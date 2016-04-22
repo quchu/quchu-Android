@@ -1,6 +1,5 @@
 package co.quchu.galleryfinal;
 
-import android.app.Activity;
 import android.widget.AbsListView;
 
 /**

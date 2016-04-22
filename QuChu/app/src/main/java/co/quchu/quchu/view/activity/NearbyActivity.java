@@ -24,7 +24,6 @@ import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.NearbyAdapter;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
-import co.quchu.quchu.widget.TagCloudView;
 
 /**
  * Created by Nico on 16/4/11.
@@ -34,8 +33,8 @@ public class NearbyActivity extends BaseActivity {
 
     @Bind(R.id.detail_recyclerview)
     RecyclerView detailRecyclerview;
-    @Bind(R.id.detail_store_tagclound_tcv)
-    TagCloudView tagCloudView;
+//    @Bind(R.id.detail_store_tagclound_tcv)
+//    TagCloudView tagCloudView;
     NearbyAdapter mAdapter;
     private int mMaxPageNo = -1;
     private int mCurrentPageNo = 1;

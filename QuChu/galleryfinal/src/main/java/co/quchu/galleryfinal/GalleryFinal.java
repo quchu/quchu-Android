@@ -420,14 +420,14 @@ public class GalleryFinal {
     /**
      * 处理结果
      */
-    public static interface OnHanlderResultCallback {
+    public interface OnHanlderResultCallback {
         /**
          * 处理成功
          *
          * @param reqeustCode
          * @param resultList
          */
-        public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList);
+        void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList);
 
         /**
          * 处理失败或异常
@@ -435,6 +435,6 @@ public class GalleryFinal {
          * @param requestCode
          * @param errorMsg
          */
-        public void onHanlderFailure(int requestCode, String errorMsg);
+        void onHanlderFailure(int requestCode, String errorMsg);
     }
 }
