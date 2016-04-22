@@ -17,6 +17,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.FootprintModel;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.presenter.FootPrintPresenter;
 import co.quchu.quchu.view.adapter.FootPrintAdapter;
 import co.quchu.quchu.widget.SpacesItemDecoration;
@@ -66,7 +67,14 @@ public class FootPrintActivity extends BaseActivity {
         mAdapter = new FootPrintAdapter(mData, new FootPrintAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                startActivity(new Intent(FootPrintActivity.this, MyFootprintDetailActivity.class));
+                Intent intent = new Intent(FootPrintActivity.this, MyFootprintDetailActivity.class);
+                ArrayList<PostCardItemModel> mBundleData = new ArrayList<>();
+                for (int i = 0; i < mData.size(); i++) {
+                    mBundleData.add(mData.get(position).convertToCompatModel());
+                }
+                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_POSITION,position);
+                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL,mBundleData);
+                startActivity(intent);
             }
         });
         rvFootPrint.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));

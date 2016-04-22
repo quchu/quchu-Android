@@ -31,6 +31,33 @@ public class FootprintModel {
     private boolean isp;
 
 
+    public PostCardItemModel convertToCompatModel(){
+        PostCardItemModel model = new PostCardItemModel();
+        model.setHeight(this.height);
+        model.setWidth(this.width);
+        model.setAddress(this.address);
+        model.setAutor(this.autor);
+        model.setAutorId(this.autorId);
+        model.setAutorPhoto(this.autorPhoto);
+        model.setCardId(this.cardId);
+        model.setComment(this.comment);
+        model.setFavoNum(this.favoNum);
+        model.setImglist(this.imglist);
+        model.setIsf(this.isf);
+        model.setIsme(this.ism);
+        model.setIsp(this.isp);
+        model.setPlaceId(this.placeId);
+        model.setPlcaeAddress(this.placeAddress);
+        model.setPlcaeCover(this.placeCover);
+        model.setPlcaeName(this.placeName);
+        model.setIsf(this.isf);
+        model.setPraiseNum(this.praiseNum);
+        model.setScore(this.score);
+        model.setTel(this.tel);
+        model.setTime(this.time);
+        return  model;
+    }
+
     public int getCardId() {
         return cardId;
     }

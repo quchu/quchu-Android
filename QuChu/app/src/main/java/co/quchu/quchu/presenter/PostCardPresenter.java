@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import co.quchu.quchu.model.PostCardItemModel;
@@ -89,11 +90,17 @@ public class PostCardPresenter {
         } else if (!StringUtils.isEmpty(comment) && StringUtils.isEmpty(imageStr)) {
             saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3$s", pId, cScore, comment);
         } else if (StringUtils.isEmpty(comment) && !StringUtils.isEmpty(imageStr)) {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.image=%3$s", pId, cScore, imageStr);
+            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d", pId, cScore);
         } else {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3$s&card.image=%4$s", pId, cScore, comment, imageStr);
+            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3", pId, cScore, comment);
         }
-        NetService.post(context, NetApi.saveOrUpdateCard + saveUrl, null, new IRequestListener() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("card.image",imageStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        NetService.post(context, NetApi.saveOrUpdateCard + saveUrl, jsonObject, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 listener.onSuccess(null);

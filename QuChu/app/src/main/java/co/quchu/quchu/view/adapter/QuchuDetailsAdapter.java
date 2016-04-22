@@ -62,18 +62,19 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     protected static final int LAYOUT_TYPE_IMAGE = 0x0010;
     protected static final int LAYOUT_TYPE_NEARBY = 0x0011;
     protected static final int LAYOUT_TYPE_BLANK = 0x0012;
-    private static final int LAYOUT_TYPE_LOAD_MORE = 0x1001;
+    protected static final int LAYOUT_TYPE_LOAD_MORE = 0x1001;
 
     private LayoutInflater mLayoutInflater;
     private Activity mAnchorActivity;
     private DetailModel mData;
     private View.OnClickListener mOnItemClickListener;
     public static final int BLOCK_INDEX = 7;
-    private boolean mOnLoadingMore = false;
+    private boolean mOnLoadingMore = true;
     private VisitedUsersModel mVisitedUsers;
     private int mVisitedUsersAvatarSize = -1;
     private int mVisitedUsersAvatarMargin;
     private SimpleQuchuDetailAnalysisModel mAnalysisModel;
+
 
 
 
@@ -343,6 +344,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(.5f);
             ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(.5f);
             ((AdditionalInfoViewHolder) holder).ivApplePay.setAlpha(.5f);
+            if (null!=mData.getIcons()){
+                for (int i = 0; i < mData.getIcons().size(); i++) {
+                    System.out.println(mData.getIcons().get(i).getZh());
+                }
+            }
             if (!mData.isIsActivity()) {
                 ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.VISIBLE);
                 //TODO revert it
@@ -424,14 +430,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (null!=mLoadMoreListener){
                 mLoadMoreListener.onLoadMore();
             }
-            if (mOnLoadingMore){
-                ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore,"rotation",0,360);
-                rotation.setInterpolator(new LinearInterpolator());
-                rotation.setRepeatMode(ValueAnimator.RESTART);
-                rotation.setRepeatCount(ValueAnimator.INFINITE);
-                rotation.setDuration(1500);
-                rotation.start();
-            }else{
+
+            ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore,"rotation",0,360);
+            rotation.setInterpolator(new LinearInterpolator());
+            rotation.setRepeatMode(ValueAnimator.RESTART);
+            rotation.setRepeatCount(ValueAnimator.INFINITE);
+            rotation.setDuration(1500);
+            rotation.start();
+
+            if (!mOnLoadingMore){
                 ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
             }
 
@@ -441,12 +448,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void finishLoadMore(){
         mOnLoadingMore = false;
+        notifyDataSetChanged();
     }
-
-    public void startLoadMore(){
-        mOnLoadingMore = true;
-    }
-
 
     private View.OnTouchListener listener = new View.OnTouchListener() {
         @Override

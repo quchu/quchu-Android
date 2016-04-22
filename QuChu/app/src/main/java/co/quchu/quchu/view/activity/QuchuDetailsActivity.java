@@ -313,7 +313,6 @@ public class QuchuDetailsActivity extends BaseActivity {
         if (mIsLoadMoreRunning) return;
         mIsLoadMoreRunning = true;
 
-        mQuchuDetailAdapter.startLoadMore();
         NearbyPresenter.getNearbyData(getApplicationContext(), recommendPids, cateIds, isFirst, pid, cid, lat, lon, 1, new NearbyPresenter.getNearbyDataListener() {
             @Override
             public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
