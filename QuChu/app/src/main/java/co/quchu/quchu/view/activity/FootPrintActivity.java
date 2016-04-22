@@ -70,6 +70,8 @@ public class FootPrintActivity extends BaseActivity {
                 Intent intent = new Intent(FootPrintActivity.this, MyFootprintDetailActivity.class);
                 ArrayList<PostCardItemModel> mBundleData = new ArrayList<>();
                 for (int i = 0; i < mData.size(); i++) {
+                    System.out.println("> "+i);
+                    System.out.println(mData.get(position).convertToCompatModel().getImglist().size());
                     mBundleData.add(mData.get(position).convertToCompatModel());
                 }
                 intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_POSITION,position);
