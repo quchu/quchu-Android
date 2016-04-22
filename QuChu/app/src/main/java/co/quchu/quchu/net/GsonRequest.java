@@ -150,7 +150,7 @@ public class GsonRequest<T> extends Request<T> {
             }
 
             msg = jsonObject.getString("msg");
-            if (jsonObject.has("errorCode")){
+            if (jsonObject.has("errorCode")) {
                 errorCode = jsonObject.getString("errorCode");
             }
             return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
@@ -210,6 +210,7 @@ public class GsonRequest<T> extends Request<T> {
         if (!TextUtils.isEmpty(AppContext.token)) {
             headers.put("quchu-token", AppContext.token);
         }
+        headers.put("quchuVersion", AppContext.versionName);
         return headers;
     }
 

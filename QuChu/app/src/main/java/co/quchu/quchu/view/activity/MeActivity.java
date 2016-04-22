@@ -134,7 +134,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;
             case R.id.headImage:
-                if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
+                if (user.isIsVisitors()) {
                     //游客
                     VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
                     dialogFg.show(getFragmentManager(), "");
@@ -154,7 +154,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 startActivity(intent);
                 break;
             case R.id.footPrint://脚印
-                if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
+                if (user.isIsVisitors()) {
                     //游客
                     VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
                     dialogFg.show(getFragmentManager(), "");
@@ -325,9 +325,9 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         for (int i = 0; i < genes.size(); i++) {
             double progress = genes.get(i).getWeight();
             String label = genes.get(i).getZh();
-            switch (i){
+            switch (i) {
                 case 0:
-                    if (null!=genes.get(i).getMark()){
+                    if (null != genes.get(i).getMark()) {
                         tvUserNickName.setText(genes.get(i).getMark());
                     }
                     rpv1.setProgress(progress);
@@ -347,9 +347,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                     break;
             }
         }
-
-
-
 
 
     }

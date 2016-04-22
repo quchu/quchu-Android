@@ -21,23 +21,20 @@ public class FootprintDetailFragment extends BaseFragment {
 
     @Bind(R.id.draweeViewMain)
     SimpleDraweeView draweeViewMain;
-    private View rootView;
-    public boolean firstPage;
-    private ImageModel bean;
 
     public static final String REQUEST_KEY_IMAGE_ENTITY = "ENTITY";
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_my_footprint_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_my_footprint_detail, container, false);
         ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        bean = getArguments().getParcelable(REQUEST_KEY_IMAGE_ENTITY);
+        ImageModel bean = getArguments().getParcelable(REQUEST_KEY_IMAGE_ENTITY);
         if (bean != null) {
             float ratio = (float) bean.getWidth() / bean.getHeight();
             draweeViewMain.setAspectRatio(ratio);
@@ -46,23 +43,6 @@ public class FootprintDetailFragment extends BaseFragment {
 
 
     }
-
-
-//    public void showing() {
-//        containerBottom.animate()
-//                .translationYBy(-containerBottom.getHeight())
-//                .setDuration(600)
-//                .setInterpolator(new DecelerateInterpolator())
-//                .start();
-//    }
-//
-//    public void hint() {
-//        containerBottom.animate()
-//                .translationYBy(containerBottom.getHeight())
-//                .setDuration(600)
-//                .setInterpolator(new AccelerateDecelerateInterpolator())
-//                .start();
-//    }
 
     @Override
     public void onDestroyView() {

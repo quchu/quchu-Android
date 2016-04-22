@@ -114,6 +114,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
 
 
         final ConfirmDialogFg dialogFg = ConfirmDialogFg.newInstance("合并数据", "是否将两个账号数据合并");
+        dialogFg.setCancelable(false);
         dialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
             @Override
             public void onClick(int index) {

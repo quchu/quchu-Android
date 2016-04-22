@@ -48,6 +48,7 @@ public class HttpRequest extends JsonObjectRequest {
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(AppContext.mContext))) {
             headers.put("quchu-token", SPUtils.getUserToken(AppContext.mContext));
         }
+        headers.put("quchuVersion", AppContext.versionName);
       /*  headers.put("quchu-token",SPUtils.getUserToken(AppContext.mContext) );
         LogUtils.json("getHeaders == user=="+SPUtils.getUserToken(AppContext.mContext) );*/
         return headers;

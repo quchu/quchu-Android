@@ -137,12 +137,11 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         data = new ArrayList<>();
         for (int i = 0, s = beanList.size(); i < s; i++) {
             PostCardItemModel bean = beanList.get(i);
-            Entity entity = null;
+            Entity entity;
             if (i == position) {
                 pageInintPosition = data.size();
             }
-            if (bean.getImglist() != null && bean.getImglist().size() > 0) {
-
+            if (bean.getImglist() != null && bean.getImglist().size() > 0)
                 for (ImageModel item : bean.getImglist()) {
                     entity = new Entity();
                     entity.autoId = bean.getAutorId();
@@ -174,60 +173,18 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
                     builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), index2, index3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 
                     entity.builder = builder;
-                }
-                if (entity != null)
+
                     data.add(entity);
-            } else {
-                //空列表处理
-                entity = new Entity();
-
-                ImageModel item = new ImageModel();
-                item.setPath(bean.getPlcaeCover());
-                item.setHeight(bean.getHeight());
-                item.setWidth(bean.getWidth());
-
-                entity.autoId = bean.getAutorId();
-                entity.head = bean.getAutorPhoto();
-                entity.isP = bean.isIsp();
-                entity.supportCount = bean.getPraiseNum();
-                entity.time = bean.getTime();
-                entity.image = item;
-                entity.cardId = bean.getCardId();
-                entity.PlcaeName = bean.getPlcaeName();
-                entity.PlcaeId = bean.getPlaceId();
-                entity.Comment = bean.getComment();
-
-                StringBuilder text1 = new StringBuilder();
-                text1.append(bean.getAutor());
-                text1.append(":");
-                int index1 = text1.length();
-                text1.append(bean.getComment());
-                text1.append("\n");
-                text1.append("- 在 ");
-                int index2 = text1.length();
-                text1.append(bean.getPlcaeName());
-                int index3 = text1.length();
-
-                SpannableStringBuilder builder = new SpannableStringBuilder(text1.toString());
-                builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), 0, index1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                builder.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), index1, index2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), index2, index3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-
-                entity.builder = builder;
-
-                data.add(entity);
-            }
+                }
         }
         PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), data);
         viewPager.setAdapter(mPagerAdapter);
         viewPager.addOnPageChangeListener(this);
 
-        if (data.size() > pageInintPosition) {
-            viewPager.setCurrentItem(pageInintPosition);
-        } else {
+        viewPager.setCurrentItem(pageInintPosition);
+        if (pageInintPosition == 0) {
             onPageSelected(0);
         }
-
     }
 
     private void initListener() {
@@ -257,30 +214,41 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         });
     }
 
+    //点赞后服务器还没返回
+    private int clickPosition = -1;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.supportContainer://点赞
                 final Entity entity = data.get(selectedPosition);
+                //屏蔽重复点赞
+                if (clickPosition != selectedPosition) {
 
-                PostCardPresenter.setPraise(this, entity.isP, true, entity.cardId, new PostCardPresenter.MyPostCardListener() {
-                    @Override
-                    public void onSuccess(PostCardModel model) {
-                        if (entity.isP) {
-                            entity.isP = false;
-                            support.setImageResource(R.drawable.ic_light_like);
-                        } else {
-                            entity.isP = true;
-                            support.setImageResource(R.drawable.ic_light_like_fill);
+                    clickPosition = selectedPosition;
+                    PostCardPresenter.setPraise(this, entity.isP, true, entity.cardId, new PostCardPresenter.MyPostCardListener() {
+                        @Override
+                        public void onSuccess(PostCardModel model) {
+                            if (entity.isP) {
+                                entity.isP = false;
+                                //如果用户没有切换卡片
+                                if (clickPosition == selectedPosition)
+                                    support.setImageResource(R.drawable.ic_light_like);
+                            } else {
+                                entity.isP = true;
+                                if (clickPosition == selectedPosition)
+                                    support.setImageResource(R.drawable.ic_light_like_fill);
+                            }
+                            clickPosition = -1;
                         }
-                    }
 
-                    @Override
-                    public void onError(String error) {
-                        Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                        @Override
+                        public void onError(String error) {
+                            clickPosition = -1;
+                            Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
                 break;
             case R.id.share://分享
                 final Entity en = data.get(selectedPosition);

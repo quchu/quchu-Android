@@ -162,7 +162,7 @@ public class SPUtils {
     }
 
     public static String getUserToken(Context context) {
-        return getValueFromSPMap(context, AppKey.USERTOKEN, "") + "\nquchuVersion:1.2";
+        return getValueFromSPMap(context, AppKey.USERTOKEN, "");
     }
 
 

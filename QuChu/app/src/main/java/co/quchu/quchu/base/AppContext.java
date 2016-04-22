@@ -2,6 +2,7 @@ package co.quchu.quchu.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
 
@@ -37,6 +38,7 @@ public class AppContext extends Application {
     public static boolean dCardListNeedUpdate = false;
 
     public static String token = "";
+    public static String versionName = "";
 
 
     private RefWatcher refWatcher;
@@ -53,6 +55,13 @@ public class AppContext extends Application {
         refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
         token = SPUtils.getUserToken(getApplicationContext());
+        try {
+            versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
 //禁用页面自动统计
         MobclickAgent.openActivityDurationTrack(false);
         ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
