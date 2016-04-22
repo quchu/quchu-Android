@@ -24,9 +24,11 @@ import co.quchu.quchu.widget.TagCloudView;
 public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder> {
 
     private List<NearbyItemModel> mData;
+    private OnItemClickListener mListener;
 
-    public NearbyAdapter(List<NearbyItemModel> pData) {
+    public NearbyAdapter(List<NearbyItemModel> pData,OnItemClickListener pListener) {
         mData = pData;
+        mListener = pListener;
     }
 
     @Override
@@ -34,8 +36,9 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_favorite, parent, false));
     }
 
+
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.name.setText(mData.get(position).getName());
         holder.simpleDraweeView.setImageURI(Uri.parse(mData.get(position).getCover()));
         List<String> tags = new ArrayList<>();
@@ -43,6 +46,14 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
             tags.add(mData.get(position).getTags().get(i).getZh());
         }
         holder.tag.setTags(tags);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null!=mListener){
+                    mListener.onClick(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -64,5 +75,9 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface OnItemClickListener{
+        void onClick(int position);
     }
 }

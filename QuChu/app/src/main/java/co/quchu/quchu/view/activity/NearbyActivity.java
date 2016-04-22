@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -107,7 +108,14 @@ public class NearbyActivity extends BaseActivity {
         mData.addAll((List<NearbyItemModel>) getIntent().getSerializableExtra(BUNDLE_KEY_DATA));
 
         ButterKnife.bind(this);
-        mAdapter = new NearbyAdapter(mData);
+        mAdapter = new NearbyAdapter(mData, new NearbyAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(NearbyActivity.this,QuchuDetailsActivity.class);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID,mData.get(position).getPlaceId());
+                startActivity(intent);
+            }
+        });
         detailRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         detailRecyclerview.setAdapter(mAdapter);
         detailRecyclerview.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) detailRecyclerview.getLayoutManager()) {
@@ -156,7 +164,7 @@ public class NearbyActivity extends BaseActivity {
         NearbyPresenter.getNearbyData(getApplicationContext(), mRecommendPlaceIds, mStrFilterPattern, 0, mPlaceId, SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
             @Override
             public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
-                System.out.println("7");
+
                 if (mMaxPageNo == -1) {
                     mMaxPageNo = pMaxPageNo;
                 }

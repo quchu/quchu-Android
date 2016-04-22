@@ -82,17 +82,18 @@ public class PostCardPresenter {
         });
     }
 
-    public static void sacePostCard(Context context, int pId, int cScore, String comment, String imageStr, final MyPostCardListener listener) {
+    public static void sacePostCard(Context context, int pId, int cScore, String comment, String imageStr,int cid, final MyPostCardListener listener) {
         //  "?card.pid=%1$d&card.score=%2$d&card.comment=%3$s&card.image=%4$s";
         String saveUrl = "";
+        String strCid = cid>0?String.valueOf(cid):"";
         if (StringUtils.isEmpty(comment) && StringUtils.isEmpty(imageStr)) {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d", pId, cScore);
+            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.cardId=%3$s", pId, cScore,strCid);
         } else if (!StringUtils.isEmpty(comment) && StringUtils.isEmpty(imageStr)) {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3$s", pId, cScore, comment);
+            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3$s&card.cardId=%4$s", pId, cScore, comment,strCid);
         } else if (StringUtils.isEmpty(comment) && !StringUtils.isEmpty(imageStr)) {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d", pId, cScore);
+            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.cardId=%3$s", pId, cScore,strCid);
         } else {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3", pId, cScore, comment);
+            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3&card.cardId=%4$s", pId, cScore, comment,strCid);
         }
         JSONObject jsonObject = new JSONObject();
         try {

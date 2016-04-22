@@ -57,6 +57,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     public static final String REQUEST_KEY_ID = "id";
     public static final String REQUEST_KEY_NAME = "name";
     public static final String REQUEST_KEY_ENTITY = "entity";
+    private int cId = -1;
     private int pId;
     private String pName;
     private PostCardItemModel mData;
@@ -79,6 +80,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         mData = getIntent().getParcelableExtra(REQUEST_KEY_ENTITY);
         mIsEdit = mData != null;
         pId = mData == null ? pId : mData.getPlaceId();
+        cId = mData == null ? cId : mData.getCardId();
         getEnhancedToolbar().getRightTv().setText(R.string.save);
         getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.load_progress_yellow));
         tvPickFromMap.setOnClickListener(new View.OnClickListener() {
@@ -218,7 +220,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     }
 
     private void saveCard(final int pId, String comment, String imgs) {
-        PostCardPresenter.sacePostCard(this, pId, 0, comment, imgs, new PostCardPresenter.MyPostCardListener() {
+        PostCardPresenter.sacePostCard(this, pId, 0, comment, imgs,cId, new PostCardPresenter.MyPostCardListener() {
             @Override
             public void onSuccess(PostCardModel model) {
                 EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_QUCHU_DETAIL_UPDATED, pId));
