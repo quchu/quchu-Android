@@ -40,9 +40,6 @@
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme.NoActionBar">
-
-        <!-- android:name="co.quchu.quchu.view.activity.PlanetActivity" -->
-
         <activity
             android:name=".view.activity.SplashActivity"
             android:label="@string/app_name"
@@ -54,28 +51,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.activity.PlanetActivity"
-            android:label="@string/titlebar_word_planet"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.GeneActivity"
-            android:label="@string/titlebar_word_gene"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.GeneIntroduceActivity"
-            android:label="@string/titlebar_word_gene_introduce"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.FriendsCircleIntroduceActivity"
-            android:label="@string/titlebar_word_friends_introduce"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.DiscoverActivity"
-            android:label="@string/titlebar_word_discover"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.activity.QuFriendsActivity"
             android:label="@string/titlebar_word_qu_friends"
@@ -90,22 +66,12 @@
             android:label="@string/add_foot_print"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".view.activity.FlickrActivity"
-            android:label="@string/titlebar_word_flickr"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.activity.FeedbackActivity"
             android:label="@string/titlebar_word_feedback"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.FavoriteActivity"
-            android:label="@string/titlebar_word_favorite"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.FavoritePlaceActivity"
-            android:label="@string/ic_detail_share"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.activity.WebViewActivity"
             android:label="@string/webview_redirecting"
@@ -126,8 +92,8 @@
         <activity
             android:name=".view.activity.AccountSettingActivity"
             android:label="@string/titlebar_word_account_setting"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <!-- 趣处详情 -->
         <activity
             android:name=".view.activity.QuchuDetailsActivity"
@@ -151,21 +117,12 @@
             android:name=".view.activity.RecommendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar_top" />
-        <!-- 下拉菜单 -->
-        <activity
-            android:name=".view.activity.MenusActivity"
-            android:screenOrientation="portrait" />
+
         <!-- 搜索 -->
         <activity
             android:name=".view.activity.SearchActivity"
             android:screenOrientation="portrait" />
-        <!-- 账户设置 -->
-        <!-- 趣处小图浏览界面 -->
-        <!-- 趣处小图浏览界面 -->
-        <!-- 趣处 预定 -->
-        <activity
-            android:name=".view.activity.ReserveActivity"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.activity.PlaceMapActivity"
             android:label="@string/nearby_quchu"
@@ -277,7 +234,6 @@
             android:name=".view.activity.BindPhotoNumActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
 
     </application>
 

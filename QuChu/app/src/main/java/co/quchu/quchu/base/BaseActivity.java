@@ -12,11 +12,9 @@ import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.photoselected.PreviewImageActivity;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
 import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
-import co.quchu.quchu.widget.swipbacklayout.Utils;
 
 
 /**
@@ -53,7 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
                 overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
                 break;
             case TRANSITION_TYPE_LEFT:
-                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.in_stable);
+                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
                 mHelper = new SwipeBackActivityHelper(this);
                 mHelper.onActivityCreate();
                 mSwipeBackLayout = getSwipeBackLayout();
@@ -61,7 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
                 mSwipeBackLayout.setEdgeSize(360);
                 break;
             case TRANSITION_TYPE_BOTTOM:
-                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.in_stable);
+                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
                 mHelper = new SwipeBackActivityHelper(this);
                 mHelper.onActivityCreate();
                 mSwipeBackLayout = getSwipeBackLayout();
@@ -89,17 +87,18 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
     @Override
     public void finish() {
         super.finish();
-
-//        if (this instanceof MenusActivity) {
-//            overridePendingTransition(R.anim.out_bottom_to_top,
-//                    R.anim.out_bottom_to_top);
-//        } else
-        if (this instanceof PreviewImageActivity) {
-            overridePendingTransition(R.anim.in_alpha,
-                    R.anim.out_alpha);
-        } else {
-            overridePendingTransition(R.anim.in_stable,
-                    R.anim.out_push_left_to_right);
+        switch (activitySetup()) {
+//            case TRANSITION_TYPE_NOTHING:
+//                break;
+//            case TRANSITION_TYPE_ALPHA:
+//                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
+//                break;
+//            case TRANSITION_TYPE_LEFT:
+//                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
+//                break;
+            case TRANSITION_TYPE_BOTTOM:
+                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
+                break;
         }
     }
 
@@ -136,18 +135,6 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         return mHelper.getSwipeBackLayout();
     }
 
-    @Override
-    public void setSwipeBackEnable(boolean enable) {
-        getSwipeBackLayout().setEnableGesture(enable);
-    }
-
-    @Override
-    public void scrollToFinishActivity() {
-        Utils.convertActivityToTranslucent(this);
-        getSwipeBackLayout().scrollToFinishActivity();
-    }
-
-
     public EnhancedToolbar getEnhancedToolbar() {
         return null == enhancedToolbar ? initToolbar() : enhancedToolbar;
     }
@@ -173,10 +160,6 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         }
     }
 
-
-    /**
-     * title bar 控制  end
-     */
 
     @Override
     public Resources getResources() {

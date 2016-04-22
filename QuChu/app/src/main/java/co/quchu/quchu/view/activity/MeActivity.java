@@ -192,7 +192,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
 
     @Override
     protected int activitySetup() {
-        return TRANSITION_TYPE_LEFT;
+        return TRANSITION_TYPE_BOTTOM;
     }
 
 //    //趣头像
