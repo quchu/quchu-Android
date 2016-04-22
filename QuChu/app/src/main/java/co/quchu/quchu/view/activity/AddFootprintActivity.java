@@ -83,6 +83,11 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         cId = mData == null ? cId : mData.getCardId();
         getEnhancedToolbar().getRightTv().setText(R.string.save);
         getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.load_progress_yellow));
+
+        if (cId>0){
+            tvPickFromMap.setVisibility(View.GONE);
+        }
+
         tvPickFromMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
