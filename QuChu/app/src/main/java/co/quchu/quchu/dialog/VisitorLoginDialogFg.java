@@ -42,13 +42,13 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
 
 
     private int viewModel = 0x00;
-    public static final int QFAVORITE = 0x00; //收藏
     public static final int QFOCUS = 0x01; // 关注
     public static final int QPRAISE = 0x02; // 点赞
     public static final int QAVATAR = 0x03; //头像 趣星球
     public static final int QACCOUNTSETTING = 0x04; //账户设置
     public static final int QMESSAGECENTER = 0x05; // 消息中心
     public static final int QBEEN = 0x06;//quguo
+    public static final int QFAVORITE = 0x07; //收藏
 
     /**
      * Retrieve a new instance of the sample fragment.
@@ -87,22 +87,22 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
 
         builder.setView(view);
         switch (viewModel) {
-            case QFAVORITE:
-                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行收藏操作")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
-                break;
-            case QFOCUS:
-                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行关注操作")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
-                break;
-            case QPRAISE:
-                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行点赞操作")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
-                break;
-            case QAVATAR:
-                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入趣星球")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 5, R.color.gene_textcolor_yellow);
-                break;
+//            case QFAVORITE:
+//                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行收藏操作")));
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
+//                break;
+//            case QFOCUS:
+//                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行关注操作")));
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
+//                break;
+//            case QPRAISE:
+//                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行点赞操作")));
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
+//                break;
+//            case QAVATAR:
+//                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入趣星球")));
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 5, R.color.gene_textcolor_yellow);
+//                break;
             case QACCOUNTSETTING:
                 dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入账户设置")));
                 StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.gene_textcolor_yellow);
@@ -114,6 +114,9 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
             case QBEEN:
                 dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "明信片操作")));
                 StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.gene_textcolor_yellow);
+                break;
+            default:
+                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行该操作")));
                 break;
         }
         return builder.create();
