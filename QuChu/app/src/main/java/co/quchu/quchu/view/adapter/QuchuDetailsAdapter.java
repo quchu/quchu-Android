@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -306,15 +308,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(mOnItemClickListener);
             if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
-//                StringTokenizer token = new StringTokenizer(mData.getTel(), " ");
-//                StringBuffer phoneHtml = new StringBuffer();
-//                while (token.hasMoreTokens()) {
-//                    String phoneNum = token.nextToken();
-//                    phoneHtml.append("<font color=#ff4444><a href=\"tel:").append(phoneNum).append("\">").append(phoneNum).append("</a> </font>  ");
-//                }
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：" + mData.getTel());
+                StringTokenizer token = new StringTokenizer(mData.getTel(), " ");
+                StringBuffer phoneHtml = new StringBuffer();
+                while (token.hasMoreTokens()) {
+                    String phoneNum = token.nextToken();
+                    phoneHtml.append("<font color=#ffffff><a href='tel:").append(phoneNum).append("'>").append(phoneNum).append("</a> </font>  ");
+                }
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：");
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.append(Html.fromHtml(phoneHtml.toString()));
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setMovementMethod(LinkMovementMethod.getInstance());
-                Linkify.addLinks(((ContactInfoViewHolder) holder).detail_store_phone_tv, Linkify.ALL);
             } else {
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.clearComposingText();
             }

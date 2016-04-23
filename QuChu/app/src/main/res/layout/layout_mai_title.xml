@@ -23,15 +23,6 @@
             android:textSize="16sp" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/title_content_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@color/planet_text_color_white"
-        android:textSize="@dimen/word_title_body"
-        android:visibility="invisible" />
-
     <co.quchu.quchu.widget.RecommendTitleGroup
         android:id="@+id/recommend_title_center_rtg"
         android:layout_width="184dp"
