@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,8 +53,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
     @Bind(R.id.recommend_title_location_tv)
     TextView recommendTitleLocationIv;
 
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
     @Bind(R.id.recommend_title_more_iv)
     ImageView recommendTitleMoreRl;
     @Bind(R.id.recommend_title_center_rtg)
@@ -62,6 +61,8 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
     RelativeLayout rlSearchBar;
     @Bind(R.id.search_input_et)
     TextView tvSearch;
+    @Bind(R.id.container)
+    FrameLayout flContainer;
 
     public long firstTime = 0;
     private ArrayList<CityModel> list;
@@ -179,46 +180,27 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
             tvSearch.animate()
-                    .translationY(-tvSearch.getHeight())
+                    .translationY(-rlSearchBar.getHeight())
                     .alpha(0)
                     .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .withStartAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            rlSearchBar.setVisibility(View.GONE);
-                        }
-                    })
-                    .start();
-
-            //recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
-            titleContentTv.setVisibility(View.INVISIBLE);
-            recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
-
-            transaction.
-//                    setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out).
-        hide(classifyFragment).show(recommendFragment).commit();
+                    .setInterpolator(new AccelerateDecelerateInterpolator()).start();
+            flContainer.animate().translationY(0)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator()).start();
+            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+            transaction.hide(classifyFragment).show(recommendFragment).commit();
         } else {
-            rlSearchBar.setVisibility(View.VISIBLE);
-
-            transaction
-//                    .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out)
-                    .hide(recommendFragment).show(classifyFragment).commit();
 
             tvSearch.animate()
                     .translationY(0)
                     .alpha(1)
                     .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .withStartAction(new Runnable() {
-                        @Override
-                        public void run() {
-                        }
-                    })
-                    .start();
-            //recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
-            recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
-            titleContentTv.setVisibility(View.INVISIBLE);
+                    .setInterpolator(new AccelerateDecelerateInterpolator()).start();
+            flContainer.animate().translationY(rlSearchBar.getHeight())
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator()).start();
+            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+            transaction .hide(recommendFragment).show(classifyFragment).commit();
         }
         viewPagerIndex = index;
     }
