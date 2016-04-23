@@ -96,11 +96,9 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
 
     private void initData() {
 
-        if (AppContext.user != null) {
-            ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+        ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+        name.setText(AppContext.user.isIsVisitors() ? "未知生物" : AppContext.user.getFullname());
 
-            name.setText(AppContext.user.getFullname());
-        }
         presenter.getGene();
     }
 

@@ -34,6 +34,8 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
     protected final int TRANSITION_TYPE_LEFT = 1;
     //activity向下移动进入
     protected final int TRANSITION_TYPE_BOTTOM = 2;
+    //往上
+    protected final int TRANSITION_TYPE_TOP = 4;
     //
     protected final int TRANSITION_TYPE_ALPHA = 3;
 
@@ -65,6 +67,9 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
                 mSwipeBackLayout = getSwipeBackLayout();
                 mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
                 mSwipeBackLayout.setEdgeSize(360);
+                break;
+            case TRANSITION_TYPE_TOP:
+                overridePendingTransition(R.anim.in_bottom_to_top, R.anim.out_top_to_bottom);
                 break;
         }
 
@@ -98,6 +103,9 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
 //                break;
             case TRANSITION_TYPE_BOTTOM:
                 overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
+                break;
+            case TRANSITION_TYPE_TOP:
+                overridePendingTransition(R.anim.in_bottom_to_top, R.anim.out_top_to_bottom);
                 break;
         }
     }

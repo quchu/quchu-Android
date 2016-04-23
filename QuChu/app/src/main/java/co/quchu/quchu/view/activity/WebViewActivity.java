@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
@@ -19,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -32,10 +34,7 @@ public class WebViewActivity extends BaseActivity {
 
     public static final String BUNDLE_KEY_WEBVIEW_URL = "BUNDLE_KEY_WEB_URL";
     public static final String BUNDLE_KEY_WEBVIEW_TITLE = "BUNDLE_KEY_WEBVIEW_TITLE";
-    private String mUrl;
     private String mPageTitle;
-    private WebChromeClient mWebChromeClient;
-    private SimpleWebViewClient mWebViewClient;
     public static final String TAG = "WebViewActivity";
 
 
@@ -51,9 +50,15 @@ public class WebViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         ButterKnife.bind(this);
-        getEnhancedToolbar();
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        toolbar.getLeftIv().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        mWebChromeClient = new WebChromeClient() {
+        WebChromeClient webChromeClient = new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 if (null == mPageTitle && !StringUtils.isEmpty(title)) {
@@ -61,19 +66,19 @@ public class WebViewActivity extends BaseActivity {
                 }
             }
         };
-        mWebViewClient = new SimpleWebViewClient();
+        SimpleWebViewClient webViewClient = new SimpleWebViewClient();
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebChromeClient(mWebChromeClient);
-        mWebView.setWebViewClient(mWebViewClient);
+        mWebView.setWebChromeClient(webChromeClient);
+        mWebView.setWebViewClient(webViewClient);
 
-        mUrl = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_URL);
+        String url = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_URL);
         mPageTitle = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_TITLE);
-        System.out.println(mUrl+"|"+mPageTitle);
+        System.out.println(url + "|" + mPageTitle);
         getEnhancedToolbar().getTitleTv().setText(!StringUtils.isEmpty(mPageTitle) ? mPageTitle : "");
 
-        if (!StringUtils.isEmpty(mUrl) && URLUtil.isValidUrl(mUrl)) {
-            Log.d(TAG, mUrl);
-            mWebView.loadUrl(mUrl);
+        if (!StringUtils.isEmpty(url) && URLUtil.isValidUrl(url)) {
+            Log.d(TAG, url);
+            mWebView.loadUrl(url);
             DialogUtil.showProgess(WebViewActivity.this, R.string.loading_dialog_text);
         } else {
             showErrorToast();

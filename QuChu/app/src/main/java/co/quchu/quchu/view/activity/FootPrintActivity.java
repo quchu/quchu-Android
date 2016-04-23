@@ -14,8 +14,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.presenter.FootPrintPresenter;
@@ -56,10 +58,17 @@ public class FootPrintActivity extends BaseActivity {
         getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FootPrintActivity.this, AddFootprintActivity.class);
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mQuchuId);
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mQuchuName);
-                startActivity(intent);
+
+                if (AppContext.user.isIsVisitors()) {
+                    VisitorLoginDialogFg dialog = VisitorLoginDialogFg.newInstance(0);
+                    dialog.show(getFragmentManager(), "");
+
+                } else {
+                    Intent intent = new Intent(FootPrintActivity.this, AddFootprintActivity.class);
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mQuchuId);
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mQuchuName);
+                    startActivity(intent);
+                }
             }
         });
 
