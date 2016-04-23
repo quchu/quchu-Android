@@ -64,7 +64,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private DetailModel mData;
     private View.OnClickListener mOnItemClickListener;
     public static final int BLOCK_INDEX = 7;
-    private boolean mOnLoadingMore = true;
+    private boolean mEnableLoadMore = true;
     private VisitedUsersModel mVisitedUsers;
     private int mVisitedUsersAvatarSize = -1;
     private int mVisitedUsersAvatarMargin;
@@ -297,6 +297,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         } else if (holder instanceof ContactInfoViewHolder) {
+            mEnableLoadMore = true;
             if (null == mData.getTraffic() || StringUtils.isEmpty(mData.getTraffic())) {
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址：" + mData.getAddress());
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setSelected(true);
@@ -423,29 +424,30 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             }
         } else if (holder instanceof LoadMoreViewHolder){
-            if (holder.itemView.getVisibility()==View.GONE){return;}
-            if (null!=mLoadMoreListener){
-                mLoadMoreListener.onLoadMore();
-            }
-
-            if (!mOnLoadingMore){
+            if (!mEnableLoadMore){
                 ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
-                ((LoadMoreViewHolder) holder).itemView.setVisibility(View.GONE);
+                ((LoadMoreViewHolder) holder).itemView.setVisibility(View.INVISIBLE);
             }else{
+                ((LoadMoreViewHolder) holder).itemView.setVisibility(View.VISIBLE);
                 ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore,"rotation",0,360);
                 rotation.setInterpolator(new LinearInterpolator());
                 rotation.setRepeatMode(ValueAnimator.RESTART);
                 rotation.setRepeatCount(ValueAnimator.INFINITE);
                 rotation.setDuration(1500);
                 rotation.start();
+
+                if (null!=mLoadMoreListener){
+                    mLoadMoreListener.onLoadMore();
+                }
             }
 
 
         }
     }
 
+
     public void finishLoadMore(){
-        mOnLoadingMore = false;
+        mEnableLoadMore = false;
         notifyDataSetChanged();
     }
 

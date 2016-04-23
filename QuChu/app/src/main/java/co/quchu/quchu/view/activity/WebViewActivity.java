@@ -111,7 +111,12 @@ public class WebViewActivity extends BaseActivity {
     private class SimpleWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
+            if (url!=null||url.startsWith("intent")){
+
+            }else{
+                view.loadUrl(url);
+
+            }
             return true;
         }
 

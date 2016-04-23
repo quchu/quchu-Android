@@ -178,7 +178,7 @@ public class NearbyActivity extends BaseActivity {
 
     @Override
     protected int activitySetup() {
-        return TRANSITION_TYPE_TOP;
+        return TRANSITION_TYPE_BOTTOM;
     }
 
     @Override

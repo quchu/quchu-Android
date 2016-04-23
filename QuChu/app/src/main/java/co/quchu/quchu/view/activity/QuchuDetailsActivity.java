@@ -253,7 +253,7 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
         });
 
-        mRecyclerView.setOnScrollListener(new HidingScrollListener() {
+        mRecyclerView.addOnScrollListener(new HidingScrollListener() {
 
             @Override
             public void onHide() {

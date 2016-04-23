@@ -42,7 +42,7 @@ public class RatingQuchuDialogAdapter extends RecyclerView.Adapter<RatingQuchuDi
         holder.tvTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=mListener) mListener.onSelected(position);
+                if (null!=mListener) mListener.onSelected(position,mData.get(position).isPraise());
             }
         });
     }
@@ -53,7 +53,7 @@ public class RatingQuchuDialogAdapter extends RecyclerView.Adapter<RatingQuchuDi
     }
 
     public interface OnItemSelectedListener{
-        void onSelected(int index);
+        void onSelected(int index,boolean selected);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

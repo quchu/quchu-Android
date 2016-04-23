@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -49,6 +50,7 @@ public class RatingQuchuDialog extends BlurDialogFragment {
     private List<TagsModel> mDataset;
     private float mRating;
     private RatingQuchuDialogAdapter adapter;
+    public static final int MAX_TAG_SELECT = 3;
 
 
     /**
@@ -89,9 +91,19 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapter = new RatingQuchuDialogAdapter(mDataset, new RatingQuchuDialogAdapter.OnItemSelectedListener() {
             @Override
-            public void onSelected(int index) {
-                mDataset.get(index).setPraise(!mDataset.get(index).isPraise());
-                adapter.notifyDataSetChanged();
+            public void onSelected(int index,boolean select) {
+                int selected = 0;
+                for (int i = 0; i < mDataset.size(); i++) {
+                    if (mDataset.get(i).isPraise()){
+                        selected++;
+                    }
+                }
+                if (!select &&selected>=MAX_TAG_SELECT){
+                    Toast.makeText(getActivity(),"最多只能选择3个标签",Toast.LENGTH_SHORT).show();
+                }else{
+                    mDataset.get(index).setPraise(!mDataset.get(index).isPraise());
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
         rvTags.setAdapter(adapter);
