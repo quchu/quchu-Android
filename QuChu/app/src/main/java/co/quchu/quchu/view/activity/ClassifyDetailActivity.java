@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -24,19 +23,14 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.Postprocessor;
 import com.umeng.analytics.MobclickAgent;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.presenter.RecommendPresenter;
-import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.view.adapter.DiscoverDetailPagerAdapter;
 
@@ -50,8 +44,7 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
     ImageView ivBackground;
     ArrayList<RecommendModel> mData = new ArrayList<>();
     DiscoverDetailPagerAdapter mAdapter;
-    boolean mNetworkBusy = false;
-    int mClickTimes = 0;
+
 
     private int currentIndex = -1;
     private int currentBGIndex = -1;
@@ -68,30 +61,14 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classify_detail);
         ButterKnife.bind(this);
-        getEnhancedToolbar().getRightTv().setText(" ");
-        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mClickTimes += 1;
-                if (mClickTimes >= 5) {
-                    getVersionInfo();
-                }
 
-                vpContent.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mClickTimes = 0;
-                    }
-                }, 1500);
-            }
-        });
 
         mAdapter = new DiscoverDetailPagerAdapter(mData, this, new DiscoverDetailPagerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 MobclickAgent.onEvent(ClassifyDetailActivity.this, "detail_subject_c");
                 Intent intent = new Intent(ClassifyDetailActivity.this, QuchuDetailsActivity.class);
-                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM,QuchuDetailsActivity.FROM_TYPE_SUBJECT);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_SUBJECT);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid());
                 System.out.println(mData.get(position).getPid());
                 startActivity(intent);
@@ -108,25 +85,6 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
     @Override
     protected int activitySetup() {
         return TRANSITION_TYPE_LEFT;
-    }
-
-
-    public void getVersionInfo() {
-        if (mNetworkBusy) return;
-        mNetworkBusy = true;
-        VersionInfoPresenter.getVersionInfo(getApplicationContext(), new IRequestListener() {
-            @Override
-            public void onSuccess(JSONObject response) {
-                mNetworkBusy = false;
-                ConfirmDialogFg.newInstance("版本信息", response.toString()).show(getFragmentManager(), "");
-            }
-
-            @Override
-            public boolean onError(String error) {
-                mNetworkBusy = false;
-                return false;
-            }
-        });
     }
 
 
@@ -277,7 +235,7 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
     @Override
     protected void onDestroy() {
         ButterKnife.unbind(this);
-        if (null!=vpContent){
+        if (null != vpContent) {
             vpContent.removeOnPageChangeListener(this);
         }
         super.onDestroy();

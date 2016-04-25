@@ -212,7 +212,7 @@ public class GsonRequest<T> extends Request<T> {
         if (!TextUtils.isEmpty(AppContext.token)) {
             headers.put("quchu-token", AppContext.token);
         }
-        headers.put("quchuVersion", AppContext.versionName);
+        headers.put("quchuVersion", AppContext.packageInfo.versionName);
         return headers;
     }
 

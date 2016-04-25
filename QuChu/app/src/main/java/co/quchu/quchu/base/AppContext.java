@@ -2,6 +2,7 @@ package co.quchu.quchu.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
@@ -38,10 +39,10 @@ public class AppContext extends Application {
     public static boolean dCardListNeedUpdate = false;
 
     public static String token = "";
-    public static String versionName = "";
 
 
     private RefWatcher refWatcher;
+    public static PackageInfo packageInfo;
 
     public static RefWatcher getRefWatcher(Context context) {
         AppContext application = (AppContext) context.getApplicationContext();
@@ -56,7 +57,7 @@ public class AppContext extends Application {
         mContext = getApplicationContext();
         token = SPUtils.getUserToken(getApplicationContext());
         try {
-            versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

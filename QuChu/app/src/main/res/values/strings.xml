@@ -84,7 +84,25 @@
         <item>手机相册</item>
     </array>
     <string name="app_exit_text">再按一次退出程序</string>
-    <string name="about_us_text">没人想要把时间浪费在千篇一律的内容上，\r\n就像没人想要活得单调而雷同。\r\n你的偏爱，\r\n就是我们看似“没有原则”的原则。\r\n你的喜好，\r\n就是“趣处”存在的意义。\r\n\r\n我们知道，\r\n你需要的，\r\n本来就和别人不一样。\r\n\r\n一千个人，就有一千个趣处。\r\n- 趣处%1$s -\r\n带你重新认识你的城市，\r\n陪你从心定义你的生活方式。\r\n\r\n</string>
+    <string name="about_us_text">没人想要把时间浪费在千篇一律的内容上\n
+        就像没人想要活得单调而雷同\n
+        你的偏爱\n
+        就是我们看似“没有原则”的原则\n
+        你的喜好\n
+        就是“趣处”存在的意义\n\n
+        我们知道\n
+        你需要的\n
+        本来就和别人不一样\n\n
+        一千个人，就有一千个趣处\n\n
+        - 趣处v%s -\n
+        带你重新认识你的城市\n
+        陪你重新定义你的生活方式\n\n\n\n
+        意见建议\n Email:service@quchu.co\n\n
+        加入我们\n
+        (选择以下“虚席”对号入座:....)\n
+         Email:hr@quchu.co\n\n
+        商务合作\n
+        Email:contact@quchu.co!</string>
 
     <string name="mypost_timer_now">刚刚</string>
     <string name="mypost_timer_minutes">分钟前</string>

@@ -7,13 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
-import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.view.activity.AboutUsActivity;
 import co.quchu.quchu.view.activity.FeedbackActivity;
 
@@ -24,38 +21,13 @@ import co.quchu.quchu.view.activity.FeedbackActivity;
  * 城市选择弹窗
  */
 public class MenuSettingDialogFg extends BlurDialogFragment {
-    /**
-     * Bundle key used to start the blur dialog with a given scale factor (float).
-     */
-
-
-    private ArrayList<CityModel> cityList;
-
-    /**
-     * Retrieve a new instance of the sample fragment.
-     *
-     * @return well instantiated fragment.
-     * Serializable cityList
-     */
     public static MenuSettingDialogFg newInstance() {
-        MenuSettingDialogFg fragment = new MenuSettingDialogFg();
-        Bundle args = new Bundle();
-        // args.putSerializable(CITY_LIST_MODEL, cityList);
-        fragment.setArguments(args);
-        return fragment;
+        return new MenuSettingDialogFg();
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        Bundle args = getArguments();
-    /*    mRadius = args.getInt(BUNDLE_KEY_BLUR_RADIUS);
-        mDownScaleFactor = args.getFloat(BUNDLE_KEY_DOWN_SCALE_FACTOR);
-        mDimming = args.getBoolean(BUNDLE_KEY_DIMMING);
-        mDebug = args.getBoolean(BUNDLE_KEY_DEBUG);*/
-
-
     }
 
     @Override
@@ -79,27 +51,14 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
             R.id.dialog_menu_setting_feedback_tv, R.id.dialog_menu_setting_update_tv})
     public void menuSettingClick(View view) {
         switch (view.getId()) {
-//            case R.id.dialog_menu_setting_account_setting_tv:
-//                if (AppContext.user.isIsVisitors()) {
-//                    MenuSettingDialogFg.this.dismiss();
-//                    VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
-//                    vDialog.show(getActivity().getFragmentManager(), "visitor");
-//                } else {
-//                    getActivity().startActivity(new Intent(getActivity(), AccountSettingActivity.class));
-//                    MenuSettingDialogFg.this.dismiss();
-//                    getActivity().finish();
-//                }
-//                break;
+
             case R.id.dialog_menu_setting_aboutus_tv:
-                //     Toast.makeText(getActivity(), "即将开发，敬请期待", Toast.LENGTH_SHORT).show();
                 getActivity().startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 MenuSettingDialogFg.this.dismiss();
-                //      getActivity().finish();
                 break;
             case R.id.dialog_menu_setting_feedback_tv:
                 getActivity().startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 MenuSettingDialogFg.this.dismiss();
-                //    getActivity().finish();
                 break;
             case R.id.dialog_menu_setting_update_tv:
 //                if (getActivity() instanceof MenusActivity)
