@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -34,7 +34,7 @@
             android:id="@+id/headImage"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            fresco:roundAsCircle="true" />
+            app:roundAsCircle="true" />
 
         <TextView
             android:id="@+id/detail"
@@ -64,7 +64,7 @@
                 android:id="@+id/support"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@drawable/ic_light_like_fill" />
+                app:srcCompat="@drawable/ic_light_like_fill" />
 
             <TextView
                 android:id="@+id/supportCount"
@@ -89,7 +89,7 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_share" />
+            app:srcCompat="@drawable/ic_share" />
 
         <View
             android:layout_width="1dp"
@@ -103,7 +103,7 @@
             android:layout_width="0dp"
             android:layout_height="18dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_edit" />
+            app:srcCompat="@drawable/ic_edit" />
 
         <!--<View-->
         <!--android:layout_width="1dp"-->
