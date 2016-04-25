@@ -52,13 +52,12 @@ public class NetService {
 
     public static void post(Context cont, String pUrl, JSONObject params,
                             IRequestListener pListener) {
-        Log.d("NetService",pUrl);
+        Log.d("NetService", pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //     NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
             DialogUtil.dismissProgess();
             Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
-            NetErrorActionUtil.UpdateRecommendData();
         } else {
             try {
                 if (AppContext.gatherList != null && AppContext.gatherList.size() > 0) {
@@ -80,12 +79,11 @@ public class NetService {
     }
 
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
-        Log.d("NetService",pUrl);
+        Log.d("NetService", pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //  NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
             Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
-            NetErrorActionUtil.UpdateRecommendData();
             DialogUtil.dismissProgess();
         } else {
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0);
@@ -93,12 +91,11 @@ public class NetService {
     }
 
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
-        Log.d("NetService",pUrl);
+        Log.d("NetService", pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //    NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
             Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
-            NetErrorActionUtil.UpdateRecommendData();
             DialogUtil.dismissProgess();
         } else {
 //            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())

@@ -11,8 +11,10 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,8 +24,10 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
@@ -73,7 +77,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         userId = getIntent().getIntExtra(REQUEST_KEY_USER_ID, AppContext.user.getUserId());
 
         presenter = new MyFootprintPresenter(this, this);
-        presenter.getMoreMyFoiotrintList(userId, pagesNo);
+        presenter.getMyFoiotrintList(userId, pagesNo);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean isIdle = true;
@@ -155,7 +159,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
 
     @Override
     public void onLoadmore() {
-        presenter.getMoreMyFoiotrintList(userId, pagesNo + 1);
+        presenter.getMyFoiotrintList(userId, pagesNo + 1);
     }
 
     @Override
@@ -170,7 +174,6 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     public void initData(PostCardModel data) {
         pagesNo = data.getPagesNo();
         recyclerView.setVisibility(View.VISIBLE);
-        List<PostCardItemModel> data1 = data.getResult();
         adapter.initData(data.getResult());
     }
 
@@ -194,11 +197,31 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     protected void onResume() {
         MobclickAgent.onPageStart("my pic");
         super.onResume();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
     protected void onPause() {
         MobclickAgent.onPageEnd("my pic");
         super.onPause();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe
+    public void postCardDelete(QuchuEventModel model) {
+        if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+            pagesNo = 1;
+            presenter.getMyFoiotrintList(userId, pagesNo);
+        }
     }
 }

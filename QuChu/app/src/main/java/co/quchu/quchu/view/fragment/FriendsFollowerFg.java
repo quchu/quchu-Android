@@ -51,6 +51,13 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
         super.onViewCreated(view, savedInstanceState);
         mIsSubscribe = getArguments().getBoolean(BUNDLE_KEY_IS_SUBSCRIBE, true);
 
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        pageNo = 1;
         FollowPresenter.getCurrentUserFollowers(getActivity(), false, mIsSubscribe ? FollowPresenter.TAFOLLOWING : FollowPresenter.TAFOLLOWERS, 1, new FollowPresenter.GetFollowCallBack() {
             @Override
             public void onSuccess(ArrayList<FollowUserModel> lists) {
@@ -62,6 +69,7 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
                 mAdapter.setLoadMoreEnable(false);
             }
         });
+
     }
 
     @Override

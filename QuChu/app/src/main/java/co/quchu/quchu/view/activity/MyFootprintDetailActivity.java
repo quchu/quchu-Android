@@ -23,6 +23,9 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +38,9 @@ import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.PostCardPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.fragment.FootprintDetailFragment;
 
 public class MyFootprintDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
@@ -63,7 +68,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     ImageView edit;
     @Bind(R.id.supportContainer)
     LinearLayout supportContainer;
-    private List<PostCardItemModel> beanList;
     private int selectedPosition;
 
     @Override
@@ -127,15 +131,15 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         getEnhancedToolbar().getTitleTv().setText("");
         ButterKnife.bind(this);
         initListener();
-        initData();
+        initData(-1);
     }
 
     List<Entity> data;
     //图片进来需要移动到的位置
     int pageInintPosition;
 
-    private void initData() {
-        beanList = getIntent().getParcelableArrayListExtra(REQUEST_KEY_MODEL);
+    private void initData(int filter) {
+        List<PostCardItemModel> beanList = getIntent().getParcelableArrayListExtra(REQUEST_KEY_MODEL);
         int position = getIntent().getIntExtra(REQUEST_KEY_POSITION, 0);
         if (null == beanList || beanList.size() == 0) {
             return;
@@ -144,9 +148,18 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         for (int i = 0, s = beanList.size(); i < s; i++) {
             PostCardItemModel bean = beanList.get(i);
             Entity entity;
+            //删除卡片
+            if (bean.getCardId() == filter) {
+                if (i == position) {
+                    pageInintPosition = data.size() - 1;
+                    pageInintPosition = pageInintPosition < 0 ? 0 : pageInintPosition;
+                }
+                continue;
+            }
             if (i == position) {
                 pageInintPosition = data.size();
             }
+
             if (bean.getImglist() != null && bean.getImglist().size() > 0)
                 for (ImageModel item : bean.getImglist()) {
                     entity = new Entity();
@@ -273,11 +286,13 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
                         bean.setPlaceId(item.PlcaeId);
                         bean.setPlcaeName(item.PlcaeName);
                         bean.setComment(item.Comment);
+                        bean.setCardId(item.cardId);
                     }
                 }
                 intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, bean);
                 intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, bean.getPlcaeName());
                 intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, bean.getPlaceId());
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_IS_EDIT, true);
                 startActivity(intent);
                 break;
         }
@@ -329,6 +344,35 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         public int getCount() {
             return fragments == null ? 0 : fragments.size();
         }
+    }
 
+    @Subscribe
+    public void postCardDelete(QuchuEventModel model) {
+        if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+            initData((Integer) model.getContent());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().register(this);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }

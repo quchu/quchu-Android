@@ -28,7 +28,7 @@ public class MyFootprintPresenter {
         this.view = view;
     }
 
-    public void getMoreMyFoiotrintList(int userId, final int pageNo) {
+    public void getMyFoiotrintList(int userId, final int pageNo) {
 
         Map<String, String> params = new HashMap<>();
         params.put("pageno", String.valueOf(pageNo));

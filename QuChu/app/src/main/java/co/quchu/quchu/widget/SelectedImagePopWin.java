@@ -26,10 +26,11 @@ import co.quchu.quchu.photoselected.FrescoImageLoader;
  */
 public class SelectedImagePopWin extends PopupWindow {
     private List<PhotoInfo> photo;
+    private int maxSize;
 
-
-    public SelectedImagePopWin(Context mContext, View parent, List<PhotoInfo> photo, final GalleryFinal.OnHanlderResultCallback listener) {
+    public SelectedImagePopWin(Context mContext, View parent, List<PhotoInfo> photo, int maxSize, final GalleryFinal.OnHanlderResultCallback listener) {
         this.photo = photo;
+        this.maxSize = maxSize;
         View view = View
                 .inflate(mContext, R.layout.item_popupwindows, null);
 
@@ -74,7 +75,7 @@ public class SelectedImagePopWin extends PopupWindow {
 
     private void initGralley() {
         FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
-        functionConfigBuilder.setMutiSelectMaxSize(photo == null ? 8 : 9 - photo.size());
+        functionConfigBuilder.setMutiSelectMaxSize(photo == null ? maxSize : ++maxSize - photo.size());
         functionConfigBuilder.setEnableEdit(false);
         functionConfigBuilder.setEnableCrop(true);
         functionConfigBuilder.setEnablePreview(true);

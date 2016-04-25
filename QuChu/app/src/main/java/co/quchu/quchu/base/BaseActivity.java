@@ -36,6 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
     protected final int TRANSITION_TYPE_BOTTOM = 2;
     //
     protected final int TRANSITION_TYPE_ALPHA = 3;
+    protected final int TRANSITION_TYPE_TOP = 4;
 
     @SuppressLint("InlinedApi")
     @Override
@@ -43,6 +44,12 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         super.onCreate(savedInstanceState);
         //压栈
         ActManager.getAppManager().addActivity(this);
+
+        mHelper = new SwipeBackActivityHelper(this);
+        mHelper.onActivityCreate();
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeSize(360);
 
         switch (activitySetup()) {
             case TRANSITION_TYPE_NOTHING:
@@ -52,19 +59,12 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
                 break;
             case TRANSITION_TYPE_LEFT:
                 overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
-                mHelper = new SwipeBackActivityHelper(this);
-                mHelper.onActivityCreate();
-                mSwipeBackLayout = getSwipeBackLayout();
-                mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-                mSwipeBackLayout.setEdgeSize(360);
                 break;
             case TRANSITION_TYPE_BOTTOM:
                 overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
-                mHelper = new SwipeBackActivityHelper(this);
-                mHelper.onActivityCreate();
-                mSwipeBackLayout = getSwipeBackLayout();
-                mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_BOTTOM);
-                mSwipeBackLayout.setEdgeSize(360);
+                break;
+            case TRANSITION_TYPE_TOP:
+                overridePendingTransition(R.anim.in_bottom_to_top, R.anim.out_top_to_bottom);
                 break;
         }
 
@@ -84,20 +84,24 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         ActManager.getAppManager().finishActivity(this);
     }
 
+    //
     @Override
     public void finish() {
         super.finish();
         switch (activitySetup()) {
-            case TRANSITION_TYPE_NOTHING:
-                break;
+//            case TRANSITION_TYPE_NOTHING:
+//                break;
             case TRANSITION_TYPE_ALPHA:
                 overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
                 break;
-            case TRANSITION_TYPE_LEFT:
-                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
-                break;
+//            case TRANSITION_TYPE_LEFT:
+//                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
+//                break;
             case TRANSITION_TYPE_BOTTOM:
                 overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
+                break;
+            case TRANSITION_TYPE_TOP:
+                overridePendingTransition(R.anim.in_bottom_to_top, R.anim.out_top_to_bottom);
                 break;
         }
     }

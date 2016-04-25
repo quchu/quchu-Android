@@ -26,6 +26,7 @@ public class EnhancedToolbar extends Toolbar {
     public static final int TYPE_TITLE_TV = 0x3001;
     public static final int TYPE_CUSTOM_V = 0x4001;
     private RelativeLayout rlContent;
+    private int itemSize;
 
     public EnhancedToolbar(Context context) {
         super(context);
@@ -46,6 +47,7 @@ public class EnhancedToolbar extends Toolbar {
 
 
     protected void initSelf() {
+        itemSize = getResources().getDimensionPixelSize(R.dimen.toolbar_item_size);
         if (getChildCount() <= 0) {
             rlContent = new RelativeLayout(new ContextThemeWrapper(getContext(), R.style.ToolbarContainer));
             addView(rlContent, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -53,6 +55,9 @@ public class EnhancedToolbar extends Toolbar {
         }
     }
 
+    public int getItemSize() {
+        return itemSize;
+    }
 
     protected int getActionViewId(int type) {
         int childViewId = -1;
@@ -125,19 +130,19 @@ public class EnhancedToolbar extends Toolbar {
         return (TextView) addActionView(TYPE_TITLE_TV);
     }
 
-    public View addCustomView(View v, LayoutParams layoutParams) {
+    public View addCustomView(View v, ViewGroup.LayoutParams layoutParams) {
         return addCustomChildView(v, layoutParams);
     }
 
 
-    protected View addCustomChildView(View v, LayoutParams layoutParams) {
+    protected View addCustomChildView(View v, ViewGroup.LayoutParams layoutParams) {
         rlContent.addView(v, layoutParams);
         return v;
     }
 
     protected View addActionView(int type) {
         View v = null;
-        int itemSize = getResources().getDimensionPixelSize(R.dimen.toolbar_item_size);
+
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(itemSize, itemSize);
 
         switch (type) {
@@ -155,13 +160,13 @@ public class EnhancedToolbar extends Toolbar {
                 v = new ImageView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem));
                 lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 lp.addRule(RelativeLayout.CENTER_VERTICAL);
-                ((ImageView)v).setScaleType(ImageView.ScaleType.CENTER);
+                ((ImageView) v).setScaleType(ImageView.ScaleType.CENTER);
                 break;
             case TYPE_RIGHT_IV:
                 v = new ImageView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem));
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 lp.addRule(RelativeLayout.CENTER_VERTICAL);
-                ((ImageView)v).setScaleType(ImageView.ScaleType.CENTER);
+                ((ImageView) v).setScaleType(ImageView.ScaleType.CENTER);
                 break;
             case TYPE_TITLE_TV:
                 v = new TextView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem_TitleTextView));

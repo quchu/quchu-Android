@@ -1,19 +1,24 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * PostCardPresenter
@@ -82,37 +87,61 @@ public class PostCardPresenter {
         });
     }
 
-    public static void sacePostCard(Context context, int pId, int cScore, String comment, String imageStr,int cid, final MyPostCardListener listener) {
+    public static void sacePostCard(Context context, int pId, int cScore, String comment, String imageStr, int cid, final MyPostCardListener listener) {
+//服务器接受不到图片列表
         //  "?card.pid=%1$d&card.score=%2$d&card.comment=%3$s&card.image=%4$s";
-        String saveUrl = "";
-        String strCid = cid>0?String.valueOf(cid):"";
-        if (StringUtils.isEmpty(comment) && StringUtils.isEmpty(imageStr)) {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.cardId=%3$s", pId, cScore,strCid);
-        } else if (!StringUtils.isEmpty(comment) && StringUtils.isEmpty(imageStr)) {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3$s&card.cardId=%4$s", pId, cScore, comment,strCid);
-        } else if (StringUtils.isEmpty(comment) && !StringUtils.isEmpty(imageStr)) {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.cardId=%3$s", pId, cScore,strCid);
-        } else {
-            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3&card.cardId=%4$s", pId, cScore, comment,strCid);
-        }
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("card.image",imageStr);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        NetService.post(context, NetApi.saveOrUpdateCard + saveUrl, jsonObject, new IRequestListener() {
+//        String saveUrl = "";
+//        String strCid = cid > 0 ? String.valueOf(cid) : "";
+//        if (StringUtils.isEmpty(comment) && StringUtils.isEmpty(imageStr)) {
+//            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.cardId=%3$s", pId, cScore, strCid);
+//        } else if (!StringUtils.isEmpty(comment) && StringUtils.isEmpty(imageStr)) {
+//            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3$s&card.cardId=%4$s", pId, cScore, comment, strCid);
+//        } else if (StringUtils.isEmpty(comment) && !StringUtils.isEmpty(imageStr)) {
+//            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.cardId=%3$s", pId, cScore, strCid);
+//        } else {
+//            saveUrl = String.format("?card.pid=%1$d&card.score=%2$d&card.comment=%3&card.cardId=%4$s", pId, cScore, comment, strCid);
+//        }
+//        JSONObject jsonObject = new JSONObject();
+//
+//        try {
+//            jsonObject.put("card.image", imageStr);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        NetService.post(context, NetApi.saveOrUpdateCard + saveUrl, jsonObject, new IRequestListener() {
+//            @Override
+//            public void onSuccess(JSONObject response) {
+//                listener.onSuccess(null);
+//            }
+//
+//            @Override
+//            public boolean onError(String error) {
+//                listener.onError("");
+//                return false;
+//            }
+//        });
+        Map<String, String> params = new HashMap<>();
+        params.put("card.pid", String.valueOf(pId));
+        params.put("card.score", String.valueOf(cScore));
+        params.put("card.cardId", cid > 0 ? String.valueOf(cid) : "");
+        params.put("card.image", imageStr);
+        params.put("card.comment", comment);
+        GsonRequest<Object> request = new GsonRequest<>(NetApi.saveOrUpdateCard, Object.class, params, new ResponseListener<Object>() {
             @Override
-            public void onSuccess(JSONObject response) {
-                listener.onSuccess(null);
+            public void onErrorResponse(@Nullable VolleyError error) {
+                listener.onError("");
             }
 
             @Override
-            public boolean onError(String error) {
-                listener.onError("");
-                return false;
+            public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
+                if (result) {
+                    listener.onSuccess(null);
+                } else
+                    listener.onError("");
             }
         });
+        request.start(context, null);
+
     }
 
     public interface MyPostCardListener {
