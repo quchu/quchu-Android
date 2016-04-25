@@ -294,6 +294,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                     Toast.makeText(AddFootprintActivity.this, "脚印添加成功!", Toast.LENGTH_SHORT).show();
                 }
 
+                AddFootprintActivity.this.finish();
             }
 
             @Override
