@@ -475,15 +475,13 @@ public class PhoneLoginFragment extends BaseFragment {
      */
     private void userRegiest() {
         if (phoneLoginPasswordEt.getText().toString().trim().length() >= 6) {
-            UserLoginPresenter.userRegiest(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
+            UserLoginPresenter.userRegiest(getActivity(), AppContext.user.getUserId(), phoneLoginPnumEt.getText().toString().trim(),
                     MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), userLoginNicknameEt.getText().toString().trim(),
                     authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
                         @Override
                         public void isUnique(JSONObject msg) {
-                            LogUtils.json("user regiest " + msg);
                             UserInfoHelper.saveUserInfo(msg);
                             MobclickAgent.onEvent(getContext(), "register_c");
-
                             ((UserLoginActivity) getActivity()).userRegiestSuccess();
 
                         }
@@ -493,6 +491,8 @@ public class PhoneLoginFragment extends BaseFragment {
 
                         }
                     });
+
+
         } else {
             Toast.makeText(getActivity(), "密码长度必须大于6位", Toast.LENGTH_SHORT).show();
         }

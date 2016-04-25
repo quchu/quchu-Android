@@ -1,14 +1,23 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
+import android.widget.Toast;
+
+import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import co.quchu.quchu.base.AppContext;
+import java.util.HashMap;
+import java.util.Map;
+
+import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.LogUtils;
@@ -85,37 +94,60 @@ public class UserLoginPresenter {
         });
     }
 
-    public static void userLogin2Server(Context context, String mobileNum, String password, UserNameUniqueListener listener) {
-
-    }
 
     /**
-     * 用户注册
+     * 游客转正式用户
      *
      * @param context  上下文环境
      * @param phoneNo  手机号
      * @param password 密码
      * @param nickName 昵称
+     * @param id       原先用户的id
      * @param authCode 验证码
      * @param listener 回调
      */
-    public static void userRegiest(Context context, String phoneNo, String password, String nickName, String authCode, final UserNameUniqueListener listener) {
-        String regiestUrl = String.format(NetApi.Regiester, phoneNo, password, authCode, StringUtils.getMyUUID(), nickName);
-        if (AppContext.user != null) {
-            regiestUrl += "&userId=" + AppContext.user.getUserId();
-        }
-        NetService.post(context, regiestUrl, null, new IRequestListener() {
+    public static void userRegiest(final Context context, int id, String phoneNo, String password, String nickName, String authCode, final UserNameUniqueListener listener) {
+//        String regiestUrl = String.format(NetApi.Regiester, phoneNo, password, authCode, StringUtils.getMyUUID(), nickName);
+//        if (AppContext.user != null) {
+//            regiestUrl += "&userId=" + AppContext.user.getUserId();
+//        }
+//        NetService.post(context, regiestUrl, null, new IRequestListener() {
+//            @Override
+//            public void onSuccess(JSONObject response) {
+//                LogUtils.json(response.toString());
+//                listener.isUnique(response);
+//            }
+//
+//            @Override
+//            public boolean onError(String error) {
+//                return false;
+//            }
+//        });
+
+        Map<String, String> params = new HashMap<>();
+        params.put("username", phoneNo);
+        params.put("password", password);
+        params.put("captcha", authCode);
+        params.put("regType", "tel");
+        params.put("equip", StringUtils.getMyUUID());
+        params.put("userId", String.valueOf(id));
+        params.put("fullname", nickName);
+
+        GsonRequest<UserInfoModel> request = new GsonRequest<>(NetApi.register, UserInfoModel.class, params, new ResponseListener<UserInfoModel>() {
             @Override
-            public void onSuccess(JSONObject response) {
-                LogUtils.json(response.toString());
-                listener.isUnique(response);
+            public void onErrorResponse(@Nullable VolleyError error) {
+                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public boolean onError(String error) {
-                return false;
+            public void onResponse(UserInfoModel response, boolean result, String errorCode, @Nullable String msg) {
+                UserInfoHelper.saveUserInfo(response);
+                LogUtils.json(response.toString());
+                listener.isUnique(null);
             }
         });
+        request.start(context, null);
+
     }
 
     /**
