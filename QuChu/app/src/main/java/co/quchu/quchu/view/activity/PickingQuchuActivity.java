@@ -1,11 +1,13 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.android.volley.VolleyError;
@@ -89,7 +91,24 @@ public class PickingQuchuActivity extends BaseActivity {
                     doSearch();
             }
         };
+
         mEtSearchField.addTextChangedListener(mTextWatcher);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mEtSearchField.requestFocus();
+
+        mEtSearchField.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                InputMethodManager keyboard = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(mEtSearchField, 0);
+            }
+        },200);
     }
 
     private void doSearch(){

@@ -8,6 +8,8 @@ import android.view.View;
 
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,9 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.FootPrintPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.adapter.FootPrintAdapter;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 
@@ -124,6 +128,18 @@ public class FootPrintActivity extends BaseActivity {
             }
 
         });
+    }
+
+
+
+
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+
+        if (event.getFlag() == EventFlags.EVENT_QUCHU_DETAIL_UPDATED) {
+            loadData(false);
+        }
     }
 
     @Override

@@ -120,6 +120,17 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     protected void onPause() {
         MobclickAgent.onPageEnd("search");
         super.onPause();
+        searchInputEt.requestFocus();
+
+        searchInputEt.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                InputMethodManager keyboard = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(searchInputEt, 0);
+            }
+        },200);
     }
 
     @OnClick({R.id.search_button_rl, R.id.search_history_clear_rl})

@@ -68,7 +68,7 @@ public class NearbyActivity extends BaseActivity {
 
                             mStrFilterPattern = "";
 
-                            if (selection.size() == 1) {
+                            if (selection.size() <=1) {
                                 mStrFilterPattern += selection.get(0).getTagId();
                             } else {
                                 for (int i = 0; i < selection.size(); i++) {
@@ -77,6 +77,7 @@ public class NearbyActivity extends BaseActivity {
                                         mStrFilterPattern += "|";
                                     }
                                 }
+
                                 mStrFilterPattern = mStrFilterPattern.substring(0, mStrFilterPattern.length() - 1);
                             }
 

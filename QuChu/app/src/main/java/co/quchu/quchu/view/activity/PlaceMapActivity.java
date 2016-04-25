@@ -153,7 +153,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
 
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
-        NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", SPUtils.getLatitude(), SPUtils.getLongitude(), new CommonListener<List<NearbyMapModel>>() {
+        NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", gdlat, gdlon, new CommonListener<List<NearbyMapModel>>() {
             @Override
             public void successListener(List<NearbyMapModel> response) {
                 mDataSet.addAll(response);

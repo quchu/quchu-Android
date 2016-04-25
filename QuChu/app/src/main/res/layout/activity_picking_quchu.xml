@@ -10,7 +10,8 @@
         />
 
     <EditText
-
+        android:textCursorDrawable = "@null"
+        android:cursorVisible="true"
         android:layout_below="@+id/appbar"
         android:id="@+id/etSearchField"
         android:background="@color/load_progress_yellow"
