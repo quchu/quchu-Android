@@ -117,7 +117,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     @Override
     public void loginSuccess(int type, String token, String appId) {
         enterApp();
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS, null));
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
     }
 
     public void userRegiestSuccess() {
@@ -127,7 +127,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         transaction.commitAllowingStateLoss();
         SPUtils.initGuideIndex();
         KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS, null));
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
     }
 
     public void enterApp() {

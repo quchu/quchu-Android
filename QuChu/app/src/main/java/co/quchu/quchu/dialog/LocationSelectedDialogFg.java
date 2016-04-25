@@ -96,7 +96,7 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
                 //保存数据 而后关闭
                 SPUtils.setCityId(CityId);
                 SPUtils.setCityName(cityName);
-                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED,null));
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED));
                 if (getActivity() instanceof RecommendActivity)
                     ((RecommendActivity) getActivity()).updateRecommend();
                 if (AppContext.gatherList == null)

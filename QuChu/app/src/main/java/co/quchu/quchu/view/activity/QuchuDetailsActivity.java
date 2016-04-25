@@ -93,6 +93,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     boolean mIsLoadMoreRunning = false;
 
     public static final String FROM_TYPE_HOME = "detail_home_t";//从智能推荐进来的
+    public static final String FROM_TYPE_MAP = "map";//从智能推荐进来的
     public static final String FROM_TYPE_TAG = "detail_tag_t";//从其他类别进来的
     public static final String FROM_TYPE_SUBJECT = "detail_subject_t";//从发现进来的
     public static final String FROM_TYPE_RECOM = "detail_recommendation_t";//从详情页推荐进来的
@@ -237,20 +238,16 @@ public class QuchuDetailsActivity extends BaseActivity {
                 }
 
                 mLoadingMore = true;
-                String s ="";
-                if (dModel.getNearPlace().size()<=1){
-                    s += dModel.getNearPlace().get(0).getPlaceId();
-                }else {
-                    for (int i = 0; i < dModel.getNearPlace().size(); i++) {
-                        s+= dModel.getNearPlace().get(i).getPlaceId();
-                        s+= "|";
-                    }
-                    s = s.substring(0,s.length()-1);
+                String str ="";
+
+                for (int i = 0; i < dModel.getNearPlace().size(); i++) {
+                    str+= dModel.getNearPlace().get(i).getPlaceId();
+                    str+= "|";
                 }
-
-                loadMore(s, null, 1, dModel.getPid(), SPUtils.getCityId(), Double.valueOf(dModel.getLatitude()), Double.valueOf(dModel.getLongitude()));
-
-
+                if (str.indexOf("|")!=-1){
+                    str = str.substring(0,str.length()-1);
+                }
+                loadMore(str, null, 1, dModel.getPid(), SPUtils.getCityId(), Double.valueOf(dModel.getLatitude()), Double.valueOf(dModel.getLongitude()));
             }
         });
 
@@ -354,17 +351,18 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-    private void ratingQuchu(List<TagsModel> selection, int score) {
+    private void ratingQuchu(final List<TagsModel> selection, final int score) {
         String strTags = "";
         if (selection.size() == 1) {
             strTags += selection.get(0).getTagId();
-        } else {
-            for (int i = 0; i < selection.size(); i++) {
-                if (selection.get(i).isPraise()){
-                    strTags += selection.get(i).getTagId();
-                    strTags += "|";
-                }
+        }
+        for (int i = 0; i < selection.size(); i++) {
+            if (selection.get(i).isPraise()){
+                strTags += selection.get(i).getTagId();
+                strTags += "|";
             }
+        }
+        if (strTags.indexOf("|")!=-1){
             strTags = strTags.substring(0, strTags.length() - 1);
         }
         if (mIsRatingRunning) return;
@@ -373,6 +371,10 @@ public class QuchuDetailsActivity extends BaseActivity {
             @Override
             public void onSuccessCall(String str) {
                 Toast.makeText(getApplicationContext(), "评价成功", Toast.LENGTH_LONG).show();
+                mVisitedInfoModel.setScore(score);
+                for (int i = 0; i < selection.size(); i++) {
+                    mVisitedInfoModel.getResult().get(i).setPraise(selection.get(i).isPraise());
+                }
                 mIsRatingRunning = false;
             }
 
@@ -418,20 +420,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                     footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_NAME, dModel.getName());
                     startActivity(footPrintIntent);
                     break;
-//                case R.id.detail_want_tv:
-//                    //用户想去
-//                    if (dModel.isIsf()) {
-//                        // startActivity(new Intent(InterestingDetailsActivity.this, ReserveActivity.class).putExtra("PlaceUrl", dModel.getNet()));
-//                        WebViewActivity.enterActivity(QuchuDetailsActivity.this,dModel.getNet(),dModel.getName());
-//                    } else {
-//                        WantToGoDialogFg lDialog = WantToGoDialogFg.newInstance();
-//                        lDialog.show(getFragmentManager(), "blur_sample", new Want2GoClickImpl());
-//                    }
-//                    if (AppContext.gatherList == null)
-//                        AppContext.gatherList = new ArrayList<>();
-//                    if (AppContext.user != null && dModel != null)
-//                        AppContext.gatherList.add(new GatherWantGoModel(AppContext.user.getUserId(), dModel.getPid()));
-//                    break;
+
                 case R.id.detail_button_add_postcard_rl:
                     Intent intent = new Intent();
                     intent.putExtra("pId", dModel.getPid());
@@ -574,15 +563,27 @@ public class QuchuDetailsActivity extends BaseActivity {
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
 
-        if (event.getFlag() == EventFlags.EVENT_QUCHU_DETAIL_UPDATED && null != dModel) {
-            if ((Integer) event.getContent() == dModel.getPid()) {
-                dModel.setMyCardId((Integer) event.getContent());
-            }
+        switch (event.getFlag()){
+            case EventFlags.EVENT_QUCHU_DETAIL_UPDATED:
+                if (null!=dModel&&(Integer) event.getContent() == dModel.getPid()) {
+                    dModel.setMyCardId((Integer) event.getContent());
+                }
+                break;
+            case EventFlags.EVENT_QUCHU_RATING_UPDATE:
+                getRatingInfo();
+                getVisitors();
+                break;
+            case EventFlags.EVENT_POST_CARD_ADDED:
+                if ((Integer)event.getContent()==dModel.getPid()){
+                    dModel.setCardCount(dModel.getCardCount()+1);
+                }
+                break;
+            case EventFlags.EVENT_POST_CARD_DELETED:
+                if (((Integer[])event.getContent())[1]==dModel.getPid() && dModel.getCardCount()>1){
+                    dModel.setCardCount(dModel.getCardCount()-1);
+                }
+                break;
         }
 
-        if (event.getFlag() == EventFlags.EVENT_QUCHU_RATING_UPDATE){
-            getRatingInfo();
-            getVisitors();
-        }
     }
 }

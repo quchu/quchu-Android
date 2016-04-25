@@ -16,9 +16,27 @@ public class NearbyMapModel {
     private String rgb;
     private String longitude;
     private String latitude;
+    private String gdLongitude;
+    private String gdLatitude;
     private int pid;
     private int height;
     private int width;
+
+    public String getGdLongitude() {
+        return gdLongitude;
+    }
+
+    public void setGdLongitude(String gdLongitude) {
+        this.gdLongitude = gdLongitude;
+    }
+
+    public String getGdLatitude() {
+        return gdLatitude;
+    }
+
+    public void setGdLatitude(String gdLatitude) {
+        this.gdLatitude = gdLatitude;
+    }
 
     public List<TagsModel> getTags() {
         return tags;

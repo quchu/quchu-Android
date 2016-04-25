@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -113,14 +114,12 @@ public class FootPrintActivity extends BaseActivity {
         FootPrintPresenter.getFootprint(getApplicationContext(), mQuchuId, mCurrentPageNo, new FootPrintPresenter.GetFootprintDataListener() {
             @Override
             public void getFootprint(List<FootprintModel> model, int pMaxPageNo) {
-                if (null!=mData&&mData.size()>0){
-
                     mMaxPageNo = pMaxPageNo;
-
-                    mData.addAll(model);
-                    mAdapter.notifyDataSetChanged();
+                    if (null!=model){
+                        mData.addAll(model);
+                        mAdapter.notifyDataSetChanged();
+                    }
                     mIsLoading = false;
-                }
                 if (DialogUtil.isDialogShowing()) {
                     DialogUtil.dismissProgess();
                 }
@@ -137,9 +136,22 @@ public class FootPrintActivity extends BaseActivity {
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
 
-        if (event.getFlag() == EventFlags.EVENT_QUCHU_DETAIL_UPDATED) {
+        if (event.getFlag() == EventFlags.EVENT_POST_CARD_ADDED || event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
             loadData(false);
         }
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override

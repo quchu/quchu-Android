@@ -66,21 +66,17 @@ public class NearbyActivity extends BaseActivity {
                         @Override
                         public void onFinishPicking(List<TagsModel> selection,boolean selectAll) {
 
+                            mRecommendPlaceIds = "";
                             mStrFilterPattern = "";
-
-                            if (selection.size() <=1) {
-                                mStrFilterPattern += selection.get(0).getTagId();
-                            } else {
-                                for (int i = 0; i < selection.size(); i++) {
-                                    if (selection.get(i).isPraise()){
-                                        mStrFilterPattern += selection.get(i).getTagId();
-                                        mStrFilterPattern += "|";
-                                    }
+                            for (int i = 0; i < selection.size(); i++) {
+                                if (selection.get(i).isPraise()){
+                                    mStrFilterPattern += selection.get(i).getTagId();
+                                    mStrFilterPattern += "|";
                                 }
-
+                            }
+                            if (mStrFilterPattern.indexOf("|")!=-1){
                                 mStrFilterPattern = mStrFilterPattern.substring(0, mStrFilterPattern.length() - 1);
                             }
-
                             if (selectAll){
                                 mStrFilterPattern = "";
                             }

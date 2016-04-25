@@ -125,7 +125,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                         public void onResponse(Objects response, boolean result, String errorCode, @Nullable String msg) {
                             v.setClickable(true);
                             if (result) {
-                                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId));
+                                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId,pId));
                                 Toast.makeText(AddFootprintActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
                                 finish();
                             } else {
@@ -291,6 +291,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                 if (Bimp.imglist.size() > 0) {
                     Toast.makeText(AddFootprintActivity.this, "脚印修改成功", Toast.LENGTH_SHORT).show();
                 } else {
+
+                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, pId));
                     Toast.makeText(AddFootprintActivity.this, "脚印添加成功!", Toast.LENGTH_SHORT).show();
                 }
 

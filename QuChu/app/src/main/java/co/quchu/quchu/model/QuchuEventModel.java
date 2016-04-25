@@ -8,7 +8,7 @@ public class QuchuEventModel {
     private int mFlag;
     private Object mContent;
 
-    public QuchuEventModel(int flag, Object ojbContent) {
+    public QuchuEventModel(int flag, Object ...ojbContent) {
         this.mFlag = flag;
         this.mContent = ojbContent;
     }
