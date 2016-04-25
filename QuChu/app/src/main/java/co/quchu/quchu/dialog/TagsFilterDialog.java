@@ -39,8 +39,6 @@ public class TagsFilterDialog extends BlurDialogFragment {
     @Bind(R.id.ivFinish)
     ImageView ivFinish;
 
-    @Bind(R.id.cbSelectAll)
-    CheckBox cbSelectAll;
 
 
     private ArrayList<TagsModel> mDataset;
@@ -95,22 +93,12 @@ public class TagsFilterDialog extends BlurDialogFragment {
             @Override
             public void onClick(View v) {
                 if (null!=mListener){
-                    mListener.onFinishPicking(mDataset,cbSelectAll.isChecked());
+                    mListener.onFinishPicking(mDataset);
                 }
                 dismiss();
             }
         });
 
-        cbSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                for (int i = 0; i < mDataset.size(); i++) {
-                    mDataset.get(i).setPraise(isChecked);
-                }
-                adapter.notifyDataSetChanged();
-            }
-        });
         return dialog;
     }
 
@@ -169,7 +157,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
     }
     private OnFinishPickingListener mListener;
     public interface OnFinishPickingListener{
-        void onFinishPicking(List<TagsModel> selection,boolean selectAll);
+        void onFinishPicking(List<TagsModel> selection);
     }
 
     public void setPickingListener(OnFinishPickingListener pListener){

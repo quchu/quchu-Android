@@ -20,23 +20,7 @@
         android:layout_margin="@dimen/half_margin"
         />
 
-    <CheckBox
-        android:id="@+id/cbSelectAll"
-        android:text="@string/select_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/tc_light_n_dark_selector"
-        android:layout_marginLeft="28dp"
-        android:button="@null"
-        android:background="@drawable/simple_shape_selector_white"
-        android:layout_above="@id/rvTags"
-        android:textSize="@dimen/word_size_body"
-        android:paddingTop="@dimen/tow_dp_margin"
-        android:paddingBottom="@dimen/tow_dp_margin"
-        android:paddingLeft="@dimen/base_margin"
-        android:paddingRight="@dimen/base_margin"
-        android:layout_marginBottom="@dimen/half_margin"
-        />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvTags"

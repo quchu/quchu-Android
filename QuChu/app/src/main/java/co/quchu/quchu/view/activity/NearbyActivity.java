@@ -24,6 +24,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.NearbyAdapter;
+import co.quchu.quchu.view.adapter.NearbyFilterSelectionAdapter;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 
 /**
@@ -34,12 +35,14 @@ public class NearbyActivity extends BaseActivity {
 
     @Bind(R.id.detail_recyclerview)
     RecyclerView detailRecyclerview;
-//    @Bind(R.id.detail_store_tagclound_tcv)
-//    TagCloudView tagCloudView;
+    @Bind(R.id.rvSelection)
+    RecyclerView rvSelection;
     NearbyAdapter mAdapter;
+    NearbyFilterSelectionAdapter mNearbyFilterSelectionAdapter;
     private int mMaxPageNo = -1;
     private int mCurrentPageNo = 1;
     private List<NearbyItemModel> mData = new ArrayList<>();
+    private List<TagsModel> mSelection = new ArrayList<>();
     private boolean mIsLoading = false;
     public static final String BUNDLE_KEY_PID = "BUNDLE_KEY_PID";
     public static final String BUNDLE_KEY_RECOMMEND_PIDS = "BUNDLE_KEY_RECOMMEND_PIDS";
@@ -64,22 +67,26 @@ public class NearbyActivity extends BaseActivity {
                     tagsFilterDialog.show(getFragmentManager(), "");
                     tagsFilterDialog.setPickingListener(new TagsFilterDialog.OnFinishPickingListener() {
                         @Override
-                        public void onFinishPicking(List<TagsModel> selection,boolean selectAll) {
+                        public void onFinishPicking(List<TagsModel> selection) {
 
                             mRecommendPlaceIds = "";
                             mStrFilterPattern = "";
+                            int selectionLenth = 0;
+                            mSelection.clear();
                             for (int i = 0; i < selection.size(); i++) {
                                 if (selection.get(i).isPraise()){
+                                    mSelection.add(selection.get(i));
                                     mStrFilterPattern += selection.get(i).getTagId();
                                     mStrFilterPattern += "|";
+                                    selectionLenth ++;
                                 }
                             }
                             if (mStrFilterPattern.indexOf("|")!=-1){
                                 mStrFilterPattern = mStrFilterPattern.substring(0, mStrFilterPattern.length() - 1);
-                            }
-                            if (selectAll){
+                            }else if(selectionLenth==mData.size()){
                                 mStrFilterPattern = "";
                             }
+                            mNearbyFilterSelectionAdapter.notifyDataSetChanged();
 
                             DialogUtil.showProgess(NearbyActivity.this, R.string.loading_dialog_text);
                             NearbyPresenter.getNearbyData(getApplicationContext(), mRecommendPlaceIds, mStrFilterPattern, 0, mPlaceId, SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
@@ -113,6 +120,26 @@ public class NearbyActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        mNearbyFilterSelectionAdapter = new NearbyFilterSelectionAdapter(mSelection, new NearbyFilterSelectionAdapter.OnTagClickListener() {
+            @Override
+            public void onTagClick(int tagId) {
+                mSelection.clear();
+                for (int i = 0; i < mFilterTags.size(); i++) {
+                    if (mFilterTags.get(i).getTagId()==tagId){
+                        mFilterTags.get(i).setPraise(false);
+                        for (int j = 0; j < mSelection.size(); j++) {
+                            if (mSelection.get(j).getTagId()==tagId){
+                                mSelection.remove(j);
+                            }
+                        }
+                    }
+                }
+                mNearbyFilterSelectionAdapter.notifyDataSetChanged();
+                loadData(false);
+            }
+        });
+        rvSelection.setAdapter(mNearbyFilterSelectionAdapter);
+        rvSelection.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         detailRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         detailRecyclerview.setAdapter(mAdapter);
         detailRecyclerview.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) detailRecyclerview.getLayoutManager()) {

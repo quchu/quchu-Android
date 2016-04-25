@@ -26,6 +26,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import butterknife.Bind;
@@ -105,6 +106,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LAYOUT_TYPE_LOAD_MORE
     };
 
+    public static final int [] RANDOM_AVATAR = {R.mipmap.ic_random_user_avatar_a,R.mipmap.ic_random_user_avatar_b,R.mipmap.ic_random_user_avatar_c,R.mipmap.ic_random_user_avatar_d};
 
     public QuchuDetailsAdapter(Activity activity, DetailModel dModel, View.OnClickListener onClickListener) {
         if (null == onClickListener) {
@@ -115,7 +117,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mLayoutInflater = LayoutInflater.from(activity);
         mOnItemClickListener = onClickListener;
         mVisitedUsersAvatarSize = mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.visited_users_avatar_size);
-        mVisitedUsersAvatarMargin = mAnchorActivity.getResources().getDimensionPixelOffset(R.dimen.base_margin);
+        mVisitedUsersAvatarMargin = mAnchorActivity.getResources().getDimensionPixelOffset(R.dimen.base_margin)/2;
     }
 
     public void updateVisitedUsers(VisitedUsersModel pUsers){
@@ -275,23 +277,46 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((ActionViewHolder) holder).tvFootprint.setText(R.string.foot_print);
             }
             if (null!=mVisitedUsers){
-                ((ActionViewHolder) holder).tvVisitorCount.setText(mVisitedUsers.getUserOutCount()+"人去过");
+                if (mVisitedUsers.getUserOutCount()==0){
+                    ((ActionViewHolder) holder).tvVisitorCount.setText("还没人去过");
+                }else{
+                    ((ActionViewHolder) holder).tvVisitorCount.setText(mVisitedUsers.getUserOutCount()+"人去过");
+                }
                 LinearLayout.LayoutParams lpVisitedUsersAvatar;
-                for (int i = 0; i < mVisitedUsers.getResult().size(); i++) {
-                    SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
-                    sdv.setImageURI(Uri.parse(mVisitedUsers.getResult().get(i).getUserPhoneUrl()));
-                    RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
-                    roundingParams.setRoundAsCircle(true);
-                    sdv.getHierarchy().setRoundingParams(roundingParams);
-                    if (i>0){
-                        lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
-                        lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin,0,0,0);
-                    }else{
-                        lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
-                        lpVisitedUsersAvatar.setMargins(0,0,0,0);
+                //ic_care_friends_avatar
+
+                for (int i = 0; i < 9; i++) {
+                    if (mVisitedUsers.getResult().size()>i){
+                        SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
+                        sdv.setImageURI(Uri.parse(mVisitedUsers.getResult().get(i).getUserPhoneUrl()));
+                        RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
+                        roundingParams.setRoundAsCircle(true);
+                        sdv.getHierarchy().setRoundingParams(roundingParams);
+                        if (i>0){
+                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
+                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin,0,0,0);
+                        }else{
+                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
+                            lpVisitedUsersAvatar.setMargins(0,0,0,0);
+                        }
+                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv,lpVisitedUsersAvatar);
+                        sdv.requestLayout();
+                    }else if(mVisitedUsers.getResult().size()>0){ }else{
+                        SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
+                        Random random = new Random();
+                        int randomNumber = random.nextInt(3);
+                        sdv.setImageResource(RANDOM_AVATAR[randomNumber]);
+                        if (i>0){
+                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
+                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin,0,0,0);
+                        }else{
+                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
+                            lpVisitedUsersAvatar.setMargins(0,0,0,0);
+                        }
+                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv,lpVisitedUsersAvatar);
+                        sdv.requestLayout();
                     }
-                    ((ActionViewHolder) holder).llVisitedUsers.addView(sdv,lpVisitedUsersAvatar);
-                    sdv.requestLayout();
+
                 }
                 ((ActionViewHolder) holder).tvQuguo.setOnClickListener(mOnItemClickListener);
                 ((ActionViewHolder) holder).llVisitedUsers.invalidate();

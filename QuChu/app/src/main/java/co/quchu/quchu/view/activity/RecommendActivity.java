@@ -77,19 +77,11 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
         isGuide = getIntent().getBooleanExtra("isGuide", false);
-//        if (isGuide) {
-//            startActivity(new Intent(this, PlanetActivity.class));
-//        }
-
-
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
         classifyFragment = new ClassifyFragment();
-
         getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
-
         initView();
-
         recommendTitleMoreRl.setOnClickListener(this);
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
@@ -100,10 +92,8 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                 startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
             }
         });
-
-//        startActivity(new Intent(RecommendActivity.this,AddFootprintActivity.class));
-
         VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
+        getSwipeBackLayout().setEnableGesture(false);
     }
 
     @Override

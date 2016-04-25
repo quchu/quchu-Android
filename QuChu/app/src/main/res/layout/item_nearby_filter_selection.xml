@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/tvTag"
+    android:background="@drawable/shape_lineframe_white_fill"
+    android:textSize="@dimen/word_size_body"
+    android:paddingTop="@dimen/tow_dp_margin"
+    android:paddingBottom="@dimen/tow_dp_margin"
+    android:layout_marginLeft="@dimen/quarter_margin"
+    android:layout_marginRight="@dimen/quarter_margin"
+    android:layout_marginTop="@dimen/quarter_margin"
+    android:layout_marginBottom="@dimen/half_margin"
+    android:gravity="center"
+    android:maxLines="1"
+    android:textColor="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    />

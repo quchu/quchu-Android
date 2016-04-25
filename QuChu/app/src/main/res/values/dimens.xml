@@ -90,6 +90,7 @@
     <dimen name="toolbar_container_horizontal_padding">8dp</dimen>
     <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
-    <dimen name="visited_users_avatar_size">24dp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="visited_users_avatar_size">20dp</dimen>
 
 </resources>

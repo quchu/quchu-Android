@@ -45,24 +45,28 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/half_margin"
+        android:paddingTop="@dimen/base_margin"
         android:paddingBottom="@dimen/half_margin"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
+        android:gravity="center_vertical"
         >
         <LinearLayout
             android:id="@+id/llVisitedUsers"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/icon_size_24dp"
             android:orientation="horizontal"
+            android:layout_toLeftOf="@+id/tvVisitorCount"
             />
 
         <TextView
             android:id="@+id/tvVisitorCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_10"
             android:textColor="@color/load_progress_yellow"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             />
     </RelativeLayout>
 
