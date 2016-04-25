@@ -35,7 +35,6 @@ public class NearbyFilterSelectionAdapter extends RecyclerView.Adapter<NearbyFil
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvTag.setText(mData.get(position).getZh());
-        holder.tvTag.setTextColor(Color.BLACK);
         holder.tvTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

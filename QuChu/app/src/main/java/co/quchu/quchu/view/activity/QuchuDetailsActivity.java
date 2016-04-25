@@ -251,55 +251,54 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
         });
 
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new HidingScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState==RecyclerView.SCROLL_STATE_IDLE){
-
-                    if ((System.currentTimeMillis() - mLastAnimated) < 1000) {
-                        return;
-                    }
-                    detail_bottom_group_ll.animate()
-                            .translationY(detail_bottom_group_ll.getHeight())
-                            .setInterpolator(new AccelerateDecelerateInterpolator())
-                            .setDuration(500).setStartDelay(500)
-                            .start();
-                    appbar.animate()
-                            .translationY(-appbar.getHeight())
-                            .setInterpolator(new AccelerateDecelerateInterpolator())
-                            .setDuration(500).setStartDelay(500).withStartAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            appbar.setVisibility(View.GONE);
-                            detail_bottom_group_ll.setVisibility(View.GONE);
-                            mLastAnimated = System.currentTimeMillis();
-                        }
-                    }).start();
-                }else{
-                    if ((System.currentTimeMillis() - mLastAnimated) < 1000) {
-                        return;
-                    }
-                    detail_bottom_group_ll.animate()
-                            .translationY(0)
-                            .setInterpolator(new AccelerateDecelerateInterpolator())
-                            .setDuration(500).setStartDelay(500)
-                            .start();
-                    appbar.animate()
-                            .translationY(0)
-                            .setInterpolator(new AccelerateDecelerateInterpolator())
-                            .setDuration(500).setStartDelay(500).withStartAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            appbar.setVisibility(View.VISIBLE);
-                            detail_bottom_group_ll.setVisibility(View.VISIBLE);
-                            mLastAnimated = System.currentTimeMillis();
-                        }
-                    })
-                            .start();
+            public void onHide() {
+                if ((System.currentTimeMillis() - mLastAnimated) < 600) {
+                    return;
                 }
+                detail_bottom_group_ll.animate()
+                        .translationY(detail_bottom_group_ll.getHeight())
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(300).setStartDelay(300)
+                        .start();
+                appbar.animate()
+                        .translationY(-appbar.getHeight())
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(300).setStartDelay(300).withStartAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        appbar.setVisibility(View.GONE);
+                        detail_bottom_group_ll.setVisibility(View.GONE);
+                    }
+                }).start();
+                mLastAnimated = System.currentTimeMillis();
+            }
+
+            @Override
+            public void onShow() {
+                if ((System.currentTimeMillis() - mLastAnimated) < 600) {
+                    return;
+                }
+                detail_bottom_group_ll.animate()
+                        .translationY(0)
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(300).setStartDelay(300)
+                        .start();
+                appbar.animate()
+                        .translationY(0)
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(500).setStartDelay(100).withStartAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        appbar.setVisibility(View.VISIBLE);
+                        detail_bottom_group_ll.setVisibility(View.VISIBLE);
+                    }
+                }).start();
+                mLastAnimated = System.currentTimeMillis();
             }
         });
+
 
         changeCollectState(dModel.isIsf());
     }

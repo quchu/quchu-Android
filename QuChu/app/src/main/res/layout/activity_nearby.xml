@@ -9,8 +9,12 @@
 <android.support.v7.widget.RecyclerView
     android:layout_below="@+id/appbar"
     android:id="@+id/rvSelection"
+    android:background="@color/appBackground_dark"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/half_margin"
+    android:paddingLeft="@dimen/base_margin"
+    android:paddingRight="@dimen/base_margin"
     />
 
     <android.support.v7.widget.RecyclerView

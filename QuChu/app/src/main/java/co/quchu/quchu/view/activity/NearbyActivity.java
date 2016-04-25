@@ -73,6 +73,7 @@ public class NearbyActivity extends BaseActivity {
                             mStrFilterPattern = "";
                             int selectionLenth = 0;
                             mSelection.clear();
+
                             for (int i = 0; i < selection.size(); i++) {
                                 if (selection.get(i).isPraise()){
                                     mSelection.add(selection.get(i));
@@ -123,7 +124,6 @@ public class NearbyActivity extends BaseActivity {
         mNearbyFilterSelectionAdapter = new NearbyFilterSelectionAdapter(mSelection, new NearbyFilterSelectionAdapter.OnTagClickListener() {
             @Override
             public void onTagClick(int tagId) {
-                mSelection.clear();
                 for (int i = 0; i < mFilterTags.size(); i++) {
                     if (mFilterTags.get(i).getTagId()==tagId){
                         mFilterTags.get(i).setPraise(false);
