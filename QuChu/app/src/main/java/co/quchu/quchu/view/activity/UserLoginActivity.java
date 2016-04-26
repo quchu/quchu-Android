@@ -73,7 +73,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
                 if (!AppContext.user.isIsVisitors()) {
                     enterApp();
                 }
-                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS, null));
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
             }
         } else {
             UserLoginPresenter.visitorRegiest(this, null);

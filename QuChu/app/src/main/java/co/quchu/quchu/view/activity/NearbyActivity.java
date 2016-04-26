@@ -127,11 +127,11 @@ public class NearbyActivity extends BaseActivity {
                 for (int i = 0; i < mFilterTags.size(); i++) {
                     if (mFilterTags.get(i).getTagId()==tagId){
                         mFilterTags.get(i).setPraise(false);
-                        for (int j = 0; j < mSelection.size(); j++) {
-                            if (mSelection.get(j).getTagId()==tagId){
-                                mSelection.remove(j);
-                            }
-                        }
+                    }
+                }
+                for (int j = 0; j < mSelection.size(); j++) {
+                    if (mSelection.get(j).getTagId()==tagId){
+                        mSelection.remove(j);
                     }
                 }
                 mNearbyFilterSelectionAdapter.notifyDataSetChanged();
