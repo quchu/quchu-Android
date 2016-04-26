@@ -233,17 +233,12 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
     }
 
 
-    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
-        super.onNestedPreScroll(target, dx, dy, consumed);
-    }
-
-
     public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
         return super.onNestedPreFling(target, velocityX, velocityY);
     }
 
 
-    public int getNestedScrollAxes(){
+    public int getNestedScrollAxes() {
         return super.getNestedScrollAxes();
     }
 }
