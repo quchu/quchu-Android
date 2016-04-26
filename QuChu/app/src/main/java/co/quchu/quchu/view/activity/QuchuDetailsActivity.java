@@ -32,8 +32,6 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.dialog.ShareDialogFg;
-import co.quchu.quchu.dialog.VisitorLoginDialogFg;
-import co.quchu.quchu.dialog.WantToGoDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -46,7 +44,6 @@ import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
@@ -70,8 +67,6 @@ public class QuchuDetailsActivity extends BaseActivity {
     AppBarLayout appbar;
     @Bind(R.id.ivFavorite)
     ImageView vFavorite;
-    @Bind(R.id.ivShare)
-    View vShare;
 
     private long mLastAnimated = -1;
     public static final String REQUEST_KEY_PID = "pid";
@@ -114,18 +109,18 @@ public class QuchuDetailsActivity extends BaseActivity {
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet()) ) {
+                if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
                     MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
                     WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
-                }else{
+                } else {
                     MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
-                    WebViewActivity.enterActivity(QuchuDetailsActivity.this,"http://www.dianping.com",dModel.getName());
+                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName());
                 }
             }
         });
 
 
-        if (null!=savedInstanceState){
+        if (null != savedInstanceState) {
             dModel = (DetailModel) savedInstanceState.getSerializable(BUNDLE_KEY_DATA_MODEL);
         }
 
@@ -155,7 +150,8 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
 
             @Override
-            public void errorListener(VolleyError error, String exception, String msg) {}
+            public void errorListener(VolleyError error, String exception, String msg) {
+            }
         });
     }
 
@@ -169,11 +165,12 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
 
             @Override
-            public void errorListener(VolleyError error, String exception, String msg) {}
+            public void errorListener(VolleyError error, String exception, String msg) {
+            }
         });
     }
 
-    private void getRatingInfo(){
+    private void getRatingInfo() {
         InterestingDetailPresenter.getVisitedInfo(getApplicationContext(), pId, new CommonListener<VisitedInfoModel>() {
             @Override
             public void successListener(VisitedInfoModel response) {
@@ -183,7 +180,8 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
 
             @Override
-            public void errorListener(VolleyError error, String exception, String msg) {}
+            public void errorListener(VolleyError error, String exception, String msg) {
+            }
         });
     }
 
@@ -196,7 +194,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        outState.putSerializable(BUNDLE_KEY_DATA_MODEL,dModel);
+        outState.putSerializable(BUNDLE_KEY_DATA_MODEL, dModel);
     }
 
 
@@ -205,7 +203,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         if (-1 == pId) {
             Toast.makeText(this, "该趣处已不存在!", Toast.LENGTH_SHORT).show();
         } else {
-            if (dModel==null||StringUtils.isEmpty(dModel.getName())){
+            if (dModel == null || StringUtils.isEmpty(dModel.getName())) {
 
                 DialogUtil.showProgess(this, "数据加载中...");
                 InterestingDetailPresenter.getInterestingData(this, pId, new InterestingDetailPresenter.getDetailDataListener() {
@@ -215,7 +213,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                         DialogUtil.dismissProgess();
                     }
                 });
-            }else{
+            } else {
                 bindingDetailData(dModel);
             }
 
@@ -238,16 +236,26 @@ public class QuchuDetailsActivity extends BaseActivity {
                 }
 
                 mLoadingMore = true;
-                String str ="";
+                String str = "";
 
                 for (int i = 0; i < dModel.getNearPlace().size(); i++) {
-                    str+= dModel.getNearPlace().get(i).getPlaceId();
-                    str+= "|";
+                    str += dModel.getNearPlace().get(i).getPlaceId();
+                    str += "|";
                 }
-                if (str.indexOf("|")!=-1){
-                    str = str.substring(0,str.length()-1);
+                if (str.contains("|")) {
+                    str = str.substring(0, str.length() - 1);
                 }
-                loadMore(str, null, 1, dModel.getPid(), SPUtils.getCityId(), Double.valueOf(dModel.getLatitude()), Double.valueOf(dModel.getLongitude()));
+                double la;
+                double lo;
+                try {
+                    la = Double.valueOf(dModel.getLatitude());
+                    lo = Double.valueOf(dModel.getLongitude());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return;
+                }
+
+                loadMore(str, null, 1, dModel.getPid(), SPUtils.getCityId(), la, lo);
             }
         });
 
@@ -306,7 +314,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     private void changeCollectState(boolean isCollect) {
         dModel.setIsf(isCollect);
-        vFavorite.setImageResource(isCollect?R.mipmap.ic_star_stroke:R.mipmap.ic_star_fill);
+        vFavorite.setImageResource(isCollect ? R.mipmap.ic_star_stroke : R.mipmap.ic_star_fill);
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 
@@ -356,12 +364,12 @@ public class QuchuDetailsActivity extends BaseActivity {
             strTags += selection.get(0).getTagId();
         }
         for (int i = 0; i < selection.size(); i++) {
-            if (selection.get(i).isPraise()){
+            if (selection.get(i).isPraise()) {
                 strTags += selection.get(i).getTagId();
                 strTags += "|";
             }
         }
-        if (strTags.indexOf("|")!=-1){
+        if (strTags.contains("|")) {
             strTags = strTags.substring(0, strTags.length() - 1);
         }
         if (mIsRatingRunning) return;
@@ -385,7 +393,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.ivShare,R.id.ivFavorite})
+    @OnClick({R.id.ivShare, R.id.ivFavorite})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -399,9 +407,9 @@ public class QuchuDetailsActivity extends BaseActivity {
 //                        vDialog.show(getFragmentManager(), "visitor");
 //                    } else
 
-                    if(null!=mVisitedInfoModel){
-                        RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getScore(),mVisitedInfoModel.getResult());
-                        tagsFilterDialog.show(getFragmentManager(),"");
+                    if (null != mVisitedInfoModel) {
+                        RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
+                        tagsFilterDialog.show(getFragmentManager(), "");
                         tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
                             @Override
                             public void onFinishPicking(List<TagsModel> selection, int score) {
@@ -506,33 +514,33 @@ public class QuchuDetailsActivity extends BaseActivity {
 
         super.onDestroy();
     }
-
-    public class Want2GoClickImpl implements WantToGoDialogFg.Wan2GoClickListener {
-
-        @Override
-        public void collectClick() {
-            if (AppContext.user.isIsVisitors()) {
-                VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
-                vDialog.show(getFragmentManager(), "visitor");
-            } else {
-                if (dModel.isIsf()) {
-                    Toast.makeText(QuchuDetailsActivity.this, "已经收藏成功了!", Toast.LENGTH_SHORT).show();
-                } else {
-                    setFavorite();
-                }
-            }
-        }
-
-        @Override
-        public void reserveClick() {
-            if (StringUtils.isEmpty(dModel.getNet())) {
-                Toast.makeText(QuchuDetailsActivity.this, "还没找到去往你心里的路...", Toast.LENGTH_SHORT).show();
-            } else {
-                LogUtils.json("webview ==");
-                WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
-            }
-        }
-    }
+//
+//    public class Want2GoClickImpl implements WantToGoDialogFg.Wan2GoClickListener {
+//
+//        @Override
+//        public void collectClick() {
+//            if (AppContext.user.isIsVisitors()) {
+//                VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
+//                vDialog.show(getFragmentManager(), "visitor");
+//            } else {
+//                if (dModel.isIsf()) {
+//                    Toast.makeText(QuchuDetailsActivity.this, "已经收藏成功了!", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    setFavorite();
+//                }
+//            }
+//        }
+//
+//        @Override
+//        public void reserveClick() {
+//            if (StringUtils.isEmpty(dModel.getNet())) {
+//                Toast.makeText(QuchuDetailsActivity.this, "还没找到去往你心里的路...", Toast.LENGTH_SHORT).show();
+//            } else {
+//                LogUtils.json("webview ==");
+//                WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
+//            }
+//        }
+//    }
 
     @Override
     protected void onResume() {
@@ -562,9 +570,9 @@ public class QuchuDetailsActivity extends BaseActivity {
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
 
-        switch (event.getFlag()){
+        switch (event.getFlag()) {
             case EventFlags.EVENT_QUCHU_DETAIL_UPDATED:
-                if (null!=dModel&&(Integer) event.getContent() == dModel.getPid()) {
+                if (null != dModel && (Integer) event.getContent() == dModel.getPid()) {
                     dModel.setMyCardId((Integer) event.getContent());
                 }
                 break;
@@ -573,13 +581,13 @@ public class QuchuDetailsActivity extends BaseActivity {
                 getVisitors();
                 break;
             case EventFlags.EVENT_POST_CARD_ADDED:
-                if ((Integer)event.getContent()==dModel.getPid()){
-                    dModel.setCardCount(dModel.getCardCount()+1);
+                if ((Integer) event.getContent() == dModel.getPid()) {
+                    dModel.setCardCount(dModel.getCardCount() + 1);
                 }
                 break;
             case EventFlags.EVENT_POST_CARD_DELETED:
-                if (((Integer[])event.getContent())[1]==dModel.getPid() && dModel.getCardCount()>1){
-                    dModel.setCardCount(dModel.getCardCount()-1);
+                if (((Integer[]) event.getContent())[1] == dModel.getPid() && dModel.getCardCount() > 1) {
+                    dModel.setCardCount(dModel.getCardCount() - 1);
                 }
                 break;
         }
