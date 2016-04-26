@@ -1,6 +1,7 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -22,24 +23,34 @@ import co.quchu.quchu.net.NetService;
  * Date: 2015-12-13
  */
 public class InterestingDetailPresenter {
-    public static void getInterestingData(Context context, int pId, final getDetailDataListener listener) {
+    public static void getInterestingData(final Context context, int pId, final getDetailDataListener listener) {
 
         NetService.get(context, String.format(NetApi.getDetail, pId), new IRequestListener() {
-            @Override
-            public void onSuccess(JSONObject response) {
-                if (response != null) {
-                    Gson gson = new Gson();
-                    DetailModel detailModel = gson.fromJson(response.toString(), DetailModel.class);
-                    listener.getDetailData(detailModel);
-                }
-            }
+                    @Override
+                    public void onSuccess(JSONObject response) {
+                        if (response != null) {
+                            Gson gson = new Gson();
+                            DetailModel detailModel = gson.fromJson(response.toString(), DetailModel.class);
+                            if (detailModel != null)
+                                listener.getDetailData(detailModel);
+                            else {
+                                DialogUtil.dismissProgess();
+                                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            DialogUtil.dismissProgess();
+                            Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-            @Override
-            public boolean onError(String error) {
-                DialogUtil.dismissProgess();
-                return false;
-            }
-        });
+                    @Override
+                    public boolean onError(String error) {
+                        DialogUtil.dismissProgess();
+                        return false;
+                    }
+                }
+
+        );
     }
 
     public interface getDetailDataListener {
@@ -47,7 +58,7 @@ public class InterestingDetailPresenter {
     }
 
     public static void getUserOutPlace(Context context, int pId, boolean isout, final DetailDataListener listener) {
-        String urlStr ;
+        String urlStr;
         if (isout) {
             urlStr = String.format(NetApi.delUserOutPlace, pId);
         } else {
@@ -69,7 +80,7 @@ public class InterestingDetailPresenter {
     }
 
     public static void setDetailFavorite(Context context, int pId, boolean isFavorite, final DetailDataListener listener) {
-        String favoUrl ;
+        String favoUrl;
         if (isFavorite) {
             favoUrl = String.format(NetApi.userDelFavorite, pId, NetApi.FavTypePlace);
         } else {
@@ -97,12 +108,12 @@ public class InterestingDetailPresenter {
     }
 
 
-    public static void getVisitedUsers(Context context, int cityId,final CommonListener<VisitedUsersModel> listener) {
-        String url = String.format(NetApi.getVisitedUsers,cityId);
+    public static void getVisitedUsers(Context context, int cityId, final CommonListener<VisitedUsersModel> listener) {
+        String url = String.format(NetApi.getVisitedUsers, cityId);
         NetService.get(context, url, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                VisitedUsersModel result = new Gson().fromJson(response.toString(),VisitedUsersModel.class);
+                VisitedUsersModel result = new Gson().fromJson(response.toString(), VisitedUsersModel.class);
                 listener.successListener(result);
             }
 
@@ -114,25 +125,25 @@ public class InterestingDetailPresenter {
         });
     }
 
-    public static void getVisitedInfo(Context context, int pId, final CommonListener<VisitedInfoModel> pListener){
+    public static void getVisitedInfo(Context context, int pId, final CommonListener<VisitedInfoModel> pListener) {
         NetService.get(context, String.format(NetApi.getVisitedInfo, pId), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                VisitedInfoModel visitedInfoModel = new Gson().fromJson(response.toString(),VisitedInfoModel.class);
+                VisitedInfoModel visitedInfoModel = new Gson().fromJson(response.toString(), VisitedInfoModel.class);
                 pListener.successListener(visitedInfoModel);
 
             }
 
             @Override
             public boolean onError(String error) {
-                pListener.errorListener(new VolleyError(error),"","");
+                pListener.errorListener(new VolleyError(error), "", "");
                 return false;
             }
         });
     }
 
-    public static void updateRatingInfo(Context context, int pId,int score,String tagIds,final DetailDataListener listener){
-        NetService.get(context, String.format(NetApi.updateRatingInfo, pId,tagIds,score), new IRequestListener() {
+    public static void updateRatingInfo(Context context, int pId, int score, String tagIds, final DetailDataListener listener) {
+        NetService.get(context, String.format(NetApi.updateRatingInfo, pId, tagIds, score), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 listener.onSuccessCall("");
@@ -149,11 +160,11 @@ public class InterestingDetailPresenter {
 
 
     public static void getVisitorAnalysis(Context context, int cityId, final CommonListener<SimpleQuchuDetailAnalysisModel> listener) {
-        String url = String.format(NetApi.getVisitorAnalysis,cityId);
+        String url = String.format(NetApi.getVisitorAnalysis, cityId);
         NetService.get(context, url, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                SimpleQuchuDetailAnalysisModel result = new Gson().fromJson(response.toString(),SimpleQuchuDetailAnalysisModel.class);
+                SimpleQuchuDetailAnalysisModel result = new Gson().fromJson(response.toString(), SimpleQuchuDetailAnalysisModel.class);
                 listener.successListener(result);
             }
 
