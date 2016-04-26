@@ -124,7 +124,7 @@ public class ShareDialogFg extends BlurDialogFragment implements AdapterView.OnI
                 QQHelper.shareToQzone(getActivity(), mTencent, shareUrl, shareTitle);
                 break;
             case 4:
-                WeiboHelper.share2Weibo(getActivity(), shareUrl, shareTitle);
+                WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrl, shareTitle);
                 break;
         }
         ShareDialogFg.this.dismiss();

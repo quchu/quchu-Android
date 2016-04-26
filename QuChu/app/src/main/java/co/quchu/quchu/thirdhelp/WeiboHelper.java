@@ -1,6 +1,7 @@
 package co.quchu.quchu.thirdhelp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -47,86 +48,85 @@ public class WeiboHelper {
     private static final String SCOPE = "email,direct_messages_read,direct_messages_write,"
             + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
             + "follow_app_official_microblog," + "invitation_write";
-    /**
-     * 注意：SsoHandler 仅当 SDK 支持 SSO 时有效
-     */
-    public static SsoHandler mSsoHandler;
-    private Activity activity;
-    private UserLoginListener listener;
-    AuthInfo mAuthInfo;
+    private Context context;
+    private static WeiboHelper helper;
+    private AuthInfo mAuthInfo;
 
-    public WeiboHelper(Activity context, UserLoginListener listener) {
-        this.activity = context;
-        mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
-        this.listener = listener;
-
+    private WeiboHelper(Context context) {
+        this.context = context.getApplicationContext();
+        mAuthInfo = new AuthInfo(context, APP_KEY, REDIRECT_URL, SCOPE);
     }
 
-    private boolean isLogin;
-
-    public void weiboLogin(Activity context, boolean isLogin) {
-        this.activity = context;
-        this.isLogin = isLogin;
-        mAuthInfo = new AuthInfo(activity, APP_KEY, REDIRECT_URL, SCOPE);
-        mSsoHandler = new SsoHandler(activity, mAuthInfo);
-        mSsoHandler.authorize(new AuthListener());
+    public static WeiboHelper getInstance(Context context) {
+        if (helper == null) {
+            synchronized (WeiboHelper.class) {
+                if (helper == null) {
+                    helper = new WeiboHelper(context);
+                }
+            }
+        }
+        return helper;
     }
 
-    class AuthListener implements WeiboAuthListener {
+    public AuthInfo getmAuthInfo() {
+        return mAuthInfo;
+    }
 
-        @Override
-        public void onComplete(Bundle values) {
-            Oauth2AccessToken accessToken = Oauth2AccessToken.parseAccessToken(values);
-            if (accessToken != null && accessToken.isSessionValid()) {
-                AccessTokenKeeper.writeAccessToken(activity, accessToken);
+    public void weiboLogin(SsoHandler ssoHandler, final UserLoginListener listener, final boolean isLogin) {
+        ssoHandler.authorize(new WeiboAuthListener() {
+            @Override
+            public void onComplete(Bundle bundle) {
+                Oauth2AccessToken accessToken = Oauth2AccessToken.parseAccessToken(bundle);
+                if (accessToken.isSessionValid()) {
+                    AccessTokenKeeper.writeAccessToken(context, accessToken);
+                    String access_token = accessToken.getToken();
+                    String uid = accessToken.getUid();
+                    LogUtils.e("微博授权成功");
+                    if (isLogin) {
+                        regiest2Server(access_token, uid, listener);
+                    } else {
+                        listener.loginSuccess(3, access_token, uid);
+                    }
+                } else {
+                    LogUtils.e("微博key错误:" + bundle.getString("code"));
+                }
             }
 
-            LogUtils.json(values.toString());
-
-            String access_token = values.getString("access_token");
-            String uid = values.getString("uid");
-
-            LogUtils.json("uid==" + uid);
-            if (isLogin) {
-                regiest2Server(access_token, uid);
-            } else {
-                SPUtils.putLoginType(SPUtils.LOGIN_TYPE_WEIBO);
-                listener.loginSuccess(3, access_token, uid);
+            @Override
+            public void onWeiboException(WeiboException e) {
+                LogUtils.e("微博登陆异常");
+                e.printStackTrace();
             }
-            LogUtils.json("access_token==" + access_token);
-        }
 
-        @Override
-        public void onCancel() {
-        }
+            @Override
+            public void onCancel() {
+                LogUtils.e("微博登陆取消");
 
-        @Override
-        public void onWeiboException(WeiboException e) {
-        }
+            }
+        });
     }
 
 
-    private void regiest2Server(final String token, final String uid) {
-        NetService.get(activity, String.format(NetApi.WeiboLogin, token, uid, StringUtils.getMyUUID()), new IRequestListener() {
+    private void regiest2Server(final String token, final String uid, final UserLoginListener listener) {
+        NetService.get(context, String.format(NetApi.WeiboLogin, token, uid, StringUtils.getMyUUID()), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 UserInfoHelper.saveUserInfo(response);
                 MobclickAgent.onProfileSignIn("loginweibo_c", AppContext.user.getUserId() + "");
+                SPUtils.putLoginType(SPUtils.LOGIN_TYPE_WEIBO);
                 listener.loginSuccess(3, token, uid);
-
-                LogUtils.json("skdf" + response.toString());
-
-
+                LogUtils.e("微博注册成功");
             }
 
             @Override
             public boolean onError(String error) {
+                LogUtils.e("微博注册失败");
                 return false;
             }
         });
     }
 
-    public static void share2Weibo(final Activity activity, String shareUrl, String shareTitle) {
+    public void share2Weibo(final Activity activity, String shareUrl, String shareTitle) {
         if (!AppUtil.isAppInstall("com.sina.weibo")) {
             Toast.makeText(activity, "请检查是否已安装微博客户端!", Toast.LENGTH_SHORT).show();
             return;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,6 +34,7 @@ import co.quchu.quchu.view.fragment.UserLoginMainFragment;
 public class UserLoginActivity extends BaseActivity implements UserLoginListener {
 
     private FragmentTransaction transaction;
+    private SsoHandler handler;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -68,8 +70,7 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
         if (null != AppContext.user) {
             if (!IsVisitorLogin) {
-                if (AppContext.user != null && AppContext.user.isIsVisitors()) {
-                } else {
+                if (!AppContext.user.isIsVisitors()) {
                     enterApp();
                 }
                 EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS, null));
@@ -83,9 +84,6 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
 
     public void mobileNoLogin() {
-      /*  transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.user_login_fl, new UserLoginMainFragment());
-        transaction.commit();*/
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.user_login_fl, new PhoneLoginFragment());
         transaction.addToBackStack(null);
@@ -94,7 +92,9 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
 
     public void sinaLogin() {
         MobclickAgent.onEvent(this, "pop_loginweibo_c");
-        new WeiboHelper(this, this).weiboLogin(this, true);
+        WeiboHelper instance = WeiboHelper.getInstance(this);
+        handler = new SsoHandler(this, instance.getmAuthInfo());
+        instance.weiboLogin(handler, this, true);
     }
 
     public void weixinLogin() {
@@ -106,12 +106,8 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // SSO 授权回调
-        // 重要：发起 SSO 登陆的 Activity 必须重写 onActivityResult
-        //   LogUtils.json("requestCode=" + requestCode + "///resultCode=" + resultCode + "data=" + data);
-        if (WeiboHelper.mSsoHandler != null) {
-            WeiboHelper.mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
-        }
+        if (handler != null)
+            handler.authorizeCallBack(requestCode, resultCode, data);
     }
 
     @Override

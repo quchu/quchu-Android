@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
@@ -40,6 +42,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
 
     public static final String TYPE_WEIBO = "weibo";
     public static final String TYPE_Wecha = "weixin";
+    private SsoHandler ssoHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +89,9 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                         unBind(false, TYPE_WEIBO);
                     }
                 } else {
-                    new WeiboHelper(this, this).weiboLogin(this, false);
+                    WeiboHelper instance = WeiboHelper.getInstance(this);
+                    ssoHandler = new SsoHandler(this, instance.getmAuthInfo());
+                    instance.weiboLogin(ssoHandler, this, false);
                 }
                 break;
         }
@@ -241,6 +246,16 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
             }
         });
         request.start(this, null);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtils.e("onActivityResult" + data.toString());
+        if (ssoHandler != null) {
+            LogUtils.e("onActivityResult:不为空" );
+            ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+        }
     }
 
     @Override
