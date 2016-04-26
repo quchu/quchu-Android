@@ -41,34 +41,8 @@ import co.quchu.quchu.utils.StringUtils;
  * Date: 2015-11-30
  */
 public class WeiboHelper {
-    /**
-     * WeiboSDKDemo 程序的 APP_SECRET。
-     * 请注意：请务必妥善保管好自己的 APP_SECRET，不要直接暴露在程序中，此处仅作为一个DEMO来演示。
-     */
-    private static final String WEIBO_DEMO_APP_SECRET = "4e47e691a516afad0fc490e05ff70ee5";
-    /**
-     * 通过 code 获取 Token 的 URL
-     */
-    private static final String OAUTH2_ACCESS_TOKEN_URL = "https://open.weibo.cn/oauth2/access_token";
-    /**
-     * 获取 Token 成功或失败的消息
-     */
-    private static final int MSG_FETCH_TOKEN_SUCCESS = 1;
-    private static final int MSG_FETCH_TOKEN_FAILED = 2;
-    /**
-     * 微博 Web 授权接口类，提供登陆等功能
-     */
-
-    /**
-     * 获取到的 Code
-     */
-    private String mCode;
-    /**
-     * 获取到的 Token
-     */
-    private Oauth2AccessToken mAccessToken;
     private static final String APP_KEY = "1884585494";
-    private static final String REDIRECT_URL = "http://www.paimeilv.com";
+    private static final String REDIRECT_URL = "http://sit.quchu.co";
 
     private static final String SCOPE = "email,direct_messages_read,direct_messages_write,"
             + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
@@ -109,7 +83,6 @@ public class WeiboHelper {
 
             LogUtils.json(values.toString());
 
-            String _weibo_transaction = values.getString("_weibo_transaction");
             String access_token = values.getString("access_token");
             String uid = values.getString("uid");
 
@@ -121,7 +94,6 @@ public class WeiboHelper {
                 listener.loginSuccess(3, access_token, uid);
             }
             LogUtils.json("access_token==" + access_token);
-            mCode = _weibo_transaction;
         }
 
         @Override

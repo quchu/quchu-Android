@@ -90,12 +90,6 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="mypopwindow_anim_style">
-        <item name="android:windowEnterAnimation">@anim/in_top_to_bottom</item>
-        <!-- 指定显示的动画xml -->
-        <item name="android:windowExitAnimation">@anim/out_bottom_to_top</item>
-        <!-- 指定消失的动画xml -->
-    </style>
 
     <style name="DetailTextStyle_sub">
         <item name="textColor">@color/text_color_white</item>
@@ -121,21 +115,24 @@
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
-
     <style name="ToolbarContainer">
         <item name="android:paddingLeft">@dimen/toolbar_container_horizontal_padding</item>
         <item name="android:paddingRight">@dimen/toolbar_container_horizontal_padding</item>
     </style>
+
     <style name="ToolbarItem">
         <item name="android:gravity">center</item>
     </style>
+
     <style name="ToolbarItem.TextView" parent="ToolbarItem">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:maxLines">1</item>
     </style>
+
     <style name="ToolbarItem.ActionTextView" parent="ToolbarItem.TextView">
         <item name="android:textSize">@dimen/text_size_14</item>
     </style>
+
     <style name="ToolbarItem.TitleTextView" parent="ToolbarItem.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">@dimen/text_size_16</item>

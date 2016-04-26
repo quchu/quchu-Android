@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">趣处</string>
-    <string name="titlebar_word_planet">我的趣星球</string>
     <string name="titlebar_word_gene">我的趣基因</string>
     <string name="titlebar_word_atmosphere">氛围</string>
     <string name="titlebar_word_discover">我的发现</string>
@@ -74,15 +73,7 @@
         <item>非常棒!</item>
     </array>
 
-    <array name="dialogShareString">
-        <item>微信好友</item>
-        <item>朋友圈</item>
-        <item>QQ好友</item>
-        <item>QQ空间</item>
-        <item>新浪微博</item>
-        <item>豆瓣</item>
-        <item>手机相册</item>
-    </array>
+
     <string name="app_exit_text">再按一次退出程序</string>
     <string name="about_us_text">没人想要把时间浪费在千篇一律的内容上\n
         就像没人想要活得单调而雷同\n
