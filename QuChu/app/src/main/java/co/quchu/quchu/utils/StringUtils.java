@@ -11,11 +11,15 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.widget.TextView;
 
+import com.amap.api.maps.AMapUtils;
+import com.amap.api.maps.model.LatLng;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -319,5 +323,10 @@ public class StringUtils {
         BigDecimal b3 = new BigDecimal(price);
         double f3 = b3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         return new Double(f3);
+    }
+
+    public static String getDistance(double latitude, double longitude, double targetLatitude, double targetLonitude) {
+        float distance = AMapUtils.calculateLineDistance(new LatLng(latitude, longitude),new LatLng(targetLatitude,targetLonitude));
+        return new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
     }
 }

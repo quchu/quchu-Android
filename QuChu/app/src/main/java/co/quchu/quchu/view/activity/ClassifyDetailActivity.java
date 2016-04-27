@@ -62,6 +62,7 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
         setContentView(R.layout.activity_classify_detail);
         ButterKnife.bind(this);
 
+        getEnhancedToolbar();
 
         mAdapter = new DiscoverDetailPagerAdapter(mData, this, new DiscoverDetailPagerAdapter.OnItemClickListener() {
             @Override

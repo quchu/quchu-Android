@@ -119,12 +119,14 @@ public class PhoneLoginFragment extends BaseFragment {
                     break;
                 case 0x05://用户登录 密码获取输入框
                     view.clearFocus();
-                    phoneLoginPasswordEt.setFocusable(true);
-                    phoneLoginPasswordEt.setFocusableInTouchMode(true);
-                    phoneLoginPasswordEt.requestFocus();
-                    inputManager =
-                            (InputMethodManager) phoneLoginPasswordEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputManager.showSoftInput(phoneLoginPasswordEt, 0);
+                    if (null!=phoneLoginPasswordEt){
+                        phoneLoginPasswordEt.setFocusable(true);
+                        phoneLoginPasswordEt.setFocusableInTouchMode(true);
+                        phoneLoginPasswordEt.requestFocus();
+                        inputManager =
+                                (InputMethodManager) phoneLoginPasswordEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputManager.showSoftInput(phoneLoginPasswordEt, 0);
+                    }
                     break;
             }
         }
