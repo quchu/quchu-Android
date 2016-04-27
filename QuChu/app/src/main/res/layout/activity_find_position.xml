@@ -66,8 +66,10 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/nameNone"
                     android:background="@null"
+                    android:ellipsize="end"
                     android:gravity="center"
                     android:hint="填写趣处名称"
+                    android:maxLength="20"
                     android:maxLines="1"
                     android:minHeight="@dimen/subTabLayoutHeight"
                     android:textSize="@dimen/word_size_time" />
@@ -99,8 +101,10 @@
                     android:layout_alignTop="@id/addressNone"
                     android:layout_toRightOf="@id/addressNone"
                     android:background="@null"
+                    android:ellipsize="end"
                     android:gravity="center"
                     android:hint="填写趣处地址"
+                    android:maxLength="30"
                     android:maxLines="1"
                     android:minHeight="@dimen/subTabLayoutHeight"
                     android:textSize="@dimen/word_size_time" />
@@ -124,7 +128,7 @@
                     android:background="@null"
                     android:gravity="top|left"
                     android:hint="写两行以上的内容,更容易被我们采纳~"
-                    android:minLines="5"
+                    android:maxLength="140"
                     android:textSize="@dimen/word_size_body" />
 
                 <android.support.v7.widget.RecyclerView

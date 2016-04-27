@@ -133,8 +133,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                     Toast.makeText(FindPositionActivity.this, "名称和地址不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                List<String> im = new ArrayList<String>();
+                List<String> im = new ArrayList<>();
                 for (PhotoInfo item : photoInfos) {
                     if (item.getPhotoPath().contains("file://")) {
                         im.add(Uri.parse(item.getPhotoPath()).getPath());
@@ -177,7 +176,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         map.put("place.pimage", Images);
 
 
-        GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url, map, null, new ResponseListener<Object>() {
+        GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url, map, Object.class, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();

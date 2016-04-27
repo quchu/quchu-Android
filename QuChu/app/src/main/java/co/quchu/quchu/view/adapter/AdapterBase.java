@@ -34,6 +34,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     }
 
     public void initData(List<DT> data) {
+        netError = false;
         this.data = data;
         loadMoreing = false;
         loadMoreEnable = !(data == null || data.size() < 10);
@@ -41,6 +42,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     }
 
     public void addMoreData(List<DT> data) {
+        netError = false;
         loadMoreing = false;
         if (data == null || data.size() == 0) {
             loadMoreEnable = false;
@@ -64,11 +66,21 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
 
     public void setLoadMoreEnable(boolean loadMoreEnable) {
         loadMoreing = false;
-
+        netError = false;
         if (this.loadMoreEnable != loadMoreEnable) {
             this.loadMoreEnable = loadMoreEnable;
-            notifyDataSetChanged();
         }
+        notifyDataSetChanged();
+    }
+
+    private boolean netError;
+    private View.OnClickListener errorListener;
+
+    public void setNetError(View.OnClickListener errorListener) {
+        this.netError = true;
+        loadMoreEnable = false;
+        this.errorListener = errorListener;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -83,7 +95,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     @Override
     public final void onBindViewHolder(VH holder, int position) {
         if (holder instanceof LoadMoreViewHolder) {
-            LoadMoreViewHolder loadMoreHold = (LoadMoreViewHolder) holder;
+            final LoadMoreViewHolder loadMoreHold = (LoadMoreViewHolder) holder;
             if (loadMoreEnable) {
                 loadMoreHold.retryView.setText("加载中~~");
                 loadMoreHold.itemView.setVisibility(View.VISIBLE);
@@ -97,12 +109,35 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                     loadMoreing = true;
                     loadmoreListener.onLoadmore();
                 }
+                loadMoreHold.retryView.setOnClickListener(null);
+            } else if (netError) {
+
+                loadMoreHold.loadView.clearAnimation();
+                loadMoreHold.loadView.setVisibility(View.INVISIBLE);
+                loadMoreHold.retryView.setText("网络异常了~~点击重试");
+                loadMoreHold.retryView.setClickable(true);
+                loadMoreHold.retryView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        v.setClickable(false);
+                        loadMoreHold.loadView.setVisibility(View.VISIBLE);
+                        ObjectAnimator rotation = ObjectAnimator.ofFloat(loadMoreHold.loadView, "rotation", 0, 360);
+                        rotation.setInterpolator(new LinearInterpolator());
+                        rotation.setRepeatMode(ValueAnimator.RESTART);
+                        rotation.setRepeatCount(ValueAnimator.INFINITE);
+                        rotation.setDuration(1500);
+                        rotation.start();
+                        netError = false;
+                        loadMoreHold.retryView.setText("加载中~~");
+                        errorListener.onClick(v);
+                    }
+                });
             } else {
+                loadMoreHold.retryView.setOnClickListener(null);
                 loadMoreHold.loadView.clearAnimation();
                 loadMoreHold.loadView.setVisibility(View.INVISIBLE);
 
                 loadMoreHold.retryView.setText("没有更多了~~");
-
             }
         } else {
             onBindView(holder, position);

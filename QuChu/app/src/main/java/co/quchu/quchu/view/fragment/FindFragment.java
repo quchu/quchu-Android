@@ -110,8 +110,12 @@ public class FindFragment extends BaseFragment implements PageLoadListener<FindB
 
     @Override
     public void netError(final int pagesNo, String massage) {
-        // TODO: 2016/4/16   加载更多网络异常
-        adapter.setLoadMoreEnable(false);
+        adapter.setNetError(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.getFindData(pagesNo, FindFragment.this);
+            }
+        });
 
     }
 }

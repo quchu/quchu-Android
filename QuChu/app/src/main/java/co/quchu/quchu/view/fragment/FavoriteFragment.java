@@ -93,6 +93,11 @@ public class FavoriteFragment extends BaseFragment implements PageLoadListener<F
 
     @Override
     public void netError(final int pagesNo, String massage) {
-        adapter.setLoadMoreEnable(false);
+        adapter.setNetError(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.getFavoriteData(pagesNo, FavoriteFragment.this);
+            }
+        });
     }
 }

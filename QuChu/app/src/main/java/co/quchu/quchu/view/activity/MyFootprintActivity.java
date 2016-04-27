@@ -197,8 +197,13 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     }
 
     @Override
-    public void netError(int pageNo, String massage) {
-        adapter.setLoadMoreEnable(false);
+    public void netError(final int pageNo, String massage) {
+        adapter.setNetError(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.getMyFoiotrintList(userId, pageNo );
+            }
+        });
     }
 
     @Override
