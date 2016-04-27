@@ -11,7 +11,7 @@
         android:id="@+id/ivIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_load_more_indicator" />
+        android:src="@mipmap/ic_loadmore" />
 
     <TextView
         android:id="@+id/textView"

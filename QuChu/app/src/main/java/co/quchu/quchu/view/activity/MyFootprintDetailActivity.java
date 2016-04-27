@@ -87,9 +87,9 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
             edit.setVisibility(View.VISIBLE);
         }
         if (!entity.isP) {//当前登录用户是否已经点赞
-            support.setImageResource(R.drawable.ic_light_like);
+            support.setImageResource(R.mipmap.ic_light_like);
         } else {
-            support.setImageResource(R.drawable.ic_light_like_fill);
+            support.setImageResource(R.mipmap.ic_light_like_fill);
         }
         supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
         detail.setText(entity.builder);
@@ -252,11 +252,11 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
                                 entity.isP = false;
                                 //如果用户没有切换卡片
                                 if (clickPosition == selectedPosition)
-                                    support.setImageResource(R.drawable.ic_light_like);
+                                    support.setImageResource(R.mipmap.ic_light_like);
                             } else {
                                 entity.isP = true;
                                 if (clickPosition == selectedPosition)
-                                    support.setImageResource(R.drawable.ic_light_like_fill);
+                                    support.setImageResource(R.mipmap.ic_light_like_fill);
                             }
                             clickPosition = -1;
                         }

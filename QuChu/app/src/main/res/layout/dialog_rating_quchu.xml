@@ -31,8 +31,8 @@
         app:prb_clickable="true"
         app:prb_defaultRating="4"
         app:prb_tickSpacing="3dip"
-        app:prb_tickNormalDrawable="@drawable/ic_like_fill"
-        app:prb_tickSelectedDrawable="@drawable/ic_like_fill_checked"
+        app:prb_tickNormalDrawable="@mipmap/ic_like_fill"
+        app:prb_tickSelectedDrawable="@mipmap/ic_like_fill_checked"
         app:prb_totalTicks="5" />
 
 

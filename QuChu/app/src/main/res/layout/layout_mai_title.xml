@@ -39,5 +39,5 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:padding="@dimen/base_margin"
-        app:srcCompat="@drawable/ic_user" />
+        android:src="@mipmap/ic_user" />
 </RelativeLayout>
