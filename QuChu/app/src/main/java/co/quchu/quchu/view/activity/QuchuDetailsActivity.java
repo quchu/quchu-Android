@@ -192,8 +192,8 @@ public class QuchuDetailsActivity extends BaseActivity {
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putSerializable(BUNDLE_KEY_DATA_MODEL, dModel);
     }
 
