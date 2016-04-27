@@ -110,12 +110,13 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                     loadmoreListener.onLoadmore();
                 }
                 loadMoreHold.retryView.setOnClickListener(null);
+                loadMoreHold.retryView.setBackground(null);
             } else if (netError) {
-
                 loadMoreHold.loadView.clearAnimation();
                 loadMoreHold.loadView.setVisibility(View.INVISIBLE);
                 loadMoreHold.retryView.setText("网络异常了~~点击重试");
                 loadMoreHold.retryView.setClickable(true);
+                loadMoreHold.retryView.setBackgroundResource(R.drawable.shape_data_null_button_bg);
                 loadMoreHold.retryView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -133,10 +134,10 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                     }
                 });
             } else {
+                loadMoreHold.retryView.setBackground(null);
                 loadMoreHold.retryView.setOnClickListener(null);
                 loadMoreHold.loadView.clearAnimation();
                 loadMoreHold.loadView.setVisibility(View.INVISIBLE);
-
                 loadMoreHold.retryView.setText("没有更多了~~");
             }
         } else {
