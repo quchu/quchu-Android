@@ -78,7 +78,6 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             }
         });
         init();
-
         restore();
     }
 
@@ -206,7 +205,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             new SelectedImagePopWin(this, recyclerView, photoInfos, 4, new GalleryFinal.OnHanlderResultCallback() {
                 @Override
                 public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                    if (photoInfos.size() + resultList.size() > 8 && photoInfos.size() > 0) {
+                    if (photoInfos.size() + resultList.size() > 4 && photoInfos.size() > 0) {
                         photoInfos.remove(0);
                     }
                     for (PhotoInfo info : resultList) {
