@@ -354,25 +354,19 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStart() {
+        super.onStart();
         EventBus.getDefault().register(this);
     }
 
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
     }
 }
