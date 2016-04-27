@@ -32,10 +32,13 @@ import co.quchu.quchu.view.adapter.PickingQuchuAdapter;
 public class PickingQuchuActivity extends BaseActivity {
 
 
-    public String mKeyword;
+    //    public String mKeyword;
     public static final String BUNDLE_KEY_KEYWORD = "BUNDLE_KEY_KEYWORD";
     public static final String BUNDLE_KEY_PICKING_RESULT_NAME = "BUNDLE_KEY_PICKING_RESULT_NAME";
-    public static final String BUNDLE_KEY_PICKING_RESULT_ID= "BUNDLE_KEY_PICKING_RESULT_ID";
+    public static final String BUNDLE_KEY_PICKING_RESULT_ID = "BUNDLE_KEY_PICKING_RESULT_ID";
+    //是否从我的脚印跳转
+    public static final String REQUEST_KEY_FROM_MY_FOOTPRINT = "from";
+
     @Bind(R.id.etSearchField)
     EditText mEtSearchField;
     @Bind(R.id.rvContent)
@@ -51,7 +54,7 @@ public class PickingQuchuActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        if (null!=mEtSearchField){
+        if (null != mEtSearchField) {
             mEtSearchField.removeTextChangedListener(mTextWatcher);
         }
         super.onDestroy();
@@ -65,34 +68,48 @@ public class PickingQuchuActivity extends BaseActivity {
         ButterKnife.bind(this);
         getEnhancedToolbar();
 
-        mKeyword = getIntent().getStringExtra(BUNDLE_KEY_KEYWORD);
+        String mKeyword = getIntent().getStringExtra(BUNDLE_KEY_KEYWORD);
+        final boolean fromMyfootprint = getIntent().getBooleanExtra(REQUEST_KEY_FROM_MY_FOOTPRINT, false);
         mAdapter = new PickingQuchuAdapter(mData, new PickingQuchuAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent   = new Intent();
-                intent.putExtra(BUNDLE_KEY_PICKING_RESULT_ID,mData.get(position).getId());
-                intent.putExtra(BUNDLE_KEY_PICKING_RESULT_NAME,mData.get(position).getName());
-                setResult(RESULT_OK,intent);
-                finish();
+                if (fromMyfootprint) {
+                    Intent intent = new Intent(PickingQuchuActivity.this, AddFootprintActivity.class);
+
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mData.get(position).getId());
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mData.get(position).getName());
+                    startActivity(intent);
+                    finish();
+                } else {
+
+                    Intent intent = new Intent();
+                    intent.putExtra(BUNDLE_KEY_PICKING_RESULT_ID, mData.get(position).getId());
+                    intent.putExtra(BUNDLE_KEY_PICKING_RESULT_NAME, mData.get(position).getName());
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         });
-        mRvContent.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+        mRvContent.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRvContent.setAdapter(mAdapter);
         mTextWatcher = new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (null!=s && !StringUtils.isEmpty(s.toString()))
-                    doSearch();
+                if (null != s && !StringUtils.isEmpty(s.toString()))
+                    doSearch(s.toString());
             }
         };
 
         mEtSearchField.addTextChangedListener(mTextWatcher);
+        doSearch(mKeyword);
     }
 
     @Override
@@ -108,11 +125,11 @@ public class PickingQuchuActivity extends BaseActivity {
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 keyboard.showSoftInput(mEtSearchField, 0);
             }
-        },200);
+        }, 200);
     }
 
-    private void doSearch(){
-        NearbyPresenter.getSearchResult(this, SPUtils.getCityId(), mKeyword, new CommonListener<List<SimpleQuchuSearchResultModel>>() {
+    private void doSearch(String keyWord) {
+        NearbyPresenter.getSearchResult(this, SPUtils.getCityId(), keyWord, new CommonListener<List<SimpleQuchuSearchResultModel>>() {
             @Override
             public void successListener(List<SimpleQuchuSearchResultModel> response) {
                 mData.clear();

@@ -203,7 +203,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                 InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-            new SelectedImagePopWin(this, recyclerView, photoInfos, 8, new GalleryFinal.OnHanlderResultCallback() {
+            new SelectedImagePopWin(this, recyclerView, photoInfos, 4, new GalleryFinal.OnHanlderResultCallback() {
                 @Override
                 public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                     if (photoInfos.size() + resultList.size() > 8 && photoInfos.size() > 0) {

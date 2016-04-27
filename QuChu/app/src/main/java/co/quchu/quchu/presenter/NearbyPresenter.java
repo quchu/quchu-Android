@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Locale;
 
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.NearbyItemModel;
@@ -30,8 +31,8 @@ import co.quchu.quchu.net.ResponseListener;
  * Date: 2015-12-13
  */
 public class NearbyPresenter {
-    public static void getNearbyData(Context context,String recommendPlaceIds,String categoryTagIds,int isFirst,int placeId, int cityId,double latitude,double longitude,int pageNo, final getNearbyDataListener listener) {
-        String url = String.format(NetApi.getNearby,cityId,String.valueOf(latitude),String.valueOf(longitude),pageNo,recommendPlaceIds,categoryTagIds,isFirst,placeId);
+    public static void getNearbyData(Context context, String recommendPlaceIds, String categoryTagIds, int isFirst, int placeId, int cityId, double latitude, double longitude, int pageNo, final getNearbyDataListener listener) {
+        String url = String.format(NetApi.getNearby, cityId, String.valueOf(latitude), String.valueOf(longitude), pageNo, recommendPlaceIds, categoryTagIds, isFirst, placeId);
         System.out.println(url);
         NetService.get(context, url, new IRequestListener() {
             @Override
@@ -42,11 +43,12 @@ public class NearbyPresenter {
                     List<NearbyItemModel> nearbyItemModels = null;
                     try {
                         maxPageNo = response.getInt("pageCount");
-                        nearbyItemModels = gson.fromJson(response.getString("result"), new TypeToken<List<NearbyItemModel>>(){}.getType());
+                        nearbyItemModels = gson.fromJson(response.getString("result"), new TypeToken<List<NearbyItemModel>>() {
+                        }.getType());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    listener.getNearbyData(nearbyItemModels,maxPageNo);
+                    listener.getNearbyData(nearbyItemModels, maxPageNo);
                 }
             }
 
@@ -58,10 +60,11 @@ public class NearbyPresenter {
         });
     }
 
-    public static void getMapNearbyData(Context context, int cityId,String name,double latitude,double longitude,final CommonListener<List<NearbyMapModel>> listener) {
+    public static void getMapNearbyData(Context context, int cityId, String name, double latitude, double longitude, final CommonListener<List<NearbyMapModel>> listener) {
 
-        String url = String.format(NetApi.getMapNearby,name,cityId,String.valueOf(latitude),String.valueOf(longitude));
-        GsonRequest<List<NearbyMapModel>> request = new GsonRequest<>(Request.Method.GET,url, new TypeToken<List<NearbyMapModel>>(){}.getType(), new ResponseListener<List<NearbyMapModel>>() {
+        String url = String.format(NetApi.getMapNearby, name, cityId, String.valueOf(latitude), String.valueOf(longitude));
+        GsonRequest<List<NearbyMapModel>> request = new GsonRequest<>(Request.Method.GET, url, new TypeToken<List<NearbyMapModel>>() {
+        }.getType(), new ResponseListener<List<NearbyMapModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 listener.errorListener(error, "", "");
@@ -76,9 +79,10 @@ public class NearbyPresenter {
 
     }
 
-    public static void getFilterData(Context context,final CommonListener<List<TagsModel>> listener) {
+    public static void getFilterData(Context context, final CommonListener<List<TagsModel>> listener) {
 
-        GsonRequest<List<TagsModel>> request = new GsonRequest<>(Request.Method.GET,NetApi.getFilterTags, new TypeToken<List<TagsModel>>(){}.getType(), new ResponseListener<List<TagsModel>>() {
+        GsonRequest<List<TagsModel>> request = new GsonRequest<>(Request.Method.GET, NetApi.getFilterTags, new TypeToken<List<TagsModel>>() {
+        }.getType(), new ResponseListener<List<TagsModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 listener.errorListener(error, "", "");
@@ -94,11 +98,12 @@ public class NearbyPresenter {
     }
 
 
-    public static void getSearchResult(Context context, int cityId,String name,final CommonListener<List<SimpleQuchuSearchResultModel>> listener) {
+    public static void getSearchResult(Context context, int cityId, String name, final CommonListener<List<SimpleQuchuSearchResultModel>> listener) {
 
-        String url = String.format(NetApi.getSearchResult,cityId,name);
+        String url = String.format(Locale.CHINA, NetApi.getSearchResult, cityId, name);
 
-        GsonRequest<List<SimpleQuchuSearchResultModel>> request = new GsonRequest<>(Request.Method.GET,url, new TypeToken<List<SimpleQuchuSearchResultModel>>(){}.getType(), new ResponseListener<List<SimpleQuchuSearchResultModel>>() {
+        GsonRequest<List<SimpleQuchuSearchResultModel>> request = new GsonRequest<>(Request.Method.GET, url, new TypeToken<List<SimpleQuchuSearchResultModel>>() {
+        }.getType(), new ResponseListener<List<SimpleQuchuSearchResultModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 listener.errorListener(error, "", "");
@@ -114,7 +119,7 @@ public class NearbyPresenter {
     }
 
     public interface getNearbyDataListener {
-        void getNearbyData(List<NearbyItemModel> model,int i);
+        void getNearbyData(List<NearbyItemModel> model, int i);
     }
 
 

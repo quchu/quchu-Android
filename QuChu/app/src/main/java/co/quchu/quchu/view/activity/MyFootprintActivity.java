@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -28,7 +29,6 @@ import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 import co.quchu.quchu.widget.ScrollIndexView;
@@ -79,12 +79,12 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         presenter = new MyFootprintPresenter(this, this);
         presenter.getMyFoiotrintList(userId, pagesNo);
 
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean isIdle = true;
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                LogUtils.e("state:" + newState);
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_DRAGGING:
                         if (isIdle) {
@@ -145,10 +145,18 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
                 "个脚印";
         name.setText(AppContext.user.getFullname());
         ageAndCound.setText(builder);
-//        headViewBg.setImageURI(Uri.parse("res:///" + R.mipmap.bg_user));
         headView.setImageURI(Uri.parse(uri + ""));
-        setSupportActionBar(toolbar);
-
+        ImageView rightIv = toolbar.getRightIv();
+        rightIv.setImageResource(R.mipmap.ic_dismiss_dialog);
+        rightIv.setRotation(45);
+        rightIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyFootprintActivity.this, PickingQuchuActivity.class);
+                intent.putExtra(PickingQuchuActivity.REQUEST_KEY_FROM_MY_FOOTPRINT, true);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

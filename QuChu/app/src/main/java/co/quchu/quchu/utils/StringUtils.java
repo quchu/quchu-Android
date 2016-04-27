@@ -249,8 +249,7 @@ public class StringUtils {
         String telRegex = "[1][34578]\\d{9}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         //  String telRegex = "`((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8]))\\\\d{8}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         //  String telRegex = "((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
-        if (TextUtils.isEmpty(mobiles)) return false;
-        else return Pattern.matches(telRegex, mobiles);
+        return !TextUtils.isEmpty(mobiles) && Pattern.matches(telRegex, mobiles);
     }
 
     /**

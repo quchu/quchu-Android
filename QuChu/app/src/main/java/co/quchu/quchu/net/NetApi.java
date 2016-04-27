@@ -89,7 +89,7 @@ public interface NetApi {
     String getNearby = HOST + "/place/nearPlaces?cityId=%d&latitude=%s&longitude=%s&pagesNo=%d&recommendPlaceIds=%s&categoryTagIds=%s&isFirst=%d&placeId=%d";
     String getMapNearby = HOST + "/place/nearbyMapPlaces?name=%s&cityId=%d&latitude=%s&longitude=%s";
     String getFootprint = HOST + "/place/getCardList?pId=%d&pageno=%d";
-    String getSearchResult = HOST + "/place/getSelectPlaces?cityId=%d&name=%d";
+    String getSearchResult = HOST + "/place/getSelectPlaces?cityId=%d&name=%s";
     String getVisitedUsers = HOST + "/place/userOut?placeId=%d";
     String getVisitorAnalysis = HOST + "/place/tagsCount?placeId=%d";
 
