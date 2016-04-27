@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include layout="@layout/cp_enhanced_toolbar"/>
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +20,7 @@
             android:layout_marginTop="@dimen/half_margin"
             android:text="绑定手机号"
             android:textColor="@color/account_setting_text_hint_color"
-            android:textSize="@dimen/word_subhead_size"/>
+            android:textSize="@dimen/word_subhead_size" />
 
         <TextView
             android:id="@+id/id_photo_number"
@@ -32,7 +31,7 @@
             android:layout_marginTop="@dimen/half_margin"
             android:text="手机号"
             android:textColor="@color/black"
-            android:textSize="@dimen/word_size_body"/>
+            android:textSize="@dimen/word_size_body" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -48,9 +47,11 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="请输入手机号"
-                android:inputType="number"
+                android:inputType="phone"
+                android:maxLength="13"
+                android:maxLines="1"
                 android:textColor="@color/account_setting_text_hint_color"
-                android:textSize="@dimen/word_size_body"/>
+                android:textSize="@dimen/word_size_body" />
 
             <TextView
                 android:id="@+id/getAuthCode"
@@ -62,13 +63,13 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:text="获取验证码"
-                android:textSize="@dimen/word_size_time"/>
+                android:textSize="@dimen/word_size_time" />
         </RelativeLayout>
 
         <View
             style="@style/AccountBHl"
             android:layout_alignParentBottom="false"
-            android:layout_below="@id/id_photo_number"/>
+            android:layout_below="@id/id_photo_number" />
 
         <TextView
             android:id="@+id/account_setting_realpwd_hint"
@@ -79,7 +80,7 @@
             android:layout_marginTop="@dimen/half_margin"
             android:text="验证码"
             android:textColor="@color/black"
-            android:textSize="@dimen/word_size_body"/>
+            android:textSize="@dimen/word_size_body" />
 
 
         <EditText
@@ -91,15 +92,17 @@
             android:layout_marginTop="@dimen/half_margin"
             android:background="@null"
             android:hint="请输入验证码"
-            android:inputType="textPassword"
+            android:inputType="number"
+            android:maxLength="10"
+            android:maxLines="1"
             android:textColor="@color/account_setting_text_hint_color"
             android:textColorHint="@color/account_setting_text_hint_color"
-            android:textSize="@dimen/word_size_body"/>
+            android:textSize="@dimen/word_size_body" />
 
         <View
             style="@style/AccountBHl"
             android:layout_alignParentBottom="false"
-            android:layout_below="@id/account_setting_realpwd_hint"/>
+            android:layout_below="@id/account_setting_realpwd_hint" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -108,33 +111,35 @@
             android:layout_marginTop="@dimen/half_margin"
             android:text="创建密码"
             android:textColor="@color/black"
-            android:textSize="@dimen/word_size_body"/>
+            android:textSize="@dimen/word_size_body" />
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/account_setting_realpwd_hint"
             android:layout_marginLeft="70dp"
             android:layout_marginTop="@dimen/half_margin"
             android:background="@null"
-            android:hint="创建密码"
-            android:inputType="textPassword"
+            android:hint="请输入6-12位数字字母作为密码"
+            android:inputType="textVisiblePassword"
+            android:maxLength="12"
+            android:maxLines="1"
             android:textColor="@color/account_setting_text_hint_color"
             android:textColorHint="@color/account_setting_text_hint_color"
-            android:textSize="@dimen/word_size_body"/>
+            android:textSize="@dimen/word_size_body" />
 
         <View
             style="@style/AccountBHl"
             android:layout_alignParentBottom="false"
-            android:layout_below="@id/password"
-            android:layout_marginTop="@dimen/half_margin"/>
+            android:layout_below="@id/pass"
+            android:layout_marginTop="@dimen/half_margin" />
 
         <TextView
             android:id="@+id/bindPhotoNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/password"
+            android:layout_below="@id/pass"
             android:layout_marginTop="30dp"
             android:background="@color/gene_textcolor_yellow"
             android:gravity="center"
@@ -142,7 +147,7 @@
             android:paddingTop="@dimen/half_margin"
             android:text="确定"
             android:textColor="@color/black"
-            android:textSize="@dimen/word_subhead_size"/>
+            android:textSize="@dimen/word_subhead_size" />
 
     </RelativeLayout>
 </RelativeLayout>

@@ -38,6 +38,10 @@ public class UserInfoModel implements Parcelable {
     private int cardCount;// 脚印的个数
     private boolean isphone;//是否绑定手机号
 
+    public void setIsphone(boolean isphone) {
+        this.isphone = isphone;
+    }
+
     public boolean isphone() {
         return isphone;
     }

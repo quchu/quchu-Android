@@ -114,50 +114,36 @@ public class FootPrintActivity extends BaseActivity {
         FootPrintPresenter.getFootprint(getApplicationContext(), mQuchuId, mCurrentPageNo, new FootPrintPresenter.GetFootprintDataListener() {
             @Override
             public void getFootprint(List<FootprintModel> model, int pMaxPageNo) {
-                    mMaxPageNo = pMaxPageNo;
-                    if (null!=model){
-                        mData.addAll(model);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                    mIsLoading = false;
+                mMaxPageNo = pMaxPageNo;
+                if (null != model) {
+                    mData.addAll(model);
+                    mAdapter.notifyDataSetChanged();
+                }
+                mIsLoading = false;
                 if (DialogUtil.isDialogShowing()) {
                     DialogUtil.dismissProgess();
                 }
-
             }
 
         });
     }
 
 
-
-
-
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-
         if (event.getFlag() == EventFlags.EVENT_POST_CARD_ADDED || event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+            mMaxPageNo = -1;
             loadData(false);
         }
     }
 
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -169,6 +155,8 @@ public class FootPrintActivity extends BaseActivity {
     @Override
     protected void onPause() {
         MobclickAgent.onPageEnd("pic");
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         super.onPause();
     }
 }

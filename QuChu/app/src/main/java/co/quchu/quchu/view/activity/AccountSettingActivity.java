@@ -5,8 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,27 +71,26 @@ public class AccountSettingActivity extends BaseActivity {
     @Bind(R.id.account_setting_user_location)
     TextView accountSettingUserLocation;
     @Bind(R.id.account_setting_new_pwd_et)
-    EditText accountSettingNewPwdEt;
+    EditText originPasswordEd;
     @Bind(R.id.account_setting_new_pwd_again_et)
-    EditText accountSettingNewPwdAgainEt;
+    EditText newPasswordEd;
     @Bind(R.id.bindPhoto)
     TextView bindPhoto;
     @Bind(R.id.lineBindPhone)
     View lineBindPhone;
+    @Bind(R.id.modiffPassContainer)
+    RelativeLayout modiffPassContainer;
 
 
     private ArrayList<Integer> imageList;
-    private AccountSettingPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_setting);
         ButterKnife.bind(this);
-        presenter = new AccountSettingPresenter(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
         toolbar.getTitleTv().setText(getTitle());
-
         imageList = AccountSettingPresenter.getQAvatar();
 
     }
@@ -119,6 +120,11 @@ public class AccountSettingActivity extends BaseActivity {
         if (AppContext.user.isphone()) {
             bindPhoto.setVisibility(View.GONE);
             lineBindPhone.setVisibility(View.GONE);
+            modiffPassContainer.setVisibility(View.VISIBLE);
+        } else {
+            bindPhoto.setVisibility(View.VISIBLE);
+            lineBindPhone.setVisibility(View.VISIBLE);
+            modiffPassContainer.setVisibility(View.GONE);
         }
     }
 
@@ -158,7 +164,7 @@ public class AccountSettingActivity extends BaseActivity {
 
                 break;
             case R.id.exit:
-                ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance("确认退出?", "退出后将以游客模式登陆");
+                ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance("确认退出?", "退出后将以游客模式登录");
                 confirmDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
                     @Override
                     public void onClick(int index) {
@@ -258,48 +264,58 @@ public class AccountSettingActivity extends BaseActivity {
         GalleryFinal.cleanCacheFile();
     }
 
-    private String newUserPw = "", newUserPwAgain = "";
+    private String originPassword = "", newPassword = "";
 
     //保存修改信息
     public void saveUserChange() {
-        newUserPw = accountSettingNewPwdEt.getText().toString().trim();
-        newUserPwAgain = accountSettingNewPwdAgainEt.getText().toString().trim();
-        newUserNickName = StringUtils.isEmpty(accountSettingNicknameEt.getText().toString().trim()) ? AppContext.user.getFullname()
-                : accountSettingNicknameEt.getText().toString().trim();
+
+
+        newUserNickName = accountSettingNicknameEt.getText().toString().trim();
+
+        if (newUserNickName.length() < 1 || newUserNickName.length() > 10) {
+            Toast.makeText(this, "昵称必须为1-10位汉字或英文", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        originPassword = originPasswordEd.getText().toString().trim();
+        newPassword = newPasswordEd.getText().toString().trim();
+
+        if (AppContext.user.isphone() && (!TextUtils.isEmpty(originPassword) || !TextUtils.isEmpty(newPassword))) {
+            if (originPassword.equals(newPassword)) {
+                Toast.makeText(this, "新旧密码不能相同", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (newPassword.length() < 6 || newPassword.length() > 12) {
+                Toast.makeText(this, "请输入6-12位新密码", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
 
         newUserGender = accountSettingGenderTv.getText().toString().trim();
         newUserLocation = accountSettingUserLocation.getText().toString().trim();
 
-        if (StringUtils.isEmpty(newUserPw) && newUserPwAgain.equals(newUserPw) || (newUserPw.equals(newUserPwAgain) && newUserPw.length() > 6)) {
-            DialogUtil.showProgess(this, R.string.loading_dialog_text);
-            if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
-                AccountSettingPresenter.getQiNiuToken(AccountSettingActivity.this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
-                    @Override
-                    public void onSuccess(String photoUrl) {
-                        putUserInfo("http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl);
-                    }
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
+            AccountSettingPresenter.getQiNiuToken(AccountSettingActivity.this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
+                @Override
+                public void onSuccess(String photoUrl) {
+                    putUserInfo("http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl);
+                }
 
-                    @Override
-                    public void onError() {
-                        DialogUtil.dismissProgess();
-                        Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            } else if (!StringUtils.isEmpty(newUserPhoto) && newUserPhoto.startsWith("http")) {
-                putUserInfo(newUserPhoto);
-            } else {
-                putUserInfo("");
-            }
-
+                @Override
+                public void onError() {
+                    DialogUtil.dismissProgess();
+                    Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
-            Toast.makeText(this, "密码必须六位数以上,且跟确认密码相同", Toast.LENGTH_SHORT).show();
+            putUserInfo(newUserPhoto);
         }
     }
 
     public void putUserInfo(String photoUrl) {
         AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this,
-                newUserNickName, photoUrl, newUserGender, newUserLocation, newUserPw, newUserPwAgain, new AccountSettingPresenter.UploadUserPhotoListener() {
+                newUserNickName, photoUrl, newUserGender, newUserLocation, originPassword, newPassword, new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
                         refreshUserInfo();
@@ -307,7 +323,7 @@ public class AccountSettingActivity extends BaseActivity {
 
                     @Override
                     public void onError() {
-                        Toast.makeText(AccountSettingActivity.this, "账户信息修改失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AccountSettingActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                         DialogUtil.dismissProgess();
                     }
                 });
@@ -318,7 +334,6 @@ public class AccountSettingActivity extends BaseActivity {
         NetService.get(this, NetApi.getMyUserInfo, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                LogUtils.json("==" + response);
                 UserInfoHelper.saveUserInfo(response);
                 Toast.makeText(AccountSettingActivity.this, "账户信息修改成功", Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgess();
@@ -327,7 +342,7 @@ public class AccountSettingActivity extends BaseActivity {
 
             @Override
             public boolean onError(String error) {
-                Toast.makeText(AccountSettingActivity.this, "账户信息修改失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AccountSettingActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgess();
                 return false;
             }

@@ -5,11 +5,9 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
@@ -33,7 +31,6 @@ import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * AccountSettingPresenter
@@ -52,8 +49,6 @@ public class AccountSettingPresenter {
     private MyHandle handle;
     private static final String mAuthDesc = "秒后重新获取";
     private int mAuthCounter;
-    //点击获取验证码后保存
-    private String photoNumber;
 
     public AccountSettingPresenter(Context context) {
         this.context = context;
@@ -75,74 +70,6 @@ public class AccountSettingPresenter {
         }
     }
 
-
-    /**
-     * 获取验证码
-     */
-    public void getAuthCode(TextView view, String PhotoNumber) {
-
-        if (PhotoNumber.trim().length() < 11) {
-            Toast.makeText(context, "手机号不合法", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        mAuthCounter = 60;
-        this.photoNumber = PhotoNumber;
-        this.authView = view;
-        handle = new MyHandle();
-        view.setText("60秒后重新获取");
-        view.setEnabled(false);
-        handle.sendEmptyMessageDelayed(AUTH_CODE, 1000);
-        String uri = String.format(NetApi.GetCaptcha, PhotoNumber, "register");
-        GsonRequest<Object> request = new GsonRequest<>(uri, null, new ResponseListener<Object>() {
-            @Override
-            public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
-                handle.removeMessages(AUTH_CODE);
-                authView.setText("再次获取验证码");
-                authView.setEnabled(true);
-            }
-
-            @Override
-            public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
-
-            }
-        });
-        request.start(context, null);
-    }
-
-    public void bindPhotoNumber(String authCode, String password, final CommonListener<Object> listener) {
-        if (TextUtils.isEmpty(photoNumber) || authCode.trim().length() < 4) {
-            Toast.makeText(context, "请先获取验证码", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (password.trim().length() >= 6) {
-
-            Map<String, String> params = new HashMap<>();
-            params.put("phone", photoNumber);
-            params.put("captcha", authCode);
-            params.put("password", password);
-
-            GsonRequest<Object> request = new GsonRequest<>(Request.Method.GET, NetApi.bindPhoneNumber, params, Object.class, new ResponseListener<Object>() {
-                @Override
-                public void onErrorResponse(@Nullable VolleyError error) {
-                    Toast.makeText(context, "绑定失败", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
-                    if (result) {
-                    listener.successListener(response);
-                        Toast.makeText(context, "绑定成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "msg", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            request.start(context, null);
-        } else {
-            Toast.makeText(context, "密码长度必须大于六位", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     public static void getQiNiuToken(Context mContext, final String filePath, final UploadUserPhotoListener listener) {
         NetService.get(mContext, NetApi.getQiniuToken, new IRequestListener() {
@@ -211,25 +138,35 @@ public class AccountSettingPresenter {
     /**
      * 保存用户信息
      */
-    public static void postUserInfo2Server(Context mContext, String userName, String userPhoto, String userGender, String userLocation, String userPw, String userRePw, final UploadUserPhotoListener listener) {
+    public static void postUserInfo2Server(final Context mContext, String userName, String userPhoto, String userGender, String userLocation, String userPw, String userRePw,
+                                           final UploadUserPhotoListener listener) {
 
-        String netUrl = NetApi.updateUser + "?user.name=" + userName + "&user.gander=" + ("男".equals(userGender) ? "M" : "W") + "&user.location=" + userLocation;
-        if (!StringUtils.isEmpty(userPhoto))
-            netUrl += "&user.photo=" + userPhoto;
-        if (!StringUtils.isEmpty(userPw))
-            netUrl += "&user.password=" + userPw + "&user.restpsw=" + userRePw;
-        NetService.post(mContext, netUrl, null, new IRequestListener() {
+        Map<String, String> params = new HashMap<>();
+        params.put("user.name", userName);
+        params.put("user.gander", ("男".equals(userGender) ? "M" : "W"));
+        params.put("user.location", userLocation);
+        params.put("user.photo", userPhoto);
+        params.put("user.password", userPw);
+        params.put("user.restpsw", userRePw);
+
+        GsonRequest<Object> request = new GsonRequest<>(NetApi.updateUser, Object.class, params, new ResponseListener<Object>() {
             @Override
-            public void onSuccess(JSONObject response) {
-                listener.onSuccess("");
+            public void onErrorResponse(@Nullable VolleyError error) {
+                Toast.makeText(mContext, "网络异常", Toast.LENGTH_SHORT).show();
+                listener.onError();
             }
 
             @Override
-            public boolean onError(String error) {
-                listener.onError();
-                return false;
+            public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
+                if (result) {
+                    listener.onSuccess("");
+                } else {
+                    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                    listener.onError();
+                }
             }
         });
+        request.start(mContext, null);
     }
 
 

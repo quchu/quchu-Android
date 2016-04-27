@@ -572,8 +572,8 @@ public class QuchuDetailsActivity extends BaseActivity {
 
         switch (event.getFlag()) {
             case EventFlags.EVENT_QUCHU_DETAIL_UPDATED:
-                if (null != dModel && (Integer) event.getContent() == dModel.getPid()) {
-                    dModel.setMyCardId((Integer) event.getContent());
+                if (null != dModel && (Integer) event.getContent()[0] == dModel.getPid()) {
+                    dModel.setMyCardId((Integer) event.getContent()[0]);
                 }
                 break;
             case EventFlags.EVENT_QUCHU_RATING_UPDATE:
@@ -581,12 +581,15 @@ public class QuchuDetailsActivity extends BaseActivity {
                 getVisitors();
                 break;
             case EventFlags.EVENT_POST_CARD_ADDED:
-                if ((Integer) event.getContent() == dModel.getPid()) {
+                if ((Integer) event.getContent()[0] == dModel.getPid()) {
                     dModel.setCardCount(dModel.getCardCount() + 1);
                 }
                 break;
             case EventFlags.EVENT_POST_CARD_DELETED:
-                if (((Integer[]) event.getContent())[1] == dModel.getPid() && dModel.getCardCount() > 1) {
+
+
+
+                if (((Integer) event.getContent()[1]) == dModel.getPid() && dModel.getCardCount() > 1) {
                     dModel.setCardCount(dModel.getCardCount() - 1);
                 }
                 break;

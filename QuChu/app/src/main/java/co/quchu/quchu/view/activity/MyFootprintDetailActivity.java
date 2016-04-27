@@ -349,7 +349,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     @Subscribe
     public void postCardDelete(QuchuEventModel model) {
         if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
-            initData((Integer) model.getContent());
+            initData((Integer) model.getContent()[0]);
         }
     }
 
