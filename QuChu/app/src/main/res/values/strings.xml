@@ -141,5 +141,7 @@
     <string name="navigation">导航</string>
     <string name="select_all">全选</string>
     <string name="discover_quchu">发现趣处</string>
+    <string name="confirm_delete">确认删除？</string>
+    <string name="caution_action_cannot_revert">该操作无法撤销，请注意</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 import com.umeng.analytics.MobclickAgent;
@@ -139,11 +140,21 @@ public class FootPrintActivity extends BaseActivity {
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -155,8 +166,6 @@ public class FootPrintActivity extends BaseActivity {
     @Override
     protected void onPause() {
         MobclickAgent.onPageEnd("pic");
-        if (!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this);
         super.onPause();
     }
 }

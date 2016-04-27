@@ -314,7 +314,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     private void changeCollectState(boolean isCollect) {
         dModel.setIsf(isCollect);
-        vFavorite.setImageResource(isCollect ? R.mipmap.ic_star_stroke : R.mipmap.ic_star_fill);
+        vFavorite.setImageResource(isCollect ? R.mipmap.ic_star_fill : R.mipmap.ic_star_stroke);
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 
@@ -383,6 +383,9 @@ public class QuchuDetailsActivity extends BaseActivity {
                     mVisitedInfoModel.getResult().get(i).setPraise(selection.get(i).isPraise());
                 }
                 mIsRatingRunning = false;
+                dModel.setIsout(true);
+                getVisitors();
+                getRatingInfo();
             }
 
             @Override
@@ -400,7 +403,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         if (dModel != null) {
             switch (v.getId()) {
 
-                case R.id.tvQuguo:
+                case R.id.rlQuguo:
 
 //                    if (AppContext.user.isIsVisitors()) {
 //                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);

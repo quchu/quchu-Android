@@ -34,6 +34,7 @@ import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
@@ -111,29 +112,37 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
             titleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    v.setClickable(false);
-                    String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
-
-                    GsonRequest<Objects> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Objects>() {
+                    ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance(getString(R.string.confirm_delete),getString(R.string.caution_action_cannot_revert));
+                    confirmDialogFg.show(getFragmentManager(),"confirm");
+                    confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                         @Override
-                        public void onErrorResponse(@Nullable VolleyError error) {
-                            Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                            v.setClickable(true);
-                        }
+                        public void onClick(int index) {
+                            v.setClickable(false);
+                            String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
 
-                        @Override
-                        public void onResponse(Objects response, boolean result, String errorCode, @Nullable String msg) {
-                            v.setClickable(true);
-                            if (result) {
-                                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId, pId));
-                                Toast.makeText(AddFootprintActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else {
-                                Toast.makeText(AddFootprintActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
-                            }
+                            GsonRequest<Objects> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Objects>() {
+                                @Override
+                                public void onErrorResponse(@Nullable VolleyError error) {
+                                    Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                                    v.setClickable(true);
+                                }
+
+                                @Override
+                                public void onResponse(Objects response, boolean result, String errorCode, @Nullable String msg) {
+                                    v.setClickable(true);
+                                    if (result) {
+                                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId, pId));
+                                        Toast.makeText(AddFootprintActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    } else {
+                                        Toast.makeText(AddFootprintActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            request.start(AddFootprintActivity.this, null);
                         }
                     });
-                    request.start(AddFootprintActivity.this, null);
+
                 }
             });
         }

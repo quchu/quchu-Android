@@ -269,7 +269,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ActionViewHolder) holder).detail_button_add_postcard_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).detail_button_collect_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).tvFootprint.setOnClickListener(mOnItemClickListener);
-            ((ActionViewHolder) holder).tvQuguo.setOnClickListener(mOnItemClickListener);
+            ((ActionViewHolder) holder).rlQuguo.setOnClickListener(mOnItemClickListener);
+            ((ActionViewHolder) holder).ivQuguo.setVisibility(mData.isIsout()?View.VISIBLE:View.GONE);
+
             ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
             if (mData.getCardCount()>0){
                 ((ActionViewHolder) holder).tvFootprint.setText("脚印 "+mData.getCardCount());
@@ -285,6 +287,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 LinearLayout.LayoutParams lpVisitedUsersAvatar;
                 //ic_care_friends_avatar
 
+                ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
                 for (int i = 0; i < 9; i++) {
                     if (mVisitedUsers.getResult().size()>i){
                         SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
@@ -318,7 +321,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
 
                 }
-                ((ActionViewHolder) holder).tvQuguo.setOnClickListener(mOnItemClickListener);
                 ((ActionViewHolder) holder).llVisitedUsers.invalidate();
             }
 
@@ -557,6 +559,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LinearLayout llVisitedUsers;
         @Bind(R.id.tvVisitorCount)
         TextView tvVisitorCount;
+        @Bind(R.id.ivQuguo)
+        ImageView ivQuguo;
+        @Bind(R.id.rlQuguo)
+        RelativeLayout rlQuguo;
 
         @Bind(R.id.tvFootPrint)
         TextView tvFootprint;
