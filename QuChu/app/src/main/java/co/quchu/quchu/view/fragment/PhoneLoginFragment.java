@@ -366,14 +366,7 @@ public class PhoneLoginFragment extends BaseFragment {
 
     }
 
-    private Handler hander = new Handler() {
-        public void handleMessage(android.os.Message msg) {
 
-            InputMethodManager inputManager = (InputMethodManager) phoneLoginPnumEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.showSoftInput(phoneLoginPnumEt, 0);
-        }
-
-    };
     long startTime = 0l;
 
     /**
