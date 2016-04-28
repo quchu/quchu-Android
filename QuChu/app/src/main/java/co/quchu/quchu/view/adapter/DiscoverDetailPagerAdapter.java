@@ -105,10 +105,11 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
             holder.tag2.setVisibility(View.GONE);
             holder.tag3.setVisibility(View.GONE);
         }
-        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
+        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude() ) {
             holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
         } else {
-            String distance = StringUtils.formatDouble(Double.parseDouble(model.getDistance())) + "km";
+
+            String distance = StringUtils.getDistance(model.getLatitude(),model.getLongitude(),SPUtils.getLatitude(),SPUtils.getLongitude());
             holder.item_recommend_card_distance_tv.setText("距您" + distance);
         }
         view.setOnClickListener(new View.OnClickListener() {

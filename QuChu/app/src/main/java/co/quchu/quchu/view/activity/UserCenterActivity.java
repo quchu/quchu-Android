@@ -83,8 +83,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             public void onSuccess(UserCenterInfo userCenterInfo) {
                 userInfo = userCenterInfo;
                 userInfo.userId = userId;
-                if (userInfo != null)
-                    bindView();
+                bindView();
             }
 
             @Override

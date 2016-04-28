@@ -185,7 +185,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()), Double.valueOf(mDataSet.get(i).getLongitude()));
             Marker marker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getName())
                     .snippet(strDistance)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_target))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_target))
                     .perspective(true).draggable(false).period(50));
             marker.setObject(i);
             mMarks.add(marker);

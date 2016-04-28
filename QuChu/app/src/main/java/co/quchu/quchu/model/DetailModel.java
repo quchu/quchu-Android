@@ -96,6 +96,7 @@ public class DetailModel implements Serializable{
 
 
     public void copyFrom(DetailModel objTarget){
+
         setActivityInfo(objTarget.getActivityInfo());
         setActivityInfo(objTarget.getActivityInfo());
         setActivityInfoHtml(objTarget.getActivityInfoHtml());

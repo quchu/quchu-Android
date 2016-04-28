@@ -9,11 +9,11 @@ android {
         applicationId "co.quchu.quchu"
         targetSdkVersion 16
         minSdkVersion 16
-        versionCode 1009
-        versionName "1.1.63"
+        versionCode 1016
+        versionName "1.1.70"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
-        vectorDrawables.generatedDensities = ['xhdpi','xxhdpi','hdpi']
+        vectorDrawables.generatedDensities = ['xhdpi', 'xxhdpi', 'hdpi']
         vectorDrawables.useSupportLibrary = true
     }
     lintOptions {
@@ -41,18 +41,18 @@ android {
             // 移除无用的resource文件
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [AMAP_DEBUG_KEY:"8d635450932036faf3681a8960d884fa"]
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "8d635450932036faf3681a8960d884fa"]
         }
         debug {
             buildConfigField "int", "API_SERVER", "2"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
-            manifestPlaceholders = [AMAP_DEBUG_KEY:"b60847e00e5cc92cc6239b4a664cd872"]
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
         }
 
         uat {
             buildConfigField "int", "API_SERVER", "1"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
-            manifestPlaceholders = [AMAP_DEBUG_KEY:"b60847e00e5cc92cc6239b4a664cd872"]
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
         }
 
     }
@@ -133,7 +133,6 @@ dependencies {
     compile "com.android.support:support-v4:${supportVersion()}"
 
     //动画回弹效果
-    compile files('libs/weibosdkcore.jar')
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.2.jar')
     compile files('libs/open_sdk_r5509.jar')
@@ -145,14 +144,11 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-//    compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
-//    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
+
     compile 'com.qiniu:qiniu-android-sdk:7.0.+'
-    compile 'com.facebook.rebound:rebound:0.3.8'
+//    compile 'com.facebook.rebound:rebound:0.3.8'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.he5ed.lib:volley:android-6.0.1_r5'
     compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.facebook.fresco:fresco:0.9.0+'
-    compile 'com.facebook.fresco:webpsupport:0.9.0+'
 }

@@ -58,8 +58,8 @@
             card_view:prb_clickable="false"
             card_view:prb_defaultRating="4"
             card_view:prb_tickSpacing="3dip"
-            card_view:prb_tickNormalDrawable="@drawable/ic_like_fill"
-            card_view:prb_tickSelectedDrawable="@drawable/ic_like_fill_checked"
+            card_view:prb_tickNormalDrawable="@mipmap/ic_like_fill"
+            card_view:prb_tickSelectedDrawable="@mipmap/ic_like_fill_checked"
             card_view:prb_totalTicks="5" />
 
 

@@ -20,9 +20,7 @@ import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.PhoneLoginFragment;
-import co.quchu.quchu.view.fragment.UserGuideFragment;
 import co.quchu.quchu.view.fragment.UserLoginMainFragment;
 
 /**
@@ -117,13 +115,11 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
     }
 
     public void userRegiestSuccess() {
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.user_login_fl, new UserGuideFragment());
-        transaction.addToBackStack(null);
-        transaction.commitAllowingStateLoss();
-        SPUtils.initGuideIndex();
+        startActivity(new Intent(this, RecommendActivity.class));
+//        SPUtils.initGuideIndex();
         KeyboardUtils.closeBoard(this, findViewById(R.id.user_login_fl));
         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
+        finish();
     }
 
     public void enterApp() {

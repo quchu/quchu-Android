@@ -64,13 +64,14 @@
                 android:id="@+id/support"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                app:srcCompat="@drawable/ic_light_like_fill" />
+                android:src="@mipmap/ic_light_like_fill" />
 
             <TextView
                 android:id="@+id/supportCount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="4dp"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:text="88" />
 
@@ -89,7 +90,7 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_share" />
+            android:src="@mipmap/ic_share" />
 
         <View
             android:layout_width="1dp"
@@ -103,7 +104,7 @@
             android:layout_width="0dp"
             android:layout_height="18dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_edit" />
+            android:src="@mipmap/ic_edit" />
 
         <!--<View-->
         <!--android:layout_width="1dp"-->

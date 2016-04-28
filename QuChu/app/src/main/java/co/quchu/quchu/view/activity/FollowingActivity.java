@@ -3,8 +3,9 @@ package co.quchu.quchu.view.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -13,6 +14,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.FollowUserModel;
 import co.quchu.quchu.presenter.FollowPresenter;
+import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FriendsAdatper;
 
@@ -22,7 +24,7 @@ import co.quchu.quchu.view.adapter.FriendsAdatper;
  * Date: 2016-03-01
  * TA关注的  /我关注的
  */
-public class FollowingActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener {
+public class FollowingActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, PageLoadListener<List<FollowUserModel>> {
     public static final int TAFOLLOWING = 0x01;//TA关注的
     public static final int TAFOLLOWERS = 0x02;//关注TA的
     @Bind(R.id.follow_rv)
@@ -32,6 +34,7 @@ public class FollowingActivity extends BaseActivity implements AdapterBase.OnLoa
     FriendsAdatper adatper;
     private EnhancedToolbar toolbar;
     private int pageNo = 1;
+    private FollowPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +50,14 @@ public class FollowingActivity extends BaseActivity implements AdapterBase.OnLoa
         adatper.setLoadmoreListener(this);
         followRv.setLayoutManager(new LinearLayoutManager(this));
         followRv.setAdapter(adatper);
-        FollowPresenter.getFollowsList(this, userId, followType, pageNo, new FollowPresenter.GetFollowCallBack() {
-            @Override
-            public void onSuccess(ArrayList<FollowUserModel> lists) {
-                adatper.initData(lists);
-            }
 
-            @Override
-            public void onError() {
-                adatper.setLoadMoreEnable(false);
-            }
-        });
+        presenter = new FollowPresenter(this, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.getFollow(userId, followType, false, pageNo);
     }
 
     @Override
@@ -79,20 +79,33 @@ public class FollowingActivity extends BaseActivity implements AdapterBase.OnLoa
 
     @Override
     public void onLoadmore() {
-        FollowPresenter.getFollowsList(this, userId, followType, pageNo + 1, new FollowPresenter.GetFollowCallBack() {
-            @Override
-            public void onSuccess(ArrayList<FollowUserModel> lists) {
-                pageNo++;
-                adatper.addMoreData(lists);
-
-            }
-
-            @Override
-            public void onError() {
-                adatper.setLoadMoreEnable(false);
-            }
-        });
+        presenter.getFollow(userId, followType, false, pageNo + 1);
     }
 
 
+    @Override
+    public void initData(List<FollowUserModel> data) {
+        adatper.initData(data);
+    }
+
+    @Override
+    public void moreData(List<FollowUserModel> data) {
+        pageNo++;
+        adatper.addMoreData(data);
+    }
+
+    @Override
+    public void nullData() {
+        adatper.setLoadMoreEnable(false);
+    }
+
+    @Override
+    public void netError(final int pageNo, String massage) {
+        adatper.setNetError(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.getFollow(userId, followType, false, pageNo);
+            }
+        });
+    }
 }

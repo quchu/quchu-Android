@@ -57,7 +57,7 @@ public class GsonRequest<T> extends Request<T> {
     }
 
     public GsonRequest(String url, @NonNull Class<T> entity, ResponseListener<T> listener) {
-        super(Method.GET, url, listener);
+        super(Method.POST, url, listener);
         this.listener = listener;
         this.entity = entity;
     }
@@ -219,6 +219,13 @@ public class GsonRequest<T> extends Request<T> {
     public void start(Context context, Object tag) {
         this.context = context;
         setTag(tag);
+        setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
+        queue.add(this);
+        queue.start();
+    }
+
+    public void start(Context context) {
+        this.context = context;
         setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
         queue.start();

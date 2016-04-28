@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -87,9 +88,9 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
             edit.setVisibility(View.VISIBLE);
         }
         if (!entity.isP) {//当前登录用户是否已经点赞
-            support.setImageResource(R.drawable.ic_light_like);
+            support.setImageResource(R.mipmap.ic_light_like);
         } else {
-            support.setImageResource(R.drawable.ic_light_like_fill);
+            support.setImageResource(R.mipmap.ic_light_like_fill);
         }
         supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
         detail.setText(entity.builder);
@@ -252,11 +253,11 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
                                 entity.isP = false;
                                 //如果用户没有切换卡片
                                 if (clickPosition == selectedPosition)
-                                    support.setImageResource(R.drawable.ic_light_like);
+                                    support.setImageResource(R.mipmap.ic_light_like);
                             } else {
                                 entity.isP = true;
                                 if (clickPosition == selectedPosition)
-                                    support.setImageResource(R.drawable.ic_light_like_fill);
+                                    support.setImageResource(R.mipmap.ic_light_like_fill);
                             }
                             clickPosition = -1;
                         }
@@ -346,33 +347,27 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         }
     }
 
-    @Subscribe
-    public void postCardDelete(QuchuEventModel model) {
-        if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
-            initData((Integer) model.getContent());
-        }
-    }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStart() {
+        super.onStart();
         EventBus.getDefault().register(this);
     }
 
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel model) {
+        if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+            initData((Integer) model.getContent()[0]);
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
     }
 }

@@ -27,19 +27,34 @@
             android:background="@drawable/shape_lineframe_white"
             />
 
-        <TextView
-            android:id="@+id/tvQuguo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/status_quguo"
-            android:gravity="center"
-            android:padding="@dimen/half_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginLeft="@dimen/quarter_margin"
-            android:textColor="@color/white"
-            android:background="@drawable/shape_lineframe_white"
-            />
+       <RelativeLayout
+           android:id="@+id/rlQuguo"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:drawableLeft="@mipmap/ic_drawable_left_quguo"
+           android:layout_marginRight="@dimen/base_margin"
+           android:layout_marginLeft="@dimen/quarter_margin"
+           android:background="@drawable/shape_lineframe_white"
+           >
+           <ImageView
+               android:id="@+id/ivQuguo"
+               android:src="@mipmap/ic_drawable_left_quguo"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_toLeftOf="@+id/tvQuguo"
+               android:layout_centerVertical="true"
+               />
+           <TextView
+               android:id="@+id/tvQuguo"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/status_quguo"
+               android:layout_centerInParent="true"
+               android:padding="@dimen/half_margin"
+               android:textColor="@color/white"
+               />
+       </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout

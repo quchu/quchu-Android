@@ -192,8 +192,8 @@ public class QuchuDetailsActivity extends BaseActivity {
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putSerializable(BUNDLE_KEY_DATA_MODEL, dModel);
     }
 
@@ -262,48 +262,48 @@ public class QuchuDetailsActivity extends BaseActivity {
         mRecyclerView.addOnScrollListener(new HidingScrollListener() {
             @Override
             public void onHide() {
-                if ((System.currentTimeMillis() - mLastAnimated) < 600) {
-                    return;
-                }
-                detail_bottom_group_ll.animate()
-                        .translationY(detail_bottom_group_ll.getHeight())
-                        .setInterpolator(new AccelerateDecelerateInterpolator())
-                        .setDuration(300).setStartDelay(300)
-                        .start();
-                appbar.animate()
-                        .translationY(-appbar.getHeight())
-                        .setInterpolator(new AccelerateDecelerateInterpolator())
-                        .setDuration(300).setStartDelay(300).withStartAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        appbar.setVisibility(View.GONE);
-                        detail_bottom_group_ll.setVisibility(View.GONE);
-                    }
-                }).start();
-                mLastAnimated = System.currentTimeMillis();
+//                if ((System.currentTimeMillis() - mLastAnimated) < 600) {
+//                    return;
+//                }
+//                detail_bottom_group_ll.animate()
+//                        .translationY(detail_bottom_group_ll.getHeight())
+//                        .setInterpolator(new AccelerateDecelerateInterpolator())
+//                        .setDuration(300).setStartDelay(300)
+//                        .start();
+//                appbar.animate()
+//                        .translationY(-appbar.getHeight())
+//                        .setInterpolator(new AccelerateDecelerateInterpolator())
+//                        .setDuration(300).setStartDelay(300).withStartAction(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        appbar.setVisibility(View.GONE);
+//                        detail_bottom_group_ll.setVisibility(View.GONE);
+//                    }
+//                }).start();
+//                mLastAnimated = System.currentTimeMillis();
             }
 
             @Override
             public void onShow() {
-                if ((System.currentTimeMillis() - mLastAnimated) < 600) {
-                    return;
-                }
-                detail_bottom_group_ll.animate()
-                        .translationY(0)
-                        .setInterpolator(new AccelerateDecelerateInterpolator())
-                        .setDuration(300).setStartDelay(300)
-                        .start();
-                appbar.animate()
-                        .translationY(0)
-                        .setInterpolator(new AccelerateDecelerateInterpolator())
-                        .setDuration(500).setStartDelay(100).withStartAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        appbar.setVisibility(View.VISIBLE);
-                        detail_bottom_group_ll.setVisibility(View.VISIBLE);
-                    }
-                }).start();
-                mLastAnimated = System.currentTimeMillis();
+//                if ((System.currentTimeMillis() - mLastAnimated) < 600) {
+//                    return;
+//                }
+//                detail_bottom_group_ll.animate()
+//                        .translationY(0)
+//                        .setInterpolator(new AccelerateDecelerateInterpolator())
+//                        .setDuration(300).setStartDelay(300)
+//                        .start();
+//                appbar.animate()
+//                        .translationY(0)
+//                        .setInterpolator(new AccelerateDecelerateInterpolator())
+//                        .setDuration(500).setStartDelay(100).withStartAction(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        appbar.setVisibility(View.VISIBLE);
+//                        detail_bottom_group_ll.setVisibility(View.VISIBLE);
+//                    }
+//                }).start();
+//                mLastAnimated = System.currentTimeMillis();
             }
         });
 
@@ -314,7 +314,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     private void changeCollectState(boolean isCollect) {
         dModel.setIsf(isCollect);
-        vFavorite.setImageResource(isCollect ? R.mipmap.ic_star_stroke : R.mipmap.ic_star_fill);
+        vFavorite.setImageResource(isCollect ? R.mipmap.ic_star_fill : R.mipmap.ic_star_stroke);
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 
@@ -383,6 +383,9 @@ public class QuchuDetailsActivity extends BaseActivity {
                     mVisitedInfoModel.getResult().get(i).setPraise(selection.get(i).isPraise());
                 }
                 mIsRatingRunning = false;
+                dModel.setIsout(true);
+                getVisitors();
+                getRatingInfo();
             }
 
             @Override
@@ -400,7 +403,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         if (dModel != null) {
             switch (v.getId()) {
 
-                case R.id.tvQuguo:
+                case R.id.rlQuguo:
 
 //                    if (AppContext.user.isIsVisitors()) {
 //                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
@@ -572,8 +575,8 @@ public class QuchuDetailsActivity extends BaseActivity {
 
         switch (event.getFlag()) {
             case EventFlags.EVENT_QUCHU_DETAIL_UPDATED:
-                if (null != dModel && (Integer) event.getContent() == dModel.getPid()) {
-                    dModel.setMyCardId((Integer) event.getContent());
+                if (null != dModel && (Integer) event.getContent()[0] == dModel.getPid()) {
+                    dModel.setMyCardId((Integer) event.getContent()[0]);
                 }
                 break;
             case EventFlags.EVENT_QUCHU_RATING_UPDATE:
@@ -581,12 +584,15 @@ public class QuchuDetailsActivity extends BaseActivity {
                 getVisitors();
                 break;
             case EventFlags.EVENT_POST_CARD_ADDED:
-                if ((Integer) event.getContent() == dModel.getPid()) {
+                if ((Integer) event.getContent()[0] == dModel.getPid()) {
                     dModel.setCardCount(dModel.getCardCount() + 1);
                 }
                 break;
             case EventFlags.EVENT_POST_CARD_DELETED:
-                if (((Integer[]) event.getContent())[1] == dModel.getPid() && dModel.getCardCount() > 1) {
+
+
+
+                if (((Integer) event.getContent()[1]) == dModel.getPid() && dModel.getCardCount() > 1) {
                     dModel.setCardCount(dModel.getCardCount() - 1);
                 }
                 break;

@@ -7,6 +7,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.NestedScrollingParent;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -101,7 +102,6 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
         int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
 
         measureChildren(widthMeasureSpec, heightMeasureSpec);
-
 
         setMeasuredDimension(sizeWidth, sizeHeight);
 
@@ -219,26 +219,23 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
 
     @Override
     public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
-        return super.onNestedFling(target, velocityX, velocityY, consumed);
+        return false;
     }
 
 
     public void onNestedScrollAccepted(View child, View target, int nestedScrollAxes) {
-        super.onNestedScrollAccepted(child, target, nestedScrollAxes);
     }
 
 
     public void onStopNestedScroll(View target) {
-        super.onStopNestedScroll(target);
     }
 
-
     public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
-        return super.onNestedPreFling(target, velocityX, velocityY);
+        return false;
     }
 
 
     public int getNestedScrollAxes() {
-        return super.getNestedScrollAxes();
+        return ViewCompat.SCROLL_AXIS_VERTICAL;
     }
 }

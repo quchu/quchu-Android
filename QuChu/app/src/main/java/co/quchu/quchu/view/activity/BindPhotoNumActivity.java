@@ -20,11 +20,14 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.thirdhelp.UserInfoHelper;
 
 /**
  * Created by no21 on 2016/4/19.
@@ -36,11 +39,9 @@ public class BindPhotoNumActivity extends BaseActivity implements View.OnClickLi
     EditText photoNumber;
     @Bind(R.id.getAuthCode)
     TextView getAuthCode;
-    @Bind(R.id.account_setting_realpwd_hint)
-    TextView accountSettingRealpwdHint;
     @Bind(R.id.authCode)
     EditText authCode;
-    @Bind(R.id.password)
+    @Bind(R.id.pass)
     EditText password;
     @Bind(R.id.bindPhotoNumber)
     TextView bindPhotoNumber;
@@ -145,7 +146,7 @@ public class BindPhotoNumActivity extends BaseActivity implements View.OnClickLi
             Toast.makeText(this, "请先获取验证码", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (password.trim().length() >= 6) {
+        if (password.trim().length() >= 6 && password.trim().length() < 13) {
             Map<String, String> params = new HashMap<>();
             params.put("phone", photoNumberCache);
             params.put("captcha", authCode);
@@ -161,6 +162,9 @@ public class BindPhotoNumActivity extends BaseActivity implements View.OnClickLi
                 public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
                     if (result) {
                         Toast.makeText(BindPhotoNumActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
+                        UserInfoModel user = AppContext.user;
+                        user.setIsphone(true);
+                        UserInfoHelper.saveUserInfo(user);
                         finish();
                     } else {
                         Toast.makeText(BindPhotoNumActivity.this, "请勿重复绑定", Toast.LENGTH_SHORT).show();
@@ -169,7 +173,7 @@ public class BindPhotoNumActivity extends BaseActivity implements View.OnClickLi
             });
             request.start(BindPhotoNumActivity.this, null);
         } else {
-            Toast.makeText(BindPhotoNumActivity.this, "密码长度必须大于六位", Toast.LENGTH_SHORT).show();
+            Toast.makeText(BindPhotoNumActivity.this, "请输入6-12位新密码", Toast.LENGTH_SHORT).show();
         }
     }
 

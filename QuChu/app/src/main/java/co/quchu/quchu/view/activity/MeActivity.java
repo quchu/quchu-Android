@@ -72,6 +72,9 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
 
     private MeActivityPresenter presenter;
 
+    //用户头像
+    private Uri userHead;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,13 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("profile");
+
+        name.setText(AppContext.user.isIsVisitors() ? "未知生物" : AppContext.user.getFullname());
+//更换了头像
+        if (!userHead.equals(Uri.parse(AppContext.user.getPhoto()))) {
+            userHead = Uri.parse(AppContext.user.getPhoto());
+            ImageUtils.loadWithAppropriateSize(headImage, userHead);
+        }
         super.onResume();
     }
 
@@ -95,10 +105,8 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     }
 
     private void initData() {
-
-        ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
-        name.setText(AppContext.user.isIsVisitors() ? "未知生物" : AppContext.user.getFullname());
-
+        userHead = Uri.parse(AppContext.user.getPhoto());
+        ImageUtils.loadWithAppropriateSize(headImage, userHead);
         presenter.getGene();
     }
 

@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -81,7 +82,12 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
 
     @Override
     public void netError(int pageNo, String massage) {
-        adapter.setLoadMoreEnable(false);
+        adapter.setNetError(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MessageCenterPresenter.getMessageList(MessageCenterActivity.this, pagesNo, MessageCenterActivity.this);
+            }
+        });
     }
 
     @Override

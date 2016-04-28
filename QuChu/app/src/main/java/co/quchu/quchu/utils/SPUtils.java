@@ -229,15 +229,15 @@ public class SPUtils {
     }
 
 
-    /**
-     * 初始化 引导页 标志
-     */
-    public static void initGuideIndex() {
-        putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_IMAGES_GUIDE, true);
-        putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_GUIDE, true);
-        putBooleanToSPMap(AppContext.mContext, AppKey.IS_PLANET_GUIDE, true);
-
-    }
+//    /**
+//     * 初始化 引导页 标志
+//     */
+//    public static void initGuideIndex() {
+//        putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_IMAGES_GUIDE, true);
+//        putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_GUIDE, true);
+//        putBooleanToSPMap(AppContext.mContext, AppKey.IS_PLANET_GUIDE, true);
+//
+//    }
 
     public static String getLoginType() {
         return getValueFromSPMap(AppContext.mContext, AppKey.LOGIN_TYPE);

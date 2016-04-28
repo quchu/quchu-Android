@@ -11,8 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import co.quchu.quchu.model.FollowBean;
 import co.quchu.quchu.model.FollowUserModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
@@ -32,18 +34,39 @@ public class FollowPresenter {
     public static final int TAFOLLOWING = 0x01;//TA关注的
     public static final int TAFOLLOWERS = 0x02;//关注TA的
 
+    private PageLoadListener<List<FollowUserModel>> view;
+    private Context context;
 
-    public static void getMyFollow(Context context, int userId, String type, boolean head, int pageNo) {
-        String uri = String.format(Locale.CHINA, NetApi.getFollow, userId, pageNo, type);
-        GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
+    public FollowPresenter(Context context, PageLoadListener<List<FollowUserModel>> view) {
+        this.view = view;
+        this.context = context;
+    }
+
+    /**
+     * @param type 关注和被关注 我关注 host  关注我的 follow
+     * @param head 头部信息
+     */
+    public void getFollow(int userId, int type, boolean head, final int pageNo) {
+
+        String typeString = type == TAFOLLOWING ? "host" : "follow";
+
+        String uri = String.format(Locale.CHINA, NetApi.getFollow, userId, pageNo, typeString);
+
+        GsonRequest<FollowBean> request = new GsonRequest<>(uri, FollowBean.class, new ResponseListener<FollowBean>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-
+                view.netError(pageNo, "");
             }
 
             @Override
-            public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
-
+            public void onResponse(FollowBean response, boolean result, @Nullable String exception, @Nullable String msg) {
+                if (response.getUsers().getResult() == null || response.getUsers().getResult().size() == 0) {
+                    view.nullData();
+                } else if (pageNo == 1) {
+                    view.initData(response.getUsers().getResult());
+                } else {
+                    view.moreData(response.getUsers().getResult());
+                }
             }
         });
 

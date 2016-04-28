@@ -119,12 +119,14 @@ public class PhoneLoginFragment extends BaseFragment {
                     break;
                 case 0x05://用户登录 密码获取输入框
                     view.clearFocus();
-                    phoneLoginPasswordEt.setFocusable(true);
-                    phoneLoginPasswordEt.setFocusableInTouchMode(true);
-                    phoneLoginPasswordEt.requestFocus();
-                    inputManager =
-                            (InputMethodManager) phoneLoginPasswordEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputManager.showSoftInput(phoneLoginPasswordEt, 0);
+                    if (null != phoneLoginPasswordEt) {
+                        phoneLoginPasswordEt.setFocusable(true);
+                        phoneLoginPasswordEt.setFocusableInTouchMode(true);
+                        phoneLoginPasswordEt.requestFocus();
+                        inputManager =
+                                (InputMethodManager) phoneLoginPasswordEt.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputManager.showSoftInput(phoneLoginPasswordEt, 0);
+                    }
                     break;
             }
         }
@@ -388,7 +390,7 @@ public class PhoneLoginFragment extends BaseFragment {
         @Override
         public void onTextChanged(CharSequence s, final int start, int before, int count) {
 
-            if (s.length() >= 11) {
+            if (s.toString().trim().length() >= 11) {
                 String phoneNo = s.toString().trim();
                 if (phoneNo.length() >= 11) {
                     if (StringUtils.isMobileNO(phoneNo)) {
@@ -474,28 +476,34 @@ public class PhoneLoginFragment extends BaseFragment {
      * 用户注册
      */
     private void userRegiest() {
-        if (phoneLoginPasswordEt.getText().toString().trim().length() >= 6) {
-            UserLoginPresenter.userRegiest(getActivity(), AppContext.user.getUserId(), phoneLoginPnumEt.getText().toString().trim(),
-                    MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), userLoginNicknameEt.getText().toString().trim(),
-                    authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
-                        @Override
-                        public void isUnique(JSONObject msg) {
-                            UserInfoHelper.saveUserInfo(msg);
-                            MobclickAgent.onEvent(getContext(), "register_c");
-                            ((UserLoginActivity) getActivity()).userRegiestSuccess();
-
-                        }
-
-                        @Override
-                        public void notUnique(String msg) {
-
-                        }
-                    });
-
-
-        } else {
-            Toast.makeText(getActivity(), "密码长度必须大于6位", Toast.LENGTH_SHORT).show();
+        String password = phoneLoginPasswordEt.getText().toString().trim();
+        if (password.length() < 6 || password.length() > 12) {
+            Toast.makeText(getActivity(), "请输入6-12位密码", Toast.LENGTH_SHORT).show();
+            return;
         }
+        String nikeName = userLoginNicknameEt.getText().toString().trim();
+        if (nikeName.length() < 1 || nikeName.length() > 10) {
+            Toast.makeText(getActivity(), "请输入1-10位昵称", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        UserLoginPresenter.userRegiest(getActivity(), AppContext.user.getUserId(), phoneLoginPnumEt.getText().toString().trim(),
+                MD5.hexdigest(password), nikeName,
+                authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
+                    @Override
+                    public void isUnique(JSONObject msg) {
+                        UserInfoHelper.saveUserInfo(msg);
+                        MobclickAgent.onEvent(getContext(), "register_c");
+                        ((UserLoginActivity) getActivity()).userRegiestSuccess();
+
+                    }
+
+                    @Override
+                    public void notUnique(String msg) {
+
+                    }
+                });
     }
 
     /**

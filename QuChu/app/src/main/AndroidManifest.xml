@@ -207,6 +207,7 @@
 
         <activity
             android:name=".view.activity.ClassifyDetailActivity"
+            android:label="@string/discover_quchu"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.FindPositionActivity"

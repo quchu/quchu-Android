@@ -16,7 +16,7 @@ public class FollowUserModel {
     private String name;
     private String photo;
     private int userId;
-
+    private String location;
     public void setName(String name) {
         this.name = name;
     }

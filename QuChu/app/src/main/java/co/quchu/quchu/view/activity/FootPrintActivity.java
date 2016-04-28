@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 import com.umeng.analytics.MobclickAgent;
@@ -114,29 +115,25 @@ public class FootPrintActivity extends BaseActivity {
         FootPrintPresenter.getFootprint(getApplicationContext(), mQuchuId, mCurrentPageNo, new FootPrintPresenter.GetFootprintDataListener() {
             @Override
             public void getFootprint(List<FootprintModel> model, int pMaxPageNo) {
-                    mMaxPageNo = pMaxPageNo;
-                    if (null!=model){
-                        mData.addAll(model);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                    mIsLoading = false;
+                mMaxPageNo = pMaxPageNo;
+                if (null != model) {
+                    mData.addAll(model);
+                    mAdapter.notifyDataSetChanged();
+                }
+                mIsLoading = false;
                 if (DialogUtil.isDialogShowing()) {
                     DialogUtil.dismissProgess();
                 }
-
             }
 
         });
     }
 
 
-
-
-
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-
         if (event.getFlag() == EventFlags.EVENT_POST_CARD_ADDED || event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+            mMaxPageNo = -1;
             loadData(false);
         }
     }

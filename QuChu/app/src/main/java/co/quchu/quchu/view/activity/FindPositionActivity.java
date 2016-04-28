@@ -78,7 +78,6 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             }
         });
         init();
-
         restore();
     }
 
@@ -134,8 +133,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                     Toast.makeText(FindPositionActivity.this, "名称和地址不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                List<String> im = new ArrayList<String>();
+                List<String> im = new ArrayList<>();
                 for (PhotoInfo item : photoInfos) {
                     if (item.getPhotoPath().contains("file://")) {
                         im.add(Uri.parse(item.getPhotoPath()).getPath());
@@ -178,7 +176,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         map.put("place.pimage", Images);
 
 
-        GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url, map, null, new ResponseListener<Object>() {
+        GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url, map, Object.class, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
@@ -203,10 +201,10 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                 InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-            new SelectedImagePopWin(this, recyclerView, photoInfos, 8, new GalleryFinal.OnHanlderResultCallback() {
+            new SelectedImagePopWin(this, recyclerView, photoInfos, 4, new GalleryFinal.OnHanlderResultCallback() {
                 @Override
                 public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                    if (photoInfos.size() + resultList.size() > 8 && photoInfos.size() > 0) {
+                    if (photoInfos.size() + resultList.size() > 4 && photoInfos.size() > 0) {
                         photoInfos.remove(0);
                     }
                     for (PhotoInfo info : resultList) {

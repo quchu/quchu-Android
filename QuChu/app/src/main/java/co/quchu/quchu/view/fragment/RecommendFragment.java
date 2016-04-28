@@ -483,7 +483,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     public void onMessageEvent(QuchuEventModel event) {
 
         if (event.getFlag() == EventFlags.EVENT_QUCHU_DETAIL_UPDATED) {
-            if ((Integer) event.getContent() == cardList.get(currentIndex).getPid()) {
+            if ((Integer) event.getContent()[0] == cardList.get(currentIndex).getPid()) {
                 cardList.get(currentIndex).isout = true;
                 adapter.notifyItemChanged(currentIndex);
             }
