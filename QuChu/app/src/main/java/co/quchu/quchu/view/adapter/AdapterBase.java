@@ -128,6 +128,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                         rotation.setRepeatCount(ValueAnimator.INFINITE);
                         rotation.setDuration(1500);
                         rotation.start();
+                        loadMoreHold.retryView.setBackground(null);
                         netError = false;
                         loadMoreHold.retryView.setText("加载中~~");
                         errorListener.onClick(v);
