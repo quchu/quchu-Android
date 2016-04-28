@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -235,9 +236,10 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         super.onDestroy();
     }
 
+
     @Subscribe
-    public void postCardDelete(QuchuEventModel model) {
-        if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+    public void onMessageEvent(QuchuEventModel event) {
+        if (event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
             pagesNo = 1;
             presenter.getMyFoiotrintList(userId, pagesNo);
         }

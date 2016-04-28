@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -346,12 +347,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         }
     }
 
-    @Subscribe
-    public void postCardDelete(QuchuEventModel model) {
-        if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
-            initData((Integer) model.getContent()[0]);
-        }
-    }
 
     @Override
     protected void onStart() {
@@ -365,6 +360,12 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         super.onStop();
     }
 
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel model) {
+        if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+            initData((Integer) model.getContent()[0]);
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
