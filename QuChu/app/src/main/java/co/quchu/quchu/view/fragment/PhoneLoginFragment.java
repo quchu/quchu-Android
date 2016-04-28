@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,6 +157,17 @@ public class PhoneLoginFragment extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_user_login_phone, null);
         ButterKnife.bind(this, view);
         phoneLoginPnumEt.addTextChangedListener(new PhoneNumWatcher());
+        phoneLoginPnumEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event.getAction()==KeyEvent.KEYCODE_ENTER){
+                    if (!StringUtils.isMobileNO(v.getText().toString())){
+                        Toast.makeText(getActivity(),"请输入正确的手机号",Toast.LENGTH_LONG).show();
+                    }
+                }
+                return false;
+            }
+        });
         initEditText();
         handler.sendMessageDelayed(handler.obtainMessage(0x03), 300);
         return view;
