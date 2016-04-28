@@ -8,14 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.FollowUserModel;
 import co.quchu.quchu.presenter.FollowPresenter;
+import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FriendsAdatper;
 
@@ -24,7 +26,7 @@ import co.quchu.quchu.view.adapter.FriendsAdatper;
  * User: Chenhs
  * Date: 2015-11-09
  */
-public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoadmoreListener {
+public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoadmoreListener, PageLoadListener<List<FollowUserModel>> {
     View view;
     @Bind(R.id.fragment_firends_rv)
     RecyclerView fragmentFirendsRv;
@@ -32,6 +34,7 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
     public static final String BUNDLE_KEY_IS_SUBSCRIBE = "BUNDLE_KEY_IS_SUBSCRIBE";
     public FriendsAdatper mAdapter;
     private int pageNo = 1;
+    private FollowPresenter presenter;
 
     @Nullable
     @Override
@@ -50,7 +53,7 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mIsSubscribe = getArguments().getBoolean(BUNDLE_KEY_IS_SUBSCRIBE, true);
-
+        presenter = new FollowPresenter(getContext(), this);
 
     }
 
@@ -58,18 +61,7 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
     public void onResume() {
         super.onResume();
         pageNo = 1;
-        FollowPresenter.getCurrentUserFollowers(getActivity(), false, mIsSubscribe ? FollowPresenter.TAFOLLOWING : FollowPresenter.TAFOLLOWERS, 1, new FollowPresenter.GetFollowCallBack() {
-            @Override
-            public void onSuccess(ArrayList<FollowUserModel> lists) {
-                mAdapter.initData(lists);
-            }
-
-            @Override
-            public void onError() {
-                mAdapter.setLoadMoreEnable(false);
-            }
-        });
-
+        presenter.getFollow(AppContext.user.getUserId(), mIsSubscribe ? FollowPresenter.TAFOLLOWING : FollowPresenter.TAFOLLOWERS, false, pageNo++);
     }
 
     @Override
@@ -80,15 +72,31 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
 
     @Override
     public void onLoadmore() {
-        FollowPresenter.getCurrentUserFollowers(getActivity(), false, mIsSubscribe ? FollowPresenter.TAFOLLOWING : FollowPresenter.TAFOLLOWERS, pageNo + 1, new FollowPresenter.GetFollowCallBack() {
-            @Override
-            public void onSuccess(ArrayList<FollowUserModel> lists) {
-                mAdapter.addMoreData(lists);
-            }
+        presenter.getFollow(AppContext.user.getUserId(), mIsSubscribe ? FollowPresenter.TAFOLLOWING : FollowPresenter.TAFOLLOWERS, false, pageNo++);
+    }
 
+    @Override
+    public void initData(List<FollowUserModel> data) {
+        mAdapter.initData(data);
+    }
+
+    @Override
+    public void moreData(List<FollowUserModel> data) {
+
+        mAdapter.addMoreData(data);
+    }
+
+    @Override
+    public void nullData() {
+        mAdapter.setLoadMoreEnable(false);
+    }
+
+    @Override
+    public void netError(final int pageNo, String massage) {
+        mAdapter.setNetError(new View.OnClickListener() {
             @Override
-            public void onError() {
-                mAdapter.setLoadMoreEnable(false);
+            public void onClick(View v) {
+                presenter.getFollow(AppContext.user.getUserId(), mIsSubscribe ? FollowPresenter.TAFOLLOWING : FollowPresenter.TAFOLLOWERS, false, pageNo);
 
             }
         });
