@@ -140,9 +140,7 @@ public class AccountSettingActivity extends BaseActivity {
         userGenderChanged = !StringUtils.isEmpty(newUserGender) && !AppContext.user.getGender().equals(newUserGender);
         boolean userLocationChanged;
         userLocationChanged = !StringUtils.isEmpty(accountSettingUserLocation.getText().toString()) && !AppContext.user.getLocation().equals(accountSettingUserLocation.getText().toString());
-        Log.i(TAG, "onBackPressed: "+mProfileModified+"|"+userNameChanged+"|"+userGenderChanged+"|"+userLocationChanged);
         if (mProfileModified||userNameChanged||userGenderChanged||userLocationChanged){
-            Log.i(TAG, "onBackPressed: WTF");
             ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示","当前修改尚未保存，退出会导致资料丢失，是否保存");
             confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                 @Override
