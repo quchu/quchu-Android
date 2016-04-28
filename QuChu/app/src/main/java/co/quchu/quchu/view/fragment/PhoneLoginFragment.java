@@ -32,6 +32,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
@@ -313,7 +314,7 @@ public class PhoneLoginFragment extends BaseFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (isRegiest == 0) {
-                    setRegiestButtonClickable(s.length() > 0 && authcodeLoginPasswordEt.getText().toString().trim().length() > 0 && userLoginNicknameEt.getText().toString().trim().length() > 0);
+                    setRegiestButtonClickable(s.toString().trim().length() > 0 && authcodeLoginPasswordEt.getText().toString().trim().length() > 0 && userLoginNicknameEt.getText().toString().trim().length() > 0);
                 } else if (isRegiest == 1) {
                     setRegiestButtonClickable(phoneLoginPnumEt.getText().toString().trim().length() > 0 && s.length() > 0);
                 } else {
@@ -457,6 +458,12 @@ public class PhoneLoginFragment extends BaseFragment {
      * 获取验证码
      */
     private void getAuthCode() {
+        if (!NetUtil.isNetworkConnected(getContext())) {
+            Toast.makeText(getContext(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         getauthcodeLoginTv.setClickable(false);
         handler.sendMessage(handler.obtainMessage(0x02));
         UserLoginPresenter.getCaptcha(getActivity(), phoneLoginPnumEt.getText().toString().trim(), isRegiest == 0 ? UserLoginPresenter.getCaptcha_regiest : UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
@@ -486,7 +493,10 @@ public class PhoneLoginFragment extends BaseFragment {
             Toast.makeText(getActivity(), "请输入1-10位昵称", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if (StringUtils.containsEmoji(nikeName) || StringUtils.containsEmoji(password)) {
+            Toast.makeText(getActivity(), "用户名和密码不能包含特殊字符", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         UserLoginPresenter.userRegiest(getActivity(), AppContext.user.getUserId(), phoneLoginPnumEt.getText().toString().trim(),
                 MD5.hexdigest(password), nikeName,
@@ -525,6 +535,16 @@ public class PhoneLoginFragment extends BaseFragment {
      * 重置密码
      */
     private void userResetPassword() {
+        String password = phoneLoginPasswordEt.getText().toString().trim();
+        if (password.length() < 6 || password.length() > 12) {
+            Toast.makeText(getActivity(), "请输入6-12位密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (StringUtils.containsEmoji(password)) {
+            Toast.makeText(getActivity(), "密码不能包含特殊字符", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         UserLoginPresenter.resetPassword(getActivity(), phoneLoginPnumEt.getText().toString().trim(),
                 MD5.hexdigest(phoneLoginPasswordEt.getText().toString().trim()), authcodeLoginPasswordEt.getText().toString().trim(), new UserLoginPresenter.UserNameUniqueListener() {
                     @Override

@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -292,6 +293,14 @@ public class QuFriendsActivity extends BaseActivity {
     protected void onResume() {
         MobclickAgent.onPageStart("social");
         super.onResume();
+
+        planetGeneTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QuFriendsActivity.this, WhatIsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
