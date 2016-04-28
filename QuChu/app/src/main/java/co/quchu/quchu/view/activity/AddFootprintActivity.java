@@ -24,7 +24,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -112,15 +111,15 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
             titleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance(getString(R.string.confirm_delete),getString(R.string.caution_action_cannot_revert));
-                    confirmDialogFg.show(getFragmentManager(),"confirm");
+                    ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance(getString(R.string.confirm_delete), getString(R.string.caution_action_cannot_revert));
+                    confirmDialogFg.show(getFragmentManager(), "confirm");
                     confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                         @Override
                         public void onClick(int index) {
                             v.setClickable(false);
                             String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
 
-                            GsonRequest<Objects> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Objects>() {
+                            GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
                                 @Override
                                 public void onErrorResponse(@Nullable VolleyError error) {
                                     Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
@@ -128,7 +127,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                                 }
 
                                 @Override
-                                public void onResponse(Objects response, boolean result, String errorCode, @Nullable String msg) {
+                                public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
                                     v.setClickable(true);
                                     if (result) {
                                         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId, pId));
