@@ -52,12 +52,25 @@
                 android:text="..fsadfasd."
                 android:textColor="@color/appBackground" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/base_margin"
+                android:paddingRight="@dimen/base_margin"
+                android:paddingTop="@dimen/half_margin"
+                android:paddingBottom="@dimen/half_margin"
+                android:layout_marginBottom="@dimen/half_margin"
+                android:layout_above="@+id/recyclerView"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/shape_lineframe_gray"
+                android:text="@string/hint_max_text_length"
+                />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tvPickFromMap"
-                android:layout_marginTop="@dimen/base_margin"
                 app:layoutManager="android.support.v7.widget.GridLayoutManager"
                 app:spanCount="4"
                 tools:listitem="@layout/item_find_position_image" />
