@@ -130,9 +130,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         Intent intent;
         UserInfoModel user = AppContext.user;
         switch (v.getId()) {
-            case R.id.back:
-                finish();
-                break;
             case R.id.setting://设置
                 MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;

@@ -83,6 +83,7 @@ public class AccountSettingActivity extends BaseActivity {
 
 
     private ArrayList<Integer> imageList;
+    private boolean mProfileModified = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +130,29 @@ public class AccountSettingActivity extends BaseActivity {
     }
 
     ArrayList<CityModel> genderList;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        boolean userNameChanged;
+        userNameChanged = !StringUtils.isEmpty(accountSettingNicknameEt.getText().toString())&&!accountSettingNicknameEt.getText().equals(AppContext.user.getFullname());
+        boolean userGenderChanged;
+        userGenderChanged = !StringUtils.isEmpty(newUserGender) && !AppContext.user.getGender().equals(newUserGender);
+        boolean userLocationChanged;
+        userLocationChanged = !StringUtils.isEmpty(accountSettingUserLocation.getText().toString()) && !AppContext.user.getLocation().equals(accountSettingUserLocation.getText().toString());
+        if (mProfileModified||userNameChanged||userGenderChanged||userLocationChanged){
+            ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示","当前修改尚未保存，退出会导致资料丢失，是否保存");
+            confirmDialogFg.show(getFragmentManager(),"");
+            confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+                @Override
+                public void onClick(int index) {
+                    if (index==ConfirmDialogFg.INDEX_OK){
+                        AccountSettingActivity.this.onBackPressed();
+                    }
+                }
+            });
+        }
+    }
 
     @OnClick({R.id.account_setting_avatar_sdv, R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv
             , R.id.saveUserInfo, R.id.account_setting_user_location, R.id.bindAccound, R.id.exit, R.id.bindPhoto})
@@ -372,6 +396,7 @@ public class AccountSettingActivity extends BaseActivity {
     Bitmap bitmaps = null;
 
     public void updateAvatar(int avatarId) {
+        mProfileModified = true;
         bitmaps = BitmapFactory.decodeResource(getResources(), avatarId);
         LogUtils.json("bitmap ==null?=" + (bitmaps == null));
         AccountSettingPresenter.getQiNiuToken(AccountSettingActivity.this, bitmaps, new AccountSettingPresenter.UploadUserPhotoListener() {

@@ -119,29 +119,32 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                     confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                         @Override
                         public void onClick(int index) {
-                            v.setClickable(false);
-                            String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
+                            if (index==ConfirmDialogFg.INDEX_OK){
+                                v.setClickable(false);
+                                String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
 
-                            GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
-                                @Override
-                                public void onErrorResponse(@Nullable VolleyError error) {
-                                    Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                                    v.setClickable(true);
-                                }
-
-                                @Override
-                                public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
-                                    v.setClickable(true);
-                                    if (result) {
-                                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId, pId));
-                                        Toast.makeText(AddFootprintActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    } else {
-                                        Toast.makeText(AddFootprintActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                                GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
+                                    @Override
+                                    public void onErrorResponse(@Nullable VolleyError error) {
+                                        Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                                        v.setClickable(true);
                                     }
-                                }
-                            });
-                            request.start(AddFootprintActivity.this, null);
+
+                                    @Override
+                                    public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
+                                        v.setClickable(true);
+                                        if (result) {
+                                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId, pId));
+                                            Toast.makeText(AddFootprintActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        } else {
+                                            Toast.makeText(AddFootprintActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                request.start(AddFootprintActivity.this, null);
+                            }
+
                         }
                     });
 

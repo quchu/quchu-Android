@@ -9,8 +9,8 @@ android {
         applicationId "co.quchu.quchu"
         targetSdkVersion 16
         minSdkVersion 16
-        versionCode 1017
-        versionName "1.1.71"
+        versionCode 1018
+        versionName "1.1.72"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
         vectorDrawables.generatedDensities = ['xhdpi', 'xxhdpi', 'hdpi']
