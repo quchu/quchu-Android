@@ -68,12 +68,14 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     public static final String REQUEST_KEY_NAME = "name";
     public static final String REQUEST_KEY_ENTITY = "entity";
     public static final String REQUEST_KEY_IS_EDIT = "edit";
+    public static final String REQUEST_KEY_ALLOW_PICKING_STORE = "REQUEST_KEY_ALLOW_PICKING_STORE";
 
     private int cId = -1;
     private int pId;
     private String pName;
     private PostCardItemModel mData;
     private int REQUEST_PICKING_QUCHU = 0x0001;
+    private boolean mAllowPicking = false;
 
 
     @Override
@@ -89,6 +91,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
 
         pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
         pName = getIntent().getStringExtra(REQUEST_KEY_NAME);
+        mAllowPicking = getIntent().getBooleanExtra(REQUEST_KEY_ALLOW_PICKING_STORE,false);
         //数据是重新封装过的,如果部分属性丢失请返回前面页面添加
         mData = getIntent().getParcelableExtra(REQUEST_KEY_ENTITY);
         pId = mData == null ? pId : mData.getPlaceId();
@@ -152,8 +155,10 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         tvPickFromMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddFootprintActivity.this, PickingQuchuActivity.class);
-                startActivityForResult(intent, REQUEST_PICKING_QUCHU);
+                if (mAllowPicking){
+                    Intent intent = new Intent(AddFootprintActivity.this, PickingQuchuActivity.class);
+                    startActivityForResult(intent, REQUEST_PICKING_QUCHU);
+                }
             }
         });
         init();
