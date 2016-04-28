@@ -104,7 +104,7 @@ public class PickingQuchuActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (null != s && !StringUtils.isEmpty(s.toString()))
+//                if (null != s && !StringUtils.isEmpty(s.toString()))
                     doSearch(s.toString());
             }
         };
