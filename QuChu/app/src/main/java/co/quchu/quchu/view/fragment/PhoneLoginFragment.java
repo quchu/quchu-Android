@@ -160,7 +160,7 @@ public class PhoneLoginFragment extends BaseFragment {
         phoneLoginPnumEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getAction()==KeyEvent.KEYCODE_ENTER){
+                if (null!=event &&event.getAction()==KeyEvent.KEYCODE_ENTER){
                     if (!StringUtils.isMobileNO(v.getText().toString())){
                         Toast.makeText(getActivity(),"请输入正确的手机号",Toast.LENGTH_LONG).show();
                     }
