@@ -148,7 +148,7 @@ public class AccountSettingActivity extends BaseActivity {
                 @Override
                 public void onClick(int index) {
                     if (index==ConfirmDialogFg.INDEX_OK){
-                        AccountSettingActivity.this.onBackPressed();
+                        AccountSettingActivity.this.finish();
                     }
                 }
             });
