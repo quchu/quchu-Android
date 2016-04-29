@@ -31,6 +31,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -73,6 +74,11 @@ public class WeiboHelper {
     }
 
     public void weiboLogin(SsoHandler ssoHandler, final UserLoginListener listener, final boolean isLogin) {
+        if (!NetUtil.isNetworkConnected(context)) {
+            Toast.makeText(context, "请检查网络连接", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         ssoHandler.authorize(new WeiboAuthListener() {
             @Override
             public void onComplete(Bundle bundle) {

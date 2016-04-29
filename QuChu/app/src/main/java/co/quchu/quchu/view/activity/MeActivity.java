@@ -8,9 +8,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 
 import java.util.List;
 
@@ -130,9 +135,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         Intent intent;
         UserInfoModel user = AppContext.user;
         switch (v.getId()) {
-            case R.id.back:
-                finish();
-                break;
             case R.id.setting://设置
                 MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
                 break;
@@ -224,4 +226,24 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         }
     }
 
+    public void checkUpdate() {
+
+        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+            @Override
+            public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
+                switch (updateStatus) {
+                    case UpdateStatus.Yes: // has update
+                        UmengUpdateAgent.showUpdateDialog(MeActivity.this, updateInfo);
+                        break;
+                    case UpdateStatus.No: // has no update
+                        Toast.makeText(MeActivity.this, "当前已是最新版本!", Toast.LENGTH_SHORT).show();
+                        break;
+                    case UpdateStatus.Timeout: // time out
+                        Toast.makeText(MeActivity.this, "网络超时,请稍后重试!", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+        UmengUpdateAgent.forceUpdate(this);
+    }
 }

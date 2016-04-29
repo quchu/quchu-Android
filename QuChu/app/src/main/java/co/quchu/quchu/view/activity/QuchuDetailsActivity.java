@@ -319,42 +319,47 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-    private void loadMore(String recommendPids, String cateIds, int isFirst, final int pid, int cid, double lat, double lon) {
+    private void loadMore(final String recommendPids, final String cateIds, final int isFirst, final int pid, final int cid, final double lat, final double lon) {
         if (mIsLoadMoreRunning) return;
         mIsLoadMoreRunning = true;
 
-        NearbyPresenter.getNearbyData(getApplicationContext(), recommendPids, cateIds, isFirst, pid, cid, lat, lon, 1, new NearbyPresenter.getNearbyDataListener() {
+        mRecyclerView.postDelayed(new Runnable() {
             @Override
-            public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
-                Intent intent = new Intent(QuchuDetailsActivity.this, NearbyActivity.class);
-
-                String pids = "";
-                List<DetailModel.NearPlace> places = dModel.getNearPlace();
-
-                if (places.size() == 1) {
-                    pids += places.get(0).getPlaceId();
-                } else {
-                    for (int i = 0; i < places.size(); i++) {
-                        pids += places.get(i).getPlaceId();
-                        pids += "|";
-                    }
-                    pids = pids.substring(0, pids.length() - 1);
-                }
-                MobclickAgent.onEvent(QuchuDetailsActivity.this, "allrecommendation_c");
-                intent.putExtra(NearbyActivity.BUNDLE_KEY_DATA, (Serializable) model);
-                intent.putExtra(NearbyActivity.BUNDLE_KEY_PID, dModel.getPid());
-                intent.putExtra(NearbyActivity.BUNDLE_KEY_RECOMMEND_PIDS, pids);
-                mQuchuDetailAdapter.finishLoadMore();
-                startActivity(intent);
-                mRecyclerView.postDelayed(new Runnable() {
+            public void run() {
+                NearbyPresenter.getNearbyData(getApplicationContext(), recommendPids, cateIds, isFirst, pid, cid, lat, lon, 1, new NearbyPresenter.getNearbyDataListener() {
                     @Override
-                    public void run() {
-                        mIsLoadMoreRunning = false;
-                        mLoadingMore = false;
+                    public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
+                        Intent intent = new Intent(QuchuDetailsActivity.this, NearbyActivity.class);
+
+                        String pids = "";
+                        List<DetailModel.NearPlace> places = dModel.getNearPlace();
+
+                        if (places.size() == 1) {
+                            pids += places.get(0).getPlaceId();
+                        } else {
+                            for (int i = 0; i < places.size(); i++) {
+                                pids += places.get(i).getPlaceId();
+                                pids += "|";
+                            }
+                            pids = pids.substring(0, pids.length() - 1);
+                        }
+                        MobclickAgent.onEvent(QuchuDetailsActivity.this, "allrecommendation_c");
+                        intent.putExtra(NearbyActivity.BUNDLE_KEY_DATA, (Serializable) model);
+                        intent.putExtra(NearbyActivity.BUNDLE_KEY_PID, dModel.getPid());
+                        intent.putExtra(NearbyActivity.BUNDLE_KEY_RECOMMEND_PIDS, pids);
+                        mQuchuDetailAdapter.finishLoadMore();
+                        startActivity(intent);
+                        mRecyclerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mIsLoadMoreRunning = false;
+                                mLoadingMore = false;
+                            }
+                        }, 500);
                     }
-                }, 500);
+                });
             }
-        });
+        },1000l);
     }
 
 

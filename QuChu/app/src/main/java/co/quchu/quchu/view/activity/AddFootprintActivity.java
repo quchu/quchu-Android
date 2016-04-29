@@ -68,12 +68,14 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     public static final String REQUEST_KEY_NAME = "name";
     public static final String REQUEST_KEY_ENTITY = "entity";
     public static final String REQUEST_KEY_IS_EDIT = "edit";
+    public static final String REQUEST_KEY_ALLOW_PICKING_STORE = "REQUEST_KEY_ALLOW_PICKING_STORE";
 
     private int cId = -1;
     private int pId;
     private String pName;
     private PostCardItemModel mData;
     private int REQUEST_PICKING_QUCHU = 0x0001;
+    private boolean mAllowPicking = false;
 
 
     @Override
@@ -89,6 +91,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
 
         pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
         pName = getIntent().getStringExtra(REQUEST_KEY_NAME);
+        mAllowPicking = getIntent().getBooleanExtra(REQUEST_KEY_ALLOW_PICKING_STORE,false);
         //数据是重新封装过的,如果部分属性丢失请返回前面页面添加
         mData = getIntent().getParcelableExtra(REQUEST_KEY_ENTITY);
         pId = mData == null ? pId : mData.getPlaceId();
@@ -116,29 +119,32 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                     confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                         @Override
                         public void onClick(int index) {
-                            v.setClickable(false);
-                            String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
+                            if (index==ConfirmDialogFg.INDEX_OK){
+                                v.setClickable(false);
+                                String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
 
-                            GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
-                                @Override
-                                public void onErrorResponse(@Nullable VolleyError error) {
-                                    Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                                    v.setClickable(true);
-                                }
-
-                                @Override
-                                public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
-                                    v.setClickable(true);
-                                    if (result) {
-                                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId, pId));
-                                        Toast.makeText(AddFootprintActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    } else {
-                                        Toast.makeText(AddFootprintActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                                GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
+                                    @Override
+                                    public void onErrorResponse(@Nullable VolleyError error) {
+                                        Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                                        v.setClickable(true);
                                     }
-                                }
-                            });
-                            request.start(AddFootprintActivity.this, null);
+
+                                    @Override
+                                    public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
+                                        v.setClickable(true);
+                                        if (result) {
+                                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId, pId));
+                                            Toast.makeText(AddFootprintActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        } else {
+                                            Toast.makeText(AddFootprintActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                request.start(AddFootprintActivity.this, null);
+                            }
+
                         }
                     });
 
@@ -152,8 +158,10 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         tvPickFromMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddFootprintActivity.this, PickingQuchuActivity.class);
-                startActivityForResult(intent, REQUEST_PICKING_QUCHU);
+                if (mAllowPicking){
+                    Intent intent = new Intent(AddFootprintActivity.this, PickingQuchuActivity.class);
+                    startActivityForResult(intent, REQUEST_PICKING_QUCHU);
+                }
             }
         });
         init();
@@ -184,7 +192,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         tackImage = new PhotoInfo();
 
         if (mData == null || mData.getImglist().size() < 4) {
-            tackImage.setPhotoPath("res:///" + R.mipmap.ic_add_photo_image);
+            tackImage.setPhotoPath("res:///" + R.mipmap.ic_take_photo);
             photoInfos.add(tackImage);
         }
         recyclerView.setHasFixedSize(true);

@@ -43,6 +43,7 @@
             android:name=".view.activity.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,7 +51,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activity.QuFriendsActivity"
             android:label="@string/titlebar_word_qu_friends"
@@ -64,12 +64,10 @@
             android:label="@string/add_foot_print"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".view.activity.FeedbackActivity"
             android:label="@string/titlebar_word_feedback"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".view.activity.WebViewActivity"
             android:label="@string/webview_redirecting"
@@ -82,7 +80,6 @@
             android:name=".view.activity.PickingQuchuActivity"
             android:label="@string/picking_quchu"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".view.activity.AboutUsActivity"
             android:label="@string/titlebar_word_about_us"
@@ -120,7 +117,6 @@
         <activity
             android:name=".view.activity.SearchActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".view.activity.PlaceMapActivity"
             android:label="@string/nearby_quchu"
@@ -129,7 +125,8 @@
         <!-- 用户登录 -->
         <activity
             android:name=".view.activity.UserLoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".photoselected.PreviewImageActivity"
             android:screenOrientation="portrait" />
@@ -188,7 +185,6 @@
         <!-- 高德地图 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-
             android:value="${AMAP_DEBUG_KEY}" />
         <!--
         正式版的key"8d635450932036faf3681a8960d884fa"
@@ -234,7 +230,7 @@
             android:name=".view.activity.BindPhotoNumActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity android:name=".view.activity.WhatIsActivity"></activity>
     </application>
 
 </manifest>

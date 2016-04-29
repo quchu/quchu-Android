@@ -9,8 +9,8 @@ android {
         applicationId "co.quchu.quchu"
         targetSdkVersion 16
         minSdkVersion 16
-        versionCode 1016
-        versionName "1.1.70"
+        versionCode 1019
+        versionName "1.1.73"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
         vectorDrawables.generatedDensities = ['xhdpi', 'xxhdpi', 'hdpi']
@@ -50,7 +50,7 @@ android {
         }
 
         uat {
-            buildConfigField "int", "API_SERVER", "1"
+            buildConfigField "int", "API_SERVER", "2"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
             manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
         }

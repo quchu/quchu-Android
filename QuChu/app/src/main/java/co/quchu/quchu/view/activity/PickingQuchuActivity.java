@@ -78,6 +78,7 @@ public class PickingQuchuActivity extends BaseActivity {
 
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mData.get(position).getId());
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mData.get(position).getName());
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ALLOW_PICKING_STORE,true);
                     startActivity(intent);
                     finish();
                 } else {
@@ -103,7 +104,7 @@ public class PickingQuchuActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (null != s && !StringUtils.isEmpty(s.toString()))
+//                if (null != s && !StringUtils.isEmpty(s.toString()))
                     doSearch(s.toString());
             }
         };
