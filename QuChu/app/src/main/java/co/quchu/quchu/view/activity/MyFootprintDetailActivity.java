@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -243,7 +242,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     }
 
     //点赞后服务器还没返回
-    private int clickPosition = -1;
+    private int clickID = -1;
 
     @Override
     public void onClick(View v) {
@@ -251,28 +250,36 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
             case R.id.supportContainer://点赞
                 final Entity entity = data.get(selectedPosition);
                 //屏蔽重复点赞
-                if (clickPosition != selectedPosition) {
+                if (clickID != entity.cardId) {
 
-                    clickPosition = selectedPosition;
+                    clickID = entity.cardId;
                     PostCardPresenter.setPraise(this, entity.isP, true, entity.cardId, new PostCardPresenter.MyPostCardListener() {
                         @Override
                         public void onSuccess(PostCardModel model) {
                             if (entity.isP) {
-                                entity.isP = false;
-                                //如果用户没有切换卡片
-                                if (clickPosition == selectedPosition)
+//                                entity.isP = false;
+//                                entity.supportCount--;
+                                if (clickID == entity.cardId) {
+                                    supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
                                     support.setImageResource(R.mipmap.ic_light_like);
+                                }
+                                resetStatus(false, entity.cardId);
+                                //如果用户没有切换卡片
                             } else {
-                                entity.isP = true;
-                                if (clickPosition == selectedPosition)
+//                                entity.supportCount++;
+//                                entity.isP = true;
+                                if (clickID == entity.cardId) {
+                                    supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
                                     support.setImageResource(R.mipmap.ic_light_like_fill);
+                                    resetStatus(true, entity.cardId);
+                                }
                             }
-                            clickPosition = -1;
+                            clickID = -1;
                         }
 
                         @Override
                         public void onError(String error) {
-                            clickPosition = -1;
+                            clickID = -1;
                             Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -307,18 +314,32 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         }
     }
 
+    private void resetStatus(boolean isp, int cardID) {
+        for (Entity item : data) {
+            if (item.cardId == cardID) {
+                item.isP = isp;
+                if (isp) {
+                    item.supportCount++;
+                } else {
+                    item.supportCount--;
+                }
+            }
+        }
+    }
+
+
     private boolean isShowing = true;
 
     private void animation() {
         if (isShowing) {
             isShowing = false;
-            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", 0, containerBottom.getHeight());
+            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", 0, containerBottom.getHeight()+100);
             animator.setDuration(600);
             animator.setInterpolator(new DecelerateInterpolator());
             animator.start();
         } else {
             isShowing = true;
-            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", containerBottom.getHeight(), 0);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", containerBottom.getHeight()+100, 0);
             animator.setDuration(600);
             animator.setInterpolator(new DecelerateInterpolator());
             animator.start();
@@ -374,6 +395,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
             initData((Integer) model.getContent()[0]);
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
