@@ -69,6 +69,8 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     ImageView edit;
     @Bind(R.id.supportContainer)
     LinearLayout supportContainer;
+    @Bind(R.id.actionContainer)
+    LinearLayout actionContainer;
     private int selectedPosition;
 
     @Override
@@ -82,6 +84,12 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         Entity entity = data.get(position);
         headImage.setImageURI(Uri.parse(entity.head));
 //
+
+        if (entity.PlcaeId == 0) {
+            actionContainer.setVisibility(View.INVISIBLE);
+        } else {
+            actionContainer.setVisibility(View.VISIBLE);
+        }
         if (entity.autoId != AppContext.user.getUserId()) {//如果不是自己的脚印
             edit.setVisibility(View.GONE);
         } else {
