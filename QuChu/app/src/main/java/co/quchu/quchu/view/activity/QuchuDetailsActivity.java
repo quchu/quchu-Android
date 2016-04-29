@@ -39,6 +39,7 @@ import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.NearbyPresenter;
@@ -109,12 +110,19 @@ public class QuchuDetailsActivity extends BaseActivity {
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
-                    MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
-                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
-                } else {
-                    MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
-                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName());
+
+                if (NetUtil.isNetworkConnected(getApplicationContext())){
+
+
+                    if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
+                        MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
+                        WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
+                    } else {
+                        MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
+                        WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName());
+                    }
+                }else{
+                    Toast.makeText(QuchuDetailsActivity.this,R.string.network_error,Toast.LENGTH_SHORT).show();
                 }
             }
         });

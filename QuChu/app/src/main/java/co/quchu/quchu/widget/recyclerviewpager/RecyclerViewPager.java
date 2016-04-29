@@ -171,7 +171,11 @@ public class RecyclerViewPager extends RecyclerView {
         }
         position = transformInnerPositionIfNeed(position);
         mSmoothScrollTargetPosition = position;
-        super.smoothScrollToPosition(position);
+        try {
+            super.smoothScrollToPosition(position);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
