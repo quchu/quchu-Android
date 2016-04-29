@@ -164,6 +164,8 @@ public class RecommendModel {
         double v = 0;
         try {
             v = Double.parseDouble(longitude);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

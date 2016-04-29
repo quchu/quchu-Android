@@ -279,7 +279,12 @@ public class GsonRequest<T> extends Request<T> {
                 AppContext.token = null;
             }
         });
-        dialog.show();
+        try {
+            dialog.show();
+
+        }catch (IllegalStateException ex){
+            ex.printStackTrace();
+        }
 
 
     }
