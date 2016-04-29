@@ -101,13 +101,17 @@ public class SPUtils {
             e.printStackTrace();
         }
         if (!pInfo.equals(getVersionNameBeforeUpdate(context))){
-            return true;
-        }else{
             setVersionNameBeforeUpdate(context, pInfo.versionName);
             setForceUpdateIfNecessary(context,false);
-            preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-            return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE, false);
         }
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        boolean ifForceUpdate = preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE, false);
+        if (ifForceUpdate){
+
+            return true;
+        }
+        return false;
+
     }
 
     public static void setForceUpdateIfNecessary(Context context, boolean forceUpdate) {
