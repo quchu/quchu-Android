@@ -424,7 +424,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 //                    } else
 
                     if (null != mVisitedInfoModel) {
-                        RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
+                        RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(),mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
                         tagsFilterDialog.show(getFragmentManager(), "");
                         tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
                             @Override

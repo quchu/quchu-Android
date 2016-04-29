@@ -35,6 +35,7 @@ public class RatingQuchuDialog extends BlurDialogFragment {
      */
     private static final String BUNDLE_KEY_TAGS = "BUNDLE_KEY_TAGS";
     private static final String BUNDLE_KEY_TAGS_RATING = "BUNDLE_KEY_TAGS_RATING";
+    private static final String BUNDLE_KEY_TAGS_USERCOUNT = "BUNDLE_KEY_TAGS_USERCOUNT";
     @Bind(R.id.tvTips)
     TextView tvTips;
     @Bind(R.id.prbRating)
@@ -51,6 +52,7 @@ public class RatingQuchuDialog extends BlurDialogFragment {
     private float mRating;
     private RatingQuchuDialogAdapter adapter;
     public static final int MAX_TAG_SELECT = 3;
+    private int mUserCount = 0;
 
 
     /**
@@ -60,11 +62,12 @@ public class RatingQuchuDialog extends BlurDialogFragment {
      * @return well instantiated fragment.
      * Serializable cityList
      */
-    public static RatingQuchuDialog newInstance(int rating, ArrayList<TagsModel> list) {
+    public static RatingQuchuDialog newInstance(int userCount,int rating, ArrayList<TagsModel> list) {
         RatingQuchuDialog fragment = new RatingQuchuDialog();
         Bundle args = new Bundle();
         args.putSerializable(BUNDLE_KEY_TAGS, list);
         args.putFloat(BUNDLE_KEY_TAGS_RATING, rating);
+        args.putInt(BUNDLE_KEY_TAGS_USERCOUNT,userCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,6 +78,7 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         Bundle args = getArguments();
         mDataset = (ArrayList<TagsModel>) args.getSerializable(BUNDLE_KEY_TAGS);
         mRating = args.getFloat(BUNDLE_KEY_TAGS_RATING);
+        mUserCount = args.getInt(BUNDLE_KEY_TAGS_USERCOUNT);
     }
 
 
@@ -117,6 +121,7 @@ public class RatingQuchuDialog extends BlurDialogFragment {
                 dismiss();
             }
         });
+        tvTips.setText("你的建议会帮助"+mUserCount+"位趣星人");
         return dialog;
     }
 
