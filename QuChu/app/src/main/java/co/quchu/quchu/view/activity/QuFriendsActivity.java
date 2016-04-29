@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -164,7 +165,7 @@ public class QuFriendsActivity extends BaseActivity {
 
             @Override
             public void onError() {
-
+                Toast.makeText(QuFriendsActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
             }
         });
 

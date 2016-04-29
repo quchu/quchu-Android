@@ -121,10 +121,11 @@
             android:layout_marginLeft="70dp"
             android:layout_marginTop="@dimen/half_margin"
             android:background="@null"
+            android:digits="@string/passFilter"
             android:hint="请输入6-12位数字字母作为密码"
             android:inputType="textVisiblePassword"
             android:maxLength="12"
-            android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/account_setting_text_hint_color"
             android:textColorHint="@color/account_setting_text_hint_color"
             android:textSize="@dimen/word_size_body" />
