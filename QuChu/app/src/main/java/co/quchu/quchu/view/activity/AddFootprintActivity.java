@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -59,6 +61,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     @Bind(R.id.tvPickFromMap)
     TextView tvPickFromMap;
     List<PhotoInfo> photoInfos;
+    @Bind(R.id.textLength)
+    TextView textLength;
 
 
     private FindPositionAdapter adapter;
@@ -91,7 +95,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
 
         pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
         pName = getIntent().getStringExtra(REQUEST_KEY_NAME);
-        mAllowPicking = getIntent().getBooleanExtra(REQUEST_KEY_ALLOW_PICKING_STORE,false);
+        mAllowPicking = getIntent().getBooleanExtra(REQUEST_KEY_ALLOW_PICKING_STORE, false);
         //数据是重新封装过的,如果部分属性丢失请返回前面页面添加
         mData = getIntent().getParcelableExtra(REQUEST_KEY_ENTITY);
         pId = mData == null ? pId : mData.getPlaceId();
@@ -119,7 +123,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                     confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                         @Override
                         public void onClick(int index) {
-                            if (index==ConfirmDialogFg.INDEX_OK){
+                            if (index == ConfirmDialogFg.INDEX_OK) {
                                 v.setClickable(false);
                                 String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
 
@@ -158,7 +162,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         tvPickFromMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mAllowPicking){
+                if (mAllowPicking) {
                     Intent intent = new Intent(AddFootprintActivity.this, PickingQuchuActivity.class);
                     startActivityForResult(intent, REQUEST_PICKING_QUCHU);
                 }
@@ -187,6 +191,25 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     private void init() {
         photoInfos = new ArrayList<>();
         adapter = new FindPositionAdapter();
+
+        etContent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                textLength.setText("最多输入" + (140 - s.length()) + "个文字");
+            }
+        });
+
 
         etContent.setText(null != mData ? mData.getComment() : "");
         tackImage = new PhotoInfo();
