@@ -52,20 +52,21 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
     private actionListener listener;
 
     public DampView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public DampView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public DampView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        this(context, attrs, defStyleAttr, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public DampView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        ViewCompat.setNestedScrollingEnabled(this, true);
     }
 
     @Override
@@ -133,6 +134,9 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
         setRefreshView(null);
         setListener(null);
         // TODO: 2016/4/26  测试
+        if (refreshView != null) {
+            refreshView.headViewInflateFinish(headView);
+        }
     }
 
     public void setRefreshView(RefreshView refreshView) {
@@ -147,7 +151,9 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
 
     public void stopRefreshing() {
         refreshing = false;
+        refreshView.onStopRefresh();
         pullRelease(true);
+
     }
 
     @Override
@@ -196,12 +202,13 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
                     translation = 0;
                     headViewPushable = false;
                 } else {
+                    //不能下拉超过headView高度
                     if (translation > headView.getHeight()) {
                         translation = headView.getHeight();
                     }
                     headViewPushable = true;
                 }
-
+                //更新headView动画进度
                 if (view == headView) {
                     int progress = (int) (Math.abs(translation / headView.getHeight()) * 100);
                     refreshView.headViewProgress(progress);
@@ -217,6 +224,7 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
      * 下拉释放
      */
     private void pullRelease(boolean closeRefresh) {
+
         headViewVisiliby = false;
         AnimatorSet set = new AnimatorSet();
         set.setDuration(250);
@@ -224,6 +232,7 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
 
         List<Animator> animators = new ArrayList<>(3);
         float translation;
+
         for (int i = 0; i < childCount; i++) {
             View view = getChildAt(i);
             if (view == footView) {
@@ -231,10 +240,12 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
             }
             translation = getTranslation(view);
             ObjectAnimator animator;
+
             //下拉距离超过临界值
             if (translation > refreshDistance && !closeRefresh) {
                 if (!refreshing) {
                     refreshing = true;
+                    refreshView.onStartRefresh();
                     listener.onRefresh();
                 }
                 animator = ObjectAnimator.ofFloat(view, "translationY", translation, refreshDistance);
@@ -295,6 +306,7 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
 
 
     public void onNestedScrollAccepted(View child, View target, int nestedScrollAxes) {
+
     }
 
 
@@ -337,4 +349,16 @@ public class DampView extends ViewGroup implements NestedScrollingParent {
         }
     }
 
+    @Override
+    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed) {
+        LogUtils.e("dispatchNestedFlingfdfffff:" + velocityY);
+        return super.dispatchNestedFling(velocityX, velocityY, consumed);
+
+    }
+
+    @Override
+    public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
+        LogUtils.e("dispatcdFlingfdfffff:" + velocityY);
+        return super.dispatchNestedPreFling(velocityX, velocityY);
+    }
 }
