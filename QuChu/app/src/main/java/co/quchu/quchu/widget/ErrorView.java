@@ -68,8 +68,8 @@ public class ErrorView extends FrameLayout {
         setVisibility(VISIBLE);
         refreshLayout.setVisibility(VISIBLE);
         loadingView.setVisibility(INVISIBLE);
-        massageView.setText("网络发送异常了~~");
-        actionButtton.setText(" 刷新 ");
+        massageView.setText(R.string.network_error);
+        actionButtton.setText(R.string.click_to_retry);
         actionButtton.setOnClickListener(actionListener);
     }
 

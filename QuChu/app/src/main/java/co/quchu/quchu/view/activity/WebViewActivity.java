@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,9 +19,11 @@ import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.finalteam.toolsfinal.DeviceUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -70,6 +73,7 @@ public class WebViewActivity extends BaseActivity {
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebChromeClient(webChromeClient);
         mWebView.setWebViewClient(webViewClient);
+        //mWebView.getSettings().setUserAgentString("Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3");
 
         String url = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_URL);
         mPageTitle = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_TITLE);
@@ -111,11 +115,27 @@ public class WebViewActivity extends BaseActivity {
     private class SimpleWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url!=null||url.startsWith("intent")){
 
+            if (null!=url&&url.startsWith("intent")){
+//                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                if (intent.resolveActivity(getPackageManager())==null){
+//                    Toast.makeText(WebViewActivity.this,"你还没有安装大众点评",Toast.LENGTH_SHORT).show();
+//                }else{
+//                    ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示","是否跳转至大众点评");
+//                    confirmDialogFg.show(getFragmentManager(),"confirm");
+//                    confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+//                        @Override
+//                        public void onClick(int index) {
+//                            if (index==ConfirmDialogFg.INDEX_OK){
+//                                startActivity(intent);
+//                            }else{
+//
+//                            }
+//                        }
+//                    });
+//                }
             }else{
                 view.loadUrl(url);
-
             }
             return true;
         }

@@ -22,6 +22,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -32,9 +33,11 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchModel;
+import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.SearchHistoryUtil;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
@@ -63,6 +66,14 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     RecyclerView searchResultRv;
     @Bind(R.id.search_result_fl)
     FrameLayout searchResultFl;
+    @Bind(R.id.search_tag1)
+    TextView tvTag1;
+    @Bind(R.id.search_tag2)
+    TextView tvTag2;
+    @Bind(R.id.search_tag3)
+    TextView tvTag3;
+    @Bind(R.id.llTags)
+    LinearLayout llTags;
 
     SearchModel searchModel;
     @Bind(R.id.search_history_hint_fl)
@@ -88,6 +99,35 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
             public void run() {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(searchInputEt, 0);
+            }
+        });
+        SearchPresenter.getSearchTags(new SearchPresenter.SearchTagsListener(){
+            @Override
+            public void successResult(List<TagsModel> arrayList) {
+                if (null!=arrayList && arrayList.size()>0){
+                    llTags.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < arrayList.size(); i++) {
+                        switch (i){
+                            case 0:
+                                tvTag1.setText(arrayList.get(0).getZh());
+                                tvTag1.setVisibility(View.VISIBLE);
+                                break;
+                            case 1:
+                                tvTag2.setText(arrayList.get(1).getZh());
+                                tvTag2.setVisibility(View.VISIBLE);
+                                break;
+                            case 2:
+                                tvTag3.setText(arrayList.get(2).getZh());
+                                tvTag3.setVisibility(View.VISIBLE);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void errorNull() {
+
             }
         });
     }
@@ -133,7 +173,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         },200);
     }
 
-    @OnClick({R.id.search_button_rl, R.id.search_history_clear_rl})
+    @OnClick({R.id.search_button_rl, R.id.search_history_clear_rl,R.id.search_tag1,R.id.search_tag2,R.id.search_tag3})
     public void buttonClick(View view) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -145,6 +185,15 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
                 searchModel.removeAllSearchHistory();
                 historyAdapter.notifyDataSetChanged();
                 showNoneHistory();
+                break;
+            case R.id.search_tag1:
+                searchInputEt.setText(tvTag1.getText());
+                break;
+            case R.id.search_tag2:
+                searchInputEt.setText(tvTag2.getText());
+                break;
+            case R.id.search_tag3:
+                searchInputEt.setText(tvTag3.getText());
                 break;
         }
     }
@@ -168,7 +217,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         MobclickAgent.onEvent(this, "search_type", p);
 
 
-        SearchPresenter.searchFromService(this, str, mCurrentPageNo, new SearchPresenter.SearchResultListener() {
+        SearchPresenter.searchFromService(this, str, mCurrentPageNo, SPUtils.getCityId(), new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList, int maxPageNo) {
 
@@ -288,7 +337,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         searchHistoryClearRl.setVisibility(View.VISIBLE);
         searchResultFl.setVisibility(View.GONE);
         searchHistoryHintFl.setText("历史记录");
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,true);
         searchHistoryRv.setLayoutManager(mLayoutManager);
         searchHistoryRv.setItemAnimator(new DefaultItemAnimator());
         historyAdapter = new SearchHistoryAdapter(this, searchModel, this);
