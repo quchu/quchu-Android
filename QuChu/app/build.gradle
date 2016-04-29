@@ -9,8 +9,8 @@ android {
         applicationId "co.quchu.quchu"
         targetSdkVersion 16
         minSdkVersion 16
-        versionCode 1021
-        versionName "1.1.75"
+        versionCode 1022
+        versionName "1.1.76"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
         vectorDrawables.generatedDensities = ['xhdpi', 'xxhdpi', 'hdpi']
@@ -33,7 +33,7 @@ android {
         release {
             // 不显示Log
             buildConfigField "boolean", "DISPLAY_LOG", "false"
-            buildConfigField "int", "API_SERVER", "0" //0 prd ,1 uat, 2 sit
+            buildConfigField "int", "API_SERVER", "1" //0 prd ,1 uat, 2 sit
             //混淆
             minifyEnabled true
             //Zipalign优化
@@ -44,7 +44,7 @@ android {
             manifestPlaceholders = [AMAP_DEBUG_KEY: "8d635450932036faf3681a8960d884fa"]
         }
         debug {
-            buildConfigField "int", "API_SERVER", "2"
+            buildConfigField "int", "API_SERVER", "1"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
             manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
         }
