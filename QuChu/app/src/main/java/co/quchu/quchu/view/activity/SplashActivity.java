@@ -430,7 +430,6 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     }
 
     private void initLogic() {
-
         if (SPUtils.getForceUpdateIfNecessary(getApplicationContext())){
             ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示",SPUtils.getForceUpdateReason(getApplicationContext()));
             confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {

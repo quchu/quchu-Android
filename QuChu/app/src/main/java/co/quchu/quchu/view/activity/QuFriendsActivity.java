@@ -165,7 +165,7 @@ public class QuFriendsActivity extends BaseActivity {
 
             @Override
             public void onError() {
-                Toast.makeText(QuFriendsActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(QuFriendsActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
             }
         });
 

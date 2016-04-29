@@ -100,33 +100,19 @@ public class SPUtils {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        if (!pInfo.equals(getVersionNameBeforeUpdate(context))){
-            setVersionNameBeforeUpdate(context, pInfo.versionName);
-            setForceUpdateIfNecessary(context,false);
-        }
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        boolean ifForceUpdate = preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE, false);
-        if (ifForceUpdate){
-
-            return true;
-        }
-        return false;
-
+        return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE + pInfo.versionName , false);
     }
 
     public static void setForceUpdateIfNecessary(Context context, boolean forceUpdate) {
-        if (forceUpdate){
-            PackageInfo pInfo = null;
-            try {
-                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-            String version = pInfo.versionName;
-            setVersionNameBeforeUpdate(context,version);
+        PackageInfo pInfo = null;
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        preferences.edit().putBoolean(AppKey.SPF_KEY_FORCE_UPDATE, forceUpdate).commit();
+        preferences.edit().putBoolean(AppKey.SPF_KEY_FORCE_UPDATE + pInfo.versionName , forceUpdate).commit();
     }
 
     public static String getForceUpdateReason(Context context) {
@@ -148,17 +134,6 @@ public class SPUtils {
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_URL, reason).commit();
     }
-
-    public static String getVersionNameBeforeUpdate(Context context) {
-        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        return preferences.getString(AppKey.SPF_KEY_FORCE_UPDATE_VERSION_NAME, "");
-    }
-
-    public static void setVersionNameBeforeUpdate(Context context, String reason) {
-        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_VERSION_NAME, reason).commit();
-    }
-
 
     /**
      * 获取String

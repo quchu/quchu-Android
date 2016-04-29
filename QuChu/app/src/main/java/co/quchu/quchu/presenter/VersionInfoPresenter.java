@@ -22,28 +22,6 @@ public class VersionInfoPresenter {
     }
 
     public static void getIfForceUpdate(final Context context) {
-//        NetService.get(context, NetApi.checkIfForceUpdate, null, new IRequestListener() {
-//            @Override
-//            public void onSuccess(JSONObject response) {
-//
-//                if (null != response && response.has("result")) {
-//                    try {
-//                        if (response.getBoolean("result")) {
-//                            SPUtils.setForceUpdateIfNecessary(context, response.getBoolean("result"));
-//                            SPUtils.setForceUpdateReason(context, response.getString("msg"));
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public boolean onError(String error) {
-//                return false;
-//            }
-//        });
-
         GsonRequest<String> request = new GsonRequest<>(NetApi.checkIfForceUpdate, null, new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
