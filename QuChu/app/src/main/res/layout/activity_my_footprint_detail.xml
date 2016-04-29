@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBackgroundTrans"
     android:fitsSystemWindows="true"
     tools:context="co.quchu.quchu.view.activity.MyFootprintDetailActivity">
 
 
-    <include layout="@layout/cp_enhanced_toolbar" />
+    <include layout="@layout/cp_enhanced_toolbar"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
@@ -18,7 +20,7 @@
         android:layout_marginBottom="40dp"
         android:clickable="true"
         android:descendantFocusability="blocksDescendants"
-        android:focusable="true" />
+        android:focusable="true"/>
 
 
     <RelativeLayout
@@ -28,13 +30,14 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp"
         android:background="@color/appBackgroundTrans"
+
         android:padding="16dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/headImage"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:roundAsCircle="true" />
+            app:roundAsCircle="true"/>
 
         <TextView
             android:id="@+id/detail"
@@ -42,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/headImage"
-            android:text="null" />
+            android:text="null"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -65,7 +68,7 @@
                 android:id="@+id/support"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@mipmap/ic_light_like_fill" />
+                android:src="@mipmap/ic_light_like_fill"/>
 
             <TextView
                 android:id="@+id/supportCount"
@@ -74,7 +77,7 @@
                 android:layout_marginLeft="4dp"
                 android:gravity="center"
                 android:text="88"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
@@ -83,7 +86,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/appBackground" />
+            android:background="@color/appBackground"/>
 
 
         <ImageView
@@ -91,21 +94,21 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_weight="1"
-            android:src="@mipmap/ic_share" />
+            android:src="@mipmap/ic_share"/>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/appBackground" />
+            android:background="@color/appBackground"/>
 
         <ImageView
             android:id="@+id/edit"
             android:layout_width="0dp"
             android:layout_height="18dp"
             android:layout_weight="1"
-            android:src="@mipmap/ic_edit" />
+            android:src="@mipmap/ic_edit"/>
 
         <!--<View-->
         <!--android:layout_width="1dp"-->
