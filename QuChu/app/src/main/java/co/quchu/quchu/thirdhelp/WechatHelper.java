@@ -67,6 +67,7 @@ public class WechatHelper {
     }
 
     public void login(UserLoginListener listener) {
+        isBind = false;
         this.listener = listener;
         if (!api.isWXAppInstalled()) {
             Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();

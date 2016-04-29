@@ -160,9 +160,9 @@ public class PhoneLoginFragment extends BaseFragment {
         phoneLoginPnumEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (null!=event &&event.getAction()==KeyEvent.KEYCODE_ENTER){
-                    if (!StringUtils.isMobileNO(v.getText().toString())){
-                        Toast.makeText(getActivity(),"请输入正确的手机号",Toast.LENGTH_LONG).show();
+                if (null != event && event.getAction() == KeyEvent.KEYCODE_ENTER) {
+                    if (!StringUtils.isMobileNO(v.getText().toString())) {
+                        Toast.makeText(getActivity(), "请输入正确的手机号", Toast.LENGTH_LONG).show();
                     }
                 }
                 return false;
@@ -509,6 +509,10 @@ public class PhoneLoginFragment extends BaseFragment {
             Toast.makeText(getActivity(), "用户名和密码不能包含特殊字符", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (password.contains(" ")) {
+            Toast.makeText(getActivity(), "密码不能包含空格", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         UserLoginPresenter.userRegiest(getActivity(), AppContext.user.getUserId(), phoneLoginPnumEt.getText().toString().trim(),
                 MD5.hexdigest(password), nikeName,
@@ -552,8 +556,8 @@ public class PhoneLoginFragment extends BaseFragment {
             Toast.makeText(getActivity(), "请输入6-12位密码", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (StringUtils.containsEmoji(password)) {
-            Toast.makeText(getActivity(), "密码不能包含特殊字符", Toast.LENGTH_SHORT).show();
+        if (StringUtils.containsEmoji(password) || password.contains(" ")) {
+            Toast.makeText(getActivity(), "密码不能包含特殊字符和空格", Toast.LENGTH_SHORT).show();
             return;
         }
 

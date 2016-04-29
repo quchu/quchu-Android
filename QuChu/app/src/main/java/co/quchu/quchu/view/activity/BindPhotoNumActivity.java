@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.sina.weibo.sdk.utils.MD5;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
@@ -150,7 +151,7 @@ public class BindPhotoNumActivity extends BaseActivity implements View.OnClickLi
             Map<String, String> params = new HashMap<>();
             params.put("phone", photoNumberCache);
             params.put("captcha", authCode);
-            params.put("password", password);
+            params.put("password", MD5.hexdigest(password));
 
             GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, NetApi.bindPhoneNumber, params, Object.class, new ResponseListener<Object>() {
                 @Override

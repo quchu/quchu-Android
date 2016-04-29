@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -135,22 +134,24 @@ public class AccountSettingActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         boolean userNameChanged;
-        userNameChanged = !StringUtils.isEmpty(accountSettingNicknameEt.getText().toString())&&!accountSettingNicknameEt.getText().equals(AppContext.user.getFullname());
+        userNameChanged = !StringUtils.isEmpty(accountSettingNicknameEt.getText().toString()) && !accountSettingNicknameEt.getText().toString().equals(AppContext.user.getFullname());
         boolean userGenderChanged;
         userGenderChanged = !StringUtils.isEmpty(newUserGender) && !AppContext.user.getGender().equals(newUserGender);
         boolean userLocationChanged;
         userLocationChanged = !StringUtils.isEmpty(accountSettingUserLocation.getText().toString()) && !AppContext.user.getLocation().equals(accountSettingUserLocation.getText().toString());
-        if (mProfileModified||userNameChanged||userGenderChanged||userLocationChanged){
-            ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示","当前修改尚未保存，退出会导致资料丢失，是否保存");
+        if (mProfileModified || userNameChanged || userGenderChanged || userLocationChanged) {
+            ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示", "当前修改尚未保存，退出会导致资料丢失，是否保存");
             confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                 @Override
                 public void onClick(int index) {
-                    if (index==ConfirmDialogFg.INDEX_OK){
+                    if (index == ConfirmDialogFg.INDEX_OK) {
                         AccountSettingActivity.this.finish();
                     }
                 }
             });
-            confirmDialogFg.show(getFragmentManager(),"~");
+            confirmDialogFg.show(getFragmentManager(), "~");
+        }else {
+            super.onBackPressed();
         }
     }
 
@@ -366,7 +367,6 @@ public class AccountSettingActivity extends BaseActivity {
 
             @Override
             public boolean onError(String error) {
-                Toast.makeText(AccountSettingActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgess();
                 return false;
             }
