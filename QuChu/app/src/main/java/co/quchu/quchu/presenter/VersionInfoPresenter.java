@@ -54,6 +54,7 @@ public class VersionInfoPresenter {
                 if (result) {
                     SPUtils.setForceUpdateIfNecessary(context, true);
                     SPUtils.setForceUpdateReason(context, msg);
+                    SPUtils.setForceUpdateUrl(context,response);
                 }
             }
         });

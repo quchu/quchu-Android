@@ -2,6 +2,8 @@ package co.quchu.quchu.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.google.gson.Gson;
 
@@ -92,11 +94,33 @@ public class SPUtils {
     }
 
     public static boolean getForceUpdateIfNecessary(Context context) {
-        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE, false);
+        PackageInfo pInfo = null;
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (!pInfo.equals(getVersionNameBeforeUpdate(context))){
+            return true;
+        }else{
+            setVersionNameBeforeUpdate(context, pInfo.versionName);
+            setForceUpdateIfNecessary(context,false);
+            preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+            return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE, false);
+        }
     }
 
     public static void setForceUpdateIfNecessary(Context context, boolean forceUpdate) {
+        if (forceUpdate){
+            PackageInfo pInfo = null;
+            try {
+                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            String version = pInfo.versionName;
+            setVersionNameBeforeUpdate(context,version);
+        }
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         preferences.edit().putBoolean(AppKey.SPF_KEY_FORCE_UPDATE, forceUpdate).commit();
     }
@@ -109,6 +133,26 @@ public class SPUtils {
     public static void setForceUpdateReason(Context context, String reason) {
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
         preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_REASON, reason).commit();
+    }
+
+    public static String getForceUpdateUrl(Context context) {
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        return preferences.getString(AppKey.SPF_KEY_FORCE_UPDATE_URL, "");
+    }
+
+    public static void setForceUpdateUrl(Context context, String reason) {
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_URL, reason).commit();
+    }
+
+    public static String getVersionNameBeforeUpdate(Context context) {
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        return preferences.getString(AppKey.SPF_KEY_FORCE_UPDATE_VERSION_NAME, "");
+    }
+
+    public static void setVersionNameBeforeUpdate(Context context, String reason) {
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_VERSION_NAME, reason).commit();
     }
 
 

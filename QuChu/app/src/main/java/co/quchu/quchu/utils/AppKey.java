@@ -101,6 +101,14 @@ public interface AppKey {
      * 强制更新说明
      */
     String SPF_KEY_FORCE_UPDATE_REASON = "SPF_KEY_FORCE_UPDATE_REASON";
+    /**
+     * 强制更新地址
+     */
+    String SPF_KEY_FORCE_UPDATE_URL = "SPF_KEY_FORCE_UPDATE_URL";
+    /**
+     * 强制更新前版本
+     */
+    String SPF_KEY_FORCE_UPDATE_VERSION_NAME = "SPF_KEY_FORCE_UPDATE_VERSION_NAME";
 
     /**
      * 当前登陆的类型 微信 手机 游客 微博

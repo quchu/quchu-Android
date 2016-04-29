@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -34,6 +35,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.RecommendPresenter;
@@ -76,7 +78,7 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     @Bind(R.id.vBg)
     View mViewBg;
     @Bind(R.id.tvTips)
-    View mTvTips;
+    TextView mTvTips;
     @Bind(R.id.vSpace)
     View mVSpace;
 
@@ -295,6 +297,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         mShowGuide = SPUtils.animationShown(getApplicationContext());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         View decorView = getWindow().getDecorView();
@@ -309,6 +313,15 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
         AppContext.initLocation();
         ButterKnife.bind(this);
 
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String version = pInfo.versionName;
+
+        mTvTips.setText("趣处 "+version+" \n给春天开一扇玩耍的门");
         mTvVersion.setText(getVersionName());
         //大屏幕不执行动画
         if (ScreenUtils.getScreenHeight(getApplicationContext())>3204){
@@ -417,34 +430,53 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     }
 
     private void initLogic() {
-        mAnimationEnd = true;
-        if (AppContext.user != null) {
-            new EnterAppTask().execute(viewDuration);
-        } else {
-            visitorStartTime = System.currentTimeMillis() / 1000;
-            UserLoginPresenter.visitorRegiest(this, new UserLoginPresenter.UserNameUniqueListener() {
+
+        if (SPUtils.getForceUpdateIfNecessary(getApplicationContext())){
+            ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示",SPUtils.getForceUpdateReason(getApplicationContext()));
+            confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                 @Override
-                public void isUnique(JSONObject msg) {
-
-                    RecommendPresenter.getCityList(SplashActivity.this, new RecommendPresenter.CityListListener() {
-                        @Override
-                        public void hasCityList(ArrayList<CityModel> list) {
-
-                            if ((System.currentTimeMillis() / 1000 - visitorStartTime) > viewDuration) {
-                                enterApp();
-                            } else {
-                                new EnterAppTask().execute(viewDuration - (System.currentTimeMillis() / 1000 - visitorStartTime));
-                            }
-                        }
-                    });
-
-                }
-
-                @Override
-                public void notUnique(String msg) {
+                public void onClick(int index) {
+                    switch (index){
+                        case ConfirmDialogFg.INDEX_OK:
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(SPUtils.getForceUpdateUrl(getApplicationContext())));
+                            startActivity(browserIntent);
+                            break;
+                    }
                 }
             });
+        }else{
+
+            mAnimationEnd = true;
+            if (AppContext.user != null) {
+                new EnterAppTask().execute(viewDuration);
+            } else {
+                visitorStartTime = System.currentTimeMillis() / 1000;
+                UserLoginPresenter.visitorRegiest(this, new UserLoginPresenter.UserNameUniqueListener() {
+                    @Override
+                    public void isUnique(JSONObject msg) {
+
+                        RecommendPresenter.getCityList(SplashActivity.this, new RecommendPresenter.CityListListener() {
+                            @Override
+                            public void hasCityList(ArrayList<CityModel> list) {
+
+                                if ((System.currentTimeMillis() / 1000 - visitorStartTime) > viewDuration) {
+                                    enterApp();
+                                } else {
+                                    new EnterAppTask().execute(viewDuration - (System.currentTimeMillis() / 1000 - visitorStartTime));
+                                }
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void notUnique(String msg) {
+                    }
+                });
+            }
         }
+
+
     }
 
     @Override
