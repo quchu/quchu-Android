@@ -35,8 +35,7 @@ import co.quchu.quchu.utils.LogUtils;
 public class SearchPresenter {
     public static void searchFromService(Context context, String seachStr, int pageNum,int cityId, final SearchResultListener listener) {
 
-        System.out.println(String.format(NetApi.Seach, seachStr, pageNum,cityId));
-        NetService.get(context, String.format(NetApi.Seach, seachStr, pageNum), new IRequestListener() {
+        NetService.get(context, String.format(NetApi.Seach, seachStr, pageNum,cityId), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 try {
@@ -90,9 +89,9 @@ public class SearchPresenter {
         void errorNull();
     }
 
-    public static void getSearchTags(final SearchTagsListener listener){
+    public static void getSearchTags(Context context,final SearchTagsListener listener){
 
-        new GsonRequest<>(Request.Method.GET, NetApi.getSearchTags, new TypeToken<List<TagsModel>>() {}.getType(), new ResponseListener<List<TagsModel>>() {
+        GsonRequest<List<TagsModel>> request = new GsonRequest<>(Request.Method.GET, NetApi.getSearchTags, new TypeToken<List<TagsModel>>() {}.getType(), new ResponseListener<List<TagsModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 listener.errorNull();
@@ -103,6 +102,7 @@ public class SearchPresenter {
                 listener.successResult(response);
             }
         });
+        request.start(context);
 
     }
 }

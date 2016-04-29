@@ -101,7 +101,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
                 imm.showSoftInput(searchInputEt, 0);
             }
         });
-        SearchPresenter.getSearchTags(new SearchPresenter.SearchTagsListener(){
+        SearchPresenter.getSearchTags(getApplicationContext(),new SearchPresenter.SearchTagsListener(){
             @Override
             public void successResult(List<TagsModel> arrayList) {
                 if (null!=arrayList && arrayList.size()>0){
