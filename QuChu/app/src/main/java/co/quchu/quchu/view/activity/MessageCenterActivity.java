@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +24,7 @@ import co.quchu.quchu.view.adapter.MessageCenterAdapter;
  * User: Chenhs
  * Date: 2016-01-11
  */
-public class MessageCenterActivity extends BaseActivity implements PageLoadListener<MessageModel>, AdapterBase.OnLoadmoreListener {
+public class MessageCenterActivity extends BaseActivity implements PageLoadListener<MessageModel>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<MessageModel.ResultBean> {
     @Bind(R.id.messages_rv)
     RecyclerView messagesRv;
     private MessageCenterAdapter adapter;
@@ -41,6 +42,7 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
         adapter.setLoadmoreListener(this);
         messagesRv.setAdapter(adapter);
         MessageCenterPresenter.getMessageList(this, pagesNo, this);
+        adapter.setItemClickListener(this);
     }
 
     @Override
@@ -93,5 +95,12 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
     @Override
     public void onLoadmore() {
         MessageCenterPresenter.getMessageList(this, pagesNo + 1, this);
+    }
+
+    @Override
+    public void itemClick(MessageModel.ResultBean item, int type, int position) {
+        Intent intent = new Intent(this, UserCenterActivity.class);
+        intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, item.getFormId());
+        startActivity(intent);
     }
 }

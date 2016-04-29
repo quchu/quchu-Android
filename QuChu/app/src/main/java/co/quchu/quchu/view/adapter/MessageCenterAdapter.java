@@ -35,12 +35,20 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, M
     }
 
     @Override
-    public void onBindView(MessageCenterItemHolder holder, int position) {
-        MessageModel.ResultBean model = data.get(position);
+    public void onBindView(MessageCenterItemHolder holder, final int position) {
+        final MessageModel.ResultBean model = data.get(position);
         holder.itemMessageFromAvator.setImageURI(Uri.parse(model.getFormPhoto()));
         holder.itemMessageDesTv.setText(model.getContent());
         holder.itemMessageUserNameTv.setText(model.getForm());
         holder.itemMessageAddTimeTv.setText(DateUtils.getTimeRange(model.getTime(), mContext));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.itemClick(model, 0, position);
+            }
+        });
+
         switch (model.getType()) {
             case "follow":
                 holder.itemMessageFromRl.setVisibility(View.VISIBLE);

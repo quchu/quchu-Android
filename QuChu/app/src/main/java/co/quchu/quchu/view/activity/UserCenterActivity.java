@@ -30,7 +30,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     TextView userCenterFollowingTv;
     TextView userCenterFollowedTv;
     TextView userCenterPnumTv;
-//    TextView userCenterFavoritenumTv;
+    //    TextView userCenterFavoritenumTv;
     SimpleDraweeView ivZoom;
     SimpleDraweeView userCenterUserIconSdv;
     TextView userCenterUserNicknameTv;
@@ -38,6 +38,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     TextView userCenterFoucsableTv;
     private PullToZoomScrollViewEx scrollView;
     private int userId = 0;
+    public static final String REQUEST_KEY_USER_ID = "USERID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         toolbar.getTitleTv().setText(getTitle());
 
         loadViewForCode();
-        userId = getIntent().getIntExtra("USERID", 0);
+        userId = getIntent().getIntExtra(REQUEST_KEY_USER_ID, 0);
         scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
         initView();
         DisplayMetrics localDisplayMetrics = new DisplayMetrics();

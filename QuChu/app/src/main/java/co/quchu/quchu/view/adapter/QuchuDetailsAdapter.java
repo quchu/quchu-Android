@@ -10,7 +10,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,6 +38,7 @@ import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import co.quchu.quchu.view.activity.UserCenterActivity;
 import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
@@ -74,8 +74,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private SimpleQuchuDetailAnalysisModel mAnalysisModel;
 
 
-
-
     protected static final int VIEW_TYPES[] = new int[]{
             LAYOUT_TYPE_INTRO_IMAGE,
             LAYOUT_TYPE_ACTIONBAR,
@@ -106,7 +104,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LAYOUT_TYPE_LOAD_MORE
     };
 
-    public static final int [] RANDOM_AVATAR = {R.mipmap.ic_random_user_avatar_a,R.mipmap.ic_random_user_avatar_b,R.mipmap.ic_random_user_avatar_c,R.mipmap.ic_random_user_avatar_d};
+    public static final int[] RANDOM_AVATAR = {R.mipmap.ic_random_user_avatar_a, R.mipmap.ic_random_user_avatar_b, R.mipmap.ic_random_user_avatar_c, R.mipmap.ic_random_user_avatar_d};
 
     public QuchuDetailsAdapter(Activity activity, DetailModel dModel, View.OnClickListener onClickListener) {
         if (null == onClickListener) {
@@ -117,14 +115,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mLayoutInflater = LayoutInflater.from(activity);
         mOnItemClickListener = onClickListener;
         mVisitedUsersAvatarSize = mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.visited_users_avatar_size);
-        mVisitedUsersAvatarMargin = mAnchorActivity.getResources().getDimensionPixelOffset(R.dimen.base_margin)/2;
+        mVisitedUsersAvatarMargin = mAnchorActivity.getResources().getDimensionPixelOffset(R.dimen.base_margin) / 2;
     }
 
-    public void updateVisitedUsers(VisitedUsersModel pUsers){
+    public void updateVisitedUsers(VisitedUsersModel pUsers) {
         mVisitedUsers = pUsers;
         notifyDataSetChanged();
     }
-
 
 
     public void updateVisitorAnalysis(SimpleQuchuDetailAnalysisModel response) {
@@ -132,11 +129,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyDataSetChanged();
     }
 
-    public void setLoadMoreListener(OnLoadMoreListener pListener){
+    public void setLoadMoreListener(OnLoadMoreListener pListener) {
         mLoadMoreListener = pListener;
     }
 
     private OnLoadMoreListener mLoadMoreListener;
+
     public interface OnLoadMoreListener {
         void onLoadMore();
     }
@@ -147,7 +145,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return null != mData && mData.isIsActivity() ? VIEW_TYPES_PARTY[position] : VIEW_TYPES[position];
         } else if (position >= (BLOCK_INDEX + 1) && position < (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
             return LAYOUT_TYPE_IMAGE;
-        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1)) && position < (mData.getImglist().size()+BLOCK_INDEX+1+mData.getNearPlace().size())) {
+        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1)) && position < (mData.getImglist().size() + BLOCK_INDEX + 1 + mData.getNearPlace().size())) {
             return LAYOUT_TYPE_NEARBY;
         } else {
             return LAYOUT_TYPE_LOAD_MORE;
@@ -194,13 +192,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case LAYOUT_TYPE_NEARBY:
                 return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_favorite, parent, false));
             case LAYOUT_TYPE_LOAD_MORE:
-                return new LoadMoreViewHolder(mLayoutInflater.inflate(R.layout.cp_loadmore,parent,false));
+                return new LoadMoreViewHolder(mLayoutInflater.inflate(R.layout.cp_loadmore, parent, false));
             default:
                 return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
         }
 
     }
-
 
 
     @Override
@@ -211,23 +208,25 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof IntroImageViewHolder) {
             if (null != mData.getImglist()) {
                 List<ImageModel> imageSet = new ArrayList<>();
-                for (int i = 0; i < mData.getImglist().size() && i<=3; i++) {
+                for (int i = 0; i < mData.getImglist().size() && i <= 3; i++) {
                     imageSet.add(mData.getImglist().get(i).convert2ImageModel());
                 }
-                ((IntroImageViewHolder) holder).vpGallery.setAdapter(new GalleryAdapter(imageSet,((IntroImageViewHolder) holder).vpGallery.getContext()));
+                ((IntroImageViewHolder) holder).vpGallery.setAdapter(new GalleryAdapter(imageSet, ((IntroImageViewHolder) holder).vpGallery.getContext()));
                 final int size = imageSet.size();
-                ((IntroImageViewHolder) holder).tvGalleryIndicator.setText(1 +" of "+size);
+                ((IntroImageViewHolder) holder).tvGalleryIndicator.setText(1 + " of " + size);
                 ((IntroImageViewHolder) holder).vpGallery.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-                    @Override
-                    public void onPageSelected(int position) {
-                        ((IntroImageViewHolder) holder).tvGalleryIndicator.setText(position+1 +" of "+size);
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                     }
 
                     @Override
-                    public void onPageScrollStateChanged(int state) {}
+                    public void onPageSelected(int position) {
+                        ((IntroImageViewHolder) holder).tvGalleryIndicator.setText(position + 1 + " of " + size);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+                    }
                 });
                 ((IntroImageViewHolder) holder).vpGallery.setOnTouchListener(listener);
             }
@@ -244,7 +243,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             //TODO For some reason ,TagCloudView can cause laggy in this activity ,Consider using recyclerview for instead
             if (null != mData.getTags() && mData.getTags().size() > 0) {
                 for (int i = 0; i < mData.getTags().size(); i++) {
-                    switch (i){
+                    switch (i) {
                         case 0:
                             ((IntroImageViewHolder) holder).tag1.setText(mData.getTags().get(i).getZh());
                             ((IntroImageViewHolder) holder).tag1.setVisibility(View.VISIBLE);
@@ -270,53 +269,66 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ActionViewHolder) holder).detail_button_collect_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).tvFootprint.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).rlQuguo.setOnClickListener(mOnItemClickListener);
-            ((ActionViewHolder) holder).ivQuguo.setVisibility(mData.isIsout()?View.VISIBLE:View.GONE);
+            ((ActionViewHolder) holder).ivQuguo.setVisibility(mData.isIsout() ? View.VISIBLE : View.GONE);
 
             ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
-            if (mData.getCardCount()>0){
-                ((ActionViewHolder) holder).tvFootprint.setText("脚印 "+mData.getCardCount());
-            }else {
+            if (mData.getCardCount() > 0) {
+                ((ActionViewHolder) holder).tvFootprint.setText("脚印 " + mData.getCardCount());
+            } else {
                 ((ActionViewHolder) holder).tvFootprint.setText(R.string.foot_print);
             }
-            if (null!=mVisitedUsers){
-                if (mVisitedUsers.getUserOutCount()==0){
+            if (null != mVisitedUsers) {
+                if (mVisitedUsers.getUserOutCount() == 0) {
                     ((ActionViewHolder) holder).tvVisitorCount.setText("还没人去过");
-                }else{
-                    ((ActionViewHolder) holder).tvVisitorCount.setText(mVisitedUsers.getUserOutCount()+"人去过");
+                } else {
+                    ((ActionViewHolder) holder).tvVisitorCount.setText(mVisitedUsers.getUserOutCount() + "人去过");
                 }
                 LinearLayout.LayoutParams lpVisitedUsersAvatar;
                 //ic_care_friends_avatar
 
                 ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
                 for (int i = 0; i < 9; i++) {
-                    if (mVisitedUsers.getResult().size()>i){
+                    if (mVisitedUsers.getResult().size() > i) {
                         SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
                         sdv.setImageURI(Uri.parse(mVisitedUsers.getResult().get(i).getUserPhoneUrl()));
                         RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
                         roundingParams.setRoundAsCircle(true);
                         sdv.getHierarchy().setRoundingParams(roundingParams);
-                        if (i>0){
-                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
-                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin,0,0,0);
-                        }else{
-                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
-                            lpVisitedUsersAvatar.setMargins(0,0,0,0);
+                        if (i > 0) {
+                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
+                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
+                        } else {
+                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
+                            lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
                         }
-                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv,lpVisitedUsersAvatar);
+                        //跳转用户中心
+                        final int finalI = i;
+                        sdv.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), UserCenterActivity.class);
+                                intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, mVisitedUsers.getResult().get(finalI).getUserId());
+                                v.getContext().startActivity(intent);
+                            }
+                        });
+
+
+                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
                         sdv.requestLayout();
-                    }else if(mVisitedUsers.getResult().size()>0){ }else{
+                    } else if (mVisitedUsers.getResult().size() > 0) {
+                    } else {
                         SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
                         Random random = new Random();
                         int randomNumber = random.nextInt(3);
                         sdv.setImageResource(RANDOM_AVATAR[randomNumber]);
-                        if (i>0){
-                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
-                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin,0,0,0);
-                        }else{
-                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize,mVisitedUsersAvatarSize);
-                            lpVisitedUsersAvatar.setMargins(0,0,0,0);
+                        if (i > 0) {
+                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
+                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
+                        } else {
+                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
+                            lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
                         }
-                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv,lpVisitedUsersAvatar);
+                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
                         sdv.requestLayout();
                     }
 
@@ -348,16 +360,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.clearComposingText();
             }
         } else if (holder instanceof RatingInfoViewHolder) {
-            if (null != mAnalysisModel &&null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size()>0) {
+            if (null != mAnalysisModel && null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size() > 0) {
                 try {
 
-                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((Float.valueOf(mAnalysisModel.getResult().get(0).getCount())/ mAnalysisModel.getUserOutCount())*100f);
-                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((Float.valueOf(mAnalysisModel.getResult().get(1).getCount())/ mAnalysisModel.getUserOutCount())*100f);
-                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((Float.valueOf(mAnalysisModel.getResult().get(2).getCount())/ mAnalysisModel.getUserOutCount())*100f);
+                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((Float.valueOf(mAnalysisModel.getResult().get(0).getCount()) / mAnalysisModel.getUserOutCount()) * 100f);
+                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((Float.valueOf(mAnalysisModel.getResult().get(1).getCount()) / mAnalysisModel.getUserOutCount()) * 100f);
+                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((Float.valueOf(mAnalysisModel.getResult().get(2).getCount()) / mAnalysisModel.getUserOutCount()) * 100f);
                     ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
                     ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
                     ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
-                }catch (IndexOutOfBoundsException ex){
+                } catch (IndexOutOfBoundsException ex) {
                     //ex.printStackTrace();
                 }
             }
@@ -373,7 +385,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(.5f);
             ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(.5f);
             ((AdditionalInfoViewHolder) holder).ivApplePay.setAlpha(.5f);
-            if (null!=mData.getIcons()&&mData.getIcons().size() > 0) {
+            if (null != mData.getIcons() && mData.getIcons().size() > 0) {
                 for (int i = 0; i < mData.getIcons().size(); i++) {
                     String iconStr = mData.getIcons().get(i).getZh();
                     switch (iconStr) {
@@ -458,43 +470,43 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 ((NearbyViewHolder) holder).tvName.setText(mData.getNearPlace().get(imgIndex - 1).getName());
                 List<String> strTags = new ArrayList<>();
-                List<TagsModel> tags = mData.getNearPlace().get(imgIndex-1).getTags();
-                if (null!=tags && tags.size()>0){
+                List<TagsModel> tags = mData.getNearPlace().get(imgIndex - 1).getTags();
+                if (null != tags && tags.size() > 0) {
                     for (int i = 0; i < tags.size(); i++) {
                         strTags.add(tags.get(i).getZh());
                     }
                 }
 
                 ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
-                ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex-1).getAddress());
+                ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex - 1).getAddress());
                 ((NearbyViewHolder) holder).sdvImage.setImageURI(Uri.parse(mData.getNearPlace().get(imgIndex - 1).getCover()));
-                final int pid =mData.getNearPlace().get(imgIndex - 1).getPlaceId();
+                final int pid = mData.getNearPlace().get(imgIndex - 1).getPlaceId();
                 ((NearbyViewHolder) holder).cvRoot.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        Intent intent = new Intent(mAnchorActivity,QuchuDetailsActivity.class);
-                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM,QuchuDetailsActivity.FROM_TYPE_RECOM);
-                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID,pid);
+                        Intent intent = new Intent(mAnchorActivity, QuchuDetailsActivity.class);
+                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_RECOM);
+                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, pid);
                         mAnchorActivity.startActivity(intent);
                     }
                 });
 
             }
-        } else if (holder instanceof LoadMoreViewHolder){
-            if (!mEnableLoadMore){
+        } else if (holder instanceof LoadMoreViewHolder) {
+            if (!mEnableLoadMore) {
                 ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
                 ((LoadMoreViewHolder) holder).itemView.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 ((LoadMoreViewHolder) holder).itemView.setVisibility(View.VISIBLE);
-                ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore,"rotation",0,360);
+                ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore, "rotation", 0, 360);
                 rotation.setInterpolator(new LinearInterpolator());
                 rotation.setRepeatMode(ValueAnimator.RESTART);
                 rotation.setRepeatCount(ValueAnimator.INFINITE);
                 rotation.setDuration(1500);
                 rotation.start();
 
-                if (null!=mLoadMoreListener){
+                if (null != mLoadMoreListener) {
                     mLoadMoreListener.onLoadMore();
                 }
             }
@@ -504,7 +516,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public void finishLoadMore(){
+    public void finishLoadMore() {
         mEnableLoadMore = false;
         notifyDataSetChanged();
     }
@@ -514,7 +526,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public boolean onTouch(View v, MotionEvent event) {
             if (((ViewPager) v).getCurrentItem() != 0) {
                 ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(false);
-            }else{
+            } else {
                 ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(true);
             }
             return false;
@@ -530,17 +542,17 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (null != mData && null != mData.getNearPlace()) {
             basicCount += mData.getNearPlace().size();
         }
-        basicCount+=1;
+        basicCount += 1;
         return basicCount;
     }
 
-    public static class LoadMoreViewHolder extends RecyclerView.ViewHolder{
+    public static class LoadMoreViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.ivIndicator)
         ImageView ivLoadMore;
 
         LoadMoreViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
+            ButterKnife.bind(this, view);
         }
     }
 
@@ -744,7 +756,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ButterKnife.bind(this, view);
         }
     }
-
 
 
 }
