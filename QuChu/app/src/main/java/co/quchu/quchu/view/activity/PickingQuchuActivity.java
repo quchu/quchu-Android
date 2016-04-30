@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -20,10 +21,10 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.SimpleQuchuSearchResultModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.PickingQuchuAdapter;
 
 /**
@@ -78,7 +79,7 @@ public class PickingQuchuActivity extends BaseActivity {
 
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mData.get(position).getId());
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mData.get(position).getName());
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ALLOW_PICKING_STORE,true);
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ALLOW_PICKING_STORE, true);
                     startActivity(intent);
                     finish();
                 } else {
@@ -105,7 +106,7 @@ public class PickingQuchuActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
 //                if (null != s && !StringUtils.isEmpty(s.toString()))
-                    doSearch(s.toString());
+                doSearch(s.toString());
             }
         };
 
@@ -130,6 +131,11 @@ public class PickingQuchuActivity extends BaseActivity {
     }
 
     private void doSearch(String keyWord) {
+        if (!NetUtil.isNetworkConnected(this)) {
+            Toast.makeText(this, "网络异常", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         NearbyPresenter.getSearchResult(this, SPUtils.getCityId(), keyWord, new CommonListener<List<SimpleQuchuSearchResultModel>>() {
             @Override
             public void successListener(List<SimpleQuchuSearchResultModel> response) {

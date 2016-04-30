@@ -265,7 +265,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                     new ImageUpload(AddFootprintActivity.this, im, new ImageUpload.UploadResponseListener() {
                         @Override
                         public void finish(String result) {
-                            init();
+
                             saveCard(pId, etContent.getText().toString(), result);
                         }
 

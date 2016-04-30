@@ -23,9 +23,9 @@ import co.quchu.quchu.utils.LogUtils;
 public class MessageCenterPresenter {
 
     public static void getMessageList(Context mContext, final int pageNo, final PageLoadListener<MessageModel> listener) {
+        String uri = NetApi.getMessageList + "?pageno=" + pageNo;
 
-
-        GsonRequest<MessageModel> request = new GsonRequest<>(NetApi.getMessageList, MessageModel.class, new ResponseListener<MessageModel>() {
+        GsonRequest<MessageModel> request = new GsonRequest<>(uri, MessageModel.class, new ResponseListener<MessageModel>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 listener.netError(pageNo, "");
@@ -33,7 +33,7 @@ public class MessageCenterPresenter {
 
             @Override
             public void onResponse(MessageModel response, boolean result, @Nullable String exception, @Nullable String msg) {
-                 if (response == null) {
+                if (response == null) {
                     listener.nullData();
                 } else if (pageNo == 1) {
                     listener.initData(response);

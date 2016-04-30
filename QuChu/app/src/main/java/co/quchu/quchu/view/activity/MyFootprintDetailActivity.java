@@ -41,6 +41,7 @@ import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.fragment.FootprintDetailFragment;
 
 public class MyFootprintDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
@@ -248,8 +249,8 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.supportContainer://点赞
-                final Entity entity = data.get(selectedPosition);
                 //屏蔽重复点赞
+                final Entity entity = data.get(selectedPosition);
                 if (clickID != entity.cardId) {
 
                     clickID = entity.cardId;
@@ -257,22 +258,24 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
                         @Override
                         public void onSuccess(PostCardModel model) {
                             if (entity.isP) {
+                                LogUtils.e("取消点赞成功");
 //                                entity.isP = false;
 //                                entity.supportCount--;
                                 if (clickID == entity.cardId) {
-                                    supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
+                                    supportCount.setText(String.valueOf(entity.supportCount - 1));//点赞数目
                                     support.setImageResource(R.mipmap.ic_light_like);
                                 }
                                 resetStatus(false, entity.cardId);
                                 //如果用户没有切换卡片
                             } else {
+                                LogUtils.e("点赞成功");
 //                                entity.supportCount++;
 //                                entity.isP = true;
                                 if (clickID == entity.cardId) {
-                                    supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
+                                    supportCount.setText(String.valueOf(entity.supportCount + 1));//点赞数目
                                     support.setImageResource(R.mipmap.ic_light_like_fill);
-                                    resetStatus(true, entity.cardId);
                                 }
+                                resetStatus(true, entity.cardId);
                             }
                             clickID = -1;
                         }
@@ -333,13 +336,13 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     private void animation() {
         if (isShowing) {
             isShowing = false;
-            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", 0, containerBottom.getHeight()+100);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", 0, containerBottom.getHeight() + 100);
             animator.setDuration(600);
             animator.setInterpolator(new DecelerateInterpolator());
             animator.start();
         } else {
             isShowing = true;
-            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", containerBottom.getHeight()+100, 0);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", containerBottom.getHeight() + 100, 0);
             animator.setDuration(600);
             animator.setInterpolator(new DecelerateInterpolator());
             animator.start();

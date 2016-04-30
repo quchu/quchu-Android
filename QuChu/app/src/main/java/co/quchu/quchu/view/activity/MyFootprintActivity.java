@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -29,7 +28,6 @@ import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
-import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 import co.quchu.quchu.widget.ScrollIndexView;
@@ -58,6 +56,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     public static final String REQUEST_KEY_USER_ID = "userId";
     public static final String REQUEST_KEY_USER_AGE = "age";
     public static final String REQUEST_KEY_USER_PHOTO = "photo";
+    public static final String REQUEST_KEY_USER_NAME = "name";
     public static final String REQUEST_KEY_USER_FOOTER_COUND = "cound";
     public static final String REQUEST_KEY_USER_FOOTER_TITLE = "title";
     private int userId;
@@ -78,7 +77,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         userId = getIntent().getIntExtra(REQUEST_KEY_USER_ID, AppContext.user.getUserId());
 
         presenter = new MyFootprintPresenter(this, this);
-        presenter.getMyFoiotrintList(userId, pagesNo);
+//        presenter.getMyFoiotrintList(userId, pagesNo);
 
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -144,7 +143,8 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
                 "年," +
                 cound +
                 "个脚印";
-        name.setText(AppContext.user.getFullname());
+
+        name.setText(getIntent().getStringExtra(REQUEST_KEY_USER_NAME));
         ageAndCound.setText(builder);
         headView.setImageURI(Uri.parse(uri + ""));
         ImageView rightIv = toolbar.getRightIv();
@@ -221,12 +221,15 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
 
     @Override
     protected void onResume() {
+        pagesNo = 1;
+        presenter.getMyFoiotrintList(userId, pagesNo);
         MobclickAgent.onPageStart("my pic");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
+
         MobclickAgent.onPageEnd("my pic");
         super.onPause();
     }
@@ -239,9 +242,8 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
-            pagesNo = 1;
-            presenter.getMyFoiotrintList(userId, pagesNo);
-        }
+//        if (event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED||event.getFlag()==EventFlags.EVENT_POST_CARD_ADDED||event.getFlag()==EventFlags.EVENT_QUCHU_DETAIL_UPDATED) {
+//
+//        }
     }
 }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -30,7 +31,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     TextView userCenterFollowingTv;
     TextView userCenterFollowedTv;
     TextView userCenterPnumTv;
-    //    TextView userCenterFavoritenumTv;
     SimpleDraweeView ivZoom;
     SimpleDraweeView userCenterUserIconSdv;
     TextView userCenterUserNicknameTv;
@@ -73,6 +73,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         userCenterFollowingTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_following_tv);
         userCenterFollowedTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_followed_tv);
         userCenterPnumTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_pnum_tv);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initData();
     }
 
@@ -116,6 +121,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_COUND, userInfo.getCardNum());
                 intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_PHOTO, userInfo.getPhoto());
                 intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_TITLE, userInfo.getName() + "的脚印");
+                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_NAME, userInfo.getName());
                 startActivity(intent);
 
         }
@@ -165,6 +171,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             userCenterFoucsableTv.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
             userCenterFoucsableTv.setBackground(getResources().getDrawable(R.drawable.shape_usercenter_unfoucs));
         }
+
+        userCenterFollowedTv.setText(String.format(getResources().getString(R.string.usercenter_follow_text), userInfo.getFollowNum()));
+        userCenterFollowingTv.setText(String.format(getResources().getString(R.string.usercenter_host_text), userInfo.getHostNum()));
+
     }
 
     private void followSomebody() {
@@ -175,13 +185,20 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userInfo.userId, new UserCenterPresenter.UserCenterInfoCallBack() {
                 @Override
                 public void onSuccess(UserCenterInfo userCenterInfo) {
-                    userInfo.setIsFollow(!userInfo.isIsFollow());
+//                    userInfo.setIsFollow(!userInfo.isIsFollow());
+                    if (userInfo.isFollow()) {
+                        userInfo.setIsFollow(false);
+                        userInfo.setFollowNum(userInfo.getFollowNum() - 1);
+                    } else {
+                        userInfo.setIsFollow(true);
+                        userInfo.setFollowNum(userInfo.getFollowNum() + 1);
+                    }
                     updateIsFollow();
                 }
 
                 @Override
                 public void onError() {
-
+                    Toast.makeText(UserCenterActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                 }
             });
         }

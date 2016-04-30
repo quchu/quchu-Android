@@ -62,7 +62,7 @@
                 android:paddingBottom="@dimen/quarter_margin"
                 android:layout_marginBottom="@dimen/half_margin"
                 android:textSize="@dimen/word_size_minimum"
-                android:layout_below="@+id/etContent"
+                android:layout_below="@id/etContent"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/shape_lineframe_gray"
                 android:text="@string/hint_max_text_length"

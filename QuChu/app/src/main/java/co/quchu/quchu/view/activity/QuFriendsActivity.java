@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -130,7 +129,7 @@ public class QuFriendsActivity extends BaseActivity {
         strollRpv.setVisibility(View.INVISIBLE);
 
 
-        FollowPresenter.getCurrentUserFollowers(getApplicationContext(), false, FollowPresenter.TAFOLLOWING, 1, new FollowPresenter.GetFollowCallBack() {
+        FollowPresenter.getCurrentUserFollowers(getApplicationContext(), false, FollowPresenter.TAFOLLOWERS, 1, new FollowPresenter.GetFollowCallBack() {
             @Override
             public void onSuccess(ArrayList<FollowUserModel> lists) {
                 if (null == lists) {

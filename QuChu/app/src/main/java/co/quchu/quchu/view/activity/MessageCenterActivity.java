@@ -83,11 +83,11 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
     }
 
     @Override
-    public void netError(int pageNo, String massage) {
+    public void netError(final int pageNo, String massage) {
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MessageCenterPresenter.getMessageList(MessageCenterActivity.this, pagesNo, MessageCenterActivity.this);
+                MessageCenterPresenter.getMessageList(MessageCenterActivity.this, pageNo, MessageCenterActivity.this);
             }
         });
     }
