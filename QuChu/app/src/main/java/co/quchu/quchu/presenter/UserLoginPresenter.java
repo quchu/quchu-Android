@@ -141,9 +141,13 @@ public class UserLoginPresenter {
 
             @Override
             public void onResponse(UserInfoModel response, boolean result, String errorCode, @Nullable String msg) {
+                if (result){
                 UserInfoHelper.saveUserInfo(response);
                 LogUtils.json(response.toString());
                 listener.isUnique(null);
+                }else {
+                    Toast.makeText(context,"验证码错误",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         request.start(context, null);
