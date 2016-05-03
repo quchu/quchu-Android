@@ -97,7 +97,9 @@ public class NearbyActivity extends BaseActivity {
                                     if (mMaxPageNo == -1) {
                                         mMaxPageNo = pMaxPageNo;
                                     }
-                                    mData.addAll(model);
+                                    if (null!=model){
+                                        mData.addAll(model);
+                                    }
                                     mAdapter.notifyDataSetChanged();
                                     DialogUtil.dismissProgess();
                                 }
@@ -110,7 +112,10 @@ public class NearbyActivity extends BaseActivity {
         });
         mPlaceId = getIntent().getIntExtra(BUNDLE_KEY_PID, -1);
         mRecommendPlaceIds = getIntent().getStringExtra(BUNDLE_KEY_RECOMMEND_PIDS);
-        mData.addAll((List<NearbyItemModel>) getIntent().getSerializableExtra(BUNDLE_KEY_DATA));
+        if (null!=getIntent().getSerializableExtra(BUNDLE_KEY_DATA)){
+            mData.addAll((List<NearbyItemModel>) getIntent().getSerializableExtra(BUNDLE_KEY_DATA));
+        }
+
 
         ButterKnife.bind(this);
         mAdapter = new NearbyAdapter(mData, new NearbyAdapter.OnItemClickListener() {
@@ -159,7 +164,9 @@ public class NearbyActivity extends BaseActivity {
             @Override
             public void successListener(List<TagsModel> response) {
                 mFilterTags.clear();
-                mFilterTags.addAll(response);
+                if (null!=response){
+                    mFilterTags.addAll(response);
+                }
 
             }
 
@@ -192,7 +199,9 @@ public class NearbyActivity extends BaseActivity {
                 if (mMaxPageNo == -1) {
                     mMaxPageNo = pMaxPageNo;
                 }
-                mData.addAll(model);
+                if (null!=model){
+                    mData.addAll(model);
+                }
                 mAdapter.notifyDataSetChanged();
                 mIsLoading = false;
                 DialogUtil.dismissProgess();

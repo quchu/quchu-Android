@@ -47,7 +47,11 @@ public class LoadingDialog extends Dialog {
     @Override
     public void dismiss() {
         if (isShowing()) {
-            super.dismiss();
+            try{
+                super.dismiss();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
         }
     }
 }
