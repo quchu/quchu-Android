@@ -95,7 +95,6 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
             public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
                 mData.clear();
                 mData.addAll(arrayList);
-                getSwipeBackLayout().setEnableGesture(false);
                 mAdapter.notifyDataSetChanged();
                 index = currentIndex = 0;
                 mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
@@ -218,11 +217,6 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
     @Override
     public void onPageSelected(int position) {
         MobclickAgent.onEvent(this, "discovery_c");
-        if (position == 0) {
-            getSwipeBackLayout().setEnableGesture(true);
-        } else {
-            getSwipeBackLayout().setEnableGesture(false);
-        }
         currentIndex = position;
         index = position;
         mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);

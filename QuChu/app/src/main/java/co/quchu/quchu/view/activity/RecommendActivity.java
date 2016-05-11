@@ -93,7 +93,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
             }
         });
         VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
-        getSwipeBackLayout().setEnableGesture(false);
     }
 
     @Override

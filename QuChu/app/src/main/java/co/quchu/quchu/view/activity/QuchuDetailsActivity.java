@@ -232,9 +232,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     private void bindingDetailData(DetailModel model) {
         dModel.copyFrom(model);
-        if (null != dModel.getImglist() && dModel.getImglist().size() > 1) {
-            getSwipeBackLayout().setEnableGesture(false);
-        }
+
         mQuchuDetailAdapter.notifyDataSetChanged();
         mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
             @Override

@@ -228,7 +228,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     public void onPageScrollStateChanged(int state) {
                     }
                 });
-                ((IntroImageViewHolder) holder).vpGallery.setOnTouchListener(listener);
             }
 
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
@@ -521,17 +520,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyDataSetChanged();
     }
 
-    private View.OnTouchListener listener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if (((ViewPager) v).getCurrentItem() != 0) {
-                ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(false);
-            } else {
-                ((QuchuDetailsActivity) mAnchorActivity).getSwipeBackLayout().setEnableGesture(true);
-            }
-            return false;
-        }
-    };
 
     @Override
     public int getItemCount() {

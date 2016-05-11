@@ -12,9 +12,6 @@ import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityBase;
-import co.quchu.quchu.widget.swipbacklayout.SwipeBackActivityHelper;
-import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
 
 
 /**
@@ -23,9 +20,7 @@ import co.quchu.quchu.widget.swipbacklayout.SwipeBackLayout;
  * Date: 2015-10-19
  * activity 基类
  */
-public abstract class BaseActivity extends AppCompatActivity implements SwipeBackActivityBase {
-    private SwipeBackActivityHelper mHelper;
-    protected SwipeBackLayout mSwipeBackLayout;
+public abstract class BaseActivity extends AppCompatActivity {
     protected String TAG = getClass().getName();
 
     //不做任何动画处理
@@ -44,12 +39,6 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
         super.onCreate(savedInstanceState);
         //压栈
         ActManager.getAppManager().addActivity(this);
-
-        mHelper = new SwipeBackActivityHelper(this);
-        mHelper.onActivityCreate();
-        mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-        mSwipeBackLayout.setEdgeSize(360);
 
         switch (activitySetup()) {
             case TRANSITION_TYPE_NOTHING:
@@ -119,24 +108,10 @@ public abstract class BaseActivity extends AppCompatActivity implements SwipeBac
     }
 
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        if (mHelper != null)
-            mHelper.onPostCreate();
-    }
 
     @Override
     public View findViewById(int id) {
-        View v = super.findViewById(id);
-        if (v == null && mHelper != null)
-            return mHelper.findViewById(id);
-        return v;
-    }
-
-    @Override
-    public SwipeBackLayout getSwipeBackLayout() {
-        return mHelper.getSwipeBackLayout();
+        return super.findViewById(id);
     }
 
     public EnhancedToolbar getEnhancedToolbar() {

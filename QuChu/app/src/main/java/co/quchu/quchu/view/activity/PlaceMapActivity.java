@@ -82,7 +82,6 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         mapView = (MapView) findViewById(R.id.place_map_mv);
         mVPNearby = (ViewPager) findViewById(R.id.vpNearby);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
-        getSwipeBackLayout().setEnableGesture(false);
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
         currentPosition.setOnClickListener(this);
         if (aMap == null) {
