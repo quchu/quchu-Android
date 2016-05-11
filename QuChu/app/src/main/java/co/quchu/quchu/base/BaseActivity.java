@@ -42,6 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         switch (activitySetup()) {
             case TRANSITION_TYPE_NOTHING:
+                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
                 break;
             case TRANSITION_TYPE_ALPHA:
                 overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
@@ -83,9 +84,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             case TRANSITION_TYPE_ALPHA:
                 overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
                 break;
-//            case TRANSITION_TYPE_LEFT:
-//                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
-//                break;
+            case TRANSITION_TYPE_LEFT:
+                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
+                break;
             case TRANSITION_TYPE_BOTTOM:
                 overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
                 break;
