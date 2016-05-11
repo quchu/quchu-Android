@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/appBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/base_margin"
+        android:text="注意!"
+        android:textColor="@color/planet_progress_yellow"
+        android:textSize="@dimen/word_subhead_size" />
+
+    <TextView
+        android:id="@+id/subTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        android:minHeight="32dp"
+        android:text="哈哈哈哈哈"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/word_subhead_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:padding="@dimen/quarter_margin">
+
+        <Button
+            android:id="@+id/passive"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="取消"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_size_body" />
+
+        <Button
+            android:id="@+id/active"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="确定"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/word_size_body" />
+    </LinearLayout>
+</LinearLayout>
