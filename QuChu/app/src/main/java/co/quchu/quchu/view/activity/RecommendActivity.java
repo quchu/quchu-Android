@@ -216,7 +216,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
             } else {
                 UserAnalysisUtils.sendUserBehavior(RecommendActivity.this);
                 ActManager.getAppManager().AppExit();
-                AppContext.stopLocation();
             }
 
         }

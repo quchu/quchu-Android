@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
 
+import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
@@ -109,7 +110,13 @@ public class AppContext extends Application {
         if (!AppUtil.isOpen(mContext))
             AppUtil.openGPS(mContext);
         mLocationClient = new AMapLocationClient(mContext);
-        mLocationListener = new AppLocationListener();
+        mLocationListener = new AppLocationListener(){
+            @Override
+            public void onLocationChanged(AMapLocation amapLocation) {
+                super.onLocationChanged(amapLocation);
+                stopLocation();
+            }
+        };
         //设置定位回调监听
         mLocationClient.setLocationListener(mLocationListener);
         //初始化定位参数

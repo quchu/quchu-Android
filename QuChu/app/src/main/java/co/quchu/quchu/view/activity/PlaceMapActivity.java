@@ -115,7 +115,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onPageSelected(final int position) {
                 MobclickAgent.onEvent(PlaceMapActivity.this, "maplist_c");
-                LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(position).getLatitude()), Double.valueOf(mDataSet.get(position).getLongitude()));
+                LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(position).getGdLatitude()), Double.valueOf(mDataSet.get(position).getGdLongitude()));
                 CameraUpdate s = CameraUpdateFactory.changeLatLng(latLng);
 
                 aMap.animateCamera(s);
@@ -177,15 +177,13 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         navigateDialogFg.show(getFragmentManager(), "navigate");
     }
     private void initMarks() {
-        mMarks.clear();
         for (int i = 0; i < mDataSet.size(); i++) {
-            float distance = AMapUtils.calculateLineDistance(new LatLng(gdlat, gdlon),
-                    new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()), Double.valueOf(mDataSet.get(i).getLongitude())));
-            String strDistance = "距离当前趣处：" + new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
-            LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(i).getLatitude()), Double.valueOf(mDataSet.get(i).getLongitude()));
-            Marker marker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getName())
-                    .snippet(strDistance)
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_target))
+//            float distance = AMapUtils.calculateLineDistance(new LatLng(gdlat, gdlon),
+//            new LatLng(Double.valueOf(mDataSet.get(i).getGdLatitude()), Double.valueOf(mDataSet.get(i).getGdLongitude())));
+            //String strDistance = "距离当前趣处：" + new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
+            LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(i).getGdLatitude()), Double.valueOf(mDataSet.get(i).getGdLongitude()));
+            Marker marker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getAddress())
+                    //.snippet(strDistance)
                     .perspective(true).draggable(false).period(50));
             marker.setObject(i);
             mMarks.add(marker);
@@ -214,13 +212,18 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(placeAddress);
-        markerOption.title(placeTitle).snippet(placeAddressStr);
+        markerOption.title(placeAddressStr);//.snippet(placeAddressStr);
         markerOption.perspective(true);
         markerOption.draggable(true);
         markerOption.visible(true);
         markerOption.setFlat(true);
-//        markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.avatar_1));
-        aMap.addMarker(markerOption);
+        Marker marker = aMap.addMarker(markerOption);
+        CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                placeAddress, mapView.getMap().getCameraPosition().zoom, 0, 0));
+        aMap.animateCamera(update);
+        marker.showInfoWindow();
+//        marker.setObject(0);
+//        mMarks.add(marker);
     }
 
     @Override
@@ -251,7 +254,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                 CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
                         new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude()), mapView.getMap().getCameraPosition().zoom, 0, 0));
 
-                mapView.getMap().animateCamera(update);
+                aMap.animateCamera(update);
 
                 break;
             default:
@@ -293,7 +296,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                LogUtils.e("点击事件");
+                int index = (int) marker.getObject();
+                mVPNearby.setCurrentItem(index);
                 return false;
             }
         });
