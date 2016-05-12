@@ -443,7 +443,7 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
                     }
                 }
             });
-            confirmDialogFg.show(getFragmentManager(),"~");
+            confirmDialogFg.show(getSupportFragmentManager(),"~");
         }else{
 
             mAnimationEnd = true;

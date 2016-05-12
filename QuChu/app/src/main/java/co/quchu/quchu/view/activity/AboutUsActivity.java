@@ -82,7 +82,7 @@ public class AboutUsActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 instance.setCancelable(false);
-                instance.show(getFragmentManager(), "");
+                instance.show(getSupportFragmentManager(), "");
             }
 
             @Override

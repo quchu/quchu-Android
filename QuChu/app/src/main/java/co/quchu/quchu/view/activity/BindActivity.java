@@ -151,7 +151,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                 }
             }
         });
-        dialogFg.show(getFragmentManager(), null);
+        dialogFg.show(getSupportFragmentManager(), null);
 
 
     }

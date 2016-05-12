@@ -175,7 +175,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             case R.id.item_recommend_card_interest_iv:
                 //分享
                 ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(cardList.get(position).getPid(), cardList.get(position).getName(), true);
-                shareDialogFg.show(getActivity().getFragmentManager(), "share_place");
+                shareDialogFg.show(getActivity().getSupportFragmentManager(), "share_place");
                 break;
         }
     }
@@ -183,7 +183,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     private void setFavorite(final int position) {
         if (AppContext.user.isIsVisitors()) {
             VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
-            vDialog.show(getActivity().getFragmentManager(), "visitor");
+            vDialog.show(getActivity().getSupportFragmentManager(), "visitor");
         } else {
             InterestingDetailPresenter.setDetailFavorite(getActivity(), cardList.get(position).getPid(), cardList.get(position).isIsf(), new InterestingDetailPresenter.DetailDataListener() {
                 @Override

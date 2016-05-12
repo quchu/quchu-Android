@@ -64,7 +64,7 @@ public class NearbyActivity extends BaseActivity {
             public void onClick(View v) {
                 if (mFilterTags.size() > 0) {
                     TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(mFilterTags);
-                    tagsFilterDialog.show(getFragmentManager(), "");
+                    tagsFilterDialog.show(getSupportFragmentManager(), "");
                     tagsFilterDialog.setPickingListener(new TagsFilterDialog.OnFinishPickingListener() {
                         @Override
                         public void onFinishPicking(List<TagsModel> selection) {

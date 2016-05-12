@@ -77,8 +77,8 @@ public class QuFriendsActivity extends BaseActivity {
         StringUtils.alterBoldTextColor(planetGeneTv, 4, 7, R.color.standard_color_yellow);
 
 
-        tabLayout.addTab(tabLayout.newTab().setText("我关注的"));
-        tabLayout.addTab(tabLayout.newTab().setText("关注我的"));
+        tabLayout.addTab(tabLayout.newTab().setText("关注"));
+        tabLayout.addTab(tabLayout.newTab().setText("趣粉"));
 
         Bundle bundleSub = new Bundle();
         Bundle bundleFlr = new Bundle();

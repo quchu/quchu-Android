@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -60,6 +59,7 @@ public class FootPrintActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foot_print);
         ButterKnife.bind(this);
+        getEnhancedToolbar();
         mQuchuId = getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID, -1);
         mQuchuName = getIntent().getStringExtra(BUNDLE_KEY_QUCHU_NAME);
 
@@ -84,7 +84,7 @@ public class FootPrintActivity extends BaseActivity {
             public void onClick(View v) {
                 if (AppContext.user.isIsVisitors()) {
                     VisitorLoginDialogFg dialog = VisitorLoginDialogFg.newInstance(0);
-                    dialog.show(getFragmentManager(), "");
+                    dialog.show(getSupportFragmentManager(),"~");
 
                 } else {
                     Intent intent = new Intent(FootPrintActivity.this, AddFootprintActivity.class);
