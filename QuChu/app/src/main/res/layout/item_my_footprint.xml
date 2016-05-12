@@ -45,7 +45,7 @@
             android:layout_alignTop="@id/headView"
             android:layout_marginLeft="6dp"
             android:layout_toRightOf="@id/headView"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/word_size_time" />
 
         <TextView

@@ -124,6 +124,6 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:text="@string/text_planet_discover_gene"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/word_size_body" />
 </RelativeLayout>

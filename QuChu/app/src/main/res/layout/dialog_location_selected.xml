@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/more_cities_coming_soon"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/word_size_minimum"
         android:visibility="gone" />
 

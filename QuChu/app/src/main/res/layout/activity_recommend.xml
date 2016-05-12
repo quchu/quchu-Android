@@ -31,7 +31,7 @@
             android:layout_marginRight="@dimen/base_margin"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textColorHint="@color/translucent_white" />
 
     </RelativeLayout>

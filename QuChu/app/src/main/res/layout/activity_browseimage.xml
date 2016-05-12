@@ -37,7 +37,7 @@
                 android:layout_marginLeft="@dimen/quarter_margin"
                 android:layout_marginRight="@dimen/quarter_margin"
                 android:text="滑动浏览图片"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_body" />
 
             <ImageView
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="点击照片退出\r\n并返回照片图集"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>
     </FrameLayout>

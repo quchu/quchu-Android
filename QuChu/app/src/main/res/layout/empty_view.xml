@@ -43,7 +43,7 @@
             android:layout_marginTop="@dimen/half_margin"
             android:background="@drawable/shape_data_null_button_bg"
             android:text="@string/empty_button_text"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/word_size_body" />
     </LinearLayout>
 

@@ -20,5 +20,5 @@
         android:padding="8dp"
 
         android:text="加载中~~"
-        android:textColor="@color/white" />
+        android:textColor="@android:color/white" />
 </LinearLayout>

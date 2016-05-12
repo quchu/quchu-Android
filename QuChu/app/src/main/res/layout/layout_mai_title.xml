@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_heigh"
-    android:background="@color/appBackground"
+    android:background="@color/titleBackground"
     tools:showIn="@layout/activity_recommend">
 
     <RelativeLayout
@@ -20,7 +20,7 @@
             android:layout_marginStart="@dimen/base_margin"
             android:gravity="center"
             android:text="Null"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="16sp" />
     </RelativeLayout>
 
