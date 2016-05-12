@@ -19,8 +19,7 @@
     <co.quchu.quchu.widget.DampView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rvSelection"
-        android:background="@color/appBackground_dark">
+        android:layout_below="@id/rvSelection">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/detail_recyclerview"

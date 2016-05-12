@@ -8,7 +8,6 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFootPrint"
-        android:background="@color/appBackground"
         android:paddingLeft="@dimen/quarter_margin"
         android:paddingRight="@dimen/quarter_margin"
         android:layout_above="@+id/tvAddFootprint"

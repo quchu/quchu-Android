@@ -10,6 +10,9 @@
 
     <color name="standard_color_red">#ff231f</color>
     <color name="standard_color_yellow">#ffd300</color>
+    <color name="standard_color_h1_dark">#333333</color>
+    <color name="standard_color_content">#666666</color>
+    <color name="standard_color_description">#999999</color>
     
     <!-- 自定义属性-->
     <color name="titleBackground">#383635</color>
