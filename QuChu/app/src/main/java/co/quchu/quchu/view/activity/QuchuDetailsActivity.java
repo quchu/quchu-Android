@@ -2,12 +2,10 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -423,7 +421,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
                     if (null != mVisitedInfoModel) {
                         RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(),mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
-                        tagsFilterDialog.show(getFragmentManager(), "");
+                        tagsFilterDialog.show(getSupportFragmentManager(), "");
                         tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
                             @Override
                             public void onFinishPicking(List<TagsModel> selection, int score) {
@@ -457,7 +455,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                     //分享
                     try {
                         ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
-                        shareDialogFg.show(getFragmentManager(), "share_dialog");
+                        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }

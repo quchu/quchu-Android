@@ -139,13 +139,13 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 MeActivity.this.finish();
                 break;
             case R.id.setting://设置
-                MenuSettingDialogFg.newInstance().show(getFragmentManager(), "menu_setting");
+                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "menu_setting");
                 break;
             case R.id.headImage:
                 if (user.isIsVisitors()) {
                     //游客
                     VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
-                    dialogFg.show(getFragmentManager(), "");
+                    dialogFg.show(getSupportFragmentManager(), "");
                 } else {
                     intent = new Intent(this, AccountSettingActivity.class);
                     startActivity(intent);
@@ -160,7 +160,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 if (user.isIsVisitors()) {
                     //游客
                     VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
-                    dialogFg.show(getFragmentManager(), "");
+                    dialogFg.show(getSupportFragmentManager(), "");
                 } else {
                     intent = new Intent(this, MyFootprintActivity.class);
                     intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_ID, AppContext.user.getUserId());
@@ -176,7 +176,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
                     //游客
                     VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
-                    dialogFg.show(getFragmentManager(), "");
+                    dialogFg.show(getSupportFragmentManager(), "");
                 } else {
                     intent = new Intent(this, QuFriendsActivity.class);
                     startActivity(intent);

@@ -119,7 +119,7 @@ public interface NetApi {
     String updateRatingInfo = HOST + "/operate/userOutPlace?pId=%d&tagIds=%s&score=%d";//更新评价
     String getFilterTags = HOST + "/public/getCategoryTags";//获得筛选标签
     String register = HOST + "/mregister/official";
-
+    String midiff_password = HOST + "/personal/postUserPassword";//单独修改密码
 
     /****************** POST *******************/
 }

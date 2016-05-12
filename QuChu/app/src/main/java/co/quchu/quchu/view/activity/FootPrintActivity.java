@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 
 import com.umeng.analytics.MobclickAgent;
@@ -67,7 +66,7 @@ public class FootPrintActivity extends BaseActivity {
 
                 if (AppContext.user.isIsVisitors()) {
                     VisitorLoginDialogFg dialog = VisitorLoginDialogFg.newInstance(0);
-                    dialog.show(getFragmentManager(), "");
+                    dialog.show(getSupportFragmentManager(), "");
 
                 } else {
                     Intent intent = new Intent(FootPrintActivity.this, AddFootprintActivity.class);

@@ -180,7 +180,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private void followSomebody() {
         if (AppContext.user.isIsVisitors()) {
             VisitorLoginDialogFg fg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFOCUS);
-            fg.show(getFragmentManager(), "QFocus");
+            fg.show(getSupportFragmentManager(), "QFocus");
         } else {
             UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userInfo.userId, new UserCenterPresenter.UserCenterInfoCallBack() {
                 @Override

@@ -105,8 +105,7 @@
         <!-- 关注的 -->
         <activity
             android:name=".view.activity.FollowingActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar_top" />
+            android:screenOrientation="portrait" />
         <!-- 我的趣推荐 -->
         <activity
             android:name=".view.activity.RecommendActivity"

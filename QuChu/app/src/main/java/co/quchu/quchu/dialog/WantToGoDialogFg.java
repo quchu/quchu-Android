@@ -3,11 +3,11 @@ package co.quchu.quchu.dialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.TextView;
 

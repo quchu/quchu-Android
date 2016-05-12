@@ -34,10 +34,12 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
+import co.quchu.quchu.dialog.BindPhoneNumDialog;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.GenderSelectedDialogFg;
 import co.quchu.quchu.dialog.LocationSettingDialogFg;
+import co.quchu.quchu.dialog.ModiffPasswordDialog;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.CityModel;
@@ -118,15 +120,16 @@ public class AccountSettingActivity extends BaseActivity {
             newUserLocation = AppContext.user.getLocation();
             accountSettingUserLocation.setText(newUserLocation);
         }
-        if (AppContext.user.isphone()) {
-            bindPhoto.setVisibility(View.GONE);
-            lineBindPhone.setVisibility(View.GONE);
-            modiffPassContainer.setVisibility(View.VISIBLE);
-        } else {
-            bindPhoto.setVisibility(View.VISIBLE);
-            lineBindPhone.setVisibility(View.VISIBLE);
-            modiffPassContainer.setVisibility(View.GONE);
-        }
+        // TODO: 2016/5/12  
+//        if (AppContext.user.isphone()) {
+//            bindPhoto.setVisibility(View.GONE);
+//            lineBindPhone.setVisibility(View.GONE);
+//            modiffPassContainer.setVisibility(View.VISIBLE);
+//        } else {
+//            bindPhoto.setVisibility(View.VISIBLE);
+//            lineBindPhone.setVisibility(View.VISIBLE);
+//            modiffPassContainer.setVisibility(View.GONE);
+//        }
     }
 
     ArrayList<CityModel> genderList;
@@ -149,8 +152,8 @@ public class AccountSettingActivity extends BaseActivity {
                     }
                 }
             });
-            confirmDialogFg.show(getFragmentManager(), "~");
-        }else {
+            confirmDialogFg.show(getSupportFragmentManager(), "~");
+        } else {
             super.onBackPressed();
         }
     }
@@ -163,7 +166,7 @@ public class AccountSettingActivity extends BaseActivity {
             case R.id.account_setting_avatar_editer_tv:
                 ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
                 photoDialogFg.setOnOriginListener(listener);
-                photoDialogFg.show(getFragmentManager(), "photo");
+                photoDialogFg.show(getSupportFragmentManager(), "photo");
                 break;
             case R.id.saveUserInfo:
                 saveUserChange();
@@ -173,19 +176,25 @@ public class AccountSettingActivity extends BaseActivity {
                 genderList.add(new CityModel("男", 0, "男".equals(newUserGender)));
                 genderList.add(new CityModel("女", 0, "女".equals(newUserGender)));
                 GenderSelectedDialogFg genderDialogFg = GenderSelectedDialogFg.newInstance(genderList);
-                genderDialogFg.show(getFragmentManager(), "gender");
+                genderDialogFg.show(getSupportFragmentManager(), "gender");
                 break;
             case R.id.account_setting_user_location:
                 LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
-                locationDIalogFg.show(getFragmentManager(), "location");
+                locationDIalogFg.show(getSupportFragmentManager(), "location");
                 break;
             case R.id.bindAccound:
-                final Intent intent = new Intent(this, BindActivity.class);
-                startActivity(intent);
+//                final Intent intent = new Intent(this, BindActivity.class);
+//                startActivity(intent);
+
+                ModiffPasswordDialog dialog = ModiffPasswordDialog.newInstance();
+                dialog.show(getSupportFragmentManager(), "");
                 break;
             case R.id.bindPhoto:
-                Intent intent1 = new Intent(this, BindPhotoNumActivity.class);
-                startActivity(intent1);
+//                Intent intent1 = new Intent(this, BindPhotoNumActivity.class);
+//                startActivity(intent1);
+                BindPhoneNumDialog instance = BindPhoneNumDialog.newInstance();
+                instance.show(getSupportFragmentManager(), "");
+
 
                 break;
             case R.id.exit:
@@ -195,7 +204,7 @@ public class AccountSettingActivity extends BaseActivity {
                     public void onClick(int index) {
                         if (index == ConfirmDialogFg.INDEX_OK) {
                             VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
-                            vDialog.show(getFragmentManager(), "visitor");
+                            vDialog.show(getSupportFragmentManager(), "visitor");
                             SPUtils.clearUserinfo(AppContext.mContext);
                             AppContext.user = null;
                             Intent intent1 = new Intent(AccountSettingActivity.this, UserLoginActivity.class);
@@ -206,7 +215,7 @@ public class AccountSettingActivity extends BaseActivity {
                         }
                     }
                 });
-                confirmDialog.show(getFragmentManager(), "confirm");
+                confirmDialog.show(getSupportFragmentManager(), "confirm");
                 break;
         }
     }
@@ -238,7 +247,7 @@ public class AccountSettingActivity extends BaseActivity {
                         updateAvatar(imageId);
                     }
                 });
-                qAvatarDIalogFg.show(getFragmentManager(), "qAvatar");
+                qAvatarDIalogFg.show(getSupportFragmentManager(), "qAvatar");
             }
         }
     };

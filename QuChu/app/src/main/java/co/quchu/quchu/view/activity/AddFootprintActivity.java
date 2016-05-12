@@ -119,7 +119,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                 @Override
                 public void onClick(final View v) {
                     ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance(getString(R.string.confirm_delete), getString(R.string.caution_action_cannot_revert));
-                    confirmDialogFg.show(getFragmentManager(), "confirm");
+                    confirmDialogFg.show(getSupportFragmentManager(), "confirm");
                     confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                         @Override
                         public void onClick(int index) {

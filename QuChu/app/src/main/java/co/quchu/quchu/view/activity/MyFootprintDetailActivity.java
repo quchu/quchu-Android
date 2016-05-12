@@ -284,7 +284,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
             case R.id.share://分享
                 final Entity en = data.get(selectedPosition);
                 ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(en.cardId, en.PlcaeName, false);
-                shareDialogFg.show(getFragmentManager(), "share_postcard");
+                shareDialogFg.show(getSupportFragmentManager(), "share_postcard");
                 break;
             case R.id.edit://编辑
                 //获取一个脚印

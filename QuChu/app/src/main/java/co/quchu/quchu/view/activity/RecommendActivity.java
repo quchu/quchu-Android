@@ -139,7 +139,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
 
     private void showCityDialog() {
         LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance(list);
-        lDialog.show(getFragmentManager(), "blur_sample");
+        lDialog.show(getSupportFragmentManager(), "blur_sample");
     }
 
     private void initView() {
