@@ -33,7 +33,7 @@
             app:tabIndicatorHeight="2dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/standard_color_yellow"
-            app:tabTextColor="@color/white" />
+            app:tabTextColor="@android:color/white" />
 
         <View
             android:layout_width="match_parent"

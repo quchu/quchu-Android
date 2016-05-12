@@ -40,7 +40,7 @@
                         android:layout_height="64dp"
                         card_view:actualImageScaleType="focusCrop"
                         card_view:roundAsCircle="true"
-                        card_view:roundingBorderColor="@color/black"
+                        card_view:roundingBorderColor="@android:color/black"
                         card_view:roundingBorderWidth="3dp" />
 
                     <TextView
@@ -50,7 +50,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_below="@id/account_setting_avatar_sdv"
                         android:layout_marginTop="@dimen/quarter_margin"
-                        android:background="@color/black"
+                        android:background="@android:color/black"
                         android:paddingBottom="@dimen/tow_dp_margin"
                         android:paddingLeft="@dimen/quarter_margin"
                         android:paddingRight="@dimen/quarter_margin"
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="注册账号"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/word_subhead_size" />
 
                     <TextView
@@ -149,7 +149,7 @@
                     android:drawableRight="@mipmap/ic_account_setting_location_icon"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:textColor="@color/black"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/word_size_body" />
 
 

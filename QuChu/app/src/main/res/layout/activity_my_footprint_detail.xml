@@ -77,7 +77,7 @@
                 android:layout_marginLeft="4dp"
                 android:gravity="center"
                 android:text="88"
-                android:textColor="@color/white"/>
+                android:textColor="@android:color/white"/>
 
         </LinearLayout>
 

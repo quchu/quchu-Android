@@ -14,7 +14,7 @@
         android:gravity="center"
         android:text="你的建议会帮助0位趣星人"
         android:layout_above="@+id/prbRating"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         />
 
 
@@ -45,7 +45,7 @@
         android:gravity="center"
         android:text="值得称赞的地方"
         android:layout_centerVertical="true"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         android:layout_marginBottom="@dimen/base_margin"
         />
     <android.support.v7.widget.RecyclerView

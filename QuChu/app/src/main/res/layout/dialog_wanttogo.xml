@@ -28,7 +28,7 @@
         android:paddingBottom="@dimen/half_margin"
         android:paddingTop="@dimen/half_margin"
         android:text="先收藏起来吧&#126;"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:textSize="@dimen/word_size_body" />
 
 
@@ -44,7 +44,7 @@
         android:paddingBottom="@dimen/half_margin"
         android:paddingTop="@dimen/half_margin"
         android:text="我要马上预定&#126;"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:textSize="@dimen/word_size_body" />
 
     <View
