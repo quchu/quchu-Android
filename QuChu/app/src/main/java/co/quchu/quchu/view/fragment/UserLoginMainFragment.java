@@ -68,8 +68,8 @@ public class UserLoginMainFragment extends BaseFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_login_main, null);
         ButterKnife.bind(this, view);
-        StringUtils.alterTextColor(userLoginMainWeiboTv, 0, 4, R.color.white);
-        StringUtils.alterTextColor(userLoginMainWechatTv, 0, 2, R.color.white);
+        StringUtils.alterTextColor(userLoginMainWeiboTv, 0, 4, android.R.color.white);
+        StringUtils.alterTextColor(userLoginMainWechatTv, 0, 2, android.R.color.white);
 
 
         userLoginEmptyV.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

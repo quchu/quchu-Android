@@ -132,7 +132,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 //            if (StringUtils.isDouble(model.getDistance())) {
 //
 //                holder.item_recommend_card_distance_tv.setText("距您" + distance);
-//                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + distance.length(), R.color.white);
+//                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + distance.length(), android.R.color.white);
 //            }
         }
 

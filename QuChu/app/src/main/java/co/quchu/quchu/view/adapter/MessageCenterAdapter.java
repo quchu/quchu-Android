@@ -55,7 +55,7 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, M
                 holder.itemMessageFrom.setVisibility(View.GONE);
                 holder.itemMessageFollowTv.setVisibility(View.VISIBLE);
                 if ("yes".equals(model.getCome())) {
-                    holder.itemMessageFollowTv.setTextColor(mContext.getResources().getColor(R.color.black));
+                    holder.itemMessageFollowTv.setTextColor(mContext.getResources().getColor(android.R.color.black));
                     holder.itemMessageFollowTv.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.shape_message_follow_full_bg));
                     holder.itemMessageFollowTv.setText("已关注");
                 } else {
