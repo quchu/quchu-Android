@@ -94,6 +94,17 @@ public class UserLoginPresenter {
         });
     }
 
+    /**
+     * 获取验证码
+     *
+     * @param context  上下文环境
+     * @param mobileNo 手机号码
+     * @param type     获取用途—— 注册：regiest  重置：reset
+     * @param listener 回调
+     */
+    public static void getCaptcha(Context context, String mobileNo, String type, final ResponseListener<String> listener) {
+        new GsonRequest<>(String.format(NetApi.GetCaptcha, mobileNo, type), null, listener).start(context);
+    }
 
     /**
      * 游客转正式用户
@@ -141,12 +152,12 @@ public class UserLoginPresenter {
 
             @Override
             public void onResponse(UserInfoModel response, boolean result, String errorCode, @Nullable String msg) {
-                if (result){
-                UserInfoHelper.saveUserInfo(response);
-                LogUtils.json(response.toString());
-                listener.isUnique(null);
-                }else {
-                    Toast.makeText(context,"验证码错误",Toast.LENGTH_SHORT).show();
+                if (result) {
+                    UserInfoHelper.saveUserInfo(response);
+                    LogUtils.json(response.toString());
+                    listener.isUnique(null);
+                } else {
+                    Toast.makeText(context, "验证码错误", Toast.LENGTH_SHORT).show();
                 }
             }
         });

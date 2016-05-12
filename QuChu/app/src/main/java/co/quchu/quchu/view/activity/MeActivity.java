@@ -78,7 +78,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     private MeActivityPresenter presenter;
 
     //用户头像
-    private Uri userHead;
+    private String userHead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +96,9 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
 
         name.setText(AppContext.user.isIsVisitors() ? "未知生物" : AppContext.user.getFullname());
 //更换了头像
-        if (!userHead.equals(Uri.parse(AppContext.user.getPhoto()))) {
-            userHead = Uri.parse(AppContext.user.getPhoto());
-            ImageUtils.loadWithAppropriateSize(headImage, userHead);
+        if (!userHead.equals(AppContext.user.getPhoto())) {
+            userHead = AppContext.user.getPhoto();
+            ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
         }
         super.onResume();
     }
@@ -110,8 +110,8 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     }
 
     private void initData() {
-        userHead = Uri.parse(AppContext.user.getPhoto());
-        ImageUtils.loadWithAppropriateSize(headImage, userHead);
+        userHead = AppContext.user.getPhoto();
+        ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
         presenter.getGene();
     }
 

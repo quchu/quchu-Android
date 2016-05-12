@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="250dp"
     android:background="@color/appBackground"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
+    <requestFocus />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="请求焦点,勿删" />
+
+    <co.quchu.quchu.widget.NoScrollViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="250dp"
+        android:focusable="true" />
 </LinearLayout>

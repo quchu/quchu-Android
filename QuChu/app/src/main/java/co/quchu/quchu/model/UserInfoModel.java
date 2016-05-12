@@ -123,7 +123,7 @@ public class UserInfoModel implements Parcelable {
     }
 
     public String getPhoto() {
-        return photo + "?" + System.currentTimeMillis();
+        return photo;
     }
 
     public String getToken() {
