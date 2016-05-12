@@ -160,7 +160,9 @@ public class DetailModel implements Serializable{
         }else{
             recommendPlaces.clear();
         }
-        recommendPlaces.addAll(objTarget.getNearPlace());
+        if (null!=objTarget.getNearPlace()){
+            recommendPlaces.addAll(objTarget.getNearPlace());
+        }
 
         cardCount = objTarget.getCardCount();
 
