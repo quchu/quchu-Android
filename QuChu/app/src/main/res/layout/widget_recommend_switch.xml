@@ -35,7 +35,7 @@
             android:background="@drawable/shape_recommend_button_unselected_bg"
             android:gravity="center"
             android:text="推荐"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/word_subhead_size" />
 
         <TextView

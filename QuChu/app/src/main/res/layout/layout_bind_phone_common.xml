@@ -17,8 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="请输入手机号码"
-            android:textColor="@color/white" />
+            android:text="请输入手机号码" />
 
         <ImageView
             android:id="@+id/close"

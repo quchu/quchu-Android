@@ -89,31 +89,31 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
         switch (viewModel) {
 //            case QFAVORITE:
 //                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行收藏操作")));
-//                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.standard_color_yellow);
 //                break;
 //            case QFOCUS:
 //                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行关注操作")));
-//                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.standard_color_yellow);
 //                break;
 //            case QPRAISE:
 //                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行点赞操作")));
-//                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.standard_color_yellow);
 //                break;
 //            case QAVATAR:
 //                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入趣星球")));
-//                StringUtils.alterTextColor(dialogLocationTv, 2, 5, R.color.gene_textcolor_yellow);
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 5, R.color.standard_color_yellow);
 //                break;
             case QACCOUNTSETTING:
                 dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入账户设置")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.gene_textcolor_yellow);
+                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
                 break;
             case QMESSAGECENTER:
                 dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入消息中心")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.gene_textcolor_yellow);
+                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
                 break;
             case QBEEN:
                 dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "明信片操作")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.gene_textcolor_yellow);
+                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
                 break;
             default:
                 dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行该操作")));

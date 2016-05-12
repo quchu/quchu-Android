@@ -26,7 +26,7 @@
             fresco:roundTopLeft="true"
             fresco:roundTopRight="true"
             fresco:roundedCornerRadius="180dp"
-            fresco:roundingBorderColor="@color/planet_progress_yellow"
+            fresco:roundingBorderColor="@color/standard_color_yellow"
             fresco:roundingBorderWidth="2dp" />
 
 

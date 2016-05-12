@@ -12,6 +12,6 @@
 
     android:gravity="center"
     android:maxLines="1"
-    android:textColor="@color/white"
+    android:textColor="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>

@@ -42,7 +42,7 @@
                     android:layout_marginBottom="30dp"
                     android:layout_marginLeft="40dp"
                     fresco:roundAsCircle="true"
-                    fresco:roundingBorderColor="@color/planet_progress_yellow"
+                    fresco:roundingBorderColor="@color/standard_color_yellow"
                     fresco:roundingBorderWidth="2dp" />
 
                 <TextView

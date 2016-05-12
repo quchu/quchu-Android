@@ -163,12 +163,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private void updateIsFollow() {
         if (userInfo.isIsFollow()) {
             userCenterFoucsableTv.setText(getResources().getString(R.string.usercenter_foucsed_text));
-            userCenterFoucsableTv.setTextColor(getResources().getColor(R.color.black));
+            userCenterFoucsableTv.setTextColor(getResources().getColor(android.R.color.black));
             userCenterFoucsableTv.setBackground(getResources().getDrawable(R.drawable.shape_usercenter_foucsed));
 
         } else {
             userCenterFoucsableTv.setText(getResources().getString(R.string.usercenter_foucs_text));
-            userCenterFoucsableTv.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
+            userCenterFoucsableTv.setTextColor(getResources().getColor(R.color.standard_color_yellow));
             userCenterFoucsableTv.setBackground(getResources().getDrawable(R.drawable.shape_usercenter_unfoucs));
         }
 

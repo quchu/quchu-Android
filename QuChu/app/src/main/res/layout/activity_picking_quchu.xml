@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/appBackground"
     android:layout_height="match_parent">
 
     <include
@@ -14,8 +13,8 @@
         android:cursorVisible="true"
         android:layout_below="@+id/appbar"
         android:id="@+id/etSearchField"
-        android:background="@color/load_progress_yellow"
-        android:textColor="@color/black"
+        android:background="@color/standard_color_yellow"
+        android:textColor="@android:color/black"
         android:maxLines="1"
         android:singleLine="true"
         android:gravity="center_vertical"

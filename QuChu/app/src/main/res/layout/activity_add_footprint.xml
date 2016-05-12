@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
     android:orientation="vertical">
 
 
@@ -44,7 +43,7 @@
                 android:layout_marginLeft="@dimen/half_margin"
                 android:layout_marginRight="@dimen/half_margin"
                 android:layout_marginTop="@dimen/base_margin"
-                android:background="@color/load_progress_yellow"
+                android:background="@color/standard_color_yellow"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/base_margin"
         android:text="注意!"
-        android:textColor="@color/planet_progress_yellow"
+        android:textColor="@color/standard_color_yellow"
         android:textSize="@dimen/word_subhead_size" />
 
     <TextView

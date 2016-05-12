@@ -58,13 +58,13 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
             holder.dialogItemCityCb.setChecked(true);
             holder.dialogItemCityCb.setClickable(false);
             selectedIndex = position;
-            holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.gene_textcolor_yellow));
+            holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.standard_color_yellow));
 //            if (dataType == 0) {
 //                titleText.setText("所在城市:" + cityList.get(position).getCvalue());
 //            } else {
 //                titleText.setText("设置性别:" + cityList.get(position).getCvalue());
 //            }
-//            StringUtils.alterTextColor(titleText, 5, 5 + cityList.get(position).getCvalue().length(), R.color.gene_textcolor_yellow);
+//            StringUtils.alterTextColor(titleText, 5, 5 + cityList.get(position).getCvalue().length(), R.color.standard_color_yellow);
         } else {
             holder.dialogItemCityCb.setChecked(false);
             holder.dialogItemCityCb.setClickable(true);

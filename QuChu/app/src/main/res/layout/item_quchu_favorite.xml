@@ -28,7 +28,7 @@
             android:layout_toLeftOf="@id/simpleDraweeView"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/word_subhead_size" />
 
         <co.quchu.quchu.widget.TagCloudView

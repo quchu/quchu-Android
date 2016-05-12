@@ -36,7 +36,7 @@ public class TagsFilterDialogAdapter extends RecyclerView.Adapter<TagsFilterDial
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvTag.setText(mData.get(position).getZh());
         holder.tvTag.setBackgroundResource(mData.get(position).isPraise()?R.drawable.shape_lineframe_white_fill:R.drawable.shape_lineframe_white);
-        int color = holder.tvTag.getResources().getColor(mData.get(position).isPraise()?R.color.appBackground:R.color.white);
+        int color = holder.tvTag.getResources().getColor(mData.get(position).isPraise()?R.color.appBackground:android.R.color.white);
         holder.tvTag.setTextColor(color);
 
         holder.tvTag.setOnClickListener(new View.OnClickListener() {

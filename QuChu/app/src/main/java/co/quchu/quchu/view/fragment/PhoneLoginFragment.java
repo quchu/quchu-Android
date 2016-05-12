@@ -456,11 +456,11 @@ public class PhoneLoginFragment extends BaseFragment {
 
     private void setRegiestButtonClickable(boolean clickable) {
         if (clickable) {
-            phoneLoginEnterTv.setBackgroundColor(getResources().getColor(R.color.user_login_textbg_clickable));
+            phoneLoginEnterTv.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
             phoneLoginEnterTv.setTextColor(getResources().getColor(R.color.user_login_text_clickable));
         } else {
             phoneLoginEnterTv.setBackgroundColor(getResources().getColor(R.color.user_login_text_hint_text_color));
-            phoneLoginEnterTv.setTextColor(getResources().getColor(R.color.white));
+            phoneLoginEnterTv.setTextColor(getResources().getColor(android.R.color.white));
         }
         phoneLoginEnterTv.setClickable(clickable);
     }

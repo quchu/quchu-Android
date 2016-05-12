@@ -149,4 +149,5 @@
 
     <string name="passFilter">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
     <string name="filter_phone">1234567890</string>
+    <string name="add_foot_print_long">留下一个自己的脚印</string>
 </resources>

@@ -108,7 +108,7 @@ public class GeneProgressAdapter extends BaseAdapter {
             //  holder.gene_progress_item_tv.setText(genes.get(position).getZh());
             holder.gene_progress_item_iv.setImageResource(imagesArray[position]);
             SpannableStringBuilder builder = new SpannableStringBuilder(genes.get(position).getZh() + "基因");
-            ForegroundColorSpan redSpan = new ForegroundColorSpan(context.getResources().getColor(R.color.planet_progress_yellow));
+            ForegroundColorSpan redSpan = new ForegroundColorSpan(context.getResources().getColor(R.color.standard_color_yellow));
             builder.setSpan(redSpan, 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.gene_progress_item_tv.setText(builder);
         }

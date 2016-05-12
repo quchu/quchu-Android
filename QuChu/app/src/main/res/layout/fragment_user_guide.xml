@@ -31,7 +31,7 @@
             android:layout_marginTop="@dimen/quarter_margin"
             android:gravity="center_horizontal"
             android:text="欢迎登录趣星球&#126; \r\n你好像收到了一张特别的明信片"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/word_size_time" />
 
     </LinearLayout>
@@ -48,7 +48,7 @@
         android:paddingLeft="@dimen/dialog_margin"
         android:paddingRight="@dimen/dialog_margin"
         android:text="拆开看看"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:textSize="@dimen/word_size_body" />
 
 </RelativeLayout>

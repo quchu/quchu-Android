@@ -1,11 +1,11 @@
-<resources>
+<resources >
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/appBackground</item>
-        <item name="colorPrimaryDark">@color/appBackground_dark</item>
-        <item name="colorAccent">@color/planet_progress_yellow</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -20,6 +20,10 @@
         <item name="android:windowIsTranslucent">false</item>
     </style>
 
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -72,13 +76,6 @@
         <item name="android:indeterminateDrawable">@drawable/ratingbar_layer_list</item>
     </style>
 
-    <!-- ************* SwipeBackLayout ************ -->
-    <style name="SwipeBackLayout">
-        <item name="edge_size">50dip</item>
-        <item name="shadow_left">@mipmap/shadow_left</item>
-        <item name="shadow_right">@mipmap/shadow_right</item>
-        <item name="shadow_bottom">@mipmap/shadow_bottom</item>
-    </style>
 
 
     <!-- 下拉菜单 设置界面 dialog style -->
@@ -105,14 +102,10 @@
     <!--对话框-->
     <style name="dialog_two_button" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColor">@color/planet_progress_yellow</item>
+        <item name="android:textColor">@color/standard_color_yellow</item>
         <item name="android:background">@color/appBackground</item>
 
     </style>
-
-    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
     <style name="ToolbarContainer">

@@ -30,7 +30,7 @@
             android:layout_marginBottom="@dimen/half_margin"
             android:layout_marginTop="@dimen/half_margin"
             android:text="手机号"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/word_size_body" />
 
         <RelativeLayout
@@ -79,7 +79,7 @@
             android:layout_marginBottom="@dimen/half_margin"
             android:layout_marginTop="@dimen/half_margin"
             android:text="验证码"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/word_size_body" />
 
 
@@ -110,7 +110,7 @@
             android:layout_below="@id/account_setting_realpwd_hint"
             android:layout_marginTop="@dimen/half_margin"
             android:text="创建密码"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/word_size_body" />
 
         <EditText
@@ -142,12 +142,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/pass"
             android:layout_marginTop="30dp"
-            android:background="@color/gene_textcolor_yellow"
+            android:background="@color/standard_color_yellow"
             android:gravity="center"
             android:paddingBottom="@dimen/half_margin"
             android:paddingTop="@dimen/half_margin"
             android:text="确定"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/word_subhead_size" />
 
     </RelativeLayout>

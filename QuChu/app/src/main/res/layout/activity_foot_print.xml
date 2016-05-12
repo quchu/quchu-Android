@@ -8,13 +8,23 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFootPrint"
-        android:background="@color/appBackground"
         android:paddingLeft="@dimen/quarter_margin"
         android:paddingRight="@dimen/quarter_margin"
+        android:layout_above="@+id/tvAddFootprint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appbar" />
 
+    <TextView
+        android:id="@+id/tvAddFootprint"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_item_size"
+        android:textColor="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:background="@color/appBackground_dark"
+        android:gravity="center"
+        android:text="@string/add_foot_print_long"
+        />
 
 
 </RelativeLayout>

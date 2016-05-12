@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
     android:orientation="vertical"
     tools:context="co.quchu.quchu.view.activity.FindPositionActivity">
 
@@ -38,7 +37,7 @@
                 android:drawablePadding="10dp"
                 android:gravity="center"
                 android:text="我发现一个新趣处"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_title_body" />
 
             <RelativeLayout
@@ -150,7 +149,7 @@
                     android:background="#f4e727"
                     android:gravity="center"
                     android:text="提交"
-                    android:textColor="@color/black"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/word_size_time" />
             </RelativeLayout>
 

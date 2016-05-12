@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <!-- 自定义属性-->
-    <color name="titleBackground">#383635</color>
-    <color name="appBackground">#383635</color>
-    <color name="appBackgroundTrans">#cc383635</color>
-    <color name="appBackground_dark">#2c2a2a</color>
-    <color name="transparent">#00000000</color>
+    <color name="colorPrimary">#111111</color>
+    <color name="colorPrimaryDark">#111111</color>
+    <color name="colorAccent">#ffd300</color>
 
     <color name="translucent_white">#7fffffff</color>
-
     <color name="translucent_dark">#7f000000</color>
-    <color name="planet_progress_yellow">#E4DB11</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="standard_color_red">#ff231f</color>
+    <color name="standard_color_yellow">#ffd300</color>
+    <color name="standard_color_h1_dark">#333333</color>
+    <color name="standard_color_content">#666666</color>
+    <color name="standard_color_description">#999999</color>
+    
+    <!-- 自定义属性-->
+    <color name="titleBackground">#383635</color>
+    <color name="appBackground">#ffffff</color>
+    <color name="appBackgroundTrans">#cc383635</color>
+    <color name="appBackground_dark">#2c2a2a</color>
     <color name="planet_progress_white">#dcdddd</color>
-    <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
     <!-- 我的趣星球 、titleBar字体颜色-->
     <color name="planet_text_color_white">#ffffff</color>
     <color name="lineBackground_gray">#595757</color>
@@ -25,7 +28,6 @@
     <color name="itemMask_black">#a6221814</color>
     <color name="imageLoaderingColor">#DCDCDC</color>
     <!-- 我的趣基因文字颜色 背景颜色 -->
-    <color name="gene_textcolor_yellow">#f4e727</color>
     <color name="gene_desc_blck_bg">#221814</color>
 
     <!-- 趣星人-->
@@ -34,10 +36,8 @@
     <color name="item_discover_bg_color">#595757</color>
     <color name="item_discover_title_color">#fefefe</color>
     <color name="item_discover_subtitle_color">#b4b5b5</color>
-    <color name="splash_progress_yellow">#99f4e727</color>
 
     <!--上拉加载更多  进度条-->
-    <color name="load_progress_yellow">#e9dd34</color>
     <color name="load_progress_gray">#697081</color>
     <color name="load_progress_black">#221613</color>
     <color name="load_progress_white">#fefefe</color>
@@ -47,7 +47,6 @@
     <color name="user_login_text_hint_text_color">#b3b3b3</color>
     <color name="user_login_view_bg_color">#33ffffff</color>
     <color name="user_login_text_clickable">#221714</color>
-    <color name="user_login_textbg_clickable">#fff000</color>
 
     <!--下拉菜单-->
     <color name="menu_wiper_switch_off">#bf000000</color>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -36,6 +37,8 @@ public class FootPrintActivity extends BaseActivity {
 
     @Bind(R.id.rvFootPrint)
     RecyclerView rvFootPrint;
+    @Bind(R.id.tvAddFootprint)
+    TextView tvAddFootPrint;
     FootPrintAdapter mAdapter;
     private int mMaxPageNo = -1;
     private int mCurrentPageNo = 1;
@@ -56,27 +59,9 @@ public class FootPrintActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foot_print);
         ButterKnife.bind(this);
+        getEnhancedToolbar();
         mQuchuId = getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID, -1);
         mQuchuName = getIntent().getStringExtra(BUNDLE_KEY_QUCHU_NAME);
-        getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_dismiss_dialog);
-        getEnhancedToolbar().getRightIv().setRotation(45);
-        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (AppContext.user.isIsVisitors()) {
-                    VisitorLoginDialogFg dialog = VisitorLoginDialogFg.newInstance(0);
-                    dialog.show(getSupportFragmentManager(), "");
-
-                } else {
-                    Intent intent = new Intent(FootPrintActivity.this, AddFootprintActivity.class);
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mQuchuId);
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mQuchuName);
-                    startActivity(intent);
-                }
-            }
-        });
-
 
         mAdapter = new FootPrintAdapter(mData, new FootPrintAdapter.OnItemClickListener() {
             @Override
@@ -94,7 +79,21 @@ public class FootPrintActivity extends BaseActivity {
         rvFootPrint.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
         rvFootPrint.setAdapter(mAdapter);
         rvFootPrint.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        tvAddFootPrint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AppContext.user.isIsVisitors()) {
+                    VisitorLoginDialogFg dialog = VisitorLoginDialogFg.newInstance(0);
+                    dialog.show(getSupportFragmentManager(),"~");
 
+                } else {
+                    Intent intent = new Intent(FootPrintActivity.this, AddFootprintActivity.class);
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mQuchuId);
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mQuchuName);
+                    startActivity(intent);
+                }
+            }
+        });
 
         loadData(false);
     }

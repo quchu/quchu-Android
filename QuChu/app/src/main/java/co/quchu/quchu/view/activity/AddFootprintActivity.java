@@ -102,7 +102,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         cId = mData == null ? cId : mData.getCardId();
         EnhancedToolbar toolbar = getEnhancedToolbar();
         toolbar.getRightTv().setText(R.string.save);
-        toolbar.getRightTv().setTextColor(getResources().getColor(R.color.load_progress_yellow));
+        toolbar.getRightTv().setTextColor(getResources().getColor(R.color.standard_color_yellow));
         boolean isEdit = getIntent().getBooleanExtra(REQUEST_KEY_IS_EDIT, false);
         if (isEdit) {
             TextView titleView = new TextView(this);

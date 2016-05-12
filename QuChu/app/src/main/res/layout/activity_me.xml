@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
     tools:context="co.quchu.quchu.view.activity.MeActivity">
 
     <RelativeLayout
@@ -72,7 +71,7 @@
                 android:layout_marginTop="5dp"
                 android:singleLine="true"
                 android:text="我的手_做不到"
-                android:textColor="@color/white" />
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/tvUserNickName"
@@ -109,7 +108,7 @@
                 android:drawablePadding="3dp"
                 android:gravity="center_vertical"
                 android:text="趣处"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_body" />
         </FrameLayout>
 
@@ -118,7 +117,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/white" />
+            android:background="@android:color/white" />
 
         <FrameLayout
             android:id="@+id/footPrint"
@@ -136,7 +135,7 @@
                 android:drawablePadding="3dp"
                 android:gravity="center_vertical"
                 android:text="脚印"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_body" />
         </FrameLayout>
 
@@ -145,7 +144,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/white" />
+            android:background="@android:color/white" />
 
         <FrameLayout
             android:id="@+id/friend"
@@ -163,7 +162,7 @@
                 android:drawablePadding="3dp"
                 android:gravity="center_vertical"
                 android:text="趣友圈"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_body" />
         </FrameLayout>
 
@@ -172,7 +171,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/white" />
+            android:background="@android:color/white" />
 
         <FrameLayout
             android:id="@+id/massage"
@@ -190,7 +189,7 @@
                 android:drawablePadding="3dp"
                 android:gravity="center_vertical"
                 android:text="消息"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_body" />
         </FrameLayout>
     </LinearLayout>
@@ -215,7 +214,7 @@
                 android:layout_height="66dp"
                 android:gravity="center"
                 app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundProgressColor="@color/standard_color_yellow"
                 app:roundWidth="8dp"
                 app:textSize="@dimen/word_size_body"
                 app:textStyle="Num" />
@@ -229,7 +228,7 @@
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
                 android:text="好奇基因"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_time" />
 
         </LinearLayout>
@@ -247,7 +246,7 @@
                 android:layout_height="66dp"
                 android:gravity="center"
                 app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundProgressColor="@color/standard_color_yellow"
                 app:roundWidth="8dp"
                 app:textSize="@dimen/word_size_body"
                 app:textStyle="Num" />
@@ -261,7 +260,7 @@
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
                 android:text="吃货基因"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_time" />
 
         </LinearLayout>
@@ -279,7 +278,7 @@
                 android:layout_height="66dp"
                 android:gravity="center"
                 app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundProgressColor="@color/standard_color_yellow"
                 app:roundWidth="8dp"
                 app:textSize="@dimen/word_size_body"
                 app:textStyle="Num" />
@@ -293,7 +292,7 @@
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
                 android:text="艺术基因"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_time" />
 
         </LinearLayout>
@@ -311,7 +310,7 @@
                 android:layout_height="66dp"
                 android:gravity="center"
                 app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundProgressColor="@color/standard_color_yellow"
                 app:roundWidth="8dp"
                 app:textSize="@dimen/word_size_body"
                 app:textStyle="Num" />
@@ -325,7 +324,7 @@
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
                 android:text="土豪基因"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/word_size_time" />
 
         </LinearLayout>
