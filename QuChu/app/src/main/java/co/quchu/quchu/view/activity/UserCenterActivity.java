@@ -168,7 +168,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
         } else {
             userCenterFoucsableTv.setText(getResources().getString(R.string.usercenter_foucs_text));
-            userCenterFoucsableTv.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
+            userCenterFoucsableTv.setTextColor(getResources().getColor(R.color.standard_color_yellow));
             userCenterFoucsableTv.setBackground(getResources().getDrawable(R.drawable.shape_usercenter_unfoucs));
         }
 

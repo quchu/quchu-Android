@@ -74,7 +74,7 @@ public class QuFriendsActivity extends BaseActivity {
         ButterKnife.bind(this);
         getEnhancedToolbar().getTitleTv().setText(getTitle().toString());
         planetGeneTv.setText(getResources().getString(R.string.text_planet_discover_friends));
-        StringUtils.alterBoldTextColor(planetGeneTv, 4, 7, R.color.gene_textcolor_yellow);
+        StringUtils.alterBoldTextColor(planetGeneTv, 4, 7, R.color.standard_color_yellow);
 
 
         tabLayout.addTab(tabLayout.newTab().setText("我关注的"));

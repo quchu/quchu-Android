@@ -78,7 +78,7 @@ public class ConfirmDialogFg extends BlurDialogFragment {
         dialogLocationSubmitTv.setText("确定");
         dialogLocationCancelTv.setText("取消");
 
-        //StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.gene_textcolor_yellow);
+        //StringUtils.alterTextColor(dialogLocationTv, 2, 4, R.color.standard_color_yellow);
         return builder.create();
     }
 

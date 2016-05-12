@@ -139,7 +139,7 @@ public class CircleWaveView extends RelativeLayout {
             canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
             canvas.drawCircle(radius,radius,radius-rippleStrokeWidth,paint);
 //            paint.setStyle(Paint.Style.STROKE); //设置空心
-//            paint.setColor(getResources().getColor(R.color.planet_progress_yellow));
+//            paint.setColor(getResources().getColor(R.color.standard_color_yellow));
 //            canvas.drawCircle(radius,radius,radius,paint);
 
         }

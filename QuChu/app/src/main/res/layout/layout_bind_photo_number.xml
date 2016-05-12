@@ -142,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/pass"
             android:layout_marginTop="30dp"
-            android:background="@color/gene_textcolor_yellow"
+            android:background="@color/standard_color_yellow"
             android:gravity="center"
             android:paddingBottom="@dimen/half_margin"
             android:paddingTop="@dimen/half_margin"

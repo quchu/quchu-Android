@@ -72,8 +72,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     RecyclerViewPager recyclerView;
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
-    @Bind(R.id.f_recommend_bimg_top)
-    ImageView fRecommendBimgTop;
+//    @Bind(R.id.f_recommend_bimg_top)
+//    ImageView fRecommendBimgTop;
     @Bind(R.id.refreshLayout)
     HorizontalSwipeRefLayout refreshLayout;
     @Bind(R.id.errorView)
@@ -84,75 +84,10 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     private RecommendAdapter adapter;
     private RecommentFragPresenter presenter;
     private int currentIndex = -1;
-    private int currentBGIndex = -1;
-    private final int MESSAGE_FLAG_DELAY_TRIGGER = 0x0001;
-    private final int MESSAGE_FLAG_BLUR_RENDERING_FINISH = 0x0002;
-    public static final String MESSAGE_KEY_BITMAP = "MESSAGE_KEY_BITMAP";
     private boolean mFragmentStoped;
     private int dataCount = -1;
 
     private String from = QuchuDetailsActivity.FROM_TYPE_HOME;
-
-    Bitmap mSourceBitmap;
-    private int index;
-    private Handler mBlurEffectAnimationHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (mFragmentStoped) {
-                return;
-            }
-            switch (msg.what) {
-                case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
-                    mSourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
-                    if (null != mSourceBitmap && !mSourceBitmap.isRecycled()) {
-                        executeSwitchAnimation(ImageUtils.doBlur(mSourceBitmap, fRecommendBimgTop.getWidth() / 4, fRecommendBimgTop.getHeight() / 4));
-                    }
-                    currentBGIndex = currentIndex;
-                    break;
-
-                case MESSAGE_FLAG_DELAY_TRIGGER:
-                    if (-1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
-                        String strUri = cardList.get(currentIndex).getCover();
-                        if (!TextUtils.isEmpty(strUri)) {
-                            Uri imageUri = Uri.parse(strUri);
-                            if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)) {
-                                ImageRequest request = ImageRequestBuilder
-                                        .newBuilderWithSource(imageUri)
-                                        .setImageType(ImageRequest.ImageType.SMALL)
-                                        .setPostprocessor(new Postprocessor() {
-                                            @Override
-                                            public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
-                                                if (null != sourceBitmap) {
-                                                    Message msg = new Message();
-                                                    msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
-                                                    Bundle bundle = new Bundle();
-                                                    bundle.putParcelable(MESSAGE_KEY_BITMAP, sourceBitmap);
-                                                    msg.setData(bundle);
-                                                    mBlurEffectAnimationHandler.sendMessage(msg);
-                                                }
-                                                return null;
-                                            }
-
-                                            @Override
-                                            public String getName() {
-                                                return null;
-                                            }
-
-                                            @Override
-                                            public CacheKey getPostprocessorCacheKey() {
-                                                return null;
-                                            }
-                                        })
-                                        .build();
-                                Fresco.getImagePipeline().fetchImageFromBitmapCache(request, getActivity());
-                            }
-                        }
-                    }
-                    break;
-            }
-        }
-    };
 
     @Nullable
     @Override
@@ -168,7 +103,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         recyclerView.addOnPageChangedListener(this);
         presenter = new RecommentFragPresenter(getContext(), this);
         recyclerView.addOnLayoutChangeListener();
-        refreshLayout.setColorSchemeResources(R.color.planet_progress_yellow);
+        refreshLayout.setColorSchemeResources(R.color.standard_color_yellow);
         initData();
 
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
@@ -205,8 +140,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             }
         }
         currentIndex = newPosition;
-        index = newPosition;
-        mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
     }
 
 
@@ -337,7 +270,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 LogUtils.json("selectedTag=" + selectedTag);
                 presenter.initTabData(false, selectedTag);
                 refreshLayout.setRefreshing(false);
-                mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 500L);
+                //mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 500L);
             }
 
             @Override
@@ -390,8 +323,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             if (cardList.size() > 0)
                 recyclerView.smoothScrollToPosition(0);
 
-            index = currentIndex = 0;
-            mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
         }
     }
 
@@ -419,34 +350,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     }
 
 
-    /**
-     * 执行切换动画
-     */
-    private void executeSwitchAnimation(Bitmap bm) {
-        if (null == bm || bm.isRecycled()) {
-            return;
-        }
-
-        final Bitmap finalBm = bm;
-
-        fRecommendBimgTop.animate().alpha(.1f).setDuration(400).setInterpolator(new AccelerateInterpolator()).withEndAction(new Runnable() {
-            @Override
-            public void run() {
-                if (fRecommendBimgTop.getDrawable() instanceof ColorDrawable) {
-                    fRecommendBimgTop.setImageBitmap(null);
-                } else {
-                    if (!(fRecommendBimgTop.getDrawable() instanceof ColorDrawable) && null != fRecommendBimgTop.getDrawable() && null != ((BitmapDrawable) fRecommendBimgTop.getDrawable()).getBitmap()) {
-                        ((BitmapDrawable) fRecommendBimgTop.getDrawable()).getBitmap().recycle();
-                        fRecommendBimgTop.setImageBitmap(null);
-                        System.gc();
-                    }
-                }
-                fRecommendBimgTop.setImageBitmap(finalBm);
-                fRecommendBimgTop.animate().alpha(1).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
-            }
-        }).start();
-
-    }
 
     @Override
     public void onStart() {

@@ -150,7 +150,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/quarter_margin"
             android:layout_weight="1"
-            android:background="@color/gene_textcolor_yellow">
+            android:background="@color/standard_color_yellow">
 
             <TextView
                 android:id="@+id/getauthcode_login_tv"

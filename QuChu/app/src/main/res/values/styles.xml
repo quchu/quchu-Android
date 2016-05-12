@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appBackground</item>
         <item name="colorPrimaryDark">@color/appBackground_dark</item>
-        <item name="colorAccent">@color/planet_progress_yellow</item>
+        <item name="colorAccent">@color/standard_color_yellow</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -105,7 +105,7 @@
     <!--对话框-->
     <style name="dialog_two_button" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColor">@color/planet_progress_yellow</item>
+        <item name="android:textColor">@color/standard_color_yellow</item>
         <item name="android:background">@color/appBackground</item>
 
     </style>

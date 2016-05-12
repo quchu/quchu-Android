@@ -14,7 +14,7 @@
         android:cursorVisible="true"
         android:layout_below="@+id/appbar"
         android:id="@+id/etSearchField"
-        android:background="@color/load_progress_yellow"
+        android:background="@color/standard_color_yellow"
         android:textColor="@color/black"
         android:maxLines="1"
         android:singleLine="true"

@@ -36,7 +36,7 @@
             android:layout_marginTop="4dp"
             android:background="@drawable/shape_tv_black_bg"
             android:text="编辑内容"
-            android:textColor="@color/gene_textcolor_yellow" />
+            android:textColor="@color/standard_color_yellow" />
 
         <TextView
             android:id="@+id/address"

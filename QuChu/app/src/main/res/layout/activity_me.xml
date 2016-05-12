@@ -215,7 +215,7 @@
                 android:layout_height="66dp"
                 android:gravity="center"
                 app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundProgressColor="@color/standard_color_yellow"
                 app:roundWidth="8dp"
                 app:textSize="@dimen/word_size_body"
                 app:textStyle="Num" />
@@ -247,7 +247,7 @@
                 android:layout_height="66dp"
                 android:gravity="center"
                 app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundProgressColor="@color/standard_color_yellow"
                 app:roundWidth="8dp"
                 app:textSize="@dimen/word_size_body"
                 app:textStyle="Num" />
@@ -279,7 +279,7 @@
                 android:layout_height="66dp"
                 android:gravity="center"
                 app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundProgressColor="@color/standard_color_yellow"
                 app:roundWidth="8dp"
                 app:textSize="@dimen/word_size_body"
                 app:textStyle="Num" />
@@ -311,7 +311,7 @@
                 android:layout_height="66dp"
                 android:gravity="center"
                 app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/planet_progress_yellow"
+                app:roundProgressColor="@color/standard_color_yellow"
                 app:roundWidth="8dp"
                 app:textSize="@dimen/word_size_body"
                 app:textStyle="Num" />

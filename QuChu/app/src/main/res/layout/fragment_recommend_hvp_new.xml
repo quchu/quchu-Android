@@ -15,14 +15,6 @@
         app:tabMode="fixed" />
 
 
-    <ImageView
-        android:id="@+id/f_recommend_bimg_top"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tabLayout"
-        android:scaleType="fitXY"
-        android:src="@color/appBackground" />
-
     <co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"

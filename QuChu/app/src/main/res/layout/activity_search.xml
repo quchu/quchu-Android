@@ -60,7 +60,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/half_margin"
                     android:text="取消"
-                    android:textColor="@color/gene_textcolor_yellow"
+                    android:textColor="@color/standard_color_yellow"
                     android:textSize="@dimen/word_subhead_size" />
             </RelativeLayout>
         </LinearLayout>
@@ -158,7 +158,7 @@
                     android:layout_height="wrap_content"
 
                     android:layout_margin="@dimen/base_margin"
-                    android:background="@color/load_progress_yellow">
+                    android:background="@color/standard_color_yellow">
 
                     <TextView
                         android:layout_width="wrap_content"

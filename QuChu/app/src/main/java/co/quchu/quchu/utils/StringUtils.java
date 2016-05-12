@@ -191,7 +191,7 @@ public class StringUtils {
      */
     public static void setTextHighlighting(TextView view, int startIndex, int endIndex) {
         SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
-        ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(R.color.planet_progress_yellow));
+        ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(R.color.standard_color_yellow));
         builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         view.setText(builder);

@@ -29,10 +29,10 @@
             android:layout_height="48dp"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            app:tabIndicatorColor="@color/gene_textcolor_yellow"
+            app:tabIndicatorColor="@color/standard_color_yellow"
             app:tabIndicatorHeight="2dp"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/gene_textcolor_yellow"
+            app:tabSelectedTextColor="@color/standard_color_yellow"
             app:tabTextColor="@color/white" />
 
         <View

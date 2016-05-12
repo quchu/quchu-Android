@@ -56,7 +56,7 @@
                         android:paddingRight="@dimen/quarter_margin"
                         android:paddingTop="@dimen/tow_dp_margin"
                         android:text="编辑头像"
-                        android:textColor="@color/gene_textcolor_yellow"
+                        android:textColor="@color/standard_color_yellow"
                         android:textSize="@dimen/word_size_body" />
 
                     <EditText

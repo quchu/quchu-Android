@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_10"
-            android:textColor="@color/load_progress_yellow"
+            android:textColor="@color/standard_color_yellow"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             />

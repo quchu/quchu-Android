@@ -59,7 +59,7 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, M
                     holder.itemMessageFollowTv.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.shape_message_follow_full_bg));
                     holder.itemMessageFollowTv.setText("已关注");
                 } else {
-                    holder.itemMessageFollowTv.setTextColor(mContext.getResources().getColor(R.color.gene_textcolor_yellow));
+                    holder.itemMessageFollowTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_yellow));
                     holder.itemMessageFollowTv.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.shape_message_follow_bg));
                     holder.itemMessageFollowTv.setText("关注");
                 }

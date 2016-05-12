@@ -3,7 +3,7 @@
     android:shape="oval">
     <stroke
         android:width="3dp"
-        android:color="@color/user_login_textbg_clickable" />
+        android:color="@color/standard_color_yellow" />
     <size
         android:width="100dp"
         android:height="100dp" />
