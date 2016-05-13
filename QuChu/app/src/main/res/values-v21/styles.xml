@@ -2,8 +2,11 @@
 
 
     <style name="AppTheme" parent="AppThemeBase">
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:statusBarColor">#ff4444</item>
+        <item name="android:navigationBarColor">#ff4444</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="AppThemeTransparentStatusBar" parent="AppThemeBase">
