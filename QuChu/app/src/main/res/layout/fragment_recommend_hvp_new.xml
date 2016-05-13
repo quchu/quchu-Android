@@ -40,9 +40,4 @@
         android:layout_below="@id/tabLayout"
         android:visibility="gone" />
 
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="4dp"-->
-    <!--android:layout_below="@id/tabLayout"-->
-    <!--android:background="@mipmap/shadow_bottom" />-->
 </RelativeLayout>
