@@ -33,7 +33,6 @@ import co.quchu.quchu.view.adapter.PickingQuchuAdapter;
 public class PickingQuchuActivity extends BaseActivity {
 
 
-    //    public String mKeyword;
     public static final String BUNDLE_KEY_KEYWORD = "BUNDLE_KEY_KEYWORD";
     public static final String BUNDLE_KEY_PICKING_RESULT_NAME = "BUNDLE_KEY_PICKING_RESULT_NAME";
     public static final String BUNDLE_KEY_PICKING_RESULT_ID = "BUNDLE_KEY_PICKING_RESULT_ID";
