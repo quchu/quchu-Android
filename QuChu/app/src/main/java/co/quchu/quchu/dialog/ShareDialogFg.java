@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -17,7 +18,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.dialog.adapter.DialogShareAdapter;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.net.NetApi;
@@ -31,7 +31,7 @@ import co.quchu.quchu.utils.KeyboardUtils;
  * User: Chenhs
  * Date: 2015-12-23
  */
-public class ShareDialogFg extends BlurDialogFragment implements AdapterView.OnItemClickListener {
+public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemClickListener {
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */

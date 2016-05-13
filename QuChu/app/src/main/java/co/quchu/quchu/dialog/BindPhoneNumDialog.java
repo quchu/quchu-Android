@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.DigitsKeyListener;
@@ -25,7 +26,6 @@ import com.android.volley.VolleyError;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.StringUtils;
@@ -35,7 +35,7 @@ import co.quchu.quchu.utils.StringUtils;
  * email:437943145@qq.com
  * desc :
  */
-public class BindPhoneNumDialog extends BlurDialogFragment {
+public class BindPhoneNumDialog extends DialogFragment {
 
     @Bind(R.id.viewPager)
     ViewPager viewPager;
@@ -224,30 +224,5 @@ public class BindPhoneNumDialog extends BlurDialogFragment {
         }
     }
 
-
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
-    }
 
 }

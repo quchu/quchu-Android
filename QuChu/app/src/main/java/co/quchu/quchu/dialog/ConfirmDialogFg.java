@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.TextView;
@@ -13,12 +14,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 
 /**
  * Created by admin on 2016/3/25.
  */
-public class ConfirmDialogFg extends BlurDialogFragment {
+public class ConfirmDialogFg extends DialogFragment {
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
@@ -105,30 +105,6 @@ public class ConfirmDialogFg extends BlurDialogFragment {
     }
 
 
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
-    }
 
 
     @OnClick({R.id.dialog_location_submit_tv, R.id.dialog_location_cancel_tv})

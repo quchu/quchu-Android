@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.TextView;
@@ -16,7 +17,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 
@@ -26,7 +26,7 @@ import co.quchu.quchu.view.activity.UserLoginActivity;
  * Date: 2015-12-23
  * 游客登录提醒弹窗
  */
-public class VisitorLoginDialogFg extends BlurDialogFragment {
+public class VisitorLoginDialogFg extends DialogFragment {
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
@@ -136,32 +136,6 @@ public class VisitorLoginDialogFg extends BlurDialogFragment {
     public void show(FragmentManager manager, String tag) {
         super.show(manager, tag);
 
-    }
-
-
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
     }
 
 

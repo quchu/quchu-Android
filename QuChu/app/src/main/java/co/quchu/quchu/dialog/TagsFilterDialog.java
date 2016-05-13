@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +18,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.dialog.adapter.TagsFilterDialogAdapter;
 import co.quchu.quchu.model.TagsModel;
 
@@ -25,7 +25,7 @@ import co.quchu.quchu.model.TagsModel;
  * Created by Nico on 16/4/11.
  */
 
-public class TagsFilterDialog extends BlurDialogFragment {
+public class TagsFilterDialog extends DialogFragment {
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
@@ -36,7 +36,6 @@ public class TagsFilterDialog extends BlurDialogFragment {
     RecyclerView rvTags;
     @Bind(R.id.ivFinish)
     ImageView ivFinish;
-
 
 
     private ArrayList<TagsModel> mDataset;
@@ -79,7 +78,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
 
         initSelected();
         rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 4));
-        adapter = new TagsFilterDialogAdapter(mDataset,  new TagsFilterDialogAdapter.OnItemSelectedListener() {
+        adapter = new TagsFilterDialogAdapter(mDataset, new TagsFilterDialogAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(int index) {
                 mDataset.get(index).setPraise(!mDataset.get(index).isPraise());
@@ -90,7 +89,7 @@ public class TagsFilterDialog extends BlurDialogFragment {
         ivFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=mListener){
+                if (null != mListener) {
                     mListener.onFinishPicking(mDataset);
                 }
                 dismiss();
@@ -124,41 +123,18 @@ public class TagsFilterDialog extends BlurDialogFragment {
 
 
     @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
     private OnFinishPickingListener mListener;
-    public interface OnFinishPickingListener{
+
+    public interface OnFinishPickingListener {
         void onFinishPicking(List<TagsModel> selection);
     }
 
-    public void setPickingListener(OnFinishPickingListener pListener){
+    public void setPickingListener(OnFinishPickingListener pListener) {
         mListener = pListener;
     }
 }

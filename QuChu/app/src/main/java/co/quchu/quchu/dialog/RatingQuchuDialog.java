@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.dialog.adapter.RatingQuchuDialogAdapter;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
@@ -29,7 +29,7 @@ import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
  * Created by Nico on 16/4/11.
  */
 
-public class RatingQuchuDialog extends BlurDialogFragment {
+public class RatingQuchuDialog extends DialogFragment {
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
@@ -62,12 +62,12 @@ public class RatingQuchuDialog extends BlurDialogFragment {
      * @return well instantiated fragment.
      * Serializable cityList
      */
-    public static RatingQuchuDialog newInstance(int userCount,int rating, ArrayList<TagsModel> list) {
+    public static RatingQuchuDialog newInstance(int userCount, int rating, ArrayList<TagsModel> list) {
         RatingQuchuDialog fragment = new RatingQuchuDialog();
         Bundle args = new Bundle();
         args.putSerializable(BUNDLE_KEY_TAGS, list);
         args.putFloat(BUNDLE_KEY_TAGS_RATING, rating);
-        args.putInt(BUNDLE_KEY_TAGS_USERCOUNT,userCount);
+        args.putInt(BUNDLE_KEY_TAGS_USERCOUNT, userCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,16 +95,16 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapter = new RatingQuchuDialogAdapter(mDataset, new RatingQuchuDialogAdapter.OnItemSelectedListener() {
             @Override
-            public void onSelected(int index,boolean select) {
+            public void onSelected(int index, boolean select) {
                 int selected = 0;
                 for (int i = 0; i < mDataset.size(); i++) {
-                    if (mDataset.get(i).isPraise()){
+                    if (mDataset.get(i).isPraise()) {
                         selected++;
                     }
                 }
-                if (!select &&selected>=MAX_TAG_SELECT){
-                    Toast.makeText(getActivity(),"最多只能选择3个标签",Toast.LENGTH_SHORT).show();
-                }else{
+                if (!select && selected >= MAX_TAG_SELECT) {
+                    Toast.makeText(getActivity(), "最多只能选择3个标签", Toast.LENGTH_SHORT).show();
+                } else {
                     mDataset.get(index).setPraise(!mDataset.get(index).isPraise());
                     adapter.notifyDataSetChanged();
                 }
@@ -121,7 +121,7 @@ public class RatingQuchuDialog extends BlurDialogFragment {
                 dismiss();
             }
         });
-        tvTips.setText("你的建议会帮助"+mUserCount+"位趣星人");
+        tvTips.setText("你的建议会帮助" + mUserCount + "位趣星人");
         return dialog;
     }
 
@@ -157,31 +157,6 @@ public class RatingQuchuDialog extends BlurDialogFragment {
         }
     }
 
-
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
-    }
 
     @Override
     public void onDestroyView() {

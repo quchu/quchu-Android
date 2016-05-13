@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -20,7 +21,6 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
@@ -30,7 +30,7 @@ import co.quchu.quchu.net.ResponseListener;
  * email:437943145@qq.com
  * desc :
  */
-public class ModiffPasswordDialog extends BlurDialogFragment implements View.OnClickListener {
+public class ModiffPasswordDialog extends DialogFragment implements View.OnClickListener {
     @Bind(R.id.originPassw)
     TextInputEditText originPassw;
     @Bind(R.id.newPassw)
@@ -78,30 +78,6 @@ public class ModiffPasswordDialog extends BlurDialogFragment implements View.OnC
         return builder.create();
     }
 
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
-    }
 
     @Override
     public void onDestroyView() {

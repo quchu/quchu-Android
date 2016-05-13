@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.view.activity.AccountSettingActivity;
@@ -27,7 +27,7 @@ import co.quchu.quchu.view.activity.AccountSettingActivity;
  * Date: 2015-12-23
  * 设置界面性别选择弹窗
  */
-public class GenderSelectedDialogFg extends BlurDialogFragment {
+public class GenderSelectedDialogFg extends DialogFragment {
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
@@ -122,31 +122,6 @@ public class GenderSelectedDialogFg extends BlurDialogFragment {
         if (adapter != null && dialogLocationRv != null) {
             adapter.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
     }
 
 

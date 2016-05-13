@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -13,14 +14,13 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 
 /**
  * Created by no21 on 2016/5/11.
  * email:437943145@qq.com
  * desc :通用的,对话框
  */
-public class CommonDialog extends BlurDialogFragment implements View.OnClickListener {
+public class CommonDialog extends DialogFragment implements View.OnClickListener {
 
     @Bind(R.id.title)
     TextView title;
@@ -80,30 +80,6 @@ public class CommonDialog extends BlurDialogFragment implements View.OnClickList
         this.listener = listener;
     }
 
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
-    }
 
     @Override
     public void onDestroyView() {

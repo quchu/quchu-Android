@@ -5,12 +5,12 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.view.activity.AboutUsActivity;
 import co.quchu.quchu.view.activity.FeedbackActivity;
 import co.quchu.quchu.view.activity.MeActivity;
@@ -21,7 +21,7 @@ import co.quchu.quchu.view.activity.MeActivity;
  * Date: 2015-12-23
  * 城市选择弹窗
  */
-public class MenuSettingDialogFg extends BlurDialogFragment {
+public class MenuSettingDialogFg extends DialogFragment {
     public static MenuSettingDialogFg newInstance() {
         return new MenuSettingDialogFg();
     }
@@ -70,30 +70,6 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
 
     }
 
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
-    }
 
 
     @Override

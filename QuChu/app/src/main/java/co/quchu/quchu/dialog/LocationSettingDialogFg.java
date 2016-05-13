@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -14,7 +15,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
@@ -27,7 +27,7 @@ import co.quchu.quchu.view.activity.AccountSettingActivity;
  * Date: 2015-12-23
  * 城市选择弹窗
  */
-public class LocationSettingDialogFg extends BlurDialogFragment {
+public class LocationSettingDialogFg extends DialogFragment {
 
 
     @Bind(R.id.account_setting_location_rl)
@@ -87,31 +87,6 @@ public class LocationSettingDialogFg extends BlurDialogFragment {
     public void onPause() {
         LogUtils.json("dialog onPause");
         super.onPause();
-    }
-
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
     }
 
 
