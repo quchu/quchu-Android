@@ -501,7 +501,7 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     }
 
     public void enterApp() {
-        startActivity(new Intent(this, RecommendActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         SplashActivity.this.finish();
     }
 

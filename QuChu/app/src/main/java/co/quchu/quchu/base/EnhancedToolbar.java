@@ -55,6 +55,14 @@ public class EnhancedToolbar extends Toolbar {
         }
     }
 
+    public void show(){
+        this.setVisibility(View.VISIBLE);
+    }
+
+    public void hide(){
+        this.setVisibility(View.GONE);
+    }
+
     public int getItemSize() {
         return itemSize;
     }

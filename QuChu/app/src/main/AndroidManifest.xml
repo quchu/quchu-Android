@@ -223,7 +223,7 @@
             android:name=".view.activity.BindPhotoNumActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.WhatIsActivity" />
-        <activity android:name=".view.activity.LoginMainActivity"></activity>
+        <activity android:name=".view.activity.LoginActivity"></activity>
     </application>
 
 </manifest>
