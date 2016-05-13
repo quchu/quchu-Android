@@ -101,8 +101,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     @Override
     public void onScrollChanged() {
 
-        float offset = (1-(mScrollView.getScrollY()/mScrollDistance));
-        float offsetPx = offset*mHalfWidth;
+        float offset = (1 - (mScrollView.getScrollY() / mScrollDistance));
+        float offsetPx = offset * mHalfWidth;
 
         mIvCloudLeft.setTranslationX(-offsetPx);
         mIvCloudRight.setTranslationX(+offsetPx);
@@ -118,7 +118,7 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
 
     @Override
     public void onBackPressed() {
-        if (mAnimationEnd){
+        if (mAnimationEnd) {
             super.onBackPressed();
         }
     }
@@ -128,8 +128,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
                 ObjectAnimator.ofFloat(mIvBg, "scaleX", 1, 1.5f),
                 ObjectAnimator.ofFloat(mIvBg, "scaleY", 1, 1.5f)
         );
-        ObjectAnimator.ofFloat(mIvCloudLeft, "translationX", mIvCloudLeft.getTranslationX(), -mHalfWidth*2).setDuration(1000).start();
-        ObjectAnimator.ofFloat(mIvCloudRight, "translationX", mIvCloudRight.getTranslationX(), mHalfWidth*2).setDuration(1000).start();
+        ObjectAnimator.ofFloat(mIvCloudLeft, "translationX", mIvCloudLeft.getTranslationX(), -mHalfWidth * 2).setDuration(1000).start();
+        ObjectAnimator.ofFloat(mIvCloudRight, "translationX", mIvCloudRight.getTranslationX(), mHalfWidth * 2).setDuration(1000).start();
         mIvArrow.clearAnimation();
         ((BitmapDrawable) mIvArrow.getDrawable()).getBitmap().recycle();
         mRelativeLayout.removeView(mIvArrow);
@@ -140,7 +140,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
         mAnimationSet.start();
         mAnimationSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -156,10 +157,12 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
 
         mScrollView.getViewTreeObserver().removeOnScrollChangedListener(SplashActivity.this);
@@ -173,7 +176,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
         animatorSet.start();
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -186,10 +190,12 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
     }
 
@@ -206,11 +212,11 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             public void run() {
                 startFinalAnimation();
             }
-        },250);
+        }, 250);
 
     }
 
-    private void startFinalAnimation(){
+    private void startFinalAnimation() {
         mIvBg.setScaleType(ImageView.ScaleType.CENTER_CROP);
         ((BitmapDrawable) mIvBg.getDrawable()).getBitmap().recycle();
         mIvBg.setImageBitmap(null);
@@ -227,15 +233,17 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
 
         ValueAnimator anim = ValueAnimator.ofFloat(0, 1);
         anim.setDuration(1000);
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener(){
-            @Override public void onAnimationUpdate(ValueAnimator animation) {
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
                 mViewBg.setAlpha((Float) animation.getAnimatedValue());
             }
         });
         anim.start();
         anim.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -247,18 +255,20 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
 
 
         final AnimatorSet animatorSetText = new AnimatorSet();
         animatorSetText.playTogether(
-                ObjectAnimator.ofFloat(mTvAppName, "translationY", mTvAppName.getTranslationY()/1.4f,0),
-                ObjectAnimator.ofFloat(mTvCopyRight, "translationX", mHalfWidth,0),
-                ObjectAnimator.ofFloat(mTvVersion, "translationY", mTvVersion.getTranslationY(),0),
+                ObjectAnimator.ofFloat(mTvAppName, "translationY", mTvAppName.getTranslationY() / 1.4f, 0),
+                ObjectAnimator.ofFloat(mTvCopyRight, "translationX", mHalfWidth, 0),
+                ObjectAnimator.ofFloat(mTvVersion, "translationY", mTvVersion.getTranslationY(), 0),
                 ObjectAnimator.ofFloat(mTvAppName, "alpha", 0, 1),
                 ObjectAnimator.ofFloat(mTvCopyRight, "alpha", 0, 1),
                 ObjectAnimator.ofFloat(mTvVersion, "alpha", 0, 1)
@@ -269,7 +279,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
         animatorSetText.start();
         animatorSetText.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -281,14 +292,16 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
                         initLogic();
 
                     }
-                },500);
+                }, 500);
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
 
     }
@@ -298,17 +311,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
         super.onCreate(savedInstanceState);
 
 
-
         mShowGuide = SPUtils.animationShown(getApplicationContext());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE);
         setContentView(R.layout.activity_landing_page);
         AppContext.initLocation();
         ButterKnife.bind(this);
@@ -321,16 +325,16 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
         }
         String version = pInfo.versionName;
 
-        mTvTips.setText("趣处 "+version+" \n给春天开一扇玩耍的门");
+        mTvTips.setText("趣处 " + version + " \n给春天开一扇玩耍的门");
         mTvVersion.setText(getVersionName());
         //大屏幕不执行动画
-        if (ScreenUtils.getScreenHeight(getApplicationContext())>3204){
+        if (ScreenUtils.getScreenHeight(getApplicationContext()) > 3204) {
             mShowGuide = false;
         }
 
         mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
 
-        if (!mShowGuide){
+        if (!mShowGuide) {
             //mRelativeLayout.removeView(mScrollView);
             mIvBgSec.setAdjustViewBounds(true);
             mIvBgSec.setAlpha(1f);
@@ -340,10 +344,10 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
 
             final AnimatorSet animatorSetText = new AnimatorSet();
             animatorSetText.playTogether(
-                    ObjectAnimator.ofFloat(mIvAppIcon,"alpha",0,1),
-                    ObjectAnimator.ofFloat(mTvAppName, "translationY", mTvAppName.getTranslationY()/1.4f,0),
-                    ObjectAnimator.ofFloat(mTvCopyRight, "translationX", mHalfWidth,0),
-                    ObjectAnimator.ofFloat(mTvVersion, "translationY", mTvVersion.getTranslationY(),0),
+                    ObjectAnimator.ofFloat(mIvAppIcon, "alpha", 0, 1),
+                    ObjectAnimator.ofFloat(mTvAppName, "translationY", mTvAppName.getTranslationY() / 1.4f, 0),
+                    ObjectAnimator.ofFloat(mTvCopyRight, "translationX", mHalfWidth, 0),
+                    ObjectAnimator.ofFloat(mTvVersion, "translationY", mTvVersion.getTranslationY(), 0),
                     ObjectAnimator.ofFloat(mTvAppName, "alpha", 0, 1),
                     ObjectAnimator.ofFloat(mTvCopyRight, "alpha", 0, 1),
                     ObjectAnimator.ofFloat(mTvVersion, "alpha", 0, 1)
@@ -355,7 +359,7 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
 
             mViewBg.setAlpha(1);
             initLogic();
-        }else{
+        } else {
             mIvArrow.setImageResource(R.mipmap.ic_wide_arrow);
             mIvBgSec.setImageResource(R.mipmap.background_fth);
             mIvCloudRight.setImageResource(R.mipmap.cloud_right);
@@ -375,13 +379,13 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
                     mScrollView.fullScroll(View.FOCUS_DOWN);
                     mScrollView.getViewTreeObserver().addOnScrollChangedListener(SplashActivity.this);
                 }
-            },100);
+            }, 100);
 
             mIvBg.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     mHalfWidth = mIvBg.getWidth() / 2;
-                    mScrollDistance = mScrollView.getChildAt(0).getHeight()-mScrollView.getHeight();
+                    mScrollDistance = mScrollView.getChildAt(0).getHeight() - mScrollView.getHeight();
                     mIvBg.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
             });
@@ -389,13 +393,13 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
             mScrollView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if ((mScrollView.getScrollY() / (mScrollDistance))<.8f&&!mActionUp&&(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_MOVE)){
+                    if ((mScrollView.getScrollY() / (mScrollDistance)) < .8f && !mActionUp && (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_MOVE)) {
                         mActionUp = true;
                         mDisableScroll = true;
                         mScrollView.post(new Runnable() {
                             @Override
                             public void run() {
-                                ObjectAnimator scrollAnimator = ObjectAnimator.ofInt(mScrollView, "scrollY",  0).setDuration(1000);
+                                ObjectAnimator scrollAnimator = ObjectAnimator.ofInt(mScrollView, "scrollY", 0).setDuration(1000);
                                 scrollAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
                                 scrollAnimator.start();
                             }
@@ -416,7 +420,7 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
 
     }
 
-    public String getVersionName(){
+    public String getVersionName() {
         String versionName = "1.0.0";
         try {
 
@@ -430,12 +434,12 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
     }
 
     private void initLogic() {
-        if (SPUtils.getForceUpdateIfNecessary(getApplicationContext())){
-            ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示",SPUtils.getForceUpdateReason(getApplicationContext()));
+        if (SPUtils.getForceUpdateIfNecessary(getApplicationContext())) {
+            ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示", SPUtils.getForceUpdateReason(getApplicationContext()));
             confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                 @Override
                 public void onClick(int index) {
-                    switch (index){
+                    switch (index) {
                         case ConfirmDialogFg.INDEX_OK:
                             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(SPUtils.getForceUpdateUrl(getApplicationContext())));
                             startActivity(browserIntent);
@@ -443,8 +447,8 @@ public class SplashActivity extends BaseActivity implements ViewTreeObserver.OnS
                     }
                 }
             });
-            confirmDialogFg.show(getSupportFragmentManager(),"~");
-        }else{
+            confirmDialogFg.show(getSupportFragmentManager(), "~");
+        } else {
 
             mAnimationEnd = true;
             if (AppContext.user != null) {

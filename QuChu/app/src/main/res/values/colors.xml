@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#111111</color>
-    <color name="colorPrimaryDark">#111111</color>
+    <color name="colorPrimary">#333333</color>
+    <color name="colorPrimaryDark">#333333</color>
     <color name="colorAccent">#ffd300</color>
+    <color name="colorBackground">#ffffff</color>
 
     <color name="translucent_white">#7fffffff</color>
     <color name="translucent_dark">#7f000000</color>
@@ -13,7 +14,8 @@
     <color name="standard_color_h1_dark">#333333</color>
     <color name="standard_color_content">#666666</color>
     <color name="standard_color_description">#999999</color>
-    
+
+
     <!-- 自定义属性-->
     <color name="titleBackground">#383635</color>
     <color name="appBackground">#ffffff</color>
@@ -23,24 +25,16 @@
     <!-- 我的趣星球 、titleBar字体颜色-->
     <color name="planet_text_color_white">#ffffff</color>
     <color name="lineBackground_gray">#595757</color>
-    <color name="roundProgressBackground_black">#26000000</color>
     <!-- 图片item 蒙版颜色-->
     <color name="itemMask_black">#a6221814</color>
-    <color name="imageLoaderingColor">#DCDCDC</color>
     <!-- 我的趣基因文字颜色 背景颜色 -->
-    <color name="gene_desc_blck_bg">#221814</color>
 
     <!-- 趣星人-->
     <color name="text_color_white">#fff</color>
     <!-- 我的发现 -->
-    <color name="item_discover_bg_color">#595757</color>
-    <color name="item_discover_title_color">#fefefe</color>
-    <color name="item_discover_subtitle_color">#b4b5b5</color>
 
     <!--上拉加载更多  进度条-->
     <color name="load_progress_gray">#697081</color>
-    <color name="load_progress_black">#221613</color>
-    <color name="load_progress_white">#fefefe</color>
 
 
     <!-- 用户登陆 -->
@@ -50,27 +44,17 @@
 
     <!--下拉菜单-->
     <color name="menu_wiper_switch_off">#bf000000</color>
-    <color name="menu_pop_setting_bg">#80595757</color>
 
     <!-- 账户设置-->
 
     <color name="account_setting_text_hint_color">#595757</color>
-    <color name="account_setting_weibo_color">#F39700</color>
-    <color name="account_setting_wechat_color">#8EC31E</color>
 
     <!-- 横向 数字进度条 -->
-    <color name="widget_horizontal_progressbar_bg">#26000000</color>
     <!-- 趣处详情 -->
-    <color name="detail_card_bg_color">#595656</color>
     <color name="detail_avg_price_text_bg">#26000000</color>
     <!--人均消费 文字背景色-->
     <color name="detail_line_color">#717071</color>
-    <!--人均消费 文字背景色-->
-    <color name="detail_subtitle_bg">#272525</color>
-    <!--人均消费 文字背景色-->
-    <!--人均消费 文字背景色-->
 
-    <color name="user_guide_text_color">#d8b07e</color>
     <color name="user_guide_bg_blue">#400000FF</color>
     <!--  1.1版本颜色值 start-->
     <color name="new_recommend_line_color">#3E3A39</color>

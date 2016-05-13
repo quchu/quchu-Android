@@ -38,7 +38,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".view.activity.SplashActivity"
             android:label="@string/app_name"
@@ -108,8 +108,7 @@
         <!-- 我的趣推荐 -->
         <activity
             android:name=".view.activity.RecommendActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar_top" />
+            android:screenOrientation="portrait" />
 
         <!-- 搜索 -->
         <activity
@@ -123,7 +122,7 @@
         <!-- 用户登录 -->
         <activity
             android:name=".view.activity.UserLoginActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".photoselected.PreviewImageActivity"
             android:screenOrientation="portrait" />
@@ -208,18 +207,18 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.activity.MeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activity.QuchuActivity" />
         <activity
             android:name=".view.activity.BindActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.MyFootprintActivity"
-            android:label="我的脚印"/>
+            android:label="我的脚印" />
         <activity
             android:name=".view.activity.MyFootprintDetailActivity"
             android:label="@string/title_activity_my_footprint_detail"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.BindPhotoNumActivity"
             android:screenOrientation="portrait" />
