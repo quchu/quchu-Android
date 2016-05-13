@@ -14,11 +14,12 @@
     <color name="standard_color_h1_dark">#333333</color>
     <color name="standard_color_content">#666666</color>
     <color name="standard_color_description">#999999</color>
+    <color name="tagTextColor">#fff</color>
 
 
     <!-- 自定义属性-->
     <color name="titleBackground">#383635</color>
-    <color name="appBackground">#ffffff</color>
+    <color name="appBackground">#fff</color>
     <color name="appBackgroundTrans">#cc383635</color>
     <color name="appBackground_dark">#2c2a2a</color>
     <color name="planet_progress_white">#dcdddd</color>

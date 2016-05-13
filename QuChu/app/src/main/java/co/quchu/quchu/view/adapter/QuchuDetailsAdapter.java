@@ -6,12 +6,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
@@ -477,10 +475,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
 
                 ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
-                ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex - 1).getAddress());
+//                ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex - 1).getAddress());
                 ((NearbyViewHolder) holder).sdvImage.setImageURI(Uri.parse(mData.getNearPlace().get(imgIndex - 1).getCover()));
                 final int pid = mData.getNearPlace().get(imgIndex - 1).getPlaceId();
-                ((NearbyViewHolder) holder).cvRoot.setOnClickListener(new View.OnClickListener() {
+                ((NearbyViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -732,12 +730,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView tvName;
         @Bind(R.id.tag)
         TagCloudView tcvTag;
-        @Bind(R.id.address)
-        TextView tvAddress;
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView sdvImage;
-        @Bind(R.id.cvRoot)
-        CardView cvRoot;
 
         NearbyViewHolder(View view) {
             super(view);

@@ -13,8 +13,7 @@
         android:layout_below="@+id/appbar"
         android:background="@color/appBackground_dark"
         android:paddingLeft="@dimen/base_margin"
-        android:paddingRight="@dimen/base_margin"
-        android:paddingTop="@dimen/half_margin" />
+        android:paddingRight="@dimen/base_margin" />
 
     <co.quchu.quchu.widget.DampView
         android:layout_width="match_parent"

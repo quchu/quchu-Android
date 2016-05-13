@@ -1,33 +1,16 @@
 package co.quchu.quchu.view.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.cache.common.CacheKey;
-import com.facebook.common.references.CloseableReference;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.facebook.imagepipeline.request.Postprocessor;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -51,7 +34,6 @@ import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
@@ -72,8 +54,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     RecyclerViewPager recyclerView;
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
-//    @Bind(R.id.f_recommend_bimg_top)
-//    ImageView fRecommendBimgTop;
     @Bind(R.id.refreshLayout)
     HorizontalSwipeRefLayout refreshLayout;
     @Bind(R.id.errorView)
@@ -84,7 +64,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     private RecommendAdapter adapter;
     private RecommentFragPresenter presenter;
     private int currentIndex = -1;
-    private boolean mFragmentStoped;
     private int dataCount = -1;
 
     private String from = QuchuDetailsActivity.FROM_TYPE_HOME;
@@ -350,7 +329,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -359,7 +337,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Override
     public void onStop() {
-        mFragmentStoped = true;
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
@@ -368,7 +345,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     public void onResume() {
         MobclickAgent.onPageStart("h_recommendtion");
         super.onResume();
-        mFragmentStoped = false;
     }
 
     @Override
