@@ -44,6 +44,16 @@ public class RecommendModel {
     private float suggest;
     private int width;
     public boolean isout;  //是否去过
+    private String price;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
     /**
      * key : 夜生活
      * value : 90

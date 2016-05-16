@@ -23,8 +23,8 @@
             android:padding="@dimen/half_margin"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/quarter_margin"
-            android:textColor="@android:color/white"
-            android:background="@drawable/shape_lineframe_white"
+            android:textColor="@color/standard_color_h1_dark"
+            android:background="@drawable/shape_lineframe_black"
             />
 
        <RelativeLayout
@@ -35,7 +35,7 @@
            android:drawableLeft="@mipmap/ic_drawable_left_quguo"
            android:layout_marginRight="@dimen/base_margin"
            android:layout_marginLeft="@dimen/quarter_margin"
-           android:background="@drawable/shape_lineframe_white"
+           android:background="@drawable/shape_lineframe_black"
            >
            <ImageView
                android:id="@+id/ivQuguo"
@@ -52,7 +52,7 @@
                android:text="@string/status_quguo"
                android:layout_centerInParent="true"
                android:padding="@dimen/half_margin"
-               android:textColor="@android:color/white"
+               android:textColor="@color/standard_color_h1_dark"
                />
        </RelativeLayout>
     </LinearLayout>
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_10"
-            android:textColor="@color/standard_color_yellow"
+            android:textColor="@color/standard_color_h1_dark"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             />

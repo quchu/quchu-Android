@@ -3,6 +3,7 @@
 
     <style name="AppTheme" parent="AppThemeBase">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
     </style>
 
     <!--<style name="AppThemeTransparentStatusBar" parent="AppThemeBase">-->

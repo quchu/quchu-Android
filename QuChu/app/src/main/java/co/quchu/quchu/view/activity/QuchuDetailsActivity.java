@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -66,6 +68,8 @@ public class QuchuDetailsActivity extends BaseActivity {
     AppBarLayout appbar;
     @Bind(R.id.ivFavorite)
     ImageView vFavorite;
+    @Bind(R.id.sdvHead)
+    SimpleDraweeView sdv;
 
     private long mLastAnimated = -1;
     public static final String REQUEST_KEY_PID = "pid";
@@ -103,8 +107,9 @@ public class QuchuDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         from = getIntent().getStringExtra(REQUEST_KEY_FROM);
 
+        getEnhancedToolbar().getTitleTv().setText("");
         getEnhancedToolbar().getRightTv().setText(R.string.pre_order);
-        getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.standard_color_yellow));
+        getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.standard_color_white));
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,9 +131,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         });
 
 
-        if (null != savedInstanceState) {
-            dModel = (DetailModel) savedInstanceState.getSerializable(BUNDLE_KEY_DATA_MODEL);
-        }
+        if (null != savedInstanceState)
 
         initData();
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
@@ -215,6 +218,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                 InterestingDetailPresenter.getInterestingData(this, pId, new InterestingDetailPresenter.getDetailDataListener() {
                     @Override
                     public void getDetailData(DetailModel model) {
+                        sdv.setImageURI(Uri.parse(model.getCover()));
                         bindingDetailData(model);
                         DialogUtil.dismissProgess();
                     }

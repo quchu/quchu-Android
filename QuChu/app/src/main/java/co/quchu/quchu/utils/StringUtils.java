@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
@@ -38,6 +40,18 @@ public class StringUtils {
     public static boolean isFile(String path) {
 
         return new File(path).isFile();
+    }
+
+    public static Spanned getColorSpan(Context context, int resColor, String pre, String target, String end){
+        StringBuffer sb = new StringBuffer();
+        sb.append(pre)
+                .append("<font color=#")
+                .append(Integer.toHexString(context.getResources().getColor(resColor)& 0x00ffffff))
+                .append(">")
+                .append(target)
+                .append("</font>")
+                .append(end);
+        return Html.fromHtml(sb.toString());
     }
 
     public static String getRealPath() {

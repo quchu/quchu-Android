@@ -155,4 +155,6 @@
     <string name="forgotten_password">忘记密码</string>
     <string name="login">登录</string>
     <string name="send_valid_code">发送验证码</string>
+    <string name="empty_string">Null</string>
+    <string name="avg_cost">人均消费</string>
 </resources>

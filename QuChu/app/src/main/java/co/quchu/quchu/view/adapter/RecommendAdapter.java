@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -64,7 +65,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         } else {
             holder.item_place_event_tv.setVisibility(View.GONE);
         }
-        holder.itemRecommendCardAddressTv.setText(model.getAddress());
+
+        //Html.fromHtml(mContext.getString(R.string.avg_cost)
+        // +"<font color=#"+Integer.toHexString(mContext.getResources().getColor(R.color.standard_color_red)& 0x00ffffff)+">"
+        // +model.getPrice()+"</font>元")
+        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost),model.getPrice(),"元"));
         holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
 

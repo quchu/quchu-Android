@@ -209,13 +209,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 for (int i = 0; i < mData.getImglist().size() && i <= 3; i++) {
                     imageSet.add(mData.getImglist().get(i).convert2ImageModel());
                 }
+                ((IntroImageViewHolder) holder).vpGallery.setVisibility(View.GONE);
                 ((IntroImageViewHolder) holder).vpGallery.setAdapter(new GalleryAdapter(imageSet, ((IntroImageViewHolder) holder).vpGallery.getContext()));
                 final int size = imageSet.size();
                 ((IntroImageViewHolder) holder).tvGalleryIndicator.setText(1 + " of " + size);
                 ((IntroImageViewHolder) holder).vpGallery.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    }
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
                     @Override
                     public void onPageSelected(int position) {
@@ -223,8 +223,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
 
                     @Override
-                    public void onPageScrollStateChanged(int state) {
-                    }
+                    public void onPageScrollStateChanged(int state) {}
                 });
             }
 

@@ -32,7 +32,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/text_color_white"
+            android:textColor="@color/standard_color_h1_dark"
             android:textSize="@dimen/word_size_body"/>
 
     </LinearLayout>
@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:drawablePadding="8dp"
             android:drawableRight="@mipmap/ic_friends_arrow"
-            android:textColor="@color/text_color_white"
+            android:textColor="@color/standard_color_h1_dark"
             android:textSize="@dimen/word_size_body"/>
 
     </LinearLayout>
