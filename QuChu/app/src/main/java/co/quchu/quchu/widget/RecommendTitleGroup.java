@@ -220,11 +220,11 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
 
     private void animationEndChange(boolean isHotSelected) {
         if (isHotSelected) {
-            widgetSwitchNewBtn.setTextColor(getResources().getColor(R.color.text_color_white));
+            widgetSwitchNewBtn.setTextColor(getResources().getColor(R.color.standard_color_h1_dark));
             widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
         } else {
             widgetSwitchNewBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
-            widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.text_color_white));
+            widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.standard_color_h1_dark));
         }
     }
 

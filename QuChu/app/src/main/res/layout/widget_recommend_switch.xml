@@ -43,7 +43,7 @@
         android:background="@drawable/shape_recommend_button_unselected_bg"
         android:gravity="center"
         android:text="趣发现"
-        android:textColor="@color/text_color_white"
+        android:textColor="@color/standard_color_h1_dark"
         android:textSize="@dimen/word_subhead_size" />
 
 </RelativeLayout>
