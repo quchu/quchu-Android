@@ -42,6 +42,7 @@
 
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rlPasswordField"
         android:layout_below="@+id/rlUserNameField"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"

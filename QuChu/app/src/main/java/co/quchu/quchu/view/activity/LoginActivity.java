@@ -1,8 +1,7 @@
 package co.quchu.quchu.view.activity;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextPaint;
 import android.widget.FrameLayout;
 
 import butterknife.Bind;
@@ -26,6 +25,8 @@ public class LoginActivity extends BaseActivity {
     PhoneValidationFragment phoneValidationFragment;
     RegistrationFragment registrationFragment;
     RestorePasswordFragment restorePasswordFragment;
+    FragmentManager fragmentManager;
+
 
 
     @Override
@@ -36,10 +37,41 @@ public class LoginActivity extends BaseActivity {
 
         getEnhancedToolbar().hide();
 
+        loginFragment = new LoginFragment();
+        fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.flContent,loginFragment,LoginFragment.TAG).commit();
+        getFragmentManager().executePendingTransactions();
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        System.out.println("fragmentManager.getBackStackEntryCount() "+fragmentManager.getBackStackEntryCount());
+        if (getFragmentManager().getBackStackEntryCount() > 0 ) {
+            getFragmentManager().popBackStack();
+        }else{
+            super.onBackPressed();
+        }
+//        int lastIndex = fragmentManager.getBackStackEntryCount();//
+//        if (lastIndex>0){
+//            fragmentManager.beginTransaction().setCustomAnimations(
+//                    R.animator.card_flip_horizontal_right_in,
+//                    R.animator.card_flip_horizontal_left_out,
+//                    R.animator.card_flip_horizontal_left_in,
+//                    R.animator.card_flip_horizontal_right_out)
+//                    .remove(fragmentManager.findFragmentById(fragmentManager.getBackStackEntryAt(lastIndex).getId()))
+//                    .commitAllowingStateLoss();
+//
+////            fragmentManager = getSupportFragmentManager();
+////            lastIndex = fragmentManager.getFragments().size()-1;//
+////            lastIndex-=1;
+////            fragmentManager.beginTransaction().show(fragmentManager.getFragments().get(lastIndex-1)).commitAllowingStateLoss();
+//        }
     }
 
     @Override
     protected int activitySetup() {
-        return TRANSITION_TYPE_NOTHING;
+        return TRANSITION_TYPE_LEFT;
     }
 }
