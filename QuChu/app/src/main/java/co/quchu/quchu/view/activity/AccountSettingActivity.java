@@ -5,10 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,15 +33,12 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
-import co.quchu.quchu.dialog.BindPhoneNumDialog;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.GenderSelectedDialogFg;
 import co.quchu.quchu.dialog.LocationSettingDialogFg;
 import co.quchu.quchu.dialog.ModiffPasswordDialog;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
-import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -61,27 +57,17 @@ import co.quchu.quchu.utils.StringUtils;
  * User: Chenhs
  * Date: 2015-12-04
  */
-public class AccountSettingActivity extends BaseActivity {
-    @Bind(R.id.account_setting_avatar_sdv)
+public class AccountSettingActivity extends BaseActivity implements View.OnClickListener {
+    @Bind(R.id.headView)
     SimpleDraweeView accountSettingAvatarSdv;
-    @Bind(R.id.account_setting_nickname_et)
-    EditText accountSettingNicknameEt;
-    @Bind(R.id.account_setting_gender_tv)
-    TextView accountSettingGenderTv;
-    @Bind(R.id.account_setting_phone_tv)
-    TextView accountSettingPhoneTv;
-    @Bind(R.id.account_setting_user_location)
+    @Bind(R.id.nickname)
+    EditText nickname;
+    @Bind(R.id.photoNumber)
+    TextView photoNumber;
+    @Bind(R.id.location)
     TextView accountSettingUserLocation;
-    @Bind(R.id.account_setting_new_pwd_et)
-    EditText originPasswordEd;
-    @Bind(R.id.account_setting_new_pwd_again_et)
-    EditText newPasswordEd;
-    @Bind(R.id.bindPhoto)
-    TextView bindPhoto;
-    @Bind(R.id.lineBindPhone)
-    View lineBindPhone;
-    @Bind(R.id.modiffPassContainer)
-    RelativeLayout modiffPassContainer;
+    @Bind(R.id.radioGroup)
+    RadioGroup radioGroup;
 
 
     private ArrayList<Integer> imageList;
@@ -93,9 +79,11 @@ public class AccountSettingActivity extends BaseActivity {
         setContentView(R.layout.activity_account_setting);
         ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
-        toolbar.getTitleTv().setText(getTitle());
+        toolbar.getTitleTv().setText("账号编辑");
         imageList = AccountSettingPresenter.getQAvatar();
-
+        TextView rightTv = toolbar.getRightTv();
+        rightTv.setText("退出登录");
+        rightTv.setOnClickListener(this);
     }
 
 
@@ -112,34 +100,31 @@ public class AccountSettingActivity extends BaseActivity {
         }
 
         if (AppContext.user != null) {
+            UserInfoModel user = AppContext.user;
             accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
-            accountSettingNicknameEt.setText(AppContext.user.getFullname());
-            accountSettingPhoneTv.setText(AppContext.user.getUsername());
-            newUserGender = AppContext.user.getGender();
-            accountSettingGenderTv.setText(newUserGender);
+            nickname.setText(AppContext.user.getFullname());
+            photoNumber.setText(AppContext.user.getUsername());
             newUserLocation = AppContext.user.getLocation();
             accountSettingUserLocation.setText(newUserLocation);
+            if ("男".equals(user.getGender())) {
+                radioGroup.check(R.id.man);
+            } else {
+                radioGroup.check(R.id.girl);
+            }
         }
-        // TODO: 2016/5/12  
-//        if (AppContext.user.isphone()) {
-//            bindPhoto.setVisibility(View.GONE);
-//            lineBindPhone.setVisibility(View.GONE);
-//            modiffPassContainer.setVisibility(View.VISIBLE);
-//        } else {
-//            bindPhoto.setVisibility(View.VISIBLE);
-//            lineBindPhone.setVisibility(View.VISIBLE);
-//            modiffPassContainer.setVisibility(View.GONE);
-//        }
     }
-
-    ArrayList<CityModel> genderList;
 
     @Override
     public void onBackPressed() {
         boolean userNameChanged;
-        userNameChanged = !StringUtils.isEmpty(accountSettingNicknameEt.getText().toString()) && !accountSettingNicknameEt.getText().toString().equals(AppContext.user.getFullname());
+        userNameChanged = !nickname.getText().toString().equals(AppContext.user.getFullname());
         boolean userGenderChanged;
-        userGenderChanged = !StringUtils.isEmpty(newUserGender) && !AppContext.user.getGender().equals(newUserGender);
+
+        String gender = radioGroup.getCheckedRadioButtonId() == R.id.man ? "男" : "女";
+
+        userGenderChanged = !AppContext.user.getGender().equals(gender);
+
+
         boolean userLocationChanged;
         userLocationChanged = !StringUtils.isEmpty(accountSettingUserLocation.getText().toString()) && !AppContext.user.getLocation().equals(accountSettingUserLocation.getText().toString());
         if (mProfileModified || userNameChanged || userGenderChanged || userLocationChanged) {
@@ -158,12 +143,11 @@ public class AccountSettingActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.account_setting_avatar_sdv, R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv
-            , R.id.saveUserInfo, R.id.account_setting_user_location, R.id.bindAccound, R.id.exit, R.id.bindPhoto})
-    public void accountClick(View v) {
+    @OnClick({R.id.headView, R.id.editHeadImage
+            , R.id.location, R.id.modiffPass, R.id.bindAccound, R.id.saveUserInfo})
+    public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.account_setting_avatar_sdv:
-            case R.id.account_setting_avatar_editer_tv:
+            case R.id.editHeadImage:
                 ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
                 photoDialogFg.setOnOriginListener(listener);
                 photoDialogFg.show(getSupportFragmentManager(), "photo");
@@ -171,33 +155,20 @@ public class AccountSettingActivity extends BaseActivity {
             case R.id.saveUserInfo:
                 saveUserChange();
                 break;
-            case R.id.account_setting_gender_tv:
-                genderList = new ArrayList<>();
-                genderList.add(new CityModel("男", 0, "男".equals(newUserGender)));
-                genderList.add(new CityModel("女", 0, "女".equals(newUserGender)));
-                GenderSelectedDialogFg genderDialogFg = GenderSelectedDialogFg.newInstance(genderList);
-                genderDialogFg.show(getSupportFragmentManager(), "gender");
-                break;
-            case R.id.account_setting_user_location:
+
+            case R.id.location:
                 LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
                 locationDIalogFg.show(getSupportFragmentManager(), "location");
                 break;
             case R.id.bindAccound:
-//                final Intent intent = new Intent(this, BindActivity.class);
-//                startActivity(intent);
-
+                final Intent intent = new Intent(this, BindActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.modiffPass:
                 ModiffPasswordDialog dialog = ModiffPasswordDialog.newInstance();
                 dialog.show(getSupportFragmentManager(), "");
                 break;
-            case R.id.bindPhoto:
-//                Intent intent1 = new Intent(this, BindPhotoNumActivity.class);
-//                startActivity(intent1);
-                BindPhoneNumDialog instance = BindPhoneNumDialog.newInstance();
-                instance.show(getSupportFragmentManager(), "");
-
-
-                break;
-            case R.id.exit:
+            case R.id.toolbar_tv_right:
                 ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance("确认退出?", "退出后将以游客模式登录");
                 confirmDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
                     @Override
@@ -287,7 +258,6 @@ public class AccountSettingActivity extends BaseActivity {
     };
 
     private String newUserPhoto = "";
-    private String newUserGender = "";
     private String newUserNickName = "";
     private String newUserLocation = "";
 
@@ -298,34 +268,18 @@ public class AccountSettingActivity extends BaseActivity {
         GalleryFinal.cleanCacheFile();
     }
 
-    private String originPassword = "", newPassword = "";
 
     //保存修改信息
     public void saveUserChange() {
 
 
-        newUserNickName = accountSettingNicknameEt.getText().toString().trim();
+        newUserNickName = nickname.getText().toString().trim();
 
         if (newUserNickName.length() < 1 || newUserNickName.length() > 10) {
             Toast.makeText(this, "昵称必须为1-10位汉字或英文", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        originPassword = originPasswordEd.getText().toString().trim();
-        newPassword = newPasswordEd.getText().toString().trim();
-
-        if (AppContext.user.isphone() && (!TextUtils.isEmpty(originPassword) || !TextUtils.isEmpty(newPassword))) {
-            if (originPassword.equals(newPassword)) {
-                Toast.makeText(this, "新旧密码不能相同", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (newPassword.length() < 6 || newPassword.length() > 12) {
-                Toast.makeText(this, "请输入6-12位新密码", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-
-        newUserGender = accountSettingGenderTv.getText().toString().trim();
         newUserLocation = accountSettingUserLocation.getText().toString().trim();
 
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
@@ -349,7 +303,7 @@ public class AccountSettingActivity extends BaseActivity {
 
     public void putUserInfo(String photoUrl) {
         AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this,
-                newUserNickName, photoUrl, newUserGender, newUserLocation, originPassword, newPassword, new AccountSettingPresenter.UploadUserPhotoListener() {
+                newUserNickName, photoUrl, radioGroup.getCheckedRadioButtonId() == R.id.man ? "男" : "女", newUserLocation, new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
                         refreshUserInfo();
@@ -382,10 +336,6 @@ public class AccountSettingActivity extends BaseActivity {
         });
     }
 
-    public void updateGender(String userGender) {
-        newUserGender = userGender;
-        accountSettingGenderTv.setText(newUserGender);
-    }
 
     public void updateLocation(String locationDes) {
         newUserLocation = locationDes;
@@ -439,4 +389,6 @@ public class AccountSettingActivity extends BaseActivity {
         super.onResume();
         MobclickAgent.onPageStart("edit");
     }
+
+
 }

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical">
 
     <RelativeLayout
@@ -58,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:background="@color/colorPrimary"
             android:text="重新获取(60)" />
 
         <Button
@@ -65,7 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/half_margin"
             android:layout_weight="1"
+            android:background="@color/colorPrimary"
             android:text="获取验证码" />
     </LinearLayout>
 </LinearLayout>

@@ -60,6 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:layout_below="@id/layout_head"
+        android:layout_marginTop="@dimen/base_margin"
         android:background="@color/line" />
 
     <LinearLayout
@@ -67,6 +68,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/lineHead"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        android:layout_marginTop="@dimen/base_margin"
         android:orientation="vertical">
 
         <co.quchu.quchu.widget.ProgressView
@@ -94,18 +98,24 @@
             android:layout_marginTop="@dimen/half_margin" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/lineProgress"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_below="@id/progressContainer"
+        android:layout_marginTop="@dimen/base_margin"
+        android:background="@color/line" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="match_parent"
+        android:layout_below="@id/lineProgress"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:id="@+id/layout_mid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/progressContainer"
             android:orientation="horizontal">
 
 
@@ -133,10 +143,7 @@
                     android:textSize="@dimen/word_size_body" />
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/line" />
+            <View style="@style/VerticalLine" />
 
             <LinearLayout
                 android:id="@+id/footPrint"
@@ -164,11 +171,7 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/layout_mid"
-            android:background="@color/line" />
+        <View style="@style/HorizontalLine" />
 
         <LinearLayout
             android:id="@+id/containerMass"
@@ -203,9 +206,7 @@
             </LinearLayout>
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/line" />
+               style="@style/VerticalLine" />
 
             <LinearLayout
                 android:id="@+id/massage"
@@ -234,10 +235,7 @@
         </LinearLayout>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/containerMass"
-            android:background="@color/line" />
+            style="@style/HorizontalLine" />
 
         <LinearLayout
             android:id="@+id/findPosition"

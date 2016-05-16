@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.storage.UploadOptions;
-import com.sina.weibo.sdk.utils.MD5;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -140,7 +138,7 @@ public class AccountSettingPresenter {
     /**
      * 保存用户信息
      */
-    public static void postUserInfo2Server(final Context mContext, String userName, String userPhoto, String userGender, String userLocation, String userPw, String userRePw,
+    public static void postUserInfo2Server(final Context mContext, String userName, String userPhoto, String userGender, String userLocation,
                                            final UploadUserPhotoListener listener) {
 
         Map<String, String> params = new HashMap<>();
@@ -148,8 +146,8 @@ public class AccountSettingPresenter {
         params.put("user.gander", ("男".equals(userGender) ? "M" : "W"));
         params.put("user.location", userLocation);
         params.put("user.photo", userPhoto);
-        params.put("user.password", TextUtils.isEmpty(userPw) ? "" : MD5.hexdigest(userPw));
-        params.put("user.restpsw", TextUtils.isEmpty(userRePw) ? "" : MD5.hexdigest(userRePw));
+//        params.put("user.password", TextUtils.isEmpty(userPw) ? "" : MD5.hexdigest(userPw));
+//        params.put("user.restpsw", TextUtils.isEmpty(userRePw) ? "" : MD5.hexdigest(userRePw));
 
         GsonRequest<Object> request = new GsonRequest<>(NetApi.updateUser, Object.class, params, new ResponseListener<Object>() {
             @Override

@@ -21,6 +21,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.BindPhoneNumDialog;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
@@ -42,6 +43,8 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
 
     public static final String TYPE_WEIBO = "weibo";
     public static final String TYPE_Wecha = "weixin";
+    @Bind(R.id.bind_phone)
+    Button bindPhone;
     private SsoHandler ssoHandler;
 
     @Override
@@ -58,8 +61,11 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
     private void initListener() {
         bindSina.setOnClickListener(this);
         bindWecha.setOnClickListener(this);
+        bindPhone.setOnClickListener(this);
         if (AppContext.user.isIsweixin()) {
             bindWecha.setText("取消绑定我的微信");
+            bindWecha.setBackgroundColor(getResources().getColor(R.color.standard_color_content));
+
         }
         if (AppContext.user.isIsweibo()) {
             bindSina.setText("取消绑定我的微博");
@@ -69,6 +75,10 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.bind_phone:
+                BindPhoneNumDialog dialog = BindPhoneNumDialog.newInstance();
+                dialog.show(getSupportFragmentManager(), "");
+                break;
             case R.id.bind_wecha:
                 if (AppContext.user.isIsweixin()) {
                     if (SPUtils.getLoginType().equals(SPUtils.LOGIN_TYPE_WEIXIN)) {
@@ -253,7 +263,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         super.onActivityResult(requestCode, resultCode, data);
         LogUtils.e("onActivityResult" + data.toString());
         if (ssoHandler != null) {
-            LogUtils.e("onActivityResult:不为空" );
+            LogUtils.e("onActivityResult:不为空");
             ssoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
     }

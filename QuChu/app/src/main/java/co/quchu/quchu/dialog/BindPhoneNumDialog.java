@@ -20,12 +20,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.StringUtils;
@@ -163,8 +168,41 @@ public class BindPhoneNumDialog extends DialogFragment {
                 common.setText("确认");
                 editText.setKeyListener(DigitsKeyListener.getInstance(getActivity().getString(R.string.passFilter)));
                 autoCode.setVisibility(View.GONE);
+                common.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setPassword(editText.getText().toString(), inputLayout);
+                    }
+
+
+                });
                 break;
         }
+    }
+
+    private void setPassword(String password, final TextInputLayout layout) {
+        if (password.length() < 6 || password.length() > 12) {
+            layout.setError("请输入6-12位密码");
+            return;
+        }
+        HashMap<String, String> params = new HashMap<>();
+        GsonRequest<String> request = new GsonRequest<>(NetApi.bindPassword, String.class, params, new ResponseListener<String>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                layout.setError("网络异常");
+            }
+
+            @Override
+            public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
+                if (result) {
+                    dismiss();
+                    Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    layout.setError(msg);
+                }
+            }
+        });
+        request.start(getActivity());
     }
 
     /**
@@ -195,8 +233,29 @@ public class BindPhoneNumDialog extends DialogFragment {
         });
     }
 
-    private void checkAutoCode(String code, TextInputLayout layout) {
+    private void checkAutoCode(String code, final TextInputLayout layout) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("phoneNumber", phoneNumber);
+        params.put("verifyCode", code);
 
+        GsonRequest<String> request = new GsonRequest<>(NetApi.autoCodeIsCorrect, String.class, params, new ResponseListener<String>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                layout.setError("网络异常");
+            }
+
+            @Override
+            public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
+                if (result) {
+                    handle.removeMessages(0);
+                    viewPager.setCurrentItem(2);
+                } else {
+                    layout.setError("验证码有误");
+                }
+
+            }
+        });
+        request.start(getActivity());
     }
 
     static class MyHandle extends Handler {

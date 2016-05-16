@@ -45,11 +45,8 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     LinearLayout friend;
     @Bind(R.id.massage)
     LinearLayout massage;
-
-
     @Bind(R.id.tvUserNickName)
     TextView tvUserNickName;
-
     @Bind(R.id.name)
     TextView name;
     @Bind(R.id.progress1)
@@ -60,8 +57,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     ProgressView progress3;
     @Bind(R.id.progress4)
     ProgressView progress4;
-    @Bind(R.id.layout_mid)
-    LinearLayout layoutMid;
     @Bind(R.id.findPosition)
     LinearLayout findPosition;
 

@@ -78,6 +78,7 @@ public class AboutUsActivity extends BaseActivity {
                 try {
                     instance = ConfirmDialogFg.newInstance("版本信息:", "SER_VN:" + response.getString("version") +
                             "\nAPP_VN:" + AppContext.packageInfo.versionName + "\nAPP_VC:" + AppContext.packageInfo.versionCode);
+                    instance.setCancelable(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

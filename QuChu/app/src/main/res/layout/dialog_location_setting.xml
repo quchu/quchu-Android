@@ -70,7 +70,7 @@
         </RelativeLayout>
 
         <EditText
-            android:id="@+id/account_setting_user_location"
+            android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

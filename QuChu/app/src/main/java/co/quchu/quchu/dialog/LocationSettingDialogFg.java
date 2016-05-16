@@ -32,7 +32,7 @@ public class LocationSettingDialogFg extends DialogFragment {
 
     @Bind(R.id.account_setting_location_rl)
     RelativeLayout accountSettingLocationRl;
-    @Bind(R.id.account_setting_user_location)
+    @Bind(R.id.location)
     EditText accountSettingUserLocation;
     @Bind(R.id.dialog_location_submit_tv)
     TextView dialogLocationSubmitTv;

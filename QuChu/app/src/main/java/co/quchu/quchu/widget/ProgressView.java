@@ -1,5 +1,6 @@
 package co.quchu.quchu.widget;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -8,6 +9,7 @@ import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.utils.StringUtils;
@@ -63,23 +65,22 @@ public class ProgressView extends View {
         }
 
         // draw  bg,文字宽度为50
-        rectF.left = StringUtils.dip2px(getContext(), 20);
+        rectF.left = StringUtils.dip2px(getContext(), 30);
         rectF.right = getWidth();
         rectF.bottom = getHeight();
 
         paint.setColor(getResources().getColor(R.color.standard_color_description));
-        paint.setStrokeWidth(5);
+        paint.setStrokeWidth(3);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawRoundRect(rectF, 25f, 25f, paint);
 
         //draw progress
-        rectF.left = StringUtils.dip2px(getContext(), 20) - paint.getStrokeWidth();
-        rectF.right = getWidth() * progress / 100f;
+        rectF.left = StringUtils.dip2px(getContext(), 30) - paint.getStrokeWidth();
+        rectF.right = (getWidth() - rectF.left) * progress / 100f;
         rectF.bottom = getHeight();
 
         paint.setColor(getResources().getColor(R.color.colorPrimary));
-        paint.setStrokeWidth(5);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRoundRect(rectF, 25f, 25f, paint);
@@ -91,8 +92,18 @@ public class ProgressView extends View {
         if (progress < 0 || progress > 100)
             throw new IllegalArgumentException("progress must between 0 100");
 
-        this.progress = (int) ((progress / 100f) * getWidth());
         this.text = text;
-        invalidate();
+        ValueAnimator animator = ValueAnimator.ofInt(0, progress);
+        animator.setDuration(800);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+        ProgressView.this.progress = (int) animation.getAnimatedValue();
+
+                invalidate();
+            }
+        });
+        animator.start();
     }
 }
