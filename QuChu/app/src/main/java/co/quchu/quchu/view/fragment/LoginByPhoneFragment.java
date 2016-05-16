@@ -40,6 +40,8 @@ public class LoginByPhoneFragment extends Fragment {
     @Bind(R.id.rlPasswordField)
     RelativeLayout rlPasswordField;
 
+    public static final String TAG = "LoginByPhoneFragment";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

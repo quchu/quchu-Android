@@ -14,6 +14,9 @@ import co.quchu.quchu.R;
  * Created by Nico on 16/5/13.
  */
 public class PhoneValidationFragment extends Fragment {
+
+    public static final String TAG = "PhoneValidationFragment";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

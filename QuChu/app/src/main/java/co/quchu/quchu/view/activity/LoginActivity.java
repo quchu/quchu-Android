@@ -47,27 +47,12 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        System.out.println("fragmentManager.getBackStackEntryCount() "+fragmentManager.getBackStackEntryCount());
         if (getFragmentManager().getBackStackEntryCount() > 0 ) {
             getFragmentManager().popBackStack();
         }else{
             super.onBackPressed();
         }
-//        int lastIndex = fragmentManager.getBackStackEntryCount();//
-//        if (lastIndex>0){
-//            fragmentManager.beginTransaction().setCustomAnimations(
-//                    R.animator.card_flip_horizontal_right_in,
-//                    R.animator.card_flip_horizontal_left_out,
-//                    R.animator.card_flip_horizontal_left_in,
-//                    R.animator.card_flip_horizontal_right_out)
-//                    .remove(fragmentManager.findFragmentById(fragmentManager.getBackStackEntryAt(lastIndex).getId()))
-//                    .commitAllowingStateLoss();
-//
-////            fragmentManager = getSupportFragmentManager();
-////            lastIndex = fragmentManager.getFragments().size()-1;//
-////            lastIndex-=1;
-////            fragmentManager.beginTransaction().show(fragmentManager.getFragments().get(lastIndex-1)).commitAllowingStateLoss();
-//        }
+
     }
 
     @Override

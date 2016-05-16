@@ -14,6 +14,9 @@ import co.quchu.quchu.R;
  * Created by Nico on 16/5/13.
  */
 public class RegistrationFragment extends Fragment {
+
+    public static final String TAG = "RegistrationFragment";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
