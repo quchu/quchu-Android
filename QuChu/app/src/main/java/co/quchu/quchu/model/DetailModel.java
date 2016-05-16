@@ -131,21 +131,28 @@ public class DetailModel implements Serializable{
         }else{
             genes.clear();
         }
-        genes.addAll(objTarget.getGenes());
+        if (objTarget.getGenes() != null) {
+            genes.addAll(objTarget.getGenes());
+        }
 
         if (null==icons){
             icons = new ArrayList<>();
         }else{
             icons.clear();
         }
-        icons.addAll(objTarget.getIcons());
+        if (null!=objTarget.getIcons()){
+            icons.addAll(objTarget.getIcons());
+        }
 
         if (null==imglist){
             imglist = new ArrayList<>();
         }else{
             imglist.clear();
         }
-        imglist.addAll(objTarget.getImglist());
+
+        if (null!=objTarget.getImglist()){
+            imglist.addAll(objTarget.getImglist());
+        }
 
         if (null==tags){
             tags = new ArrayList<>();
