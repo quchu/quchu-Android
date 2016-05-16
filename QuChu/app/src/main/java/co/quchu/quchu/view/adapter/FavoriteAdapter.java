@@ -44,7 +44,7 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
 
     @Override
     public ViewHold onCreateView(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_favorite, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bearby_quchu, parent, false);
         return new ViewHold(view);
     }
 

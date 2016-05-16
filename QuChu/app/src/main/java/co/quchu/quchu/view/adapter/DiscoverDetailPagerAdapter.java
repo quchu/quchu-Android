@@ -35,7 +35,7 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
     private List<RecommendModel> mData;
     private OnItemClickListener mListener;
 
-    public DiscoverDetailPagerAdapter(List<RecommendModel> pData, Context context,OnItemClickListener pListener) {
+    public DiscoverDetailPagerAdapter(List<RecommendModel> pData, Context context, OnItemClickListener pListener) {
         this.mData = pData;
         this.mContext = context;
         this.mListener = pListener;
@@ -46,7 +46,7 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
@@ -85,7 +85,7 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
         }
         if (null != model.getTags() && model.getTags().size() > 0) {
             for (int i = 0; i < model.getTags().size(); i++) {
-                switch (i){
+                switch (i) {
                     case 0:
                         holder.tag1.setText(model.getTags().get(i).getZh());
                         holder.tag1.setVisibility(View.VISIBLE);
@@ -100,22 +100,18 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
                         break;
                 }
             }
-        } else {
-            holder.tag1.setVisibility(View.GONE);
-            holder.tag2.setVisibility(View.GONE);
-            holder.tag3.setVisibility(View.GONE);
         }
-        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude() ) {
+        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
             holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
         } else {
 
-            String distance = StringUtils.getDistance(model.getLatitude(),model.getLongitude(),SPUtils.getLatitude(),SPUtils.getLongitude());
+            String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
             holder.item_recommend_card_distance_tv.setText("距您" + distance);
         }
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=mListener){
+                if (null != mListener) {
                     mListener.onItemClick(position);
                 }
             }
@@ -124,15 +120,15 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
     }
 
     public class ViewHolder {
-        @Bind(R.id.item_recommend_card_photo_sdv)
+        @Bind(R.id.photo)
         SimpleDraweeView itemRecommendCardPhotoSdv;
-        @Bind(R.id.item_recommend_card_prb)
+        @Bind(R.id.ProperRatingBar)
         ProperRatingBar itemRecommendCardPrb;
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
-        @Bind(R.id.item_place_event_tv)
+        @Bind(R.id.activity)
         TextView item_place_event_tv;
-        @Bind(R.id.item_recommend_card_name_tv)
+        @Bind(R.id.name)
         TextView item_recommend_card_name_tv;
         @Bind(R.id.recommend_tag1)
         TextView tag1;
@@ -142,13 +138,14 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
         TextView tag3;
         @Bind(R.id.root_cv)
         CardView rootCv;
-        @Bind(R.id.item_recommend_card_collect_iv)
-        TextView itemRecommendCardCollectIv;
-        @Bind(R.id.item_recommend_card_distance_tv)
+        @Bind(R.id.distance)
         TextView item_recommend_card_distance_tv;
 
         public ViewHolder(View itemView) {
             ButterKnife.bind(this, itemView);
+            tag1.setVisibility(View.GONE);
+            tag2.setVisibility(View.GONE);
+            tag3.setVisibility(View.GONE);
         }
     }
 

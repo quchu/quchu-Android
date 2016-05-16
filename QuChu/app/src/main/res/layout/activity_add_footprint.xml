@@ -63,7 +63,7 @@
                 android:textSize="@dimen/word_size_minimum"
                 android:layout_below="@id/etContent"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/shape_lineframe_gray"
+                android:background="@drawable/shape_tag_bg"
                 android:text="@string/hint_max_text_length"
                 />
 

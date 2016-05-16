@@ -63,7 +63,8 @@ public class RecommentFragPresenter {
                 DialogUtil.dismissProgessDirectly();
                 if (response != null)
                     view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo(), response.getRowCount());
-
+                else
+                    view.initTabData(true, null, 0, 0, 0);
 
             }
 
@@ -81,7 +82,10 @@ public class RecommentFragPresenter {
         model.loadMore(type, pageNumber, new CommonListener<RecommendModelNew>() {
             @Override
             public void successListener(RecommendModelNew response) {
-                view.loadMore(false, response.getResult(), response.getPageCount(), response.getPagesNo());
+                if (response != null)
+                    view.loadMore(false, response.getResult(), response.getPageCount(), response.getPagesNo());
+                else
+                    view.loadMore(true, null, 0, 0);
             }
 
             @Override

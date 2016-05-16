@@ -53,7 +53,6 @@ public class RecommendFragModel implements IRecommendFragModel {
         urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(), isDefaultData,
                 SPUtils.getLatitude(), SPUtils.getLongitude(), 1
         );
-        LogUtils.json(urlStr);
 
         GsonRequest<RecommendModelNew> request = new GsonRequest<>(urlStr, RecommendModelNew.class, new ResponseListener<RecommendModelNew>() {
             @Override

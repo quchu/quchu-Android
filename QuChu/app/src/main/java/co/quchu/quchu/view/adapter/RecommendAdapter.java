@@ -8,7 +8,9 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.utils.FlyMeUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
@@ -38,13 +39,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
 
     private Activity mContext;
-    private boolean isFlyme = false;
     private List<RecommendModel> dataSet;
     private CardClickListener listener;
 
     public RecommendAdapter(Activity mContext, List<RecommendModel> arrayList, CardClickListener listener) {
         this.mContext = mContext;
-        isFlyme = FlyMeUtils.isFlyme();
         dataSet = arrayList;
         this.listener = listener;
     }
@@ -59,7 +58,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     public void onBindViewHolder(RecommendAdapter.RecommendHolder holder, int position) {
         RecommendModel model = dataSet.get(position);
         holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
-        //ImageUtils.loadWithAppropriateSize(holder.itemRecommendCardPhotoSdv,Uri.parse(model.getCover()));
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (model.isIsActivity()) {
             holder.item_place_event_tv.setVisibility(View.VISIBLE);
@@ -70,12 +68,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
 
-//        List<RecommendModel.GenesEntity> genes = model.getGenes();
-//        holder.tag1.setText(genes.get(0).getKey());
-//        holder.tag2.setText(genes.get(1).getKey());
-//        holder.tag3.setText(genes.get(2).getKey());
-
-        //holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(model.isIsf() ? R.mipmap.ic_detail_collect_dark : R.mipmap.ic_atmophere_unselected_dark));
 
         if (model.isout) {//用户去过该趣处
             //去过标签 start
@@ -97,9 +89,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             holder.item_recommend_card_name_tv.setText(model.getName());
         }
         if (null != model.getTags() && model.getTags().size() > 0) {
-            //ArrayList<String> tags = new ArrayList<String>();
             for (int i = 0; i < model.getTags().size(); i++) {
-                switch (i){
+                switch (i) {
                     case 0:
                         holder.tag1.setText(model.getTags().get(i).getZh());
                         holder.tag1.setVisibility(View.VISIBLE);
@@ -114,26 +105,24 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
                         break;
                 }
             }
-//            holder.detailStoreTagcloundTcv.setVisibility(View.VISIBLE);
-//            holder.detailStoreTagcloundTcv.setTags(tags);
         } else {
-            //holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
             holder.tag1.setVisibility(View.GONE);
             holder.tag2.setVisibility(View.GONE);
             holder.tag3.setVisibility(View.GONE);
         }
-        System.out.println(SPUtils.getLatitude() +"|"+SPUtils.getLongitude());
+        System.out.println(SPUtils.getLatitude() + "|" + SPUtils.getLongitude());
         if (0 == SPUtils.getLatitude() || 0 == SPUtils.getLongitude()) {
             holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
         } else {
+            String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
+            String text = "距您当前位置" + distance;
 
-            String distance = StringUtils.getDistance(model.getLatitude(),model.getLongitude(),SPUtils.getLatitude(),SPUtils.getLongitude());
-            holder.item_recommend_card_distance_tv.setText("距您" + distance);
-//            if (StringUtils.isDouble(model.getDistance())) {
-//
-//                holder.item_recommend_card_distance_tv.setText("距您" + distance);
-//                StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + distance.length(), android.R.color.white);
-//            }
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            builder.append(text);
+            ForegroundColorSpan span_1 = new ForegroundColorSpan(mContext.getResources().getColor(R.color.standard_color_red));
+            builder.setSpan(span_1, 6, text.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            holder.item_recommend_card_distance_tv.setText(builder);
+
         }
 
     }
@@ -147,17 +136,16 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     }
 
     class RecommendHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.item_recommend_card_photo_sdv)
+        @Bind(R.id.photo)
         SimpleDraweeView itemRecommendCardPhotoSdv;
-        @Bind(R.id.item_recommend_card_prb)
+        @Bind(R.id.ProperRatingBar)
         ProperRatingBar itemRecommendCardPrb;
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
-        @Bind(R.id.item_place_event_tv)
+        @Bind(R.id.activity)
         TextView item_place_event_tv;
-        @Bind(R.id.item_recommend_card_name_tv)
+        @Bind(R.id.name)
         TextView item_recommend_card_name_tv;
-
         @Bind(R.id.recommend_tag1)
         TextView tag1;
         @Bind(R.id.recommend_tag2)
@@ -167,11 +155,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
         @Bind(R.id.root_cv)
         CardView rootCv;
-        @Bind(R.id.item_recommend_card_collect_iv)
-        TextView itemRecommendCardCollectIv;
-        //        @Bind(R.id.detail_store_tagclound_tcv)
-//        TagCloudView detailStoreTagcloundTcv;
-        @Bind(R.id.item_recommend_card_distance_tv)
+        @Bind(R.id.distance)
         TextView item_recommend_card_distance_tv;
         private CardClickListener listener;
 
@@ -179,17 +163,13 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.listener = listener;
-//            if (isFlyme) {
-//                itemRecommendCardPhotoSdv.setAspectRatio(1.4f);
-//            } else {
-//                itemRecommendCardPhotoSdv.setAspectRatio(1.2f);
-//            }
+            tag1.setVisibility(View.GONE);
+            tag2.setVisibility(View.GONE);
+            tag3.setVisibility(View.GONE);
         }
 
-        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_iv, R.id.item_recommend_card_interest_iv})
+        @OnClick({R.id.root_cv})
         public void cardClick(View view) {
-            if (isFastDoubleClick())
-                return;
             if (listener != null)
                 listener.onCardLick(view, getPosition());
         }

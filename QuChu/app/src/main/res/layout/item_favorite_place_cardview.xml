@@ -26,7 +26,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/item_recommend_card_name_tv"
+                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/half_margin"
@@ -51,7 +51,7 @@
         </RelativeLayout>
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/item_recommend_card_photo_sdv"
+            android:id="@+id/photo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/animation1"
@@ -60,10 +60,10 @@
             card_view:actualImageScaleType="centerCrop" />
 
         <co.quchu.quchu.widget.ratingbar.ProperRatingBar
-            android:id="@+id/item_recommend_card_prb"
+            android:id="@+id/ProperRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_recommend_card_photo_sdv"
+            android:layout_below="@id/photo"
             android:layout_marginBottom="@dimen/half_margin"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginTop="@dimen/half_margin"
@@ -78,7 +78,7 @@
             android:id="@+id/item_recommend_card_address_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_recommend_card_prb"
+            android:layout_below="@id/ProperRatingBar"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
             android:textColor="@color/text_color_white"

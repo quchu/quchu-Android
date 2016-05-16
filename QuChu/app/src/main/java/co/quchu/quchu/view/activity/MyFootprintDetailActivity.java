@@ -83,7 +83,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         selectedPosition = position;
         Entity entity = data.get(position);
         headImage.setImageURI(Uri.parse(entity.head));
-//
 
         if (entity.PlcaeId == 0) {
             actionContainer.setVisibility(View.INVISIBLE);

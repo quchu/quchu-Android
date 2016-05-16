@@ -26,14 +26,14 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
     private List<NearbyItemModel> mData;
     private OnItemClickListener mListener;
 
-    public NearbyAdapter(List<NearbyItemModel> pData,OnItemClickListener pListener) {
+    public NearbyAdapter(List<NearbyItemModel> pData, OnItemClickListener pListener) {
         mData = pData;
         mListener = pListener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_favorite, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bearby_quchu, parent, false));
     }
 
 
@@ -49,7 +49,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=mListener){
+                if (null != mListener) {
                     mListener.onClick(position);
                 }
             }
@@ -58,7 +58,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return null!=mData?mData.size():0;
+        return null != mData ? mData.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -66,18 +66,16 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         TextView name;
         @Bind(R.id.tag)
         TagCloudView tag;
-        @Bind(R.id.address)
-        TextView address;
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onClick(int position);
     }
 }
