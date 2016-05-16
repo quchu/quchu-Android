@@ -131,7 +131,9 @@ public class QuchuDetailsActivity extends BaseActivity {
         });
 
 
-        if (null != savedInstanceState)
+        if (null != savedInstanceState) {
+            dModel = (DetailModel) savedInstanceState.getSerializable(BUNDLE_KEY_DATA_MODEL);
+        }
 
         initData();
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
