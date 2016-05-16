@@ -1,355 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="co.quchu.quchu.view.activity.MeActivity">
 
+
+    <include layout="@layout/cp_enhanced_toolbar" />
+
     <RelativeLayout
         android:id="@+id/layout_head"
         android:layout_width="match_parent"
-        android:layout_height="280dp">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/bg_simpleDraweeView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            fresco:placeholderImage="@mipmap/bg_user"
-            fresco:placeholderImageScaleType="centerCrop"
-            fresco:viewAspectRatio="1.33" />
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:padding="16dp"
-            android:src="@mipmap/ic_back" />
-
-        <ImageView
-            android:id="@+id/setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
-            android:padding="16dp"
-            android:src="@mipmap/ic_setting" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appbar">
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/headViewContainer"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/double_margin"
+            android:background="@drawable/head_circle">
 
-            <RelativeLayout
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/headImage"
                 android:layout_width="100dp"
-                android:layout_height="100dp">
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:padding="3dp"
+                fresco:roundAsCircle="true" />
+        </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/head_circle"
-                    tools:ignore="ContentDescription" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/headImage"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerInParent="true"
-                    android:padding="3dp"
-                    fresco:roundAsCircle="true" />
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/headViewContainer"
+            android:layout_centerHorizontal="true"
+            android:singleLine="true"
+            android:text="我的手_做不到"
+            android:textColor="@android:color/white" />
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:singleLine="true"
-                android:text="我的手_做不到"
-                android:textColor="@android:color/white" />
-
-            <Button
-                android:id="@+id/tvUserNickName"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/me_user_tag"
-                android:text="好奇猫" />
-
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/tvUserNickName"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/me_user_tag"
+            android:text="好奇猫" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_mid"
+    <View
+        android:id="@+id/lineHead"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="8dp"
         android:layout_below="@id/layout_head"
-        android:orientation="horizontal">
+        android:background="@color/line" />
 
-        <FrameLayout
-            android:id="@+id/quchu"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
+    <LinearLayout
+        android:id="@+id/progressContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lineHead"
+        android:orientation="vertical">
 
+        <co.quchu.quchu.widget.ProgressView
+            android:id="@+id/progress1"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginTop="@dimen/half_margin" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:drawableLeft="@mipmap/ic_quchu"
-                android:drawablePadding="3dp"
-                android:gravity="center_vertical"
-                android:text="趣处"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/word_size_body" />
-        </FrameLayout>
+        <co.quchu.quchu.widget.ProgressView
+            android:id="@+id/progress2"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginTop="@dimen/half_margin" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/white" />
+        <co.quchu.quchu.widget.ProgressView
+            android:id="@+id/progress3"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginTop="@dimen/half_margin" />
 
-        <FrameLayout
-            android:id="@+id/footPrint"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:drawableLeft="@mipmap/ic_pug"
-                android:drawablePadding="3dp"
-                android:gravity="center_vertical"
-                android:text="脚印"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/word_size_body" />
-        </FrameLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/white" />
-
-        <FrameLayout
-            android:id="@+id/friend"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:drawableLeft="@mipmap/ic_friend"
-                android:drawablePadding="3dp"
-                android:gravity="center_vertical"
-                android:text="趣友圈"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/word_size_body" />
-        </FrameLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/white" />
-
-        <FrameLayout
-            android:id="@+id/massage"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:drawableLeft="@mipmap/ic_massage"
-                android:drawablePadding="3dp"
-                android:gravity="center_vertical"
-                android:text="消息"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/word_size_body" />
-        </FrameLayout>
+        <co.quchu.quchu.widget.ProgressView
+            android:id="@+id/progress4"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginTop="@dimen/half_margin" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_mid"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:id="@+id/layout_mid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progressContainer"
+            android:orientation="horizontal">
 
-            <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/rpv1"
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:gravity="center"
-                app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/standard_color_yellow"
-                app:roundWidth="8dp"
-                app:textSize="@dimen/word_size_body"
-                app:textStyle="Num" />
 
-            <TextView
-                android:id="@+id/tvLabel1"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/quchu"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:drawableLeft="@mipmap/ic_curiosity"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:text="好奇基因"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/word_size_time" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_quchu" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:drawablePadding="3dp"
+                    android:gravity="center_vertical"
+                    android:text="趣处"
+                    android:textColor="@color/standard_color_content"
+                    android:textSize="@dimen/word_size_body" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:id="@+id/footPrint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_pug" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:drawablePadding="3dp"
+                    android:gravity="center_vertical"
+                    android:text="脚印"
+                    android:textColor="@color/standard_color_content"
+                    android:textSize="@dimen/word_size_body" />
+            </LinearLayout>
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/layout_mid"
+            android:background="@color/line" />
+
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:id="@+id/containerMass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_mid"
+            android:orientation="horizontal">
 
-            <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/rpv2"
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:gravity="center"
-                app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/standard_color_yellow"
-                app:roundWidth="8dp"
-                app:textSize="@dimen/word_size_body"
-                app:textStyle="Num" />
 
-            <TextView
-                android:id="@+id/tvLabel2"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/friend"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:drawableLeft="@mipmap/ic_eat"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:text="吃货基因"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/word_size_time" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_friend" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:drawablePadding="3dp"
+                    android:gravity="center_vertical"
+                    android:text="趣友圈"
+                    android:textColor="@color/standard_color_content"
+                    android:textSize="@dimen/word_size_body" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:id="@+id/massage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_massage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:drawablePadding="3dp"
+                    android:gravity="center_vertical"
+                    android:text="消息"
+                    android:textColor="@color/standard_color_content"
+                    android:textSize="@dimen/word_size_body" />
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/rpv3"
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:gravity="center"
-                app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/standard_color_yellow"
-                app:roundWidth="8dp"
-                app:textSize="@dimen/word_size_body"
-                app:textStyle="Num" />
-
-            <TextView
-                android:id="@+id/tvLabel3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:drawableLeft="@mipmap/ic_art"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:text="艺术基因"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/word_size_time" />
-
-        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/containerMass"
+            android:background="@color/line" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:id="@+id/findPosition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-            <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/rpv4"
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:gravity="center"
-                app:roundProgressBackground="@color/itemMask_black"
-                app:roundProgressColor="@color/standard_color_yellow"
-                app:roundWidth="8dp"
-                app:textSize="@dimen/word_size_body"
-                app:textStyle="Num" />
-
-            <TextView
-                android:id="@+id/tvLabel4"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:drawableLeft="@mipmap/ic_money"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:text="土豪基因"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/word_size_time" />
+                android:src="@mipmap/ic_pull_menus_add" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="我发现了一个新趣处"
+                android:textColor="@color/standard_color_content"
+                android:textSize="@dimen/word_title_body" />
         </LinearLayout>
     </LinearLayout>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/findPosition"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        app:cardBackgroundColor="@color/lineBackground_gray"
-        app:cardElevation="10dp">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:drawableLeft="@mipmap/ic_pull_menus_add"
-            android:gravity="center"
-            android:text="   我发现了一个新趣处"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/word_title_body" />
-
-    </android.support.v7.widget.CardView>
 </RelativeLayout>

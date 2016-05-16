@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#333333</color>
-    <color name="colorPrimaryDark">#333333</color>
+    <color name="colorPrimary">#ffd300</color>
+    <color name="colorPrimaryDark">#ffd300</color>
     <color name="colorAccent">#ffd300</color>
     <color name="colorBackground">#ffffff</color>
 
@@ -15,6 +15,8 @@
     <color name="standard_color_content">#666666</color>
     <color name="standard_color_description">#999999</color>
     <color name="tagTextColor">#fff</color>
+    <!--分割线颜色-->
+    <color name="line">#AAAAAA</color>
 
 
     <!-- 自定义属性-->

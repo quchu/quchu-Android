@@ -2,12 +2,15 @@ package co.quchu.quchu.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Shader;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+
+import co.quchu.quchu.R;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by no21 on 2016/5/13.
@@ -18,6 +21,9 @@ public class ProgressView extends View {
 
     private Paint paint;
     private int progress;
+    private RectF rectF;
+    private String text;
+    private Rect rect;
 
     public ProgressView(Context context) {
         this(context, null);
@@ -35,21 +41,58 @@ public class ProgressView extends View {
     private void init() {
         paint = new Paint();
 //        new float[]{0, 0.3f, 0.8f}
-        paint.setShader(new LinearGradient(0, 0, 2, 2, new int[]{Color.RED, Color.BLACK, Color.GRAY}, null, Shader.TileMode.REPEAT));
-        paint.setStrokeWidth(50);
+//        paint.setShader(new LinearGradient(0, 0, 2, 2, new int[]{Color.RED, Color.BLACK, Color.GRAY}, null, Shader.TileMode.REPEAT));
+
+
+        rectF = new RectF();
+        rect = new Rect();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (progress != 0)
-            canvas.drawLine(0, 0, progress, 0, paint);
+        //draw text
+        paint.setTextSize(getResources().getDimension(R.dimen.standard_text_size_h4));
+        paint.setColor(getResources().getColor(R.color.colorPrimary));
+
+        float y = getHeight() / 2f + paint.getTextSize() / 2f;
+        canvas.drawText(progress + "%", 0, y, paint);
+
+        if (!TextUtils.isEmpty(text)) {
+            paint.getTextBounds(text, 0, text.length(), rect);
+            canvas.drawText(text, getWidth() / 2 - rect.width() / 2, getHeight() / 2 + rect.height() / 2, paint);
+        }
+
+        // draw  bg,文字宽度为50
+        rectF.left = StringUtils.dip2px(getContext(), 20);
+        rectF.right = getWidth();
+        rectF.bottom = getHeight();
+
+        paint.setColor(getResources().getColor(R.color.standard_color_description));
+        paint.setStrokeWidth(5);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawRoundRect(rectF, 25f, 25f, paint);
+
+        //draw progress
+        rectF.left = StringUtils.dip2px(getContext(), 20) - paint.getStrokeWidth();
+        rectF.right = getWidth() * progress / 100f;
+        rectF.bottom = getHeight();
+
+        paint.setColor(getResources().getColor(R.color.colorPrimary));
+        paint.setStrokeWidth(5);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRoundRect(rectF, 25f, 25f, paint);
+
+
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(int progress, String text) {
         if (progress < 0 || progress > 100)
             throw new IllegalArgumentException("progress must between 0 100");
 
         this.progress = (int) ((progress / 100f) * getWidth());
+        this.text = text;
         invalidate();
     }
 }
