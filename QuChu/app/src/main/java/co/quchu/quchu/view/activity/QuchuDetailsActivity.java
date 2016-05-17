@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -70,6 +72,35 @@ public class QuchuDetailsActivity extends BaseActivity {
     ImageView vFavorite;
     @Bind(R.id.sdvHead)
     SimpleDraweeView sdv;
+
+    @Bind(R.id.ivQuguo)
+    ImageView ivQuguo;
+    @Bind(R.id.rlQuguo)
+    RelativeLayout rlQuguo;
+
+    @Bind(R.id.tvFootPrint)
+    TextView tvFootprint;
+    @Bind(R.id.tvQuguo)
+    TextView tvQuguo;
+
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+//    tvFootprint.setOnClickListener(mOnItemClickListener);
+//    rlQuguo.setOnClickListener(mOnItemClickListener);
+//    ivQuguo.setVisibility(mData.isIsout() ? View.VISIBLE : View.GONE);
+//
+//    if (mData.getCardCount() > 0) {
+//        tvFootprint.setText("脚印 " + mData.getCardCount());
+//    } else {
+//        tvFootprint.setText(R.string.foot_print);
+//    }
+
 
     private long mLastAnimated = -1;
     public static final String REQUEST_KEY_PID = "pid";

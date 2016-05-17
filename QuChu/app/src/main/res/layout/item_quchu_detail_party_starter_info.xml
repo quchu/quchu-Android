@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/half_margin"
     android:orientation="vertical"
+    android:background="@color/standard_color_white"
     android:visibility="gone">
 
     <TextView

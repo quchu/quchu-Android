@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/base_margin"
+    android:background="@color/standard_color_white"
+    android:paddingTop="@dimen/half_margin"
     android:orientation="horizontal">
 
 
@@ -21,7 +22,7 @@
           android:layout_height="60dp"
           app:roundProgressBackground="@color/transparent"
           app:roundProgressColor="@color/colorAccent"
-          app:roundColor = "@color/translucent_white"
+          app:roundColor = "@color/translucent_dark"
           app:roundWidth="4dp"
           app:textSize="@dimen/word_size_body"
           app:textStyle="Num" />
@@ -49,7 +50,7 @@
         android:layout_height="60dp"
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/colorAccent"
-        app:roundColor = "@color/translucent_white"
+        app:roundColor = "@color/translucent_dark"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />
@@ -76,7 +77,7 @@
         android:layout_height="60dp"
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/colorAccent"
-        app:roundColor = "@color/translucent_white"
+        app:roundColor = "@color/translucent_dark"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />

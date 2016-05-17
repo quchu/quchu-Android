@@ -4,6 +4,7 @@
     android:id="@+id/detail_store_business_hours_ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/standard_color_white"
     android:orientation="vertical">
 
     <View
@@ -16,7 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginTop="@dimen/base_margin"
+        android:layout_marginBottom="@dimen/half_margin"
         android:text="营业时间"
         android:textColor="@color/standard_color_h1_dark"
         android:textSize="@dimen/word_size_body" />

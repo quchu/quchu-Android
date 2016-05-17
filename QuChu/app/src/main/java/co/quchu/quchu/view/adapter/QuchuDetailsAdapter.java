@@ -239,16 +239,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             ((ActionViewHolder) holder).detail_button_add_postcard_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).detail_button_collect_rl.setOnClickListener(mOnItemClickListener);
-            ((ActionViewHolder) holder).tvFootprint.setOnClickListener(mOnItemClickListener);
-            ((ActionViewHolder) holder).rlQuguo.setOnClickListener(mOnItemClickListener);
-            ((ActionViewHolder) holder).ivQuguo.setVisibility(mData.isIsout() ? View.VISIBLE : View.GONE);
-
             ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
-            if (mData.getCardCount() > 0) {
-                ((ActionViewHolder) holder).tvFootprint.setText("脚印 " + mData.getCardCount());
-            } else {
-                ((ActionViewHolder) holder).tvFootprint.setText(R.string.foot_print);
-            }
+
             if (null != mVisitedUsers) {
                 if (mVisitedUsers.getUserOutCount() == 0) {
                     ((ActionViewHolder) holder).tvVisitorCount.setText("还没人去过");
@@ -552,15 +544,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LinearLayout llVisitedUsers;
         @Bind(R.id.tvVisitorCount)
         TextView tvVisitorCount;
-        @Bind(R.id.ivQuguo)
-        ImageView ivQuguo;
-        @Bind(R.id.rlQuguo)
-        RelativeLayout rlQuguo;
-
-        @Bind(R.id.tvFootPrint)
-        TextView tvFootprint;
-        @Bind(R.id.tvQuguo)
-        TextView tvQuguo;
 
         ActionViewHolder(View view) {
             super(view);
