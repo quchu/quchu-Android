@@ -36,7 +36,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
 
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
-
     @Bind(R.id.quchu)
     LinearLayout quchu;
     @Bind(R.id.footPrint)
@@ -59,7 +58,8 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     ProgressView progress4;
     @Bind(R.id.findPosition)
     LinearLayout findPosition;
-
+    @Bind(R.id.editOrLogin)
+    TextView editOrLogin;
 
     private MeActivityPresenter presenter;
 
@@ -108,12 +108,22 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     }
 
     private void initListener() {
-        headImage.setOnClickListener(this);
         quchu.setOnClickListener(this);
         footPrint.setOnClickListener(this);
         friend.setOnClickListener(this);
         massage.setOnClickListener(this);
         findPosition.setOnClickListener(this);
+        editOrLogin.setOnClickListener(this);
+
+        if (AppContext.user.isIsVisitors()) {
+            //游客
+            editOrLogin.setText("登陆");
+            editOrLogin.setCompoundDrawables(null, null, null, null);
+        } else {
+            editOrLogin.setText("编辑");
+            editOrLogin.setCompoundDrawables(getResources().getDrawable(R.mipmap.ic_edit_checked), null, null, null);
+        }
+
     }
 
     @Override
@@ -121,16 +131,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         Intent intent;
         UserInfoModel user = AppContext.user;
         switch (v.getId()) {
-            case R.id.headImage:
-                if (user.isIsVisitors()) {
-                    //游客
-                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
-                    dialogFg.show(getSupportFragmentManager(), "");
-                } else {
-                    intent = new Intent(this, AccountSettingActivity.class);
-                    startActivity(intent);
-                }
-                break;
+
             case R.id.quchu://趣处
                 intent = new Intent(this, QuchuActivity.class);
                 startActivity(intent);
@@ -171,6 +172,15 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 break;
             case R.id.toolbar_iv_right:
                 MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "menu_setting");
+                break;
+            case R.id.editOrLogin:
+                if (user.isIsVisitors()) {
+                    intent = new Intent(this, UserLoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    intent = new Intent(this, AccountSettingActivity.class);
+                    startActivity(intent);
+                }
                 break;
         }
 

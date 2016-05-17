@@ -21,7 +21,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.BindPhoneNumDialog;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
@@ -76,8 +76,12 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bind_phone:
-                BindPhoneNumDialog dialog = BindPhoneNumDialog.newInstance();
-                dialog.show(getSupportFragmentManager(), "");
+//                BindPhoneNumDialog dialog = BindPhoneNumDialog.newInstance();
+//                dialog.show(getSupportFragmentManager(), "");
+
+                CommonDialog commonDialog = CommonDialog.newInstance("合并", "是否合并", "确定", "取消", "什么事合并");
+                commonDialog.show(getSupportFragmentManager(), "");
+
                 break;
             case R.id.bind_wecha:
                 if (AppContext.user.isIsweixin()) {

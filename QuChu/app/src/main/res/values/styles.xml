@@ -34,7 +34,13 @@
     <style name="VerticalLine">
         <item name="android:layout_width">@dimen/line_thickness</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/lineBackground_gray</item>
+        <item name="android:background">@color/line</item>
+    </style>
+    <!-- 横向分隔线 -->
+    <style name="HorizontalLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_thickness</item>
+        <item name="android:background">@color/line</item>
     </style>
 
     <style name="DetailVerticalLine">
@@ -42,12 +48,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/detail_line_color</item>
     </style>
-    <!-- 横向分隔线 -->
-    <style name="HorizontalLine">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/line_thickness</item>
-        <item name="android:background">@color/lineBackground_gray</item>
-    </style>
+
 
     <style name="DetailHorizontalLine">
         <item name="android:layout_width">match_parent</item>

@@ -121,7 +121,7 @@ public interface NetApi {
     String register = HOST + "/mregister/official";
     String midiff_password = HOST + "/personal/postUserPassword";//单独修改密码
     String isUnique = HOST + "/mregister/isUnique";//用户名存在
-    String autoCodeIsCorrect = HOST + "/public/verifyCodeIsCorrect";
+    String autoCodeIsCorrect = HOST + "/utils/verifyCodeIsCorrect";
     String bindPassword = HOST + "/personal/bindSalt";
 
 
