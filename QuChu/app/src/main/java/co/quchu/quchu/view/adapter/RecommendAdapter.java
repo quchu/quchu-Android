@@ -58,7 +58,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     @Override
     public void onBindViewHolder(RecommendAdapter.RecommendHolder holder, int position) {
         RecommendModel model = dataSet.get(position);
-        holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (model.isIsActivity()) {
             holder.item_place_event_tv.setVisibility(View.VISIBLE);

@@ -159,7 +159,9 @@ public class DetailModel implements Serializable{
         }else{
             tags.clear();
         }
-        tags.addAll(objTarget.getTags());
+        if (null!=objTarget.getTags()){
+            tags.addAll(objTarget.getTags());
+        }
 
 
         if (null==recommendPlaces){

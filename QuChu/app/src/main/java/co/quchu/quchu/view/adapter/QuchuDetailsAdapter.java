@@ -74,11 +74,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     protected static final int VIEW_TYPES[] = new int[]{
             LAYOUT_TYPE_INTRO_IMAGE,
-            LAYOUT_TYPE_ACTIONBAR,
             //LAYOUT_TYPE_SIMPLE_INFO,
-            LAYOUT_TYPE_RATING_INFO,
             LAYOUT_TYPE_CONTACT_INFO,
             LAYOUT_TYPE_OPENING_INFO,
+            LAYOUT_TYPE_RATING_INFO,
+            LAYOUT_TYPE_ACTIONBAR,
             LAYOUT_TYPE_ADDITIONAL_INFO,
             LAYOUT_TYPE_BLANK,
             LAYOUT_TYPE_BLANK,
@@ -89,12 +89,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     protected static final int VIEW_TYPES_PARTY[] = new int[]{
             LAYOUT_TYPE_INTRO_IMAGE,
-            LAYOUT_TYPE_ACTIONBAR,
             //LAYOUT_TYPE_SIMPLE_INFO,
-            LAYOUT_TYPE_RATING_INFO,
-            LAYOUT_TYPE_BLANK,
             LAYOUT_TYPE_CONTACT_INFO,
             LAYOUT_TYPE_OPENING_INFO,
+            LAYOUT_TYPE_RATING_INFO,
+            LAYOUT_TYPE_ACTIONBAR,
+            LAYOUT_TYPE_BLANK,
             LAYOUT_TYPE_PARTY_STARTER_INFO,
             LAYOUT_TYPE_PARTY_INFO,
             LAYOUT_TYPE_IMAGE,

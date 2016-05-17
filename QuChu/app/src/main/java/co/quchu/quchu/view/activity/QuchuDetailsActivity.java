@@ -220,7 +220,9 @@ public class QuchuDetailsActivity extends BaseActivity {
                 InterestingDetailPresenter.getInterestingData(this, pId, new InterestingDetailPresenter.getDetailDataListener() {
                     @Override
                     public void getDetailData(DetailModel model) {
-                        sdv.setImageURI(Uri.parse(model.getCover()));
+                        if (!StringUtils.isEmpty(model.getCover())){
+                            sdv.setImageURI(Uri.parse(model.getCover()));
+                        }
                         bindingDetailData(model);
                         DialogUtil.dismissProgess();
                     }

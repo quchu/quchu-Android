@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         card_view:placeholderImage="@mipmap/ic_image_empty"
         card_view:failureImage="@mipmap/ic_image_empty"
-        card_view:failureImageScaleType="focusCrop"
         card_view:actualImageScaleType="focusCrop"
-        card_view:placeholderImageScaleType="focusCrop"/>
+        card_view:failureImageScaleType="centerInside"
+        card_view:placeholderImageScaleType="centerInside"/>
 </LinearLayout>
