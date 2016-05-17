@@ -45,7 +45,7 @@
                 android:paddingRight="@dimen/quarter_margin"
                 android:paddingTop="@dimen/tow_dp_margin"
                 android:text="编辑头像"
-                android:textColor="@color/standard_color_content"
+                android:textColor="@color/standard_color_h2_dark"
                 android:textSize="@dimen/word_size_body" />
 
             <View

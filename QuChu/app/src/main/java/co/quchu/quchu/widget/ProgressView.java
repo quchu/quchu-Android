@@ -69,7 +69,7 @@ public class ProgressView extends View {
         rectF.right = getWidth();
         rectF.bottom = getHeight();
 
-        paint.setColor(getResources().getColor(R.color.standard_color_description));
+        paint.setColor(getResources().getColor(R.color.standard_color_h3_dark));
         paint.setStrokeWidth(3);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);

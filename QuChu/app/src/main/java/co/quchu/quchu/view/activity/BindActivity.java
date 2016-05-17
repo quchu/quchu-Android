@@ -64,7 +64,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         bindPhone.setOnClickListener(this);
         if (AppContext.user.isIsweixin()) {
             bindWecha.setText("取消绑定我的微信");
-            bindWecha.setBackgroundColor(getResources().getColor(R.color.standard_color_content));
+            bindWecha.setBackgroundColor(getResources().getColor(R.color.standard_color_h2_dark));
 
         }
         if (AppContext.user.isIsweibo()) {

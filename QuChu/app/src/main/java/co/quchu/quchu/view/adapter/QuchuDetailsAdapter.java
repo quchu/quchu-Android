@@ -5,7 +5,6 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -30,7 +29,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedUsersModel;
@@ -204,28 +202,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return;
         }
         if (holder instanceof IntroImageViewHolder) {
-            if (null != mData.getImglist()) {
-                List<ImageModel> imageSet = new ArrayList<>();
-                for (int i = 0; i < mData.getImglist().size() && i <= 3; i++) {
-                    imageSet.add(mData.getImglist().get(i).convert2ImageModel());
-                }
-                ((IntroImageViewHolder) holder).vpGallery.setVisibility(View.GONE);
-                ((IntroImageViewHolder) holder).vpGallery.setAdapter(new GalleryAdapter(imageSet, ((IntroImageViewHolder) holder).vpGallery.getContext()));
-                final int size = imageSet.size();
-                ((IntroImageViewHolder) holder).tvGalleryIndicator.setText(1 + " of " + size);
-                ((IntroImageViewHolder) holder).vpGallery.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-                    @Override
-                    public void onPageSelected(int position) {
-                        ((IntroImageViewHolder) holder).tvGalleryIndicator.setText(position + 1 + " of " + size);
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {}
-                });
-            }
 
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
             ((IntroImageViewHolder) holder).detail_suggest_prb.setRating(mData.getSuggest());
@@ -347,7 +323,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 StringBuffer phoneHtml = new StringBuffer();
                 while (token.hasMoreTokens()) {
                     String phoneNum = token.nextToken();
-                    phoneHtml.append("<font color=#ffffff><a href='tel:").append(phoneNum).append("'>").append(phoneNum).append("</a> </font>  ");
+                    phoneHtml.append("<font color=#"+Integer.toHexString(((ContactInfoViewHolder) holder).detail_store_address_tv.getResources().getColor(R.color.standard_color_h2_dark)& 0x00ffffff)+"><a href='tel:").append(phoneNum).append("'>").append(phoneNum).append("</a> </font>  ");
                 }
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：");
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.append(Html.fromHtml(phoneHtml.toString()));
@@ -548,10 +524,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ProperRatingBar detail_suggest_prb;
         @Bind(R.id.detail_avg_price_tv)
         TextView detail_avg_price_tv;
-        @Bind(R.id.vpGallery)
-        ViewPager vpGallery;
-        @Bind(R.id.tvGalleryIndicator)
-        TextView tvGalleryIndicator;
 
         @Bind(R.id.recommend_tag1)
         TextView tag1;

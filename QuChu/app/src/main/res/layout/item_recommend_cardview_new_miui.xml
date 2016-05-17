@@ -114,7 +114,7 @@
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
                 android:layout_marginTop="@dimen/half_margin"
-                android:background="@color/standard_color_description" />
+                android:background="@color/standard_color_h3_dark" />
 
             <TextView
                 android:id="@+id/name"

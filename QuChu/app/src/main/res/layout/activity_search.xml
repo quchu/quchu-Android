@@ -139,7 +139,7 @@
                     android:layout_marginLeft="@dimen/base_margin"
                     android:layout_marginTop="@dimen/base_margin"
                     android:text="历史记录"
-                    android:textColor="@color/standard_color_content"
+                    android:textColor="@color/standard_color_h2_dark"
                     android:textSize="@dimen/word_subhead_size" />
 
                 <android.support.v7.widget.RecyclerView

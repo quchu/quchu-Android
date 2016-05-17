@@ -13,8 +13,8 @@
     <color name="standard_color_red">#ff231f</color>
     <color name="standard_color_yellow">#ffd300</color>
     <color name="standard_color_h1_dark">#333333</color>
-    <color name="standard_color_content">#666666</color>
-    <color name="standard_color_description">#999999</color>
+    <color name="standard_color_h2_dark">#666666</color>
+    <color name="standard_color_h3_dark">#999999</color>
     <color name="tagTextColor">#fff</color>
     <!--分割线颜色-->
     <color name="line">#AAAAAA</color>

@@ -7,6 +7,7 @@ import android.view.View;
 
 /**
  * Created by Nico on 16/4/15.
+ * 自适应大小Viewpager
  */
 public class WrapContentViewPager extends ViewPager {
     public WrapContentViewPager(Context context) {

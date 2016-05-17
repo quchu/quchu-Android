@@ -25,14 +25,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/standard_color_content"
+                android:textColor="@color/standard_color_h2_dark"
                 android:src="@mipmap/ic_share_weibo" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/quarter_margin"
-                android:textColor="@color/standard_color_content"
+                android:textColor="@color/standard_color_h2_dark"
                 android:text="微博登陆" />
         </LinearLayout>
 
@@ -102,7 +102,7 @@
 
     <TextView
         android:id="@+id/tvForgottenPassword"
-        android:textColor="@color/standard_color_description"
+        android:textColor="@color/standard_color_h3_dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
