@@ -28,64 +28,16 @@
             />
 
         <TextView
+            android:layout_below="@+id/llVisitedUsers"
             android:id="@+id/tvVisitorCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_10"
             android:textColor="@color/standard_color_h1_dark"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/detail_button_collect_rl"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/detail_button_collect_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/ic_detail_uncollect" />
-        </RelativeLayout>
-
-
-
-
-        <RelativeLayout
-            android:id="@+id/detail_button_share_rl"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/ic_detail_share" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/detail_button_add_postcard_rl"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/ic_detail_add_postcard" />
-        </RelativeLayout>
-    </RelativeLayout>
 
     <View
         android:layout_marginLeft="0dp"

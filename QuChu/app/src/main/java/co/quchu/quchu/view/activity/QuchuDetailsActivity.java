@@ -87,10 +87,6 @@ public class QuchuDetailsActivity extends BaseActivity {
     //TODO
     //TODO
     //TODO
-    //TODO
-    //TODO
-    //TODO
-    //TODO
 //    tvFootprint.setOnClickListener(mOnItemClickListener);
 //    rlQuguo.setOnClickListener(mOnItemClickListener);
 //    ivQuguo.setVisibility(mData.isIsout() ? View.VISIBLE : View.GONE);
@@ -479,13 +475,13 @@ public class QuchuDetailsActivity extends BaseActivity {
                     startActivity(footPrintIntent);
                     break;
 
-                case R.id.detail_button_add_postcard_rl:
-                    Intent intent = new Intent();
-                    intent.putExtra("pId", dModel.getPid());
-                    //intent.putExtra("pName", dModel.getName());
-                    intent.setClass(this, FootPrintActivity.class);
-                    startActivity(intent);
-                    break;
+//                case R.id.detail_button_add_postcard_rl:
+//                    Intent intent = new Intent();
+//                    intent.putExtra("pId", dModel.getPid());
+//                    //intent.putExtra("pName", dModel.getName());
+//                    intent.setClass(this, FootPrintActivity.class);
+//                    startActivity(intent);
+//                    break;
                 case R.id.ivFavorite:
                     //收藏
                     setFavorite();

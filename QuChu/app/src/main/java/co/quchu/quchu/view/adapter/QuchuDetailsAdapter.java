@@ -204,9 +204,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof IntroImageViewHolder) {
 
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
-            ((IntroImageViewHolder) holder).detail_suggest_prb.setRating(mData.getSuggest());
+
+            ((IntroImageViewHolder) holder).linearLayout.removeAllViews();
+            for (int i = 0; i < (int)mData.getSuggest(); i++) {
+                ImageView imageView = new ImageView(((IntroImageViewHolder) holder).linearLayout.getContext());
+                imageView.setImageResource(R.mipmap.ic_ratingbar_heart);
+                ((IntroImageViewHolder) holder).linearLayout.addView(imageView);
+            }
+
             if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.setText(String.format(mAnchorActivity.getResources().getString(mData.isIsActivity() ? R.string.detail_price_hint_text_activity : R.string.detail_price_hint_text), mData.getPrice()));
+                ((IntroImageViewHolder) holder).detail_avg_price_tv.setText(StringUtils.getColorSpan(((IntroImageViewHolder) holder).detail_avg_price_tv.getContext(),R.color.standard_color_red,"人均消费",mData.getPrice(),""));
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
             } else {
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.INVISIBLE);
@@ -237,15 +244,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else if (holder instanceof ActionViewHolder) {
 
-            ((ActionViewHolder) holder).detail_button_add_postcard_rl.setOnClickListener(mOnItemClickListener);
-            ((ActionViewHolder) holder).detail_button_collect_rl.setOnClickListener(mOnItemClickListener);
             ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
 
             if (null != mVisitedUsers) {
                 if (mVisitedUsers.getUserOutCount() == 0) {
                     ((ActionViewHolder) holder).tvVisitorCount.setText("还没人去过");
                 } else {
-                    ((ActionViewHolder) holder).tvVisitorCount.setText(mVisitedUsers.getUserOutCount() + "人去过");
+                    ((ActionViewHolder) holder).tvVisitorCount.setText(StringUtils.getColorSpan(((ActionViewHolder) holder).llVisitedUsers.getContext(),R.color.standard_color_red,"有",String.valueOf(mVisitedUsers.getUserOutCount()),"人去过这里"));
                 }
                 LinearLayout.LayoutParams lpVisitedUsersAvatar;
                 //ic_care_friends_avatar
@@ -511,8 +516,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class IntroImageViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.detail_store_name_tv)
         TextView detail_store_name_tv;
-        @Bind(R.id.detail_suggest_prb)
-        ProperRatingBar detail_suggest_prb;
+        @Bind(R.id.llRating)
+        LinearLayout linearLayout;
         @Bind(R.id.detail_avg_price_tv)
         TextView detail_avg_price_tv;
 
@@ -532,13 +537,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class ActionViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.detail_button_group_ll)
         LinearLayout detail_button_group_ll;
-        @Bind(R.id.detail_button_collect_rl)
-        RelativeLayout detail_button_collect_rl;
-        @Bind(R.id.detail_button_collect_iv)
-        ImageView detail_button_collect_iv;
-        @Bind(R.id.detail_button_share_rl)
-        RelativeLayout detail_button_share_rl;
-        @Bind(R.id.detail_button_add_postcard_rl)
         RelativeLayout detail_button_add_postcard_rl;
         @Bind(R.id.llVisitedUsers)
         LinearLayout llVisitedUsers;
