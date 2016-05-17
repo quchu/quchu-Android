@@ -33,6 +33,9 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
     @Bind(R.id.subButton)
     TextView subButton;
 
+    public static final int CLICK_ID_PASSIVE = 1;
+    public static final int CLICK_ID_ACTIVE = 2;
+    public static final int CLICK_ID_SUBBUTTON = 3;
 
     private OnActionListener listener;
 
@@ -120,29 +123,34 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-
         if (listener == null)
             return;
+        boolean result = false;
+
 
         switch (v.getId()) {
             case R.id.passive:
-                listener.passiveClick(OnActionListener.CLICK_ID_PASSIVE);
+                result = listener.passiveClick(CLICK_ID_PASSIVE);
                 break;
             case R.id.active:
-                listener.passiveClick(OnActionListener.CLICK_ID_ACTIVE);
+                result = listener.passiveClick(CLICK_ID_ACTIVE);
                 break;
             case R.id.subButton:
-                listener.passiveClick(OnActionListener.CLICK_ID_SUBBUTTON);
+                result = listener.passiveClick(CLICK_ID_SUBBUTTON);
+        }
+        if (result) {
+            dismiss();
         }
     }
 
 
     public interface OnActionListener {
-        int CLICK_ID_PASSIVE = 1;
-        int CLICK_ID_ACTIVE = 2;
-        int CLICK_ID_SUBBUTTON = 3;
 
-        void passiveClick(int id);
+        /**
+         * @param clickId 按钮类型
+         * @return true 父类处理关闭事件
+         */
+        boolean passiveClick(int clickId);
     }
 
 }

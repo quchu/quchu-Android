@@ -21,8 +21,8 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.BindPhoneNumDialog;
 import co.quchu.quchu.dialog.CommonDialog;
-import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
@@ -76,12 +76,8 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bind_phone:
-//                BindPhoneNumDialog dialog = BindPhoneNumDialog.newInstance();
-//                dialog.show(getSupportFragmentManager(), "");
-
-                CommonDialog commonDialog = CommonDialog.newInstance("合并", "是否合并", "确定", "取消", "什么事合并");
-                commonDialog.show(getSupportFragmentManager(), "");
-
+                BindPhoneNumDialog dialog = BindPhoneNumDialog.newInstance();
+                dialog.show(getSupportFragmentManager(), "");
                 break;
             case R.id.bind_wecha:
                 if (AppContext.user.isIsweixin()) {
@@ -130,43 +126,54 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
     }
 
     private void merger(final int type, final String token, final String appId) {
-
-
-        final ConfirmDialogFg dialogFg = ConfirmDialogFg.newInstance("合并数据", "是否将两个账号数据合并");
-        dialogFg.setCancelable(false);
-        dialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+        CommonDialog commonDialog = CommonDialog.newInstance("注意", "该账号已被使用,是否将此账号与当前账号进行合并,合并后不影响使用", "确定", "取消", "什么是账号合并");
+        commonDialog.setListener(new CommonDialog.OnActionListener() {
             @Override
-            public void onClick(int index) {
-                dialogFg.dismiss();
-                if (index == 1) {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("open_type", type + "");
-                    params.put("open_token", token);
-                    params.put("open_id", appId);
-                    params.put("token", SPUtils.getUserToken(BindActivity.this));
+            public boolean passiveClick(int id) {
+                switch (id) {
+                    case CommonDialog.CLICK_ID_ACTIVE:
+                        Map<String, String> params = new HashMap<>();
+                        params.put("open_type", type + "");
+                        params.put("open_token", token);
+                        params.put("open_id", appId);
+                        params.put("token", SPUtils.getUserToken(BindActivity.this));
 
-                    LogUtils.e("open_type:" + type + "open_token:" + token + "open_id:" + appId);
+                        LogUtils.e("open_type:" + type + "open_token:" + token + "open_id:" + appId);
 
-                    GsonRequest request = new GsonRequest<>(Request.Method.POST, NetApi.accoundMerger, params, UserInfoModel.class, new ResponseListener<UserInfoModel>() {
-                        @Override
-                        public void onErrorResponse(@Nullable VolleyError error) {
-                            Toast.makeText(BindActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                        }
+                        GsonRequest request = new GsonRequest<>(Request.Method.POST, NetApi.accoundMerger, params, UserInfoModel.class, new ResponseListener<UserInfoModel>() {
+                            @Override
+                            public void onErrorResponse(@Nullable VolleyError error) {
+                                Toast.makeText(BindActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                            }
 
-                        @Override
-                        public void onResponse(UserInfoModel response, boolean result, @Nullable String exception, @Nullable String msg) {
-                            Toast.makeText(BindActivity.this, "合并成功", Toast.LENGTH_SHORT).show();
-                            UserInfoHelper.saveUserInfo(response);
-                            //数据不变 暂时不刷新
+                            @Override
+                            public void onResponse(UserInfoModel response, boolean result, @Nullable String exception, @Nullable String msg) {
+                                Toast.makeText(BindActivity.this, "合并成功", Toast.LENGTH_SHORT).show();
+                                UserInfoHelper.saveUserInfo(response);
+                                //数据不变 暂时不刷新
 //                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATA, response));
-                        }
-                    });
-                    request.start(AppContext.mContext, null);
+                            }
+                        });
+                        request.start(AppContext.mContext, null);
+                        break;
+                    case CommonDialog.CLICK_ID_SUBBUTTON:
+                        Intent intent = new Intent(BindActivity.this, StatementActivity.class);
+                        intent.putExtra(StatementActivity.REQUEST_KEY_TITLE, "什么是账号合并");
+                        intent.putExtra(StatementActivity.REQUEST_KEY_CONTENT, "账号合并是将用户已经绑定的第三方账号与当前帐号的数据进行合并，合并后允许用户使用多种方式登录，个人信息和行为会被融合，例如收藏，点赞，发表的脚印等，合并后趣处将为用户更全面的推荐内容。\n" +
+                                "账号合并的目的：由于人工智能算法是针对用户行为进行分析的，所以每个账号都记录了用户的行为数据，趣处认为如果用户曾经使用其他账号登录过并留下行为数据，那些数据应当被视为用户行为的一个重要组成部分被保存，所以在工程师的努力下，我们有幸能将自己的特长转化为你的愉悦体验，并将为此一直努力下去。\n" +
+                                "\n" +
+                                "\n" +
+                                "\n" +
+                                "——趣处人工智能实验室");
+                        startActivity(intent);
+                        return false;
+
                 }
+                return true;
             }
         });
-        dialogFg.show(getSupportFragmentManager(), null);
-
+        commonDialog.setCancelable(false);
+        commonDialog.show(getSupportFragmentManager(), "");
 
     }
 

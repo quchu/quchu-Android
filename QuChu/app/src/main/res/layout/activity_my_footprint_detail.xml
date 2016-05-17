@@ -107,7 +107,7 @@
             android:layout_width="0dp"
             android:layout_height="18dp"
             android:layout_weight="1"
-            android:src="@mipmap/ic_edit"/>
+            android:src="@mipmap/ic_edit_small"/>
 
         <!--<View-->
         <!--android:layout_width="1dp"-->

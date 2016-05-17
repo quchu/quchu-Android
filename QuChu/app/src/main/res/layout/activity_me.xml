@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/line"
+    android:background="@color/bg_pager"
     tools:context="co.quchu.quchu.view.activity.MeActivity">
 
 
@@ -25,23 +25,37 @@
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/double_margin"
-            android:padding="3dp"
+            fresco:placeholderImage="@mipmap/avatar_2"
             fresco:roundAsCircle="true" />
 
-        <Button
-            android:id="@+id/editOrLogin"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_alignTop="@id/headImage"
             android:layout_marginLeft="@dimen/double_margin"
             android:layout_marginStart="@dimen/double_margin"
             android:layout_toEndOf="@id/headImage"
             android:layout_toRightOf="@id/headImage"
             android:background="@drawable/tag_background"
-            android:drawableLeft="@mipmap/ic_edit_checked"
-            android:drawableStart="@mipmap/ic_edit_checked"
-            android:text="登陆"
-            android:textColor="@color/standard_color_content" />
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin">
+
+            <ImageView
+                android:id="@+id/editIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_edit_small" />
+
+            <TextView
+                android:id="@+id/editOrLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="登陆"
+                android:textColor="@color/standard_color_content" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/name"
@@ -52,7 +66,7 @@
             android:layout_marginTop="@dimen/half_margin"
             android:singleLine="true"
             android:text="我的手_做不到"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/standard_color_content" />
 
         <Button
             android:id="@+id/tvUserNickName"
@@ -76,28 +90,34 @@
         android:orientation="vertical"
         android:padding="@dimen/base_margin">
 
-        <co.quchu.quchu.widget.ProgressView
+        <co.quchu.quchu.widget.LinearProgressView
             android:id="@+id/progress1"
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
-        <co.quchu.quchu.widget.ProgressView
+        <co.quchu.quchu.widget.LinearProgressView
             android:id="@+id/progress2"
             android:layout_width="match_parent"
             android:layout_height="16dp"
             android:layout_marginTop="@dimen/half_margin" />
 
-        <co.quchu.quchu.widget.ProgressView
+        <co.quchu.quchu.widget.LinearProgressView
             android:id="@+id/progress3"
             android:layout_width="match_parent"
             android:layout_height="16dp"
             android:layout_marginTop="@dimen/half_margin" />
 
-        <co.quchu.quchu.widget.ProgressView
+        <co.quchu.quchu.widget.LinearProgressView
             android:id="@+id/progress4"
             android:layout_width="match_parent"
             android:layout_height="16dp"
             android:layout_marginTop="@dimen/half_margin" />
+
+        <co.quchu.quchu.widget.RoundProgressViewNew
+            android:layout_width="40dp"
+            android:layout_marginTop="@dimen/base_margin"
+            android:layout_height="40dp" />
+
     </LinearLayout>
 
 

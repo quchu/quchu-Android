@@ -80,7 +80,7 @@
             android:label="@string/picking_quchu"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.AboutUsActivity"
+            android:name=".view.activity.StatementActivity"
             android:label="@string/titlebar_word_about_us"
             android:screenOrientation="portrait" />
         <activity
@@ -123,7 +123,6 @@
         <activity
             android:name=".view.activity.UserLoginActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -218,9 +217,9 @@
             android:name=".view.activity.BindPhotoNumActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.WhatIsActivity" />
-        <activity android:name=".view.activity.LoginActivity"
-            android:windowSoftInputMode="adjustResize"
-            ></activity>
+        <activity
+            android:name=".view.activity.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

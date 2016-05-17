@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -10,229 +10,41 @@
         android:id="@+id/appbar"
         layout="@layout/cp_enhanced_toolbar" />
 
-    <ScrollView
-        android:id="@+id/scroll"
+
+    <RelativeLayout
+        android:id="@+id/headContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/appbar">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appbar"
+        android:background="@color/standard_color_white"
+        android:paddingBottom="@dimen/half_margin">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/headView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/double_margin"
+            fresco:actualImageScaleType="focusCrop"
+            fresco:placeholderImage="@mipmap/avatar_2"
+            fresco:roundAsCircle="true" />
 
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/headView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/double_margin"
-                card_view:actualImageScaleType="focusCrop"
-                card_view:roundAsCircle="true" />
-            <!--card_view:roundingBorderWidth="3dp" -->
-            <!--card_view:roundingBorderColor="@android:color/black"-->
-
-            <TextView
-                android:id="@+id/editHeadImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/headView"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/quarter_margin"
-                android:background="@drawable/tag_background"
-                android:paddingBottom="@dimen/tow_dp_margin"
-                android:paddingLeft="@dimen/quarter_margin"
-                android:paddingRight="@dimen/quarter_margin"
-                android:paddingTop="@dimen/tow_dp_margin"
-                android:text="编辑头像"
-                android:textColor="@color/standard_color_content"
-                android:textSize="@dimen/word_size_body" />
-
-            <View
-                android:id="@+id/lineHead"
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:layout_below="@id/editHeadImage"
-                android:layout_marginTop="@dimen/base_margin"
-                android:background="@color/line" />
-
-            <LinearLayout
-                android:id="@+id/container_as"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/lineHead"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="昵称" />
-
-
-                    <EditText
-                        android:id="@+id/nickname"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@null"
-                        android:ellipsize="end"
-                        android:gravity="right|center_vertical"
-                        android:hint="用户名"
-                        android:singleLine="true"
-                        android:textColor="@color/account_setting_text_hint_color"
-                        android:textColorHint="@color/account_setting_text_hint_color"
-                        android:textSize="@dimen/word_size_body" />
-
-                </LinearLayout>
-
-                <View style="@style/HorizontalLine" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="性别" />
-
-                    <RadioGroup
-                        android:id="@+id/radioGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        android:gravity="right|center_vertical"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/man"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="男" />
-
-                        <RadioButton
-                            android:id="@+id/girl"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="女" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <View style="@style/HorizontalLine" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="账号" />
-
-
-                    <TextView
-                        android:id="@+id/photoNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:drawableRight="@mipmap/ic_pull_menus_add"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical|right"
-                        android:maxLines="1"
-                        android:text="4234123432"
-                        android:textColor="@color/account_setting_text_hint_color"
-                        android:textSize="@dimen/word_size_body" />
-
-                </LinearLayout>
-
-                <View style="@style/HorizontalLine" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="所在城市" />
-
-
-                    <TextView
-                        android:id="@+id/location"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/half_margin"
-                        android:layout_marginTop="@dimen/half_margin"
-                        android:drawableRight="@mipmap/ic_account_setting_location_icon"
-                        android:ellipsize="end"
-                        android:gravity="right|center_vertical"
-                        android:singleLine="true"
-                        android:text="厦门"
-                        android:textSize="@dimen/word_size_body" />
-
-                </LinearLayout>
-
-                <View style="@style/HorizontalLine" />
-
-                <LinearLayout
-                    android:id="@+id/bindAccound"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="绑定社交账号" />
-
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <View style="@style/HorizontalLine" />
-
-                <LinearLayout
-                    android:id="@+id/modiffPass"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="修改密码" />
-
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <View style="@style/HorizontalLine" />
-
-            </LinearLayout>
-        </RelativeLayout>
-    </ScrollView>
-
+        <TextView
+            android:id="@+id/editHeadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/headView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/quarter_margin"
+            android:background="@drawable/tag_background"
+            android:paddingBottom="@dimen/tow_dp_margin"
+            android:paddingLeft="@dimen/quarter_margin"
+            android:paddingRight="@dimen/quarter_margin"
+            android:paddingTop="@dimen/tow_dp_margin"
+            android:text="编辑头像"
+            android:textColor="@color/standard_color_content"
+            android:textSize="@dimen/word_size_body" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/saveUserInfo"
@@ -243,12 +55,204 @@
         android:gravity="center"
         android:text="保存以上修改" />
 
-    <View
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/saveUserInfo"
-        android:layout_below="@id/scroll"
-        android:layout_marginTop="@dimen/base_margin"
-        android:background="@color/line" />
+        android:layout_below="@id/headContainer"
+        android:background="@color/bg_pager"
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/base_margin"
+        android:scrollbars="none">
+
+
+        <LinearLayout
+            android:id="@+id/container_as"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/standard_color_white"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="昵称" />
+
+
+                <EditText
+                    android:id="@+id/nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="right|center_vertical"
+                    android:hint="用户名"
+                    android:singleLine="true"
+                    android:textColor="@color/account_setting_text_hint_color"
+                    android:textColorHint="@color/account_setting_text_hint_color"
+                    android:textSize="@dimen/word_size_body" />
+
+            </LinearLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="性别" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/man"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_edit_small" />
+
+                    <RadioButton
+                        android:id="@+id/girl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_edit_small" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="账号" />
+
+
+                <TextView
+                    android:id="@+id/photoNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableRight="@mipmap/ic_pull_menus_add"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical|right"
+                    android:maxLines="1"
+                    android:text="4234123432"
+                    android:textColor="@color/account_setting_text_hint_color"
+                    android:textSize="@dimen/word_size_body" />
+
+            </LinearLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="所在城市" />
+
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableRight="@mipmap/ic_account_setting_location_icon"
+                    android:ellipsize="end"
+                    android:gravity="right|center_vertical"
+                    android:singleLine="true"
+                    android:text="厦门"
+                    android:textSize="@dimen/word_size_body" />
+
+            </LinearLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <RelativeLayout
+                android:id="@+id/bindAccound"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:text="绑定社交账号" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_go_right" />
+
+            </RelativeLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <RelativeLayout
+                android:id="@+id/modiffPass"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:text="修改密码" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_go_right" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </RelativeLayout>

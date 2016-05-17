@@ -2,10 +2,13 @@ package co.quchu.quchu.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,32 +22,39 @@ import co.quchu.quchu.utils.StringUtils;
  * email:437943145@qq.com
  * desc :颜色渐变进度条的View
  */
-public class ProgressView extends View {
+public class LinearProgressView extends View {
 
     private Paint paint;
     private int progress;
     private RectF rectF;
     private String text;
     private Rect rect;
+    private LinearGradient linearGradient;
+    private int[][] colors;
 
-    public ProgressView(Context context) {
+    public LinearProgressView(Context context) {
         this(context, null);
     }
 
-    public ProgressView(Context context, AttributeSet attrs) {
+    public LinearProgressView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ProgressView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LinearProgressView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     private void init() {
         paint = new Paint();
-//        new float[]{0, 0.3f, 0.8f}
-//        paint.setShader(new LinearGradient(0, 0, 2, 2, new int[]{Color.RED, Color.BLACK, Color.GRAY}, null, Shader.TileMode.REPEAT));
+        Resources resources = getResources();
 
+
+        int[] color = new int[]{resources.getColor(R.color.progress1), resources.getColor(R.color.progress1), resources.getColor(R.color.progress1)};
+        int[] color1 = new int[]{resources.getColor(R.color.progress4), resources.getColor(R.color.progress5), resources.getColor(R.color.progress6)};
+        int[] color2 = new int[]{resources.getColor(R.color.progress7), resources.getColor(R.color.progress8), resources.getColor(R.color.progress9)};
+        int[] color3 = new int[]{resources.getColor(R.color.progress10), resources.getColor(R.color.progress11), resources.getColor(R.color.progress12)};
+        colors = new int[][]{color, color1, color2, color3};
 
         rectF = new RectF();
         rect = new Rect();
@@ -52,9 +62,14 @@ public class ProgressView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        float radio = getHeight() / 2;
+
+        paint.reset();
+
+
         //draw text
         paint.setTextSize(getResources().getDimension(R.dimen.standard_text_size_h4));
-        paint.setColor(getResources().getColor(R.color.colorPrimary));
+        paint.setColor(colors[position][0]);
 
         float y = getHeight() / 2f + paint.getTextSize() / 2f;
         canvas.drawText(progress + "%", 0, y, paint);
@@ -64,42 +79,50 @@ public class ProgressView extends View {
             canvas.drawText(text, getWidth() / 2 - rect.width() / 2, getHeight() / 2 + rect.height() / 2, paint);
         }
 
+        paint.setStrokeWidth(3);
         // draw  bg,文字宽度为50
         rectF.left = StringUtils.dip2px(getContext(), 30);
-        rectF.right = getWidth();
+        rectF.right = getWidth() - paint.getStrokeWidth();
         rectF.bottom = getHeight();
 
         paint.setColor(getResources().getColor(R.color.standard_color_description));
-        paint.setStrokeWidth(3);
+
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
-        canvas.drawRoundRect(rectF, 25f, 25f, paint);
+        canvas.drawRoundRect(rectF, radio, radio, paint);
 
         //draw progress
         rectF.left = StringUtils.dip2px(getContext(), 30) - paint.getStrokeWidth();
-        rectF.right = (getWidth() - rectF.left) * progress / 100f;
+        rectF.right = getWidth() * progress / 100f;
         rectF.bottom = getHeight();
 
-        paint.setColor(getResources().getColor(R.color.colorPrimary));
+        paint.setShader(linearGradient);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawRoundRect(rectF, 25f, 25f, paint);
+        canvas.drawRoundRect(rectF, radio, radio, paint);
 
 
     }
 
-    public void setProgress(int progress, String text) {
+    int position;
+
+    public void setProgress(int progress, String text, int position) {
+
+
         if (progress < 0 || progress > 100)
             throw new IllegalArgumentException("progress must between 0 100");
 
+        this.position = position;
         this.text = text;
-        ValueAnimator animator = ValueAnimator.ofInt(0, progress);
+        linearGradient = new LinearGradient(0, 0, getWidth() - StringUtils.dip2px(getContext(), 30) - paint.getStrokeWidth(), 0, colors[position], null, Shader.TileMode.MIRROR);
+
+        ValueAnimator animator = ValueAnimator.ofInt(0, 100);
         animator.setDuration(800);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-        ProgressView.this.progress = (int) animation.getAnimatedValue();
+                LinearProgressView.this.progress = (int) animation.getAnimatedValue();
 
                 invalidate();
             }

@@ -30,7 +30,7 @@ import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.MeActivityPresenter;
-import co.quchu.quchu.widget.ProgressView;
+import co.quchu.quchu.widget.LinearProgressView;
 
 public class MeActivity extends BaseActivity implements IMeActivity, View.OnClickListener {
 
@@ -49,17 +49,19 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     @Bind(R.id.name)
     TextView name;
     @Bind(R.id.progress1)
-    ProgressView progress1;
+    LinearProgressView progress1;
     @Bind(R.id.progress2)
-    ProgressView progress2;
+    LinearProgressView progress2;
     @Bind(R.id.progress3)
-    ProgressView progress3;
+    LinearProgressView progress3;
     @Bind(R.id.progress4)
-    ProgressView progress4;
+    LinearProgressView progress4;
     @Bind(R.id.findPosition)
     LinearLayout findPosition;
     @Bind(R.id.editOrLogin)
     TextView editOrLogin;
+    @Bind(R.id.editIcon)
+    ImageView editIcon;
 
     private MeActivityPresenter presenter;
 
@@ -118,10 +120,10 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         if (AppContext.user.isIsVisitors()) {
             //游客
             editOrLogin.setText("登陆");
-            editOrLogin.setCompoundDrawables(null, null, null, null);
+            editIcon.setVisibility(View.GONE);
         } else {
             editOrLogin.setText("编辑");
-            editOrLogin.setCompoundDrawables(getResources().getDrawable(R.mipmap.ic_edit_checked), null, null, null);
+            editIcon.setVisibility(View.VISIBLE);
         }
 
     }
@@ -203,16 +205,16 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                     if (null != genes.get(i).getMark()) {
                         tvUserNickName.setText(genes.get(i).getMark());
                     }
-                    progress1.setProgress(progress, label);
+                    progress1.setProgress(progress, label, i);
                     break;
                 case 1:
-                    progress2.setProgress(progress, label);
+                    progress2.setProgress(progress, label, i);
                     break;
                 case 2:
-                    progress3.setProgress(progress, label);
+                    progress3.setProgress(progress, label, i);
                     break;
                 case 3:
-                    progress4.setProgress(progress, label);
+                    progress4.setProgress(progress, label, i);
                     break;
             }
         }

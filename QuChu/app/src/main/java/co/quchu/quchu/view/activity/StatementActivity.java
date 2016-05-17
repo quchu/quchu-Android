@@ -9,8 +9,6 @@ import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Locale;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -23,15 +21,19 @@ import co.quchu.quchu.presenter.VersionInfoPresenter;
 
 /**
  * AboutUsActivity
- * User: Chenhs
+ * User: 通用文字说明
  * Date: 2016-01-12
  */
-public class AboutUsActivity extends BaseActivity {
+public class StatementActivity extends BaseActivity {
 
 
     @Bind(R.id.textView)
     TextView textView;
     int mClickTimes = 0;
+
+    public static final String REQUEST_KEY_TITLE = "title";
+    public static final String REQUEST_KEY_CONTENT = "content";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +41,9 @@ public class AboutUsActivity extends BaseActivity {
         setContentView(R.layout.activity_about_us);
         ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
-        toolbar.getTitleTv().setText(getTitle());
+        toolbar.getTitleTv().setText(getIntent().getStringExtra(REQUEST_KEY_TITLE));
 
-        String about = String.format(Locale.CHINA, getString(R.string.about_us_text), AppContext.packageInfo.versionName);
-        textView.setText(about);
+        textView.setText(getIntent().getStringExtra(REQUEST_KEY_CONTENT));
 
 
         getEnhancedToolbar().getRightTv().setText(" ");
