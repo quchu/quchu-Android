@@ -22,7 +22,7 @@
           android:layout_height="60dp"
           app:roundProgressBackground="@color/transparent"
           app:roundProgressColor="@color/colorAccent"
-          app:roundColor = "@color/translucent_dark"
+          app:roundColor = "@color/transparent"
           app:roundWidth="4dp"
           app:textSize="@dimen/word_size_body"
           app:textStyle="Num" />
@@ -50,7 +50,7 @@
         android:layout_height="60dp"
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/colorAccent"
-        app:roundColor = "@color/translucent_dark"
+        app:roundColor = "@color/transparent"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />
@@ -77,7 +77,7 @@
         android:layout_height="60dp"
         app:roundProgressBackground="@color/transparent"
         app:roundProgressColor="@color/colorAccent"
-        app:roundColor = "@color/translucent_dark"
+        app:roundColor = "@color/transparent"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />

@@ -52,12 +52,12 @@
             android:id="@+id/recommend_tag1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_lineframe_white"
+            android:background="@drawable/shape_lineframe_red_fill"
             android:paddingBottom="@dimen/quarter_margin"
             android:paddingLeft="@dimen/half_margin"
             android:paddingRight="@dimen/half_margin"
             android:paddingTop="@dimen/quarter_margin"
-            android:textColor="@android:color/white"
+            android:textColor="@color/standard_color_white"
             android:textSize="@dimen/word_size_time"
             android:visibility="invisible" />
 
@@ -67,12 +67,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/half_margin"
             android:layout_toRightOf="@id/recommend_tag1"
-            android:background="@drawable/shape_lineframe_white"
+            android:background="@drawable/shape_lineframe_red_fill"
             android:paddingBottom="@dimen/quarter_margin"
             android:paddingLeft="@dimen/half_margin"
             android:paddingRight="@dimen/half_margin"
             android:paddingTop="@dimen/quarter_margin"
-            android:textColor="@android:color/white"
+            android:textColor="@color/standard_color_white"
             android:textSize="@dimen/word_size_time"
             android:visibility="invisible" />
 
@@ -82,12 +82,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/half_margin"
             android:layout_toRightOf="@id/recommend_tag2"
-            android:background="@drawable/shape_lineframe_white"
+            android:background="@drawable/shape_lineframe_red_fill"
             android:paddingBottom="@dimen/quarter_margin"
             android:paddingLeft="@dimen/half_margin"
             android:paddingRight="@dimen/half_margin"
             android:paddingTop="@dimen/quarter_margin"
-            android:textColor="@android:color/white"
+            android:textColor="@color/standard_color_white"
             android:textSize="@dimen/word_size_time"
             android:visibility="invisible" />
 
