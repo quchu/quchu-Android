@@ -347,49 +347,48 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {
 
-            ((AdditionalInfoViewHolder) holder).ivParkingSlot.setAlpha(.5f);
-            ((AdditionalInfoViewHolder) holder).ivPrivateRoom.setAlpha(.5f);
-            ((AdditionalInfoViewHolder) holder).ivDeliver.setAlpha(.5f);
-            ((AdditionalInfoViewHolder) holder).ivParty.setAlpha(.5f);
-            ((AdditionalInfoViewHolder) holder).ivAliCredit.setAlpha(.5f);
-            ((AdditionalInfoViewHolder) holder).ivCash.setAlpha(.5f);
-            ((AdditionalInfoViewHolder) holder).ivVisaCard.setAlpha(.5f);
-            ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(.5f);
-            ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(.5f);
-            ((AdditionalInfoViewHolder) holder).ivApplePay.setAlpha(.5f);
-            if (null != mData.getIcons() && mData.getIcons().size() > 0) {
-                for (int i = 0; i < mData.getIcons().size(); i++) {
-                    String iconStr = mData.getIcons().get(i).getZh();
-                    switch (iconStr) {
-                        case "包厢":
-                            ((AdditionalInfoViewHolder) holder).ivPrivateRoom.setAlpha(1f);
-                            break;
+
+            if (!mData.isIsActivity()) {
+                ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.VISIBLE);
+                ((AdditionalInfoViewHolder) holder).ivParkingSlot.setAlpha(.5f);
+                ((AdditionalInfoViewHolder) holder).ivPrivateRoom.setAlpha(.5f);
+                ((AdditionalInfoViewHolder) holder).ivDeliver.setAlpha(.5f);
+                ((AdditionalInfoViewHolder) holder).ivParty.setAlpha(.5f);
+                ((AdditionalInfoViewHolder) holder).ivAliCredit.setAlpha(.5f);
+                ((AdditionalInfoViewHolder) holder).ivCash.setAlpha(.5f);
+                ((AdditionalInfoViewHolder) holder).ivVisaCard.setAlpha(.5f);
+                ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(.5f);
+                ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(.5f);
+                ((AdditionalInfoViewHolder) holder).ivApplePay.setAlpha(.5f);
+                if (null != mData.getIcons() && mData.getIcons().size() > 0) {
+                    for (int i = 0; i < mData.getIcons().size(); i++) {
+                        String iconStr = mData.getIcons().get(i).getZh();
+                        switch (iconStr) {
+                            case "包厢":
+                                ((AdditionalInfoViewHolder) holder).ivPrivateRoom.setAlpha(1f);
+                                break;
 //                        case "堂食":
 //                            detailMessRb.setChecked(true);
 //                            break;
-                        case "外送":
-                            ((AdditionalInfoViewHolder) holder).ivDeliver.setAlpha(1f);
-                            break;
-                        case "现金":
-                            ((AdditionalInfoViewHolder) holder).ivCash.setAlpha(1f);
-                            break;
-                        case "刷卡":
-                            ((AdditionalInfoViewHolder) holder).ivVisaCard.setAlpha(1f);
-                            break;
-                        case "支付宝":
-                            ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(1f);
-                            break;
-                        case "微信":
-                            ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(1f);
-                            break;
+                            case "外送":
+                                ((AdditionalInfoViewHolder) holder).ivDeliver.setAlpha(1f);
+                                break;
+                            case "现金":
+                                ((AdditionalInfoViewHolder) holder).ivCash.setAlpha(1f);
+                                break;
+                            case "刷卡":
+                                ((AdditionalInfoViewHolder) holder).ivVisaCard.setAlpha(1f);
+                                break;
+                            case "支付宝":
+                                ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(1f);
+                                break;
+                            case "微信":
+                                ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(1f);
+                                break;
+                        }
                     }
+
                 }
-
-            }
-            if (!mData.isIsActivity()) {
-                ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.VISIBLE);
-
-                //TODO revert it
             } else {
                 ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.GONE);
             }
