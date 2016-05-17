@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    app:cardBackgroundColor="@color/lineBackground_gray"
     card_view:cardCornerRadius="0dp"
     card_view:cardElevation="@dimen/cardview_elevation"
     card_view:cardPreventCornerOverlap="false">
@@ -25,7 +24,7 @@
             android:layout_toLeftOf="@id/simpleDraweeView"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@android:color/white"
+            android:textColor="@color/standard_color_content"
             android:textSize="@dimen/word_title_body" />
 
         <TextView
@@ -34,9 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
             android:layout_marginTop="4dp"
-            android:background="@drawable/shape_tv_black_bg"
             android:text="编辑内容"
-            android:textColor="@color/standard_color_yellow" />
+            android:textColor="@color/standard_color_content" />
 
         <TextView
             android:id="@+id/address"
@@ -48,7 +46,7 @@
             android:layout_toLeftOf="@id/simpleDraweeView"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/quchu_favorite_address_text" />
+            android:textColor="@color/standard_color_content" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/simpleDraweeView"

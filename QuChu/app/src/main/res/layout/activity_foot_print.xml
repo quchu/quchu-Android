@@ -19,7 +19,7 @@
         android:id="@+id/tvAddFootprint"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_item_size"
-        android:textColor="@android:color/white"
+        android:textColor="@color/standard_color_content"
         android:layout_alignParentBottom="true"
         android:background="@color/appBackground_dark"
         android:gravity="center"
