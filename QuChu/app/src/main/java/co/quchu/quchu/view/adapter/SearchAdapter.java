@@ -69,7 +69,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
             }
         }
         holder.tcvTag.setTags(strTags);
-        holder.tvAddress.setText(model.getAddress());
+        //holder.tvAddress.setText(model.getAddress());
         holder.sdvImage.setImageURI(Uri.parse(model.getCover()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +103,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
         TextView tvName;
         @Bind(R.id.tag)
         TagCloudView tcvTag;
-        @Bind(R.id.address)
-        TextView tvAddress;
+//        @Bind(R.id.address)
+//        TextView tvAddress;
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView sdvImage;
 
