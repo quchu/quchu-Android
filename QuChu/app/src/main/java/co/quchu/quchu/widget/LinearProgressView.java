@@ -116,7 +116,7 @@ public class LinearProgressView extends View {
         this.text = text;
         linearGradient = new LinearGradient(0, 0, getWidth() - StringUtils.dip2px(getContext(), 30) - paint.getStrokeWidth(), 0, colors[position], null, Shader.TileMode.MIRROR);
 
-        ValueAnimator animator = ValueAnimator.ofInt(0, 100);
+        ValueAnimator animator = ValueAnimator.ofInt(0, progress);
         animator.setDuration(800);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
