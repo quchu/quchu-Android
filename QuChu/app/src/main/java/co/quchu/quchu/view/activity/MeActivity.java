@@ -30,13 +30,12 @@ import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.MeActivityPresenter;
-import co.quchu.quchu.widget.ProgressView;
+import co.quchu.quchu.widget.LinearProgressView;
 
 public class MeActivity extends BaseActivity implements IMeActivity, View.OnClickListener {
 
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
-
     @Bind(R.id.quchu)
     LinearLayout quchu;
     @Bind(R.id.footPrint)
@@ -50,16 +49,19 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     @Bind(R.id.name)
     TextView name;
     @Bind(R.id.progress1)
-    ProgressView progress1;
+    LinearProgressView progress1;
     @Bind(R.id.progress2)
-    ProgressView progress2;
+    LinearProgressView progress2;
     @Bind(R.id.progress3)
-    ProgressView progress3;
+    LinearProgressView progress3;
     @Bind(R.id.progress4)
-    ProgressView progress4;
+    LinearProgressView progress4;
     @Bind(R.id.findPosition)
     LinearLayout findPosition;
-
+    @Bind(R.id.editOrLogin)
+    TextView editOrLogin;
+    @Bind(R.id.editIcon)
+    ImageView editIcon;
 
     private MeActivityPresenter presenter;
 
@@ -108,12 +110,22 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     }
 
     private void initListener() {
-        headImage.setOnClickListener(this);
         quchu.setOnClickListener(this);
         footPrint.setOnClickListener(this);
         friend.setOnClickListener(this);
         massage.setOnClickListener(this);
         findPosition.setOnClickListener(this);
+        editOrLogin.setOnClickListener(this);
+
+        if (AppContext.user.isIsVisitors()) {
+            //游客
+            editOrLogin.setText("登陆");
+            editIcon.setVisibility(View.GONE);
+        } else {
+            editOrLogin.setText("编辑");
+            editIcon.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -121,16 +133,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         Intent intent;
         UserInfoModel user = AppContext.user;
         switch (v.getId()) {
-            case R.id.headImage:
-                if (user.isIsVisitors()) {
-                    //游客
-                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
-                    dialogFg.show(getSupportFragmentManager(), "");
-                } else {
-                    intent = new Intent(this, AccountSettingActivity.class);
-                    startActivity(intent);
-                }
-                break;
+
             case R.id.quchu://趣处
                 intent = new Intent(this, QuchuActivity.class);
                 startActivity(intent);
@@ -172,6 +175,15 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
             case R.id.toolbar_iv_right:
                 MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "menu_setting");
                 break;
+            case R.id.editOrLogin:
+                if (user.isIsVisitors()) {
+                    intent = new Intent(this, UserLoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    intent = new Intent(this, AccountSettingActivity.class);
+                    startActivity(intent);
+                }
+                break;
         }
 
     }
@@ -193,16 +205,16 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                     if (null != genes.get(i).getMark()) {
                         tvUserNickName.setText(genes.get(i).getMark());
                     }
-                    progress1.setProgress(progress, label);
+                    progress1.setProgress(progress, label, i);
                     break;
                 case 1:
-                    progress2.setProgress(progress, label);
+                    progress2.setProgress(progress, label, i);
                     break;
                 case 2:
-                    progress3.setProgress(progress, label);
+                    progress3.setProgress(progress, label, i);
                     break;
                 case 3:
-                    progress4.setProgress(progress, label);
+                    progress4.setProgress(progress, label, i);
                     break;
             }
         }

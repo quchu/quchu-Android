@@ -18,6 +18,25 @@
     <color name="tagTextColor">#fff</color>
     <!--分割线颜色-->
     <color name="line">#AAAAAA</color>
+    <!--页面空间之间背景-->
+    <color name="bg_pager">#EFEFEF</color>
+
+    <!--一下为我界面进度条渐变色-->
+    <color name="progress1">#fed400</color>
+    <color name="progress2">#ffe13b</color>
+    <color name="progress3">#fee770</color>
+
+    <color name="progress4">#f769ae</color>
+    <color name="progress5">#fb838c</color>
+    <color name="progress6">#fd9b69</color>
+
+    <color name="progress7">#67a9f6</color>
+    <color name="progress8">#78d1d4</color>
+    <color name="progress9">#68ffab</color>
+
+    <color name="progress10">#a8a0f0</color>
+    <color name="progress11">#9abef5</color>
+    <color name="progress12">#86eaff</color>
 
 
     <!-- 自定义属性-->

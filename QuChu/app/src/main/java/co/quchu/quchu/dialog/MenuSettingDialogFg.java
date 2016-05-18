@@ -8,10 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 
+import java.util.Locale;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.view.activity.AboutUsActivity;
+import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.view.activity.StatementActivity;
 import co.quchu.quchu.view.activity.FeedbackActivity;
 import co.quchu.quchu.view.activity.MeActivity;
 
@@ -54,7 +57,13 @@ public class MenuSettingDialogFg extends DialogFragment {
         switch (view.getId()) {
 
             case R.id.dialog_menu_setting_aboutus_tv:
-                getActivity().startActivity(new Intent(getActivity(), AboutUsActivity.class));
+                Intent intent = new Intent(getActivity(), StatementActivity.class);
+                intent.putExtra(StatementActivity.REQUEST_KEY_TITLE, "关于我们");
+                String about = String.format(Locale.CHINA, getString(R.string.about_us_text), AppContext.packageInfo.versionName);
+
+                intent.putExtra(StatementActivity.REQUEST_KEY_CONTENT, about);
+                getActivity().startActivity(intent);
+
                 MenuSettingDialogFg.this.dismiss();
                 break;
             case R.id.dialog_menu_setting_feedback_tv:
@@ -69,7 +78,6 @@ public class MenuSettingDialogFg extends DialogFragment {
         }
 
     }
-
 
 
     @Override

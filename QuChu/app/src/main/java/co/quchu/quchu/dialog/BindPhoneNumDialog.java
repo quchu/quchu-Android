@@ -29,10 +29,13 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -162,7 +165,6 @@ public class BindPhoneNumDialog extends DialogFragment {
                 });
                 break;
             case 2:
-                setCancelable(false);
                 title.setText("请创建登陆密码(3/3)");
                 inputLayout.setHint("登陆密码:");
                 common.setText("确认");
@@ -173,8 +175,6 @@ public class BindPhoneNumDialog extends DialogFragment {
                     public void onClick(View v) {
                         setPassword(editText.getText().toString(), inputLayout);
                     }
-
-
                 });
                 break;
         }
@@ -186,6 +186,9 @@ public class BindPhoneNumDialog extends DialogFragment {
             return;
         }
         HashMap<String, String> params = new HashMap<>();
+        params.put("phoneNumber", phoneNumber);
+        params.put("salt", password);
+
         GsonRequest<String> request = new GsonRequest<>(NetApi.bindPassword, String.class, params, new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
@@ -196,7 +199,10 @@ public class BindPhoneNumDialog extends DialogFragment {
             public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
                 if (result) {
                     dismiss();
-                    Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_SHORT).show();
+                    UserInfoModel user = AppContext.user;
+                    user.setIsphone(true);
+                    UserInfoHelper.saveUserInfo(user);
+                    Toast.makeText(getActivity(), "绑定成功", Toast.LENGTH_SHORT).show();
                 } else {
                     layout.setError(msg);
                 }
