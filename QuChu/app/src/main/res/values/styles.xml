@@ -39,7 +39,7 @@
     </style>
 
     <style name="DetailVerticalLine">
-        <item name="android:layout_width">@dimen/detail_horizontal_line_height</item>
+        <item name="android:layout_width">@dimen/line_thickness</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/standard_color_h3_dark</item>
     </style>

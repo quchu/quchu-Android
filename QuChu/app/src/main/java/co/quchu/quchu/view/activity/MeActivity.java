@@ -20,7 +20,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.galleryfinal.utils.ImageUtils;
+import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;

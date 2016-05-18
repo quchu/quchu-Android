@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +25,11 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.galleryfinal.GalleryFinal;
-import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.quchu.gallery.GalleryFinal;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.ImageUpload;
@@ -48,11 +48,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     EditText detail;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind(R.id.commit)
-    TextView commit;
     List<PhotoInfo> photoInfos;
-    @Bind(R.id.close)
-    ImageView close;
     private FindPositionAdapter adapter;
     private PhotoInfo tackImage;
 
@@ -65,18 +61,20 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private String descText;
     private String nameText;
     private int id;
+    private TextView rightTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_position);
         ButterKnife.bind(this);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+
+        TextView titleTv = toolbar.getTitleTv();
+        titleTv.setText("添加新趣处");
+
+        rightTv = toolbar.getRightTv();
+        rightTv.setText("保存");
         init();
         restore();
     }
@@ -123,7 +121,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         adapter.setListener(this);
 
         recyclerView.setAdapter(adapter);
-        commit.setOnClickListener(new View.OnClickListener() {
+        rightTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nameText = FindPositionActivity.this.name.getText().toString().trim();

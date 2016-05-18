@@ -43,10 +43,11 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
-import co.quchu.galleryfinal.widget.GFImageView;
+import co.quchu.quchu.gallery.widget.GFImageView;
+import co.quchu.quchu.gallery.ImageLoader;
 
 
-public class FrescoImageLoader implements co.quchu.galleryfinal.ImageLoader {
+public class FrescoImageLoader implements ImageLoader {
 
     private Context context;
 

@@ -10,11 +10,11 @@ import android.widget.PopupWindow;
 
 import java.util.List;
 
-import co.quchu.galleryfinal.BuildConfig;
-import co.quchu.galleryfinal.CoreConfig;
-import co.quchu.galleryfinal.FunctionConfig;
-import co.quchu.galleryfinal.GalleryFinal;
-import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.quchu.BuildConfig;
+import co.quchu.quchu.gallery.CoreConfig;
+import co.quchu.quchu.gallery.FunctionConfig;
+import co.quchu.quchu.gallery.GalleryFinal;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.photoselected.FrescoImageLoader;

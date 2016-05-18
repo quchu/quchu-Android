@@ -11,7 +11,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.utils.ImageUtils;
 

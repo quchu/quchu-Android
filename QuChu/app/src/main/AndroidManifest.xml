@@ -219,7 +219,16 @@
         <activity android:name=".view.activity.WhatIsActivity" />
         <activity
             android:name=".view.activity.LoginActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize" />\
+
+        <activity
+            android:name=".gallery.PhotoSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gallery.PhotoPreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".gallery.PhotoEditActivity" />
+
     </application>
 
 </manifest>
