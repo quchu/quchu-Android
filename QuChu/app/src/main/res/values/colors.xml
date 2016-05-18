@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffd300</color>                  //应用主题色
-    <color name="colorPrimaryDark">#ffd300</color>              //应用主题色 暗
-    <color name="colorAccent">#333333</color>                   //应用次主题色
-    <color name="colorBackground">#efefef</color>               //通用背景颜色
+    <color name="colorPrimary">#ffd300</color>
+    //应用主题色
+    <color name="colorPrimaryDark">#ffd300</color>
+    //应用主题色 暗
+    <color name="colorAccent">#333333</color>
+    //应用次主题色
+    <color name="colorBackground">#efefef</color>
+    //通用背景颜色
 
-    <color name="translucent_white">#7fffffff</color>           //白色半透明//
-    <color name="translucent_dark">#7f000000</color>            //黑色半透明
-    <color name="transparent">#00000000</color>                 //完全透明
+    <color name="translucent_white">#7fffffff</color>
+    //白色半透明//
+    <color name="translucent_dark">#7f000000</color>
+    //黑色半透明
+    <color name="transparent">#00000000</color>
+    //完全透明
 
     <color name="standard_color_white">#ffffff</color>
-    <color name="standard_color_red">#ff231f</color>            //主题红
-    <color name="standard_color_yellow">#ffd300</color>         //主题黄
-    <color name="standard_color_h1_dark">#333333</color>        //一级字体 深色 色值 用于：Actionbar元素及自定义标题 或线框
-    <color name="standard_color_h2_dark">#666666</color>        //二级字体 深色 色值 用于：页面子标题或线框
-    <color name="standard_color_h3_dark">#999999</color>        //三级字体 深色 色值 用于：文章内容或线框
+    <color name="standard_color_red">#ff231f</color>
+    //主题红
+    <color name="standard_color_yellow">#ffd300</color>
+    //主题黄
+    <color name="standard_color_h1_dark">#333333</color>
+    //一级字体 深色 色值 用于：Actionbar元素及自定义标题 或线框
+    <color name="standard_color_h2_dark">#666666</color>
+    //二级字体 深色 色值 用于：页面子标题或线框
+    <color name="standard_color_h3_dark">#999999</color>
+    //三级字体 深色 色值 用于：文章内容或线框
     <color name="tagTextColor">#fff</color>
     <!--分割线颜色-->
     <color name="line">#AAAAAA</color>
@@ -23,7 +35,6 @@
 
     <!--以下为我界面进度条渐变色-->
     <color name="progress1">#fed400</color>
-    <color name="progress2">#ffe13b</color>
     <color name="progress3">#fee770</color>
 
     <color name="progress4">#f769ae</color>
@@ -40,17 +51,23 @@
 
 
     <!--圆形进度条颜色-->
-    <color name="bg_shade1">#d6efff</color> //背景渐变
+    <color name="bg_shade1">#d6efff</color>
+    //背景渐变
     <color name="bg_shade2">#daeffb</color>
     <color name="bg_shade3">#b6d9f0</color>
 
-    <color name="bg_progress1">#fbb5a6</color> //进度渐变
-    <color name="bg_progress2">#fedeab</color> //进度渐变
-    <color name="bg_progress3">#fee9ad</color> //进度渐变
+    <color name="bg_progress1">#fbb5a6</color>
+    //进度渐变
+    <color name="bg_progress2">#fedeab</color>
+    //进度渐变
+    <color name="bg_progress3">#fee9ad</color>
+    //进度渐变
 
-    <color name="bg_progress">#add0e7</color> //进度背景
+    <color name="bg_progress">#add0e7</color>
+    //进度背景
 
-    <color name="bg_round">#def2f2</color> //中心园背景
+    <color name="bg_round">#def2f2</color>
+    //中心园背景
 
     <!-- 自定义属性-->
     <color name="titleBackground">#383635</color>
@@ -63,11 +80,7 @@
     <color name="lineBackground_gray">#595757</color>
     <!-- 图片item 蒙版颜色-->
     <color name="itemMask_black">#a6221814</color>
-    <!-- 我的趣基因文字颜色 背景颜色 -->
 
-    <!-- 趣星人-->
-    <color name="text_color_white">#fff</color>
-    <!-- 我的发现 -->
 
     <!--上拉加载更多  进度条-->
     <color name="load_progress_gray">#697081</color>
@@ -78,28 +91,10 @@
     <color name="user_login_view_bg_color">#33ffffff</color>
     <color name="user_login_text_clickable">#221714</color>
 
-    <!--下拉菜单-->
-    <color name="menu_wiper_switch_off">#bf000000</color>
-
-    <!-- 账户设置-->
 
     <color name="account_setting_text_hint_color">#595757</color>
 
-    <!-- 横向 数字进度条 -->
-    <!-- 趣处详情 -->
-    <color name="detail_avg_price_text_bg">#26000000</color>
-    <!--人均消费 文字背景色-->
-    <color name="detail_line_color">#717071</color>
-
-    <color name="user_guide_bg_blue">#400000FF</color>
-    <!--  1.1版本颜色值 start-->
-    <color name="new_recommend_line_color">#3E3A39</color>
-    <color name="new_recommend_tablayout_color">#f2454545</color>
-    <color name="line_color">#52454545</color>
-    <!--  1.1版本颜色值 end-->
-
 
     <color name="quchu_title_bar">#413e3e</color>
-    <color name="quchu_favorite_address_text">#b4b4b5</color>
 
 </resources>

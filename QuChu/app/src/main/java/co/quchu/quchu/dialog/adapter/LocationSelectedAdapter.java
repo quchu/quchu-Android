@@ -68,7 +68,7 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
         } else {
             holder.dialogItemCityCb.setChecked(false);
             holder.dialogItemCityCb.setClickable(true);
-            holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.text_color_white));
+            holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.standard_color_h3_dark));
         }
     }
 

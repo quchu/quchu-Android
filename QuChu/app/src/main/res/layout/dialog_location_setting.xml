@@ -14,7 +14,7 @@
           android:layout_below="@id/dialog_location_selected_city_tv"
           android:layout_marginLeft="@dimen/base_margin"
           android:text="厦门"
-          android:textColor="@color/text_color_white"
+          android:textColor="@color/standard_color_h3_dark"
           android:textSize="@dimen/word_size_body" />
 
       <View
@@ -29,7 +29,7 @@
           android:layout_below="@id/dialog_location_selected_city_tv"
           android:layout_marginLeft="@dimen/base_margin"
           android:text="杭州"
-          android:textColor="@color/text_color_white"
+          android:textColor="@color/standard_color_h3_dark"
           android:textSize="@dimen/word_size_body" />
 
       <View
@@ -80,8 +80,8 @@
             android:background="@null"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/text_color_white"
-            android:textColorHint="@color/text_color_white"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textColorHint="@color/standard_color_h3_dark"
             android:textSize="@dimen/word_size_body" />
 
 
@@ -102,7 +102,7 @@
             android:layout_marginRight="@dimen/base_margin"
             android:gravity="center_vertical|right"
             android:text="确定"
-            android:textColor="@color/text_color_white"
+            android:textColor="@color/standard_color_h3_dark"
             android:textSize="@dimen/word_size_body" />
 
         <TextView
@@ -113,7 +113,7 @@
             android:layout_toLeftOf="@id/dialog_location_submit_tv"
             android:gravity="center_vertical|right"
             android:text="取消"
-            android:textColor="@color/text_color_white"
+            android:textColor="@color/standard_color_h3_dark"
             android:textSize="@dimen/word_size_body" />
     </RelativeLayout>
 </LinearLayout>
