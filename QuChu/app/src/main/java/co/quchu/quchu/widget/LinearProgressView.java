@@ -65,8 +65,8 @@ public class LinearProgressView extends View {
         float radio = getHeight() / 2;
 
         paint.reset();
-
-
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(3);
         //draw text
         paint.setTextSize(getResources().getDimension(R.dimen.standard_text_size_h4));
         paint.setColor(colors[position][0]);
@@ -76,10 +76,10 @@ public class LinearProgressView extends View {
 
         if (!TextUtils.isEmpty(text)) {
             paint.getTextBounds(text, 0, text.length(), rect);
+            paint.setColor(getResources().getColor(R.color.standard_color_h3_dark));
             canvas.drawText(text, getWidth() / 2 - rect.width() / 2, getHeight() / 2 + rect.height() / 2, paint);
         }
 
-        paint.setStrokeWidth(3);
         // draw  bg,文字宽度为50
         rectF.left = StringUtils.dip2px(getContext(), 30);
         rectF.right = getWidth() - paint.getStrokeWidth();
@@ -87,7 +87,7 @@ public class LinearProgressView extends View {
 
         paint.setColor(getResources().getColor(R.color.standard_color_h3_dark));
 
-        paint.setAntiAlias(true);
+
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawRoundRect(rectF, radio, radio, paint);
 
@@ -97,7 +97,6 @@ public class LinearProgressView extends View {
         rectF.bottom = getHeight();
 
         paint.setShader(linearGradient);
-        paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRoundRect(rectF, radio, radio, paint);
 

@@ -21,7 +21,7 @@
     <!--页面空间之间背景-->
     <color name="bg_pager">#EFEFEF</color>
 
-    <!--一下为我界面进度条渐变色-->
+    <!--以下为我界面进度条渐变色-->
     <color name="progress1">#fed400</color>
     <color name="progress2">#ffe13b</color>
     <color name="progress3">#fee770</color>
@@ -38,6 +38,19 @@
     <color name="progress11">#9abef5</color>
     <color name="progress12">#86eaff</color>
 
+
+    <!--圆形进度条颜色-->
+    <color name="bg_shade1">#d6efff</color> //背景渐变
+    <color name="bg_shade2">#daeffb</color>
+    <color name="bg_shade3">#b6d9f0</color>
+
+    <color name="bg_progress1">#fbb5a6</color> //进度渐变
+    <color name="bg_progress2">#fedeab</color> //进度渐变
+    <color name="bg_progress3">#fee9ad</color> //进度渐变
+
+    <color name="bg_progress">#add0e7</color> //进度背景
+
+    <color name="bg_round">#def2f2</color> //中心园背景
 
     <!-- 自定义属性-->
     <color name="titleBackground">#383635</color>
