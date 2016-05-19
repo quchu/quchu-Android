@@ -131,37 +131,29 @@ public class DetailModel implements Serializable{
         }else{
             genes.clear();
         }
-        if (objTarget.getGenes() != null) {
-            genes.addAll(objTarget.getGenes());
-        }
+        genes.addAll(objTarget.getGenes());
 
         if (null==icons){
             icons = new ArrayList<>();
         }else{
             icons.clear();
         }
-        if (null!=objTarget.getIcons()){
-            icons.addAll(objTarget.getIcons());
-        }
+        icons.addAll(objTarget.getIcons());
 
         if (null==imglist){
             imglist = new ArrayList<>();
         }else{
             imglist.clear();
         }
+        imglist.addAll(objTarget.getImglist());
 
-        if (null!=objTarget.getImglist()){
-            imglist.addAll(objTarget.getImglist());
-        }
 
         if (null==tags){
             tags = new ArrayList<>();
         }else{
             tags.clear();
         }
-        if (null!=objTarget.getTags()){
-            tags.addAll(objTarget.getTags());
-        }
+        tags.addAll(objTarget.getTags());
 
 
         if (null==recommendPlaces){
@@ -169,9 +161,7 @@ public class DetailModel implements Serializable{
         }else{
             recommendPlaces.clear();
         }
-        if (null!=objTarget.getNearPlace()){
-            recommendPlaces.addAll(objTarget.getNearPlace());
-        }
+        recommendPlaces.addAll(objTarget.getNearPlace());
 
         cardCount = objTarget.getCardCount();
 
@@ -517,7 +507,7 @@ public class DetailModel implements Serializable{
     }
 
     public static class NearPlace implements Serializable{
-        private int placeId;
+        private int pid;
         private String cover;
         private String name;
         private String address;
@@ -525,11 +515,11 @@ public class DetailModel implements Serializable{
         private List<TagsModel> tags;
 
         public int getPlaceId() {
-            return placeId;
+            return pid;
         }
 
         public void setPlaceId(int placeId) {
-            this.placeId = placeId;
+            this.pid = placeId;
         }
 
         public String getCover() {

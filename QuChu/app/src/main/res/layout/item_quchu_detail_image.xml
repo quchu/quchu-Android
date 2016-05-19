@@ -42,6 +42,7 @@
         android:layout_below="@+id/llRating"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/quarter_margin"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView

@@ -239,9 +239,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                 }
             } else {
-                ((IntroImageViewHolder) holder).tag1.setVisibility(View.INVISIBLE);
-                ((IntroImageViewHolder) holder).tag2.setVisibility(View.INVISIBLE);
-                ((IntroImageViewHolder) holder).tag3.setVisibility(View.INVISIBLE);
+                ((IntroImageViewHolder) holder).tag1.setVisibility(View.GONE);
+                ((IntroImageViewHolder) holder).tag2.setVisibility(View.GONE);
+                ((IntroImageViewHolder) holder).tag3.setVisibility(View.GONE);
             }
         } else if (holder instanceof ActionViewHolder) {
 
