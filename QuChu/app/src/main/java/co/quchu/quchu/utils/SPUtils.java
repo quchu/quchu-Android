@@ -189,15 +189,6 @@ public class SPUtils {
     }
 
 
-    public static boolean animationShown(Context context) {
-        if (!getBooleanFromSPMap(context, AppKey.IS_LANDING_ANIMATION, false)) {
-            putBooleanToSPMap(context, AppKey.IS_LANDING_ANIMATION, true);
-            return true;
-        } else {
-            return false;
-        }
-
-    }
 
 
     public static void setUserToken(Context context, String userToken) {
