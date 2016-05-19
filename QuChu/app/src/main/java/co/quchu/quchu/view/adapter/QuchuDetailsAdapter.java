@@ -36,6 +36,7 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.UserCenterActivity;
 import co.quchu.quchu.widget.RoundProgressView;
+import co.quchu.quchu.widget.RoundProgressViewNew;
 import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -248,7 +249,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             if (null != mVisitedUsers) {
                 if (mVisitedUsers.getUserOutCount() == 0) {
-                    ((ActionViewHolder) holder).tvVisitorCount.setText("还没人去过");
+                    ((ActionViewHolder) holder).tvVisitorCount.setText(R.string.no_visitor);
                 } else {
                     ((ActionViewHolder) holder).tvVisitorCount.setText(StringUtils.getColorSpan(((ActionViewHolder) holder).llVisitedUsers.getContext(),R.color.standard_color_red,"有",String.valueOf(mVisitedUsers.getUserOutCount()),"人去过这里"));
                 }
@@ -332,9 +333,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (null != mAnalysisModel && null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size() > 0) {
                 try {
 
-                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((Float.valueOf(mAnalysisModel.getResult().get(0).getCount()) / mAnalysisModel.getUserOutCount()) * 100f);
-                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((Float.valueOf(mAnalysisModel.getResult().get(1).getCount()) / mAnalysisModel.getUserOutCount()) * 100f);
-                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((Float.valueOf(mAnalysisModel.getResult().get(2).getCount()) / mAnalysisModel.getUserOutCount()) * 100f);
+                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress(mAnalysisModel.getResult().get(0).getCount() / mAnalysisModel.getUserOutCount() * 100);
+                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress(mAnalysisModel.getResult().get(1).getCount() / mAnalysisModel.getUserOutCount() * 100);
+                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress(mAnalysisModel.getResult().get(2).getCount() / mAnalysisModel.getUserOutCount() * 100);
                     ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
                     ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
                     ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
@@ -498,9 +499,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static class ActionViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.detail_button_group_ll)
-        LinearLayout detail_button_group_ll;
-        RelativeLayout detail_button_add_postcard_rl;
         @Bind(R.id.llVisitedUsers)
         LinearLayout llVisitedUsers;
         @Bind(R.id.tvVisitorCount)
@@ -532,11 +530,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class RatingInfoViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.rpvItemLeft)
-        RoundProgressView rpvItemLeft;
+        RoundProgressViewNew rpvItemLeft;
         @Bind(R.id.rpvItemMiddle)
-        RoundProgressView rpvItemMiddle;
+        RoundProgressViewNew rpvItemMiddle;
         @Bind(R.id.rpvItemRight)
-        RoundProgressView rpvItemRight;
+        RoundProgressViewNew rpvItemRight;
 
         @Bind(R.id.tvRatingLeft)
         TextView tvRatingLeft;
