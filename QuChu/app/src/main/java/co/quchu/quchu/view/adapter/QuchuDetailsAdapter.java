@@ -344,50 +344,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {
 
-
+            ((AdditionalInfoViewHolder) holder).rvInfoGrid.setLayoutManager(new NestedLinearLayoutManager(((AdditionalInfoViewHolder) holder).rvInfoGrid.getContext(),4));
+            ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(null);
             if (!mData.isIsActivity()) {
-                ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.VISIBLE);
-                ((AdditionalInfoViewHolder) holder).ivParkingSlot.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivPrivateRoom.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivDeliver.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivParty.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivAliCredit.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivCash.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivVisaCard.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivApplePay.setAlpha(.5f);
-                if (null != mData.getIcons() && mData.getIcons().size() > 0) {
-                    for (int i = 0; i < mData.getIcons().size(); i++) {
-                        String iconStr = mData.getIcons().get(i).getZh();
-                        switch (iconStr) {
-                            case "包厢":
-                                ((AdditionalInfoViewHolder) holder).ivPrivateRoom.setAlpha(1f);
-                                break;
-//                        case "堂食":
-//                            detailMessRb.setChecked(true);
-//                            break;
-                            case "外送":
-                                ((AdditionalInfoViewHolder) holder).ivDeliver.setAlpha(1f);
-                                break;
-                            case "现金":
-                                ((AdditionalInfoViewHolder) holder).ivCash.setAlpha(1f);
-                                break;
-                            case "刷卡":
-                                ((AdditionalInfoViewHolder) holder).ivVisaCard.setAlpha(1f);
-                                break;
-                            case "支付宝":
-                                ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(1f);
-                                break;
-                            case "微信":
-                                ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(1f);
-                                break;
-                        }
-                    }
+                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
 
-                }
             } else {
-                ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.GONE);
+                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.GONE);
             }
 
 
@@ -590,28 +553,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public static class AdditionalInfoViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.detail_icons_rl)
-        LinearLayout llIcons;
-        @Bind(R.id.ivParkingSlot)
-        ImageView ivParkingSlot;
-        @Bind(R.id.ivPrivateRoom)
-        ImageView ivPrivateRoom;
-        @Bind(R.id.ivDeliver)
-        ImageView ivDeliver;
-        @Bind(R.id.ivParty)
-        ImageView ivParty;
-        @Bind(R.id.ivAliCredit)
-        ImageView ivAliCredit;
-        @Bind(R.id.ivCash)
-        ImageView ivCash;
-        @Bind(R.id.ivVisaCard)
-        ImageView ivVisaCard;
-        @Bind(R.id.ivAlipay)
-        ImageView ivAlipay;
-        @Bind(R.id.ivWechatPay)
-        ImageView ivWechatPay;
-        @Bind(R.id.ivApplePay)
-        ImageView ivApplePay;
+        @Bind(R.id.rvAdditionalInfo)
+        RecyclerView rvInfoGrid;
 
         AdditionalInfoViewHolder(View view) {
             super(view);
