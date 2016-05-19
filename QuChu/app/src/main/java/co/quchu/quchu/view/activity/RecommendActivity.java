@@ -172,10 +172,15 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                     .translationY(-rlSearchBar.getHeight())
                     .alpha(0)
                     .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator()).start();
-            flContainer.animate().translationY(0)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+            flContainer.animate()
+                    .translationY(0)
+                    .scaleY(1)
                     .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator()).start();
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(classifyFragment).show(recommendFragment).commit();
         } else {
@@ -184,10 +189,14 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                     .translationY(0)
                     .alpha(1)
                     .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator()).start();
-            flContainer.animate().translationY(rlSearchBar.getHeight())
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+            System.out.println("|||"+(flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight());
+            flContainer.animate().translationY(rlSearchBar.getHeight()/2)
+                    .scaleY(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
                     .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator()).start();
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction .hide(recommendFragment).show(classifyFragment).commit();
         }
