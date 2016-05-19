@@ -144,7 +144,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_label_location" />
+                    android:src="@mipmap/ic_label_location_large" />
 
                 <TextView
                     android:layout_width="wrap_content"
