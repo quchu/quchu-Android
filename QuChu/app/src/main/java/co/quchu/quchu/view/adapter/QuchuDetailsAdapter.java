@@ -36,6 +36,7 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.UserCenterActivity;
 import co.quchu.quchu.widget.RoundProgressView;
+import co.quchu.quchu.widget.RoundProgressViewNew;
 import co.quchu.quchu.widget.TagCloudView;
 import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
@@ -216,7 +217,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setText(StringUtils.getColorSpan(((IntroImageViewHolder) holder).detail_avg_price_tv.getContext(),R.color.standard_color_red,"人均消费",mData.getPrice(),""));
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
             } else {
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.INVISIBLE);
+                ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.GONE);
             }
 
             //TODO For some reason ,TagCloudView can cause laggy in this activity ,Consider using recyclerview for instead
@@ -248,7 +249,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             if (null != mVisitedUsers) {
                 if (mVisitedUsers.getUserOutCount() == 0) {
-                    ((ActionViewHolder) holder).tvVisitorCount.setText("还没人去过");
+                    ((ActionViewHolder) holder).tvVisitorCount.setText(R.string.no_visitor);
                 } else {
                     ((ActionViewHolder) holder).tvVisitorCount.setText(StringUtils.getColorSpan(((ActionViewHolder) holder).llVisitedUsers.getContext(),R.color.standard_color_red,"有",String.valueOf(mVisitedUsers.getUserOutCount()),"人去过这里"));
                 }
@@ -332,9 +333,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (null != mAnalysisModel && null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size() > 0) {
                 try {
 
-                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((Float.valueOf(mAnalysisModel.getResult().get(0).getCount()) / mAnalysisModel.getUserOutCount()) * 100f);
-                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((Float.valueOf(mAnalysisModel.getResult().get(1).getCount()) / mAnalysisModel.getUserOutCount()) * 100f);
-                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((Float.valueOf(mAnalysisModel.getResult().get(2).getCount()) / mAnalysisModel.getUserOutCount()) * 100f);
+                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress(mAnalysisModel.getResult().get(0).getCount() / mAnalysisModel.getUserOutCount() * 100);
+                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress(mAnalysisModel.getResult().get(1).getCount() / mAnalysisModel.getUserOutCount() * 100);
+                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress(mAnalysisModel.getResult().get(2).getCount() / mAnalysisModel.getUserOutCount() * 100);
                     ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
                     ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
                     ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
@@ -344,50 +345,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {
 
-
+            ((AdditionalInfoViewHolder) holder).rvInfoGrid.setLayoutManager(new NestedLinearLayoutManager(((AdditionalInfoViewHolder) holder).rvInfoGrid.getContext(),4));
+            ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(null);
             if (!mData.isIsActivity()) {
-                ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.VISIBLE);
-                ((AdditionalInfoViewHolder) holder).ivParkingSlot.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivPrivateRoom.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivDeliver.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivParty.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivAliCredit.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivCash.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivVisaCard.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(.5f);
-                ((AdditionalInfoViewHolder) holder).ivApplePay.setAlpha(.5f);
-                if (null != mData.getIcons() && mData.getIcons().size() > 0) {
-                    for (int i = 0; i < mData.getIcons().size(); i++) {
-                        String iconStr = mData.getIcons().get(i).getZh();
-                        switch (iconStr) {
-                            case "包厢":
-                                ((AdditionalInfoViewHolder) holder).ivPrivateRoom.setAlpha(1f);
-                                break;
-//                        case "堂食":
-//                            detailMessRb.setChecked(true);
-//                            break;
-                            case "外送":
-                                ((AdditionalInfoViewHolder) holder).ivDeliver.setAlpha(1f);
-                                break;
-                            case "现金":
-                                ((AdditionalInfoViewHolder) holder).ivCash.setAlpha(1f);
-                                break;
-                            case "刷卡":
-                                ((AdditionalInfoViewHolder) holder).ivVisaCard.setAlpha(1f);
-                                break;
-                            case "支付宝":
-                                ((AdditionalInfoViewHolder) holder).ivAlipay.setAlpha(1f);
-                                break;
-                            case "微信":
-                                ((AdditionalInfoViewHolder) holder).ivWechatPay.setAlpha(1f);
-                                break;
-                        }
-                    }
+                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
 
-                }
             } else {
-                ((AdditionalInfoViewHolder) holder).llIcons.setVisibility(View.GONE);
+                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.GONE);
             }
 
 
@@ -535,9 +499,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static class ActionViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.detail_button_group_ll)
-        LinearLayout detail_button_group_ll;
-        RelativeLayout detail_button_add_postcard_rl;
         @Bind(R.id.llVisitedUsers)
         LinearLayout llVisitedUsers;
         @Bind(R.id.tvVisitorCount)
@@ -569,11 +530,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class RatingInfoViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.rpvItemLeft)
-        RoundProgressView rpvItemLeft;
+        RoundProgressViewNew rpvItemLeft;
         @Bind(R.id.rpvItemMiddle)
-        RoundProgressView rpvItemMiddle;
+        RoundProgressViewNew rpvItemMiddle;
         @Bind(R.id.rpvItemRight)
-        RoundProgressView rpvItemRight;
+        RoundProgressViewNew rpvItemRight;
 
         @Bind(R.id.tvRatingLeft)
         TextView tvRatingLeft;
@@ -590,28 +551,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public static class AdditionalInfoViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.detail_icons_rl)
-        LinearLayout llIcons;
-        @Bind(R.id.ivParkingSlot)
-        ImageView ivParkingSlot;
-        @Bind(R.id.ivPrivateRoom)
-        ImageView ivPrivateRoom;
-        @Bind(R.id.ivDeliver)
-        ImageView ivDeliver;
-        @Bind(R.id.ivParty)
-        ImageView ivParty;
-        @Bind(R.id.ivAliCredit)
-        ImageView ivAliCredit;
-        @Bind(R.id.ivCash)
-        ImageView ivCash;
-        @Bind(R.id.ivVisaCard)
-        ImageView ivVisaCard;
-        @Bind(R.id.ivAlipay)
-        ImageView ivAlipay;
-        @Bind(R.id.ivWechatPay)
-        ImageView ivWechatPay;
-        @Bind(R.id.ivApplePay)
-        ImageView ivApplePay;
+        @Bind(R.id.rvAdditionalInfo)
+        RecyclerView rvInfoGrid;
 
         AdditionalInfoViewHolder(View view) {
             super(view);

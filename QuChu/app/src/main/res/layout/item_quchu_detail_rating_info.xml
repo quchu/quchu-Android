@@ -16,22 +16,16 @@
       android:gravity="center"
       android:orientation="vertical"
       >
-      <co.quchu.quchu.widget.RoundProgressView
+      <co.quchu.quchu.widget.RoundProgressViewNew
           android:id="@+id/rpvItemLeft"
           android:layout_width="60dp"
           android:layout_height="60dp"
-          app:roundProgressBackground="@color/transparent"
-          app:roundProgressColor="@color/colorAccent"
-          app:roundColor = "@color/transparent"
           app:roundWidth="4dp"
           app:textSize="@dimen/word_size_body"
           app:textStyle="Num" />
       <TextView
           android:id="@+id/tvRatingLeft"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textColor="@color/colorAccent"
-          android:gravity="center"
+          style="@style/TextView.H3"
           android:layout_marginTop="@dimen/quarter_margin"
           />
   </LinearLayout>
@@ -44,22 +38,16 @@
         android:gravity="center"
         android:orientation="vertical"
         >
-    <co.quchu.quchu.widget.RoundProgressView
+    <co.quchu.quchu.widget.RoundProgressViewNew
         android:id="@+id/rpvItemMiddle"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:roundProgressBackground="@color/transparent"
-        app:roundProgressColor="@color/colorAccent"
-        app:roundColor = "@color/transparent"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />
         <TextView
             android:id="@+id/tvRatingMiddle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:gravity="center"
+            style="@style/TextView.H3"
             android:layout_marginTop="@dimen/quarter_margin"
             />
         </LinearLayout>
@@ -71,22 +59,16 @@
         android:gravity="center"
         android:orientation="vertical"
         >
-    <co.quchu.quchu.widget.RoundProgressView
+    <co.quchu.quchu.widget.RoundProgressViewNew
         android:id="@+id/rpvItemRight"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:roundProgressBackground="@color/transparent"
-        app:roundProgressColor="@color/colorAccent"
-        app:roundColor = "@color/transparent"
         app:roundWidth="4dp"
         app:textSize="@dimen/word_size_body"
         app:textStyle="Num" />
         <TextView
             android:id="@+id/tvRatingRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:gravity="center"
+            style="@style/TextView.H3"
             android:layout_marginTop="@dimen/quarter_margin"
             />
     </LinearLayout>

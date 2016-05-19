@@ -15,6 +15,8 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -69,7 +71,13 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         // +"<font color=#"+Integer.toHexString(mContext.getResources().getColor(R.color.standard_color_red)& 0x00ffffff)+">"
         // +model.getPrice()+"</font>元")
         holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost),model.getPrice(),"元"));
-        holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
+        holder.linearLayout.removeAllViews();
+        for (int i = 0; i < model.getSuggest(); i++) {
+            ImageView imageView = new ImageView(mContext);
+            imageView.setImageResource(R.mipmap.ic_ratingbar_heart);
+            holder.linearLayout.addView(imageView);
+        }
+        //holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
 
 
@@ -142,8 +150,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
     class RecommendHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.photo)
         SimpleDraweeView itemRecommendCardPhotoSdv;
-        @Bind(R.id.ProperRatingBar)
-        ProperRatingBar itemRecommendCardPrb;
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
         @Bind(R.id.activity)
@@ -156,6 +162,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         TextView tag2;
         @Bind(R.id.recommend_tag3)
         TextView tag3;
+        @Bind(R.id.llRating)
+        LinearLayout linearLayout;
 
         @Bind(R.id.root_cv)
         CardView rootCv;

@@ -10,13 +10,10 @@
 
     <TextView
         android:id="@+id/detail_activity_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_marginTop="@dimen/half_margin"
         android:text="活动详情"
-        android:textColor="@color/standard_color_h1_dark"
-        android:textSize="@dimen/word_subhead_size" />
+        style="@style/TextView.H2"/>
 
 
     <!--     <RelativeLayout
@@ -25,14 +22,11 @@
 
     <TextView
         android:id="@+id/detail_activity_info_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/half_margin"
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_marginRight="@dimen/half_margin"
         android:layout_marginTop="@dimen/half_margin"
-        android:textColor="@color/standard_color_h1_dark"
-        android:textSize="@dimen/word_size_body" />
+        style="@style/TextView.H2" />
 
     <!--    <View
             android:layout_width="0dp"

@@ -17,7 +17,6 @@
 
         <TextView
             android:id="@+id/detail_store_address_tv"
-            style="@style/DetailTextStyle_sub"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -32,8 +31,8 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/standard_color_h1_dark"
-            android:textSize="@dimen/word_size_body"/>
+            android:text="@string/empty_string"
+            style="@style/TextView.H2"/>
 
     </LinearLayout>
 
@@ -55,15 +54,14 @@
 
         <TextView
             android:id="@+id/detail_store_phone_tv"
-            style="@style/DetailTextStyle_sub"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:drawablePadding="8dp"
             android:drawableRight="@mipmap/ic_friends_arrow"
-            android:textColor="@color/standard_color_h1_dark"
-            android:textSize="@dimen/word_size_body"/>
+            android:text="@string/empty_string"
+            style="@style/TextView.H2"/>
 
     </LinearLayout>
 
