@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.analysis.GatherCityModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
 import co.quchu.quchu.model.CityModel;
@@ -99,9 +98,6 @@ public class LocationSelectedDialogFg extends DialogFragment {
                 EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED));
                 if (getActivity() instanceof RecommendActivity)
                     ((RecommendActivity) getActivity()).updateRecommend();
-                if (AppContext.gatherList == null)
-                    AppContext.gatherList = new ArrayList<>();
-                AppContext.gatherList.add(new GatherCityModel(cityList.get(adapter.getSelectedIndex()).getCid()));
                 dismiss();
             }
         });

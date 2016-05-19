@@ -26,7 +26,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.analysis.UserAnalysisUtils;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
@@ -222,7 +221,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                 firstTime = secondTime;// 更新firstTime
                 return true;
             } else {
-                UserAnalysisUtils.sendUserBehavior(RecommendActivity.this);
                 ActManager.getAppManager().AppExit();
             }
 

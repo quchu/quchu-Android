@@ -17,7 +17,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import co.quchu.quchu.analysis.GatherSendDataModel;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -59,19 +58,7 @@ public class NetService {
             DialogUtil.dismissProgess();
             Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
         } else {
-            try {
-                if (AppContext.gatherList != null && AppContext.gatherList.size() > 0) {
-                    if (params == null)
-                        params = new JSONObject();
-                    GatherSendDataModel model = new GatherSendDataModel(AppContext.gatherList);
-                    params.put("userBehavior", new Gson().toJson(model));
-                    //    LogUtils.json("userBehavior" + (new Gson().toJson(model)));
-                    AppContext.gatherList = new ArrayList<>();
-                    model = null;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0);
           /*  if (params != null)
                 LogUtils.json("userData==" + params.toString());*/

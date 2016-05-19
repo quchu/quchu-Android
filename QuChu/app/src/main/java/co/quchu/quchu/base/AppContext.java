@@ -35,7 +35,6 @@ public class AppContext extends Application {
     public static float Width = 0;
     // 屏幕高度
     public static float Height = 0;
-    public static ArrayList<Object> gatherList;//用户行为采集list
     public static RecommendModel selectedPlace; //推荐分类 数据源
     public static boolean dCardListNeedUpdate = false;
 
@@ -76,7 +75,6 @@ public class AppContext extends Application {
             user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
 
         }
-        gatherList = new ArrayList<>();
         initWidths();
     }
 

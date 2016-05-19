@@ -27,8 +27,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.analysis.GatherCollectModel;
-import co.quchu.quchu.analysis.GatherViewModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -105,7 +103,6 @@ public class QuchuDetailsActivity extends BaseActivity {
     private int pId = 0;
     private boolean mLoadingMore = false;
     public DetailModel dModel = new DetailModel();
-    private GatherViewModel gatherViewModel;
     private QuchuDetailsAdapter mQuchuDetailAdapter;
     private VisitedInfoModel mVisitedInfoModel;
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -258,7 +255,6 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
 
         }
-        gatherViewModel = new GatherViewModel(pId + "");
     }
 
 
@@ -531,9 +527,6 @@ public class QuchuDetailsActivity extends BaseActivity {
                 }
                 if (dModel.isIsf()) {
                     Toast.makeText(QuchuDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
-                    if (AppContext.gatherList == null)
-                        AppContext.gatherList = new ArrayList<>();
-                    AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dModel.getPid()));
                 } else {
                     Toast.makeText(QuchuDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }
@@ -549,15 +542,6 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        if (gatherViewModel == null)
-            gatherViewModel = new GatherViewModel(pId + "");
-        gatherViewModel.setViewDuration((System.currentTimeMillis() - startViewTime) / 1000);
-        if (AppContext.gatherList == null)
-            AppContext.gatherList = new ArrayList<>();
-        if (gatherViewModel != null)
-            AppContext.gatherList.add(gatherViewModel);
-
-
         super.onDestroy();
     }
 //

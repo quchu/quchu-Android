@@ -22,7 +22,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.analysis.GatherCollectModel;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -171,7 +170,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     adapter.notifyDataSetChanged();
                     if (cardList.get(position).isIsf()) {
                         Toast.makeText(getActivity(), "收藏成功!", Toast.LENGTH_SHORT).show();
-                        AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, cardList.get(position).getPid()));
                     } else {
                         Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();
                     }
