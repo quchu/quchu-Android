@@ -16,6 +16,7 @@
             android:id="@+id/simpleDraweeView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            fresco:overlayImage="@color/translucent_dark"
             fresco:viewAspectRatio="3.3" />
 
         <TextView

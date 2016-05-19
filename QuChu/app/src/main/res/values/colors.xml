@@ -84,5 +84,6 @@
 
 
     <color name="quchu_title_bar">#413e3e</color>
+    <color name="standard_color_black">#000</color>
 
 </resources>

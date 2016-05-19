@@ -217,7 +217,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setText(StringUtils.getColorSpan(((IntroImageViewHolder) holder).detail_avg_price_tv.getContext(),R.color.standard_color_red,"人均消费",mData.getPrice(),""));
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
             } else {
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.INVISIBLE);
+                ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.GONE);
             }
 
             //TODO For some reason ,TagCloudView can cause laggy in this activity ,Consider using recyclerview for instead

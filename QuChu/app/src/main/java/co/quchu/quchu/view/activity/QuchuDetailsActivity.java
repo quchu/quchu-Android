@@ -136,7 +136,6 @@ public class QuchuDetailsActivity extends BaseActivity {
 
         getEnhancedToolbar().getTitleTv().setText("");
         getEnhancedToolbar().getRightTv().setText(R.string.pre_order);
-        getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.standard_color_white));
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
