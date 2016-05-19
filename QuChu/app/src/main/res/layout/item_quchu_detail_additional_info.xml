@@ -47,30 +47,11 @@
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/quarter_margin"
             android:layout_marginRight="@dimen/quarter_margin"
-            android:src="@mipmap/ic_diliver"
+            android:src="@mipmap/ic_deliver"
             />
         <View style="@style/DetailVerticalLine" />
 
-        <ImageView
-            android:id="@+id/ivParty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/quarter_margin"
-            android:layout_marginRight="@dimen/quarter_margin"
-            android:src="@mipmap/ic_party"
-            />
-        <View style="@style/DetailVerticalLine" />
 
-        <ImageView
-            android:id="@+id/ivAliCredit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/quarter_margin"
-            android:layout_marginRight="@dimen/quarter_margin"
-            android:src="@mipmap/ic_alicredit"
-            />
     </LinearLayout>
 
     <View
@@ -137,7 +118,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/quarter_margin"
             android:layout_marginRight="@dimen/quarter_margin"
-            android:src="@mipmap/ic_applepay"
+            android:src="@mipmap/ic_no_seat"
             />
     </LinearLayout>
 
