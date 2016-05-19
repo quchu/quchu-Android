@@ -1,14 +1,11 @@
 package co.quchu.quchu.view.adapter;
 
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -17,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.PostCardItemModel;
+import co.quchu.quchu.utils.DateUtils;
 
 /**
  * Created by no21 on 2016/4/7.
@@ -30,38 +28,38 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
     public void onBindView(final ViewHold holder, final int position) {
         final PostCardItemModel model = data.get(position);
 
-        float ratio = (float) model.getWidth() / model.getHeight();
-        holder.simpleDraweeView.setAspectRatio(ratio);
+//        float ratio = (float) model.getWidth() / model.getHeight();
+//        holder.simpleDraweeView.setAspectRatio(ratio);
 
         holder.simpleDraweeView.setImageURI(Uri.parse(model.getPlcaeCover()));
-        holder.headView.setImageURI(Uri.parse(model.getAutorPhoto()));
+//        holder.headView.setImageURI(Uri.parse(model.getAutorPhoto()));
 
-        StringBuilder text1 = new StringBuilder();
-        text1.append(model.getAutor());
-        text1.append(":");
-        int index1 = text1.length();
-        text1.append(" 在 ");
-        int index2 = text1.length();
-        text1.append(model.getPlcaeName());
-        int index3 = text1.length();
+//        StringBuilder text1 = new StringBuilder();
+//        text1.append(model.getAutor());
+//        text1.append(":");
+//        int index1 = text1.length();
+//        text1.append(" 在 ");
+//        int index2 = text1.length();
+//        text1.append(model.getPlcaeName());
+//        int index3 = text1.length();
+//
+//        SpannableStringBuilder builder = new SpannableStringBuilder(text1.toString());
+//
+//        builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), 0, index1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+//        builder.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), index1, index2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+//        builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), index2, index3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        holder.name.setText(model.getComment());
+        holder.address.setText(model.getPlcaeAddress());
 
-        SpannableStringBuilder builder = new SpannableStringBuilder(text1.toString());
-
-        builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), 0, index1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        builder.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), index1, index2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), index2, index3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        holder.name.setText(builder);
-
-
-        StringBuilder text2 = new StringBuilder();
-        text2.append(model.getTime());
-        text2.append(" 来至 ");
-        text2.append(model.getPlcaeAddress());
-
-        SpannableStringBuilder builder2 = new SpannableStringBuilder(text2.toString());
-        builder2.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), 0, text2.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        holder.timeAndAddress.setText(builder2);
-
+//        StringBuilder text2 = new StringBuilder();
+//        text2.append(model.getTime());
+//        text2.append(" 来至 ");
+//        text2.append(model.getPlcaeAddress());
+//
+//        SpannableStringBuilder builder2 = new SpannableStringBuilder(text2.toString());
+//        builder2.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), 0, text2.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        holder.commemt.setText(model.getPraiseNum() + "次");
+        holder.time.setText(DateUtils.getDateToString(DateUtils.DATA_FORMAT_MM_DD_YYYY, model.getTime()));
         if (itemClickListener != null) {
             holder.simpleDraweeView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,7 +68,15 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
                 }
             });
         }
-
+        holder.itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                ViewGroup.LayoutParams params = holder.line.getLayoutParams();
+                params.height = holder.itemView.getHeight();
+                holder.line.setLayoutParams(params);
+            }
+        });
     }
 
     @Override
@@ -83,13 +89,17 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
     static class ViewHold extends RecyclerView.ViewHolder {
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
-        @Bind(R.id.headView)
-        SimpleDraweeView headView;
+        @Bind(R.id.line)
+        View line;
         @Bind(R.id.name)
         TextView name;
-        @Bind(R.id.timeAndAddress)
-        TextView timeAndAddress;
+        @Bind(R.id.commemt)
+        TextView commemt;
 
+        @Bind(R.id.address)
+        TextView address;
+        @Bind(R.id.time)
+        TextView time;
 
         public ViewHold(final View itemView) {
             super(itemView);

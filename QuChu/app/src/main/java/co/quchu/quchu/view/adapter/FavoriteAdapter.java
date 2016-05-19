@@ -28,15 +28,14 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
         final FavoriteBean.ResultBean bean = data.get(position);
 
         holder.name.setText(bean.getName());
-        holder.simpleDraweeView.setImageURI(Uri.parse(bean.getAutorPhoto()));
-        holder.address.setText(bean.getAddress());
+        holder.simpleDraweeView.setImageURI(Uri.parse(bean.getCover()));
         holder.tag.setTags(bean.getTagsString());
 
         if (itemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClick(bean,0, position);
+                    itemClickListener.itemClick(bean, 0, position);
                 }
             });
         }
@@ -44,7 +43,7 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
 
     @Override
     public ViewHold onCreateView(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bearby_quchu, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite, parent, false);
         return new ViewHold(view);
     }
 
@@ -55,8 +54,8 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
         TagCloudView tag;
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
-        @Bind(R.id.address)
-        TextView address;
+//        @Bind(R.id.address)
+//        TextView address;
 
         public ViewHold(View itemView) {
             super(itemView);

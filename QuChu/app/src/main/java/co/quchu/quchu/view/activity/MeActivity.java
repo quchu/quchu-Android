@@ -20,13 +20,13 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
+import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.MeActivityPresenter;
@@ -134,8 +134,8 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         UserInfoModel user = AppContext.user;
         switch (v.getId()) {
 
-            case R.id.quchu://趣处
-                intent = new Intent(this, QuchuActivity.class);
+            case R.id.quchu://收藏
+                intent = new Intent(this, FavoriteActivity.class);
                 startActivity(intent);
                 break;
             case R.id.footPrint://脚印
@@ -169,7 +169,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 startActivity(intent);
                 break;
             case R.id.findPosition://发现新去处
-                intent = new Intent(this, FindPositionActivity.class);
+                intent = new Intent(this, FindPositionListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.toolbar_iv_right:

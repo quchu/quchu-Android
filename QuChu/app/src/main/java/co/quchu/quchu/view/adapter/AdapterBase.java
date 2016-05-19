@@ -22,15 +22,22 @@ import co.quchu.quchu.R;
  * desc :
  */
 public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
-    private static final int ITEM_VIEW_TYPE_FOOTER = -1;
+
+
+    public static final int ITEM_VIEW_TYPE_FOOTER = -1;
     private boolean loadMoreing = true;
     private OnLoadmoreListener loadmoreListener;
     private boolean loadMoreEnable = true;
     protected List<DT> data;
     protected OnItemClickListener<DT> itemClickListener;
+    protected OnItemRemoveListener<DT> itemRemoveListener;
 
     public void setItemClickListener(OnItemClickListener<DT> itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setItemRemoveListener(OnItemRemoveListener<DT> itemRemoveListener) {
+        this.itemRemoveListener = itemRemoveListener;
     }
 
     public void initData(List<DT> data) {
@@ -195,5 +202,16 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
 
     public interface OnItemClickListener<DT> {
         void itemClick(DT item, int type, int position);
+    }
+
+    public interface OnItemRemoveListener<DT> {
+        void itemRemoved(DT item, int position);
+    }
+
+    public void removeItem(int position) {
+        DT remove = data.remove(position);
+        notifyItemRemoved(position);
+        if (itemRemoveListener != null)
+            itemRemoveListener.itemRemoved(remove, position);
     }
 }

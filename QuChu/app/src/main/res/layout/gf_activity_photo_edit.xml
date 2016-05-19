@@ -25,7 +25,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/gf_title_bar_height"
-        android:background="@color/titleBackground"
+        android:background="@color/colorPrimary"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -37,7 +37,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_title_back" />
+            android:src="@mipmap/ic_back" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -46,7 +46,7 @@
             android:layout_centerInParent="true"
             android:layout_weight="1"
             android:text="@string/photo_edit"
-            android:textColor="@color/standard_color_h3_dark"
+            android:textColor="@color/titleBackground"
             android:textSize="@dimen/word_title_body" />
 
         <ImageView
@@ -117,6 +117,9 @@
         <co.quchu.quchu.gallery.widget.FloatingActionButton
             android:id="@+id/fab_crop"
             android:layout_width="wrap_content"
+            android:background="@color/colorPrimary"
+            app:backgroundTint="#ff87ffeb"
+            app:rippleColor="#33728dff"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
             app:fabIcon="@drawable/ic_gf_done" />

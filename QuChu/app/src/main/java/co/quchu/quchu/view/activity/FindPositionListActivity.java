@@ -1,53 +1,62 @@
-package co.quchu.quchu.view.fragment;
+package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.model.FindBean;
 import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.presenter.QuchuPresenter;
-import co.quchu.quchu.view.activity.FindPositionActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FindAdapter;
 
 /**
- * Created by no21 on 2016/4/6.
- * email:437943145@qq.com
- * desc :发现
+ * 我发现的趣处列表
  */
-public class FindFragment extends BaseFragment implements PageLoadListener<FindBean>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FindBean.ResultEntity> {
+public class FindPositionListActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, PageLoadListener<FindBean>, AdapterBase.OnItemClickListener<FindBean.ResultEntity> {
+
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+    @Bind(R.id.findPosition)
+    LinearLayout findPosition;
     private QuchuPresenter presenter;
-    private int pagesNo=1;
+    private int pagesNo = 1;
     private FindAdapter adapter;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_find, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_find_position_list);
+        ButterKnife.bind(this);
+        EnhancedToolbar toolbar = getEnhancedToolbar();
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        ButterKnife.bind(this, view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        TextView titleTv = toolbar.getTitleTv();
+        titleTv.setText("发现新趣处");
+
+        findPosition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FindPositionListActivity.this, FindPositionActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        presenter = new QuchuPresenter(getActivity());
+        presenter = new QuchuPresenter(this);
 
         adapter = new FindAdapter();
         adapter.setLoadmoreListener(this);
@@ -55,12 +64,13 @@ public class FindFragment extends BaseFragment implements PageLoadListener<FindB
 
         recyclerView.setAdapter(adapter);
         presenter.getFindData(pagesNo, this);
+
+
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 
     @Override
@@ -82,7 +92,7 @@ public class FindFragment extends BaseFragment implements PageLoadListener<FindB
             info.setPhotoPath(path);
             photos.add(info);
         }
-        Intent intent = new Intent(getActivity(), FindPositionActivity.class);
+        Intent intent = new Intent(this, FindPositionActivity.class);
         intent.putExtra(FindPositionActivity.REQUEST_KEY_NAME, name);
         intent.putExtra(FindPositionActivity.REQUEST_KEY_ID, pId);
         intent.putExtra(FindPositionActivity.REQUEST_KEY_POSITION, address);
@@ -113,7 +123,7 @@ public class FindFragment extends BaseFragment implements PageLoadListener<FindB
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getFindData(pagesNo, FindFragment.this);
+                presenter.getFindData(pagesNo, FindPositionListActivity.this);
             }
         });
 

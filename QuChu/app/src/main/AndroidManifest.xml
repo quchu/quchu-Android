@@ -202,7 +202,6 @@
         <activity
             android:name=".view.activity.MeActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.QuchuActivity" />
         <activity
             android:name=".view.activity.BindActivity"
             android:screenOrientation="portrait" />
@@ -213,22 +212,17 @@
             android:name=".view.activity.MyFootprintDetailActivity"
             android:label="@string/title_activity_my_footprint_detail"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.BindPhotoNumActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.BindPhotoNumActivity" />
         <activity android:name=".view.activity.WhatIsActivity" />
         <activity
             android:name=".view.activity.LoginActivity"
-            android:windowSoftInputMode="adjustResize" />\
+            android:windowSoftInputMode="adjustResize" />
 
-        <activity
-            android:name=".gallery.PhotoSelectActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".gallery.PhotoPreviewActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".gallery.PhotoSelectActivity" />
+        <activity android:name=".gallery.PhotoPreviewActivity" />
         <activity android:name=".gallery.PhotoEditActivity" />
-
+        <activity android:name=".view.activity.FavoriteActivity" />
+        <activity android:name=".view.activity.FindPositionListActivity" />
     </application>
 
 </manifest>

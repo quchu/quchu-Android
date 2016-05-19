@@ -1,62 +1,61 @@
-package co.quchu.quchu.view.fragment;
+package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.FavoriteBean;
 import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.presenter.QuchuPresenter;
-import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FavoriteAdapter;
+import co.quchu.quchu.widget.ItemTouchCallback;
 
-/**
- * Created by no21 on 2016/4/6.
- * email:437943145@qq.com
- * desc :收藏
- */
-public class FavoriteFragment extends BaseFragment implements PageLoadListener<FavoriteBean>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean> {
+public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean>, PageLoadListener<FavoriteBean> {
+
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+    private FavoriteAdapter adapter;
     private QuchuPresenter presenter;
     private int pagesNo = 1;
-    private FavoriteAdapter adapter;
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_favorite, container, false);
-    }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        ButterKnife.bind(this, view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_favorite);
+        ButterKnife.bind(this);
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        TextView titleTv = toolbar.getTitleTv();
+        titleTv.setText("收藏");
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        presenter = new QuchuPresenter(getActivity());
+        presenter = new QuchuPresenter(this);
         adapter = new FavoriteAdapter();
         adapter.setLoadmoreListener(this);
         adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);
         presenter.getFavoriteData(pagesNo, this);
+
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 
     @Override
@@ -66,8 +65,8 @@ public class FavoriteFragment extends BaseFragment implements PageLoadListener<F
 
     @Override
     public void itemClick(FavoriteBean.ResultBean item, int type, int position) {
-        MobclickAgent.onEvent(getContext(), "detail_profile_c");
-        Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
+        MobclickAgent.onEvent(this, "detail_profile_c");
+        Intent intent = new Intent(this, QuchuDetailsActivity.class);
         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_PROFILE);
         startActivity(intent);
@@ -96,7 +95,7 @@ public class FavoriteFragment extends BaseFragment implements PageLoadListener<F
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getFavoriteData(pagesNo, FavoriteFragment.this);
+                presenter.getFavoriteData(pagesNo, FavoriteActivity.this);
             }
         });
     }

@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".view.activity.MyFootprintActivity">
+    tools:context="co.quchu.quchu.view.activity.FavoriteActivity">
 
     <include layout="@layout/cp_enhanced_toolbar" />
 
@@ -13,8 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/appbar"
-        android:paddingTop="@dimen/base_margin"
-        android:background="@android:color/white" />
-
+        android:layout_marginTop="@dimen/base_margin" />
 
 </RelativeLayout>

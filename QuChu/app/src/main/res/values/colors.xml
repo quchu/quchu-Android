@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#ffd300</color>
     //应用主题色
-    <color name="colorPrimaryDark">#ffd300</color>
+    <color name="colorPrimaryDark">@android:color/black</color>
     //应用主题色 暗
     <color name="colorAccent">#333333</color>
     //应用次主题色

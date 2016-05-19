@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_pager"
+    android:fitsSystemWindows="true"
     tools:context="co.quchu.quchu.view.activity.MeActivity">
 
 
@@ -151,7 +152,7 @@
                     android:layout_gravity="center"
                     android:drawablePadding="3dp"
                     android:gravity="center_vertical"
-                    android:text="趣处"
+                    android:text="收藏"
                     android:textColor="@color/standard_color_h2_dark"
                     android:textSize="@dimen/word_size_body" />
             </LinearLayout>
@@ -250,7 +251,7 @@
         <LinearLayout
             android:id="@+id/findPosition"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/item_height"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -262,12 +263,13 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="我发现了一个新趣处"
+                android:text="发现新趣处"
                 android:textColor="@color/standard_color_h2_dark"
-                android:textSize="@dimen/word_title_body" />
+                android:textSize="@dimen/word_title_body"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

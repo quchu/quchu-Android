@@ -1,15 +1,12 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,7 +27,6 @@ import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
-import co.quchu.quchu.widget.ScrollIndexView;
 
 /**
  * 我的脚印,如果没有穿id参数 默认显示自己的
@@ -40,14 +36,14 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    @Bind(R.id.headView)
-    SimpleDraweeView headView;
-    @Bind(R.id.name)
-    TextView name;
-    @Bind(R.id.scrollIndexView)
-    ScrollIndexView scrollIndexView;
-    @Bind(R.id.ageAndCound)
-    TextView ageAndCound;
+    //    @Bind(R.id.headView)
+//    SimpleDraweeView headView;
+//    @Bind(R.id.name)
+//    TextView name;
+//    @Bind(R.id.scrollIndexView)
+//    ScrollIndexView scrollIndexView;
+//    @Bind(R.id.ageAndCound)
+//    TextView ageAndCound;
     private MyFootprintPresenter presenter;
 
     private MyFootprintAdapter adapter;
@@ -80,76 +76,75 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
 //        presenter.getMyFoiotrintList(userId, pagesNo);
 
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            boolean isIdle = true;
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        if (isIdle) {
-                            isIdle = false;
-                            scrollIndexView.show();
-                        }
-                        break;
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        isIdle = true;
-                        scrollIndexView.hide();
-                        break;
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                float height = recyclerView.getHeight();
-                View childView = recyclerView.getChildAt(0);
-                float firstPosition = recyclerView.getChildAdapterPosition(childView);
-                float itemCount = recyclerView.getAdapter().getItemCount();
-                //第一个item消失的部分
-                float itemOrrset = -childView.getTop() / (float) childView.getHeight();
-                float targetPosition = (height * ((firstPosition + itemOrrset) / itemCount)) + recyclerView.getY();
-
-                if (targetPosition > recyclerView.getY() + recyclerView.getHeight() - scrollIndexView.getHeight()) {
-                    targetPosition = recyclerView.getY() + recyclerView.getHeight() - scrollIndexView.getHeight();
-                }
-                if (targetPosition < recyclerView.getY()) {
-                    targetPosition = recyclerView.getY();
-                }
-
-                scrollIndexView.setY(targetPosition);
-                for (int i = 0, size = recyclerView.getChildCount(); i < size; i++) {
-                    View view = recyclerView.getChildAt(i);
-                    if (view.getY() + view.getHeight() >= scrollIndexView.getY()) {
-                        int position = recyclerView.getChildAdapterPosition(view);
-                        if (adapter.getData().size() > position) {
-                            String time = adapter.getData().get(position).getTime();
-                            scrollIndexView.startTimeAnamation(time);
-                        }
-                        break;
-                    }
-                }
-            }
-        });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            boolean isIdle = true;
+//
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                switch (newState) {
+//                    case RecyclerView.SCROLL_STATE_DRAGGING:
+//                        if (isIdle) {
+//                            isIdle = false;
+//                            scrollIndexView.show();
+//                        }
+//                        break;
+//                    case RecyclerView.SCROLL_STATE_IDLE:
+//                        isIdle = true;
+//                        scrollIndexView.hide();
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                float height = recyclerView.getHeight();
+//                View childView = recyclerView.getChildAt(0);
+//                float firstPosition = recyclerView.getChildAdapterPosition(childView);
+//                float itemCount = recyclerView.getAdapter().getItemCount();
+//                //第一个item消失的部分
+//                float itemOrrset = -childView.getTop() / (float) childView.getHeight();
+//                float targetPosition = (height * ((firstPosition + itemOrrset) / itemCount)) + recyclerView.getY();
+//
+//                if (targetPosition > recyclerView.getY() + recyclerView.getHeight() - scrollIndexView.getHeight()) {
+//                    targetPosition = recyclerView.getY() + recyclerView.getHeight() - scrollIndexView.getHeight();
+//                }
+//                if (targetPosition < recyclerView.getY()) {
+//                    targetPosition = recyclerView.getY();
+//                }
+//
+//                scrollIndexView.setY(targetPosition);
+//                for (int i = 0, size = recyclerView.getChildCount(); i < size; i++) {
+//                    View view = recyclerView.getChildAt(i);
+//                    if (view.getY() + view.getHeight() >= scrollIndexView.getY()) {
+//                        int position = recyclerView.getChildAdapterPosition(view);
+//                        if (adapter.getData().size() > position) {
+//                            String time = adapter.getData().get(position).getTime();
+//                            scrollIndexView.startTimeAnamation(time);
+//                        }
+//                        break;
+//                    }
+//                }
+//            }
+//        });
     }
 
     private void initTitle() {
         EnhancedToolbar toolbar = getEnhancedToolbar();
-        int age = getIntent().getIntExtra(REQUEST_KEY_USER_AGE, 0);
-        int cound = getIntent().getIntExtra(REQUEST_KEY_USER_FOOTER_COUND, 0);
-        String uri = getIntent().getStringExtra(REQUEST_KEY_USER_PHOTO);
+//        int age = getIntent().getIntExtra(REQUEST_KEY_USER_AGE, 0);
+//        int cound = getIntent().getIntExtra(REQUEST_KEY_USER_FOOTER_COUND, 0);
+//        String uri = getIntent().getStringExtra(REQUEST_KEY_USER_PHOTO);
         String title = getIntent().getStringExtra(REQUEST_KEY_USER_FOOTER_TITLE);
         toolbar.getTitleTv().setText(title);
-        String builder = String.valueOf(age) +
-                "年," +
-                cound +
-                "个脚印";
+//        String builder = String.valueOf(age) +
+//                "年," +
+//                cound +
+//                "个脚印";
 
-        name.setText(getIntent().getStringExtra(REQUEST_KEY_USER_NAME));
-        ageAndCound.setText(builder);
-        headView.setImageURI(Uri.parse(uri + ""));
+//        name.setText(getIntent().getStringExtra(REQUEST_KEY_USER_NAME));
+//        ageAndCound.setText(builder);
+//        headView.setImageURI(Uri.parse(uri + ""));
         ImageView rightIv = toolbar.getRightIv();
-        rightIv.setImageResource(R.mipmap.ic_dismiss_dialog);
-        rightIv.setRotation(45);
+        rightIv.setImageResource(R.mipmap.ic_add_position);
         rightIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +197,7 @@ public class MyFootprintActivity extends BaseActivity implements PageLoadListene
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getMyFoiotrintList(userId, pageNo );
+                presenter.getMyFoiotrintList(userId, pageNo);
             }
         });
     }
