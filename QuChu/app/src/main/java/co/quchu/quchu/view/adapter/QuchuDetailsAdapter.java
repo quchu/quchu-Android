@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.generic.RoundingParams;
@@ -35,10 +34,8 @@ import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.UserCenterActivity;
-import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.RoundProgressViewNew;
 import co.quchu.quchu.widget.TagCloudView;
-import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
  * Created by admin on 2016/3/7.
@@ -345,10 +342,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {
 
-            ((AdditionalInfoViewHolder) holder).rvInfoGrid.setLayoutManager(new NestedLinearLayoutManager(((AdditionalInfoViewHolder) holder).rvInfoGrid.getContext(),4));
-            ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(null);
             if (!mData.isIsActivity()) {
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
+                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setLayoutManager(new NestedGridLayoutManager(((AdditionalInfoViewHolder) holder).rvInfoGrid.getContext(),4));
+                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(null));
 
             } else {
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.GONE);
@@ -628,6 +625,87 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         NearbyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+        }
+    }
+
+    private class IconModel{
+        private int id;
+        private String url;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+    }
+
+    public class AdditionalInfoAdapter extends RecyclerView.Adapter<AdditionalInfoAdapter.ViewHolder>{
+
+        List<IconModel> dataSet;
+
+        public AdditionalInfoAdapter(List<IconModel> dataSet) {
+            this.dataSet = dataSet;
+        }
+
+        @Override
+        public AdditionalInfoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_additional_info,parent,false));
+        }
+
+        @Override
+        public void onBindViewHolder(AdditionalInfoAdapter.ViewHolder holder, int position) {
+//            switch (dataSet.get(position).getId()){
+            switch (position){
+                case 0:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_parking_slot);
+                    break;
+                case 1:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_wechatpay);
+                    break;
+                case 2:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_alipay);
+                    break;
+                case 3:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_cash);
+                    break;
+                case 4:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_visacard);
+                    break;
+                case 5:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_no_seat);
+                    break;
+                case 6:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_deliver);
+                    break;
+                case 7:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_private_room);
+                    break;
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return 7;
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            @Bind(R.id.sdvIcon)
+            ImageView ivIcon;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
         }
     }
 
