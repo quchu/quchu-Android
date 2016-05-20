@@ -4,12 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -20,7 +19,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -31,7 +29,6 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
-import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.NearbyItemModel;
@@ -49,7 +46,6 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
-import co.quchu.quchu.widget.HidingScrollListener;
 
 
 /**
@@ -123,7 +119,6 @@ public class QuchuDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_quchu_details);
         ButterKnife.bind(this);
         from = getIntent().getStringExtra(REQUEST_KEY_FROM);
-
         getEnhancedToolbar().getTitleTv().setText("");
         getEnhancedToolbar().getRightTv().setText(R.string.pre_order);
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
@@ -428,12 +423,17 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     }
 
+
     @OnClick({R.id.ivFootprint, R.id.ivFavorite,R.id.ivShare,R.id.ivMore})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         if (dModel != null) {
             switch (v.getId()) {
+
+                case R.id.ivMore:
+
+                    break;
 
                 case R.id.ivShare:
 

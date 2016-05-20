@@ -27,7 +27,8 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
             outRect.top = mSpace;
         }
 
-        if (parent.getChildLayoutPosition(view)>=parent.getChildCount()-2){
+
+        if (parent.getChildLayoutPosition(view)>=state.getItemCount()-2){
             outRect.bottom = mSpace * 2;
         }else{
             outRect.bottom = mSpace;
