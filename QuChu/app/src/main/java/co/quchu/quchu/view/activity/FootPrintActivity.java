@@ -76,7 +76,7 @@ public class FootPrintActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        rvFootPrint.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
+        rvFootPrint.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.quarter_margin)));
         rvFootPrint.setAdapter(mAdapter);
         rvFootPrint.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         tvAddFootPrint.setOnClickListener(new View.OnClickListener() {
