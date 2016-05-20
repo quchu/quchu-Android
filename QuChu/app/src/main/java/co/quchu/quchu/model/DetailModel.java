@@ -416,6 +416,7 @@ public class DetailModel implements Serializable{
     }
 
     public static class IconsEntity implements Serializable {
+        private int id;
         private String zh;
 
         public void setZh(String zh) {
@@ -424,6 +425,14 @@ public class DetailModel implements Serializable{
 
         public String getZh() {
             return zh;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
         }
     }
 

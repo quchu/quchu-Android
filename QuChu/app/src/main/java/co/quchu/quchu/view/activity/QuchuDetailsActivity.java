@@ -32,6 +32,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.dialog.ShareDialogFg;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -66,20 +67,12 @@ public class QuchuDetailsActivity extends BaseActivity {
     View detail_bottom_group_ll;
     @Bind(R.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.ivFavorite)
-    ImageView vFavorite;
     @Bind(R.id.sdvHead)
     SimpleDraweeView sdv;
 
-    @Bind(R.id.ivQuguo)
-    ImageView ivQuguo;
-    @Bind(R.id.rlQuguo)
-    RelativeLayout rlQuguo;
 
-    @Bind(R.id.tvFootPrint)
-    TextView tvFootprint;
-    @Bind(R.id.tvQuguo)
-    TextView tvQuguo;
+    @Bind(R.id.ivFavorite)
+    ImageView ivFavorite;
 
     //TODO
     //TODO
@@ -348,7 +341,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     private void changeCollectState(boolean isCollect) {
         dModel.setIsf(isCollect);
-        vFavorite.setImageResource(isCollect ? R.mipmap.ic_star_fill : R.mipmap.ic_star_stroke);
+        ivFavorite.setImageResource(isCollect ? R.mipmap.ic_star : R.mipmap.ic_star_light);
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 
@@ -435,19 +428,19 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.ivShare, R.id.ivFavorite})
+    @OnClick({R.id.ivFootprint, R.id.ivFavorite,R.id.ivShare,R.id.ivMore})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         if (dModel != null) {
             switch (v.getId()) {
 
-                case R.id.rlQuguo:
+                case R.id.ivShare:
 
-//                    if (AppContext.user.isIsVisitors()) {
-//                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
-//                        vDialog.show(getFragmentManager(), "visitor");
-//                    } else
+                    if (AppContext.user.isIsVisitors()) {
+                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
+                        vDialog.show(getSupportFragmentManager(), "visitor");
+                    } else
 
                     if (null != mVisitedInfoModel) {
                         RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(),mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
@@ -463,33 +456,25 @@ public class QuchuDetailsActivity extends BaseActivity {
                     }
 
                     break;
-                case R.id.tvFootPrint:
+                case R.id.ivFootprint:
                     Intent footPrintIntent = new Intent(QuchuDetailsActivity.this, FootPrintActivity.class);
                     footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_ID, dModel.getPid());
                     footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_NAME, dModel.getName());
                     startActivity(footPrintIntent);
                     break;
-
-//                case R.id.detail_button_add_postcard_rl:
-//                    Intent intent = new Intent();
-//                    intent.putExtra("pId", dModel.getPid());
-//                    //intent.putExtra("pName", dModel.getName());
-//                    intent.setClass(this, FootPrintActivity.class);
-//                    startActivity(intent);
-//                    break;
                 case R.id.ivFavorite:
                     //收藏
                     setFavorite();
                     break;
-                case R.id.ivShare:
-                    //分享
-                    try {
-                        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
-                        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    break;
+//                case R.id.ivShare:
+//                    //分享
+//                    try {
+//                        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
+//                        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//                    break;
 
                 case R.id.detail_store_address_ll:
 
@@ -544,33 +529,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-//
-//    public class Want2GoClickImpl implements WantToGoDialogFg.Wan2GoClickListener {
-//
-//        @Override
-//        public void collectClick() {
-//            if (AppContext.user.isIsVisitors()) {
-//                VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
-//                vDialog.show(getFragmentManager(), "visitor");
-//            } else {
-//                if (dModel.isIsf()) {
-//                    Toast.makeText(QuchuDetailsActivity.this, "已经收藏成功了!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    setFavorite();
-//                }
-//            }
-//        }
-//
-//        @Override
-//        public void reserveClick() {
-//            if (StringUtils.isEmpty(dModel.getNet())) {
-//                Toast.makeText(QuchuDetailsActivity.this, "还没找到去往你心里的路...", Toast.LENGTH_SHORT).show();
-//            } else {
-//                LogUtils.json("webview ==");
-//                WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
-//            }
-//        }
-//    }
+
 
     @Override
     protected void onResume() {

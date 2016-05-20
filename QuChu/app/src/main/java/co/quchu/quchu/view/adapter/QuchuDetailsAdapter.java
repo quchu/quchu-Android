@@ -34,7 +34,6 @@ import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.UserCenterActivity;
-import co.quchu.quchu.widget.GridItemDecoration;
 import co.quchu.quchu.widget.RoundProgressViewNew;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 import co.quchu.quchu.widget.TagCloudView;
@@ -344,10 +343,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {
 
-            if (!mData.isIsActivity()) {
+            if (!mData.isIsActivity() && null!=mData.getIcons()) {
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setLayoutManager(new NestedGridLayoutManager(((AdditionalInfoViewHolder) holder).rvInfoGrid.getContext(),4));
-                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(null));
+                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
 
                 if (null==((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag() || !((boolean)((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag())){
                     ((AdditionalInfoViewHolder) holder).rvInfoGrid.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin)));
@@ -634,33 +633,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private class IconModel{
-        private int id;
-        private String url;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-    }
 
     public class AdditionalInfoAdapter extends RecyclerView.Adapter<AdditionalInfoAdapter.ViewHolder>{
 
-        List<IconModel> dataSet;
+        List<DetailModel.IconsEntity> mIconSet;
 
-        public AdditionalInfoAdapter(List<IconModel> dataSet) {
-            this.dataSet = dataSet;
+        public AdditionalInfoAdapter(List<DetailModel.IconsEntity> dataSet) {
+            this.mIconSet = dataSet;
         }
 
         @Override
@@ -670,38 +649,39 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onBindViewHolder(AdditionalInfoAdapter.ViewHolder holder, int position) {
-//            switch (dataSet.get(position).getId()){
-            switch (position){
-                case 0:
-                    holder.ivIcon.setImageResource(R.mipmap.ic_parking_slot);
-                    break;
-                case 1:
-                    holder.ivIcon.setImageResource(R.mipmap.ic_wechatpay);
-                    break;
-                case 2:
-                    holder.ivIcon.setImageResource(R.mipmap.ic_alipay);
-                    break;
-                case 3:
+
+            int id = mIconSet.get(position).getId();
+            switch (id){
+                case 18:
                     holder.ivIcon.setImageResource(R.mipmap.ic_cash);
                     break;
-                case 4:
+                case 19:
                     holder.ivIcon.setImageResource(R.mipmap.ic_visacard);
                     break;
-                case 5:
+                case 21:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_parking_slot);
+                    break;
+                case 31:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_private_room);
+                    break;
+                case 61:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_wechatpay);
+                    break;
+                case 63:
+                    holder.ivIcon.setImageResource(R.mipmap.ic_alipay);
+                    break;
+                case 64:
                     holder.ivIcon.setImageResource(R.mipmap.ic_no_seat);
                     break;
-                case 6:
+                case 91:
                     holder.ivIcon.setImageResource(R.mipmap.ic_deliver);
-                    break;
-                case 7:
-                    holder.ivIcon.setImageResource(R.mipmap.ic_private_room);
                     break;
             }
         }
 
         @Override
         public int getItemCount() {
-            return 7;
+            return null!= mIconSet ? mIconSet.size():0;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
