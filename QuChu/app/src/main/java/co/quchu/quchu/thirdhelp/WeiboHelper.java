@@ -153,7 +153,6 @@ public class WeiboHelper {
         try {
             os = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
-            System.out.println("kkkkkkk    size  " + os.toByteArray().length);
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.e("Weibo.BaseMediaObject", "put thumb failed");

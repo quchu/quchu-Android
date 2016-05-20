@@ -122,7 +122,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             holder.tag2.setVisibility(View.GONE);
             holder.tag3.setVisibility(View.GONE);
         }
-        System.out.println(SPUtils.getLatitude() + "|" + SPUtils.getLongitude());
         if (0 == SPUtils.getLatitude() || 0 == SPUtils.getLongitude()) {
             holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
         } else {

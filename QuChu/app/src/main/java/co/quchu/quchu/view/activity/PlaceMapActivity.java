@@ -303,7 +303,6 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         aMap.setOnInfoWindowClickListener(new AMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                System.out.println("on infowindow click" + mDataSet.get((Integer) marker.getObject()));
                 NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getObject());
                 popNavigation(nearbyMapModel.getLatitude(),nearbyMapModel.getLongitude(),nearbyMapModel.getGdLatitude(),nearbyMapModel.getGdLongitude());
             }

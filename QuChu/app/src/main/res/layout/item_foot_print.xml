@@ -8,5 +8,7 @@
     fresco:failureImageScaleType="focusCrop"
     fresco:placeholderImage="@mipmap/ic_image_empty"
     fresco:placeholderImageScaleType="focusCrop"
+    fresco:roundingBorderWidth="1px"
+    fresco:roundingBorderColor="@color/standard_color_h3_dark"
     fresco:roundedCornerRadius="@dimen/rounded_radius"
     />

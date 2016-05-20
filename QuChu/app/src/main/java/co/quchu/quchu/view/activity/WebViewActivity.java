@@ -77,7 +77,6 @@ public class WebViewActivity extends BaseActivity {
 
         String url = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_URL);
         mPageTitle = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_TITLE);
-        System.out.println(url + "|" + mPageTitle);
         getEnhancedToolbar().getTitleTv().setText(!StringUtils.isEmpty(mPageTitle) ? mPageTitle : "");
 
         if (!StringUtils.isEmpty(url) && URLUtil.isValidUrl(url)) {

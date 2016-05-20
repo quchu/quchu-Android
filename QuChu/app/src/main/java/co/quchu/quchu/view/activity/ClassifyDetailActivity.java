@@ -71,7 +71,6 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
                 Intent intent = new Intent(ClassifyDetailActivity.this, QuchuDetailsActivity.class);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_SUBJECT);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid());
-                System.out.println(mData.get(position).getPid());
                 startActivity(intent);
             }
         });

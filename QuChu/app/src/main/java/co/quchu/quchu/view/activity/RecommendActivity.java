@@ -190,7 +190,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                     .setDuration(300)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .start();
-            System.out.println("|||"+(flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight());
             flContainer.animate().translationY(rlSearchBar.getHeight()/2)
                     .scaleY(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
                     .setDuration(300)
