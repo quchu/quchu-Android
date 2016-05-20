@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,7 +19,6 @@ import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.presenter.QuchuPresenter;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FavoriteAdapter;
-import co.quchu.quchu.widget.ItemTouchCallback;
 
 public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean>, PageLoadListener<FavoriteBean> {
 
@@ -49,8 +47,8 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
         presenter.getFavoriteData(pagesNo, this);
 
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchCallback(adapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchCallback(adapter));
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override

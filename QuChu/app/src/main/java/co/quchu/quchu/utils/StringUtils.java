@@ -42,11 +42,11 @@ public class StringUtils {
         return new File(path).isFile();
     }
 
-    public static Spanned getColorSpan(Context context, int resColor, String pre, String target, String end){
+    public static Spanned getColorSpan(Context context, int resColor, String pre, String target, String end) {
         StringBuffer sb = new StringBuffer();
         sb.append(pre)
                 .append("<font color=#")
-                .append(Integer.toHexString(context.getResources().getColor(resColor)& 0x00ffffff))
+                .append(Integer.toHexString(context.getResources().getColor(resColor) & 0x00ffffff))
                 .append(">")
                 .append(target)
                 .append("</font>")
@@ -115,6 +115,7 @@ public class StringUtils {
         return (int) (dpValue * scale + 0.5f);
     }
 
+    @Deprecated
     public static int dip2px(float dpValue) {
         final float scale = AppContext.mContext.getResources().getDisplayMetrics().density;
 //        LogUtils.json(scale+" display");
@@ -184,6 +185,7 @@ public class StringUtils {
 
     /**
      * 是否数字
+     *
      * @param str
      * @return
      */
@@ -235,14 +237,13 @@ public class StringUtils {
      * @param mColor
      */
     public static void alterBoldTextColor(TextView view, int startIndex, int endIndex, int mColor) {
-        try{
+        try {
             SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
             ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(mColor));
             builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             view.setText(builder);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -326,6 +327,7 @@ public class StringUtils {
             return false;
         }
     }
+
     /**
      * 格式化成小数点后两位
      *
@@ -339,7 +341,7 @@ public class StringUtils {
     }
 
     public static String getDistance(double latitude, double longitude, double targetLatitude, double targetLonitude) {
-        float distance = AMapUtils.calculateLineDistance(new LatLng(latitude, longitude),new LatLng(targetLatitude,targetLonitude));
+        float distance = AMapUtils.calculateLineDistance(new LatLng(latitude, longitude), new LatLng(targetLatitude, targetLonitude));
         return new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
     }
 }
