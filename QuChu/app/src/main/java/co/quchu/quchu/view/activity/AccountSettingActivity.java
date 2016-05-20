@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +24,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import co.quchu.quchu.gallery.CoreConfig;
-import co.quchu.quchu.gallery.FunctionConfig;
-import co.quchu.quchu.gallery.GalleryFinal;
-import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
@@ -39,6 +36,10 @@ import co.quchu.quchu.dialog.LocationSettingDialogFg;
 import co.quchu.quchu.dialog.ModiffPasswordDialog;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
+import co.quchu.quchu.gallery.CoreConfig;
+import co.quchu.quchu.gallery.FunctionConfig;
+import co.quchu.quchu.gallery.GalleryFinal;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -68,6 +69,8 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     TextView accountSettingUserLocation;
     @Bind(R.id.radioGroup)
     RadioGroup radioGroup;
+    @Bind(R.id.loginTypeIcon)
+    ImageView loginTypeIcon;
 
 
     private ArrayList<Integer> imageList;
@@ -112,6 +115,18 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                 radioGroup.check(R.id.girl);
             }
         }
+        switch (SPUtils.getLoginType()) {
+            case SPUtils.LOGIN_TYPE_WEIBO:
+                loginTypeIcon.setImageResource(R.mipmap.ic_weibo);
+                break;
+            case SPUtils.LOGIN_TYPE_WEIXIN:
+                loginTypeIcon.setImageResource(R.mipmap.ic_wechat);
+                break;
+            default:
+                loginTypeIcon.setImageResource(R.mipmap.ic_phone);
+        }
+
+
     }
 
     @Override

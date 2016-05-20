@@ -18,30 +18,25 @@ import co.quchu.quchu.R;
  */
 public class DateUtils {
     public static String DATA_FORMAT_MM_DD_YYYY = "MM-DD-yyyy";
+    public static String DATA_FORMAT_YYYY_MM_DDHH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
 
     public static String getDateToString(String format, long time) {
         Date d = new Date(time);
         SimpleDateFormat sf = new SimpleDateFormat(format, Locale.CHINESE);
-        sf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sf.setTimeZone(TimeZone.getDefault());
         return sf.format(d);
     }
 
     public static String getDateToString(String format, String time) {
         Date d = new Date(getTimeStamp(time));
-        SimpleDateFormat sf = new SimpleDateFormat(format);
-        sf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat sf = new SimpleDateFormat(format, Locale.SIMPLIFIED_CHINESE);
+        sf.setTimeZone(TimeZone.getDefault());
         return sf.format(d);
     }
 
-    public static String getUTCTime() {
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.CHINESE);
-        fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)));
-        return fmt.format(new Date());
-    }
-
     public static long getTimeStamp(String timeStr) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATA_FORMAT_YYYY_MM_DDHH_MM_SS, Locale.SIMPLIFIED_CHINESE);
         Date d;
         long timeStamp = 0L;
         try {

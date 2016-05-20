@@ -40,7 +40,7 @@
             android:layout_below="@id/headView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/quarter_margin"
-            android:background="@drawable/tag_background"
+            android:background="@drawable/shape_edit_bg"
             android:paddingBottom="@dimen/tow_dp_margin"
             android:paddingLeft="@dimen/quarter_margin"
             android:paddingRight="@dimen/quarter_margin"
@@ -136,7 +136,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_man" />
+                        android:src="@mipmap/ic_male" />
 
                     <RadioButton
                         android:id="@+id/girl"
@@ -146,14 +146,14 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_girl" />
+                        android:src="@mipmap/ic_female" />
                 </RadioGroup>
 
             </RelativeLayout>
 
             <View style="@style/HorizontalLine" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
@@ -165,19 +165,28 @@
                     android:text="账号" />
 
 
+                <ImageView
+                    android:id="@+id/loginTypeIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_phone" />
+
                 <TextView
                     android:id="@+id/photoNumber"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:drawableRight="@mipmap/ic_plane"
+                    android:layout_toLeftOf="@id/loginTypeIcon"
                     android:ellipsize="end"
-                    android:gravity="center_vertical|right"
+                    android:gravity="center_vertical"
                     android:maxLines="1"
                     android:textColor="@color/account_setting_text_hint_color"
                     android:textSize="@dimen/word_size_body"
                     tools:text="4234123432" />
 
-            </LinearLayout>
+
+            </RelativeLayout>
 
             <View style="@style/HorizontalLine" />
 

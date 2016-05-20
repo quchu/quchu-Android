@@ -40,7 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        getWindow().setStatusBarColor(getColor(R.color.colorPrimaryDark));
         switch (activitySetup()) {
             case TRANSITION_TYPE_NOTHING:
-                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
+//                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
                 break;
             case TRANSITION_TYPE_ALPHA:
                 overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
@@ -75,22 +75,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        switch (activitySetup()) {
-            case TRANSITION_TYPE_NOTHING:
-                break;
-            case TRANSITION_TYPE_ALPHA:
-                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
-                break;
-            case TRANSITION_TYPE_LEFT:
-                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
-                break;
-            case TRANSITION_TYPE_BOTTOM:
-                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
-                break;
-            case TRANSITION_TYPE_TOP:
-                overridePendingTransition(R.anim.in_bottom_to_top, R.anim.out_top_to_bottom);
-                break;
-        }
+//        switch (activitySetup()) {
+//            case TRANSITION_TYPE_NOTHING:
+//                break;
+//            case TRANSITION_TYPE_ALPHA:
+//                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
+//                break;
+//            case TRANSITION_TYPE_LEFT:
+//                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
+//                break;
+//            case TRANSITION_TYPE_BOTTOM:
+//                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
+//                break;
+//            case TRANSITION_TYPE_TOP:
+//                overridePendingTransition(R.anim.in_bottom_to_top, R.anim.out_top_to_bottom);
+//                break;
+//        }
     }
 
     @Override

@@ -129,7 +129,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_footprint_detail);
-        getEnhancedToolbar().getTitleTv().setText("");
         ButterKnife.bind(this);
         initListener();
         initData(-1);

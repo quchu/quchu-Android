@@ -77,7 +77,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         EnhancedToolbar toolbar = getEnhancedToolbar();
 
         ImageView imageView = toolbar.getRightIv();
-        imageView.setImageResource(R.mipmap.ic_setting);
+        imageView.setImageResource(R.mipmap.ic_tools);
         imageView.setOnClickListener(this);
 
         initListener();
@@ -161,6 +161,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                     dialogFg.show(getSupportFragmentManager(), "");
                 } else {
                     intent = new Intent(this, QuFriendsActivity.class);
+//                    Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this, headImage, QuFriendsActivity.KEY_TRANSITION_ANIMATION).toBundle();
                     startActivity(intent);
                 }
                 break;

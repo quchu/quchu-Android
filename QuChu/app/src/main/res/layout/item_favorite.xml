@@ -18,6 +18,7 @@
             android:id="@+id/simpleDraweeView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            fresco:overlayImage="@color/translucent_dark"
             fresco:placeholderImage="@mipmap/ic_image_empty"
             fresco:viewAspectRatio="3.3" />
 
@@ -44,7 +45,7 @@
             card_view:tcvItemBorderHorizontal="10dp"
             card_view:tcvRightResId="@null"
             card_view:tcvSingleLine="true"
-            card_view:tcvTextColor="@color/standard_color_h3_dark" />
+            card_view:tcvTextColor="@color/standard_color_white" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -52,14 +53,14 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/base_margin"
-            android:rotation="180"
-            android:src="@mipmap/ic_back" />
+            android:src="@mipmap/ic_forward" />
 
         <ImageView
             android:id="@+id/delete"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:rotation="180"
             android:src="@mipmap/ic_image_empty"
             android:visibility="gone" />
     </RelativeLayout>

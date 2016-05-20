@@ -25,7 +25,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/double_margin"
+            android:layout_marginTop="@dimen/base_margin"
             fresco:placeholderImage="@mipmap/avatar_2"
             fresco:roundAsCircle="true" />
 
@@ -37,7 +37,7 @@
             android:layout_marginStart="@dimen/double_margin"
             android:layout_toEndOf="@id/headImage"
             android:layout_toRightOf="@id/headImage"
-            android:background="@drawable/tag_background"
+            android:background="@drawable/shape_edit_bg"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin">
@@ -139,7 +139,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/half_margin">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -165,7 +166,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/half_margin">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -200,7 +202,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/half_margin">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -226,7 +229,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/half_margin">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -259,7 +263,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@mipmap/ic_edit_small" />
+                android:src="@mipmap/ic_writebig" />
 
             <TextView
                 android:layout_width="wrap_content"

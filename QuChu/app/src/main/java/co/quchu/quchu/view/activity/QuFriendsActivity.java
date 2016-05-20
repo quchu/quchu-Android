@@ -41,6 +41,8 @@ public class QuFriendsActivity extends BaseActivity {
     @Bind(R.id.whatIs)
     TextView whatIs;
 
+    public static final String KEY_TRANSITION_ANIMATION = "headImageView";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,9 @@ public class QuFriendsActivity extends BaseActivity {
         Bundle bundleFlr = new Bundle();
         bundleSub.putBoolean(FriendsFollowerFg.BUNDLE_KEY_IS_SUBSCRIBE, true);
         bundleFlr.putBoolean(FriendsFollowerFg.BUNDLE_KEY_IS_SUBSCRIBE, false);
+
         headImage.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+//        ViewCompat.setTransitionName(headImage, KEY_TRANSITION_ANIMATION);
 
         FriendsFollowerFg fragment1 = new FriendsFollowerFg();
         fragment1.setArguments(bundleSub);
@@ -120,7 +124,7 @@ public class QuFriendsActivity extends BaseActivity {
 
     @Override
     protected int activitySetup() {
-        return TRANSITION_TYPE_LEFT;
+        return TRANSITION_TYPE_NOTHING;
     }
 
 
