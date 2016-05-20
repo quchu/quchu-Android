@@ -80,6 +80,9 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
 
     @Override
     public void onPageSelected(int position) {
+        if (null==data){
+            return;
+        }
         selectedPosition = position;
         Entity entity = data.get(position);
         headImage.setImageURI(Uri.parse(entity.head));
