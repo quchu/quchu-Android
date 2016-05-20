@@ -34,7 +34,9 @@ import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.UserCenterActivity;
+import co.quchu.quchu.widget.GridItemDecoration;
 import co.quchu.quchu.widget.RoundProgressViewNew;
+import co.quchu.quchu.widget.SpacesItemDecoration;
 import co.quchu.quchu.widget.TagCloudView;
 
 /**
@@ -347,6 +349,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setLayoutManager(new NestedGridLayoutManager(((AdditionalInfoViewHolder) holder).rvInfoGrid.getContext(),4));
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(null));
 
+                if (null==((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag() || !((boolean)((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag())){
+                    ((AdditionalInfoViewHolder) holder).rvInfoGrid.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin)));
+                    ((AdditionalInfoViewHolder) holder).rvInfoGrid.setTag(true);
+                }
             } else {
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.GONE);
             }
