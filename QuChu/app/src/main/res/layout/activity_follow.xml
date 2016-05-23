@@ -4,13 +4,12 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <include
-        layout="@layout/cp_enhanced_toolbar" />
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/follow_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_activity_bg"
-        android:layout_below="@+id/appbar" />
+        android:layout_below="@+id/appbar"
+        android:background="@color/standard_color_white" />
 </RelativeLayout>

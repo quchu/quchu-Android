@@ -50,7 +50,7 @@
                 android:src="@mipmap/ic_edit_small" />
 
             <TextView
-                android:id="@+id/editOrLogin"
+                android:id="@+id/followAction"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -70,7 +70,7 @@
             tools:text="我的手_做不到" />
 
         <Button
-            android:id="@+id/tvUserNickName"
+            android:id="@+id/alias"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_below="@id/name"

@@ -32,7 +32,7 @@ import co.quchu.quchu.widget.AnimationViewPager.RotatePageTransformer;
  * 趣星人
  */
 public class QuFriendsActivity extends BaseActivity {
-    @Bind(R.id.qu_friends_vp)
+    @Bind(R.id.recyclerView)
     ViewPager quFriendsVp;
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
@@ -49,7 +49,7 @@ public class QuFriendsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qu_friends);
         ButterKnife.bind(this);
-        getEnhancedToolbar().getTitleTv().setText(getTitle().toString());
+        getEnhancedToolbar().getTitleTv().setText("我的趣友圈");
 
 
         tabLayout.addTab(tabLayout.newTab().setText("关注"));

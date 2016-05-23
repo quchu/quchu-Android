@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -68,15 +67,7 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
                 }
             });
         }
-        holder.itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                ViewGroup.LayoutParams params = holder.line.getLayoutParams();
-                params.height = holder.itemView.getHeight();
-                holder.line.setLayoutParams(params);
-            }
-        });
+
     }
 
     @Override
@@ -89,8 +80,6 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
     static class ViewHold extends RecyclerView.ViewHolder {
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
-        @Bind(R.id.line)
-        View line;
         @Bind(R.id.name)
         TextView name;
         @Bind(R.id.commemt)

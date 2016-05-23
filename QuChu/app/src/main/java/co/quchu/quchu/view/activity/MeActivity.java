@@ -44,7 +44,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     LinearLayout friend;
     @Bind(R.id.massage)
     LinearLayout massage;
-    @Bind(R.id.tvUserNickName)
+    @Bind(R.id.alias)
     TextView tvUserNickName;
     @Bind(R.id.name)
     TextView name;
@@ -58,7 +58,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     LinearProgressView progress4;
     @Bind(R.id.findPosition)
     LinearLayout findPosition;
-    @Bind(R.id.editOrLogin)
+    @Bind(R.id.followAction)
     TextView editOrLogin;
     @Bind(R.id.editIcon)
     ImageView editIcon;
@@ -176,7 +176,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
             case R.id.toolbar_iv_right:
                 MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "menu_setting");
                 break;
-            case R.id.editOrLogin:
+            case R.id.followAction:
                 if (user.isIsVisitors()) {
                     intent = new Intent(this, UserLoginActivity.class);
                     startActivity(intent);

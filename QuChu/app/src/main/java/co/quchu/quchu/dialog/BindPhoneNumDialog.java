@@ -45,7 +45,7 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class BindPhoneNumDialog extends DialogFragment {
 
-    @Bind(R.id.viewPager)
+    @Bind(R.id.recyclerView)
     ViewPager viewPager;
     private static MyHandle handle;
 

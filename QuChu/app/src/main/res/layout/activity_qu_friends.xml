@@ -64,7 +64,7 @@
         android:background="@color/bg_pager" />
 
     <co.quchu.quchu.widget.NoScrollViewPager
-        android:id="@+id/qu_friends_vp"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
