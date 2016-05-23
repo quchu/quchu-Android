@@ -80,7 +80,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
 
     @Override
     public void onPageSelected(int position) {
-        if (null==data){
+        if (null == data) {
             return;
         }
         selectedPosition = position;
@@ -104,6 +104,42 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         }
         supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
         detail.setText(entity.builder);
+
+
+        //底下文字背景处理
+//        ImagePipeline pipeline = Fresco.getImagePipeline();
+//        Uri uri = Uri.parse(entity.image.getPath());
+//        if (pipeline.isInBitmapMemoryCache(uri)) {
+//            ImageRequest request = ImageRequestBuilder
+//                    .newBuilderWithSource(uri)
+//                    .build();
+//
+//            DataSource<CloseableReference<CloseableImage>> source = pipeline.fetchImageFromBitmapCache(request, this);
+//            CloseableReference<CloseableImage> result = null;
+//            try {
+//                result = source.getResult();
+//                if (result != null) {
+//                    CloseableImage image = result.get();
+//                    if (image instanceof CloseableStaticBitmap) {
+//                        Bitmap bitmap = ((CloseableStaticBitmap) image).getUnderlyingBitmap();
+//                        int viewPagerHeight = viewPager.getHeight();
+//                        int viewPagerWidth = viewPager.getWidth();
+//                        //获取缩放后图片的高度
+//                        int bitmaphHeight = bitmap.getHeight();
+//                        int offset = (viewPagerHeight - bitmaphHeight) / 2;
+//                        int containerHeight = StringUtils.dip2px(this, 80);
+//                        if (offset < containerHeight) {
+//                            Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, bitmap.getHeight() - (containerHeight - offset), bitmap.getWidth(), containerHeight);
+//                            containerBottom.setBackground(new BitmapDrawable(bitmap1));
+//                        }
+//                    }
+//                }
+//
+//            } finally {
+//                source.close();
+//                CloseableReference.closeSafely(result);
+//            }
+//        }
 
     }
 
@@ -133,6 +169,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_footprint_detail);
         ButterKnife.bind(this);
+        getEnhancedToolbar();
         initListener();
         initData(-1);
     }

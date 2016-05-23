@@ -40,11 +40,12 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
     Button bindSina;
     @Bind(R.id.bind_wecha)
     Button bindWecha;
-
-    public static final String TYPE_WEIBO = "weibo";
-    public static final String TYPE_Wecha = "weixin";
     @Bind(R.id.bind_phone)
     Button bindPhone;
+    public static final String TYPE_WEIBO = "weibo";
+    public static final String TYPE_Wecha = "weixin";
+
+
     private SsoHandler ssoHandler;
 
     @Override
@@ -52,7 +53,6 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bind);
         ButterKnife.bind(this);
-        initListener();
         EnhancedToolbar toolbar = getEnhancedToolbar();
 
         toolbar.getTitleTv().setText("绑定第三方账号");
@@ -63,12 +63,27 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         bindWecha.setOnClickListener(this);
         bindPhone.setOnClickListener(this);
         if (AppContext.user.isIsweixin()) {
-            bindWecha.setText("取消绑定我的微信");
+            bindWecha.setText("解除绑定");
             bindWecha.setBackgroundColor(getResources().getColor(R.color.standard_color_h2_dark));
-
+        } else {
+            bindWecha.setText("绑定");
+            bindWecha.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
+
         if (AppContext.user.isIsweibo()) {
-            bindSina.setText("取消绑定我的微博");
+            bindSina.setText("解除绑定");
+            bindSina.setBackgroundColor(getResources().getColor(R.color.standard_color_h2_dark));
+        } else {
+            bindSina.setText("绑定");
+            bindSina.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+
+        if (AppContext.user.isphone()) {
+            bindPhone.setText("解除绑定");
+            bindPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_h2_dark));
+        } else {
+            bindPhone.setText("绑定");
+            bindPhone.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
     }
 
@@ -282,6 +297,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart("connectsocial");
+        initListener();
         super.onResume();
     }
 

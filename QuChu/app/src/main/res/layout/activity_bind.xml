@@ -14,12 +14,13 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/half_margin">
 
-        <Button
-            android:id="@+id/iconPhone"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="绑定我的手机"
-            android:textColor="#8dc21f" />
+            android:drawableLeft="@mipmap/ic_bind_type_phone"
+            android:gravity="center_vertical"
+            android:text="手机号"
+            android:textColor="@color/standard_color_h3_dark" />
 
 
         <Button
@@ -29,16 +30,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@color/colorPrimary"
-            android:text="绑定" />
+            android:text="绑定"
+            android:textColor="@color/standard_color_white" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="32dp"
-            android:layout_toRightOf="@id/iconPhone"
-            android:text="手机"
-            android:textColor="#a3a3a3" />
+
     </RelativeLayout>
 
     <View style="@style/HorizontalLine" />
@@ -48,13 +43,13 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/half_margin">
 
-        <Button
-            android:id="@+id/iconWeibo"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="绑定我的微博"
-            android:textColor="#f29600"
-            android:textSize="@dimen/word_size_body" />
+            android:drawableLeft="@mipmap/ic_bind_type_sina"
+            android:gravity="center_vertical"
+            android:text="新浪微博"
+            android:textColor="@color/standard_color_h3_dark" />
 
 
         <Button
@@ -64,15 +59,11 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@color/colorPrimary"
-            android:text="绑定" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/iconWeibo"
-            android:text="新浪微博"
-            android:textColor="#a3a3a3" />
+            android:text="绑定"
+            android:textColor="@color/standard_color_white" />
+
+
     </RelativeLayout>
 
     <View style="@style/HorizontalLine" />
@@ -83,12 +74,13 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/half_margin">
 
-        <Button
-            android:id="@+id/iconWecha"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="绑定我的微信"
-            android:textColor="#8dc21f" />
+            android:drawableLeft="@mipmap/ic_bind_type_weixin"
+            android:gravity="center_vertical"
+            android:text="微信"
+            android:textColor="@color/standard_color_h3_dark" />
 
 
         <Button
@@ -98,16 +90,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@color/colorPrimary"
-            android:text="绑定" />
+            android:text="绑定"
+            android:textColor="@color/standard_color_white" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="32dp"
-            android:layout_toRightOf="@id/iconWecha"
-            android:text="微信"
-            android:textColor="#a3a3a3" />
+
     </RelativeLayout>
 
 
