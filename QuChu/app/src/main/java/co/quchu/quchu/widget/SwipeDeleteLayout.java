@@ -37,18 +37,16 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
         setOverScrollMode(OVER_SCROLL_NEVER);
         setSmoothScrollingEnabled(false);
         try {
-            Field field = getClass().getDeclaredField("mMaximumVelocity");
+            Field field = getClass().getSuperclass().getDeclaredField("mMaximumVelocity");
             field.setAccessible(true);
             field.setInt(this, 2);
 
-            field = getClass().getDeclaredField("mMinimumVelocity");
+            field = getClass().getSuperclass().getDeclaredField("mMinimumVelocity");
             field.setAccessible(true);
             field.setInt(this, 1);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -67,10 +65,8 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
                         animation(mActionView.getWidth() - scrollX);
                     } else {
                         animation(-scrollX);
-
                     }
                 }
-
                 break;
         }
         return super.onTouchEvent(ev);
@@ -80,7 +76,7 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
 
     private void animation(int offset) {
         ValueAnimator animator = ValueAnimator.ofInt(offset);
-        animator.setDuration(300);
+        animator.setDuration(200);
         animator.setInterpolator(new LinearInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             int firstValues = 0;

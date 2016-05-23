@@ -32,30 +32,32 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
         holder.tag.setTags(bean.getTagsString());
 
         if (itemClickListener != null) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+            View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClick(bean, 0, position);
+                    itemClickListener.itemClick(bean, v.getId(), position);
                 }
-            });
+            };
+
+            holder.itemView.setOnClickListener(onClickListener);
         }
     }
 
     @Override
     public ViewHold onCreateView(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bearby_quchu, parent, false);
         return new ViewHold(view);
     }
 
     class ViewHold extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.simpleDraweeView)
+        SimpleDraweeView simpleDraweeView;
         @Bind(R.id.name)
         TextView name;
         @Bind(R.id.tag)
         TagCloudView tag;
-        @Bind(R.id.simpleDraweeView)
-        SimpleDraweeView simpleDraweeView;
-//        @Bind(R.id.address)
-//        TextView address;
 
         public ViewHold(View itemView) {
             super(itemView);

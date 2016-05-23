@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
@@ -25,12 +24,12 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.quchu.gallery.GalleryFinal;
-import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.gallery.GalleryFinal;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.ImageUpload;
 import co.quchu.quchu.net.NetApi;
@@ -60,7 +59,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private String positionText;
     private String descText;
     private String nameText;
-    private int id;
+    private String id;
     private TextView rightTv;
 
     @Override
@@ -89,7 +88,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
      */
     private void restore() {
         Intent intent = getIntent();
-        id = intent.getIntExtra(REQUEST_KEY_ID, -1);
+        id = intent.getStringExtra(REQUEST_KEY_ID);
         ArrayList<PhotoInfo> imageList = intent.getParcelableArrayListExtra(REQUEST_KEY_IMAGE_LIST);
         nameText = intent.getStringExtra(REQUEST_KEY_NAME);
         descText = intent.getStringExtra(REQUEST_KEY_DESC);
@@ -163,18 +162,17 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     }
 
     private void sendToServer(String name, String position, String desc, String Images) {
-        String url;
-        if (id != -1) {
-            url = String.format(NetApi.findPosition, String.valueOf(id), name, position, desc);
-        } else {
-            url = String.format(NetApi.findPosition, "", name, position, desc);
-        }
+
 
         Map<String, String> map = new HashMap<>();
         map.put("place.pimage", Images);
+        map.put("place.pId", id == null ? "" : id);
+        map.put("place.pname", name);
+        map.put("place.paddress", position);
+        map.put("place.profile", desc);
 
 
-        GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url, map, Object.class, new ResponseListener<Object>() {
+        GsonRequest<Object> request = new GsonRequest<>(NetApi.findPosition, Object.class, map, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();

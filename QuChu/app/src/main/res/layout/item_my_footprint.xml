@@ -11,6 +11,7 @@
     <View
         android:id="@+id/line"
         style="@style/VerticalLine"
+        android:layout_width="1dp"
         android:layout_marginLeft="@dimen/half_margin" />
 
     <ImageView
@@ -34,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="150dp"
-        android:drawableLeft="@mipmap/ic_location_yellow"
+        android:drawableLeft="@mipmap/ic_loca"
         android:singleLine="true"
         android:textColor="@color/standard_color_yellow"
         tools:text="厦门是fasdfadsssssssssfsdfs" />

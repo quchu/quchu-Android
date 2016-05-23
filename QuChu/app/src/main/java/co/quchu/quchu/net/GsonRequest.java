@@ -210,6 +210,7 @@ public class GsonRequest<T> extends Request<T> {
 
         if (!TextUtils.isEmpty(AppContext.token)) {
             headers.put("quchu-token", AppContext.token);
+            LogUtils.e("quchu-token:" + AppContext.token);
         }
         headers.put("quchuVersion", AppContext.packageInfo.versionName);
         return headers;
@@ -281,7 +282,7 @@ public class GsonRequest<T> extends Request<T> {
         try {
             dialog.show();
 
-        }catch (IllegalStateException ex){
+        } catch (IllegalStateException ex) {
             ex.printStackTrace();
         }
 

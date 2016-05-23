@@ -17,7 +17,6 @@
 package co.quchu.quchu.gallery.adapter;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,6 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
 
     private Map<String, PhotoInfo> mSelectList;
     private int mScreenWidth;
-    private int mRowWidth;
 
     private Activity mActivity;
 
@@ -54,7 +52,6 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
         super(activity, list);
         this.mSelectList = selectList;
         this.mScreenWidth = screenWidth;
-        this.mRowWidth = mScreenWidth / 3;
         this.mActivity = activity;
     }
 
@@ -75,13 +72,10 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
         }
 
         holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);
-        Drawable defaultDrawable = mActivity.getResources().getDrawable(R.drawable.ic_gf_default_photo);
         if (null != photoInfo.getThumbPath()) {
-//            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, photoInfo.getThumbPath(), holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
             holder.mIvThumb.setImageURI(Uri.fromFile(new File(photoInfo.getThumbPath())));
         } else {
-            ImageUtils.loadWithAppropriateSize(holder.mIvThumb,Uri.fromFile(new File(path)));
-//            GalleryFinal.getCoreConfig().getImageLoader().displayImage(mActivity, path, holder.mIvThumb, defaultDrawable, mRowWidth, mRowWidth);
+            ImageUtils.loadWithAppropriateSize(holder.mIvThumb, Uri.fromFile(new File(path)));
         }
         holder.mView.setAnimation(null);
         if (GalleryFinal.getCoreConfig().getAnimation() > 0) {
@@ -91,9 +85,9 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
         if (GalleryFinal.getFunctionConfig().isMutiSelect()) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
             if (mSelectList.get(photoInfo.getPhotoPath()) != null) {
-                holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckSelectedColor());
+                holder.mIvCheck.setImageResource(R.mipmap.ic_photo_checked);
             } else {
-                holder.mIvCheck.setBackgroundColor(GalleryFinal.getGalleryTheme().getCheckNornalColor());
+                holder.mIvCheck.setImageResource(R.mipmap.ic_photo_unchecked);
             }
         } else {
             holder.mIvCheck.setVisibility(View.GONE);

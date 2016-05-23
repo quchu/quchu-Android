@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/base_margin"
     android:layout_marginLeft="@dimen/base_margin"
-    android:layout_marginRight="@dimen/base_margin"
-    android:layout_marginTop="@dimen/base_margin">
+    android:layout_marginRight="@dimen/base_margin">
 
     <co.quchu.quchu.widget.SwipeDeleteLayout
         android:layout_width="match_parent"
@@ -67,12 +67,19 @@
 
             </RelativeLayout>
 
-            <ImageView
+            <FrameLayout
                 android:id="@id/swipe_delete_action"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@mipmap/ic_go_right" />
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_phone"
+                    tools:ignore="ContentDescription" />
+            </FrameLayout>
         </LinearLayout>
 
     </co.quchu.quchu.widget.SwipeDeleteLayout>

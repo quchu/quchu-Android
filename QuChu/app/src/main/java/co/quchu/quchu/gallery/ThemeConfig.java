@@ -136,7 +136,7 @@ public class ThemeConfig {
         private int iconDelete = R.drawable.ic_delete_photo;
         private int iconCheck = R.drawable.ic_folder_check;
         private int iconFab = R.drawable.ic_folder_check;
-        private int iconPreview = R.drawable.ic_gf_preview;
+        private int iconPreview = R.drawable.ic_folder_check;
 
         private Drawable bgEditTexture;
         private Drawable bgPreveiw;

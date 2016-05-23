@@ -18,7 +18,7 @@
             android:layout_height="@dimen/gf_title_bar_height"
             android:layout_gravity="center_vertical"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_title_back" />
+            android:src="@mipmap/ic_back" />
 
         <TextView
             android:id="@+id/tv_title"
