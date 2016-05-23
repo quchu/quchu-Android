@@ -3,15 +3,14 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
@@ -19,8 +18,7 @@ import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.presenter.UserCenterPresenter;
-import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.pull2zoomview.PullToZoomScrollViewEx;
+import co.quchu.quchu.view.fragment.FootprintListFragment;
 
 /**
  * UserCenterActivity
@@ -28,15 +26,19 @@ import co.quchu.quchu.widget.pull2zoomview.PullToZoomScrollViewEx;
  * Date: 2016-02-23
  */
 public class UserCenterActivity extends BaseActivity implements View.OnClickListener {
-    TextView userCenterFollowingTv;
-    TextView userCenterFollowedTv;
-    TextView userCenterPnumTv;
-    SimpleDraweeView ivZoom;
-    SimpleDraweeView userCenterUserIconSdv;
-    TextView userCenterUserNicknameTv;
-    TextView userCenterDescTv;
-    TextView userCenterFoucsableTv;
-    private PullToZoomScrollViewEx scrollView;
+
+    @Bind(R.id.headImage)
+    SimpleDraweeView headImage;
+    @Bind(R.id.name)
+    TextView name;
+    @Bind(R.id.alias)
+    TextView alias;
+    @Bind(R.id.followAction)
+    TextView followAction;
+    @Bind(R.id.follow)
+    TextView follow;
+    @Bind(R.id.friend)
+    TextView friend;
     private int userId = 0;
     public static final String REQUEST_KEY_USER_ID = "USERID";
 
@@ -44,19 +46,16 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_center);
+        ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
         toolbar.getTitleTv().setText(getTitle());
-
-        loadViewForCode();
         userId = getIntent().getIntExtra(REQUEST_KEY_USER_ID, 0);
-        scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
-        initView();
-        DisplayMetrics localDisplayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
-        int mScreenHeight = localDisplayMetrics.heightPixels;
-        int mScreenWidth = localDisplayMetrics.widthPixels;
-        LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth, (int) ((0.618F * mScreenHeight) - getResources().getDimension(R.dimen.title_bar_heigh)));
-        scrollView.setHeaderLayoutParams(localObject);
+        followAction.setOnClickListener(this);
+        follow.setOnClickListener(this);
+        friend.setOnClickListener(this);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, FootprintListFragment.newInstance(userId)).commit();
+
     }
 
     @Override
@@ -64,16 +63,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         return TRANSITION_TYPE_LEFT;
     }
 
-    private void initView() {
-        ivZoom = (SimpleDraweeView) scrollView.getZoomView().findViewById(R.id.iv_zoom);
-        userCenterUserIconSdv = (SimpleDraweeView) scrollView.getHeaderView().findViewById(R.id.user_center_user_icon_sdv);
-        userCenterFoucsableTv = (TextView) scrollView.getHeaderView().findViewById(R.id.user_center_foucsable_tv);
-        userCenterUserNicknameTv = (TextView) scrollView.getHeaderView().findViewById(R.id.user_center_nickname_tv);
-        userCenterDescTv = (TextView) scrollView.getHeaderView().findViewById(R.id.user_center_desc_tv);
-        userCenterFollowingTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_following_tv);
-        userCenterFollowedTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_followed_tv);
-        userCenterPnumTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_pnum_tv);
-    }
 
     @Override
     protected void onResume() {
@@ -89,7 +78,13 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             public void onSuccess(UserCenterInfo userCenterInfo) {
                 userInfo = userCenterInfo;
                 userInfo.userId = userId;
-                bindView();
+
+                headImage.setImageURI(Uri.parse(userInfo.getPhoto()));
+                name.setText(userCenterInfo.getName());
+                followAction.setText(userCenterInfo.isFollow() ? "取消关注" : "关注");
+
+                follow.setText("关注" + userCenterInfo.getHostNum());
+                friend.setText("趣粉" + userCenterInfo.getFollowNum());
             }
 
             @Override
@@ -100,82 +95,24 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         });
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
-            case R.id.user_center_following_tv:
-                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class).putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWING));
-                break;
-            case R.id.user_center_followed_tv:
-                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class).putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWERS));
-
-                break;
-            case R.id.user_center_foucsable_tv:
+            case R.id.followAction:
                 followSomebody();
                 break;
-            case R.id.user_center_postcard_ll://脚印
-                Intent intent = new Intent(this, MyFootprintActivity.class);
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_ID, userId);
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_AGE, userInfo.getAge());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_COUND, userInfo.getCardNum());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_PHOTO, userInfo.getPhoto());
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_TITLE, userInfo.getName() + "的脚印");
-                intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_NAME, userInfo.getName());
-                startActivity(intent);
-
+            case R.id.friend:
+                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class)
+                        .putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWERS));
+                break;
+            case R.id.follow:
+                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class)
+                        .putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWING));
+                break;
         }
     }
 
-    private void bindView() {
-       /* if (!StringUtils.isEmpty(userInfo.getBackImg()))
-            ivZoom.setImageURI(Uri.parse(userInfo.getBackImg()));*/
-
-        userCenterUserIconSdv.setImageURI(Uri.parse(userInfo.getPhoto()));
-        updateIsFollow();
-        userCenterPnumTv.setText(userInfo.getCardNum() + "");
-//        userCenterFavoritenumTv.setText(userInfo.getFovPlaceNum() + "");
-        userCenterUserNicknameTv.setText(userInfo.getName() + "");
-        if (null != userInfo.getLocation() && StringUtils.isEmpty(userInfo.getLocation().toString())) {
-            userCenterDescTv.setText(String.format(getResources().getString(R.string.usercenter_desc_text, userInfo.getGender(), userInfo.getLocation())));
-        } else {
-            userCenterDescTv.setText(userInfo.getGender());
-        }
-        userCenterFollowedTv.setText(String.format(getResources().getString(R.string.usercenter_follow_text), userInfo.getFollowNum()));
-        userCenterFollowingTv.setText(String.format(getResources().getString(R.string.usercenter_host_text), userInfo.getHostNum()));
-        scrollView.getRootView().findViewById(R.id.user_center_postcard_ll).setOnClickListener(this);
-        userCenterFollowingTv.setOnClickListener(this);
-        userCenterFollowedTv.setOnClickListener(this);
-        userCenterFoucsableTv.setOnClickListener(this);
-
-    }
-
-    private void loadViewForCode() {
-        PullToZoomScrollViewEx scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
-        View headView = LayoutInflater.from(this).inflate(R.layout.usercenter_head_view, null, false);
-        View zoomView = LayoutInflater.from(this).inflate(R.layout.usercenter_zoom_view, null, false);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.usercenter_content_view, null, false);
-        scrollView.setHeaderView(headView);
-        scrollView.setZoomView(zoomView);
-        scrollView.setScrollContentView(contentView);
-    }
-
-    private void updateIsFollow() {
-        if (userInfo.isIsFollow()) {
-            userCenterFoucsableTv.setText(getResources().getString(R.string.usercenter_foucsed_text));
-            userCenterFoucsableTv.setTextColor(getResources().getColor(android.R.color.black));
-            userCenterFoucsableTv.setBackground(getResources().getDrawable(R.drawable.shape_usercenter_foucsed));
-
-        } else {
-            userCenterFoucsableTv.setText(getResources().getString(R.string.usercenter_foucs_text));
-            userCenterFoucsableTv.setTextColor(getResources().getColor(R.color.standard_color_yellow));
-            userCenterFoucsableTv.setBackground(getResources().getDrawable(R.drawable.shape_usercenter_unfoucs));
-        }
-
-        userCenterFollowedTv.setText(String.format(getResources().getString(R.string.usercenter_follow_text), userInfo.getFollowNum()));
-        userCenterFollowingTv.setText(String.format(getResources().getString(R.string.usercenter_host_text), userInfo.getHostNum()));
-
-    }
 
     private void followSomebody() {
         if (AppContext.user.isIsVisitors()) {
@@ -185,7 +122,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userInfo.userId, new UserCenterPresenter.UserCenterInfoCallBack() {
                 @Override
                 public void onSuccess(UserCenterInfo userCenterInfo) {
-//                    userInfo.setIsFollow(!userInfo.isIsFollow());
                     if (userInfo.isFollow()) {
                         userInfo.setIsFollow(false);
                         userInfo.setFollowNum(userInfo.getFollowNum() - 1);
@@ -193,7 +129,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                         userInfo.setIsFollow(true);
                         userInfo.setFollowNum(userInfo.getFollowNum() + 1);
                     }
-                    updateIsFollow();
+                    followAction.setText(userInfo.isFollow() ? "取消关注" : "关注");
                 }
 
                 @Override
