@@ -67,8 +67,6 @@ public class SplashActivity extends BaseActivity {
     TextView mTvVersion;
     @Bind(R.id.vBg)
     View mViewBg;
-    @Bind(R.id.tvTips)
-    TextView mTvTips;
     @Bind(R.id.vSpace)
     View mVSpace;
 
@@ -99,7 +97,6 @@ public class SplashActivity extends BaseActivity {
         mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
         mIvBgSec.setAdjustViewBounds(true);
         mIvBgSec.setAlpha(1f);
-        mTvTips.setVisibility(View.GONE);
         mVSpace.setVisibility(View.GONE);
 
 
@@ -202,7 +199,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void enterApp() {
-        startActivity(new Intent(this, RecommendActivity.class));
+        //startActivity(new Intent(this, RecommendActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         SplashActivity.this.finish();
     }
 

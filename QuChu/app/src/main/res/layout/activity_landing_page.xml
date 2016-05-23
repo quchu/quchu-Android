@@ -26,18 +26,6 @@
                 android:adjustViewBounds="true"
                 android:background="#f4ffff"
                 />
-            <TextView
-                android:id="@+id/tvTips"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="趣处 1.1 \n给春天开一扇玩耍的门"
-                android:gravity="center"
-                android:textSize="18dp"
-                android:layout_below="@+id/ivBg"
-                android:layout_marginTop="320dp"
-                android:lineSpacingExtra="8dp"
-                android:textColor="#999999"
-                />
             <ImageView
                 android:id="@+id/ivBgSec"
                 android:layout_width="wrap_content"

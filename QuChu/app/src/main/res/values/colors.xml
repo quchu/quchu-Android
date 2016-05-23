@@ -3,7 +3,7 @@
 
     <color name="colorPrimary">@color/standard_color_yellow</color>                 //应用主题色
     <color name="colorPrimaryDark">@color/standard_color_yellow</color>             //应用主题色 暗
-    <color name="colorAccent">#333333</color>                                       //应用次主题色
+    <color name="colorAccent">@color/standard_color_red</color>                     //应用次主题色
     <color name="colorBackground">#efefef</color>                                   //通用背景颜色
 
     <color name="translucent_white">#7fffffff</color>                               //白色半透明

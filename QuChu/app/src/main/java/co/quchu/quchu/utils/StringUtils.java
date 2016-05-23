@@ -248,6 +248,12 @@ public class StringUtils {
         }
     }
 
+    public static boolean isGoodPassword(String password){
+        String pwdRegex = "^[0-9a-zA-Z]{6,16}$";
+
+        return !TextUtils.isEmpty(password) && Pattern.matches(pwdRegex,password);
+    }
+
     /**
      * 验证手机格式
      */

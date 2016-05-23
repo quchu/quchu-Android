@@ -147,4 +147,7 @@
 
     <string name="permissions_denied_tips">无法获取图片</string>
     <string name="no_visitor">还没人去过</string>
+    <string name="hint_input_cellphone_number">输入手机号</string>
+    <string name="hint_input_password">请输入密码</string>
+    <string name="promote_invalid_username">用户名错误</string>
 </resources>
