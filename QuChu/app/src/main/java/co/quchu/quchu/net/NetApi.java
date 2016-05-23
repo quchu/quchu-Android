@@ -123,6 +123,8 @@ public interface NetApi {
     String isUnique = HOST + "/mregister/isUnique";//用户名存在
     String autoCodeIsCorrect = HOST + "/utils/verifyCodeIsCorrect";
     String bindPassword = HOST + "/personal/bindSalt";
+    String quchu_topic_h5= HOST + "/searchSpecial/getSearchSpecialListByTagId?tagId=%d&cityId=%d";
+
 
 
     /****************** POST *******************/

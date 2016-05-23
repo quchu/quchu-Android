@@ -62,6 +62,8 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
     TextView tvSearch;
     @Bind(R.id.container)
     FrameLayout flContainer;
+    @Bind(R.id.ivArrow)
+    ImageView ivArrow;
 
     public long firstTime = 0;
     private ArrayList<CityModel> list;
@@ -137,8 +139,16 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void showCityDialog() {
+        ivArrow.animate().rotation(180).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
         LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance(list);
         lDialog.show(getSupportFragmentManager(), "blur_sample");
+        lDialog.setOnDissMissListener(new LocationSelectedDialogFg.OnDissMissListener() {
+            @Override
+            public void onDissMiss() {
+                ivArrow.animate().rotation(0).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
+            }
+        });
+
     }
 
     private void initView() {

@@ -221,14 +221,12 @@ public class GsonRequest<T> extends Request<T> {
         setTag(tag);
         setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
-        queue.start();
     }
 
     public void start(Context context) {
         this.context = context;
         setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
-        queue.start();
     }
 
     public void start(Context context, Object tag, boolean showDialog) {
@@ -237,7 +235,6 @@ public class GsonRequest<T> extends Request<T> {
         setTag(tag);
         setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
-        queue.start();
         if (showDialog)
             DialogUtil.showProgess(context, "加载中~~");
     }

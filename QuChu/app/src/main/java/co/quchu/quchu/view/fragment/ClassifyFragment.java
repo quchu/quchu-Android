@@ -30,6 +30,7 @@ import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.ClassifyDetailActivity;
+import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.view.adapter.ClassifyAdapter;
 import co.quchu.quchu.view.adapter.ClassifyDecoration;
 import co.quchu.quchu.widget.DampView;
@@ -126,8 +127,12 @@ public class ClassifyFragment extends BaseFragment {
                             MobclickAgent.onEvent(getActivity(), "subject_u", p);
 
 
-                            Intent intent = new Intent(getActivity(), ClassifyDetailActivity.class);
-                            intent.putExtra(ClassifyDetailActivity.PARAMETER_TITLE, title);
+                            //http://sit.quchu.co/app-main-service/searchSpecial/getSearchSpecialListByTagId?tagId=283&cityId=1
+
+                            String url = String.format(NetApi.quchu_topic_h5,model.getTagId(),SPUtils.getCityId());
+                            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                            intent.putExtra(WebViewActivity.BUNDLE_KEY_WEBVIEW_URL,url);
+                            //intent.putExtra(ClassifyDetailActivity.PARAMETER_TITLE, title);
                             startActivity(intent);
                         }
                     }

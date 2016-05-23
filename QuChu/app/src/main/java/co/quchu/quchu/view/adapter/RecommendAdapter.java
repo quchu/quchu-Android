@@ -70,7 +70,10 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         //Html.fromHtml(mContext.getString(R.string.avg_cost)
         // +"<font color=#"+Integer.toHexString(mContext.getResources().getColor(R.color.standard_color_red)& 0x00ffffff)+">"
         // +model.getPrice()+"</font>元")
-        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost),model.getPrice(),"元"));
+
+
+        String price = model.getPrice().split(",")[0];
+        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost),price,"元"));
         holder.linearLayout.removeAllViews();
         for (int i = 0; i < model.getSuggest(); i++) {
             ImageView imageView = new ImageView(mContext);

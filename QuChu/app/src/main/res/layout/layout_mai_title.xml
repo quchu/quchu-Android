@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/recommend_title_location_tv"
-            android:layout_width="@dimen/toolbar_item_size"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/toolbar_item_size"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/base_margin"
@@ -22,6 +22,15 @@
             android:text="Null"
             android:textColor="@color/standard_color_h1_dark"
             android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/recommend_title_location_tv"
+            android:src="@mipmap/ic_arrow_bottom"
+            android:layout_centerVertical="true"
+            />
     </RelativeLayout>
 
     <co.quchu.quchu.widget.RecommendTitleGroup

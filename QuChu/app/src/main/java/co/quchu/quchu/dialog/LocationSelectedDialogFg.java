@@ -2,6 +2,7 @@ package co.quchu.quchu.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -50,6 +50,11 @@ public class LocationSelectedDialogFg extends DialogFragment {
     TextView tvBottomTips;
 
     private ArrayList<CityModel> cityList;
+    private OnDissMissListener mOnDissMissListener;
+
+    public void setOnDissMissListener(OnDissMissListener pOnDissMissListener){
+        mOnDissMissListener = pOnDissMissListener;
+    }
 
 
     /**
@@ -74,6 +79,14 @@ public class LocationSelectedDialogFg extends DialogFragment {
         cityList = (ArrayList<CityModel>) args.getSerializable(CITY_LIST_MODEL);
     }
 
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (null!= mOnDissMissListener){
+            mOnDissMissListener.onDissMiss();
+        }
+    }
 
     private LocationSelectedAdapter adapter;
 
@@ -145,6 +158,9 @@ public class LocationSelectedDialogFg extends DialogFragment {
     }
 
 
+    public interface OnDissMissListener{
+        void onDissMiss();
+    }
 
 
     @Override
