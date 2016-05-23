@@ -169,7 +169,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_footprint_detail);
         ButterKnife.bind(this);
-        getEnhancedToolbar();
+        getEnhancedToolbar().getTitleTv().setText("");
         initListener();
         initData(-1);
     }
@@ -367,13 +367,13 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     private void animation() {
         if (isShowing) {
             isShowing = false;
-            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", 0, containerBottom.getHeight() + 100);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", 0, containerBottom.getHeight() + 150);
             animator.setDuration(600);
             animator.setInterpolator(new DecelerateInterpolator());
             animator.start();
         } else {
             isShowing = true;
-            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", containerBottom.getHeight() + 100, 0);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(containerBottom, "translationY", containerBottom.getHeight() + 150, 0);
             animator.setDuration(600);
             animator.setInterpolator(new DecelerateInterpolator());
             animator.start();

@@ -7,13 +7,14 @@
     android:fitsSystemWindows="true"
     tools:context="co.quchu.quchu.view.activity.MyFootprintDetailActivity">
 
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appbar"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="40dp"
         android:clickable="true"
         android:descendantFocusability="blocksDescendants"
         android:focusable="true" />
@@ -22,17 +23,16 @@
     <RelativeLayout
         android:id="@+id/container_bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="170dp"
-        android:padding="16dp">
+        android:layout_marginBottom="40dp"
+        android:background="@color/appBackgroundTrans"
+        android:padding="@dimen/half_margin">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/headImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:roundAsCircle="true" />
 
         <TextView
@@ -40,7 +40,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            tools:text="hahahahh" />
+            android:layout_marginTop="@dimen/half_margin"
+            android:layout_toRightOf="@id/headImage"
+            android:textColor="@color/standard_color_white"
+            tools:text="哈哈哈哈哈哈哈" />
     </RelativeLayout>
 
     <LinearLayout
