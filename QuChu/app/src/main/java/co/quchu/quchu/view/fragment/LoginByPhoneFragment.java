@@ -19,11 +19,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sina.weibo.sdk.utils.MD5;
+import com.umeng.analytics.MobclickAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.thirdhelp.UserLoginListener;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.UserLoginActivity;
 
 /**
  * Created by Nico on 16/5/13.
@@ -58,39 +66,44 @@ public class LoginByPhoneFragment extends Fragment {
         ButterKnife.bind(this, view);
         rlUserNameField.setTranslationY(200);
         rlPasswordField.setTranslationY(200);
-        etUsername.addTextChangedListener(new TextWatcher() {
+        etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                ivIconClear.setVisibility(s.length()>0?View.VISIBLE:View.INVISIBLE);
-                if (!StringUtils.isMobileNO(s.toString())){
-                    tvLoginViaPhone.setText(R.string.promote_invalid_username);
-                    tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                }else{
-                    restoreLoginButton();
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && null!=etUsername){
+                    ivIconClear.setVisibility(etUsername.getText().length()>0?View.VISIBLE:View.INVISIBLE);
+                    if (!StringUtils.isMobileNO(etUsername.getText().toString())){
+                        tvLoginViaPhone.setText(R.string.promote_invalid_username);
+                        tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    }else if(StringUtils.isMobileNO(etUsername.getText().toString()) && StringUtils.isGoodPassword(etPassword.getText().toString())){
+                        tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+                        tvLoginViaPhone.setText(R.string.login);
+                    }else{
+                        restoreLoginButton();
+                    }
                 }
             }
         });
-        etPassword.addTextChangedListener(new TextWatcher() {
+        etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!StringUtils.isGoodPassword(s.toString())){
-                    tvLoginViaPhone.setText(R.string.promote_invalid_username);
-                    tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                }else{
-                    restoreLoginButton();
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && null!=etPassword){
+                    if (!StringUtils.isGoodPassword(etPassword.getText().toString())){
+                        tvLoginViaPhone.setText(R.string.promote_invalid_password);
+                        tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    }else if(StringUtils.isMobileNO(etUsername.getText().toString()) && StringUtils.isGoodPassword(etPassword.getText().toString())){
+                        tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+                        tvLoginViaPhone.setText(R.string.login);
+                    }else{
+                        restoreLoginButton();
+                    }
                 }
+            }
+        });
+
+        tvLoginViaPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -120,6 +133,20 @@ public class LoginByPhoneFragment extends Fragment {
         //rlUserNameField.animate().translationY(200).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator()).start();
         //rlPasswordField.animate().translationY(200).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator()).start();
         return view;
+    }
+
+    /**
+     * 用户登录
+     */
+    private void userLogin(String userName,String password) {
+        UserLoginPresenter.userLogin(getActivity(), userName,MD5.hexdigest(password), new UserLoginListener() {
+                    @Override
+                    public void loginSuccess(int type, String token, String appId) {
+                        SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
+                        MobclickAgent.onProfileSignIn("loginphone_c", AppContext.user.getUserId() + "");
+                        ((UserLoginActivity) getActivity()).loginSuccess(type, token, appId);
+                    }
+                });
     }
 
     private void restoreLoginButton() {

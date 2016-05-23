@@ -150,4 +150,5 @@
     <string name="hint_input_cellphone_number">输入手机号</string>
     <string name="hint_input_password">请输入密码</string>
     <string name="promote_invalid_username">用户名错误</string>
+    <string name="promote_invalid_password">密码不正确</string>
 </resources>

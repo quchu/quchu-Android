@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,15 +11,28 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.thirdhelp.UserLoginListener;
+import co.quchu.quchu.thirdhelp.WechatHelper;
+import co.quchu.quchu.thirdhelp.WeiboHelper;
+import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.view.activity.LoginActivity;
+import co.quchu.quchu.view.activity.RecommendActivity;
+
 
 /**
  * Created by Nico on 16/5/13.
  */
-public class LoginFragment extends Fragment implements View.OnClickListener {
+public class LoginFragment extends Fragment implements View.OnClickListener, UserLoginListener {
 
     public static final String TAG = "LoginFragment";
     @Bind(R.id.llAuthorizationViaWeibo)
@@ -51,10 +65,29 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.tvLoginViaPhone,R.id.tvCreateAccountViaPhone})
+
+
+    public void sinaLogin() {
+        WeiboHelper instance = WeiboHelper.getInstance(getActivity());
+        ((LoginActivity)getActivity()).handler = new SsoHandler(getActivity(), instance.getmAuthInfo());
+        instance.weiboLogin(((LoginActivity)getActivity()).handler , this, true);
+    }
+
+    public void weixinLogin() {
+        WechatHelper.getInstance(getActivity()).login(this);
+    }
+
+
+    @OnClick({R.id.tvLoginViaPhone,R.id.tvCreateAccountViaPhone,R.id.llAuthorizationViaMm,R.id.llAuthorizationViaWeibo})
     public void onClick(View v) {
         mContainerId = mContainerId == -1? ((ViewGroup)getView().getParent()).getId():mContainerId;
         switch (v.getId()){
+            case R.id.llAuthorizationViaMm:
+                weixinLogin();
+                break;
+            case R.id.llAuthorizationViaWeibo:
+                sinaLogin();
+                break;
             case R.id.tvLoginViaPhone:
                 //getFragmentManager().beginTransaction().hide(this).commitAllowingStateLoss();
 
@@ -82,5 +115,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                 break;
         }
+    }
+
+    @Override
+    public void loginSuccess(int type, String token, String appId) {
+        startActivity(new Intent(getActivity(), RecommendActivity.class));
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
     }
 }

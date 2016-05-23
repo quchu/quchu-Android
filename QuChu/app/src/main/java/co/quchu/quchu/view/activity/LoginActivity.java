@@ -1,8 +1,11 @@
 package co.quchu.quchu.view.activity;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
+
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +29,15 @@ public class LoginActivity extends BaseActivity {
     RegistrationFragment registrationFragment;
     RestorePasswordFragment restorePasswordFragment;
     FragmentManager fragmentManager;
+    public SsoHandler handler;
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (handler != null)
+            handler.authorizeCallBack(requestCode, resultCode, data);
+    }
 
 
     @Override

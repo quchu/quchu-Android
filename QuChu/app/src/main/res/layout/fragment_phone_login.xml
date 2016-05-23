@@ -70,6 +70,8 @@
             android:layout_toRightOf="@id/ivIconPassword"
             android:singleLine="true"
             android:gravity="center_vertical"
+            android:digits="1234567890qwertyuiopasdfghjklzxcvbnm._-"
+            android:maxLength="12"
             style="@style/TextView.H3"
             android:hint="@string/hint_input_password"
             android:background="@null" />
