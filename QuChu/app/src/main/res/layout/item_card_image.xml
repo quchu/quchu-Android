@@ -3,19 +3,22 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="@dimen/rounded_radius"
     card_view:cardElevation="0dp"
     android:orientation="vertical"
-    android:layout_marginLeft="@dimen/base_margin"
-    android:layout_marginRight="@dimen/base_margin"
-    android:layout_marginTop="@dimen/base_margin"
+    android:background="@color/standard_color_white"
+
     android:fitsSystemWindows="true">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/item_card_image_sdv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/standard_color_white"
+        android:layout_marginTop="@dimen/base_margin"
+
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+
+        card_view:roundedCornerRadius="@dimen/rounded_radius"
         card_view:placeholderImage="@mipmap/ic_image_empty"
         card_view:failureImage="@mipmap/ic_image_empty"
         card_view:actualImageScaleType="focusCrop"

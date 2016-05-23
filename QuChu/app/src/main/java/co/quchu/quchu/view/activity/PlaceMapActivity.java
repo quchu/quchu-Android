@@ -23,6 +23,7 @@ import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
@@ -73,6 +74,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     private LatLng myAddress;
     private MapView mapView;
     private ViewPager mVPNearby;
+    private BitmapDescriptor mMapPin,mMapPinRed;
 
 
     @Override
@@ -81,6 +83,9 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_place_map);
         mapView = (MapView) findViewById(R.id.place_map_mv);
         mVPNearby = (ViewPager) findViewById(R.id.vpNearby);
+
+        mMapPin = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin);
+        mMapPinRed = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_red);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
         currentPosition.setOnClickListener(this);
@@ -183,6 +188,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(i).getGdLatitude()), Double.valueOf(mDataSet.get(i).getGdLongitude()));
             Marker marker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getAddress())
                     //.snippet(strDistance)
+                    .icon(mMapPin)
                     .perspective(true).draggable(false).period(50));
             marker.setObject(i);
             mMarks.add(marker);
@@ -216,6 +222,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         markerOption.draggable(true);
         markerOption.visible(true);
         markerOption.setFlat(true);
+        markerOption.icon(mMapPinRed);
         Marker marker = aMap.addMarker(markerOption);
         CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
                 placeAddress, mapView.getMap().getCameraPosition().zoom, 0, 0));

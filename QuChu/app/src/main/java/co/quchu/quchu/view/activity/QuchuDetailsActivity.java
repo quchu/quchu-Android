@@ -85,7 +85,6 @@ public class QuchuDetailsActivity extends BaseActivity {
 //    }
 
 
-    private long mLastAnimated = -1;
     public static final String REQUEST_KEY_PID = "pid";
     public static final String REQUEST_KEY_FROM = "from";
     private long startViewTime = 0L;
@@ -121,6 +120,9 @@ public class QuchuDetailsActivity extends BaseActivity {
         from = getIntent().getStringExtra(REQUEST_KEY_FROM);
         getEnhancedToolbar().getTitleTv().setText("");
         getEnhancedToolbar().getRightTv().setText(R.string.pre_order);
+        getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.standard_color_white));
+        getEnhancedToolbar().getLeftIv().setImageResource(R.mipmap.ic_forward);
+        getEnhancedToolbar().getLeftIv().setRotation(180);
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
