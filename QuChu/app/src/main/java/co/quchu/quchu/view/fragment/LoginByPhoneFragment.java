@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -31,6 +32,7 @@ import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.UserLoginActivity;
 
 /**
@@ -64,8 +66,6 @@ public class LoginByPhoneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_phone_login, container, false);
         ButterKnife.bind(this, view);
-        rlUserNameField.setTranslationY(200);
-        rlPasswordField.setTranslationY(200);
         etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -103,7 +103,7 @@ public class LoginByPhoneFragment extends Fragment {
         tvLoginViaPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                userLogin(etUsername.getText().toString(),etPassword.getText().toString());
             }
         });
 
@@ -144,7 +144,10 @@ public class LoginByPhoneFragment extends Fragment {
                     public void loginSuccess(int type, String token, String appId) {
                         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
                         MobclickAgent.onProfileSignIn("loginphone_c", AppContext.user.getUserId() + "");
-                        ((UserLoginActivity) getActivity()).loginSuccess(type, token, appId);
+                        //( ).loginSuccess(type, token, appId);
+                        getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
+                        getActivity().finish();
+
                     }
                 });
     }
