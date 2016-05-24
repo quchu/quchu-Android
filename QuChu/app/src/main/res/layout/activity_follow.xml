@@ -6,10 +6,15 @@
 
     <include layout="@layout/cp_enhanced_toolbar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/follow_rv"
+    <co.quchu.quchu.widget.DampView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appbar"
-        android:background="@color/standard_color_white" />
+        android:layout_below="@+id/appbar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/follow_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/standard_color_white" />
+    </co.quchu.quchu.widget.DampView>
 </RelativeLayout>

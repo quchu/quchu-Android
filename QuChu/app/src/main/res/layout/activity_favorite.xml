@@ -7,11 +7,16 @@
 
     <include layout="@layout/cp_enhanced_toolbar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <co.quchu.quchu.widget.DampView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appbar"
-        android:layout_marginTop="@dimen/base_margin" />
+        android:layout_below="@id/appbar">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/base_margin" />
+
+    </co.quchu.quchu.widget.DampView>
 </RelativeLayout>

@@ -52,7 +52,7 @@
                     android:layout_below="@id/desc"
                     android:layout_marginLeft="@dimen/base_margin"
                     android:layout_marginTop="@dimen/half_margin"
-                    android:drawableLeft="@mipmap/ic_label_location_tiny"
+                    android:drawableLeft="@mipmap/ic_location_white"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
