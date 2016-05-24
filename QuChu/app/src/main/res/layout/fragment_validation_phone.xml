@@ -23,6 +23,12 @@
             android:layout_toRightOf="@id/ivIconUserName"
             android:layout_toLeftOf="@+id/ivIconClear"
             android:background="@null"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:inputType="number"
+            android:maxLength="11"
+            style="@style/TextView.H3"
+            android:hint="@string/hint_input_cellphone_number"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <ImageView
@@ -64,6 +70,10 @@
             android:layout_toRightOf="@id/ivIconValidCode"
             android:layout_toLeftOf="@+id/ivSendValidCode"
             android:background="@null"
+            android:maxLength="6"
+            android:inputType="number"
+            android:hint="@string/hint_input_validate_code"
+            style="@style/TextView.H3"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <TextView

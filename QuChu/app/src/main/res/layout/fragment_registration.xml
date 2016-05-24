@@ -22,6 +22,12 @@
             android:id="@+id/etUsername"
             android:layout_toRightOf="@id/ivIconUserName"
             android:background="@null"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:inputType="number"
+            android:maxLength="11"
+            style="@style/TextView.H3"
+            android:hint="@string/hint_input_cellphone_number"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <View
@@ -54,6 +60,11 @@
             android:id="@+id/etPassword"
             android:layout_toRightOf="@id/ivIconPassword"
             android:background="@null"
+            android:digits="1234567890qwertyuiopasdfghjklzxcvbnm._-"
+            android:hint="@string/hint_input_password"
+            android:maxLength="12"
+            android:singleLine="true"
+            style="@style/TextView.H3"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <View
