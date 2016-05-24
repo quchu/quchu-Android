@@ -38,11 +38,7 @@
         <item name="android:background">@color/standard_color_h3_dark</item>
     </style>
 
-    <style name="DetailVerticalLine">
-        <item name="android:layout_width">@dimen/line_thickness</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/standard_color_h3_dark</item>
-    </style>
+
     <!-- 横向分隔线 -->
     <style name="HorizontalLine">
         <item name="android:layout_width">match_parent</item>
@@ -89,10 +85,7 @@
     </style>
 
 
-    <style name="DetailTextStyle_sub">
-        <item name="textColor">@color/standard_color_h3_dark</item>
-        <item name="textSize">@dimen/word_subhead_size</item>
-    </style>
+
     <!-- 详情界面 便利标签 radiobutton 风格 -->
 
 

@@ -24,7 +24,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
  * Created by Nico on 16/4/7.
@@ -64,7 +63,7 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
             holder.item_place_event_tv.setVisibility(View.GONE);
         }
         holder.itemRecommendCardAddressTv.setText(model.getAddress());
-        holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
+//        holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
         if (model.isout) {
             SpannableString spanText = new SpannableString(model.getName() + "，");
@@ -122,8 +121,8 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
     public class ViewHolder {
         @Bind(R.id.photo)
         SimpleDraweeView itemRecommendCardPhotoSdv;
-        @Bind(R.id.ProperRatingBar)
-        ProperRatingBar itemRecommendCardPrb;
+//        @Bind(R.id.ProperRatingBar)
+//        ProperRatingBar itemRecommendCardPrb;
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
         @Bind(R.id.activity)

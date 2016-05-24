@@ -12,21 +12,10 @@
     <string name="prb_default_symbolic_string">$</string>
     <!-- ********** 趣基因 ********* -->
 
-    <string name="text_planet_atmosphere">氛围</string>
-    <string name="text_planet_pavilion">展馆</string>
-    <string name="text_planet_design">设计</string>
-    <string name="text_planet_discover_gene">探索我的趣基因</string>
-    <string name="text_planet_discover_friends">探索我的趣友圈</string>
-    <string name="text_planet_stroll">逛店</string>
-    <string name="text_planet_cate">美食</string>
-
 
     <string name="hint_add_footprint">每个故事都应该有个精彩的开头...</string>
     <!-- ********** 氛围 ********* -->
-
-
     <!-- ********** 趣星人 ********* -->
-    <!--<string name="text_friends_item_address">%1s&#032;,&#032;%2s</string>-->
     <string name="text_login_resetpassowrd">密码重置成功，请重新登录</string>
     <string name="detail_address_hint_text">%1$s &#040;%2$s&#041;</string>
 
@@ -65,11 +54,6 @@
     <string name="mypost_timer_years">年前</string>
     <string name="search_content_has_emoji">搜索内容不能含有表情字符!</string>
     <string name="visitor_login_prompt_text">%1$s之前需要进行登录 \r\n是否现在前往?</string>
-    <string name="usercenter_foucs_text">关注</string>
-    <string name="usercenter_foucsed_text">已关注</string>
-    <string name="usercenter_follow_text">%d 关注TA的</string>
-    <string name="usercenter_host_text">%d TA关注的</string>
-    <string name="usercenter_desc_text">%1$s,%2$s</string>
     <string name="more_cities_coming_soon">更多城市将陆续登陆</string>
     <string name="error_invalid_arguments">参数错误！</string>
     <string name="login_success">登录成功</string>
@@ -115,7 +99,6 @@
 
     <string name="photo_edit">图片预览</string>
 
-    <string name="photo_crop">图片裁剪</string>
 
     <string name="crop_suc">裁剪成功</string>
 
@@ -125,7 +108,6 @@
 
     <string name="waiting">请稍等…</string>
 
-    <string name="select_max_tips">已达到最大选择数量</string>
 
     <string name="empty_sdcard">没有SD卡</string>
 
@@ -137,7 +119,6 @@
 
     <string name="please_reopen_gf">请重新打开图片浏览器</string>
 
-    <string name="edit_letoff_photo_format">不支持的图片格式</string>
 
     <string name="photo_list_empty">获取图片失败!</string>
 

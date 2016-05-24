@@ -25,7 +25,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.RecommendModel;
@@ -146,15 +145,15 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     startActivity(intent);
                 }
                 break;
-            case R.id.item_recommend_card_collect_iv:
-                //收藏
-                setFavorite(position);
-                break;
-            case R.id.item_recommend_card_interest_iv:
-                //分享
-                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(cardList.get(position).getPid(), cardList.get(position).getName(), true);
-                shareDialogFg.show(getActivity().getSupportFragmentManager(), "share_place");
-                break;
+//            case R.id.item_recommend_card_collect_iv:
+//                //收藏
+//                setFavorite(position);
+//                break;
+//            case R.id.item_recommend_card_interest_iv:
+//                //分享
+//                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(cardList.get(position).getPid(), cardList.get(position).getName(), true);
+//                shareDialogFg.show(getActivity().getSupportFragmentManager(), "share_place");
+//                break;
         }
     }
 

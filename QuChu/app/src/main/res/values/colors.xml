@@ -17,8 +17,6 @@
     <color name="standard_color_h2_dark">#666666</color>                            //二级字体 深色 色值 用于：页面子标题或线框
     <color name="standard_color_h3_dark">#999999</color>                            //三级字体 深色 色值 用于：文章内容或线框
     <color name="tagTextColor">#fff</color>
-    <!--分割线颜色-->
-    <color name="line">#AAAAAA</color>
     <!--页面空间之间背景-->
     <color name="bg_pager">#EFEFEF</color>
 
@@ -63,9 +61,7 @@
     <color name="appBackground">#fff</color>
     <color name="appBackgroundTrans">#cc383635</color>
     <color name="appBackground_dark">#2c2a2a</color>
-    <color name="planet_progress_white">#dcdddd</color>
     <!-- 我的趣星球 、titleBar字体颜色-->
-    <color name="planet_text_color_white">#ffffff</color>
     <color name="lineBackground_gray">#595757</color>
     <!-- 图片item 蒙版颜色-->
     <color name="itemMask_black">#a6221814</color>
@@ -84,7 +80,6 @@
     <color name="account_setting_text_hint_color">#595757</color>
 
 
-    <color name="quchu_title_bar">#413e3e</color>
     <color name="standard_color_black">#000</color>
 
 </resources>
