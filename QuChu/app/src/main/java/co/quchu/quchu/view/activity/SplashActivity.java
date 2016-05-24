@@ -3,27 +3,18 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.ValueAnimator;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
@@ -41,7 +32,6 @@ import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -199,8 +189,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void enterApp() {
-        //startActivity(new Intent(this, RecommendActivity.class));
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, RecommendActivity.class));
+//        startActivity(new Intent(this, LoginActivity.class));
         SplashActivity.this.finish();
     }
 

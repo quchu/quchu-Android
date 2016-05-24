@@ -31,7 +31,7 @@ import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 public class FootprintListFragment extends BaseFragment implements AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel>, PageLoadListener<PostCardModel> {
 
     @Bind(R.id.recyclerView)
-     RecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     private MyFootprintPresenter presenter;
     private int userId;
@@ -77,7 +77,7 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
     }
 
     @Override
-    public void itemClick(PostCardItemModel item, int type, int position) {
+    public void itemClick(RecyclerView.ViewHolder holder, PostCardItemModel item, int type, int position) {
         Intent intent = new Intent(getContext(), MyFootprintDetailActivity.class);
         intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_POSITION, position);
         intent.putParcelableArrayListExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, (ArrayList) adapter.getData());

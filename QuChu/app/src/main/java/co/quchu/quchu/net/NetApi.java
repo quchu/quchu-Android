@@ -123,8 +123,10 @@ public interface NetApi {
     String isUnique = HOST + "/mregister/isUnique";//用户名存在
     String autoCodeIsCorrect = HOST + "/utils/verifyCodeIsCorrect";
     String bindPassword = HOST + "/personal/bindSalt";
-    String quchu_topic_h5= HOST + "/searchSpecial/getSearchSpecialListByTagId?tagId=%d&cityId=%d";
+    String quchu_topic_h5 = HOST + "/searchSpecial/getSearchSpecialListByTagId?tagId=%d&cityId=%d";
 
+    String notReadMassage = HOST + "/personal/getNotReadMsgCount";//未读消息数
+    String deletePlace = HOST + "/operate/delPlaceTemp?placeTempId=%d";//删除我发现的趣处
 
 
     /****************** POST *******************/

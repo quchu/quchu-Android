@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,10 +44,10 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     @Bind(R.id.friend)
     LinearLayout friend;
     @Bind(R.id.massage)
-    LinearLayout massage;
+    RelativeLayout massage;
     @Bind(R.id.alias)
     TextView tvUserNickName;
-    @Bind(R.id.name)
+    @Bind(R.id.desc)
     TextView name;
     @Bind(R.id.progress1)
     LinearProgressView progress1;
@@ -62,6 +63,8 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     TextView editOrLogin;
     @Bind(R.id.editIcon)
     ImageView editIcon;
+    @Bind(R.id.unReadMassage)
+    TextView unReadMassage;
 
     private MeActivityPresenter presenter;
 
@@ -79,7 +82,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         ImageView imageView = toolbar.getRightIv();
         imageView.setImageResource(R.mipmap.ic_tools);
         imageView.setOnClickListener(this);
-
+        presenter.getUnreadMassageCound();
         initListener();
         initData();
     }
@@ -168,6 +171,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
             case R.id.massage://消息中心
                 intent = new Intent(this, MessageCenterActivity.class);
                 startActivity(intent);
+                unReadMassage.setVisibility(View.INVISIBLE);
                 break;
             case R.id.findPosition://发现新去处
                 intent = new Intent(this, FindPositionListActivity.class);
@@ -219,6 +223,12 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                     break;
             }
         }
+    }
+
+    @Override
+    public void notReadMassage(int cound) {
+        unReadMassage.setText(String.valueOf(cound));
+        unReadMassage.setVisibility(View.VISIBLE);
     }
 
     public void checkUpdate() {

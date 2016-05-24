@@ -6,6 +6,9 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
@@ -42,5 +45,30 @@ public class MeActivityPresenter {
         request.start(context, null);
     }
 
+    public void getUnreadMassageCound() {
+        GsonRequest<String> request = new GsonRequest<>(NetApi.notReadMassage, new ResponseListener<String>() {
+
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+            }
+
+            @Override
+            public void onResponse(String response, boolean result, @Nullable String exception, @Nullable String msg) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    int count = jsonObject.getInt("msgCount");
+                    if (count > 0) {
+                        view.notReadMassage(count);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        request.start(context, null);
+    }
 
 }

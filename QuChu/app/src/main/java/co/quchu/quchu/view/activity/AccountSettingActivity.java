@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.LocationSettingDialogFg;
@@ -71,6 +73,8 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     RadioGroup radioGroup;
     @Bind(R.id.loginTypeIcon)
     ImageView loginTypeIcon;
+    @Bind(R.id.modiffPass)
+    RelativeLayout modiffPass;
 
 
     private ArrayList<Integer> imageList;
@@ -123,6 +127,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                 loginTypeIcon.setImageResource(R.mipmap.ic_wechat);
                 break;
             default:
+                modiffPass.setVisibility(View.VISIBLE);
                 loginTypeIcon.setImageResource(R.mipmap.ic_phone);
         }
 
@@ -143,16 +148,19 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         boolean userLocationChanged;
         userLocationChanged = !StringUtils.isEmpty(accountSettingUserLocation.getText().toString()) && !AppContext.user.getLocation().equals(accountSettingUserLocation.getText().toString());
         if (mProfileModified || userNameChanged || userGenderChanged || userLocationChanged) {
-            ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示", "当前修改尚未保存，退出会导致资料丢失，是否保存");
-            confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
+
+            dialog.setListener(new CommonDialog.OnActionListener() {
                 @Override
-                public void onClick(int index) {
-                    if (index == ConfirmDialogFg.INDEX_OK) {
-                        AccountSettingActivity.this.finish();
+                public boolean dialogClick(int clickId) {
+                    if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
+                        finish();
                     }
+                    return true;
                 }
             });
-            confirmDialogFg.show(getSupportFragmentManager(), "~");
+
+            dialog.show(getSupportFragmentManager(), "");
         } else {
             super.onBackPressed();
         }

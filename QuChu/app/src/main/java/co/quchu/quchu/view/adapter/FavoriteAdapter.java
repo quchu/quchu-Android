@@ -24,7 +24,7 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
 
 
     @Override
-    public void onBindView(ViewHold holder, final int position) {
+    public void onBindView(final ViewHold holder, final int position) {
         final FavoriteBean.ResultBean bean = data.get(position);
 
         holder.name.setText(bean.getName());
@@ -36,7 +36,7 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClick(bean, v.getId(), position);
+                    itemClickListener.itemClick(holder,bean, v.getId(), position);
                 }
             };
 
@@ -54,7 +54,7 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
 
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
-        @Bind(R.id.name)
+        @Bind(R.id.desc)
         TextView name;
         @Bind(R.id.tag)
         TagCloudView tag;

@@ -123,20 +123,22 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if (listener == null)
+        if (listener == null) {
+            dismiss();
             return;
-        boolean result = false;
+        }
 
+        boolean result = true;
 
         switch (v.getId()) {
             case R.id.passive:
-                result = listener.passiveClick(CLICK_ID_PASSIVE);
+                result = listener.dialogClick(CLICK_ID_PASSIVE);
                 break;
             case R.id.active:
-                result = listener.passiveClick(CLICK_ID_ACTIVE);
+                result = listener.dialogClick(CLICK_ID_ACTIVE);
                 break;
             case R.id.subButton:
-                result = listener.passiveClick(CLICK_ID_SUBBUTTON);
+                result = listener.dialogClick(CLICK_ID_SUBBUTTON);
         }
         if (result) {
             dismiss();
@@ -150,7 +152,7 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
          * @param clickId 按钮类型
          * @return true 父类处理关闭事件
          */
-        boolean passiveClick(int clickId);
+        boolean dialogClick(int clickId);
     }
 
 }

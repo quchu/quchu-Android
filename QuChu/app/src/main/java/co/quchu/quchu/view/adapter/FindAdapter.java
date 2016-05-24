@@ -15,7 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.FindBean;
-import co.quchu.quchu.widget.TagCloudView;
+import co.quchu.quchu.widget.SwipeDeleteLayout;
 
 /**
  * Created by no21 on 2016/4/5.
@@ -26,23 +26,25 @@ public class FindAdapter extends AdapterBase<FindBean.ResultEntity, FindAdapter.
 
 
     @Override
-    public void onBindView(ViewHold holder, final int position) {
+    public void onBindView(final ViewHold holder, final int position) {
         final FindBean.ResultEntity bean = data.get(position);
 
 
         holder.name.setText(bean.getName());
+        holder.address.setText(bean.getAddress());
+        holder.swipeDeleteItem.scrollTo(0, 0);
         if (bean.getImage().size() > 0) {
             holder.simpleDraweeView.setImageURI(Uri.parse(bean.getImage().get(0).getImgpath()));
         } else {
             holder.simpleDraweeView.setImageURI(Uri.EMPTY);
         }
-
         if (itemClickListener != null) {
 
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClick(bean, v.getId(), position);
+
+                    itemClickListener.itemClick(holder,bean, v.getId(), position);
                 }
             };
 
@@ -58,16 +60,18 @@ public class FindAdapter extends AdapterBase<FindBean.ResultEntity, FindAdapter.
     }
 
     class ViewHold extends RecyclerView.ViewHolder {
-        @Bind(R.id.name)
-        TextView name;
-        @Bind(R.id.tag)
-        TagCloudView tag;
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
+        @Bind(R.id.desc)
+        TextView name;
+        @Bind(R.id.name)
+        TextView address;
         @Bind(R.id.swipe_delete_content)
         RelativeLayout swipeDeleteContent;
         @Bind(R.id.swipe_delete_action)
         FrameLayout swipeDeleteAction;
+        @Bind(R.id.swipe_delete_item)
+        SwipeDeleteLayout swipeDeleteItem;
 
         public ViewHold(View itemView) {
             super(itemView);

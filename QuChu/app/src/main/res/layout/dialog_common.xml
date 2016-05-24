@@ -38,6 +38,7 @@
                 android:layout_marginRight="@dimen/base_margin"
                 android:minHeight="32dp"
                 android:text="哈哈哈哈哈"
+                android:paddingBottom="@dimen/double_margin"
                 android:textColor="@color/standard_color_h2_dark"
                 android:textSize="@dimen/word_subhead_size" />
 

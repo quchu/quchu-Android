@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -71,11 +72,16 @@ public class LinearProgressView extends View {
         paint.setTextSize(getResources().getDimension(R.dimen.standard_text_size_h4));
         paint.setColor(colors[position][0]);
 
-        float y = getHeight() / 2f + paint.getTextSize() / 2f;
-        canvas.drawText(progress + "%", 0, y, paint);
+
+        String pro = progress + "%";
+        paint.getTextBounds(pro, 0, pro.length(), rect);
+        paint.setTypeface(Typeface.DEFAULT_BOLD);
+        float y = getHeight() / 2f + rect.height() / 2f;
+        canvas.drawText(pro, 0, y, paint);
 
         if (!TextUtils.isEmpty(text)) {
             paint.getTextBounds(text, 0, text.length(), rect);
+            paint.setTypeface(Typeface.DEFAULT);
             paint.setColor(getResources().getColor(R.color.standard_color_h3_dark));
             canvas.drawText(text, getWidth() / 2 - rect.width() / 2, getHeight() / 2 + rect.height() / 2, paint);
         }
@@ -99,8 +105,6 @@ public class LinearProgressView extends View {
         paint.setShader(linearGradient);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRoundRect(rectF, radio, radio, paint);
-
-
     }
 
     int position;

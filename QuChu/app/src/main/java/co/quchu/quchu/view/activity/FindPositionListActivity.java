@@ -63,9 +63,15 @@ public class FindPositionListActivity extends BaseActivity implements AdapterBas
         adapter.setItemClickListener(this);
 
         recyclerView.setAdapter(adapter);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pagesNo = 1;
         presenter.getFindData(pagesNo, this);
-
-
     }
 
     @Override
@@ -79,27 +85,36 @@ public class FindPositionListActivity extends BaseActivity implements AdapterBas
     }
 
     @Override
-    public void itemClick(FindBean.ResultEntity entity, int type, int position) {
-        String address = entity.getAddress();
-        String name = entity.getName();
-        int pId = entity.getPId();
-        String desc = entity.getInstruction();
-        ArrayList<PhotoInfo> photos = new ArrayList<>();
-        List<FindBean.ResultEntity.ImageEntity> image = entity.getImage();
-        for (FindBean.ResultEntity.ImageEntity item : image) {
-            String path = item.getImgpath();
-            PhotoInfo info = new PhotoInfo();
-            info.setPhotoPath(path);
-            photos.add(info);
+    public void itemClick(RecyclerView.ViewHolder holder, FindBean.ResultEntity entity, int type, int position) {
+        if (type == R.id.swipe_delete_content) {
+            String address = entity.getAddress();
+            String name = entity.getName();
+            int pId = entity.getPId();
+            String desc = entity.getInstruction();
+            ArrayList<PhotoInfo> photos = new ArrayList<>();
+            List<FindBean.ResultEntity.ImageEntity> image = entity.getImage();
+            for (FindBean.ResultEntity.ImageEntity item : image) {
+                String path = item.getImgpath();
+                PhotoInfo info = new PhotoInfo();
+                info.setPhotoPath(path);
+                photos.add(info);
+            }
+            Intent intent = new Intent(this, FindPositionActivity.class);
+            intent.putExtra(FindPositionActivity.REQUEST_KEY_NAME, name);
+            intent.putExtra(FindPositionActivity.REQUEST_KEY_ID, pId);
+            intent.putExtra(FindPositionActivity.REQUEST_KEY_POSITION, address);
+            intent.putExtra(FindPositionActivity.REQUEST_KEY_DESC, desc);
+            intent.putParcelableArrayListExtra(FindPositionActivity.REQUEST_KEY_IMAGE_LIST, photos);
+            startActivity(intent);
+        } else {
+            presenter.deleteMyFindQuchu(entity.getPId(), entity, holder, this);
         }
-        Intent intent = new Intent(this, FindPositionActivity.class);
-        intent.putExtra(FindPositionActivity.REQUEST_KEY_NAME, name);
-        intent.putExtra(FindPositionActivity.REQUEST_KEY_ID, pId);
-        intent.putExtra(FindPositionActivity.REQUEST_KEY_POSITION, address);
-        intent.putExtra(FindPositionActivity.REQUEST_KEY_DESC, desc);
-        intent.putParcelableArrayListExtra(FindPositionActivity.REQUEST_KEY_IMAGE_LIST, photos);
-        startActivity(intent);
     }
+
+    public void deleteSucceed(RecyclerView.ViewHolder holder ,FindBean.ResultEntity entity) {
+        adapter.removeItem(holder, entity);
+    }
+
 
     @Override
     public void initData(FindBean bean) {

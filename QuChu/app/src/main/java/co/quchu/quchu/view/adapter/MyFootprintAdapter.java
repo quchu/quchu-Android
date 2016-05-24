@@ -48,7 +48,7 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
 //        builder.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), index1, index2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 //        builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), index2, index3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         holder.name.setText(model.getComment());
-        holder.address.setText(model.getPlcaeAddress());
+        holder.address.setText(model.getPlcaeName());
 
 //        StringBuilder text2 = new StringBuilder();
 //        text2.append(model.getTime());
@@ -57,13 +57,19 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
 //
 //        SpannableStringBuilder builder2 = new SpannableStringBuilder(text2.toString());
 //        builder2.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), 0, text2.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        if (model.getPlaceId() == 0) {
+            holder.commemt.setVisibility(View.INVISIBLE);
+        } else {
+            holder.commemt.setVisibility(View.VISIBLE);
+        }
         holder.commemt.setText(model.getPraiseNum() + "次");
         holder.time.setText(DateUtils.getDateToString(DateUtils.DATA_FORMAT_MM_DD_YYYY, model.getTime()));
         if (itemClickListener != null) {
             holder.simpleDraweeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClick(model, 0, position);
+                    itemClickListener.itemClick(holder, model, 0, position);
                 }
             });
         }
@@ -80,12 +86,12 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
     static class ViewHold extends RecyclerView.ViewHolder {
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
-        @Bind(R.id.name)
+        @Bind(R.id.desc)
         TextView name;
         @Bind(R.id.commemt)
         TextView commemt;
 
-        @Bind(R.id.address)
+        @Bind(R.id.name)
         TextView address;
         @Bind(R.id.time)
         TextView time;

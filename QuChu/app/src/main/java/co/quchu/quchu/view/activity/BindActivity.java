@@ -91,8 +91,13 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bind_phone:
-                BindPhoneNumDialog dialog = BindPhoneNumDialog.newInstance();
-                dialog.show(getSupportFragmentManager(), "");
+                if (AppContext.user.isphone()) {
+                    CommonDialog dialog = CommonDialog.newInstance("出错了", "手机号是唯一的身份标示,解除绑定后将无法正常登录.", "知道了", null);
+                    dialog.show(getSupportFragmentManager(), "");
+                } else {
+                    BindPhoneNumDialog dialog = BindPhoneNumDialog.newInstance();
+                    dialog.show(getSupportFragmentManager(), "");
+                }
                 break;
             case R.id.bind_wecha:
                 if (AppContext.user.isIsweixin()) {
@@ -144,7 +149,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         CommonDialog commonDialog = CommonDialog.newInstance("注意", "该账号已被使用,是否将此账号与当前账号进行合并,合并后不影响使用", "确定", "取消", "什么是账号合并");
         commonDialog.setListener(new CommonDialog.OnActionListener() {
             @Override
-            public boolean passiveClick(int id) {
+            public boolean dialogClick(int id) {
                 switch (id) {
                     case CommonDialog.CLICK_ID_ACTIVE:
                         Map<String, String> params = new HashMap<>();

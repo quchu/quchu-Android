@@ -11,4 +11,5 @@ public interface IMeActivity {
 
     void initGene(MyGeneModel data);
 
+    void notReadMassage(int cound);
 }

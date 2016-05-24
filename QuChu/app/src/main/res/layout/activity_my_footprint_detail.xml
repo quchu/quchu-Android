@@ -106,7 +106,7 @@
             android:layout_width="0dp"
             android:layout_height="18dp"
             android:layout_weight="1"
-            android:src="@mipmap/ic_edit_small" />
+            android:src="@mipmap/ic_write_white" />
 
 
     </LinearLayout>

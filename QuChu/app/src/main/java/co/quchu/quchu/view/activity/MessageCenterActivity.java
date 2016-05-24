@@ -98,7 +98,7 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
     }
 
     @Override
-    public void itemClick(MessageModel.ResultBean item, int type, int position) {
+    public void itemClick(RecyclerView.ViewHolder holder,MessageModel.ResultBean item, int type, int position) {
         Intent intent = new Intent(this, UserCenterActivity.class);
         intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, item.getFormId());
         startActivity(intent);

@@ -30,15 +30,11 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     private boolean loadMoreEnable = true;
     protected List<DT> data;
     protected OnItemClickListener<DT> itemClickListener;
-    protected OnItemRemoveListener<DT> itemRemoveListener;
 
     public void setItemClickListener(OnItemClickListener<DT> itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
-    public void setItemRemoveListener(OnItemRemoveListener<DT> itemRemoveListener) {
-        this.itemRemoveListener = itemRemoveListener;
-    }
 
     public void initData(List<DT> data) {
         netError = false;
@@ -201,17 +197,12 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     }
 
     public interface OnItemClickListener<DT> {
-        void itemClick(DT item, int type, int position);
+        void itemClick(RecyclerView.ViewHolder holder, DT item, int type, int position);
     }
 
-    public interface OnItemRemoveListener<DT> {
-        void itemRemoved(DT item, int position);
-    }
 
-    public void removeItem(int position) {
-        DT remove = data.remove(position);
-        notifyItemRemoved(position);
-        if (itemRemoveListener != null)
-            itemRemoveListener.itemRemoved(remove, position);
+    public void removeItem(RecyclerView.ViewHolder holder, DT item) {
+        data.remove(item);
+        notifyItemRemoved(holder.getAdapterPosition());
     }
 }

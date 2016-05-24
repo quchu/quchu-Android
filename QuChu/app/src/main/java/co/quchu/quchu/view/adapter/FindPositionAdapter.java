@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,8 +12,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.R;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.utils.ImageUtils;
 
 /**
@@ -34,7 +35,9 @@ public class FindPositionAdapter extends RecyclerView.Adapter<FindPositionAdapte
 
     @Override
     public ViewHold onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = View.inflate(parent.getContext(), R.layout.item_find_position_image, null);
+//        View view = View.inflate(parent.getContext(), R.layout.item_find_position_image, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_find_position_image, parent, false);
+
         return new ViewHold(view);
     }
 

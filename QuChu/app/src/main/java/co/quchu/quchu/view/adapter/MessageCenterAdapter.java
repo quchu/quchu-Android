@@ -35,7 +35,7 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, M
     }
 
     @Override
-    public void onBindView(MessageCenterItemHolder holder, final int position) {
+    public void onBindView(final MessageCenterItemHolder holder, final int position) {
         final MessageModel.ResultBean model = data.get(position);
         holder.itemMessageFromAvator.setImageURI(Uri.parse(model.getFormPhoto()));
         holder.itemMessageDesTv.setText(model.getContent());
@@ -45,7 +45,7 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, M
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.itemClick(model, 0, position);
+                itemClickListener.itemClick(holder,model, 0, position);
             }
         });
 
