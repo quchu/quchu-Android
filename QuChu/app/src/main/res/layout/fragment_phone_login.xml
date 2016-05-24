@@ -14,9 +14,10 @@
 
         <ImageView
             android:id="@+id/ivIconUserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_width="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
+            android:src="@mipmap/ic_phone" />
 
         <EditText
             android:id="@+id/etUsername"
@@ -34,10 +35,11 @@
 
         <ImageView
             android:id="@+id/ivIconClear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_cancel" />
 
         <View
             android:layout_width="match_parent"
@@ -58,9 +60,10 @@
 
         <ImageView
             android:id="@+id/ivIconPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_width="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
+            android:src="@mipmap/ic_lock" />
 
         <EditText
             android:id="@+id/etPassword"
@@ -78,10 +81,11 @@
 
         <ImageView
             android:id="@+id/ivSwitchVisible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_see" />
 
         <View
             android:layout_width="match_parent"
