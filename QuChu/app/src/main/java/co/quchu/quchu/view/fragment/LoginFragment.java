@@ -7,19 +7,16 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
-import com.umeng.analytics.MobclickAgent;
-
 import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
@@ -78,10 +75,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     }
 
 
-    @OnClick({R.id.tvLoginViaPhone,R.id.tvCreateAccountViaPhone,R.id.llAuthorizationViaMm,R.id.llAuthorizationViaWeibo})
+    @OnClick({R.id.tvForgottenPassword,R.id.tvLoginViaPhone,R.id.tvCreateAccountViaPhone,R.id.llAuthorizationViaMm,R.id.llAuthorizationViaWeibo})
     public void onClick(View v) {
         mContainerId = mContainerId == -1? ((ViewGroup)getView().getParent()).getId():mContainerId;
         switch (v.getId()){
+            case R.id.tvForgottenPassword:
+                getFragmentManager().beginTransaction().setCustomAnimations(
+                        R.animator.card_flip_horizontal_right_in,
+                        R.animator.card_flip_horizontal_left_out,
+                        R.animator.card_flip_horizontal_left_in,
+                        R.animator.card_flip_horizontal_right_out)
+                        .replace(mContainerId,new PhoneValidationFragment())
+                        .addToBackStack(TAG)
+                        .commitAllowingStateLoss();
+                getFragmentManager().executePendingTransactions();
+                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
+                break;
             case R.id.llAuthorizationViaMm:
                 weixinLogin();
                 break;
@@ -100,6 +109,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                         .addToBackStack(TAG)
                         .commitAllowingStateLoss();
                 getFragmentManager().executePendingTransactions();
+                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
                 break;
             case R.id.tvCreateAccountViaPhone:
                 //getFragmentManager().beginTransaction().hide(this).commitAllowingStateLoss();
@@ -112,9 +122,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                         .addToBackStack(TAG)
                         .commitAllowingStateLoss();
                 getFragmentManager().executePendingTransactions();
+                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
 
                 break;
         }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((BaseActivity)getActivity()).getEnhancedToolbar().hide();
     }
 
     @Override
