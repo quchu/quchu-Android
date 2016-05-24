@@ -39,7 +39,7 @@ import co.quchu.quchu.widget.SelectedImagePopWin;
 
 public class FindPositionActivity extends BaseActivity implements FindPositionAdapter.ItemClickListener {
 
-    @Bind(R.id.name)
+    @Bind(R.id.desc)
     EditText name;
     @Bind(R.id.position)
     EditText position;

@@ -33,7 +33,7 @@
                 android:textSize="@dimen/word_size_body" />
 
             <EditText
-                android:id="@+id/name"
+                android:id="@+id/desc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"

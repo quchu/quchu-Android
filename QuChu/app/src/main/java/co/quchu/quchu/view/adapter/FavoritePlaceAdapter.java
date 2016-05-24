@@ -90,7 +90,7 @@ public class FavoritePlaceAdapter extends RecyclerView.Adapter<FavoritePlaceAdap
     }
 
     class FavoritePlaceHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.name)
+        @Bind(R.id.desc)
         TextView itemRecommendCardNameTv;
         @Bind(R.id.item_recommend_card_city_tv)
         TextView itemRecommendCardCityTv;

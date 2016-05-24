@@ -99,7 +99,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
 
     class RecommendHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.name)
+        @Bind(R.id.desc)
         TextView tvName;
         @Bind(R.id.tag)
         TagCloudView tcvTag;

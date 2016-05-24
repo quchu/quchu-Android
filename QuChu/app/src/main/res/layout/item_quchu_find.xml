@@ -15,7 +15,7 @@
         android:paddingLeft="16dp">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -30,13 +30,13 @@
             android:id="@+id/deitContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name"
+            android:layout_below="@id/desc"
             android:layout_marginTop="4dp"
             android:text="编辑内容"
             android:textColor="@color/standard_color_h2_dark" />
 
         <TextView
-            android:id="@+id/address"
+            android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/deitContent"

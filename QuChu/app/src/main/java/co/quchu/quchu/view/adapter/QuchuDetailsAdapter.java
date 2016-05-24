@@ -620,7 +620,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static class NearbyViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.name)
+        @Bind(R.id.desc)
         TextView tvName;
         @Bind(R.id.tag)
         TagCloudView tcvTag;

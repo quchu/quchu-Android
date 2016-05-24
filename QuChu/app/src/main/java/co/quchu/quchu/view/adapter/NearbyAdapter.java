@@ -62,7 +62,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.name)
+        @Bind(R.id.desc)
         TextView name;
         @Bind(R.id.tag)
         TagCloudView tag;

@@ -115,7 +115,7 @@
                 android:background="@color/standard_color_h3_dark" />
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/desc"
                 android:layout_below="@id/divider"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/half_margin"
@@ -125,7 +125,7 @@
 
             <TextView
                 android:id="@+id/distance"
-                android:layout_below="@id/name"
+                android:layout_below="@id/desc"
                 android:layout_marginTop="@dimen/quarter_margin"
                 android:text="距您当前位置0km"
                 android:layout_centerHorizontal="true"

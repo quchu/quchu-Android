@@ -1,12 +1,10 @@
 package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -30,7 +28,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
  * RecommendAdapter
@@ -156,7 +153,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         TextView itemRecommendCardAddressTv;
         @Bind(R.id.activity)
         TextView item_place_event_tv;
-        @Bind(R.id.name)
+        @Bind(R.id.desc)
         TextView item_recommend_card_name_tv;
         @Bind(R.id.recommend_tag1)
         TextView tag1;

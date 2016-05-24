@@ -29,7 +29,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
-    @Bind(R.id.name)
+    @Bind(R.id.desc)
     TextView name;
     @Bind(R.id.alias)
     TextView alias;

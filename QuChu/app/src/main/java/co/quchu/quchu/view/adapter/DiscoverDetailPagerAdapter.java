@@ -128,7 +128,7 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
         TextView itemRecommendCardAddressTv;
         @Bind(R.id.activity)
         TextView item_place_event_tv;
-        @Bind(R.id.name)
+        @Bind(R.id.desc)
         TextView item_recommend_card_name_tv;
         @Bind(R.id.recommend_tag1)
         TextView tag1;
