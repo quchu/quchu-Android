@@ -108,7 +108,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
             titleView.setText("删除");
             titleView.setGravity(Gravity.CENTER);
             titleView.setTextColor(Color.WHITE);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(toolbar.getItemSize(), toolbar.getItemSize());
+            int itemSize = getResources().getDimensionPixelSize(R.dimen.toolbar_item_size);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(itemSize, itemSize);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             params.addRule(RelativeLayout.CENTER_VERTICAL);
             params.rightMargin = 130;

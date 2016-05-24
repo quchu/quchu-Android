@@ -60,7 +60,6 @@ public class LoginByPhoneFragment extends Fragment {
 
     public static final String TAG = "LoginByPhoneFragment";
     public boolean mDisplayPassword = false;
-    public boolean mLoginAvailable = false;
 
     @Nullable
     @Override
@@ -75,14 +74,11 @@ public class LoginByPhoneFragment extends Fragment {
                     if (!StringUtils.isMobileNO(etUsername.getText().toString())){
                         tvLoginViaPhone.setText(R.string.promote_invalid_username);
                         tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                        mLoginAvailable = false;
                     }else if(StringUtils.isMobileNO(etUsername.getText().toString()) && StringUtils.isGoodPassword(etPassword.getText().toString())){
                         tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
                         tvLoginViaPhone.setText(R.string.login);
-                        mLoginAvailable = true;
                     }else{
                         restoreLoginButton();
-                        mLoginAvailable = false;
                     }
                 }
             }
@@ -94,14 +90,11 @@ public class LoginByPhoneFragment extends Fragment {
                     if (!StringUtils.isGoodPassword(etPassword.getText().toString())){
                         tvLoginViaPhone.setText(R.string.promote_invalid_password);
                         tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                        mLoginAvailable = false;
                     }else if(StringUtils.isMobileNO(etUsername.getText().toString()) && StringUtils.isGoodPassword(etPassword.getText().toString())){
                         tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
                         tvLoginViaPhone.setText(R.string.login);
-                        mLoginAvailable = true;
                     }else{
                         restoreLoginButton();
-                        mLoginAvailable = false;
                     }
                 }
             }
@@ -110,7 +103,9 @@ public class LoginByPhoneFragment extends Fragment {
         tvLoginViaPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mLoginAvailable){
+                if(StringUtils.isMobileNO(etUsername.getText().toString()) && StringUtils.isGoodPassword(etPassword.getText().toString())) {
+                    tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+                    tvLoginViaPhone.setText(R.string.login);
                     userLogin(etUsername.getText().toString(),etPassword.getText().toString());
                 }
             }

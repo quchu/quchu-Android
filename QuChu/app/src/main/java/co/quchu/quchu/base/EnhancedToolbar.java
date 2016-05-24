@@ -26,7 +26,6 @@ public class EnhancedToolbar extends Toolbar {
     public static final int TYPE_TITLE_TV = 0x3001;
     public static final int TYPE_CUSTOM_V = 0x4001;
     private RelativeLayout rlContent;
-    private int itemSize;
 
     public EnhancedToolbar(Context context) {
         super(context);
@@ -47,7 +46,6 @@ public class EnhancedToolbar extends Toolbar {
 
 
     protected void initSelf() {
-        itemSize = getResources().getDimensionPixelSize(R.dimen.toolbar_item_size);
         if (getChildCount() <= 0) {
             rlContent = new RelativeLayout(new ContextThemeWrapper(getContext(), R.style.ToolbarContainer));
             addView(rlContent, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -63,9 +61,6 @@ public class EnhancedToolbar extends Toolbar {
         this.setVisibility(View.GONE);
     }
 
-    public int getItemSize() {
-        return itemSize;
-    }
 
     protected int getActionViewId(int type) {
         int childViewId = -1;
@@ -150,7 +145,7 @@ public class EnhancedToolbar extends Toolbar {
 
     protected View addActionView(int type) {
         View v = null;
-
+        int itemSize = getResources().getDimensionPixelSize(R.dimen.toolbar_item_size);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(itemSize, itemSize);
 
         switch (type) {
@@ -163,8 +158,6 @@ public class EnhancedToolbar extends Toolbar {
                 v = new TextView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem_ActionTextView));
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 lp.addRule(RelativeLayout.CENTER_VERTICAL);
-                lp.width=lp.WRAP_CONTENT;
-                lp.height=lp.WRAP_CONTENT;
                 break;
             case TYPE_LEFT_IV:
                 v = new ImageView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem));
