@@ -3,6 +3,7 @@ package co.quchu.quchu.base;
 
 import android.content.Context;
 import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
@@ -153,11 +154,13 @@ public class EnhancedToolbar extends Toolbar {
                 v = new TextView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem_ActionTextView));
                 lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 lp.addRule(RelativeLayout.CENTER_VERTICAL);
+                lp.width = LinearLayoutCompat.LayoutParams.WRAP_CONTENT;
                 break;
             case TYPE_RIGHT_TV:
                 v = new TextView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem_ActionTextView));
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 lp.addRule(RelativeLayout.CENTER_VERTICAL);
+                lp.width = LinearLayoutCompat.LayoutParams.WRAP_CONTENT;
                 break;
             case TYPE_LEFT_IV:
                 v = new ImageView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem));

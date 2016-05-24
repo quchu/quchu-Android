@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -69,7 +70,13 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         // +model.getPrice()+"</font>元")
 
 
-        String price = model.getPrice().split(",")[0];
+        String price;
+        if (!TextUtils.isEmpty(model.getPrice())){
+            price = model.getPrice().split(",")[0];
+        }else{
+            price = "-";
+        }
+
         holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost),price,"元"));
         holder.linearLayout.removeAllViews();
         for (int i = 0; i < model.getSuggest(); i++) {
