@@ -134,7 +134,15 @@ public class WebViewActivity extends BaseActivity {
 //                    });
 //                }
             }else{
-                view.loadUrl(url);
+                if (null!=url&&url.indexOf("searchInfo.quchu.co?placeId=")>0){
+                    int pid =  Integer.valueOf(url.substring(url.lastIndexOf("=")+1,url.length()));
+                    Intent intent = new Intent(WebViewActivity.this,QuchuDetailsActivity.class);
+                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID,pid);
+                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM,QuchuDetailsActivity.FROM_TYPE_TAG);
+                    startActivity(intent);
+                }else{
+                    view.loadUrl(url);
+                }
             }
             return true;
         }
