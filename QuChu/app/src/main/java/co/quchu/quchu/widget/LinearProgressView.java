@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -64,7 +65,6 @@ public class LinearProgressView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         float radio = getHeight() / 2;
-
         paint.reset();
         paint.setAntiAlias(true);
         paint.setStrokeWidth(3);
@@ -82,7 +82,7 @@ public class LinearProgressView extends View {
         if (!TextUtils.isEmpty(text)) {
             paint.getTextBounds(text, 0, text.length(), rect);
             paint.setTypeface(Typeface.DEFAULT);
-            paint.setColor(getResources().getColor(R.color.standard_color_h3_dark));
+            paint.setColor(ContextCompat.getColor(getContext(), R.color.standard_color_h3_dark));
             canvas.drawText(text, getWidth() / 2 - rect.width() / 2, getHeight() / 2 + rect.height() / 2, paint);
         }
 
@@ -91,10 +91,12 @@ public class LinearProgressView extends View {
         rectF.right = getWidth() - paint.getStrokeWidth();
         rectF.bottom = getHeight();
 
-        paint.setColor(getResources().getColor(R.color.standard_color_h3_dark));
-
-
+        paint.reset();
+        paint.setShader(null);
+        paint.setColor(ContextCompat.getColor(getContext(), R.color.standard_color_h3_dark));
         paint.setStyle(Paint.Style.STROKE);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(3);
         canvas.drawRoundRect(rectF, radio, radio, paint);
 
         //draw progress
@@ -102,6 +104,9 @@ public class LinearProgressView extends View {
         rectF.right = getWidth() * progress / 100f;
         rectF.bottom = getHeight();
 
+        paint.reset();
+        paint.setDither(true);
+        paint.setAntiAlias(true);
         paint.setShader(linearGradient);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRoundRect(rectF, radio, radio, paint);

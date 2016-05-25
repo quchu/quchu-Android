@@ -4,6 +4,7 @@
     <stroke
         android:width="2dp"
         android:color="@color/standard_color_h3_dark" />
+    <solid android:color="@android:color/transparent" />
     <padding
         android:bottom="@dimen/half_margin"
         android:left="@dimen/half_margin"

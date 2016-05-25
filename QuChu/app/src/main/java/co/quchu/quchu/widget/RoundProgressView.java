@@ -18,13 +18,14 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.utils.LogUtils;
 
 /**
  * Created by no21 on 2016/5/17.
  * email:437943145@qq.com
  * desc :
  */
-public class RoundProgressViewNew extends View {
+public class RoundProgressView extends View {
 
     private Paint paint;
     private RectF rectF;
@@ -36,15 +37,15 @@ public class RoundProgressViewNew extends View {
     private SweepGradient sweepGradient;
     private Rect rect;
 
-    public RoundProgressViewNew(Context context) {
+    public RoundProgressView(Context context) {
         this(context, null);
     }
 
-    public RoundProgressViewNew(Context context, AttributeSet attrs) {
+    public RoundProgressView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RoundProgressViewNew(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RoundProgressView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         paint = new Paint();
         rectF = new RectF();
@@ -79,29 +80,31 @@ public class RoundProgressViewNew extends View {
         float arcWidth = getWidth() * .15f;
         float arcMargin = getWidth() * .15f;
 
-        paint.reset();
         //圆背景
+        paint.reset();
         paint.setShader(roundBg);
         paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
+        paint.setDither(true);
         canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, getWidth() / 2f, paint);
 
 
-        //进度背景
-//        canvas.rotate(90, getWidth() / 2, getHeight() / 2);
+//        进度背景
         paint.reset();
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setShader(null);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(arcWidth);
         paint.setColor(ContextCompat.getColor(getContext(), R.color.bg_progress));
+//        paint.setColor(ContextCompat.getColor(getContext(), R.color.standard_color_red));
 
         rectF.left = arcMargin;
         rectF.top = arcMargin;
         rectF.right = getWidth() - arcMargin;
         rectF.bottom = getHeight() - arcMargin;
-
+//
         canvas.drawArc(rectF, 120, 300, false, paint);
 
         //画进度
@@ -111,13 +114,15 @@ public class RoundProgressViewNew extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(arcWidth);
         paint.setShader(sweepGradient);
-
-        int pro = 300 * progress / 100;
+        paint.setDither(true);
+        float pro = 300f * progress / 100;
+        LogUtils.e("progress=:" + progress);
         if (pro != 0)
             canvas.drawArc(rectF, 120, pro, false, paint);
 
         //画中心圆
         paint.reset();
+        paint.setShader(null);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(ContextCompat.getColor(getContext(), R.color.bg_round));
@@ -139,14 +144,14 @@ public class RoundProgressViewNew extends View {
 
 
     public void setProgress(int progress) {
-        this.progress = progress;
+
         ValueAnimator animator = ValueAnimator.ofInt(0, progress);
         animator.setDuration(800);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                RoundProgressViewNew.this.progress = (int) animation.getAnimatedValue();
+                RoundProgressView.this.progress = (int) animation.getAnimatedValue();
                 invalidate();
             }
         });

@@ -34,7 +34,7 @@ import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.UserCenterActivity;
-import co.quchu.quchu.widget.RoundProgressViewNew;
+import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 import co.quchu.quchu.widget.TagCloudView;
 
@@ -532,11 +532,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class RatingInfoViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.rpvItemLeft)
-        RoundProgressViewNew rpvItemLeft;
+        RoundProgressView rpvItemLeft;
         @Bind(R.id.rpvItemMiddle)
-        RoundProgressViewNew rpvItemMiddle;
+        RoundProgressView rpvItemMiddle;
         @Bind(R.id.rpvItemRight)
-        RoundProgressViewNew rpvItemRight;
+        RoundProgressView rpvItemRight;
 
         @Bind(R.id.tvRatingLeft)
         TextView tvRatingLeft;

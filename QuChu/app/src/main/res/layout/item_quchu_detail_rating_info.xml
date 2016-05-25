@@ -15,7 +15,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <co.quchu.quchu.widget.RoundProgressViewNew
+        <co.quchu.quchu.widget.RoundProgressView
             android:id="@+id/rpvItemLeft"
             android:layout_width="60dp"
             android:layout_height="60dp" />
@@ -34,7 +34,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <co.quchu.quchu.widget.RoundProgressViewNew
+        <co.quchu.quchu.widget.RoundProgressView
             android:id="@+id/rpvItemMiddle"
             android:layout_width="60dp"
             android:layout_height="60dp" />
@@ -52,7 +52,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <co.quchu.quchu.widget.RoundProgressViewNew
+        <co.quchu.quchu.widget.RoundProgressView
             android:id="@+id/rpvItemRight"
             android:layout_width="60dp"
             android:layout_height="60dp" />
