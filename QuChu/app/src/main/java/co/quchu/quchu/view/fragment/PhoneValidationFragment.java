@@ -67,12 +67,12 @@ public class PhoneValidationFragment extends Fragment {
         UserLoginPresenter.getCaptcha(getActivity(), etUsername.getText().toString(), UserLoginPresenter.getCaptcha_regiest, new UserLoginPresenter.UserNameUniqueListener() {
             @Override
             public void isUnique(JSONObject msg) {
-                errorView.himeView();
+                errorView.hideView();
             }
 
             @Override
             public void notUnique(String msg) {
-                errorView.himeView();
+                errorView.hideView();
             }
         });
     }

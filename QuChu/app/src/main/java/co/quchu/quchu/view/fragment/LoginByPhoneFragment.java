@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.sina.weibo.sdk.utils.MD5;
 import com.umeng.analytics.MobclickAgent;
 
@@ -157,7 +155,7 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
                         MobclickAgent.onProfileSignIn("loginphone_c", AppContext.user.getUserId() + "");
                         getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
                         getActivity().finish();
-                        errorView.himeView();
+                        errorView.hideView();
                     }
 
             @Override
@@ -173,7 +171,7 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
                         e.printStackTrace();
                     }
                 }
-                errorView.himeView();
+                errorView.hideView();
             }
 
         });

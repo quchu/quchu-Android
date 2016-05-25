@@ -73,7 +73,7 @@ public class ErrorView extends FrameLayout {
         actionButtton.setOnClickListener(actionListener);
     }
 
-    public void himeView() {
+    public void hideView() {
         refreshLayout.setVisibility(GONE);
         loadingView.setVisibility(GONE);
         setVisibility(GONE);

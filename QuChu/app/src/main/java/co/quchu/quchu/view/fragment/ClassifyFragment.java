@@ -29,7 +29,6 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.activity.ClassifyDetailActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.view.adapter.ClassifyAdapter;
 import co.quchu.quchu.view.adapter.ClassifyDecoration;
@@ -88,7 +87,7 @@ public class ClassifyFragment extends BaseFragment {
             public void onResponse(final List<ClassifyModel> response, boolean result, @Nullable String exception, @Nullable String msg) {
                 DialogUtil.dismissProgessDirectly();
                 dampView.setVisibility(View.VISIBLE);
-                errorView.himeView();
+                errorView.hideView();
 
 
                 cAdapter = new ClassifyAdapter(getActivity(), response);

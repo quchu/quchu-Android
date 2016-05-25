@@ -209,7 +209,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         }
         tabLayout.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
-        errorView.himeView();
+        errorView.hideView();
 
         tagList = list;
         if (tabLayout.getTabCount() > 0) {
@@ -289,7 +289,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             recyclerView.setVisibility(View.GONE);
         } else {
             if (recyclerView.getVisibility() == View.GONE) {
-                errorView.himeView();
+                errorView.hideView();
                 recyclerView.setVisibility(View.VISIBLE);
             }
             cardList.clear();
