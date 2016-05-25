@@ -107,7 +107,7 @@ public class UserLoginPresenter {
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
                 try {
-                    if (response.has("result")&&response.getBoolean("result")){
+                    if (response.has("result")&&response.getString("result").equals("0")){
                         listener.isUnique(null);
                     }else{
                         listener.notUnique("");

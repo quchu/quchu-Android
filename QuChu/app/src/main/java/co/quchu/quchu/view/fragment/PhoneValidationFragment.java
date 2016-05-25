@@ -1,9 +1,9 @@
 package co.quchu.quchu.view.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -120,15 +120,6 @@ public class PhoneValidationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_validation_phone, container, false);
         ButterKnife.bind(this, view);
 
-        mCountingTimer = new Timer();
-        mCountingTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-            }
-        },1000l);
-        mCountingTimer.cancel();
-
 
         ivIconClear.setVisibility(View.INVISIBLE);
         etUsername.addTextChangedListener(new TextWatcher() {
@@ -162,21 +153,59 @@ public class PhoneValidationFragment extends Fragment {
     }
 
     private void getValidCode(){
+        if (mSecs >0){
+            return;
+        }
         errorView.showLoading();
 
         UserLoginPresenter.requestRegistrationVerifySms(getActivity(), etUsername.getText().toString(), new UserLoginPresenter.UserNameUniqueListener() {
             @Override
             public void isUnique(JSONObject msg) {
                 errorView.hideView();
+                scheduleCountDownTask();
             }
 
             @Override
             public void notUnique(String msg) {
                 tvNext.setText("用户名已被占用,请尝试其他账号");
                 errorView.hideView();
+                scheduleCountDownTask();
             }
         });
     }
+
+
+    private Handler mCountDownHandler = new android.os.Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (null == tvSendValidCode){
+                return;
+            }
+            if (mSecs<=0){
+                tvSendValidCode.setText(R.string.send_valid_code);
+            }else{
+                tvSendValidCode.setText("("+mSecs+")秒后重新发送");
+            }
+        }
+    };
+
+    private void scheduleCountDownTask() {
+        mSecs = 60;
+        mCountingTimer = new Timer();
+        mCountingTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (mSecs<=0){
+                    mCountingTimer.cancel();
+                }
+                mSecs-=1;
+                mCountDownHandler.sendEmptyMessage(0);
+            }
+        },10,1000);
+    }
+
+    private int mSecs = 0;
 
 
     @Override

@@ -45,13 +45,10 @@ public class NetService {
         mRequestQueue.add(request);
     }
 
-    public static void cancelAll(Object tag) {
-        mRequestQueue.cancelAll(tag);
-    }
 
     public static void post(Context cont, String pUrl, JSONObject params,
                             IRequestListener pListener) {
-        Log.d("NetService", pUrl);
+        LogUtils.d(pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //     NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
@@ -66,7 +63,7 @@ public class NetService {
     }
 
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
-        Log.d("NetService", pUrl);
+        LogUtils.d(pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //  NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
@@ -78,7 +75,7 @@ public class NetService {
     }
 
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
-        Log.d("NetService", pUrl);
+        LogUtils.d(pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //    NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
