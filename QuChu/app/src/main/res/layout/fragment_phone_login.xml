@@ -108,4 +108,11 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/standard_text_size_h1" />
 
+    <co.quchu.quchu.widget.ErrorView
+        android:id="@+id/errorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabLayout"
+        android:visibility="gone" />
+
 </RelativeLayout>

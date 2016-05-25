@@ -34,6 +34,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.UserLoginActivity;
+import co.quchu.quchu.widget.ErrorView;
 
 /**
  * Created by Nico on 16/5/13.
@@ -57,6 +58,8 @@ public class LoginByPhoneFragment extends Fragment {
     TextView tvLoginViaPhone;
     @Bind(R.id.rlPasswordField)
     RelativeLayout rlPasswordField;
+    @Bind(R.id.errorView)
+    ErrorView errorView;
 
     public static final String TAG = "LoginByPhoneFragment";
     public boolean mDisplayPassword = false;
@@ -143,6 +146,7 @@ public class LoginByPhoneFragment extends Fragment {
      * 用户登录
      */
     private void userLogin(String userName,String password) {
+        errorView.showLoading();
         UserLoginPresenter.userLogin(getActivity(), userName,MD5.hexdigest(password), new UserLoginListener() {
                     @Override
                     public void loginSuccess(int type, String token, String appId) {
@@ -151,9 +155,10 @@ public class LoginByPhoneFragment extends Fragment {
                         //( ).loginSuccess(type, token, appId);
                         getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
                         getActivity().finish();
-
+                        errorView.himeView();
                     }
-                });
+
+        });
     }
 
     private void restoreLoginButton() {

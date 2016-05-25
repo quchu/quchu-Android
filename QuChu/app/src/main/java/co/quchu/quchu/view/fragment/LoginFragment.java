@@ -140,4 +140,5 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
         startActivity(new Intent(getActivity(), RecommendActivity.class));
         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
     }
+
 }
