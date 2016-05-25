@@ -33,6 +33,7 @@ import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import co.quchu.quchu.view.activity.UserCenterActivity;
 import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.SpacesItemDecoration;
@@ -225,6 +226,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         case 0:
                             ((IntroImageViewHolder) holder).tag1.setText(mData.getTags().get(i).getZh());
                             ((IntroImageViewHolder) holder).tag1.setVisibility(View.VISIBLE);
+                            ((IntroImageViewHolder) holder).tag1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
+                                }
+                            });
                             break;
                         case 1:
                             ((IntroImageViewHolder) holder).tag2.setText(mData.getTags().get(i).getZh());
