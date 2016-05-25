@@ -118,7 +118,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                         R.animator.card_flip_horizontal_left_out,
                         R.animator.card_flip_horizontal_left_in,
                         R.animator.card_flip_horizontal_right_out)
-                        .replace(mContainerId,new RegistrationFragment())
+                        .replace(mContainerId,new PhoneValidationFragment())
                         .addToBackStack(TAG)
                         .commitAllowingStateLoss();
                 getFragmentManager().executePendingTransactions();
@@ -139,6 +139,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     public void loginSuccess(int type, String token, String appId) {
         startActivity(new Intent(getActivity(), RecommendActivity.class));
         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
+    }
+
+    @Override
+    public void loginFail(String message) {
+
     }
 
 }

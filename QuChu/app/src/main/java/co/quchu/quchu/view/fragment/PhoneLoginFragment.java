@@ -544,6 +544,11 @@ public class PhoneLoginFragment extends Fragment {
                         MobclickAgent.onProfileSignIn("loginphone_c", AppContext.user.getUserId() + "");
                         ((UserLoginActivity) getActivity()).loginSuccess(type, token, appId);
                     }
+
+                    @Override
+                    public void loginFail(String message) {
+
+                    }
                 });
     }
 

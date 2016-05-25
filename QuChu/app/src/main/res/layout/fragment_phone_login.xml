@@ -29,6 +29,7 @@
             android:gravity="center_vertical"
             android:inputType="number"
             android:maxLength="11"
+            android:text="13799270329"
             style="@style/TextView.H3"
             android:hint="@string/hint_input_cellphone_number"
             android:background="@null"/>
@@ -75,6 +76,7 @@
             android:gravity="center_vertical"
             android:digits="1234567890qwertyuiopasdfghjklzxcvbnm._-"
             android:hint="@string/hint_input_password"
+            android:text="iiiiii"
             android:maxLength="12"
             style="@style/TextView.H3"
             android:background="@null" />

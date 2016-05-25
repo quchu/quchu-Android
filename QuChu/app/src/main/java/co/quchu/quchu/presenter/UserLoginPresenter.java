@@ -183,6 +183,7 @@ public class UserLoginPresenter {
 
             @Override
             public boolean onError(String error) {
+                listener.loginFail(error);
                 return false;
             }
         });

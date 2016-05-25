@@ -114,6 +114,11 @@ public class UserLoginActivity extends BaseActivity implements UserLoginListener
         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
     }
 
+    @Override
+    public void loginFail(String message) {
+
+    }
+
     public void userRegiestSuccess() {
         startActivity(new Intent(this, RecommendActivity.class));
 //        SPUtils.initGuideIndex();

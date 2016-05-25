@@ -145,6 +145,11 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         }
     }
 
+    @Override
+    public void loginFail(String message) {
+
+    }
+
     private void merger(final int type, final String token, final String appId) {
         CommonDialog commonDialog = CommonDialog.newInstance("注意", "该账号已被使用,是否将此账号与当前账号进行合并,合并后不影响使用", "确定", "取消", "什么是账号合并");
         commonDialog.setListener(new CommonDialog.OnActionListener() {

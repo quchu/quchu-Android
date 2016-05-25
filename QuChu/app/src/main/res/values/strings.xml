@@ -133,4 +133,6 @@
     <string name="promote_invalid_username">用户名错误</string>
     <string name="promote_invalid_password">密码不正确</string>
     <string name="hint_input_validate_code">在此输入验证码</string>
+    <string name="promote_empty_username_n_password">请输入用户名及密码</string>
+    <string name="promote_empty_username_or_password">请输入用户名或密码</string>
 </resources>

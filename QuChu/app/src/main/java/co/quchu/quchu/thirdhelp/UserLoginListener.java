@@ -11,4 +11,5 @@ public interface UserLoginListener {
      * @param type  1手机,2微信 3微博
      */
     void loginSuccess(int type, String token, String appId);
+    void loginFail(String errorMsg);
 }
