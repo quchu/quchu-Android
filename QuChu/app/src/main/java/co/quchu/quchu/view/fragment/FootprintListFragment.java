@@ -108,10 +108,4 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
             }
         });
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

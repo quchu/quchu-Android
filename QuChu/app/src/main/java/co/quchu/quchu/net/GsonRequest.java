@@ -221,7 +221,7 @@ public class GsonRequest<T> extends Request<T> {
         return headers;
     }
 
-    public void start(Context context, Object tag) {
+    public void start(Context context, @NonNull Object tag) {
         this.context = context;
         setTag(tag);
         setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
@@ -230,6 +230,7 @@ public class GsonRequest<T> extends Request<T> {
 
     public void start(Context context) {
         this.context = context;
+        setTag(context.getClass().getSimpleName());
         setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
     }
@@ -287,8 +288,6 @@ public class GsonRequest<T> extends Request<T> {
         } catch (IllegalStateException ex) {
             ex.printStackTrace();
         }
-
-
     }
 
 }

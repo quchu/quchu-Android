@@ -10,6 +10,7 @@ import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.net.GsonRequest;
 
 
 /**
@@ -69,6 +70,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         RefWatcher refWatcher = AppContext.getRefWatcher(getApplicationContext());
         refWatcher.watch(this);
         ActManager.getAppManager().finishActivity(this);
+
+        GsonRequest.queue.cancelAll(getClass().getSimpleName());
     }
 
     //
@@ -130,4 +133,5 @@ public abstract class BaseActivity extends AppCompatActivity {
             return null;
         }
     }
+
 }

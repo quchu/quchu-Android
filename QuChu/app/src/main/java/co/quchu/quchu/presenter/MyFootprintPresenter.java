@@ -54,7 +54,7 @@ public class MyFootprintPresenter {
 
             }
         });
-        request.start(context, null);
+        request.start(context);
     }
 
     public void getFootprintDetail(long footprintId, final ResponseListener<PostCardItemModel> listener) {
@@ -62,7 +62,7 @@ public class MyFootprintPresenter {
         params.put("cardId", String.valueOf(footprintId));
 
         GsonRequest<PostCardItemModel> request = new GsonRequest<>(NetApi.footpritDetail, PostCardItemModel.class, params, listener);
-        request.start(context, null);
+        request.start(context);
 
 
     }
