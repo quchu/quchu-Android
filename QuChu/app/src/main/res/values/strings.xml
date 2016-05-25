@@ -135,4 +135,6 @@
     <string name="hint_input_validate_code">在此输入验证码</string>
     <string name="promote_empty_username_n_password">请输入用户名及密码</string>
     <string name="promote_empty_username_or_password">请输入用户名或密码</string>
+    <string name="next">下一步</string>
+    <string name="promote_empty_username">请输入11位用户名</string>
 </resources>

@@ -99,6 +99,38 @@ public class UserLoginPresenter {
      *
      * @param context  上下文环境
      * @param mobileNo 手机号码
+     * @param listener 回调
+     */
+    public static void requestRegistrationVerifySms(Context context, String mobileNo, final UserNameUniqueListener listener) {
+        NetService.get(context, String.format(NetApi.GetCaptcha, mobileNo, getCaptcha_regiest), new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                LogUtils.json(response.toString());
+                try {
+                    if (response.has("result")&&response.getBoolean("result")){
+                        listener.isUnique(null);
+                    }else{
+                        listener.notUnique("");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.notUnique(error);
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 获取验证码
+     *
+     * @param context  上下文环境
+     * @param mobileNo 手机号码
      * @param type     获取用途—— 注册：regiest  重置：reset
      * @param listener 回调
      */

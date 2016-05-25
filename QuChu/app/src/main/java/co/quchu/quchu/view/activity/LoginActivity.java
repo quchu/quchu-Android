@@ -7,6 +7,8 @@ import android.widget.FrameLayout;
 
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
+import java.util.Timer;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -30,6 +32,11 @@ public class LoginActivity extends BaseActivity {
     RestorePasswordFragment restorePasswordFragment;
     FragmentManager fragmentManager;
     public SsoHandler handler;
+    public long mRequestVerifyCode = -1;
+
+    public void updateRequestVerifyCode(){
+        mRequestVerifyCode = System.currentTimeMillis();
+    }
 
 
     @Override

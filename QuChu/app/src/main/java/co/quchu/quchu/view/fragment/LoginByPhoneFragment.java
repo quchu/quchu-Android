@@ -59,42 +59,32 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
     RelativeLayout rlPasswordField;
     @Bind(R.id.errorView)
     ErrorView errorView;
+    private boolean mEmptyForum = false;
 
     public static final String TAG = "LoginByPhoneFragment";
     public boolean mDisplayPassword = false;
 
-    public boolean updateButtonStatus(){
+    public void updateButtonStatus(){
 
         if (null==etUsername ||null==etPassword){
-            return false;
+            return ;
         }
-
-        boolean status = false;
         String userName = null==etUsername.getText()?"":etUsername.getText().toString();
         String userPwd = null == etPassword.getText()?"":etPassword.getText().toString();
+
         ivIconClear.setVisibility(userName.length()>0?View.VISIBLE:View.INVISIBLE);
-        if (TextUtils.isEmpty(userName)&& TextUtils.isEmpty(userPwd)){
-            tvLoginViaPhone.setText(R.string.promote_empty_username_n_password);
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        }else if(TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)){
-            tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        }else if (!StringUtils.isMobileNO(userName)){
-            tvLoginViaPhone.setText(R.string.promote_invalid_username);
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        }else if (!StringUtils.isGoodPassword(userPwd)){
-            tvLoginViaPhone.setText(R.string.promote_invalid_password);
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        }else if(StringUtils.isMobileNO(userName) && StringUtils.isGoodPassword(userPwd)){
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+        if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPwd)){
             tvLoginViaPhone.setText(R.string.login);
-            status = true;
+            mEmptyForum = false;
+            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
         }else{
+            mEmptyForum = true;
             tvLoginViaPhone.setText(R.string.login);
             tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
         }
-        return status;
     }
+
+
 
     @Nullable
     @Override
@@ -109,13 +99,11 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
         tvLoginViaPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(updateButtonStatus()) {
+                if(!mEmptyForum&&verifyForm()) {
                     userLogin(etUsername.getText().toString(),etPassword.getText().toString());
                 }
             }
         });
-
-
 
 
         ivIconClear.setVisibility(View.INVISIBLE);
@@ -141,6 +129,32 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
         //rlUserNameField.animate().translationY(200).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator()).start();
         //rlPasswordField.animate().translationY(200).setDuration(500).setInterpolator(new AccelerateDecelerateInterpolator()).start();
         return view;
+    }
+
+    private boolean verifyForm() {
+        boolean status = false;
+
+        String userName = etUsername.getText().toString();
+        String userPwd = etPassword.getText().toString();
+
+        if(TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)){
+            tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);
+            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }else if (!StringUtils.isMobileNO(userName)){
+            tvLoginViaPhone.setText(R.string.promote_invalid_username);
+            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }else if (!StringUtils.isGoodPassword(userPwd)){
+            tvLoginViaPhone.setText(R.string.promote_invalid_password);
+            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }else if(StringUtils.isMobileNO(userName) && StringUtils.isGoodPassword(userPwd)){
+            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+            tvLoginViaPhone.setText(R.string.login);
+            status = true;
+        }else{
+            tvLoginViaPhone.setText(R.string.login);
+            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+        }
+        return status;
     }
 
     /**

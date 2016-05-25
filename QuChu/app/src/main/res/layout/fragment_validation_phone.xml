@@ -62,7 +62,7 @@
             android:layout_width="@dimen/toolbar_item_size"
             android:layout_height="@dimen/toolbar_item_size"
             android:scaleType="center"
-            android:src="@mipmap/ic_lock"
+            android:src="@mipmap/ic_yanzhengma"
             />
 
         <EditText
@@ -100,7 +100,7 @@
 
     <TextView
         android:layout_alignParentBottom="true"
-        android:id="@+id/tvLoginViaPhone"
+        android:id="@+id/tvNext"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_item_size"
         android:layout_below="@id/thirdLoginContainer"
@@ -109,7 +109,7 @@
         android:background="@android:color/black"
         android:textColor="@android:color/white"
         android:textSize="@dimen/standard_text_size_h1"
-        android:text="@string/login"/>
+        android:text="@string/next"/>
 
 
     <co.quchu.quchu.widget.ErrorView
