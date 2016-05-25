@@ -1,6 +1,5 @@
 package co.quchu.quchu.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,14 +7,14 @@ import java.util.List;
  * User: Chenhs
  * Date: 2016-01-11
  */
-public class MessageModel implements Serializable {
+public class MessageModel {
 
 
     /**
      * pageCount : 1
      * pageSize : 10
      * pagesNo : 1
-     * result : [{"come":"no","content":"关注了你","form":"哦咯名学生","formId":69,"formPhoto":"http://7xodsq.com1.z0.glb.clouddn.com/69-app-default-avatar","time":"2016-03-18 19:31:33","type":"follow"}]
+     * result : [{"come":"praise","content":"点赞了你","form":"631981","formId":1901,"formPhoto":"http://7xodsq.com1.z0.glb.clouddn.com/app-default-avatar-44","interaction":false,"targetId":"862","targetImageUrl":"http://7xodsq.com1.z0.glb.clouddn.com/1914-1464140237456.JPEG?imageMogr2/thumbnail/800x/format/webp","targetType":"11","time":"2016-05-25 09:37:08","type":"praise"}]
      * resultCount : 1
      * rowCount : 1
      * rowEnd : 1
@@ -30,13 +29,17 @@ public class MessageModel implements Serializable {
     private int rowEnd;
     private int rowStart;
     /**
-     * come : no
-     * content : 关注了你
-     * form : 哦咯名学生
-     * formId : 69
-     * formPhoto : http://7xodsq.com1.z0.glb.clouddn.com/69-app-default-avatar
-     * time : 2016-03-18 19:31:33
-     * type : follow
+     * come : praise
+     * content : 点赞了你
+     * form : 631981
+     * formId : 1901
+     * formPhoto : http://7xodsq.com1.z0.glb.clouddn.com/app-default-avatar-44
+     * interaction : false
+     * targetId : 862
+     * targetImageUrl : http://7xodsq.com1.z0.glb.clouddn.com/1914-1464140237456.JPEG?imageMogr2/thumbnail/800x/format/webp
+     * targetType : 11
+     * time : 2016-05-25 09:37:08
+     * type : praise
      */
 
     private List<ResultBean> result;
@@ -111,6 +114,10 @@ public class MessageModel implements Serializable {
         private String form;
         private int formId;
         private String formPhoto;
+        private boolean interaction;
+        private int targetId;
+        private String targetImageUrl;
+        private String targetType;
         private String time;
         private String type;
 
@@ -152,6 +159,38 @@ public class MessageModel implements Serializable {
 
         public void setFormPhoto(String formPhoto) {
             this.formPhoto = formPhoto;
+        }
+
+        public boolean isInteraction() {
+            return interaction;
+        }
+
+        public void setInteraction(boolean interaction) {
+            this.interaction = interaction;
+        }
+
+        public int getTargetId() {
+            return targetId;
+        }
+
+        public void setTargetId(int targetId) {
+            this.targetId = targetId;
+        }
+
+        public String getTargetImageUrl() {
+            return targetImageUrl;
+        }
+
+        public void setTargetImageUrl(String targetImageUrl) {
+            this.targetImageUrl = targetImageUrl;
+        }
+
+        public String getTargetType() {
+            return targetType;
+        }
+
+        public void setTargetType(String targetType) {
+            this.targetType = targetType;
         }
 
         public String getTime() {

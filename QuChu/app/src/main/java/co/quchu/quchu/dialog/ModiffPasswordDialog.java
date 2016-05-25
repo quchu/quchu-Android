@@ -2,6 +2,7 @@ package co.quchu.quchu.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -10,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -115,6 +117,8 @@ public class ModiffPasswordDialog extends DialogFragment implements View.OnClick
                         if (!result) {
                             inputLayoutNewPass.setError(msg);
                         } else {
+                            InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(inputLayoutNewPass.getWindowToken(),0);
                             dismiss();
                             Toast.makeText(getActivity(), "密码修改成功", Toast.LENGTH_SHORT).show();
                         }

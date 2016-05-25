@@ -127,6 +127,7 @@ public interface NetApi {
 
     String notReadMassage = HOST + "/personal/getNotReadMsgCount";//未读消息数
     String deletePlace = HOST + "/operate/delPlaceTemp?placeTempId=%d";//删除我发现的趣处
+    String footpritDetail = HOST + "/place/getCardById";//脚印详情
 
 
     /****************** POST *******************/

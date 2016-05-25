@@ -125,8 +125,8 @@ public class RoundProgressViewNew extends View {
         float radius = getWidth() / 2 - arcMargin - arcWidth;
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, paint);
 
-
         //画进度文字
+        paint.reset();
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setColor(ContextCompat.getColor(getContext(), R.color.standard_color_h2_dark));
         paint.setTextSize(radius / 1.5f);

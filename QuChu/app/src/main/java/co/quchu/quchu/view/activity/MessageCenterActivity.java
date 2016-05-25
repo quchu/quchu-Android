@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.MessageModel;
 import co.quchu.quchu.presenter.MessageCenterPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
@@ -98,9 +99,39 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
     }
 
     @Override
-    public void itemClick(RecyclerView.ViewHolder holder,MessageModel.ResultBean item, int type, int position) {
-        Intent intent = new Intent(this, UserCenterActivity.class);
-        intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, item.getFormId());
-        startActivity(intent);
+    public void itemClick(RecyclerView.ViewHolder holder, final MessageModel.ResultBean item, int type, int position) {
+        switch (type) {
+            case MessageCenterAdapter.CLICK_TYPE_FOLLOW://关注
+                DialogUtil.showProgess(this, R.string.loading_dialog_text);
+                MessageCenterPresenter.followMessageCenterFriends(this, item.getFormId(),
+                        "yes".equals(item.getCome()), new MessageCenterPresenter.MessageGetDataListener() {
+                            @Override
+                            public void onSuccess(MessageModel arrayList) {
+                                if ("yes".equals(item.getCome())) {
+                                    item.setCome("no");
+                                } else {
+                                    item.setCome("yes");
+                                }
+                                adapter.notifyDataSetChanged();
+                                DialogUtil.dismissProgess();
+                            }
+
+                            @Override
+                            public void onError() {
+                                DialogUtil.dismissProgess();
+                            }
+                        });
+                break;
+            case MessageCenterAdapter.CLICK_TYPE_USER_INFO://头像
+                Intent intent = new Intent(this, UserCenterActivity.class);
+                intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, item.getFormId());
+                startActivity(intent);
+                break;
+            case MessageCenterAdapter.CLICK_TYPE_FOOTPRINT_COVER://脚印大图
+                Intent intent1 = new Intent(this, MyFootprintDetailActivity.class);
+                intent1.putExtra(MyFootprintDetailActivity.REQUEST_KEY_FOOTPRINT_ID, item.getTargetId());
+                startActivity(intent1);
+                break;
+        }
     }
 }

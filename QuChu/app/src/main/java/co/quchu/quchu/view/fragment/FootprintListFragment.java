@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -67,20 +65,19 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
         adapter.setItemClickListener(this);
         userId = getArguments().getInt(REQUEST_KEY_USER_ID);
 
-        presenter = new MyFootprintPresenter(getContext(), this);
-        presenter.getMyFoiotrintList(userId, pagesNo);
+        presenter = new MyFootprintPresenter(getContext());
+        presenter.getMyFoiotrintList(userId, pagesNo, this);
     }
 
     @Override
     public void onLoadmore() {
-        presenter.getMyFoiotrintList(userId, pagesNo + 1);
+        presenter.getMyFoiotrintList(userId, pagesNo + 1, this);
     }
 
     @Override
     public void itemClick(RecyclerView.ViewHolder holder, PostCardItemModel item, int type, int position) {
         Intent intent = new Intent(getContext(), MyFootprintDetailActivity.class);
-        intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_POSITION, position);
-        intent.putParcelableArrayListExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, (ArrayList) adapter.getData());
+        intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, item);
         startActivity(intent);
     }
 
@@ -107,7 +104,7 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getMyFoiotrintList(userId, pageNo);
+                presenter.getMyFoiotrintList(userId, pageNo, FootprintListFragment.this);
             }
         });
     }

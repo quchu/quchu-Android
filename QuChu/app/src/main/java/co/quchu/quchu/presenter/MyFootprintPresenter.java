@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
@@ -17,18 +18,16 @@ import co.quchu.quchu.net.ResponseListener;
 /**
  * Created by no21 on 2016/4/12.
  * email:437943145@qq.com
- * desc :
+ * desc :脚印相关
  */
 public class MyFootprintPresenter {
     private Context context;
-    private PageLoadListener<PostCardModel> view;
 
-    public MyFootprintPresenter(Context context, PageLoadListener<PostCardModel> view) {
+    public MyFootprintPresenter(Context context) {
         this.context = context;
-        this.view = view;
     }
 
-    public void getMyFoiotrintList(int userId, final int pageNo) {
+    public void getMyFoiotrintList(int userId, final int pageNo, final PageLoadListener<PostCardModel> view) {
 
         Map<String, String> params = new HashMap<>();
         params.put("pageno", String.valueOf(pageNo));
@@ -57,4 +56,15 @@ public class MyFootprintPresenter {
         });
         request.start(context, null);
     }
+
+    public void getFootprintDetail(long footprintId, final ResponseListener<PostCardItemModel> listener) {
+        Map<String, String> params = new HashMap<>();
+        params.put("cardId", String.valueOf(footprintId));
+
+        GsonRequest<PostCardItemModel> request = new GsonRequest<>(NetApi.footpritDetail, PostCardItemModel.class, params, listener);
+        request.start(context, null);
+
+
+    }
+
 }

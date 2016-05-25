@@ -3,6 +3,7 @@ package co.quchu.quchu.utils;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.Spannable;
@@ -239,7 +240,7 @@ public class StringUtils {
     public static void alterBoldTextColor(TextView view, int startIndex, int endIndex, int mColor) {
         try {
             SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
-            ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(mColor));
+            ForegroundColorSpan redSpan = new ForegroundColorSpan(ContextCompat.getColor(view.getContext(), mColor));
             builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             view.setText(builder);
@@ -248,10 +249,10 @@ public class StringUtils {
         }
     }
 
-    public static boolean isGoodPassword(String password){
+    public static boolean isGoodPassword(String password) {
         String pwdRegex = "^[0-9a-zA-Z]{6,16}$";
 
-        return !TextUtils.isEmpty(password) && Pattern.matches(pwdRegex,password);
+        return !TextUtils.isEmpty(password) && Pattern.matches(pwdRegex, password);
     }
 
     /**

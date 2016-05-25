@@ -2,16 +2,13 @@ package co.quchu.quchu.view.activity;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -21,12 +18,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -39,19 +36,23 @@ import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.fragment.FootprintDetailFragment;
 
-public class MyFootprintDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
+public class MyFootprintDetailActivity extends BaseActivity implements View.OnClickListener {
 
 
     @Bind(R.id.container)
     ViewPager viewPager;
 
-    public static final String REQUEST_KEY_MODEL = "modelList";
-    public static final String REQUEST_KEY_POSITION = "clickPosition";
+    public static final String REQUEST_KEY_IMAGE_LIST = "model";
+
+    public static final String REQUEST_KEY_FOOTPRINT_ID = "id";
+
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
     @Bind(R.id.detail)
@@ -71,42 +72,10 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     LinearLayout supportContainer;
     @Bind(R.id.actionContainer)
     LinearLayout actionContainer;
-    private int selectedPosition;
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        if (null == data) {
-            return;
-        }
-        selectedPosition = position;
-        Entity entity = data.get(position);
-        headImage.setImageURI(Uri.parse(entity.head));
-
-        if (entity.PlcaeId == 0) {
-            actionContainer.setVisibility(View.INVISIBLE);
-        } else {
-            actionContainer.setVisibility(View.VISIBLE);
-        }
-        if (entity.autoId != AppContext.user.getUserId()) {//如果不是自己的脚印
-            edit.setVisibility(View.GONE);
-        } else {
-            edit.setVisibility(View.VISIBLE);
-        }
-        if (!entity.isP) {//当前登录用户是否已经点赞
-            support.setImageResource(R.mipmap.ic_light_like);
-        } else {
-            support.setImageResource(R.mipmap.ic_light_like_fill);
-        }
-        supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
-        detail.setText(entity.builder);
+    private PostCardItemModel model;
 
 
-        //底下文字背景处理
+    //底下文字背景处理
 //        ImagePipeline pipeline = Fresco.getImagePipeline();
 //        Uri uri = Uri.parse(entity.image.getPath());
 //        if (pipeline.isInBitmapMemoryCache(uri)) {
@@ -141,28 +110,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
 //            }
 //        }
 
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-
-    static class Entity {
-        public ImageModel image;//大图
-        public String head;//头像
-        public SpannableStringBuilder builder;//显示的文字
-        public int autoId;//发布人ID
-        public boolean isP;//当前登录用户是否点赞
-        public int supportCount;//点赞数
-        public String time;//时间
-        public int cardId;
-        public String PlcaeName;
-        public int PlcaeId;
-        public String Comment;
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,79 +118,61 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         ButterKnife.bind(this);
         getEnhancedToolbar().getTitleTv().setText("");
         initListener();
-        initData(-1);
+        Intent intent = getIntent();
+        model = intent.getParcelableExtra(REQUEST_KEY_IMAGE_LIST);
+        int id = intent.getIntExtra(REQUEST_KEY_FOOTPRINT_ID, -1);
+        if (model != null) {
+            initData();
+        } else if (id != -1) {
+            MyFootprintPresenter presenter = new MyFootprintPresenter(this);
+
+            presenter.getFootprintDetail(id, new ResponseListener<PostCardItemModel>() {
+                @Override
+                public void onErrorResponse(@Nullable VolleyError error) {
+                    Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onResponse(PostCardItemModel response, boolean result, String errorCode, @Nullable String msg) {
+                    model = response;
+                    initData();
+                }
+            });
+        }
     }
 
-    List<Entity> data;
     //图片进来需要移动到的位置
     int pageInintPosition;
 
-    private void initData(int filter) {
-        List<PostCardItemModel> beanList = getIntent().getParcelableArrayListExtra(REQUEST_KEY_MODEL);
-        int position = getIntent().getIntExtra(REQUEST_KEY_POSITION, 0);
-        if (null == beanList || beanList.size() == 0) {
-            return;
+    private void initData() {
+        headImage.setImageURI(Uri.parse(model.getAutorPhoto()));
+        supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
+        detail.setText(model.getComment());
+
+        if (model.getPlaceId() == 0) {
+            actionContainer.setVisibility(View.INVISIBLE);
+        } else {
+            actionContainer.setVisibility(View.VISIBLE);
         }
-        data = new ArrayList<>();
-        for (int i = 0, s = beanList.size(); i < s; i++) {
-            PostCardItemModel bean = beanList.get(i);
-            Entity entity;
-            //删除卡片
-            if (bean.getCardId() == filter) {
-                if (i == position) {
-                    pageInintPosition = data.size() - 1;
-                    pageInintPosition = pageInintPosition < 0 ? 0 : pageInintPosition;
-                }
-                continue;
-            }
-            if (i == position) {
-                pageInintPosition = data.size();
-            }
 
-            if (bean.getImglist() != null && bean.getImglist().size() > 0)
-                for (ImageModel item : bean.getImglist()) {
-                    entity = new Entity();
-                    entity.autoId = bean.getAutorId();
-                    entity.head = bean.getAutorPhoto();
-                    entity.isP = bean.isIsp();
-                    entity.supportCount = bean.getPraiseNum();
-                    entity.time = bean.getTime();
-                    entity.image = item;
-                    entity.cardId = bean.getCardId();
-                    entity.PlcaeName = bean.getPlcaeName();
-                    entity.PlcaeId = bean.getPlaceId();
-                    entity.Comment = bean.getComment();
-
-
-                    StringBuilder text1 = new StringBuilder();
-                    text1.append(bean.getAutor());
-                    text1.append(":");
-                    int index1 = text1.length();
-                    text1.append(bean.getComment());
-                    text1.append("\n");
-                    text1.append("- 在 ");
-                    int index2 = text1.length();
-                    text1.append(bean.getPlcaeName());
-                    int index3 = text1.length();
-
-                    SpannableStringBuilder builder = new SpannableStringBuilder(text1.toString());
-                    builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), 0, index1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                    builder.setSpan(new ForegroundColorSpan(Color.parseColor("#838181")), index1, index2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                    builder.setSpan(new ForegroundColorSpan(Color.argb(255, 255, 255, 255)), index2, index3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-
-                    entity.builder = builder;
-
-                    data.add(entity);
-                }
+        if (model.getAutorId() != AppContext.user.getUserId()) {//如果不是自己的脚印
+            edit.setVisibility(View.GONE);
+        } else {
+            edit.setVisibility(View.VISIBLE);
         }
-        PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), data);
+
+        if (!model.isIsp()) {                            //当前登录用户是否已经点赞
+            support.setImageResource(R.mipmap.ic_light_like);
+        } else {
+            support.setImageResource(R.mipmap.ic_light_like_fill);
+        }
+
+
+        PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), model.getImglist());
         viewPager.setAdapter(mPagerAdapter);
-        viewPager.addOnPageChangeListener(this);
 
         viewPager.setCurrentItem(pageInintPosition);
-        if (pageInintPosition == 0) {
-            onPageSelected(0);
-        }
+
     }
 
     private void initListener() {
@@ -281,32 +210,23 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         switch (v.getId()) {
             case R.id.supportContainer://点赞
                 //屏蔽重复点赞
-                final Entity entity = data.get(selectedPosition);
-                if (clickID != entity.cardId) {
+                if (clickID != model.getCardId()) {
 
-                    clickID = entity.cardId;
-                    PostCardPresenter.setPraise(this, entity.isP, true, entity.cardId, new PostCardPresenter.MyPostCardListener() {
+                    clickID = model.getCardId();
+                    PostCardPresenter.setPraise(this, model.isIsp(), true, model.getCardId(), new PostCardPresenter.MyPostCardListener() {
                         @Override
-                        public void onSuccess(PostCardModel model) {
-                            if (entity.isP) {
+                        public void onSuccess(PostCardModel modeffl) {
+                            if (model.isIsp()) {
                                 LogUtils.e("取消点赞成功");
-//                                entity.isP = false;
-//                                entity.supportCount--;
-                                if (clickID == entity.cardId) {
-                                    supportCount.setText(String.valueOf(entity.supportCount - 1));//点赞数目
-                                    support.setImageResource(R.mipmap.ic_light_like);
-                                }
-                                resetStatus(false, entity.cardId);
+                                model.setIsp(false);
+                                supportCount.setText(String.valueOf(model.getPraiseNum() - 1));//点赞数目
+                                support.setImageResource(R.mipmap.ic_light_like);
                                 //如果用户没有切换卡片
                             } else {
+                                model.setIsp(true);
                                 LogUtils.e("点赞成功");
-//                                entity.supportCount++;
-//                                entity.isP = true;
-                                if (clickID == entity.cardId) {
-                                    supportCount.setText(String.valueOf(entity.supportCount + 1));//点赞数目
-                                    support.setImageResource(R.mipmap.ic_light_like_fill);
-                                }
-                                resetStatus(true, entity.cardId);
+                                supportCount.setText(String.valueOf(model.getPraiseNum() + 1));//点赞数目
+                                support.setImageResource(R.mipmap.ic_light_like_fill);
                             }
                             clickID = -1;
                         }
@@ -320,44 +240,18 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
                 }
                 break;
             case R.id.share://分享
-                final Entity en = data.get(selectedPosition);
-                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(en.cardId, en.PlcaeName, false);
+                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(model.getCardId(), model.getPlcaeName(), false);
                 shareDialogFg.show(getSupportFragmentManager(), "share_postcard");
                 break;
             case R.id.edit://编辑
                 //获取一个脚印
                 Intent intent = new Intent(this, AddFootprintActivity.class);
-                PostCardItemModel bean = new PostCardItemModel();
-                int cardId = data.get(selectedPosition).cardId;
-
-                for (Entity item : data) {
-                    if (item.cardId == cardId) {
-                        bean.addImageModel(item.image);
-                        bean.setPlaceId(item.PlcaeId);
-                        bean.setPlcaeName(item.PlcaeName);
-                        bean.setComment(item.Comment);
-                        bean.setCardId(item.cardId);
-                    }
-                }
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, bean);
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, bean.getPlcaeName());
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, bean.getPlaceId());
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, model);
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, model.getPlcaeName());
+                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
                 intent.putExtra(AddFootprintActivity.REQUEST_KEY_IS_EDIT, true);
                 startActivity(intent);
                 break;
-        }
-    }
-
-    private void resetStatus(boolean isp, int cardID) {
-        for (Entity item : data) {
-            if (item.cardId == cardID) {
-                item.isP = isp;
-                if (isp) {
-                    item.supportCount++;
-                } else {
-                    item.supportCount--;
-                }
-            }
         }
     }
 
@@ -387,9 +281,9 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
 
 
     public class PagerAdapter extends FragmentPagerAdapter {
-        private List<Entity> fragments;
+        private List<ImageModel> fragments;
 
-        public PagerAdapter(FragmentManager fm, List<Entity> fragments) {
+        public PagerAdapter(FragmentManager fm, List<ImageModel> fragments) {
             super(fm);
             this.fragments = fragments;
         }
@@ -397,10 +291,9 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
         @Override
         public Fragment getItem(int position) {
             Bundle bund = new Bundle();
-            bund.putParcelable(FootprintDetailFragment.REQUEST_KEY_IMAGE_ENTITY, fragments.get(position).image);
+            bund.putParcelable(FootprintDetailFragment.REQUEST_KEY_IMAGE_ENTITY, fragments.get(position));
             FootprintDetailFragment fragment = new FootprintDetailFragment();
             fragment.setArguments(bund);
-
             return fragment;
         }
 
@@ -414,24 +307,27 @@ public class MyFootprintDetailActivity extends BaseActivity implements ViewPager
     @Override
     protected void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+
     }
 
     @Override
     protected void onStop() {
-        EventBus.getDefault().unregister(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         super.onStop();
     }
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel model) {
         if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
-            initData((Integer) model.getContent()[0]);
+            finish();
         }
     }
 
     @Override
     protected void onDestroy() {
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 }

@@ -23,7 +23,6 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.FootprintModel;
-import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.FootPrintPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -67,16 +66,11 @@ public class FootPrintActivity extends BaseActivity {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(FootPrintActivity.this, MyFootprintDetailActivity.class);
-                ArrayList<PostCardItemModel> mBundleData = new ArrayList<>();
-                for (int i = 0; i < mData.size(); i++) {
-                    mBundleData.add(mData.get(i).convertToCompatModel());
-                }
-                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_POSITION, position);
-                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_MODEL, mBundleData);
+                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, mData.get(position).convertToCompatModel());
                 startActivity(intent);
             }
         });
-        rvFootPrint.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.quarter_margin),2));
+        rvFootPrint.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.quarter_margin), 2));
         rvFootPrint.setAdapter(mAdapter);
         rvFootPrint.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         tvAddFootPrint.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +78,7 @@ public class FootPrintActivity extends BaseActivity {
             public void onClick(View v) {
                 if (AppContext.user.isIsVisitors()) {
                     VisitorLoginDialogFg dialog = VisitorLoginDialogFg.newInstance(0);
-                    dialog.show(getSupportFragmentManager(),"~");
+                    dialog.show(getSupportFragmentManager(), "~");
 
                 } else {
                     Intent intent = new Intent(FootPrintActivity.this, AddFootprintActivity.class);

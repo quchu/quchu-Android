@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="104dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/base_margin"
     android:layout_marginRight="@dimen/base_margin"
     android:fitsSystemWindows="true">
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/item_message_from_avator"
+        android:id="@+id/item_message_image"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_centerVertical="true"
-        card_view:actualImageScaleType="centerCrop"
-        card_view:roundAsCircle="true" />
+        android:layout_marginTop="@dimen/base_margin"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:roundAsCircle="true" />
 
 
     <TextView
-        android:id="@+id/item_message_user_name_tv"
+        android:id="@+id/item_message_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_marginRight="@dimen/half_margin"
         android:layout_marginTop="@dimen/base_margin"
-        android:layout_toRightOf="@id/item_message_from_avator"
+        android:layout_toRightOf="@id/item_message_image"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/standard_color_h3_dark"
@@ -32,29 +32,27 @@
         tools:text="用户名" />
 
     <TextView
-        android:id="@+id/item_message_add_time_tv"
+        android:id="@+id/item_message_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/item_message_user_name_tv"
-        android:layout_below="@id/item_message_user_name_tv"
+        android:layout_alignLeft="@id/item_message_title"
+        android:layout_below="@id/item_message_title"
         android:layout_marginTop="@dimen/half_margin"
         android:text="32分钟前"
         android:textColor="@color/standard_color_h3_dark"
         android:textSize="@dimen/word_size_time" />
 
-    <TextView
-        android:id="@+id/item_message_follow_tv"
-        android:layout_width="wrap_content"
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/item_message_cover"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/shape_message_follow_full_bg"
-        android:textSize="@dimen/word_size_body"
-        tools:text="关注" />
-
+        android:layout_below="@id/item_message_image"
+        android:layout_toRightOf="@id/item_message_image"
+        fresco:placeholderImage="@mipmap/ic_image_empty"
+        fresco:viewAspectRatio="2" />
 
     <View
-        android:layout_marginTop="@dimen/base_margin"
         style="@style/HorizontalLine"
-        android:layout_alignParentBottom="true" />
+        android:layout_below="@id/item_message_cover"
+        android:layout_marginTop="@dimen/base_margin" />
 </RelativeLayout>

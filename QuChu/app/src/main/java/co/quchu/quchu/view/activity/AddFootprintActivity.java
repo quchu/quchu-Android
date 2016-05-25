@@ -2,7 +2,6 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,11 +9,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,13 +28,13 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.finalteam.toolsfinal.StringUtils;
-import co.quchu.quchu.gallery.GalleryFinal;
-import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.ConfirmDialogFg;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.gallery.GalleryFinal;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -63,6 +61,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     List<PhotoInfo> photoInfos;
     @Bind(R.id.textLength)
     TextView textLength;
+    @Bind(R.id.actionDelete)
+    ImageView actionDelete;
 
 
     private FindPositionAdapter adapter;
@@ -104,39 +104,25 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         toolbar.getRightTv().setText(R.string.save);
         boolean isEdit = getIntent().getBooleanExtra(REQUEST_KEY_IS_EDIT, false);
         if (isEdit) {
-            TextView titleView = new TextView(this);
-            titleView.setText("删除");
-            titleView.setGravity(Gravity.CENTER);
-            titleView.setTextColor(Color.WHITE);
-            int itemSize = getResources().getDimensionPixelSize(R.dimen.toolbar_item_size);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(itemSize, itemSize);
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            params.addRule(RelativeLayout.CENTER_VERTICAL);
-            params.rightMargin = 130;
-            toolbar.addCustomView(titleView, params);
-
-            titleView.setOnClickListener(new View.OnClickListener() {
+            actionDelete.setVisibility(View.VISIBLE);
+            actionDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(final View v) {
-                    ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance(getString(R.string.confirm_delete), getString(R.string.caution_action_cannot_revert));
-                    confirmDialogFg.show(getSupportFragmentManager(), "confirm");
-                    confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+                public void onClick(View v) {
+                    CommonDialog dialog = CommonDialog.newInstance("确认删除?", "该操作无法撤销,请注意", "确定", "取消");
+                    dialog.setListener(new CommonDialog.OnActionListener() {
                         @Override
-                        public void onClick(int index) {
-                            if (index == ConfirmDialogFg.INDEX_OK) {
-                                v.setClickable(false);
+                        public boolean dialogClick(int clickId) {
+                            if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
                                 String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
 
                                 GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
                                     @Override
                                     public void onErrorResponse(@Nullable VolleyError error) {
                                         Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                                        v.setClickable(true);
                                     }
 
                                     @Override
                                     public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
-                                        v.setClickable(true);
                                         if (result) {
                                             EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId, pId));
                                             Toast.makeText(AddFootprintActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
@@ -147,18 +133,18 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                                     }
                                 });
                                 request.start(AddFootprintActivity.this, null);
-                            }
 
+                            }
+                            return true;
                         }
                     });
-
+                    dialog.show(getSupportFragmentManager(), "");
                 }
             });
         }
         if (cId > 0) {
             tvPickFromMap.setVisibility(View.INVISIBLE);
         }
-
         tvPickFromMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +154,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                 }
             }
         });
+
+
         init();
     }
 

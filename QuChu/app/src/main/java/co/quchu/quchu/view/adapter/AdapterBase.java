@@ -92,7 +92,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_loadmore, parent, false);
             return (VH) new LoadMoreViewHolder(view);
         } else
-            return onCreateView(parent, viewType);
+            return (VH) onCreateView(parent, viewType);
     }
 
     @Override
@@ -165,7 +165,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
         if (position == getItemCount() - 1) {
             return ITEM_VIEW_TYPE_FOOTER;
         }
-        return getItemType();
+        return getItemType(position);
     }
 
     public int getCount() {
@@ -174,9 +174,9 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
 
     public abstract void onBindView(VH holder, int position);
 
-    public abstract VH onCreateView(ViewGroup parent, int viewType);
+    public abstract RecyclerView.ViewHolder onCreateView(ViewGroup parent, int viewType);
 
-    public int getItemType() {
+    public int getItemType(int position) {
         return 0;
     }
 
@@ -197,7 +197,11 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     }
 
     public interface OnItemClickListener<DT> {
-        void itemClick(RecyclerView.ViewHolder holder, DT item, int type, int position);
+        /**
+         *
+         * @param position please use holder.getAdapterPosition()
+         */
+        void itemClick(RecyclerView.ViewHolder holder, DT item, int type, @Deprecated int position);
     }
 
 
