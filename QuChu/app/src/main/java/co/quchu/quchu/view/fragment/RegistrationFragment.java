@@ -21,6 +21,9 @@ import co.quchu.quchu.R;
 public class RegistrationFragment extends Fragment {
 
     public static final String TAG = "RegistrationFragment";
+    public static final String BUNDLE_KEY_VERIFY_CODE = "BUNDLE_KEY_VERIFY_CODE";
+    public String mVerifyCode = "";
+
     @Bind(R.id.ivIconUserName)
     ImageView ivIconUserName;
     @Bind(R.id.etUsername)
@@ -41,6 +44,7 @@ public class RegistrationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
         ButterKnife.bind(this, view);
+        mVerifyCode = getArguments().getString(BUNDLE_KEY_VERIFY_CODE);
         return view;
     }
 

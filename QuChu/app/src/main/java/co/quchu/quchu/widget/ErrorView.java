@@ -80,4 +80,20 @@ public class ErrorView extends FrameLayout {
         actionButtton.setOnClickListener(null);
         drawable.stop();
     }
+
+
+
+    public void tryHideView() {
+        if (null!=refreshLayout){
+            refreshLayout.setVisibility(GONE);
+        }
+
+        if (null!=loadingView){
+            loadingView.setVisibility(GONE);
+        }
+
+        setVisibility(GONE);
+        actionButtton.setOnClickListener(null);
+        drawable.stop();
+    }
 }

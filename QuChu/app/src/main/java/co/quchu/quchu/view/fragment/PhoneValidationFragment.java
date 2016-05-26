@@ -153,7 +153,6 @@ public class PhoneValidationFragment extends Fragment {
 
     boolean isVerifying = false;
     private void verifySms(){
-        errorView.showLoading();
         if (isVerifying){
             return;
         }
@@ -161,40 +160,45 @@ public class PhoneValidationFragment extends Fragment {
         UserLoginPresenter.verifyNext(getActivity(), etUsername.getText().toString(), etValidCode.getText().toString(), new CommonListener() {
             @Override
             public void successListener(Object response) {
-                Toast.makeText(getActivity(),R.string.verify_pass,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),R.string.promote_verify_pass,Toast.LENGTH_SHORT).show();
                 if (mIsRegistration){
+                    RegistrationFragment registrationFragment = new RegistrationFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(RegistrationFragment.BUNDLE_KEY_VERIFY_CODE,etValidCode.getText().toString());
+                    registrationFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction().setCustomAnimations(
                             R.animator.card_flip_horizontal_right_in,
                             R.animator.card_flip_horizontal_left_out,
                             R.animator.card_flip_horizontal_left_in,
                             R.animator.card_flip_horizontal_right_out)
-                            .replace(mContainerId,new RegistrationFragment())
+                            .replace(mContainerId,registrationFragment)
                             .addToBackStack(TAG)
                             .commitAllowingStateLoss();
                     getFragmentManager().executePendingTransactions();
                     ((BaseActivity)getActivity()).getEnhancedToolbar().show();
                 }else{
+                    RestorePasswordFragment restorePasswordFragment = new RestorePasswordFragment();
+                    Bundle bundleRestorePwd = new Bundle();
+                    bundleRestorePwd.putString(RestorePasswordFragment.BUNDLE_KEY_USERNAME,etUsername.getText().toString());
+                    bundleRestorePwd.putString(RestorePasswordFragment.BUNDLE_KEY_VERIFY_CODE,etValidCode.getText().toString());
+                    restorePasswordFragment.setArguments(bundleRestorePwd);
                     getFragmentManager().beginTransaction().setCustomAnimations(
                             R.animator.card_flip_horizontal_right_in,
                             R.animator.card_flip_horizontal_left_out,
                             R.animator.card_flip_horizontal_left_in,
                             R.animator.card_flip_horizontal_right_out)
-                            .replace(mContainerId,new RestorePasswordFragment())
+                            .replace(mContainerId,restorePasswordFragment)
                             .addToBackStack(TAG)
                             .commitAllowingStateLoss();
                     getFragmentManager().executePendingTransactions();
                     ((BaseActivity)getActivity()).getEnhancedToolbar().show();
                 }
-                errorView.hideView();
                 isVerifying = false;
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                Toast.makeText(getActivity(),R.string.verify_pass,Toast.LENGTH_SHORT).show();
-                errorView.hideView();
-
-
+                Toast.makeText(getActivity(),R.string.promote_verify_pass,Toast.LENGTH_SHORT).show();
                 isVerifying = false;
             }
         });
