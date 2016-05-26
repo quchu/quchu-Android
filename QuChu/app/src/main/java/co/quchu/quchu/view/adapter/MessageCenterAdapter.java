@@ -111,6 +111,9 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, R
 
                 footprintViewHolder.itemMessageImage.setImageURI(Uri.parse(model.getFormPhoto()));
                 footprintViewHolder.itemMessageTime.setText(DateUtils.getTimeRange(model.getTime(), mContext));
+
+
+                footprintViewHolder.itemMessageCover.setAspectRatio(model.getWidth() / (float) model.getHeight());
                 footprintViewHolder.itemMessageCover.setImageURI(Uri.parse(model.getTargetImageUrl() + ""));
 
                 footprintViewHolder.itemMessageImage.setOnClickListener(clickListener);

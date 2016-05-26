@@ -21,8 +21,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/double_margin"
-            android:layout_marginTop="@dimen/double_margin"
             fresco:placeholderImage="@mipmap/avatar_2"
             fresco:roundAsCircle="true" />
 
@@ -35,18 +33,16 @@
             android:layout_marginTop="@dimen/base_margin"
             android:text="探索我的趣友圈" />
 
-    </RelativeLayout>
-
-    <View style="@style/HorizontalLine" />
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="48dp">
+        <View
+            android:id="@+id/line_friend"
+            style="@style/HorizontalLine"
+            android:layout_below="@id/whatIs" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_below="@id/line_friend"
             app:tabIndicatorColor="@color/standard_color_yellow"
             app:tabIndicatorHeight="2dp"
             app:tabMode="fixed"
@@ -55,13 +51,17 @@
 
         <View
             style="@style/VerticalLine"
+            android:layout_height="48dp"
+            android:layout_below="@id/line_friend"
             android:layout_centerHorizontal="true" />
+
+        <View
+            style="@style/HorizontalLine"
+            android:layout_height="@dimen/base_margin"
+            android:layout_below="@id/tabLayout"
+            android:background="@color/bg_pager" />
     </RelativeLayout>
 
-    <View
-        style="@style/HorizontalLine"
-        android:layout_height="@dimen/base_margin"
-        android:background="@color/bg_pager" />
 
     <co.quchu.quchu.widget.NoScrollViewPager
         android:id="@+id/recyclerView"

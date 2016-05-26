@@ -28,7 +28,7 @@
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginTop="@dimen/base_margin"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/standard_color_white"
             android:textSize="@dimen/word_subhead_size"
             tools:text="标题" />
@@ -45,6 +45,26 @@
             card_view:tcvRightResId="@null"
             card_view:tcvSingleLine="true"
             card_view:tcvTextColor="@color/standard_color_white" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tag"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/double_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            android:drawableLeft="@mipmap/ic_loca"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/standard_color_white"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            tools:text="厦门观音山.dfd" />
+
 
         <ImageView
             android:layout_width="wrap_content"

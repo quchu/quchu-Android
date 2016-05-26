@@ -18,8 +18,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/half_margin"
-        android:layout_marginTop="@dimen/half_margin"
         android:src="@mipmap/ic_photo_del" />
 </RelativeLayout>
 

@@ -120,6 +120,8 @@ public class MessageModel {
         private String targetType;
         private String time;
         private String type;
+        private int height;
+        private int width;
 
         public String getCome() {
             return come;
@@ -207,6 +209,14 @@ public class MessageModel {
 
         public void setType(String type) {
             this.type = type;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public int getWidth() {
+            return width;
         }
     }
 }

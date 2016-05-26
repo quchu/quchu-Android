@@ -77,19 +77,20 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onSuccess(UserCenterInfo userCenterInfo) {
                 userInfo = userCenterInfo;
-                userInfo.userId = userId;
 
                 headImage.setImageURI(Uri.parse(userInfo.getPhoto()));
                 name.setText(userCenterInfo.getName());
-                followAction.setText(userCenterInfo.isFollow() ? "取消关注" : "关注");
+                followAction.setText(userCenterInfo.isIsFollow() ? "取消关注" : "关注");
+                alias.setText(userCenterInfo.getMark());
 
                 follow.setText("关注" + userCenterInfo.getHostNum());
                 friend.setText("趣粉" + userCenterInfo.getFollowNum());
+
             }
 
             @Override
             public void onError() {
-                //   Toast.makeText(UserCenterActivity.this, "数据获取异常请稍后重试！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserCenterActivity.this, "数据获取异常请稍后重试！", Toast.LENGTH_SHORT).show();
                 //     UserCenterActivity.this.finish();
             }
         });
@@ -104,11 +105,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.friend:
                 startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class)
-                        .putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWERS));
+                        .putExtra("UserId", userId).putExtra("FollowType", FollowingActivity.TAFOLLOWERS));
                 break;
             case R.id.follow:
                 startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class)
-                        .putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWING));
+                        .putExtra("UserId", userId).putExtra("FollowType", FollowingActivity.TAFOLLOWING));
                 break;
         }
     }
@@ -119,17 +120,17 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             VisitorLoginDialogFg fg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFOCUS);
             fg.show(getSupportFragmentManager(), "QFocus");
         } else {
-            UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userInfo.userId, new UserCenterPresenter.UserCenterInfoCallBack() {
+            UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userId, new UserCenterPresenter.UserCenterInfoCallBack() {
                 @Override
                 public void onSuccess(UserCenterInfo userCenterInfo) {
-                    if (userInfo.isFollow()) {
+                    if (userInfo.isIsFollow()) {
                         userInfo.setIsFollow(false);
                         userInfo.setFollowNum(userInfo.getFollowNum() - 1);
                     } else {
                         userInfo.setIsFollow(true);
                         userInfo.setFollowNum(userInfo.getFollowNum() + 1);
                     }
-                    followAction.setText(userInfo.isFollow() ? "取消关注" : "关注");
+                    followAction.setText(userInfo.isIsFollow() ? "取消关注" : "关注");
                 }
 
                 @Override

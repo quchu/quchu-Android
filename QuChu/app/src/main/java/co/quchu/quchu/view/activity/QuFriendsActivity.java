@@ -41,8 +41,6 @@ public class QuFriendsActivity extends BaseActivity {
     @Bind(R.id.whatIs)
     TextView whatIs;
 
-    public static final String KEY_TRANSITION_ANIMATION = "headImageView";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

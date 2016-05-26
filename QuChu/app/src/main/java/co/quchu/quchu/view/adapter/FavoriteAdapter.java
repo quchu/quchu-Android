@@ -30,13 +30,14 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
         holder.name.setText(bean.getName());
         holder.simpleDraweeView.setImageURI(Uri.parse(bean.getCover()));
         holder.tag.setTags(bean.getTagsString());
-
+        holder.address.setText(bean.getAddress());
+        holder.address.setSelected(true);
         if (itemClickListener != null) {
 
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClick(holder,bean, v.getId(), position);
+                    itemClickListener.itemClick(holder, bean, v.getId(), position);
                 }
             };
 
@@ -58,10 +59,13 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
         TextView name;
         @Bind(R.id.tag)
         TagCloudView tag;
+        @Bind(R.id.address)
+        TextView address;
 
         public ViewHold(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            address.setVisibility(View.VISIBLE);
         }
     }
 

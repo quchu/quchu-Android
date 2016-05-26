@@ -59,7 +59,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/base_margin"
                 android:background="@drawable/shape_round"
-                android:src="@mipmap/ic_delete" />
+                android:src="@mipmap/ic_delete"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/textLength"

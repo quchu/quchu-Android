@@ -45,10 +45,6 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
         adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);
         presenter.getFavoriteData(pagesNo, this);
-
-
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchCallback(adapter));
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -62,7 +58,7 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
     }
 
     @Override
-    public void itemClick(RecyclerView.ViewHolder holder,FavoriteBean.ResultBean item, int type, int position) {
+    public void itemClick(RecyclerView.ViewHolder holder, FavoriteBean.ResultBean item, int type, int position) {
         MobclickAgent.onEvent(this, "detail_profile_c");
         Intent intent = new Intent(this, QuchuDetailsActivity.class);
         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
