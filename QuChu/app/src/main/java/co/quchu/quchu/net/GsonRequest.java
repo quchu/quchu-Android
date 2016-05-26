@@ -205,7 +205,8 @@ public class GsonRequest<T> extends Request<T> {
                     return;
             }
         }
-        listener.onResponse(t, result, errorCode, msg);
+        if (listener != null)
+            listener.onResponse(t, result, errorCode, msg);
     }
 
     @Override

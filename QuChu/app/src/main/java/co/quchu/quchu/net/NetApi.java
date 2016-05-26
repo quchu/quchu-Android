@@ -69,7 +69,7 @@ public interface NetApi {
 
     String getPlaceUserCard = HOST + "/place/getPlaceUserCard?pId=%d";  //获取趣处中我留下的明信片
     String sharePlace = HOST + "/share/place?pId=%d";  //分享趣处
-    String sharePostCard = HOST + "/share/card?cId=%d";  //分享明信片
+    String sharePostCard = HOST + "/footprint/share?postCardId=%d";  //分享明信片
 
 
     String getUserGene = HOST + "/personal/getUserGene";  //获取用户基因
@@ -129,6 +129,10 @@ public interface NetApi {
     String notReadMassage = HOST + "/personal/getNotReadMsgCount";//未读消息数
     String deletePlace = HOST + "/operate/delPlaceTemp?placeTempId=%d";//删除我发现的趣处
     String footpritDetail = HOST + "/place/getCardById";//脚印详情
+    /**
+     * 数据收集
+     */
+    String shareCollect = HOST + "/sns/shareCard?cardId=%d";//分享脚印数据收集
 
 
     /****************** POST *******************/

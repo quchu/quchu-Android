@@ -122,7 +122,7 @@ public class QuFriendsActivity extends BaseActivity {
 
     @Override
     protected int activitySetup() {
-        return TRANSITION_TYPE_NOTHING;
+        return TRANSITION_TYPE_LEFT;
     }
 
 

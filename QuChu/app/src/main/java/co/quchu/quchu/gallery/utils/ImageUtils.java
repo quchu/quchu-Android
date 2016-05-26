@@ -49,7 +49,7 @@ public class ImageUtils {
             v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+                     ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
                             .setResizeOptions(new ResizeOptions(v.getWidth(),  v.getHeight()))
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()

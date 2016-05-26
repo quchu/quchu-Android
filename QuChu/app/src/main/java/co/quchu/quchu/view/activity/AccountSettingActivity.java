@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
@@ -91,6 +90,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         TextView rightTv = toolbar.getRightTv();
         rightTv.setText("退出登录");
         rightTv.setOnClickListener(this);
+        userInfoBinding();
     }
 
 
@@ -101,24 +101,18 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
     private void userInfoBinding() {
 
-        if (AppContext.user == null) {
-            if (!StringUtils.isEmpty(SPUtils.getUserInfo(this)))
-                AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
+        UserInfoModel user = AppContext.user;
+        accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+        nickname.setText(AppContext.user.getFullname());
+        photoNumber.setText(AppContext.user.getUsername());
+        newUserLocation = AppContext.user.getLocation();
+        accountSettingUserLocation.setText(newUserLocation);
+        if ("男".equals(user.getGender())) {
+            radioGroup.check(R.id.man);
+        } else {
+            radioGroup.check(R.id.girl);
         }
 
-        if (AppContext.user != null) {
-            UserInfoModel user = AppContext.user;
-            accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
-            nickname.setText(AppContext.user.getFullname());
-            photoNumber.setText(AppContext.user.getUsername());
-            newUserLocation = AppContext.user.getLocation();
-            accountSettingUserLocation.setText(newUserLocation);
-            if ("男".equals(user.getGender())) {
-                radioGroup.check(R.id.man);
-            } else {
-                radioGroup.check(R.id.girl);
-            }
-        }
         switch (SPUtils.getLoginType()) {
             case SPUtils.LOGIN_TYPE_WEIBO:
                 loginTypeIcon.setImageResource(R.mipmap.ic_weibo);
@@ -127,10 +121,11 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                 loginTypeIcon.setImageResource(R.mipmap.ic_wechat);
                 break;
             default:
-                modiffPass.setVisibility(View.VISIBLE);
                 loginTypeIcon.setImageResource(R.mipmap.ic_phone);
         }
-
+        if (user.isphone()) {
+            modiffPass.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -368,7 +363,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     public void updateAvatar(String avatarUrl) {
         if (!avatarUrl.startsWith("http")) {
             newUserPhoto = ImageUtils.saveImage2Sd(avatarUrl);
-            accountSettingAvatarSdv.setImageURI(Uri.parse("file://" + newUserPhoto));
+            co.quchu.quchu.gallery.utils.ImageUtils.loadWithAppropriateSize(accountSettingAvatarSdv, Uri.parse("file://" + newUserPhoto));
         } else {
             newUserPhoto = avatarUrl;
             accountSettingAvatarSdv.setImageURI(Uri.parse(newUserPhoto));
@@ -408,7 +403,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void onResume() {
-        userInfoBinding();
+
         super.onResume();
         MobclickAgent.onPageStart("edit");
     }

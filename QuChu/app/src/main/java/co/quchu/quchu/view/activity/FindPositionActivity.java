@@ -59,7 +59,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private String positionText;
     private String descText;
     private String nameText;
-    private String id;
+    private int id;
     private TextView rightTv;
 
     @Override
@@ -88,7 +88,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
      */
     private void restore() {
         Intent intent = getIntent();
-        id = intent.getStringExtra(REQUEST_KEY_ID);
+        id = intent.getIntExtra(REQUEST_KEY_ID, -1);
         ArrayList<PhotoInfo> imageList = intent.getParcelableArrayListExtra(REQUEST_KEY_IMAGE_LIST);
         nameText = intent.getStringExtra(REQUEST_KEY_NAME);
         descText = intent.getStringExtra(REQUEST_KEY_DESC);
@@ -166,7 +166,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
 
         Map<String, String> map = new HashMap<>();
         map.put("place.pimage", Images);
-        map.put("place.pId", id == null ? "" : id);
+        map.put("place.pId", id == 0 ? "" : String.valueOf(id));
         map.put("place.pname", name);
         map.put("place.paddress", position);
         map.put("place.profile", desc);

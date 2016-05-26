@@ -13,6 +13,7 @@ import android.widget.GridView;
 import com.tencent.tauth.Tencent;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,6 +21,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.adapter.DialogShareAdapter;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.thirdhelp.QQHelper;
 import co.quchu.quchu.thirdhelp.WechatHelper;
@@ -127,6 +129,13 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
                 WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrl, shareTitle);
                 break;
         }
+
+        if (!isPlace) {//数据收集
+            GsonRequest<String> request = new GsonRequest<>(String.format(Locale.SIMPLIFIED_CHINESE, NetApi.shareCollect, shareId), null);
+            request.start(getContext());
+
+        }
+
         ShareDialogFg.this.dismiss();
     }
 }
