@@ -48,7 +48,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
 
     @Override
     public RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_bearby_quchu, parent, false));
+        holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_nearby_quchu, parent, false));
         return holder;
     }
 

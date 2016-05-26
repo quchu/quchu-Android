@@ -93,6 +93,7 @@ public interface NetApi {
     String getSearchResult = HOST + "/place/getSelectPlaces?cityId=%d&name=%s";
     String getVisitedUsers = HOST + "/place/userOut?placeId=%d";
     String getVisitorAnalysis = HOST + "/place/tagsCount?placeId=%d";
+    String getQuchuListViaTagId = HOST + "/place/getPlaceByTagId?tagId=%d&cityId=%d&latitude=%s&longitude=%s";
 
     /****  Get end  ****/
 

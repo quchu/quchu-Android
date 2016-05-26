@@ -186,7 +186,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case LAYOUT_TYPE_IMAGE:
                 return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
             case LAYOUT_TYPE_NEARBY:
-                return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_bearby_quchu, parent, false));
+                return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_nearby_quchu, parent, false));
             case LAYOUT_TYPE_LOAD_MORE:
                 return new LoadMoreViewHolder(mLayoutInflater.inflate(R.layout.cp_loadmore, parent, false));
             default:
@@ -230,16 +230,34 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 @Override
                                 public void onClick(View v) {
                                     Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,mData.getTags().get(0).getId());
+                                    mAnchorActivity.startActivity(intent);
                                 }
                             });
                             break;
                         case 1:
                             ((IntroImageViewHolder) holder).tag2.setText(mData.getTags().get(i).getZh());
                             ((IntroImageViewHolder) holder).tag2.setVisibility(View.VISIBLE);
+                            ((IntroImageViewHolder) holder).tag2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,mData.getTags().get(1).getId());
+                                    mAnchorActivity.startActivity(intent);
+                                }
+                            });
                             break;
                         case 2:
                             ((IntroImageViewHolder) holder).tag3.setText(mData.getTags().get(i).getZh());
                             ((IntroImageViewHolder) holder).tag3.setVisibility(View.VISIBLE);
+                            ((IntroImageViewHolder) holder).tag3.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,mData.getTags().get(2).getId());
+                                    mAnchorActivity.startActivity(intent);
+                                }
+                            });
                             break;
                     }
                 }

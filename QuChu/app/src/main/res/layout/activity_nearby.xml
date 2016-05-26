@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
-            tools:listitem="@layout/item_bearby_quchu" />
+            tools:listitem="@layout/item_nearby_quchu" />
     </co.quchu.quchu.widget.DampView>
 
 </RelativeLayout>

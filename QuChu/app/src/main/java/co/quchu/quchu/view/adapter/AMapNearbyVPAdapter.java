@@ -42,7 +42,7 @@ public class AMapNearbyVPAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        View v = LayoutInflater.from(container.getContext()).inflate(R.layout.item_bearby_quchu, container, false);
+        View v = LayoutInflater.from(container.getContext()).inflate(R.layout.item_nearby_quchu, container, false);
 
         TextView name = (TextView) v.findViewById(R.id.desc);
         TagCloudView tagCloudView = (TagCloudView) v.findViewById(R.id.tag);

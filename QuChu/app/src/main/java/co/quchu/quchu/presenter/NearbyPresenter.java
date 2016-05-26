@@ -24,6 +24,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.utils.SPUtils;
 
 /**
  * InterestingDetailPresenter
@@ -31,6 +32,38 @@ import co.quchu.quchu.net.ResponseListener;
  * Date: 2015-12-13
  */
 public class NearbyPresenter {
+
+
+
+    public static void getQuchuListViaTagId(Context context,int tagId,int cityId,String lat,String lon,final getNearbyDataListener listener){
+        String url = String.format(NetApi.getQuchuListViaTagId,tagId, cityId, lat, lon);
+        NetService.post(context, url, null,new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                if (response != null && response.has("result") && response.has("pageCount")) {
+                    int maxPageNo = -1;
+                    Gson gson = new Gson();
+                    List<NearbyItemModel> nearbyItemModels = null;
+                    try {
+                        maxPageNo = response.getInt("pageCount");
+                        nearbyItemModels = gson.fromJson(response.getString("result"), new TypeToken<List<NearbyItemModel>>() {
+                        }.getType());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    listener.getNearbyData(nearbyItemModels, maxPageNo);
+                }
+            }
+
+            @Override
+            public boolean onError(String error) {
+                DialogUtil.dismissProgess();
+                return false;
+            }
+        });
+
+    }
+
     public static void getNearbyData(Context context, String recommendPlaceIds, String categoryTagIds, int isFirst, int placeId, int cityId, double latitude, double longitude, int pageNo, final getNearbyDataListener listener) {
         String url = String.format(NetApi.getNearby, cityId, String.valueOf(latitude), String.valueOf(longitude), pageNo, recommendPlaceIds, categoryTagIds, isFirst, placeId);
         NetService.post(context, url, null,new IRequestListener() {
@@ -119,6 +152,11 @@ public class NearbyPresenter {
 
     public interface getNearbyDataListener {
         void getNearbyData(List<NearbyItemModel> model, int i);
+    }
+
+
+    public interface GenericListener {
+        void onCallBack(Object o);
     }
 
 
