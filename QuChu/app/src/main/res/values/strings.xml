@@ -48,7 +48,7 @@
 
     <string name="mypost_timer_now">刚刚</string>
     <string name="mypost_timer_minutes">分钟前</string>
-    <string name="mypost_timer_hours">分钟前</string>
+    <string name="mypost_timer_hours">小时前</string>
     <string name="mypost_timer_days">天前</string>
     <string name="mypost_timer_months">月前</string>
     <string name="mypost_timer_years">年前</string>
