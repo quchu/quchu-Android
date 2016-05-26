@@ -23,8 +23,8 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.SearchActivity;
-import co.quchu.quchu.view.activity.UserLoginActivity;
 
 /**
  * NetService
@@ -149,13 +149,13 @@ public class NetService {
                                         pListener.onSuccess(response);
                                     } else if (response.has("msg") && response.has("exception") && "1077".equals(response.getString("msg"))) {
                                         ActManager.getAppManager().finishActivitiesAndKeepLastOne();
-                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
+                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), LoginActivity.class));
                                         ActManager.getAppManager().finishLastOne();
                                         SPUtils.clearUserinfo(AppContext.mContext);
 
                                         AppContext.user = null;
                                     } else if (response.has("msg") && response.has("exception") && "1080".equals(response.getString("msg"))) {
-                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
+                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), LoginActivity.class));
                                     } else {
                                         if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
                                             Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), Toast.LENGTH_SHORT).show();

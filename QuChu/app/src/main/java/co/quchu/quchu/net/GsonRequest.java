@@ -29,7 +29,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.activity.UserLoginActivity;
+import co.quchu.quchu.view.activity.LoginActivity;
 
 /**
  * Created by linqipeng on 2016/2/25.
@@ -275,7 +275,7 @@ public class GsonRequest<T> extends Request<T> {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Intent intent = new Intent(context, UserLoginActivity.class);
+                Intent intent = new Intent(context, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 SPUtils.clearUserinfo(context);

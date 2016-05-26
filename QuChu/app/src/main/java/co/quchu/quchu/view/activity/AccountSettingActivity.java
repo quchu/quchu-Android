@@ -196,7 +196,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                             vDialog.show(getSupportFragmentManager(), "visitor");
                             SPUtils.clearUserinfo(AppContext.mContext);
                             AppContext.user = null;
-                            Intent intent1 = new Intent(AccountSettingActivity.this, UserLoginActivity.class);
+                            Intent intent1 = new Intent(AccountSettingActivity.this, LoginActivity.class);
                             intent1.putExtra("IsVisitorLogin", true);
                             intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent1);

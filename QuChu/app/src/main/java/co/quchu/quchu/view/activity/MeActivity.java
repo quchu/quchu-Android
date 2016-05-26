@@ -182,7 +182,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 break;
             case R.id.followAction:
                 if (user.isIsVisitors()) {
-                    intent = new Intent(this, UserLoginActivity.class);
+                    intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
                 } else {
                     intent = new Intent(this, AccountSettingActivity.class);

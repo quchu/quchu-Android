@@ -185,8 +185,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void enterApp() {
-//        startActivity(new Intent(this, RecommendActivity.class));
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, RecommendActivity.class));
+//        startActivity(new Intent(this, LoginActivity.class));
         SplashActivity.this.finish();
     }
 
