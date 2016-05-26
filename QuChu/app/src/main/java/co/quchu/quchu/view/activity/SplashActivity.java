@@ -43,10 +43,6 @@ public class SplashActivity extends BaseActivity {
 
     private long viewDuration = 2 * 1000;
     private long visitorStartTime = 0L;
-    @Bind(R.id.ivBg)
-    ImageView mIvBg;
-    @Bind(R.id.ivBgSec)
-    ImageView mIvBgSec;
     @Bind(R.id.ivAppIcon)
     ImageView mIvAppIcon;
     @Bind(R.id.tvAppName)
@@ -57,8 +53,6 @@ public class SplashActivity extends BaseActivity {
     TextView mTvVersion;
     @Bind(R.id.vBg)
     View mViewBg;
-    @Bind(R.id.vSpace)
-    View mVSpace;
 
     private int mHalfWidth = -1;
     boolean mAnimationEnd = false;
@@ -85,27 +79,29 @@ public class SplashActivity extends BaseActivity {
 
         mTvVersion.setText(getVersionName());
         mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
-        mIvBgSec.setAdjustViewBounds(true);
-        mIvBgSec.setAlpha(1f);
-        mVSpace.setVisibility(View.GONE);
 
 
-        final AnimatorSet animatorSetText = new AnimatorSet();
-        animatorSetText.playTogether(
-                ObjectAnimator.ofFloat(mIvAppIcon, "alpha", 0, 1),
-                ObjectAnimator.ofFloat(mTvAppName, "translationY", mTvAppName.getTranslationY() / 1.4f, 0),
-                ObjectAnimator.ofFloat(mTvCopyRight, "translationX", mHalfWidth, 0),
-                ObjectAnimator.ofFloat(mTvVersion, "translationY", mTvVersion.getTranslationY(), 0),
-                ObjectAnimator.ofFloat(mTvAppName, "alpha", 0, 1),
-                ObjectAnimator.ofFloat(mTvCopyRight, "alpha", 0, 1),
-                ObjectAnimator.ofFloat(mTvVersion, "alpha", 0, 1)
-        );
-        animatorSetText.setDuration(500);
-        animatorSetText.setStartDelay(500);
-        animatorSetText.setInterpolator(new AccelerateDecelerateInterpolator());
-        animatorSetText.start();
 
-        mViewBg.setAlpha(1);
+//        final AnimatorSet animatorSetText = new AnimatorSet();
+//        animatorSetText.playTogether(
+//                ObjectAnimator.ofFloat(mIvAppIcon, "alpha", 0, 1),
+//                ObjectAnimator.ofFloat(mTvAppName, "translationY", mTvAppName.getTranslationY() / 1.4f, 0),
+//                ObjectAnimator.ofFloat(mTvCopyRight, "translationX", mHalfWidth, 0),
+//                ObjectAnimator.ofFloat(mTvVersion, "translationY", mTvVersion.getTranslationY(), 0),
+//                ObjectAnimator.ofFloat(mTvAppName, "alpha", 0, 1),
+//                ObjectAnimator.ofFloat(mTvCopyRight, "alpha", 0, 1),
+//                ObjectAnimator.ofFloat(mTvVersion, "alpha", 0, 1)
+//        );
+//        animatorSetText.setDuration(500);
+//        animatorSetText.setStartDelay(500);
+//        animatorSetText.setInterpolator(new AccelerateDecelerateInterpolator());
+        //animatorSetText.start();
+        mIvAppIcon.setVisibility(View.GONE);
+        mTvCopyRight.setVisibility(View.GONE);
+        mTvAppName.setVisibility(View.GONE);
+        mTvVersion.setVisibility(View.GONE);
+
+        //mViewBg.setAlpha(1);
         initLogic();
     }
 
@@ -189,8 +185,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void enterApp() {
-        startActivity(new Intent(this, RecommendActivity.class));
-//        startActivity(new Intent(this, LoginActivity.class));
+//        startActivity(new Intent(this, RecommendActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         SplashActivity.this.finish();
     }
 

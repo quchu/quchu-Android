@@ -19,8 +19,8 @@ import co.quchu.quchu.R;
  */
 public class DialogShareAdapter extends BaseAdapter {
     private Context mContext;
-    private int[] imageLIst = {R.mipmap.ic_share_wechat, R.mipmap.ic_share_wechat_friends, R.mipmap.ic_share_qq,
-            R.mipmap.ic_share_qzone, R.mipmap.ic_share_weibo};
+    private int[] imageLIst = {R.mipmap.ic_wexin, R.mipmap.ic_share_wechat_friends, R.mipmap.ic_share_qq,
+            R.mipmap.ic_share_qzone, R.mipmap.ic_weibo};
     private String[] textArray = {
             "微信好友", "朋友圈",
             "QQ好友",

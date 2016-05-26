@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -100,7 +101,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LAYOUT_TYPE_LOAD_MORE
     };
 
-    public static final int[] RANDOM_AVATAR = {R.mipmap.ic_random_user_avatar_a, R.mipmap.ic_random_user_avatar_b, R.mipmap.ic_random_user_avatar_c, R.mipmap.ic_random_user_avatar_d};
+    public static final int[] RANDOM_AVATAR = {R.mipmap.ic_random_user_avatar_a, R.mipmap.ic_random_user_avatar_b,
+            R.mipmap.ic_random_user_avatar_c, R.mipmap.ic_random_user_avatar_d};
 
     public QuchuDetailsAdapter(Activity activity, DetailModel dModel, View.OnClickListener onClickListener) {
         if (null == onClickListener) {
@@ -374,7 +376,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
 
                 if (null==((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag() || !((boolean)((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag())){
-                    ((AdditionalInfoViewHolder) holder).rvInfoGrid.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin)));
+                    ((AdditionalInfoViewHolder) holder).rvInfoGrid.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin),4));
                     ((AdditionalInfoViewHolder) holder).rvInfoGrid.setTag(true);
                 }
             } else {

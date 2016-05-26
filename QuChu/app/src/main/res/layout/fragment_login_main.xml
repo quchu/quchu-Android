@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/standard_color_h2_dark"
-                android:src="@mipmap/ic_share_weibo" />
+                android:src="@mipmap/ic_weibo" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_share_wechat" />
+                android:src="@mipmap/ic_wexin" />
 
             <TextView
                 android:layout_marginTop="@dimen/quarter_margin"

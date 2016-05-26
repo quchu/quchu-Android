@@ -13,13 +13,17 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
     public SpacesItemDecoration(int space) {
         this.mSpace = space;
-    }public SpacesItemDecoration(int space,int spanCount) {
+    }
+
+    public SpacesItemDecoration(int space,int spanCount) {
         this.mSpace = space;
         this.mSpanCount = spanCount;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view,RecyclerView parent, RecyclerView.State state) {
+
+
 
         if (mSpanCount>0 && parent.getChildLayoutPosition(view)<=mSpanCount-1){
             outRect.top = mSpace *2;

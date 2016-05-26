@@ -27,6 +27,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.SPUtils;
@@ -91,6 +92,7 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_phone_login, container, false);
         ButterKnife.bind(this, view);
+        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(R.string.login_via_phone);
         etUsername.setOnFocusChangeListener(this);
         etPassword.setOnFocusChangeListener(this);
         etUsername.addTextChangedListener(this);

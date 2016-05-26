@@ -137,4 +137,8 @@
     <string name="promote_empty_username_or_password">请输入用户名或密码</string>
     <string name="next">下一步</string>
     <string name="promote_empty_username">请输入11位用户名</string>
+    <string name="registration">注册</string>
+    <string name="reset_password">找回密码</string>
+    <string name="hint_new_password">请输入6-12位数字或字母作为密码</string>
+    <string name="verify_pass">验证通过</string>
 </resources>

@@ -237,6 +237,40 @@ public class UserLoginPresenter {
         });
     }
 
+
+    /**
+     * 验证验证码
+     * @param context
+     * @param phoneNo
+     * @param code
+     * @param listener
+     */
+    public static void verifyNext(Context context,String phoneNo,String code,final CommonListener listener){
+
+        Map<String, String> params = new HashMap<>();
+        params.put("phoneNumber", phoneNo);
+        params.put("verifyCode", code);
+        GsonRequest<String> request = new GsonRequest<>(NetApi.autoCodeIsCorrect, String.class, params, new ResponseListener<String>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                listener.errorListener(error,"","");
+            }
+
+            @Override
+            public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
+                if (result) {
+                    listener.successListener(null);
+                } else {
+                    listener.errorListener(null,"","");
+                }
+            }
+        });
+        request.start(context, null);
+    }
+
+
+
+
     public interface UserNameUniqueListener {
         /**
          * 用户名或昵称可用

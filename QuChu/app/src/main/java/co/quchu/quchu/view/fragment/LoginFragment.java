@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -75,16 +76,40 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     }
 
 
+    private FragmentTransaction getFragmentTransactor(){
+        return getFragmentManager().beginTransaction().setCustomAnimations(
+                R.animator.card_flip_horizontal_right_in,
+                R.animator.card_flip_horizontal_left_out,
+                R.animator.card_flip_horizontal_left_in,
+                R.animator.card_flip_horizontal_right_out);
+    }
+
     @OnClick({R.id.tvForgottenPassword,R.id.tvLoginViaPhone,R.id.tvCreateAccountViaPhone,R.id.llAuthorizationViaMm,R.id.llAuthorizationViaWeibo})
     public void onClick(View v) {
         mContainerId = mContainerId == -1? ((ViewGroup)getView().getParent()).getId():mContainerId;
         switch (v.getId()){
             case R.id.tvForgottenPassword:
-                getFragmentManager().beginTransaction().setCustomAnimations(
-                        R.animator.card_flip_horizontal_right_in,
-                        R.animator.card_flip_horizontal_left_out,
-                        R.animator.card_flip_horizontal_left_in,
-                        R.animator.card_flip_horizontal_right_out)
+                PhoneValidationFragment pvfResetPwd = new PhoneValidationFragment();
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION,false);
+                pvfResetPwd.setArguments(bundle);
+                getFragmentTransactor()
+                        .replace(mContainerId,pvfResetPwd)
+                        .addToBackStack(TAG)
+                        .commitAllowingStateLoss();
+                getFragmentManager().executePendingTransactions();
+                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
+                break;
+            case R.id.tvLoginViaPhone:
+                getFragmentTransactor()
+                        .replace(mContainerId,new LoginByPhoneFragment())
+                        .addToBackStack(TAG)
+                        .commitAllowingStateLoss();
+                getFragmentManager().executePendingTransactions();
+                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
+                break;
+            case R.id.tvCreateAccountViaPhone:
+                getFragmentTransactor()
                         .replace(mContainerId,new PhoneValidationFragment())
                         .addToBackStack(TAG)
                         .commitAllowingStateLoss();
@@ -96,34 +121,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                 break;
             case R.id.llAuthorizationViaWeibo:
                 sinaLogin();
-                break;
-            case R.id.tvLoginViaPhone:
-                //getFragmentManager().beginTransaction().hide(this).commitAllowingStateLoss();
-
-                getFragmentManager().beginTransaction().setCustomAnimations(
-                        R.animator.card_flip_horizontal_right_in,
-                        R.animator.card_flip_horizontal_left_out,
-                        R.animator.card_flip_horizontal_left_in,
-                        R.animator.card_flip_horizontal_right_out)
-                        .replace(mContainerId,new LoginByPhoneFragment())
-                        .addToBackStack(TAG)
-                        .commitAllowingStateLoss();
-                getFragmentManager().executePendingTransactions();
-                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
-                break;
-            case R.id.tvCreateAccountViaPhone:
-                //getFragmentManager().beginTransaction().hide(this).commitAllowingStateLoss();
-                getFragmentManager().beginTransaction().setCustomAnimations(
-                        R.animator.card_flip_horizontal_right_in,
-                        R.animator.card_flip_horizontal_left_out,
-                        R.animator.card_flip_horizontal_left_in,
-                        R.animator.card_flip_horizontal_right_out)
-                        .replace(mContainerId,new PhoneValidationFragment())
-                        .addToBackStack(TAG)
-                        .commitAllowingStateLoss();
-                getFragmentManager().executePendingTransactions();
-                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
-
                 break;
         }
     }

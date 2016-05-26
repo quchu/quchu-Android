@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
@@ -24,6 +27,8 @@ import java.util.TimerTask;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.ErrorView;
@@ -33,25 +38,6 @@ import co.quchu.quchu.widget.ErrorView;
  */
 public class PhoneValidationFragment extends Fragment {
 
-//    OnRequestVerifySMSListener mCallback;
-//    public interface OnRequestVerifySMSListener {
-//        void onRequest(int position);
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        // This makes sure that the container activity has implemented
-//        // the callback interface. If not, it throws an exception
-//        try {
-//            mCallback = (OnRequestVerifySMSListener) context;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString() + " must implement OnHeadlineSelectedListener");
-//        }
-//    }
-
-
-    public static final String TAG = "PhoneValidationFragment";
     @Bind(R.id.ivIconUserName)
     ImageView ivIconUserName;
     @Bind(R.id.etUsername)
@@ -72,9 +58,13 @@ public class PhoneValidationFragment extends Fragment {
     TextView tvNext;
     @Bind(R.id.errorView)
     ErrorView errorView;
-    private boolean mEmptyForum = false;
-    private long mRequestTimeStamp = -1;
+    public static final String TAG = "PhoneValidationFragment";
+    private boolean mEmptyForum = false;private long mRequestTimeStamp = -1;
     private Timer mCountingTimer;
+    private boolean mIsRegistration = true;
+    private int mVCRequestTime = 1;
+    public static final String BUNDLE_KEY_REGISTRATION = "BUNDLE_KEY_REGISTRATION";
+    private int mContainerId = -1;
 
     public void updateButtonStatus(){
         if (null==etUsername){
@@ -84,11 +74,9 @@ public class PhoneValidationFragment extends Fragment {
         ivIconClear.setVisibility(userName.length()>0?View.VISIBLE:View.INVISIBLE);
         if (!TextUtils.isEmpty(userName)){
             mEmptyForum = false;
-            tvNext.setText(R.string.next);
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
         }else{
             mEmptyForum = true;
-            tvNext.setText(R.string.login);
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
         }
     }
@@ -98,17 +86,15 @@ public class PhoneValidationFragment extends Fragment {
         String userName = etUsername.getText().toString();
 
         if(TextUtils.isEmpty(userName) ){
-            tvNext.setText(R.string.promote_empty_username_or_password);
+            tvNext.setText(R.string.promote_empty_username);
             tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }else if (!StringUtils.isMobileNO(userName)){
             tvNext.setText(R.string.promote_invalid_username);
             tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }else if(StringUtils.isMobileNO(userName) ){
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-            tvNext.setText(R.string.login);
             status = true;
         }else{
-            tvNext.setText(R.string.login);
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
         }
         return status;
@@ -120,6 +106,10 @@ public class PhoneValidationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_validation_phone, container, false);
         ButterKnife.bind(this, view);
 
+        if (null!=getArguments()){
+            mIsRegistration = getArguments().getBoolean(BUNDLE_KEY_REGISTRATION,true);
+        }
+        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration:R.string.reset_password);
 
         ivIconClear.setVisibility(View.INVISIBLE);
         etUsername.addTextChangedListener(new TextWatcher() {
@@ -149,7 +139,73 @@ public class PhoneValidationFragment extends Fragment {
                 }
             }
         });
+        tvNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContainerId = mContainerId == -1? ((ViewGroup)getView().getParent()).getId():mContainerId;
+                if (mVCRequestTime>0){
+                    verifySms();
+                }
+            }
+        });
         return view;
+    }
+
+    boolean isVerifying = false;
+    private void verifySms(){
+        errorView.showLoading();
+        if (isVerifying){
+            return;
+        }
+        isVerifying = true;
+        UserLoginPresenter.verifyNext(getActivity(), etUsername.getText().toString(), etValidCode.getText().toString(), new CommonListener() {
+            @Override
+            public void successListener(Object response) {
+                Toast.makeText(getActivity(),R.string.verify_pass,Toast.LENGTH_SHORT).show();
+                if (mIsRegistration){
+                    getFragmentManager().beginTransaction().setCustomAnimations(
+                            R.animator.card_flip_horizontal_right_in,
+                            R.animator.card_flip_horizontal_left_out,
+                            R.animator.card_flip_horizontal_left_in,
+                            R.animator.card_flip_horizontal_right_out)
+                            .replace(mContainerId,new RegistrationFragment())
+                            .addToBackStack(TAG)
+                            .commitAllowingStateLoss();
+                    getFragmentManager().executePendingTransactions();
+                    ((BaseActivity)getActivity()).getEnhancedToolbar().show();
+                }else{
+                    getFragmentManager().beginTransaction().setCustomAnimations(
+                            R.animator.card_flip_horizontal_right_in,
+                            R.animator.card_flip_horizontal_left_out,
+                            R.animator.card_flip_horizontal_left_in,
+                            R.animator.card_flip_horizontal_right_out)
+                            .replace(mContainerId,new RestorePasswordFragment())
+                            .addToBackStack(TAG)
+                            .commitAllowingStateLoss();
+                    getFragmentManager().executePendingTransactions();
+                    ((BaseActivity)getActivity()).getEnhancedToolbar().show();
+                }
+                errorView.hideView();
+                isVerifying = false;
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                Toast.makeText(getActivity(),R.string.verify_pass,Toast.LENGTH_SHORT).show();
+                errorView.hideView();
+
+
+                isVerifying = false;
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration:R.string.reset_password);
     }
 
     private void getValidCode(){
@@ -163,6 +219,7 @@ public class PhoneValidationFragment extends Fragment {
             public void isUnique(JSONObject msg) {
                 errorView.hideView();
                 scheduleCountDownTask();
+                mVCRequestTime+=1;
             }
 
             @Override
@@ -170,6 +227,7 @@ public class PhoneValidationFragment extends Fragment {
                 tvNext.setText("用户名已被占用,请尝试其他账号");
                 errorView.hideView();
                 scheduleCountDownTask();
+                mVCRequestTime+=1;
             }
         });
     }

@@ -7,46 +7,15 @@
     >
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/ivBg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                />
-
-            <View
-                android:id="@+id/vSpace"
-                android:layout_below="@+id/ivBg"
-                android:layout_width="match_parent"
-                android:layout_height="1271px"
-                android:adjustViewBounds="true"
-                android:background="#f4ffff"
-                />
-            <ImageView
-                android:id="@+id/ivBgSec"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:alpha="0"
-                />
-
-        </RelativeLayout>
 
 
 
-
-    <View
+    <ImageView
         android:id="@+id/vBg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#383635"
-        android:alpha="0"
+        android:src="@mipmap/bg_splash"
+        android:scaleType="center"
         />
 
     <ImageView
@@ -55,7 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
-        android:alpha="0"
         />
 
     <TextView
