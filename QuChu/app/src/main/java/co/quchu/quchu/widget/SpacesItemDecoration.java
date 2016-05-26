@@ -2,6 +2,7 @@ package co.quchu.quchu.widget;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 /**
@@ -25,14 +26,15 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
 
 
-        if (mSpanCount>0 && parent.getChildLayoutPosition(view)<=mSpanCount-1){
+        // parent.getChildLayoutPosition(view)<=mSpanCount-1)
+        if (mSpanCount==1 && parent.getChildLayoutPosition(view)==0){
             outRect.top = mSpace *2;
         }else{
             outRect.top = mSpace;
         }
 
 
-        if (parent.getChildLayoutPosition(view)>=state.getItemCount()-2){
+        if (parent.getChildLayoutPosition(view)>=state.getItemCount()-2 && parent.getLayoutManager() instanceof StaggeredGridLayoutManager){
             outRect.bottom = mSpace * 2;
         }else{
             outRect.bottom = mSpace;

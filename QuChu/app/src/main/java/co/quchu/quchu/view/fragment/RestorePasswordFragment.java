@@ -50,8 +50,6 @@ public class RestorePasswordFragment extends Fragment {
     TextView tvTips;
     @Bind(R.id.tvNext)
     TextView tvNext;
-    @Bind(R.id.errorView)
-    ErrorView errorView;
 
 
     @Nullable

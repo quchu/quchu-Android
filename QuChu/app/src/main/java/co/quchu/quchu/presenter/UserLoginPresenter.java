@@ -101,8 +101,8 @@ public class UserLoginPresenter {
      * @param mobileNo 手机号码
      * @param listener 回调
      */
-    public static void requestRegistrationVerifySms(Context context, String mobileNo, final UserNameUniqueListener listener) {
-        NetService.get(context, String.format(NetApi.GetCaptcha, mobileNo, getCaptcha_regiest), new IRequestListener() {
+    public static void requestVerifySms(Context context, String mobileNo,String type, final UserNameUniqueListener listener) {
+        NetService.get(context, String.format(NetApi.GetCaptcha, mobileNo, type), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());

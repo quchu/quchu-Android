@@ -62,7 +62,7 @@ public class PhoneValidationFragment extends Fragment {
     private boolean mEmptyForum = false;private long mRequestTimeStamp = -1;
     private Timer mCountingTimer;
     private boolean mIsRegistration = true;
-    private int mVCRequestTime = 1;
+    private int mVCRequestTime = 0;
     public static final String BUNDLE_KEY_REGISTRATION = "BUNDLE_KEY_REGISTRATION";
     private int mContainerId = -1;
 
@@ -164,7 +164,9 @@ public class PhoneValidationFragment extends Fragment {
                 if (mIsRegistration){
                     RegistrationFragment registrationFragment = new RegistrationFragment();
                     Bundle bundle = new Bundle();
+                    bundle.putString(RegistrationFragment.BUNDLE_KEY_USERNAME,etUsername.getText().toString());
                     bundle.putString(RegistrationFragment.BUNDLE_KEY_VERIFY_CODE,etValidCode.getText().toString());
+
                     registrationFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction().setCustomAnimations(
                             R.animator.card_flip_horizontal_right_in,
@@ -218,7 +220,7 @@ public class PhoneValidationFragment extends Fragment {
         }
         errorView.showLoading();
 
-        UserLoginPresenter.requestRegistrationVerifySms(getActivity(), etUsername.getText().toString(), new UserLoginPresenter.UserNameUniqueListener() {
+        UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(),mIsRegistration?UserLoginPresenter.getCaptcha_regiest:UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
             @Override
             public void isUnique(JSONObject msg) {
                 errorView.hideView();

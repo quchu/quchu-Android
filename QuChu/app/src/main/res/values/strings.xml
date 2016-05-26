@@ -144,5 +144,8 @@
     <string name="registration">注册</string>
     <string name="reset_password">找回密码</string>
     <string name="hint_new_password">请输入6-12位数字或字母作为密码</string>
+    <string name="hint_input_username">请输入用户名</string>
+    <string name="promote_account_create_success_login_manually">账号注册成功，请尝试手动登陆</string>
+    <string name="promote_account_create_success">账号注册成功</string>
 
 </resources>
