@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +31,7 @@ import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.BottomDialog;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
@@ -106,7 +108,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
-
     }
 
     private void checkIfCityChanged(){
@@ -132,7 +133,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                     //城市列表中有但不是当前位置
                     confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","你目前在"+currentLocation+"，是否切换到"+currentLocation);
                 }
-                confirmDialogFg.show(getSupportFragmentManager(),"~");
                 final boolean finalInList = inList;
                 final int finalCityIdInList = cityIdInList;
                 final String finalCurrentLocation = currentLocation;
@@ -151,6 +151,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                         }
                     }
                 });
+                confirmDialogFg.show(getSupportFragmentManager(),"~");
             }
         }
     }

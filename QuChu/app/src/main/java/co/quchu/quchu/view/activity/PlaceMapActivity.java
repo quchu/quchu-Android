@@ -33,6 +33,9 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -43,9 +46,11 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.NavigateSelectedDialogFg;
 import co.quchu.quchu.model.NearbyMapModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.AppUtil;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -448,6 +453,26 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             }
         } else {
             Toast.makeText(this, "请检查是否已安装高德地图", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        if (event.getFlag()== EventFlags.EVENT_FINISH_THIS) {
+            finish();
         }
     }
 }

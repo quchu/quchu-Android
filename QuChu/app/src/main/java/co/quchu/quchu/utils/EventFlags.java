@@ -14,4 +14,7 @@ public class EventFlags {
     public static final int EVENT_POST_CARD_ADDED = 0x0004;
     public static final int EVENT_USER_LOGIN_SUCCESS = 0x10001;
     public static final int EVENT_NEW_CITY_SELECTED = 0x11001;
+
+
+    public static final int EVENT_FINISH_THIS = 0x200001;
 }

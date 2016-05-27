@@ -27,8 +27,10 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.BottomDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.NearbyItemModel;
@@ -119,29 +121,8 @@ public class QuchuDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         from = getIntent().getStringExtra(REQUEST_KEY_FROM);
         getEnhancedToolbar().getTitleTv().setText("");
-        getEnhancedToolbar().getRightTv().setText(R.string.pre_order);
-        getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.standard_color_white));
         getEnhancedToolbar().getLeftIv().setImageResource(R.mipmap.ic_forward);
         getEnhancedToolbar().getLeftIv().setRotation(180);
-        getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (NetUtil.isNetworkConnected(getApplicationContext())){
-
-
-                    if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
-                        MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
-                        WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
-                    } else {
-                        MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
-                        WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName());
-                    }
-                }else{
-                    Toast.makeText(QuchuDetailsActivity.this,R.string.network_error,Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
 
         if (null != savedInstanceState) {
@@ -435,6 +416,39 @@ public class QuchuDetailsActivity extends BaseActivity {
 
                 case R.id.ivMore:
 
+                    BottomDialog bottomDialog = new BottomDialog(QuchuDetailsActivity.this);
+                    bottomDialog.setOnButtonClickListener(new BottomDialog.OnButtonClickListener() {
+                        @Override
+                        public void onReturnClick() {
+                            EventBus.getDefault().post(EventFlags.EVENT_FINISH_THIS);
+                        }
+
+                        @Override
+                        public void onPreOrderClick() {
+                            if (NetUtil.isNetworkConnected(getApplicationContext())){
+                                if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
+                                    MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
+                                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
+                                } else {
+                                    MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
+                                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName());
+                                }
+                            }else{
+                                Toast.makeText(QuchuDetailsActivity.this,R.string.network_error,Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onShareClick() {
+                            try {
+                                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
+                                shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+                    bottomDialog.show();
                     break;
 
                 case R.id.ivShare:
@@ -577,12 +591,12 @@ public class QuchuDetailsActivity extends BaseActivity {
                 }
                 break;
             case EventFlags.EVENT_POST_CARD_DELETED:
-
-
-
                 if (((Integer) event.getContent()[1]) == dModel.getPid() && dModel.getCardCount() > 1) {
                     dModel.setCardCount(dModel.getCardCount() - 1);
                 }
+                break;
+            case EventFlags.EVENT_FINISH_THIS:
+                finish();
                 break;
         }
 

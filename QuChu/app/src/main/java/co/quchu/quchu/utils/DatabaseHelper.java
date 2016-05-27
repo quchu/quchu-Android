@@ -17,8 +17,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TABLE_USER_BEHAVIOR =
             "create table tb_user_behavior (id integer primary key autoincrement,pageName text not null,pageArguments text,pageValues text,timestamp long not null,status integer not null);";
 
-    private static final String SQL_CREATE_TABLE_CITY_LIST =
-            "create table tb_city_list (_id integer primary key autoincrement,cityId integer not null, cityName text not null);";
     private static final int DATABASE_VERSION = 1;
 
     public static synchronized DatabaseHelper getInstance(Context context) {
@@ -44,7 +42,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE_USER_BEHAVIOR);
-        db.execSQL(SQL_CREATE_TABLE_CITY_LIST);
     }
 
     @Override
