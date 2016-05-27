@@ -28,7 +28,9 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -66,7 +68,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
     ImageView ivArrow;
 
     public long firstTime = 0;
-    private ArrayList<CityModel> list;
+    private ArrayList<CityModel> list = new ArrayList<>();
     private boolean isGuide = false;
     public int viewPagerIndex = 0;
     private RecommendFragment recommendFragment;
@@ -94,6 +96,63 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
             }
         });
         VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
+
+        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+            @Override
+            public void hasCityList(ArrayList<CityModel> pList) {
+                list.clear();
+                list.addAll(pList);
+                checkIfCityChanged();
+            }
+        });
+
+
+    }
+
+    private void checkIfCityChanged(){
+        if (null!=list && null!= AppLocationListener.currentCity){
+            String currentLocation = AppLocationListener.currentCity;
+            int cityIdInList = -1;
+            if (currentLocation.endsWith("市")){
+                currentLocation = currentLocation.substring(0,currentLocation.length()-1);
+            }
+            boolean inList = false;
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getCvalue().equals(currentLocation)){
+                    inList = true;
+                    cityIdInList = list.get(i).getCid();
+                }
+            }
+            if (!currentLocation.equals(SPUtils.getCityName())){
+                ConfirmDialogFg confirmDialogFg = null;
+                if (!inList){
+                    //城市列表中没有当前位置
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","当前所在城市还没有开放服务，是否要切换城市");
+                }else if(inList){
+                    //城市列表中有但不是当前位置
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","你目前在"+currentLocation+"，是否切换到"+currentLocation);
+                }
+                confirmDialogFg.show(getSupportFragmentManager(),"~");
+                final boolean finalInList = inList;
+                final int finalCityIdInList = cityIdInList;
+                final String finalCurrentLocation = currentLocation;
+                confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+                    @Override
+                    public void onClick(int index) {
+                        if (ConfirmDialogFg.INDEX_OK == index){
+                            if (finalInList){
+                                SPUtils.setCityId(finalCityIdInList);
+                                SPUtils.setCityName(finalCurrentLocation);
+                                updateRecommend();
+                            }else{
+                                findViewById(R.id.recommend_title_location_rl).performClick();
+                            }
+
+                        }
+                    }
+                });
+            }
+        }
     }
 
     @Override
