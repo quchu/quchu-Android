@@ -58,15 +58,15 @@
         <LinearLayout
             android:id="@+id/supportContainer"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/support"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@mipmap/ic_light_like_fill" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_ratingbar_heart" />
 
             <TextView
                 android:id="@+id/supportCount"
@@ -74,7 +74,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="4dp"
                 android:gravity="center"
-                android:text="88"
+                tools:text="88"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
@@ -89,25 +89,31 @@
 
         <ImageView
             android:id="@+id/share"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@mipmap/ic_share" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/appBackground" />
-
-        <ImageView
+        <FrameLayout
             android:id="@+id/edit"
             android:layout_width="0dp"
-            android:layout_height="18dp"
-            android:layout_weight="1"
-            android:src="@mipmap/ic_write_white" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/appBackground" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_write_white" />
+
+        </FrameLayout>
 
     </LinearLayout>
 

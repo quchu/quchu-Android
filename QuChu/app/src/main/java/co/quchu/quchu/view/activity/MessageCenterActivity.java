@@ -75,7 +75,6 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
     public void moreData(MessageModel data) {
         pagesNo = data.getPagesNo();
         adapter.addMoreData(data.getResult());
-
     }
 
     @Override
@@ -109,8 +108,10 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
                             public void onSuccess(MessageModel arrayList) {
                                 if ("yes".equals(item.getCome())) {
                                     item.setCome("no");
+                                    item.setInteraction(false);
                                 } else {
                                     item.setCome("yes");
+                                    item.setInteraction(true);
                                 }
                                 adapter.notifyDataSetChanged();
                                 DialogUtil.dismissProgess();
@@ -130,6 +131,7 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
             case MessageCenterAdapter.CLICK_TYPE_FOOTPRINT_COVER://脚印大图
                 Intent intent1 = new Intent(this, MyFootprintDetailActivity.class);
                 intent1.putExtra(MyFootprintDetailActivity.REQUEST_KEY_FOOTPRINT_ID, item.getTargetId());
+                intent1.putExtra(MyFootprintDetailActivity.REQUEST_KEY_FROM_MESSAGE, true);
                 startActivity(intent1);
                 break;
         }

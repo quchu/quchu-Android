@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -52,6 +53,10 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
     public static final String REQUEST_KEY_IMAGE_LIST = "model";
 
     public static final String REQUEST_KEY_FOOTPRINT_ID = "id";
+    /**
+     * 从消息中心跳转 隐藏编辑按钮
+     */
+    public static final String REQUEST_KEY_FROM_MESSAGE = "message";
 
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
@@ -67,7 +72,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
     @Bind(R.id.share)
     ImageView share;
     @Bind(R.id.edit)
-    ImageView edit;
+    FrameLayout edit;
     @Bind(R.id.supportContainer)
     LinearLayout supportContainer;
     @Bind(R.id.actionContainer)
@@ -134,6 +139,10 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
 
                 @Override
                 public void onResponse(PostCardItemModel response, boolean result, String errorCode, @Nullable String msg) {
+                    if (response == null) {
+                        Toast.makeText(MyFootprintDetailActivity.this, "脚印不存在", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     model = response;
                     initData();
                 }
@@ -155,16 +164,16 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
             actionContainer.setVisibility(View.VISIBLE);
         }
 
-        if (model.getAutorId() != AppContext.user.getUserId()) {//如果不是自己的脚印
+        if (model.getAutorId() != AppContext.user.getUserId() || getIntent().getBooleanExtra(REQUEST_KEY_FROM_MESSAGE, false)) {//如果不是自己的脚印
             edit.setVisibility(View.GONE);
         } else {
             edit.setVisibility(View.VISIBLE);
         }
 
         if (!model.isIsp()) {                            //当前登录用户是否已经点赞
-            support.setImageResource(R.mipmap.ic_light_like);
+            support.setImageResource(R.mipmap.ic_heart);
         } else {
-            support.setImageResource(R.mipmap.ic_light_like_fill);
+            support.setImageResource(R.mipmap.ic_heart_yellow);
         }
 
 
@@ -202,42 +211,38 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         });
     }
 
-    //点赞后服务器还没返回
-    private int clickID = -1;
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.supportContainer://点赞
-                //屏蔽重复点赞
-                if (clickID != model.getCardId()) {
-
-                    clickID = model.getCardId();
-                    PostCardPresenter.setPraise(this, model.isIsp(), true, model.getCardId(), new PostCardPresenter.MyPostCardListener() {
-                        @Override
-                        public void onSuccess(PostCardModel modeffl) {
-                            if (model.isIsp()) {
-                                LogUtils.e("取消点赞成功");
-                                model.setIsp(false);
-                                supportCount.setText(String.valueOf(model.getPraiseNum() - 1));//点赞数目
-                                support.setImageResource(R.mipmap.ic_light_like);
-                                //如果用户没有切换卡片
-                            } else {
-                                model.setIsp(true);
-                                LogUtils.e("点赞成功");
-                                supportCount.setText(String.valueOf(model.getPraiseNum() + 1));//点赞数目
-                                support.setImageResource(R.mipmap.ic_light_like_fill);
-                            }
-                            clickID = -1;
+                v.setEnabled(false);
+                PostCardPresenter.setPraise(this, model.isIsp(), true, model.getCardId(), new PostCardPresenter.MyPostCardListener() {
+                    @Override
+                    public void onSuccess(PostCardModel modeffl) {
+                        if (model.isIsp()) {
+                            LogUtils.e("取消点赞成功");
+                            model.setIsp(false);
+                            model.setPraiseNum(model.getPraiseNum() - 1);
+                            supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
+                            support.setImageResource(R.mipmap.ic_heart);
+                        } else {
+                            model.setIsp(true);
+                            LogUtils.e("点赞成功");
+                            model.setPraiseNum(model.getPraiseNum() + 1);
+                            supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
+                            support.setImageResource(R.mipmap.ic_heart_yellow);
                         }
+                        v.setEnabled(true);
+                    }
 
-                        @Override
-                        public void onError(String error) {
-                            clickID = -1;
-                            Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                    @Override
+                    public void onError(String error) {
+                        v.setEnabled(true);
+                        Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 break;
             case R.id.share://分享
                 ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(model.getCardId(), model.getPlcaeName(), false);
@@ -301,6 +306,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         public int getCount() {
             return fragments == null ? 0 : fragments.size();
         }
+
     }
 
 

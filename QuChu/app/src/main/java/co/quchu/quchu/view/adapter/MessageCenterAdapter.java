@@ -56,6 +56,7 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, R
                 commomHolder.itemMessageFromAvator.setImageURI(Uri.parse(model.getFormPhoto()));
 
                 commomHolder.itemMessageAddTimeTv.setText(DateUtils.getTimeRange(model.getTime(), mContext));
+                commomHolder.itemMessageUserNameTv.setText(model.getForm() + model.getContent());
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -67,11 +68,13 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, R
                 switch (model.getType()) {
                     case "follow":
                         commomHolder.itemMessageFollowTv.setVisibility(View.VISIBLE);
-                        commomHolder.itemMessageUserNameTv.setText(model.getForm() + "关注了你");
                         StringUtils.setTextHighlighting(commomHolder.itemMessageUserNameTv, 0, model.getForm().length());
-
-                        if ("yes".equals(model.getCome())) {
-                            commomHolder.itemMessageFollowTv.setTextColor(ContextCompat.getColor(mContext, android.R.color.black));
+                        if (model.isInteraction()) {
+                            commomHolder.itemMessageFollowTv.setTextColor(ContextCompat.getColor(mContext, android.R.color.white));
+                            commomHolder.itemMessageFollowTv.setBackground(ContextCompat.getDrawable(mContext, R.drawable.shape_message_follow_full_bg));
+                            commomHolder.itemMessageFollowTv.setText("互相关注");
+                        } else if ("yes".equals(model.getCome())) {
+                            commomHolder.itemMessageFollowTv.setTextColor(ContextCompat.getColor(mContext, android.R.color.white));
                             commomHolder.itemMessageFollowTv.setBackground(ContextCompat.getDrawable(mContext, R.drawable.shape_message_follow_full_bg));
                             commomHolder.itemMessageFollowTv.setText("已关注");
                         } else {
@@ -79,6 +82,7 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, R
                             commomHolder.itemMessageFollowTv.setBackground(ContextCompat.getDrawable(mContext, R.drawable.shape_message_follow_bg));
                             commomHolder.itemMessageFollowTv.setText("关注");
                         }
+
                         break;
 
                     case "favorite":
@@ -106,7 +110,8 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, R
             case ITEM_TYPE_FOOTPRING://脚印点赞
                 FootprintViewHolder footprintViewHolder = (FootprintViewHolder) holder;
 
-                footprintViewHolder.itemMessageTitle.setText(model.getForm() + "赞了你的脚印");
+                footprintViewHolder.itemMessageTitle.setText(model.getForm() + model.getContent());
+
                 StringUtils.setTextHighlighting(footprintViewHolder.itemMessageTitle, 0, model.getForm().length());
 
                 footprintViewHolder.itemMessageImage.setImageURI(Uri.parse(model.getFormPhoto()));
