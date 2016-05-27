@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +16,9 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.NearbyItemModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.NearbyPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.NearbyAdapter;
 import co.quchu.quchu.widget.SpacesItemDecoration;
@@ -68,5 +73,26 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
             }
         });
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        if (event.getFlag()== EventFlags.EVENT_FINISH_THIS) {
+            finish();
+        }
     }
 }

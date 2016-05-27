@@ -62,7 +62,7 @@ public class PhoneValidationFragment extends Fragment {
     private boolean mEmptyForum = false;private long mRequestTimeStamp = -1;
     private Timer mCountingTimer;
     private boolean mIsRegistration = true;
-    private int mVCRequestTime = 0;
+    private int mVCRequestTime = 1;
     public static final String BUNDLE_KEY_REGISTRATION = "BUNDLE_KEY_REGISTRATION";
     private int mContainerId = -1;
 

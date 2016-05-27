@@ -108,7 +108,15 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
         if (null!=getArguments()){
             mVerifyCode = getArguments().getString(BUNDLE_KEY_VERIFY_CODE);
             mUserName = getArguments().getString(BUNDLE_KEY_USERNAME);
+            System.out.println("mUserName"+mUserName);
+            System.out.println("mUserName"+mVerifyCode);
         }
+        etUsername.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                etUsername.requestFocus();
+            }
+        },30);
         etUsername.setOnFocusChangeListener(this);
         etPassword.setOnFocusChangeListener(this);
         etUsername.addTextChangedListener(this);
@@ -117,12 +125,17 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
             @Override
             public void onClick(View v) {
 
+                System.out.println("1");
                 if(!mEmptyForum&&verifyForm()) {
+                    System.out.println("2");
+
                     if (mRequestRunning){
                         return;
                     }
                     mRequestRunning = true;
                     if (null!=AppContext.user && AppContext.user.isIsVisitors()){
+                        System.out.println("3");
+
                         int visitorUid = AppContext.user.getUserId();
                         String pwd = etPassword.getText().toString();
                         String nickName = etUsername.getText().toString();
@@ -130,6 +143,7 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
                         UserLoginPresenter.userRegiest(getActivity(), visitorUid, mUserName, pwd, nickName, mVerifyCode, new UserLoginPresenter.UserNameUniqueListener() {
                             @Override
                             public void isUnique(JSONObject msg) {
+
                                 Toast.makeText(getActivity(),R.string.promote_account_create_success,Toast.LENGTH_SHORT).show();
                                 SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
                                 getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));

@@ -420,7 +420,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                     bottomDialog.setOnButtonClickListener(new BottomDialog.OnButtonClickListener() {
                         @Override
                         public void onReturnClick() {
-                            EventBus.getDefault().post(EventFlags.EVENT_FINISH_THIS);
+                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_THIS));
                         }
 
                         @Override

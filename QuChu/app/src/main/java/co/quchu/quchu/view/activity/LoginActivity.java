@@ -7,12 +7,16 @@ import android.widget.FrameLayout;
 
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
+import org.json.JSONObject;
+
 import java.util.Timer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.view.fragment.LoginByPhoneFragment;
 import co.quchu.quchu.view.fragment.LoginFragment;
 import co.quchu.quchu.view.fragment.PhoneValidationFragment;
@@ -60,6 +64,16 @@ public class LoginActivity extends BaseActivity {
         fragmentManager.beginTransaction().add(R.id.flContent,loginFragment,LoginFragment.TAG).commit();
         getFragmentManager().executePendingTransactions();
 
+
+//        if (null!= AppContext.user ){
+//            UserLoginPresenter.visitorRegiest(getApplicationContext(), new UserLoginPresenter.UserNameUniqueListener() {
+//                @Override
+//                public void isUnique(JSONObject msg) {}
+//
+//                @Override
+//                public void notUnique(String msg) {}
+//            });
+//        }
 
     }
 

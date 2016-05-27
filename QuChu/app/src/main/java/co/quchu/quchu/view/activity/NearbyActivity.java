@@ -9,6 +9,9 @@ import android.view.View;
 import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +22,11 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.model.NearbyItemModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.NearbyPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.NearbyAdapter;
 import co.quchu.quchu.view.adapter.NearbyFilterSelectionAdapter;
@@ -226,5 +231,26 @@ public class NearbyActivity extends BaseActivity {
     protected void onPause() {
         MobclickAgent.onPageEnd("all_recommendtion");
         super.onPause();
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        if (event.getFlag()== EventFlags.EVENT_FINISH_THIS) {
+            finish();
+        }
     }
 }

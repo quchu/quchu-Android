@@ -148,5 +148,6 @@
     <string name="promote_account_create_success_login_manually">账号注册成功，请尝试手动登陆</string>
     <string name="promote_account_create_success">账号注册成功</string>
     <string name="share">分享</string>
+    <string name="share_to">分享到</string>
 
 </resources>
