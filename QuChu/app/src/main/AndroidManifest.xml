@@ -119,10 +119,6 @@
             android:label="@string/nearby_quchu"
             android:screenOrientation="portrait" />
 
-        <!-- 用户登录 -->
-        <activity
-            android:name=".view.activity.UserLoginActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -215,7 +211,6 @@
             android:name=".view.activity.MyFootprintDetailActivity"
             android:label="@string/title_activity_my_footprint_detail"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.BindPhotoNumActivity" />
         <activity android:name=".view.activity.WhatIsActivity" />
         <activity
             android:name=".view.activity.LoginActivity"
