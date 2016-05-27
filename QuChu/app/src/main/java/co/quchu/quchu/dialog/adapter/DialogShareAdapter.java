@@ -27,11 +27,7 @@ public class DialogShareAdapter extends BaseAdapter {
             "QQ空间",
             "新浪微博"};
 
-    /*,
-    , R.mipmap.ic_share_douban, R.mipmap.ic_share_photo_album
 
-                "豆瓣",
-                "手机相册"*/
     public DialogShareAdapter(Context context) {
         this.mContext = context;
 

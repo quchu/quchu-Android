@@ -215,12 +215,12 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
-
         <activity android:name=".gallery.PhotoSelectActivity" />
         <activity android:name=".gallery.PhotoPreviewActivity" />
         <activity android:name=".gallery.PhotoEditActivity" />
         <activity android:name=".view.activity.FavoriteActivity" />
         <activity android:name=".view.activity.FindPositionListActivity" />
+        <activity android:name=".view.activity.SharePreviewActivity"></activity>
     </application>
 
 </manifest>

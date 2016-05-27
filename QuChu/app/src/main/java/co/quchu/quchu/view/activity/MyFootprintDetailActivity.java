@@ -32,7 +32,6 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
@@ -150,8 +149,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         }
     }
 
-    //图片进来需要移动到的位置
-    int pageInintPosition;
 
     private void initData() {
         headImage.setImageURI(Uri.parse(model.getAutorPhoto()));
@@ -178,10 +175,8 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
 
 
         PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), model.getImglist());
+
         viewPager.setAdapter(mPagerAdapter);
-
-        viewPager.setCurrentItem(pageInintPosition);
-
     }
 
     private void initListener() {
@@ -245,8 +240,16 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
 
                 break;
             case R.id.share://分享
-                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(model.getCardId(), model.getPlcaeName(), false);
-                shareDialogFg.show(getSupportFragmentManager(), "share_postcard");
+                Intent intent1 = new Intent(this, SharePreviewActivity.class);
+                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_PLACE_NAME, model.getPlcaeName());
+                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_ID, model.getCardId());
+                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COMMENT, model.getComment());
+                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_USER_NAME, model.getAutor());
+                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_HEAD_IMAGE, model.getAutorPhoto());
+                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COVER, model.getImglist().get(viewPager.getCurrentItem()).getPath());
+                startActivity(intent1);
+
+
                 break;
             case R.id.edit://编辑
                 //获取一个脚印
@@ -296,6 +299,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         @Override
         public Fragment getItem(int position) {
             Bundle bund = new Bundle();
+
             bund.putParcelable(FootprintDetailFragment.REQUEST_KEY_IMAGE_ENTITY, fragments.get(position));
             FootprintDetailFragment fragment = new FootprintDetailFragment();
             fragment.setArguments(bund);
