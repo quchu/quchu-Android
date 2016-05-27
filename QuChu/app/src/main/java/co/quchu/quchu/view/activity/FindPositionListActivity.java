@@ -65,6 +65,9 @@ public class FindPositionListActivity extends BaseActivity implements AdapterBas
         recyclerView.setAdapter(adapter);
 
 
+
+
+
     }
 
     @Override

@@ -1,10 +1,13 @@
 package co.quchu.quchu.view.adapter;
 
+import android.animation.ValueAnimator;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,6 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.FindBean;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.SwipeDeleteLayout;
 
 /**
@@ -24,10 +28,29 @@ import co.quchu.quchu.widget.SwipeDeleteLayout;
  */
 public class FindAdapter extends AdapterBase<FindBean.ResultEntity, FindAdapter.ViewHold> {
 
+    private boolean animationed;
 
     @Override
     public void onBindView(final ViewHold holder, final int position) {
         final FindBean.ResultEntity bean = data.get(position);
+        if (position == 0 && !animationed) {
+            animationed = true;
+            ValueAnimator animation = ValueAnimator.ofInt(0, 20);
+            animation.setInterpolator(new OvershootInterpolator());
+            animation.setDuration(50);
+            animation.setRepeatCount(5);
+            animation.setRepeatMode(Animation.REVERSE);
+            animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    LogUtils.e("animationValues" + animation.getAnimatedValue());
+                    holder.swipeDeleteItem.scrollTo((int) animation.getAnimatedValue(), 0);
+                }
+
+            });
+            animation.setStartDelay(500);
+            animation.start();
+        }
 
 
         holder.name.setText(bean.getName());
@@ -44,7 +67,7 @@ public class FindAdapter extends AdapterBase<FindBean.ResultEntity, FindAdapter.
                 @Override
                 public void onClick(View v) {
 
-                    itemClickListener.itemClick(holder,bean, v.getId(), position);
+                    itemClickListener.itemClick(holder, bean, v.getId(), position);
                 }
             };
 
