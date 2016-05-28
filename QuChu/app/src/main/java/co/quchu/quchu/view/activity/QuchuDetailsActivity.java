@@ -440,12 +440,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
                         @Override
                         public void onShareClick() {
-                            try {
-                                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
-                                shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
+                            startActivity( ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this,dModel.getCover(),dModel.getName(),dModel.getAddress(),dModel.getPid()));
                         }
                     });
                     bottomDialog.show();

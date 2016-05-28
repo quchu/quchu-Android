@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/cp_enhanced_toolbar"/>
 
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/iv"
+        android:layout_below="@+id/appbar"
+        android:id="@+id/ivQuchuCover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        fresco:viewAspectRatio = "1"
         fresco:placeholderImage="@mipmap/ic_image_empty"
         fresco:failureImage="@mipmap/ic_image_empty"
         fresco:actualImageScaleType="focusCrop"
@@ -29,7 +30,7 @@
         android:textColor="@color/standard_color_h1_dark"
         android:singleLine="true"
         android:gravity="center"
-        android:layout_below="@+id/iv"
+        android:layout_below="@+id/ivQuchuCover"
         />
 
 

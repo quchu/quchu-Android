@@ -40,6 +40,7 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     private static final String SHAREID = "share_id";
     private static final String SHRETITLE = "share_title";
     private static final String ISSHARE_PLACE = "isshare_place";
+    private static final String SHARE_URL = "SHARE_URL";
     @Bind(R.id.dialog_share_gv)
     GridView dialogShareGv;
 
@@ -62,10 +63,23 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         return fragment;
     }
 
+    public static ShareDialogFg newInstance(String shareUrl,String title) {
+        ShareDialogFg fragment = new ShareDialogFg();
+        Bundle args = new Bundle();
+        // args.putSerializable(CITY_LIST_MODEL, cityList);
+        args.putInt(SHAREID, -10);
+        args.putString(SHRETITLE, title);
+        args.putString(SHARE_URL, shareUrl);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     private int shareId = 0;
     private String shareTitle = "";
     private boolean isPlace = false;
     Tencent mTencent;
+    String shareUrlFinal = "";
+
     String shareUrl = "";
 
     @Override
@@ -76,7 +90,9 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         shareId = args.getInt(SHAREID);
         shareTitle = args.getString(SHRETITLE);
         isPlace = args.getBoolean(ISSHARE_PLACE);
+        shareUrl = args.getString(SHARE_URL);
         mTencent = Tencent.createInstance("1104964977", AppContext.mContext);
+
 
         //   cityList = (ArrayList<CityModel>) args.getSerializable(CITY_LIST_MODEL);
 
@@ -95,7 +111,10 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         ButterKnife.bind(this, view);
         dialogShareGv.setAdapter(new DialogShareAdapter(getActivity()));
         dialogShareGv.setOnItemClickListener(this);
-        shareUrl = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
+        shareUrlFinal = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
+        if (shareId==-10){
+            shareUrlFinal = shareUrl;
+        }
         builder.setView(view);
         return builder.create();
     }
@@ -114,19 +133,19 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
             return;
         switch (position) {
             case 0:
-                WechatHelper.shareFriends(getActivity(), shareUrl, shareTitle, true);
+                WechatHelper.shareFriends(getActivity(), shareUrlFinal, shareTitle, true);
                 break;
             case 1:
-                WechatHelper.shareFriends(getActivity(), shareUrl, shareTitle, false);
+                WechatHelper.shareFriends(getActivity(), shareUrlFinal, shareTitle, false);
                 break;
             case 2:
-                QQHelper.share2QQ(getActivity(), mTencent, shareUrl, shareTitle);
+                QQHelper.share2QQ(getActivity(), mTencent, shareUrlFinal, shareTitle);
                 break;
             case 3:
-                QQHelper.shareToQzone(getActivity(), mTencent, shareUrl, shareTitle);
+                QQHelper.shareToQzone(getActivity(), mTencent, shareUrlFinal, shareTitle);
                 break;
             case 4:
-                WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrl, shareTitle);
+                WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrlFinal, shareTitle);
                 break;
         }
 
