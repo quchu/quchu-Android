@@ -455,21 +455,31 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             }
         } else if (holder instanceof LoadMoreViewHolder) {
-            if (!mEnableLoadMore) {
-                ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
-                ((LoadMoreViewHolder) holder).itemView.setVisibility(View.INVISIBLE);
-            } else {
-                ((LoadMoreViewHolder) holder).itemView.setVisibility(View.VISIBLE);
-                ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore, "rotation", 0, 360);
-                rotation.setInterpolator(new LinearInterpolator());
-                rotation.setRepeatMode(ValueAnimator.RESTART);
-                rotation.setRepeatCount(ValueAnimator.INFINITE);
-                rotation.setDuration(1500);
-                rotation.start();
 
-                if (null != mLoadMoreListener) {
-                    mLoadMoreListener.onLoadMore();
-                }
+            if (mEnableLoadMore){
+                ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
+                ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.VISIBLE);
+                ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
+                ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
+                ((LoadMoreViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((LoadMoreViewHolder) holder).textView.setText(R.string.loading_dialog_text);
+                        ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore, "rotation", 0, 360);
+                        rotation.setInterpolator(new LinearInterpolator());
+                        rotation.setRepeatMode(ValueAnimator.RESTART);
+                        rotation.setRepeatCount(ValueAnimator.INFINITE);
+                        rotation.setDuration(1500);
+                        rotation.start();
+                        if (null != mLoadMoreListener) {
+                            mLoadMoreListener.onLoadMore();
+                        }
+                    }
+                });
+            }else{
+                ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.INVISIBLE);
+                ((LoadMoreViewHolder) holder).textView.setVisibility(View.INVISIBLE);
+                ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
             }
 
 
@@ -499,7 +509,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class LoadMoreViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.ivIndicator)
         ImageView ivLoadMore;
-
+        @Bind(R.id.textView)
+        TextView textView;
         LoadMoreViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

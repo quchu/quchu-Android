@@ -149,5 +149,7 @@
     <string name="promote_account_create_success">账号注册成功</string>
     <string name="share">分享</string>
     <string name="share_to">分享到</string>
+    <string name="promote_duplicate_username">该手机号已经被注册</string>
+    <string name="click_to_load_more">点击加载更多</string>
 
 </resources>

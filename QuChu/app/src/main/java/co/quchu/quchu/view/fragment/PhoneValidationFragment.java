@@ -214,28 +214,48 @@ public class PhoneValidationFragment extends Fragment {
         ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration:R.string.reset_password);
     }
 
+    private boolean isRunning = false;
     private void getValidCode(){
-        if (mSecs >0){
+        if (isRunning){
             return;
         }
-        errorView.showLoading();
+        isRunning = true;
 
-        UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(),mIsRegistration?UserLoginPresenter.getCaptcha_regiest:UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
+        UserLoginPresenter.decideMobileCanLogin(getActivity(), etUsername.getText().toString(), new UserLoginPresenter.UserNameUniqueListener() {
             @Override
             public void isUnique(JSONObject msg) {
-                errorView.hideView();
-                scheduleCountDownTask();
-                mVCRequestTime+=1;
+                isRunning = false;
+                if (mSecs >0){
+                    return;
+                }
+                errorView.showLoading();
+
+                UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(),mIsRegistration?UserLoginPresenter.getCaptcha_regiest:UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
+                    @Override
+                    public void isUnique(JSONObject msg) {
+                        errorView.hideView();
+                        scheduleCountDownTask();
+                        mVCRequestTime+=1;
+                    }
+
+                    @Override
+                    public void notUnique(String msg) {
+                        tvNext.setText("用户名已被占用,请尝试其他账号");
+                        errorView.hideView();
+                        scheduleCountDownTask();
+                        mVCRequestTime+=1;
+                    }
+                });
             }
 
             @Override
             public void notUnique(String msg) {
-                tvNext.setText("用户名已被占用,请尝试其他账号");
-                errorView.hideView();
-                scheduleCountDownTask();
-                mVCRequestTime+=1;
+                isRunning = false;
+                Toast.makeText(getActivity(),R.string.promote_duplicate_username,Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
 
