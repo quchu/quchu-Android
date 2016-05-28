@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv"
         android:layout_width="match_parent"
@@ -15,6 +17,46 @@
         fresco:actualImageScaleType="focusCrop"
         fresco:failureImageScaleType="centerInside"
         fresco:placeholderImageScaleType="centerInside"
+        />
+
+    <TextView
+        android:id="@+id/tvPlaceName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/half_margin"
+        style="@style/TextView.H3"
+        android:text="@string/empty_string"
+        android:textColor="@color/standard_color_h1_dark"
+        android:singleLine="true"
+        android:gravity="center"
+        android:layout_below="@+id/iv"
+        />
+
+
+    <TextView
+        android:id="@+id/tvPlaceLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/half_margin"
+        style="@style/TextView.H3"
+        android:text="@string/empty_string"
+        android:textColor="@color/standard_color_h1_dark"
+        android:singleLine="true"
+        android:gravity="center"
+        android:layout_below="@+id/tvPlaceName"
+        />
+
+
+    <TextView
+        android:id="@+id/tvShareText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/half_margin"
+        style="@style/TextView.H1"
+        android:text="@string/quchu_detail_share_text"
+        android:textColor="@color/standard_color_h1_dark"
+        android:gravity="center"
+        android:layout_below="@+id/tvPlaceLocation"
         />
     <TextView
         android:id="@+id/tvShare"
