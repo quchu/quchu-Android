@@ -2,7 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:id="@+id/tvTag"
-    android:background="@drawable/shape_lineframe_white"
+    android:background="@drawable/shape_lineframe_black"
     android:textSize="@dimen/word_size_body"
     android:paddingTop="@dimen/tow_dp_margin"
     android:paddingBottom="@dimen/tow_dp_margin"
@@ -14,7 +14,7 @@
     android:layout_marginBottom="@dimen/quarter_margin"
     android:gravity="center"
     android:maxLines="1"
-    android:textColor="@android:color/white"
+    android:textColor="@color/standard_color_black"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     />

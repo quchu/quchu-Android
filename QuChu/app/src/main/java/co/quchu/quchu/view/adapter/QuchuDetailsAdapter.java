@@ -4,7 +4,9 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -440,6 +442,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         strTags.add(tags.get(i).getZh());
                     }
                 }
+                ((NearbyViewHolder) holder).cardView.setCardBackgroundColor(Color.RED);
 
                 ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
 //                ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex - 1).getAddress());
@@ -667,6 +670,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TagCloudView tcvTag;
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView sdvImage;
+        @Bind(R.id.cvRoot)
+        CardView cardView;
 
         NearbyViewHolder(View view) {
             super(view);

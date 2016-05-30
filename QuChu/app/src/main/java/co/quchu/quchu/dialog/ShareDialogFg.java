@@ -3,6 +3,8 @@ package co.quchu.quchu.dialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -41,6 +43,7 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     private static final String SHRETITLE = "share_title";
     private static final String ISSHARE_PLACE = "isshare_place";
     private static final String SHARE_URL = "SHARE_URL";
+    private static final int CUSTOM_SHIT= 0x0000001;
     @Bind(R.id.dialog_share_gv)
     GridView dialogShareGv;
 
@@ -67,7 +70,7 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         ShareDialogFg fragment = new ShareDialogFg();
         Bundle args = new Bundle();
         // args.putSerializable(CITY_LIST_MODEL, cityList);
-        args.putInt(SHAREID, -10);
+        args.putInt(SHAREID, CUSTOM_SHIT);
         args.putString(SHRETITLE, title);
         args.putString(SHARE_URL, shareUrl);
         fragment.setArguments(args);
@@ -112,7 +115,7 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         dialogShareGv.setAdapter(new DialogShareAdapter(getActivity()));
         dialogShareGv.setOnItemClickListener(this);
         shareUrlFinal = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
-        if (shareId==-10){
+        if (shareId==CUSTOM_SHIT){
             shareUrlFinal = shareUrl;
         }
         builder.setView(view);
@@ -142,10 +145,10 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
                 QQHelper.share2QQ(getActivity(), mTencent, shareUrlFinal, shareTitle);
                 break;
             case 3:
-                QQHelper.shareToQzone(getActivity(), mTencent, shareUrlFinal, shareTitle);
+                WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrlFinal, shareTitle);
                 break;
             case 4:
-                WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrlFinal, shareTitle);
+                copyToClipBoard(shareTitle,shareUrlFinal);
                 break;
         }
 
@@ -156,5 +159,11 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         }
 
         ShareDialogFg.this.dismiss();
+    }
+
+    private void copyToClipBoard(String label,String text){
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        clipboard.setPrimaryClip(clip);
     }
 }
