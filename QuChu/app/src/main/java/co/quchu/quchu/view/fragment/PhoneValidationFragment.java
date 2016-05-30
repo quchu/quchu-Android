@@ -62,7 +62,7 @@ public class PhoneValidationFragment extends Fragment {
     private boolean mEmptyForum = false;private long mRequestTimeStamp = -1;
     private Timer mCountingTimer;
     private boolean mIsRegistration = true;
-    private int mVCRequestTime = 1;
+    private boolean mVerifyed = false;
     public static final String BUNDLE_KEY_REGISTRATION = "BUNDLE_KEY_REGISTRATION";
     private int mContainerId = -1;
 
@@ -124,6 +124,12 @@ public class PhoneValidationFragment extends Fragment {
                 updateButtonStatus();
             }
         });
+        ivIconClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etUsername.setText("");
+            }
+        });
         etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -143,8 +149,10 @@ public class PhoneValidationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mContainerId = mContainerId == -1? ((ViewGroup)getView().getParent()).getId():mContainerId;
-                if (mVCRequestTime>0){
+                if (mVerifyed){
                     verifySms();
+                }else{
+                    Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -221,40 +229,56 @@ public class PhoneValidationFragment extends Fragment {
         }
         isRunning = true;
 
-        UserLoginPresenter.decideMobileCanLogin(getActivity(), etUsername.getText().toString(), new UserLoginPresenter.UserNameUniqueListener() {
-            @Override
-            public void isUnique(JSONObject msg) {
-                isRunning = false;
-                if (mSecs >0){
-                    return;
+        if (mIsRegistration) {
+            UserLoginPresenter.decideMobileCanLogin(getActivity(), etUsername.getText().toString(), new UserLoginPresenter.UserNameUniqueListener() {
+                @Override
+                public void isUnique(JSONObject msg) {
+                    isRunning = false;
+                    if (mSecs > 0) {
+                        return;
+                    }
+                    errorView.showLoading();
+
+                    UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(),UserLoginPresenter.getCaptcha_regiest, new UserLoginPresenter.UserNameUniqueListener() {
+                        @Override
+                        public void isUnique(JSONObject msg) {
+                            errorView.hideView();
+                            scheduleCountDownTask();
+                            mVerifyed = true;
+                        }
+
+                        @Override
+                        public void notUnique(String msg) {
+                            tvNext.setText("用户名已被占用,请尝试其他账号");
+                            errorView.hideView();
+                            scheduleCountDownTask();
+                        }
+                    });
                 }
-                errorView.showLoading();
 
-                UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(),mIsRegistration?UserLoginPresenter.getCaptcha_regiest:UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
-                    @Override
-                    public void isUnique(JSONObject msg) {
-                        errorView.hideView();
-                        scheduleCountDownTask();
-                        mVCRequestTime+=1;
-                    }
+                @Override
+                public void notUnique(String msg) {
+                    isRunning = false;
+                    Toast.makeText(getActivity(), R.string.promote_duplicate_username, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
 
-                    @Override
-                    public void notUnique(String msg) {
-                        tvNext.setText("用户名已被占用,请尝试其他账号");
-                        errorView.hideView();
-                        scheduleCountDownTask();
-                        mVCRequestTime+=1;
-                    }
-                });
-            }
+            UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(),UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
+                @Override
+                public void isUnique(JSONObject msg) {
+                    errorView.hideView();
+                    scheduleCountDownTask();
+                    mVerifyed = true;
+                }
 
-            @Override
-            public void notUnique(String msg) {
-                isRunning = false;
-                Toast.makeText(getActivity(),R.string.promote_duplicate_username,Toast.LENGTH_SHORT).show();
-            }
-        });
-
+                @Override
+                public void notUnique(String msg) {
+                    errorView.hideView();
+                    scheduleCountDownTask();
+                }
+            });
+        }
 
     }
 

@@ -77,7 +77,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             price = "-";
         }
 
-        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost),price,"元"));
+        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost),price,"起"));
         holder.linearLayout.removeAllViews();
         for (int i = 0; i < model.getSuggest(); i++) {
             ImageView imageView = new ImageView(mContext);

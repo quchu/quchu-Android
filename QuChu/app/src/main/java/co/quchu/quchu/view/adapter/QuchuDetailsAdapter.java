@@ -233,6 +233,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 public void onClick(View v) {
                                     Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
                                     intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,mData.getTags().get(0).getId());
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,mData.getTags().get(0).getZh());
                                     mAnchorActivity.startActivity(intent);
                                 }
                             });
@@ -245,6 +246,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 public void onClick(View v) {
                                     Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
                                     intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,mData.getTags().get(1).getId());
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,mData.getTags().get(1).getZh());
                                     mAnchorActivity.startActivity(intent);
                                 }
                             });
@@ -257,6 +259,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 public void onClick(View v) {
                                     Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
                                     intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,mData.getTags().get(2).getId());
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,mData.getTags().get(2).getZh());
                                     mAnchorActivity.startActivity(intent);
                                 }
                             });
