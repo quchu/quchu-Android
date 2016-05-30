@@ -68,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:ellipsize="end"
-                android:hint="(必填)"
+                android:hint="(选填)"
                 android:maxLength="30"
 
                 android:maxLines="1"

@@ -126,8 +126,8 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                 nameText = FindPositionActivity.this.name.getText().toString().trim();
                 positionText = FindPositionActivity.this.position.getText().toString().trim();
                 descText = detail.getText().toString().trim();
-                if (TextUtils.isEmpty(nameText) || TextUtils.isEmpty(positionText)) {
-                    Toast.makeText(FindPositionActivity.this, "名称和地址不能为空", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(nameText)) {
+                    Toast.makeText(FindPositionActivity.this, "请填写趣处名称", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 List<String> im = new ArrayList<>();
@@ -143,7 +143,6 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                     new ImageUpload(FindPositionActivity.this, im, new ImageUpload.UploadResponseListener() {
                         @Override
                         public void finish(String result) {
-                            init();
                             sendToServer(nameText, positionText, descText, result);
                         }
 
@@ -183,7 +182,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
                 Toast.makeText(FindPositionActivity.this, "增加趣处成功", Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgessDirectly();
-                init();
+                finish();
             }
         });
         request.start(this, null);

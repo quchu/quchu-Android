@@ -56,6 +56,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, FootprintListFragment.newInstance(userId)).commit();
 
+        if (userId == AppContext.user.getUserId()) {
+            followAction.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     @Override

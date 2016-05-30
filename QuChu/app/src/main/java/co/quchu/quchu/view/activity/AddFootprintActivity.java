@@ -27,7 +27,6 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.finalteam.toolsfinal.StringUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
@@ -235,11 +234,6 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null == etContent.getText() || StringUtils.isBlank(etContent.getText().toString())) {
-                    Toast.makeText(AddFootprintActivity.this, "你还没输入内容", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 List<String> im = new ArrayList<String>();
                 for (PhotoInfo item : photoInfos) {
                     if (item.getPhotoPath().contains("file://")) {

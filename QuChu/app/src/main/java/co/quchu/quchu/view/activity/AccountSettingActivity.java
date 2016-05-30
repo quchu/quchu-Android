@@ -103,6 +103,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         UserInfoModel user = AppContext.user;
         accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
         nickname.setText(AppContext.user.getFullname());
+        nickname.setSelection(user.getFullname().length());
         photoNumber.setText(AppContext.user.getUsername());
         accountSettingUserLocation.setText(SPUtils.getCityName());
         if ("男".equals(user.getGender())) {
@@ -124,7 +125,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         if (user.isphone()) {
             modiffPass.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override

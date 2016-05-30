@@ -9,14 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.activity.MyFootprintDetailActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
@@ -66,6 +71,12 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
         userId = getArguments().getInt(REQUEST_KEY_USER_ID);
 
         presenter = new MyFootprintPresenter(getContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        pagesNo = 1;
         presenter.getMyFoiotrintList(userId, pagesNo, this);
     }
 
@@ -74,11 +85,19 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
         presenter.getMyFoiotrintList(userId, pagesNo + 1, this);
     }
 
+    RecyclerView.ViewHolder holder;
+    PostCardItemModel item;
+
     @Override
     public void itemClick(RecyclerView.ViewHolder holder, PostCardItemModel item, int type, int position) {
+        this.holder = holder;
+        this.item = item;
         Intent intent = new Intent(getContext(), MyFootprintDetailActivity.class);
         intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, item);
         startActivity(intent);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -92,6 +111,25 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
     public void moreData(PostCardModel data) {
         pagesNo = data.getPagesNo();
         adapter.addMoreData(data.getResult());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe
+    public void FootprintChange(QuchuEventModel model) {
+        switch (model.getFlag()) {
+            case EventFlags.EVENT_POST_CARD_DELETED:
+                if (item.getCardId() == (int) model.getContent()[0]) {
+                    adapter.removeItem(holder, item);
+                }
+                break;
+        }
     }
 
     @Override
