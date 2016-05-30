@@ -53,7 +53,7 @@ public class ClassifyFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_friends_rv_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_classify, container, false);
         ButterKnife.bind(this, view);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);

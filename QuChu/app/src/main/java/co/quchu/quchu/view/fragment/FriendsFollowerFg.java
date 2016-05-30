@@ -2,6 +2,7 @@ package co.quchu.quchu.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,6 +34,8 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
     boolean mIsSubscribe = false;
     public static final String BUNDLE_KEY_IS_SUBSCRIBE = "BUNDLE_KEY_IS_SUBSCRIBE";
     public FriendsAdatper mAdapter;
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
     private int pageNo = 1;
     private FollowPresenter presenter;
 
@@ -54,7 +57,13 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
         super.onViewCreated(view, savedInstanceState);
         mIsSubscribe = getArguments().getBoolean(BUNDLE_KEY_IS_SUBSCRIBE, true);
         presenter = new FollowPresenter(getContext(), this);
-
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pageNo = 1;
+                presenter.getFollow(AppContext.user.getUserId(), mIsSubscribe ? FollowPresenter.TAFOLLOWING : FollowPresenter.TAFOLLOWERS, false, pageNo++);
+            }
+        });
     }
 
     @Override
@@ -65,12 +74,6 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
-    @Override
     public void onLoadmore() {
         presenter.getFollow(AppContext.user.getUserId(), mIsSubscribe ? FollowPresenter.TAFOLLOWING : FollowPresenter.TAFOLLOWERS, false, pageNo++);
     }
@@ -78,6 +81,7 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
     @Override
     public void initData(List<FollowUserModel> data) {
         mAdapter.initData(data);
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -93,6 +97,7 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
 
     @Override
     public void netError(final int pageNo, String massage) {
+        refreshLayout.setRefreshing(false);
         mAdapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
