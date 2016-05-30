@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -157,6 +159,30 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
             tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
         }
         return status;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        etUsername.requestFocus();
+        etUsername.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                InputMethodManager keyboard = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(etUsername, 0);
+            }
+        },350);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     /**

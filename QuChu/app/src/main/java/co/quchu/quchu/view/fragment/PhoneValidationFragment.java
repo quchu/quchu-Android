@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -99,6 +101,7 @@ public class PhoneValidationFragment extends Fragment {
         }
         return status;
     }
+
 
     @Nullable
     @Override
@@ -217,11 +220,31 @@ public class PhoneValidationFragment extends Fragment {
 
 
     @Override
+    public void onPause() {
+        super.onPause();
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+
+    @Override
     public void onResume() {
         super.onResume();
         ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration:R.string.reset_password);
-    }
 
+        etUsername.requestFocus();
+        etUsername.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                InputMethodManager keyboard = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(etUsername, 0);
+            }
+        },350);
+    }
     private boolean isRunning = false;
     private void getValidCode(){
         if (isRunning){
@@ -249,8 +272,8 @@ public class PhoneValidationFragment extends Fragment {
 
                         @Override
                         public void notUnique(String msg) {
-                            tvNext.setText("用户名已被占用,请尝试其他账号");
                             errorView.hideView();
+                            Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
                             scheduleCountDownTask();
                         }
                     });
@@ -259,7 +282,7 @@ public class PhoneValidationFragment extends Fragment {
                 @Override
                 public void notUnique(String msg) {
                     isRunning = false;
-                    Toast.makeText(getActivity(), R.string.promote_duplicate_username, Toast.LENGTH_SHORT).show();
+                    tvNext.setText(R.string.promote_duplicate_username);
                 }
             });
         }else{
@@ -275,6 +298,7 @@ public class PhoneValidationFragment extends Fragment {
                 @Override
                 public void notUnique(String msg) {
                     errorView.hideView();
+                    Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
                     scheduleCountDownTask();
                 }
             });
