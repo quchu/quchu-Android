@@ -59,7 +59,6 @@ public class QuFriendsActivity extends BaseActivity {
         bundleFlr.putBoolean(FriendsFollowerFg.BUNDLE_KEY_IS_SUBSCRIBE, false);
 
         headImage.setImageURI(Uri.parse(AppContext.user.getPhoto()));
-//        ViewCompat.setTransitionName(headImage, KEY_TRANSITION_ANIMATION);
 
         FriendsFollowerFg fragment1 = new FriendsFollowerFg();
         fragment1.setArguments(bundleSub);
@@ -99,6 +98,12 @@ public class QuFriendsActivity extends BaseActivity {
             }
         });
     }
+
+    public void setFaloowNum(int hostNum, int followNum) {
+        tabLayout.getTabAt(0).setText("关注" + hostNum);
+        tabLayout.getTabAt(1).setText("趣粉" + followNum);
+    }
+
 
     class fragmentAdapter extends FragmentPagerAdapter {
         List<Fragment> fragments;

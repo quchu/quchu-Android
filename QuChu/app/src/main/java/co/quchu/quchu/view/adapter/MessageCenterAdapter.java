@@ -135,6 +135,9 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, R
     @Override
     public int getItemType(int position) {
         MessageModel.ResultBean bean = data.get(position);
+        if (bean.getTargetType() == null) {
+            return ITEM_TYPE_FOLLOW;
+        }
         switch (bean.getTargetType()) {
             case "10"://普通类型
                 return ITEM_TYPE_FOLLOW;

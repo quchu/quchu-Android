@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -30,7 +29,6 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.BottomDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
-import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.NearbyItemModel;
@@ -214,7 +212,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                 InterestingDetailPresenter.getInterestingData(this, pId, new InterestingDetailPresenter.getDetailDataListener() {
                     @Override
                     public void getDetailData(DetailModel model) {
-                        if (!StringUtils.isEmpty(model.getCover())){
+                        if (!StringUtils.isEmpty(model.getCover())) {
                             sdv.setImageURI(Uri.parse(model.getCover()));
                         }
                         bindingDetailData(model);
@@ -364,7 +362,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                     }
                 });
             }
-        },1000l);
+        }, 1000l);
     }
 
 
@@ -407,7 +405,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.ivFootprint, R.id.ivFavorite,R.id.ivShare,R.id.ivMore})
+    @OnClick({R.id.ivFootprint, R.id.ivFavorite, R.id.ivShare, R.id.ivMore})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -425,7 +423,7 @@ public class QuchuDetailsActivity extends BaseActivity {
 
                         @Override
                         public void onPreOrderClick() {
-                            if (NetUtil.isNetworkConnected(getApplicationContext())){
+                            if (NetUtil.isNetworkConnected(getApplicationContext())) {
                                 if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
                                     MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
                                     WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
@@ -433,14 +431,14 @@ public class QuchuDetailsActivity extends BaseActivity {
                                     MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
                                     WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName());
                                 }
-                            }else{
-                                Toast.makeText(QuchuDetailsActivity.this,R.string.network_error,Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onShareClick() {
-                            startActivity( ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this,dModel.getCover(),dModel.getName(),dModel.getAddress(),dModel.getPid()));
+                            startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel.getCover(), dModel.getName(), dModel.getAddress(), dModel.getPid()));
                         }
                     });
                     bottomDialog.show();
@@ -451,10 +449,8 @@ public class QuchuDetailsActivity extends BaseActivity {
                     if (AppContext.user.isIsVisitors()) {
                         VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
                         vDialog.show(getSupportFragmentManager(), "visitor");
-                    } else
-
-                    if (null != mVisitedInfoModel) {
-                        RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(),mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
+                    } else if (null != mVisitedInfoModel) {
+                        RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
                         tagsFilterDialog.show(getSupportFragmentManager(), "");
                         tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
                             @Override
@@ -535,6 +531,11 @@ public class QuchuDetailsActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_CANCLE_FAVORITE_QUCHU, dModel.isIsf(), pId));
+        super.onBackPressed();
+    }
 
     @Override
     protected void onDestroy() {

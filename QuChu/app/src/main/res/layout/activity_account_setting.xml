@@ -212,7 +212,7 @@
                     android:ellipsize="end"
                     android:gravity="right|center_vertical"
                     android:singleLine="true"
-                    android:text="厦门"
+                    tools:text="厦门"
                     android:textSize="@dimen/word_size_body" />
 
             </LinearLayout>

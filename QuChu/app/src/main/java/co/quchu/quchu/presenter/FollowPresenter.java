@@ -23,6 +23,7 @@ import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.QuFriendsActivity;
 
 /**
  * FollowPresenter
@@ -60,6 +61,11 @@ public class FollowPresenter {
 
             @Override
             public void onResponse(FollowBean response, boolean result, @Nullable String exception, @Nullable String msg) {
+
+                if (response != null && context instanceof QuFriendsActivity) {
+                    ((QuFriendsActivity) context).setFaloowNum(response.getHostNum(),response.getFollowNum());
+                }
+
                 if (response.getUsers().getResult() == null || response.getUsers().getResult().size() == 0) {
                     view.nullData();
                 } else if (pageNo == 1) {

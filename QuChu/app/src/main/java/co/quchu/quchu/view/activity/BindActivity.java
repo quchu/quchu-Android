@@ -96,6 +96,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                     dialog.show(getSupportFragmentManager(), "");
                 } else {
                     BindPhoneNumDialog dialog = BindPhoneNumDialog.newInstance();
+                    dialog.setCancelable(false);
                     dialog.show(getSupportFragmentManager(), "");
                 }
                 break;
@@ -248,19 +249,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         }
 
         UserInfoHelper.saveUserInfo(user);
-        if (isBind) {
-            if (isWecha) {
-                bindWecha.setText("取消绑定我的微信");
-            } else {
-                bindSina.setText("取消绑定我的微博");
-            }
-        } else {
-            if (isWecha) {
-                bindWecha.setText("绑定我的微信");
-            } else {
-                bindSina.setText("绑定我的微博");
-            }
-        }
+        initListener();
     }
 
     private void unBind(final boolean isWache, final String type) {

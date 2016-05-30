@@ -195,7 +195,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
 
     @Override
     protected int activitySetup() {
-        return TRANSITION_TYPE_BOTTOM;
+        return TRANSITION_TYPE_LEFT;
     }
 
 

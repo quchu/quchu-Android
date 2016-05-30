@@ -33,7 +33,6 @@ import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
 import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.LocationSettingDialogFg;
 import co.quchu.quchu.dialog.ModiffPasswordDialog;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
@@ -105,8 +104,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
         nickname.setText(AppContext.user.getFullname());
         photoNumber.setText(AppContext.user.getUsername());
-        newUserLocation = AppContext.user.getLocation();
-        accountSettingUserLocation.setText(newUserLocation);
+        accountSettingUserLocation.setText(SPUtils.getCityName());
         if ("男".equals(user.getGender())) {
             radioGroup.check(R.id.man);
         } else {
@@ -140,9 +138,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         userGenderChanged = !AppContext.user.getGender().equals(gender);
 
 
-        boolean userLocationChanged;
-        userLocationChanged = !StringUtils.isEmpty(accountSettingUserLocation.getText().toString()) && !AppContext.user.getLocation().equals(accountSettingUserLocation.getText().toString());
-        if (mProfileModified || userNameChanged || userGenderChanged || userLocationChanged) {
+        if (mProfileModified || userNameChanged || userGenderChanged) {
             CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
 
             dialog.setListener(new CommonDialog.OnActionListener() {
@@ -173,11 +169,10 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
             case R.id.saveUserInfo:
                 saveUserChange();
                 break;
-
-            case R.id.location:
-                LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
-                locationDIalogFg.show(getSupportFragmentManager(), "location");
-                break;
+//            case R.id.location:
+//                LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
+//                locationDIalogFg.show(getSupportFragmentManager(), "location");
+//                break;
             case R.id.bindAccound:
                 final Intent intent = new Intent(this, BindActivity.class);
                 startActivity(intent);
@@ -277,7 +272,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
     private String newUserPhoto = "";
     private String newUserNickName = "";
-    private String newUserLocation = "";
 
     @Override
     public void onDestroy() {
@@ -298,7 +292,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
             return;
         }
 
-        newUserLocation = accountSettingUserLocation.getText().toString().trim();
 
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
         if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
@@ -321,7 +314,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
     public void putUserInfo(String photoUrl) {
         AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this,
-                newUserNickName, photoUrl, radioGroup.getCheckedRadioButtonId() == R.id.man ? "男" : "女", newUserLocation, new AccountSettingPresenter.UploadUserPhotoListener() {
+                newUserNickName, photoUrl, radioGroup.getCheckedRadioButtonId() == R.id.man ? "男" : "女", SPUtils.getCityName() + "", new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
                         refreshUserInfo();
@@ -354,11 +347,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         });
     }
 
-
-    public void updateLocation(String locationDes) {
-        newUserLocation = locationDes;
-        accountSettingUserLocation.setText(newUserLocation);
-    }
 
     public void updateAvatar(String avatarUrl) {
         if (!avatarUrl.startsWith("http")) {

@@ -17,4 +17,6 @@ public class EventFlags {
 
 
     public static final int EVENT_FINISH_THIS = 0x200001;
+    public static final int EVENT_CANCLE_FAVORITE_QUCHU = 0x200002;
+
 }

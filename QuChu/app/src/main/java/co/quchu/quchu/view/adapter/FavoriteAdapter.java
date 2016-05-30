@@ -32,17 +32,14 @@ public class FavoriteAdapter extends AdapterBase<FavoriteBean.ResultBean, Favori
         holder.tag.setTags(bean.getTagsString());
         holder.address.setText(bean.getAddress());
         holder.address.setSelected(true);
-        if (itemClickListener != null) {
-
-            View.OnClickListener onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemClickListener != null) {
                     itemClickListener.itemClick(holder, bean, v.getId(), position);
                 }
-            };
-
-            holder.itemView.setOnClickListener(onClickListener);
-        }
+            }
+        });
     }
 
     @Override

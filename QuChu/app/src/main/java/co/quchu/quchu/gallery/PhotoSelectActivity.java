@@ -25,7 +25,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -35,8 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.StringUtils;
 import co.quchu.quchu.R;
@@ -58,11 +55,9 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     private final int HANLDER_TAKE_PHOTO_EVENT = 1000;
     private final int HANDLER_REFRESH_LIST_EVENT = 1002;
-    @Bind(R.id.enhancedToolbar)
     EnhancedToolbar toolbar;
 
     private GridView mGvPhotoList;
-    private ImageView mIvBack;
     private TextView mTvChooseCount;
     private TextView mTvEmptyView;
 
@@ -112,7 +107,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         } else {
             setContentView(R.layout.gf_activity_photo_select);
             mPhotoTargetFolder = null;
-            ButterKnife.bind(this);
+            toolbar =getEnhancedToolbar ();
             findViews();
             setListener();
 
@@ -141,16 +136,16 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
         mGvPhotoList = (GridView) findViewById(R.id.gv_photo_list);
         mTvChooseCount = toolbar.getTitleTv();
-        mIvBack = toolbar.getLeftIv();
-        mIvBack.setImageResource(R.mipmap.ic_back);
         mTvEmptyView = (TextView) findViewById(R.id.tv_empty_view);
         TextView rightTv = toolbar.getRightTv();
         rightTv.setText("确定");
         rightTv.setOnClickListener(this);
+
+
     }
 
     private void setListener() {
-        mIvBack.setOnClickListener(this);
+
         mGvPhotoList.setOnItemClickListener(this);
     }
 

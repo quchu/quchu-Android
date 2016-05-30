@@ -8,8 +8,13 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-
-    <include layout="@layout/cp_enhanced_toolbar" />
+    <co.quchu.quchu.base.EnhancedToolbar
+        android:id="@+id/enhancedToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:gravity="center_vertical"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     <RelativeLayout
         android:layout_width="match_parent"

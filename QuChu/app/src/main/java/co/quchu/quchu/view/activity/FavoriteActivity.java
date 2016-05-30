@@ -9,14 +9,19 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.FavoriteBean;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.presenter.QuchuPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FavoriteAdapter;
 
@@ -48,6 +53,12 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected int activitySetup() {
         return TRANSITION_TYPE_LEFT;
     }
@@ -57,13 +68,21 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
         presenter.getFavoriteData(pagesNo + 1, this);
     }
 
+    RecyclerView.ViewHolder holder;
+    FavoriteBean.ResultBean item;
+
     @Override
     public void itemClick(RecyclerView.ViewHolder holder, FavoriteBean.ResultBean item, int type, int position) {
         MobclickAgent.onEvent(this, "detail_profile_c");
+        this.holder = holder;
+        this.item = item;
         Intent intent = new Intent(this, QuchuDetailsActivity.class);
         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_PROFILE);
         startActivity(intent);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -92,5 +111,22 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
                 presenter.getFavoriteData(pagesNo, FavoriteActivity.this);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe
+    public void unFavorite(QuchuEventModel bean) {
+        if (bean.getFlag() == EventFlags.EVENT_CANCLE_FAVORITE_QUCHU) {
+            if (!(Boolean) bean.getContent()[0] && (int) bean.getContent()[1] == item.getPid()) {
+                adapter.removeItem(holder, item);
+            }
+        }
     }
 }

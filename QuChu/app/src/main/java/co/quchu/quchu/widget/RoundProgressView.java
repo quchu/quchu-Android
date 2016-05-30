@@ -18,7 +18,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.LogUtils;
 
 /**
  * Created by no21 on 2016/5/17.
@@ -116,7 +115,6 @@ public class RoundProgressView extends View {
         paint.setShader(sweepGradient);
         paint.setDither(true);
         float pro = 300f * progress / 100;
-        LogUtils.e("progress=:" + progress);
         if (pro != 0)
             canvas.drawArc(rectF, 120, pro, false, paint);
 
