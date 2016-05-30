@@ -1,94 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
 
     <include layout="@layout/cp_enhanced_toolbar" />
 
-    <android.support.v7.widget.CardView
+
+    <RelativeLayout
+        android:id="@+id/edit_container"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_below="@id/appbar"
+        android:background="@color/standard_color_white">
+
+        <EditText
+            android:id="@+id/etContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="top|left"
+            android:hint="@string/hint_add_footprint"
+            android:maxLength="140"
+            android:minLines="5"
+            android:padding="@dimen/base_margin"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textColorHint="@color/translucent_dark"
+            android:textSize="@dimen/word_size_body" />
+
+        <TextView
+            android:id="@+id/textLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:text="@string/hint_max_text_length"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="@dimen/word_size_minimum" />
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/base_margin"
-        app:cardCornerRadius="@dimen/card_view_radius_dp"
-        app:cardElevation="@dimen/cardview_elevation">
+        android:layout_below="@id/edit_container"
+        android:layout_marginTop="@dimen/base_margin"
+        android:background="@color/standard_color_white"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="4"
+        tools:listitem="@layout/item_find_position_image" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/base_margin">
-
-            <EditText
-                android:id="@+id/etContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="top|left"
-                android:hint="@string/hint_add_footprint"
-                android:maxLength="140"
-                android:minLines="5"
-                android:textColor="@color/standard_color_h3_dark"
-                android:textColorHint="@color/translucent_dark"
-                android:textSize="@dimen/word_size_body" />
-
-
-            <TextView
-                android:id="@+id/tvPickFromMap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="@dimen/half_margin"
-                android:layout_marginRight="@dimen/half_margin"
-                android:layout_marginTop="@dimen/base_margin"
-                android:background="@color/standard_color_yellow"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:padding="@dimen/half_margin"
-                android:text="..fsadfasd."
-                android:textColor="@color/standard_color_white" />
-
-            <ImageView
-                android:id="@+id/actionDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/base_margin"
-                android:background="@drawable/shape_round"
-                android:src="@mipmap/ic_delete"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/textLength"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/etContent"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/half_margin"
-                android:background="@drawable/shape_tag_bg"
-                android:paddingBottom="@dimen/quarter_margin"
-                android:paddingLeft="@dimen/half_margin"
-                android:paddingRight="@dimen/half_margin"
-                android:paddingTop="@dimen/quarter_margin"
-                android:text="@string/hint_max_text_length"
-                android:textColor="@color/standard_color_white"
-                android:textSize="@dimen/word_size_minimum" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/tvPickFromMap"
-                app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                app:spanCount="4"
-                tools:listitem="@layout/item_find_position_image" />
-
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+    <ImageView
+        android:id="@+id/actionDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/base_margin"
+        android:layout_marginTop="@dimen/base_margin"
+        android:background="@drawable/shape_round"
+        android:src="@mipmap/ic_delete"
+        android:visibility="gone"
+        tools:visibility="visible" />
+</RelativeLayout>

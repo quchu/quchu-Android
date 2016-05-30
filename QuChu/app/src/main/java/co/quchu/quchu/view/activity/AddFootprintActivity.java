@@ -1,7 +1,6 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -55,8 +54,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     EditText etContent;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind(R.id.tvPickFromMap)
-    TextView tvPickFromMap;
+
+    TextView titleName;
     List<PhotoInfo> photoInfos;
     @Bind(R.id.textLength)
     TextView textLength;
@@ -95,11 +94,14 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
         pName = getIntent().getStringExtra(REQUEST_KEY_NAME);
         mAllowPicking = getIntent().getBooleanExtra(REQUEST_KEY_ALLOW_PICKING_STORE, false);
+
         //数据是重新封装过的,如果部分属性丢失请返回前面页面添加
         mData = getIntent().getParcelableExtra(REQUEST_KEY_ENTITY);
         pId = mData == null ? pId : mData.getPlaceId();
         cId = mData == null ? cId : mData.getCardId();
         EnhancedToolbar toolbar = getEnhancedToolbar();
+        titleName = toolbar.getTitleTv();
+
         toolbar.getRightTv().setText(R.string.save);
         boolean isEdit = getIntent().getBooleanExtra(REQUEST_KEY_IS_EDIT, false);
         if (isEdit) {
@@ -131,7 +133,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                                         }
                                     }
                                 });
-                                request.start(AddFootprintActivity.this, null);
+                                request.start(AddFootprintActivity.this);
 
                             }
                             return true;
@@ -141,32 +143,18 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                 }
             });
         }
-        if (cId > 0) {
-            tvPickFromMap.setVisibility(View.INVISIBLE);
-        }
-        tvPickFromMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mAllowPicking) {
-                    Intent intent = new Intent(AddFootprintActivity.this, PickingQuchuActivity.class);
-                    startActivityForResult(intent, REQUEST_PICKING_QUCHU);
-                }
-            }
-        });
-
-
         init();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PICKING_QUCHU && resultCode == RESULT_OK && null != data) {
-            pId = data.getIntExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_ID, -1);
-            pName = data.getStringExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_NAME);
-            tvPickFromMap.setText("在 " + pName);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == REQUEST_PICKING_QUCHU && resultCode == RESULT_OK && null != data) {
+//            pId = data.getIntExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_ID, -1);
+//            pName = data.getStringExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_NAME);
+//            titleName.setText( pName);
+//        }
+//    }
 
     @Override
     protected void onDestroy() {
@@ -193,7 +181,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
             @Override
             public void afterTextChanged(Editable s) {
 
-                textLength.setText("最多输入" + (140 - s.length()) + "个文字");
+                textLength.setText("剩余" + (140 - s.length()) + "字");
             }
         });
 
@@ -224,9 +212,9 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         adapter.setImages(photoInfos);
         adapter.setListener(this);
         if (null == mData) {
-            tvPickFromMap.setText("在 " + pName);
+            titleName.setText(pName);
         } else {
-            tvPickFromMap.setText("在 " + mData.getPlcaeName());
+            titleName.setText(mData.getPlcaeName());
             pId = mData.getPlaceId();
         }
 

@@ -122,7 +122,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/progressContainer"
+        android:layout_marginTop="@dimen/base_margin"
         android:background="@color/standard_color_white"
         android:orientation="vertical">
 
@@ -263,30 +264,32 @@
 
         </LinearLayout>
 
-        <View style="@style/HorizontalLine" />
 
-        <LinearLayout
-            android:id="@+id/findPosition"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/item_height"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
+    </LinearLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@mipmap/ic_writebig" />
+    <LinearLayout
+        android:id="@+id/findPosition"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/standard_color_white"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="发现新趣处"
-                android:textColor="@color/standard_color_h2_dark"
-                android:textSize="@dimen/word_title_body"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_writebig" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="发现新趣处"
+            android:textColor="@color/standard_color_h2_dark"
+            android:textSize="@dimen/word_title_body"
+            android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>

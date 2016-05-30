@@ -1,18 +1,21 @@
 package co.quchu.quchu.dialog;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.tencent.tauth.Tencent;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -20,7 +23,6 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.adapter.DialogShareAdapter;
-import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.thirdhelp.QQHelper;
@@ -33,7 +35,7 @@ import co.quchu.quchu.utils.KeyboardUtils;
  * User: Chenhs
  * Date: 2015-12-23
  */
-public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemClickListener {
+public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemClickListener, View.OnClickListener {
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
@@ -43,19 +45,13 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     private static final String SHARE_URL = "SHARE_URL";
     @Bind(R.id.dialog_share_gv)
     GridView dialogShareGv;
+    @Bind(R.id.actionClose)
+    ImageView actionClose;
 
-    private ArrayList<CityModel> cityList;
 
-    /**
-     * Retrieve a new instance of the sample fragment.
-     *
-     * @return well instantiated fragment.
-     * Serializable cityList
-     */
     public static ShareDialogFg newInstance(int shareId, String titles, boolean isPlace) {
         ShareDialogFg fragment = new ShareDialogFg();
         Bundle args = new Bundle();
-        // args.putSerializable(CITY_LIST_MODEL, cityList);
         args.putInt(SHAREID, shareId);
         args.putString(SHRETITLE, titles);
         args.putBoolean(ISSHARE_PLACE, isPlace);
@@ -63,10 +59,9 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         return fragment;
     }
 
-    public static ShareDialogFg newInstance(String shareUrl,String title) {
+    public static ShareDialogFg newInstance(String shareUrl, String title) {
         ShareDialogFg fragment = new ShareDialogFg();
         Bundle args = new Bundle();
-        // args.putSerializable(CITY_LIST_MODEL, cityList);
         args.putInt(SHAREID, -10);
         args.putString(SHRETITLE, title);
         args.putString(SHARE_URL, shareUrl);
@@ -93,9 +88,6 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         shareUrl = args.getString(SHARE_URL);
         mTencent = Tencent.createInstance("1104964977", AppContext.mContext);
 
-
-        //   cityList = (ArrayList<CityModel>) args.getSerializable(CITY_LIST_MODEL);
-
     }
 
     @Override
@@ -106,17 +98,22 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_share_view, null);
         ButterKnife.bind(this, view);
+        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setContentView(view);
+        ButterKnife.bind(this, view);
+
+        actionClose.setOnClickListener(this);
+        view.setOnClickListener(this);
+
         dialogShareGv.setAdapter(new DialogShareAdapter(getActivity()));
         dialogShareGv.setOnItemClickListener(this);
         shareUrlFinal = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
-        if (shareId==-10){
+        if (shareId == -10) {
             shareUrlFinal = shareUrl;
         }
-        builder.setView(view);
-        return builder.create();
+        return dialog;
     }
 
 
@@ -147,6 +144,11 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
             case 4:
                 WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrlFinal, shareTitle);
                 break;
+            case 5:
+                ClipboardManager cmb = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                cmb.setPrimaryClip(ClipData.newPlainText(null, shareUrl));
+                Toast.makeText(getContext(), "复制成功", Toast.LENGTH_SHORT).show();
+                break;
         }
 
         if (!isPlace) {//数据收集
@@ -156,5 +158,17 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         }
 
         ShareDialogFg.this.dismiss();
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.actionClose:
+                dismiss();
+                break;
+            default:
+                dismiss();
+        }
     }
 }

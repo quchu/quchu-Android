@@ -72,7 +72,7 @@ public class ASUserPhotoDialogFg extends DialogFragment implements AdapterView.O
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_share_view, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_setting, null);
         ButterKnife.bind(this, view);
         dialogShareGv.setAdapter(new DialogAccountSettingAdapter(getActivity()));
         dialogShareGv.setOnItemClickListener(this);

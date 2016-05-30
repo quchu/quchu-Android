@@ -283,8 +283,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
     //保存修改信息
     public void saveUserChange() {
-
-
         newUserNickName = nickname.getText().toString().trim();
 
         if (newUserNickName.length() < 1 || newUserNickName.length() > 10) {
@@ -337,6 +335,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                 Toast.makeText(AccountSettingActivity.this, "账户信息修改成功", Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgess();
                 SPUtils.putBooleanToSPMap(AccountSettingActivity.this, AppKey.IS_MENU_NEED_REFRESH, true);
+                finish();
             }
 
             @Override
