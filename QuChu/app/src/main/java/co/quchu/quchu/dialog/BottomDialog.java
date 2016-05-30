@@ -25,7 +25,7 @@ public class BottomDialog extends Dialog {
     }
 
 
-    @OnClick({R.id.tvCloseAll,R.id.tvPreOrder,R.id.tvShare})
+    @OnClick({R.id.tvCloseAll,R.id.tvPreOrder,R.id.tvShare,R.id.tvCancel})
     public void detailClick(View v) {
         if (null!=mListener){
             switch (v.getId()){
@@ -37,6 +37,8 @@ public class BottomDialog extends Dialog {
                     break;
                 case R.id.tvShare:
                     mListener.onShareClick();
+                    break;
+                case R.id.tvCancel:
                     break;
             }
             dismiss();

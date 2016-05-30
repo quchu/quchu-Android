@@ -177,7 +177,7 @@
             android:id="@+id/search_result_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/search_title_bar_ll"
+            android:layout_below="@id/search_history_fl"
             android:visibility="gone">
 
 

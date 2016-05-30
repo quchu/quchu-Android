@@ -188,12 +188,15 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
                 break;
             case R.id.search_tag1:
                 searchInputEt.setText(tvTag1.getText());
+                seachStr(searchInputEt.getText().toString(), false);
                 break;
             case R.id.search_tag2:
                 searchInputEt.setText(tvTag2.getText());
+                seachStr(searchInputEt.getText().toString(), false);
                 break;
             case R.id.search_tag3:
                 searchInputEt.setText(tvTag3.getText());
+                seachStr(searchInputEt.getText().toString(), false);
                 break;
         }
     }
@@ -262,7 +265,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
         searchInputEt.setOnKeyListener(new View.OnKeyListener() {//输入完后按键盘上的搜索键【回车键改为了搜索键】
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {//修改回车键功能
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {//修改回车键功能
                     if (StringUtils.isEmpty(searchInputEt.getText().toString())) {
                         Toast.makeText(SearchActivity.this, "请输入搜索内容!", Toast.LENGTH_SHORT).show();
                         searchInputEt.setFocusable(true);
@@ -409,6 +412,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     @Override
     public void itemTVClick(int position) {
         searchInputEt.setText(searchModel.getSearchList().get(position).getSerachStr());
+        seachStr(searchInputEt.getText().toString(), false);
     }
 
     @Override

@@ -14,17 +14,12 @@
         android:paddingLeft="@dimen/base_margin"
         android:paddingRight="@dimen/base_margin" />
 
-    <co.quchu.quchu.widget.DampView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rvSelection">
-
         <android.support.v7.widget.RecyclerView
+            android:layout_below="@id/rvSelection"
             android:id="@+id/detail_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
             tools:listitem="@layout/item_nearby_quchu" />
-    </co.quchu.quchu.widget.DampView>
 
 </RelativeLayout>

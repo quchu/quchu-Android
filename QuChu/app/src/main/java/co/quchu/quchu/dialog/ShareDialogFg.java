@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -43,6 +42,7 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     private static final String SHRETITLE = "share_title";
     private static final String ISSHARE_PLACE = "isshare_place";
     private static final String SHARE_URL = "SHARE_URL";
+    private static final int CUSTOM_SHIT = 0x0000001;
     @Bind(R.id.dialog_share_gv)
     GridView dialogShareGv;
     @Bind(R.id.actionClose)
@@ -62,7 +62,7 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     public static ShareDialogFg newInstance(String shareUrl, String title) {
         ShareDialogFg fragment = new ShareDialogFg();
         Bundle args = new Bundle();
-        args.putInt(SHAREID, -10);
+        args.putInt(SHAREID, CUSTOM_SHIT);
         args.putString(SHRETITLE, title);
         args.putString(SHARE_URL, shareUrl);
         fragment.setArguments(args);
@@ -107,10 +107,11 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         actionClose.setOnClickListener(this);
         view.setOnClickListener(this);
 
-        dialogShareGv.setAdapter(new DialogShareAdapter(getActivity()));
+        dialogShareGv.setAdapter(new DialogShareAdapter(getContext()));
         dialogShareGv.setOnItemClickListener(this);
         shareUrlFinal = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
-        if (shareId == -10) {
+
+        if (shareId == CUSTOM_SHIT) {
             shareUrlFinal = shareUrl;
         }
         return dialog;
@@ -139,15 +140,10 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
                 QQHelper.share2QQ(getActivity(), mTencent, shareUrlFinal, shareTitle);
                 break;
             case 3:
-                QQHelper.shareToQzone(getActivity(), mTencent, shareUrlFinal, shareTitle);
-                break;
-            case 4:
                 WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrlFinal, shareTitle);
                 break;
-            case 5:
-                ClipboardManager cmb = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                cmb.setPrimaryClip(ClipData.newPlainText(null, shareUrl));
-                Toast.makeText(getContext(), "复制成功", Toast.LENGTH_SHORT).show();
+            case 4:
+                copyToClipBoard(shareTitle, shareUrlFinal);
                 break;
         }
 
@@ -160,7 +156,6 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         ShareDialogFg.this.dismiss();
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -170,5 +165,13 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
             default:
                 dismiss();
         }
+
+    }
+
+    private void copyToClipBoard(String label, String text) {
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(getContext(), "复制成功", Toast.LENGTH_SHORT).show();
     }
 }
