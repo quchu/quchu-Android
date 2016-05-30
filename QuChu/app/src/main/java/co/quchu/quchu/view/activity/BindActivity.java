@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -64,26 +65,26 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         bindPhone.setOnClickListener(this);
         if (AppContext.user.isIsweixin()) {
             bindWecha.setText("解除绑定");
-            bindWecha.setBackgroundColor(getResources().getColor(R.color.standard_color_h2_dark));
+            bindWecha.setBackgroundColor(ContextCompat.getColor(this, R.color.standard_color_h2_dark));
         } else {
             bindWecha.setText("绑定");
-            bindWecha.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            bindWecha.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
         if (AppContext.user.isIsweibo()) {
             bindSina.setText("解除绑定");
-            bindSina.setBackgroundColor(getResources().getColor(R.color.standard_color_h2_dark));
+            bindSina.setBackgroundColor(ContextCompat.getColor(this, R.color.standard_color_h2_dark));
         } else {
             bindSina.setText("绑定");
-            bindSina.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            bindSina.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
         if (AppContext.user.isphone()) {
             bindPhone.setText("解除绑定");
-            bindPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_h2_dark));
+            bindPhone.setBackgroundColor(ContextCompat.getColor(this, R.color.standard_color_h2_dark));
         } else {
             bindPhone.setText("绑定");
-            bindPhone.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            bindPhone.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
     }
 
@@ -180,7 +181,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
 //                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATA, response));
                             }
                         });
-                        request.start(AppContext.mContext, null);
+                        request.start(BindActivity.this);
                         break;
                     case CommonDialog.CLICK_ID_SUBBUTTON:
                         Intent intent = new Intent(BindActivity.this, StatementActivity.class);
@@ -224,15 +225,14 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                 } else {
                     if (exception.equals("10132")) {
                         saveInfo(true, isWecha);
-
                         merger(isWecha ? 2 : 3, token, appId);
                     } else {
-                        Toast.makeText(BindActivity.this, "该账号不允许绑定", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(BindActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-        request.start(this, null);
+        request.start(this);
     }
 
     /**
@@ -269,18 +269,16 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                     LogUtils.e("解绑的type为" + type);
                     Toast.makeText(BindActivity.this, "解绑成功", Toast.LENGTH_SHORT).show();
                     if (isWache) {
-                        bindWecha.setText("绑定我的微信");
                         saveInfo(false, true);
                     } else {
-                        bindSina.setText("绑定我的微博");
                         saveInfo(false, false);
                     }
                 } else {
-                    Toast.makeText(BindActivity.this, "该账号不允许解除绑定", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BindActivity.this, msg, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        request.start(this, null);
+        request.start(this);
     }
 
     @Override

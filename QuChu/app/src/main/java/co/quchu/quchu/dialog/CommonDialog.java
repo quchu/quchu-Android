@@ -92,7 +92,7 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
         if (TextUtils.isEmpty(bundle.getString(KEY_SUBBUTTON))) {
             subButton.setVisibility(View.GONE);
         } else {
-            subButton.setText(bundle.getString(KEY_PASSIVE));
+            subButton.setText(bundle.getString(KEY_SUBBUTTON));
             subButton.setOnClickListener(this);
         }
         active.setOnClickListener(this);
