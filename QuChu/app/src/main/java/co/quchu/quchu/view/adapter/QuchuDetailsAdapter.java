@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -37,7 +36,6 @@ import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
-import co.quchu.quchu.view.activity.UserCenterActivity;
 import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 import co.quchu.quchu.widget.TagCloudView;
@@ -59,6 +57,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     protected static final int LAYOUT_TYPE_IMAGE = 0x0010;
     protected static final int LAYOUT_TYPE_NEARBY = 0x0011;
     protected static final int LAYOUT_TYPE_BLANK = 0x0012;
+    protected static final int LAYOUT_TYPE_LABEL = 0x0013;
     protected static final int LAYOUT_TYPE_LOAD_MORE = 0x1001;
 
     private LayoutInflater mLayoutInflater;
@@ -145,7 +144,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return null != mData && mData.isIsActivity() ? VIEW_TYPES_PARTY[position] : VIEW_TYPES[position];
         } else if (position >= (BLOCK_INDEX + 1) && position < (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
             return LAYOUT_TYPE_IMAGE;
-        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1)) && position < (mData.getImglist().size() + BLOCK_INDEX + 1 + mData.getNearPlace().size())) {
+        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1)) && position < (mData.getImglist().size() + (BLOCK_INDEX + 2))) {
+            return LAYOUT_TYPE_LABEL;
+        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 2)) && position < (mData.getImglist().size() + BLOCK_INDEX + 2 + mData.getNearPlace().size())) {
             return LAYOUT_TYPE_NEARBY;
         } else {
             return LAYOUT_TYPE_LOAD_MORE;
@@ -189,6 +190,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             case LAYOUT_TYPE_IMAGE:
                 return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
+            case LAYOUT_TYPE_LABEL:
+                return new LabelViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label,parent,false));
             case LAYOUT_TYPE_NEARBY:
                 return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_nearby_quchu, parent, false));
             case LAYOUT_TYPE_LOAD_MORE:
@@ -302,15 +305,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
                         }
                         //跳转用户中心
-                        final int finalI = i;
-                        sdv.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(v.getContext(), UserCenterActivity.class);
-                                intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, mVisitedUsers.getResult().get(finalI).getUserId());
-                                v.getContext().startActivity(intent);
-                            }
-                        });
+
+//                        final int finalI = i;
+//                        sdv.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                Intent intent = new Intent(v.getContext(), UserCenterActivity.class);
+//                                intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, mVisitedUsers.getResult().get(finalI).getUserId());
+//                                v.getContext().startActivity(intent);
+//                            }
+//                        });
 
 
                         ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
@@ -442,7 +446,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         strTags.add(tags.get(i).getZh());
                     }
                 }
-                ((NearbyViewHolder) holder).cardView.setCardBackgroundColor(Color.RED);
+                ((NearbyViewHolder) holder).cardView.setBackgroundColor(Color.RED);
 
                 ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
 //                ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex - 1).getAddress());
@@ -520,6 +524,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LoadMoreViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+        }
+    }
+
+
+    public static class LabelViewHolder extends RecyclerView.ViewHolder {
+        LabelViewHolder(View view) {
+            super(view);
         }
     }
 

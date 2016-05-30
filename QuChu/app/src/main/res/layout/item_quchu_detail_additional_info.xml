@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rvAdditionalInfo"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="center"
     android:background="@color/standard_color_white"
-    android:paddingTop="@dimen/half_margin"
-    android:paddingBottom="@dimen/half_margin"
-    android:layout_marginTop="@dimen/half_margin"/>
+    >
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvAdditionalInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="@dimen/half_margin"
+        android:paddingBottom="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin"/>
+    <TextView
+        android:text="@string/quchu_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextView.H1"
+        android:gravity="center"
+        android:padding="@dimen/quarter_margin"
+        />
+</LinearLayout>
