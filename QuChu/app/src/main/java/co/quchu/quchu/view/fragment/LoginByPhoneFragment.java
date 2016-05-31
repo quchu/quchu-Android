@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.fragment;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +30,6 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.SPUtils;
@@ -41,7 +41,7 @@ import co.quchu.quchu.widget.ErrorView;
 /**
  * Created by Nico on 16/5/13.
  */
-public class LoginByPhoneFragment extends BaseFragment implements TextWatcher, View.OnFocusChangeListener {
+public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener {
     @Bind(R.id.ivIconUserName)
     ImageView ivIconUserName;
     @Bind(R.id.etUsername)

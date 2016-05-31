@@ -142,7 +142,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(position).getPid());
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, from);
-                    startActivity(intent);
+                    getActivity().startActivity(intent);
                 }
                 break;
 //            case R.id.item_recommend_card_collect_iv:
