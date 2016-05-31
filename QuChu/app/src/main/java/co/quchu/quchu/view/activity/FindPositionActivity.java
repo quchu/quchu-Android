@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -27,6 +29,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoInfo;
@@ -61,6 +64,8 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private String nameText;
     private int id;
     private TextView rightTv;
+
+    private boolean dataChange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,12 +185,16 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
 
             @Override
             public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
-                Toast.makeText(FindPositionActivity.this, "增加趣处成功", Toast.LENGTH_SHORT).show();
-                DialogUtil.dismissProgessDirectly();
-                finish();
+                if (result) {
+                    Toast.makeText(FindPositionActivity.this, "增加趣处成功", Toast.LENGTH_SHORT).show();
+                    DialogUtil.dismissProgessDirectly();
+                    finish();
+                } else {
+                    Toast.makeText(FindPositionActivity.this, msg, Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        request.start(this, null);
+        request.start(this);
     }
 
     @Override
@@ -199,14 +208,16 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             new SelectedImagePopWin(this, recyclerView, photoInfos, 4, new GalleryFinal.OnHanlderResultCallback() {
                 @Override
                 public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                    if (photoInfos.size() + resultList.size() > 4 && photoInfos.size() > 0) {
-                        photoInfos.remove(0);
-                    }
+                    dataChange = true;
                     for (PhotoInfo info : resultList) {
                         String path = info.getPhotoPath();
-                        info.setPhotoPath("file://" + path);
+                        if (!path.startsWith("file://") && !path.startsWith("res:///"))
+                            info.setPhotoPath("file://" + path);
                     }
+                    photoInfos.clear();
                     photoInfos.addAll(resultList);
+                    if (photoInfos.size() < 4)
+                        photoInfos.add(0, tackImage);
                     adapter.notifyDataSetChanged();
                 }
 
@@ -217,6 +228,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             });
         }
         if (isDelete) {
+            dataChange = true;
             photoInfos.remove(position);
             if (photoInfos.size() < 8 && photoInfos.size() > 0 && !photoInfos.get(0).getPhotoPath().contains("res:///")) {
                 photoInfos.add(0, tackImage);
@@ -229,6 +241,26 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     protected void onResume() {
         MobclickAgent.onPageStart("lookfornew");
         super.onResume();
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                dataChange = true;
+            }
+        };
+
+        name.addTextChangedListener(textWatcher);
+        position.addTextChangedListener(textWatcher);
+        detail.addTextChangedListener(textWatcher);
     }
 
     @Override
@@ -241,5 +273,25 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (dataChange) {
+            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
+            dialog.setListener(new CommonDialog.OnActionListener() {
+                @Override
+                public boolean dialogClick(int clickId) {
+                    if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
+                        finish();
+                    }
+                    return true;
+                }
+            });
+            dialog.show(getSupportFragmentManager(), "");
+        } else {
+            super.onBackPressed();
+        }
     }
 }

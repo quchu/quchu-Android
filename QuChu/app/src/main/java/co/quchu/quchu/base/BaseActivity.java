@@ -1,6 +1,7 @@
 package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -27,36 +28,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     //activity向左移动进入
     protected final int TRANSITION_TYPE_LEFT = 1;
     //activity向下移动进入
-    protected final int TRANSITION_TYPE_BOTTOM = 2;
-    //
-    protected final int TRANSITION_TYPE_ALPHA = 3;
+//    protected final int TRANSITION_TYPE_BOTTOM = 2;
+//    //
+//    protected final int TRANSITION_TYPE_ALPHA = 3;
     protected final int TRANSITION_TYPE_TOP = 4;
 
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         //压栈
         ActManager.getAppManager().addActivity(this);
 //        getWindow().setStatusBarColor(getColor(R.color.colorPrimaryDark));
-        switch (activitySetup()) {
-            case TRANSITION_TYPE_NOTHING:
-//                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
-                break;
-            case TRANSITION_TYPE_ALPHA:
-                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
-                break;
-            case TRANSITION_TYPE_LEFT:
-                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
-                break;
-            case TRANSITION_TYPE_BOTTOM:
-                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
-                break;
-            case TRANSITION_TYPE_TOP:
-                overridePendingTransition(R.anim.in_bottom_to_top, R.anim.out_top_to_bottom);
-                break;
-        }
 
+        super.onCreate(savedInstanceState);
     }
 
     /**
@@ -74,24 +58,45 @@ public abstract class BaseActivity extends AppCompatActivity {
         GsonRequest.queue.cancelAll(getClass().getSimpleName());
     }
 
-    //
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        switch (activitySetup()) {
+            case TRANSITION_TYPE_NOTHING:
+//                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
+                break;
+//            case TRANSITION_TYPE_ALPHA:
+//                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
+//                break;
+            case TRANSITION_TYPE_LEFT:
+                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.nothing);
+                break;
+//            case TRANSITION_TYPE_BOTTOM:
+//                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
+//                break;
+            case TRANSITION_TYPE_TOP:
+                overridePendingTransition(R.anim.in_bottom_to_top, R.anim.nothing);
+                break;
+        }
+    }
+
     @Override
     public void finish() {
         super.finish();
         switch (activitySetup()) {
             case TRANSITION_TYPE_NOTHING:
                 break;
-            case TRANSITION_TYPE_ALPHA:
-                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
-                break;
+//            case TRANSITION_TYPE_ALPHA:
+//                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
+//                break;
             case TRANSITION_TYPE_LEFT:
-                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
+                overridePendingTransition(0, R.anim.out_push_letf_to_right);
                 break;
-            case TRANSITION_TYPE_BOTTOM:
-                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
-                break;
+//            case TRANSITION_TYPE_BOTTOM:
+//                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
+//                break;
             case TRANSITION_TYPE_TOP:
-                overridePendingTransition(R.anim.in_bottom_to_top, R.anim.out_top_to_bottom);
+                overridePendingTransition(0, R.anim.out_top_to_bottom);
                 break;
         }
     }

@@ -70,12 +70,11 @@ public class SelectedImagePopWin extends PopupWindow {
 
     }
 
-
     private FunctionConfig functionConfig;
 
     private void initGralley() {
         FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
-        functionConfigBuilder.setMutiSelectMaxSize(photo == null ? maxSize : ++maxSize - photo.size());
+        functionConfigBuilder.setMutiSelectMaxSize(maxSize);
         functionConfigBuilder.setEnableEdit(false);
         functionConfigBuilder.setEnableCrop(true);
         functionConfigBuilder.setEnablePreview(true);

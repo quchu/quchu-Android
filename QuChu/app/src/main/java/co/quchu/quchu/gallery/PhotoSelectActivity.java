@@ -18,16 +18,15 @@ package co.quchu.quchu.gallery;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,10 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.finalteam.toolsfinal.FileUtils;
-import cn.finalteam.toolsfinal.StringUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.gallery.adapter.FolderListAdapter;
 import co.quchu.quchu.gallery.adapter.PhotoListAdapter;
 import co.quchu.quchu.gallery.model.PhotoFolderInfo;
 import co.quchu.quchu.gallery.model.PhotoInfo;
@@ -61,9 +58,6 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private TextView mTvChooseCount;
     private TextView mTvEmptyView;
 
-    private List<PhotoFolderInfo> mAllPhotoFolderList;
-    private FolderListAdapter mFolderListAdapter;
-
     private List<PhotoInfo> mCurPhotoList;
     private PhotoListAdapter mPhotoListAdapter;
 
@@ -85,12 +79,6 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             } else if (msg.what == HANDLER_REFRESH_LIST_EVENT) {
                 refreshSelectCount();
                 mPhotoListAdapter.notifyDataSetChanged();
-                mFolderListAdapter.notifyDataSetChanged();
-                if (mAllPhotoFolderList.get(0).getPhotoList() == null ||
-                        mAllPhotoFolderList.get(0).getPhotoList().size() == 0) {
-                    mTvEmptyView.setText(R.string.no_photo);
-                }
-
                 mGvPhotoList.setEnabled(true);
             }
         }
@@ -106,21 +94,24 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             resultFailure(getString(R.string.please_reopen_gf), true);
         } else {
             setContentView(R.layout.gf_activity_photo_select);
-            mPhotoTargetFolder = null;
-            toolbar =getEnhancedToolbar ();
+            toolbar = getEnhancedToolbar();
             findViews();
             setListener();
 
-            mAllPhotoFolderList = new ArrayList<>();
-            mFolderListAdapter = new FolderListAdapter(this, mAllPhotoFolderList, mFunctionConfig);
+            if (mFunctionConfig.getSelectedPhoto() != null) {
+                for (PhotoInfo item : mFunctionConfig.getSelectedPhoto()) {
+                    if (!item.getPhotoPath().startsWith("res:///")) {
+                        mSelectPhotoMap.put(Uri.parse(item.getPhotoPath()).getPath(), item);
+                    }
+                }
+            }
+
 
             mCurPhotoList = new ArrayList<>();
+
             mPhotoListAdapter = new PhotoListAdapter(this, mCurPhotoList, mSelectPhotoMap, mScreenWidth);
             mGvPhotoList.setAdapter(mPhotoListAdapter);
 
-            if (mFunctionConfig.isMutiSelect()) {
-                mTvChooseCount.setVisibility(View.VISIBLE);
-            }
 
             mGvPhotoList.setEmptyView(mTvEmptyView);
             refreshSelectCount();
@@ -190,49 +181,6 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private void takeRefreshGallery(PhotoInfo photoInfo) {
         mCurPhotoList.add(0, photoInfo);
         mPhotoListAdapter.notifyDataSetChanged();
-
-        //添加到集合中
-        List<PhotoInfo> photoInfoList = mAllPhotoFolderList.get(0).getPhotoList();
-        if (photoInfoList == null) {
-            photoInfoList = new ArrayList<>();
-        }
-        photoInfoList.add(0, photoInfo);
-        mAllPhotoFolderList.get(0).setPhotoList(photoInfoList);
-
-        if (mFolderListAdapter.getSelectFolder() != null) {
-            PhotoFolderInfo photoFolderInfo = mFolderListAdapter.getSelectFolder();
-            List<PhotoInfo> list = photoFolderInfo.getPhotoList();
-            if (list == null) {
-                list = new ArrayList<>();
-            }
-            list.add(0, photoInfo);
-            if (list.size() == 1) {
-                photoFolderInfo.setCoverPhoto(photoInfo);
-            }
-            mFolderListAdapter.getSelectFolder().setPhotoList(list);
-        } else {
-            String folderA = new File(photoInfo.getPhotoPath()).getParent();
-            for (int i = 1; i < mAllPhotoFolderList.size(); i++) {
-                PhotoFolderInfo folderInfo = mAllPhotoFolderList.get(i);
-                String folderB = null;
-                if (!StringUtils.isEmpty(photoInfo.getPhotoPath())) {
-                    folderB = new File(photoInfo.getPhotoPath()).getParent();
-                }
-                if (TextUtils.equals(folderA, folderB)) {
-                    List<PhotoInfo> list = folderInfo.getPhotoList();
-                    if (list == null) {
-                        list = new ArrayList<>();
-                    }
-                    list.add(0, photoInfo);
-                    folderInfo.setPhotoList(list);
-                    if (list.size() == 1) {
-                        folderInfo.setCoverPhoto(photoInfo);
-                    }
-                }
-            }
-        }
-
-        mFolderListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -372,9 +320,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             public void run() {
                 super.run();
 
-                mAllPhotoFolderList.clear();
                 List<PhotoFolderInfo> allFolderList = PhotoTools.getAllPhotoFolder(PhotoSelectActivity.this, mSelectPhotoMap);
-                mAllPhotoFolderList.addAll(allFolderList);
 
                 mCurPhotoList.clear();
                 if (allFolderList.size() > 0) {
@@ -382,7 +328,6 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
                         mCurPhotoList.addAll(allFolderList.get(0).getPhotoList());
                     }
                 }
-
                 refreshAdapter();
             }
         }.start();

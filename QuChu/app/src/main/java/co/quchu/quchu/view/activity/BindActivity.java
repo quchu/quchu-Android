@@ -223,12 +223,20 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                     Toast.makeText(BindActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
                     saveInfo(true, isWecha);
                 } else {
-                    if (exception.equals("10132")) {
-                        saveInfo(true, isWecha);
-                        merger(isWecha ? 2 : 3, token, appId);
-                    } else {
-                        Toast.makeText(BindActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    switch (exception) {
+                        case "10132":
+                            Toast.makeText(BindActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
+                            saveInfo(true, isWecha);
+                            merger(isWecha ? 2 : 3, token, appId);
+                            break;
+                        case "10133":
+                        case "10134":
+                            Toast.makeText(BindActivity.this, "绑定失败" + exception, Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(BindActivity.this, "绑定失败" + exception, Toast.LENGTH_SHORT).show();
                     }
+
                 }
             }
         });
@@ -266,13 +274,8 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
             @Override
             public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
                 if (result) {
-                    LogUtils.e("解绑的type为" + type);
                     Toast.makeText(BindActivity.this, "解绑成功", Toast.LENGTH_SHORT).show();
-                    if (isWache) {
-                        saveInfo(false, true);
-                    } else {
-                        saveInfo(false, false);
-                    }
+                    saveInfo(false, isWache);
                 } else {
                     Toast.makeText(BindActivity.this, msg, Toast.LENGTH_SHORT).show();
                 }

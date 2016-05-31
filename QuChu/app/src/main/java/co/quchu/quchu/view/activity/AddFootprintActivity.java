@@ -79,6 +79,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     private int REQUEST_PICKING_QUCHU = 0x0001;
     private boolean mAllowPicking = false;
 
+    private boolean dataChange;
 
     @Override
     protected int activitySetup() {
@@ -146,15 +147,6 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         init();
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_PICKING_QUCHU && resultCode == RESULT_OK && null != data) {
-//            pId = data.getIntExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_ID, -1);
-//            pName = data.getStringExtra(PickingQuchuActivity.BUNDLE_KEY_PICKING_RESULT_NAME);
-//            titleName.setText( pName);
-//        }
-//    }
 
     @Override
     protected void onDestroy() {
@@ -180,7 +172,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                dataChange = true;
                 textLength.setText("剩余" + (140 - s.length()) + "字");
             }
         });
@@ -246,7 +238,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                         }
                     });
                 } else {
-                    Toast.makeText(AddFootprintActivity.this, "请至少上传一张图片", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddFootprintActivity.this, "至少留下一张图片才能转身离去", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -265,15 +257,17 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
             new SelectedImagePopWin(AddFootprintActivity.this, recyclerView, photoInfos, 4, new GalleryFinal.OnHanlderResultCallback() {
                 @Override
                 public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                    if (photoInfos.size() + resultList.size() > 4 && photoInfos.size() > 0) {
-                        photoInfos.remove(0);
-                    }
                     for (PhotoInfo info : resultList) {
                         String path = info.getPhotoPath();
-                        info.setPhotoPath("file://" + path);
+                        if (!path.startsWith("file://") && !path.startsWith("res:///"))
+                            info.setPhotoPath("file://" + path);
                     }
+                    photoInfos.clear();
                     photoInfos.addAll(resultList);
+                    if (photoInfos.size() < 4)
+                        photoInfos.add(0, tackImage);
                     adapter.notifyDataSetChanged();
+                    dataChange = true;
                 }
 
                 @Override
@@ -283,6 +277,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
             });
         }
         if (isDelete) {
+            dataChange = true;
             photoInfos.remove(position);
             if (photoInfos.size() < 4 && photoInfos.size() > 0 && !photoInfos.get(0).getPhotoPath().contains("res:///")) {
                 photoInfos.add(0, tackImage);
@@ -326,4 +321,23 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         super.onPause();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (dataChange) {
+            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
+            dialog.setListener(new CommonDialog.OnActionListener() {
+                @Override
+                public boolean dialogClick(int clickId) {
+                    if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
+                        finish();
+                    }
+                    return true;
+                }
+            });
+
+            dialog.show(getSupportFragmentManager(), "");
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
@@ -46,13 +45,11 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
     private Map<String, PhotoInfo> mSelectList;
     private int mScreenWidth;
 
-    private Activity mActivity;
 
     public PhotoListAdapter(Activity activity, List<PhotoInfo> list, Map<String, PhotoInfo> selectList, int screenWidth) {
         super(activity, list);
         this.mSelectList = selectList;
         this.mScreenWidth = screenWidth;
-        this.mActivity = activity;
     }
 
     @Override
@@ -66,22 +63,14 @@ public class PhotoListAdapter extends ViewHolderAdapter<PhotoListAdapter.PhotoVi
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
         PhotoInfo photoInfo = getDatas().get(position);
 
-        String path = "";
-        if (photoInfo != null) {
-            path = photoInfo.getPhotoPath();
-        }
+        String path;
+        path = photoInfo.getPhotoPath();
 
-        holder.mIvThumb.setImageResource(R.drawable.ic_gf_default_photo);
         if (null != photoInfo.getThumbPath()) {
             holder.mIvThumb.setImageURI(Uri.fromFile(new File(photoInfo.getThumbPath())));
         } else {
             ImageUtils.loadWithAppropriateSize(holder.mIvThumb, Uri.fromFile(new File(path)));
         }
-        holder.mView.setAnimation(null);
-        if (GalleryFinal.getCoreConfig().getAnimation() > 0) {
-            holder.mView.setAnimation(AnimationUtils.loadAnimation(mActivity, GalleryFinal.getCoreConfig().getAnimation()));
-        }
-        holder.mIvCheck.setImageResource(GalleryFinal.getGalleryTheme().getIconCheck());
         if (GalleryFinal.getFunctionConfig().isMutiSelect()) {
             holder.mIvCheck.setVisibility(View.VISIBLE);
             if (mSelectList.get(photoInfo.getPhotoPath()) != null) {

@@ -18,6 +18,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -350,7 +351,8 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     public void updateAvatar(String avatarUrl) {
         if (!avatarUrl.startsWith("http")) {
             newUserPhoto = ImageUtils.saveImage2Sd(avatarUrl);
-            co.quchu.quchu.gallery.utils.ImageUtils.loadWithAppropriateSize(accountSettingAvatarSdv, Uri.parse("file://" + newUserPhoto));
+
+            co.quchu.quchu.gallery.utils.ImageUtils.loadWithAppropriateSize(accountSettingAvatarSdv, Uri.fromFile(new File(newUserPhoto)));
         } else {
             newUserPhoto = avatarUrl;
             accountSettingAvatarSdv.setImageURI(Uri.parse(newUserPhoto));

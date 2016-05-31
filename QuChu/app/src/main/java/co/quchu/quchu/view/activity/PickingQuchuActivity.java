@@ -7,8 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -20,6 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.SimpleQuchuSearchResultModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
@@ -66,7 +69,7 @@ public class PickingQuchuActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picking_quchu);
         ButterKnife.bind(this);
-        getEnhancedToolbar();
+        EnhancedToolbar toolbar = getEnhancedToolbar();
 
         String mKeyword = getIntent().getStringExtra(BUNDLE_KEY_KEYWORD);
         final boolean fromMyfootprint = getIntent().getBooleanExtra(REQUEST_KEY_FROM_MY_FOOTPRINT, false);
@@ -82,7 +85,6 @@ public class PickingQuchuActivity extends BaseActivity {
                     startActivity(intent);
                     finish();
                 } else {
-
                     Intent intent = new Intent();
                     intent.putExtra(BUNDLE_KEY_PICKING_RESULT_ID, mData.get(position).getId());
                     intent.putExtra(BUNDLE_KEY_PICKING_RESULT_NAME, mData.get(position).getName());
@@ -105,12 +107,45 @@ public class PickingQuchuActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
 //                if (null != s && !StringUtils.isEmpty(s.toString()))
-                doSearch(s.toString());
+                doSearch(s.toString().trim());
             }
         };
 
         mEtSearchField.addTextChangedListener(mTextWatcher);
         doSearch(mKeyword);
+
+        TextView textView = toolbar.getRightTv();
+        textView.setText("下一步");
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String trim = mEtSearchField.getText().toString().trim();
+
+                boolean filterSucceed = false;
+                for (SimpleQuchuSearchResultModel item : mData) {
+                    if (item.getName().equals(trim)) {
+                        filterSucceed = true;
+                        if (fromMyfootprint) {
+                            Intent intent = new Intent(PickingQuchuActivity.this, AddFootprintActivity.class);
+                            intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, item.getId());
+                            intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, item.getName());
+                            intent.putExtra(AddFootprintActivity.REQUEST_KEY_ALLOW_PICKING_STORE, true);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Intent intent = new Intent();
+                            intent.putExtra(BUNDLE_KEY_PICKING_RESULT_ID, item.getId());
+                            intent.putExtra(BUNDLE_KEY_PICKING_RESULT_NAME, item.getName());
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    }
+                }
+                if (!filterSucceed) {
+                    Toast.makeText(PickingQuchuActivity.this, "您输入的趣处不存在", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override

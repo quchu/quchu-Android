@@ -94,7 +94,7 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
         this.item = item;
         Intent intent = new Intent(getContext(), MyFootprintDetailActivity.class);
         intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, item);
-        startActivity(intent);
+        getActivity().startActivity(intent);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

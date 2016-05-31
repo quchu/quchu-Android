@@ -26,7 +26,7 @@ import co.quchu.quchu.gallery.model.PhotoInfo;
  * Author:pengjianbo
  * Date:15/12/2 上午10:45
  */
-public class FunctionConfig implements Cloneable{
+public class FunctionConfig implements Cloneable {
 
     protected boolean mutiSelect;
     protected int maxSize;
@@ -45,6 +45,8 @@ public class FunctionConfig implements Cloneable{
     private ArrayList<String> selectedList;
     private ArrayList<String> filterList;//过滤器
 
+    private Collection<PhotoInfo> selectedPhoto;//已经选中的照片
+
     private FunctionConfig(final Builder builder) {
         this.mutiSelect = builder.mutiSelect;
         this.maxSize = builder.maxSize;
@@ -62,6 +64,7 @@ public class FunctionConfig implements Cloneable{
         this.forceCrop = builder.forceCrop;
         this.forceCropEdit = builder.forceCropEdit;
         this.preview = builder.preview;
+        this.selectedPhoto = builder.selectedPhoto;
     }
 
     public static class Builder {
@@ -81,6 +84,8 @@ public class FunctionConfig implements Cloneable{
         private boolean forceCrop;//强制裁剪
         private boolean forceCropEdit;//强制裁剪后是否可对图片编辑，默认不可以
         private boolean preview;//预览
+
+        private Collection<PhotoInfo> selectedPhoto;//已经选中的照片
 
         protected Builder setMutiSelect(boolean mutiSelect) {
             this.mutiSelect = mutiSelect;
@@ -135,9 +140,9 @@ public class FunctionConfig implements Cloneable{
         }
 
         public Builder setSelected(Collection<PhotoInfo> selectedList) {
-            if ( selectedList != null ) {
+            if (selectedList != null) {
                 ArrayList<String> list = new ArrayList<>();
-                for(PhotoInfo info:selectedList) {
+                for (PhotoInfo info : selectedList) {
                     if (info != null) {
                         list.add(info.getPhotoPath());
                     }
@@ -145,20 +150,21 @@ public class FunctionConfig implements Cloneable{
 
                 this.selectedList = list;
             }
+            this.selectedPhoto = selectedList;
             return this;
         }
 
         public Builder setFilter(ArrayList<String> filterList) {
-            if ( filterList != null ) {
+            if (filterList != null) {
                 this.filterList = (ArrayList<String>) filterList.clone();
             }
             return this;
         }
 
         public Builder setFilter(Collection<PhotoInfo> filterList) {
-            if ( filterList != null ) {
+            if (filterList != null) {
                 ArrayList<String> list = new ArrayList<>();
-                for(PhotoInfo info:filterList) {
+                for (PhotoInfo info : filterList) {
                     if (info != null) {
                         list.add(info.getPhotoPath());
                     }
@@ -171,6 +177,7 @@ public class FunctionConfig implements Cloneable{
 
         /**
          * 设置旋转后是否替换原图
+         *
          * @param rotateReplaceSource
          * @return
          */
@@ -181,6 +188,7 @@ public class FunctionConfig implements Cloneable{
 
         /**
          * 设置裁剪后是否替换原图
+         *
          * @param cropReplaceSource
          * @return
          */
@@ -191,6 +199,7 @@ public class FunctionConfig implements Cloneable{
 
         /**
          * 强制裁剪
+         *
          * @param forceCrop
          * @return
          */
@@ -201,6 +210,7 @@ public class FunctionConfig implements Cloneable{
 
         /**
          * 强制裁剪后是否可以对图片编辑，默认不可编辑
+         *
          * @param forceCropEdit
          * @return
          */
@@ -211,6 +221,7 @@ public class FunctionConfig implements Cloneable{
 
         /**
          * 是否开启预览功能
+         *
          * @param preview
          * @return
          */
@@ -284,8 +295,12 @@ public class FunctionConfig implements Cloneable{
         return filterList;
     }
 
-    public boolean isEnablePreview(){
+    public boolean isEnablePreview() {
         return preview;
+    }
+
+    public Collection<PhotoInfo> getSelectedPhoto() {
+        return selectedPhoto;
     }
 
     @Override

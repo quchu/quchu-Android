@@ -125,9 +125,9 @@ public class PhotoTools {
                         }
                         photoFolderInfo.getPhotoList().add(photoInfo);
 
-                        if (selectedList != null && selectedList.size() > 0 && selectedList.contains(path)) {
-                            selectPhotoMap.put(path, photoInfo);
-                        }
+//                        if (selectedList != null && selectedList.size() > 0 && selectedList.contains(path)) {
+//                            selectPhotoMap.put(path, photoInfo);
+//                        }
                     }
                 }
             }
