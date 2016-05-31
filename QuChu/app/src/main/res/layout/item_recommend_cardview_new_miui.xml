@@ -50,10 +50,16 @@
                 android:id="@+id/llRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/detail_avg_price_tv"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/quarter_margin"
-                android:orientation="horizontal"/>
+                android:layout_marginTop="@dimen/base_margin"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_ratingbar_heart"
+                    />
+
+            </LinearLayout>
 
 
             <LinearLayout
@@ -62,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llRating"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/half_margin"
+                android:layout_marginTop="@dimen/base_margin"
                 android:orientation="horizontal">
 
                 <TextView
@@ -71,12 +77,12 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_tag_bg"
                     android:paddingBottom="@dimen/tow_dp_margin"
-                    android:paddingLeft="@dimen/quarter_margin"
-                    android:paddingRight="@dimen/quarter_margin"
                     android:paddingTop="@dimen/tow_dp_margin"
                     android:text="标签1"
                     android:textColor="@color/tagTextColor"
-                    android:textSize="@dimen/text_size_14" />
+                    android:paddingLeft="@dimen/half_margin"
+                    android:paddingRight="@dimen/half_margin"
+                    android:textSize="@dimen/standard_text_size_h4" />
 
                 <TextView
                     android:id="@+id/recommend_tag2"
@@ -85,12 +91,12 @@
                     android:layout_marginLeft="@dimen/half_margin"
                     android:background="@drawable/shape_tag_bg"
                     android:paddingBottom="@dimen/tow_dp_margin"
-                    android:paddingLeft="@dimen/quarter_margin"
-                    android:paddingRight="@dimen/quarter_margin"
+                    android:paddingLeft="@dimen/half_margin"
+                    android:paddingRight="@dimen/half_margin"
                     android:paddingTop="@dimen/tow_dp_margin"
                     android:textColor="@color/tagTextColor"
                     android:visibility="gone"
-                    android:textSize="@dimen/text_size_14" />
+                    android:textSize="@dimen/standard_text_size_h4" />
 
                 <TextView
                     android:id="@+id/recommend_tag3"
@@ -99,12 +105,12 @@
                     android:layout_marginLeft="@dimen/half_margin"
                     android:background="@drawable/shape_tag_bg"
                     android:paddingBottom="@dimen/tow_dp_margin"
-                    android:paddingLeft="@dimen/quarter_margin"
-                    android:paddingRight="@dimen/quarter_margin"
+                    android:paddingLeft="@dimen/half_margin"
+                    android:paddingRight="@dimen/half_margin"
                     android:paddingTop="@dimen/tow_dp_margin"
                     android:textColor="@color/tagTextColor"
                     android:visibility="gone"
-                    android:textSize="@dimen/text_size_14" />
+                    android:textSize="@dimen/standard_text_size_h4" />
 
             </LinearLayout>
 
@@ -115,14 +121,14 @@
                 android:layout_below="@id/tags"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/half_margin"
+                android:layout_marginTop="@dimen/base_margin"
                 android:background="@color/standard_color_h3_dark" />
 
             <TextView
                 android:id="@+id/desc"
                 android:layout_below="@id/divider"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/half_margin"
+                android:layout_marginTop="@dimen/base_margin"
                 android:text="@string/empty_string"
                 style="@style/TextView.H1" />
 
@@ -142,7 +148,6 @@
                 android:id="@+id/item_recommend_card_address_tv"
                 android:layout_below="@+id/distance"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/quarter_margin"
                 android:drawableLeft="@mipmap/ic_label_money"
                 android:gravity="center"
                 android:text="人均消费"

@@ -202,8 +202,9 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     }
 
     private void seachStr(String str, final boolean loadMore) {
+        System.out.println("mIsLoading "+mIsLoading);
         if (mIsLoading) return;
-        if (mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
+        if (loadMore&& mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
         if (!loadMore) {
             resultList.clear();
             mCurrentPageNo = 1;

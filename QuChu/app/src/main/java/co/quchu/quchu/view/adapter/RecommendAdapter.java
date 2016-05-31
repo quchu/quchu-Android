@@ -77,11 +77,13 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             price = "-";
         }
 
-        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost),price,"起"));
+        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost_with_rmb_symbol),price,"起"));
         holder.linearLayout.removeAllViews();
+        int space = (int) mContext.getResources().getDimension(R.dimen.quarter_margin);
         for (int i = 0; i < model.getSuggest(); i++) {
             ImageView imageView = new ImageView(mContext);
-            imageView.setImageResource(R.mipmap.ic_ratingbar_heart);
+            imageView.setImageResource(R.mipmap.ic_ratingbar_heart_fill);
+            imageView.setPadding(space,0,space,0);
             holder.linearLayout.addView(imageView);
         }
         //holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -69,6 +70,8 @@ public class QuchuDetailsActivity extends BaseActivity {
 
     @Bind(R.id.ivFavorite)
     ImageView ivFavorite;
+    @Bind(R.id.tvFootprintCount)
+    TextView tvFootprintCount;
 
     //TODO
     //TODO
@@ -318,6 +321,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     private void changeCollectState(boolean isCollect) {
         dModel.setIsf(isCollect);
         ivFavorite.setImageResource(isCollect ? R.mipmap.ic_star : R.mipmap.ic_star_light);
+        tvFootprintCount.setText(String.valueOf(dModel.getCardCount()));
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 

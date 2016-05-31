@@ -163,5 +163,6 @@
     <string name="forget_pwd_step_1">找回密码（1/2）</string>
     <string name="forget_pwd_step_2">找回密码（2/2）</string>
     <string name="time">时间</string>
+    <string name="avg_cost_with_rmb_symbol">人均消费¥</string>
 
 </resources>

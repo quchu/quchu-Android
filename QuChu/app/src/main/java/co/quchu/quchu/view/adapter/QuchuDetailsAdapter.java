@@ -215,9 +215,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
 
             ((IntroImageViewHolder) holder).linearLayout.removeAllViews();
+            int space = (int) mAnchorActivity.getResources().getDimension(R.dimen.quarter_margin);
             for (int i = 0; i < (int)mData.getSuggest(); i++) {
                 ImageView imageView = new ImageView(((IntroImageViewHolder) holder).linearLayout.getContext());
-                imageView.setImageResource(R.mipmap.ic_ratingbar_heart);
+                imageView.setImageResource(R.mipmap.ic_ratingbar_heart_fill);
+                imageView.setPadding(space,0,space,0);
                 ((IntroImageViewHolder) holder).linearLayout.addView(imageView);
             }
 

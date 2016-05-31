@@ -101,6 +101,14 @@ public class LocationSelectedDialogFg extends DialogFragment {
         dialog.setContentView(view);
 
         initSelected();
+        View imageView = view.findViewById(R.id.ivClose);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissAllowingStateLoss();
+            }
+        });
+
         dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         adapter = new LocationSelectedAdapter(cityList, null, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
             @Override
@@ -116,12 +124,6 @@ public class LocationSelectedDialogFg extends DialogFragment {
         });
         dialogLocationRv.setAdapter(adapter);
         tvBottomTips.setVisibility(View.VISIBLE);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
         return dialog;
     }
 

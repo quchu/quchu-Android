@@ -67,15 +67,34 @@
             android:orientation="horizontal">
 
 
-            <ImageView
-                android:id="@+id/ivFootprint"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="@dimen/base_margin"
-                android:background="@color/appBackground_dark"
-                android:src="@mipmap/ic_feet" />
+                >
 
+                <ImageView
+                    android:id="@+id/ivFootprint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="@dimen/base_margin"
+                    android:background="@color/appBackground_dark"
+                    android:src="@mipmap/ic_feet" />
+
+                <TextView
+                    android:id="@+id/tvFootprintCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextView.H3"
+                    android:textColor="@color/standard_color_yellow"
+                    android:paddingLeft="25dp"
+                    android:paddingTop="5dp"
+                    android:layout_centerHorizontal="true"
+
+                    />
+
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/ivShare"

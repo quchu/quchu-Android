@@ -65,7 +65,7 @@ public class ShareQuchuActivity extends BaseActivity {
         setContentView(R.layout.activity_share_quchu);
         ButterKnife.bind(this);
 
-        getEnhancedToolbar().getRightTv().setText(R.string.share_mode_normal);
+        getEnhancedToolbar().getRightTv().setText(R.string.share_mode_joking);
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
