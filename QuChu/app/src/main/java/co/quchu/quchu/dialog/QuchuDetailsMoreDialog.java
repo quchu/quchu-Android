@@ -17,10 +17,10 @@ import co.quchu.quchu.R;
 /**
  * Created by Nikolai on 2016/5/23.
  */
-public class BottomDialog extends Dialog {
+public class QuchuDetailsMoreDialog extends Dialog {
 
     public OnButtonClickListener mListener;
-    public BottomDialog(Context context) {
+    public QuchuDetailsMoreDialog(Context context) {
         super(context, R.style.dialog_bottom);
     }
 
@@ -68,7 +68,6 @@ public class BottomDialog extends Dialog {
         void onReturnClick();
         void onPreOrderClick();
         void onShareClick();
-
     }
 
 

@@ -125,4 +125,15 @@ public class AppUtil {
         }
         return packageInfo != null;
     }
+
+    /**
+     * 打电话
+     * @param context
+     * @param phoneNumber
+     */
+    public static void makeCall(Context context,String phoneNumber){
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        context.startActivity(intent);
+    }
 }

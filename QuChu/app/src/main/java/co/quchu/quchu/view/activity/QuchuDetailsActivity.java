@@ -26,7 +26,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.BottomDialog;
+import co.quchu.quchu.dialog.QuchuDetailsMoreDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
@@ -414,8 +414,8 @@ public class QuchuDetailsActivity extends BaseActivity {
 
                 case R.id.ivMore:
 
-                    BottomDialog bottomDialog = new BottomDialog(QuchuDetailsActivity.this);
-                    bottomDialog.setOnButtonClickListener(new BottomDialog.OnButtonClickListener() {
+                    QuchuDetailsMoreDialog quchuDetailsMoreDialog = new QuchuDetailsMoreDialog(QuchuDetailsActivity.this);
+                    quchuDetailsMoreDialog.setOnButtonClickListener(new QuchuDetailsMoreDialog.OnButtonClickListener() {
                         @Override
                         public void onReturnClick() {
                             EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_THIS));
@@ -441,7 +441,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                             startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel.getCover(), dModel.getName(), dModel.getAddress(), dModel.getPid()));
                         }
                     });
-                    bottomDialog.show();
+                    quchuDetailsMoreDialog.show();
                     break;
 
                 case R.id.ivShare:

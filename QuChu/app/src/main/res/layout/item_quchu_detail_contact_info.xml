@@ -23,6 +23,7 @@
             android:layout_weight="1"
             android:drawablePadding="8dp"
             android:drawableRight="@mipmap/ic_friends_arrow"
+            android:drawableLeft="@mipmap/ic_location"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -59,6 +60,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:drawablePadding="8dp"
+            android:drawableLeft="@mipmap/ic_call"
             android:drawableRight="@mipmap/ic_friends_arrow"
             android:text="@string/empty_string"
             style="@style/TextView.H2"/>

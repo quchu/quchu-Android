@@ -17,6 +17,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -29,6 +30,7 @@ import java.util.StringTokenizer;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.dialog.BottomListDialog;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
@@ -359,7 +361,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：");
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.append(Html.fromHtml(phoneHtml.toString()));
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setMovementMethod(LinkMovementMethod.getInstance());
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BottomListDialog b = new BottomListDialog(mAnchorActivity,mData.getTel().split(" "));
+                        b.show();
+                    }
+                });
             } else {
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.clearComposingText();
             }
@@ -435,6 +443,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (null != mData.getImglist()) {
                     imgIndex -= mData.getImglist().size();
                 }
+                imgIndex -=1;
                 if (null == mData.getNearPlace().get(imgIndex - 1) || null == mData.getNearPlace().get(imgIndex - 1)) {
                     return;
                 }
@@ -512,7 +521,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (null != mData && null != mData.getNearPlace()) {
             basicCount += mData.getNearPlace().size();
         }
-        basicCount += 1;
+        basicCount += 2;
         return basicCount;
     }
 

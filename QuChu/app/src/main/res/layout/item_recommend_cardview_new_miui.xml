@@ -19,11 +19,9 @@
         android:id="@+id/activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/standard_color_yellow"
-        android:text="活动"
-        android:padding="@dimen/base_margin"
-        android:rotation="-45"
-        android:layout_marginRight="15dp"
+        android:background="@mipmap/ic_party"
+        android:text=""
+        android:layout_margin="@dimen/half_margin"
         android:textColor="@color/standard_color_white"
         android:textSize="@dimen/standard_text_size_h1" />
 
