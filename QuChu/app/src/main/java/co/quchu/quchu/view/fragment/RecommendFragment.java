@@ -79,7 +79,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         recyclerView.addOnScrollListener();
         recyclerView.addOnPageChangedListener(this);
         presenter = new RecommentFragPresenter(getContext(), this);
-        recyclerView.addOnLayoutChangeListener();
         refreshLayout.setColorSchemeResources(R.color.standard_color_yellow);
         initData();
 
@@ -90,7 +89,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 presenter.initTabData(true, selectedTag);
             }
         });
-        recyclerView.addOnLayoutChangeListener();
+        recyclerView.addOnScrollListener();
+        //recyclerView.addOnLayoutChangeListener();
         return view;
     }
 
