@@ -24,6 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -58,6 +59,13 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
     private boolean mEmptyForum = false;
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(R.string.registration_step_2);
+
+    }
+
     private boolean verifyForm() {
         boolean status = false;
 
@@ -80,6 +88,7 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
         }
         return status;
     }
+
 
     public void updateButtonStatus(){
 

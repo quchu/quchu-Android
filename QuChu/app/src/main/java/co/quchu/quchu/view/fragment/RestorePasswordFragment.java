@@ -21,6 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.SPUtils;
@@ -52,6 +53,12 @@ public class RestorePasswordFragment extends Fragment {
     TextView tvNext;
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(R.string.forget_pwd_step_2);
+
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

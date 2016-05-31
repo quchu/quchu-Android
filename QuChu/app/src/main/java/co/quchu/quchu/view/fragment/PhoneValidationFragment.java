@@ -81,6 +81,11 @@ public class PhoneValidationFragment extends Fragment {
             mEmptyForum = true;
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
         }
+        if (StringUtils.isMobileNO(userName)){
+            tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
+        }else{
+            tvSendValidCode.setBackgroundColor(getResources().getColor(R.color.standard_color_h3_dark));
+        }
     }
 
     private boolean verifyForm() {
@@ -112,7 +117,7 @@ public class PhoneValidationFragment extends Fragment {
         if (null!=getArguments()){
             mIsRegistration = getArguments().getBoolean(BUNDLE_KEY_REGISTRATION,true);
         }
-        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration:R.string.reset_password);
+        //((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration_step_1:R.string.forget_pwd_step_1);
 
         ivIconClear.setVisibility(View.INVISIBLE);
         etUsername.addTextChangedListener(new TextWatcher() {
@@ -233,7 +238,7 @@ public class PhoneValidationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration:R.string.reset_password);
+        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration_step_1:R.string.forget_pwd_step_1);
 
         etUsername.requestFocus();
         etUsername.postDelayed(new Runnable() {

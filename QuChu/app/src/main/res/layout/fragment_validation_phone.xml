@@ -85,6 +85,7 @@
             android:src="@mipmap/ic_launcher"
             android:textSize="@dimen/standard_text_size_h3"
             android:text="@string/send_valid_code"
+            android:textColor="@color/standard_color_white"
             android:background="@drawable/shape_lineframe_yellow_fill"
             android:layout_alignParentRight="true"
             />

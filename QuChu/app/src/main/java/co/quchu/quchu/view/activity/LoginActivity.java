@@ -29,18 +29,10 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.flContent)
     FrameLayout flContent;
 
-    LoginByPhoneFragment loginByPhoneFragment;
     LoginFragment loginFragment;
-    PhoneValidationFragment phoneValidationFragment;
-    RegistrationFragment registrationFragment;
-    RestorePasswordFragment restorePasswordFragment;
     FragmentManager fragmentManager;
     public SsoHandler handler;
     public long mRequestVerifyCode = -1;
-
-    public void updateRequestVerifyCode(){
-        mRequestVerifyCode = System.currentTimeMillis();
-    }
 
 
     @Override
