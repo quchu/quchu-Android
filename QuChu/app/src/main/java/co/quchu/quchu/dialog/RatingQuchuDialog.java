@@ -92,6 +92,13 @@ public class RatingQuchuDialog extends DialogFragment {
         Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(view);
 
+        View imageView = view.findViewById(R.id.ivClose);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissAllowingStateLoss();
+            }
+        });
         rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapter = new RatingQuchuDialogAdapter(mDataset, new RatingQuchuDialogAdapter.OnItemSelectedListener() {
             @Override

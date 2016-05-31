@@ -30,8 +30,6 @@ public class TagsFilterDialog extends DialogFragment {
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
     private static final String BUNDLE_KEY_TAGS = "BUNDLE_KEY_TAGS";
-    @Bind(R.id.tvTitle)
-    TextView tvTitle;
     @Bind(R.id.rvTags)
     RecyclerView rvTags;
     @Bind(R.id.ivFinish)
@@ -77,6 +75,13 @@ public class TagsFilterDialog extends DialogFragment {
         dialog.setContentView(view);
 
         initSelected();
+        View imageView = view.findViewById(R.id.ivClose);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissAllowingStateLoss();
+            }
+        });
         rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         adapter = new TagsFilterDialogAdapter(mDataset, new TagsFilterDialogAdapter.OnItemSelectedListener() {
             @Override

@@ -8,6 +8,7 @@
 
     <color name="translucent_white">#7fffffff</color>                               //白色半透明
     <color name="translucent_dark">#7f000000</color>                                //黑色半透明
+    <color name="translucent_deep_dark">#cf000000</color>                           //黑色半透明深
     <color name="transparent">#00000000</color>                                     //完全透明
 
     <color name="standard_color_black">#000</color>
@@ -73,5 +74,6 @@
     <color name="user_login_view_bg_color">#33ffffff</color>
     <color name="user_login_text_clickable">#221714</color>
     <color name="account_setting_text_hint_color">#595757</color>
+
 
 </resources>

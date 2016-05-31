@@ -3,22 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@color/translucent_dark"
+    android:background="@color/translucent_deep_dark"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-
-    <TextView
-        android:id="@+id/tvTitle"
+    <ImageView
+        android:id="@+id/ivClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tags_filter_title"
-        android:textSize="@dimen/word_title_body"
-        android:textColor="@android:color/white"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/half_margin"
+        android:src="@mipmap/ic_dismiss_dialog"
+        android:layout_margin="@dimen/base_margin"
         />
+
 
 
 

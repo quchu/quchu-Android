@@ -90,7 +90,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 presenter.initTabData(true, selectedTag);
             }
         });
-
+        recyclerView.addOnLayoutChangeListener();
         return view;
     }
 
