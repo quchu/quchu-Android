@@ -49,19 +49,21 @@
 
     <TextView
         android:id="@+id/tvTagsLabel"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_above="@+id/rvTags"
+        android:layout_centerHorizontal="true"
         android:text="值得称赞的地方"
-        android:layout_centerVertical="true"
+        android:drawablePadding="@dimen/quarter_margin"
+        android:drawableLeft="@mipmap/ic_thumb_up"
         android:textColor="@android:color/white"
         android:layout_marginBottom="@dimen/base_margin"
         />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvTags"
-        android:layout_below="@id/tvTagsLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
         app:spanCount="5"
