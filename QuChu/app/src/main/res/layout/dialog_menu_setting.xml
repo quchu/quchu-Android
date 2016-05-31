@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/translucent_dark"
-    android:gravity="center"
     android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/actionClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/base_margin"
+        android:src="@mipmap/ic_dismiss_dialog" />
 
-    <TextView
-        android:id="@+id/dialog_menu_setting_feedback_tv"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="@dimen/half_margin"
-        android:gravity="center"
-        android:text="快速反馈"
-        android:textColor="@color/standard_color_white"
-        android:textSize="@dimen/word_subhead_size" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/dialog_menu_setting_update_tv"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="@dimen/half_margin"
-        android:gravity="center"
-        android:text="检查更新"
-        android:textColor="@color/standard_color_white"
-        android:textSize="@dimen/word_subhead_size" />
+        <TextView
+            android:id="@+id/dialog_menu_setting_feedback_tv"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="@dimen/half_margin"
+            android:gravity="center"
+            android:text="快速反馈"
+            android:textColor="@color/standard_color_white"
+            android:textSize="@dimen/word_subhead_size" />
 
-    <TextView
-        android:id="@+id/dialog_menu_setting_aboutus_tv"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="@dimen/half_margin"
-        android:gravity="center"
-        android:text="关于我们"
-        android:textColor="@color/standard_color_white"
-        android:textSize="@dimen/word_subhead_size" />
+        <TextView
+            android:id="@+id/dialog_menu_setting_update_tv"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="@dimen/half_margin"
+            android:gravity="center"
+            android:text="检查更新"
+            android:textColor="@color/standard_color_white"
+            android:textSize="@dimen/word_subhead_size" />
 
-    <View
-        android:layout_width="0.1dp"
-        android:layout_height="@dimen/half_margin" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/dialog_menu_setting_aboutus_tv"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="@dimen/half_margin"
+            android:gravity="center"
+            android:text="关于我们"
+            android:textColor="@color/standard_color_white"
+            android:textSize="@dimen/word_subhead_size" />
+
+    </LinearLayout>
+</RelativeLayout>

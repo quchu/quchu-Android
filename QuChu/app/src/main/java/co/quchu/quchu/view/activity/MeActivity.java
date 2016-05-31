@@ -144,7 +144,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
             case R.id.footPrint://脚印
                 if (user.isIsVisitors()) {
                     //游客
-                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
+                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
                     dialogFg.show(getSupportFragmentManager(), "");
                 } else {
                     intent = new Intent(this, MyFootprintActivity.class);
@@ -160,7 +160,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
             case R.id.friend://趣友圈
                 if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
                     //游客
-                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
+                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
                     dialogFg.show(getSupportFragmentManager(), "");
                 } else {
                     intent = new Intent(this, QuFriendsActivity.class);

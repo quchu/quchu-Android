@@ -247,6 +247,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         functionConfigBuilder.setForceCrop(false);//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
         functionConfigBuilder.setForceCropEdit(true);
         functionConfigBuilder.setRotateReplaceSource(true);
+        functionConfigBuilder.setMutiSelect(false);
         functionConfig = functionConfigBuilder.build();
         CoreConfig coreConfig = new CoreConfig.Builder(this, new FrescoImageLoader(this), null)
                 .setDebug(BuildConfig.DEBUG)
@@ -262,6 +263,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
             if (resultList != null && resultList.size() > 0 && !StringUtils.isEmpty(resultList.get(0).getPhotoPath())) {
                 updateAvatar(resultList.get(0).getPhotoPath());
+                LogUtils.e("头像:" + resultList.get(0).getPhotoPath());
             }
         }
 

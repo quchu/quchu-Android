@@ -7,16 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.util.Locale;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.view.activity.StatementActivity;
 import co.quchu.quchu.view.activity.FeedbackActivity;
 import co.quchu.quchu.view.activity.MeActivity;
+import co.quchu.quchu.view.activity.StatementActivity;
 
 /**
  * LocationSelectedDialogFg
@@ -24,7 +26,10 @@ import co.quchu.quchu.view.activity.MeActivity;
  * Date: 2015-12-23
  * 城市选择弹窗
  */
-public class MenuSettingDialogFg extends DialogFragment {
+public class MenuSettingDialogFg extends DialogFragment implements View.OnClickListener {
+    @Bind(R.id.actionClose)
+    ImageView actionClose;
+
     public static MenuSettingDialogFg newInstance() {
         return new MenuSettingDialogFg();
     }
@@ -47,7 +52,8 @@ public class MenuSettingDialogFg extends DialogFragment {
         ButterKnife.bind(this, view);
         Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(view);
-
+        actionClose.setOnClickListener(this);
+        view.setOnClickListener(this);
         return dialog;
     }
 
@@ -86,4 +92,8 @@ public class MenuSettingDialogFg extends DialogFragment {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        dismiss();
+    }
 }
