@@ -8,13 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
@@ -169,7 +166,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected int activitySetup() {
-        return 0;
+        return TRANSITION_TYPE_LEFT;
     }
 
     @Override

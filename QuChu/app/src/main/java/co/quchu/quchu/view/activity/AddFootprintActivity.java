@@ -172,7 +172,6 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
 
             @Override
             public void afterTextChanged(Editable s) {
-                dataChange = true;
                 textLength.setText("剩余" + (140 - s.length()) + "字");
             }
         });
@@ -323,7 +322,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
 
     @Override
     public void onBackPressed() {
-        if (dataChange) {
+        String s = null != mData ? mData.getComment() : "";
+        if (dataChange || !etContent.getText().toString().trim().equals(s)) {
             CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
             dialog.setListener(new CommonDialog.OnActionListener() {
                 @Override

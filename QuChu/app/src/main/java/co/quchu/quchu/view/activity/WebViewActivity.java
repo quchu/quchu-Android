@@ -2,7 +2,6 @@ package co.quchu.quchu.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +18,9 @@ import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.finalteam.toolsfinal.DeviceUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -92,7 +89,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected int activitySetup() {
-        return 0;
+        return TRANSITION_TYPE_LEFT;
     }
 
     private void showErrorToast() {

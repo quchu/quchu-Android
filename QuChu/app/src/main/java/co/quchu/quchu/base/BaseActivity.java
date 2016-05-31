@@ -1,7 +1,6 @@
 package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -36,34 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //压栈
         ActManager.getAppManager().addActivity(this);
-//        getWindow().setStatusBarColor(getColor(R.color.colorPrimaryDark));
-
-        super.onCreate(savedInstanceState);
-    }
-
-    /**
-     * activity 切换的时候调用,默认不执行动画处理
-     */
-    protected abstract int activitySetup();
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = AppContext.getRefWatcher(getApplicationContext());
-        refWatcher.watch(this);
-        ActManager.getAppManager().finishActivity(this);
-
-        GsonRequest.queue.cancelAll(getClass().getSimpleName());
-    }
-
-    @Override
-    public void startActivity(Intent intent) {
-        super.startActivity(intent);
         switch (activitySetup()) {
             case TRANSITION_TYPE_NOTHING:
-//                overridePendingTransition(R.anim.in_push_right_to_left, R.anim.out_push_letf_to_right);
                 break;
 //            case TRANSITION_TYPE_ALPHA:
 //                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
@@ -78,6 +52,22 @@ public abstract class BaseActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.in_bottom_to_top, R.anim.nothing);
                 break;
         }
+        super.onCreate(savedInstanceState);
+
+    }
+
+    /**
+     * activity 切换的时候调用,默认不执行动画处理
+     */
+    protected abstract int activitySetup();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = AppContext.getRefWatcher(getApplicationContext());
+        refWatcher.watch(this);
+        ActManager.getAppManager().finishActivity(this);
+        GsonRequest.queue.cancelAll(getClass().getSimpleName());
     }
 
     @Override

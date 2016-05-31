@@ -132,7 +132,7 @@ public class ClassifyFragment extends BaseFragment {
                             Intent intent = new Intent(getActivity(), WebViewActivity.class);
                             intent.putExtra(WebViewActivity.BUNDLE_KEY_WEBVIEW_URL,url);
                             //intent.putExtra(ClassifyDetailActivity.PARAMETER_TITLE, title);
-                            startActivity(intent);
+                            getActivity().startActivity(intent);
                         }
                     }
                 });

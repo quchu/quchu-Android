@@ -156,7 +156,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected int activitySetup() {
-        return 0;
+        return TRANSITION_TYPE_LEFT;
     }
 
     @OnClick({R.id.recommend_title_location_rl})
