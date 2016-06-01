@@ -67,12 +67,6 @@
         <item name="android:background">@color/user_login_view_bg_color</item>
     </style>
 
-    <style name="QuchuRatingBarStyle" parent="android:Widget.RatingBar">
-        <!--<item name="progressDrawable">@mipmap/ratingbar_full</item>-->
-        <!--<item name="indeterminateDrawable">@mipmap/ratingbar_full</item>-->
-        <item name="android:progressDrawable">@drawable/ratingbar_layer_list</item>
-        <item name="android:indeterminateDrawable">@drawable/ratingbar_layer_list</item>
-    </style>
 
 
     <!-- 下拉菜单 设置界面 dialog style -->

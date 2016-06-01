@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -197,7 +198,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case LAYOUT_TYPE_NEARBY:
                 return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_nearby_quchu, parent, false));
             case LAYOUT_TYPE_LOAD_MORE:
-                return new LoadMoreViewHolder(mLayoutInflater.inflate(R.layout.cp_loadmore, parent, false));
+                return new LoadMoreViewHolder(mLayoutInflater.inflate(R.layout.cp_loadmore_horizontal, parent, false));
             default:
                 return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
         }
@@ -214,14 +215,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
 
-            ((IntroImageViewHolder) holder).linearLayout.removeAllViews();
-            int space = (int) mAnchorActivity.getResources().getDimension(R.dimen.quarter_margin);
-            for (int i = 0; i < (int)mData.getSuggest(); i++) {
-                ImageView imageView = new ImageView(((IntroImageViewHolder) holder).linearLayout.getContext());
-                imageView.setImageResource(R.mipmap.ic_ratingbar_heart_fill);
-                imageView.setPadding(space,0,space,0);
-                ((IntroImageViewHolder) holder).linearLayout.addView(imageView);
-            }
+            ((IntroImageViewHolder) holder).rbRating.setRating(mData.getSuggest());
 
             if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setText(StringUtils.getColorSpan(((IntroImageViewHolder) holder).detail_avg_price_tv.getContext(),R.color.standard_color_red,"人均消费",mData.getPrice(),""));
@@ -548,8 +542,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class IntroImageViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.detail_store_name_tv)
         TextView detail_store_name_tv;
-        @Bind(R.id.llRating)
-        LinearLayout linearLayout;
+        @Bind(R.id.rbRating)
+        RatingBar rbRating;
         @Bind(R.id.detail_avg_price_tv)
         TextView detail_avg_price_tv;
 

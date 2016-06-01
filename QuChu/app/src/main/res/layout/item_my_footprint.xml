@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/cardViewNone"
         android:layout_below="@id/desc"
-        android:drawableLeft="@mipmap/ic_ratingbar_heart"
+        android:drawableLeft="@drawable/ic_ratingbar_heart"
         android:gravity="center_vertical"
         android:textColor="@color/standard_color_red"
         android:textSize="@dimen/word_size_time"

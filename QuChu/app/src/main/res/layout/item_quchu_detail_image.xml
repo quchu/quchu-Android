@@ -26,20 +26,27 @@
         android:text="Null" />
 
 
-    <LinearLayout
-        android:id="@+id/llRating"
+
+
+    <RatingBar
+        android:id="@+id/rbRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/base_margin"
         android:layout_below="@+id/detail_avg_price_tv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/base_margin"
-        android:orientation="horizontal"/>
+        style="?android:attr/ratingBarStyleSmall"
+        android:progressDrawable="@drawable/custom_ratingbar_selector"
+        android:numStars="5"
+        android:stepSize=".5"
+        android:rating="3.5" />
 
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/llRating"
+        android:layout_below="@+id/rbRating"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/base_margin"
         android:gravity="center"

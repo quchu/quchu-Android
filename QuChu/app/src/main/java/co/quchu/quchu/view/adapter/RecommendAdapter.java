@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -78,14 +79,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         }
 
         holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost_with_rmb_symbol),price,"起"));
-        holder.linearLayout.removeAllViews();
-        int space = (int) mContext.getResources().getDimension(R.dimen.quarter_margin);
-        for (int i = 0; i < model.getSuggest(); i++) {
-            ImageView imageView = new ImageView(mContext);
-            imageView.setImageResource(R.mipmap.ic_ratingbar_heart_fill);
-            imageView.setPadding(space,0,space,0);
-            holder.linearLayout.addView(imageView);
-        }
+        holder.rbRating.setRating(model.getSuggest());
         //holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
 
@@ -170,8 +164,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         TextView tag2;
         @Bind(R.id.recommend_tag3)
         TextView tag3;
-        @Bind(R.id.llRating)
-        LinearLayout linearLayout;
+        @Bind(R.id.rbRating)
+        RatingBar rbRating;
 
         @Bind(R.id.root_cv)
         CardView rootCv;
