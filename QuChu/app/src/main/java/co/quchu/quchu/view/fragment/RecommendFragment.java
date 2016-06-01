@@ -44,8 +44,7 @@ import co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment extends BaseFragment implements RecommendAdapter.CardClickListener, IRecommendFragment,
-        ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
+public class RecommendFragment extends BaseFragment implements RecommendAdapter.CardClickListener, IRecommendFragment, ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
     @Bind(R.id.viewpager)
     ViewPager viewpager;
     @Bind(R.id.tabLayout)
@@ -78,7 +77,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         viewpager.setPageTransformer(false, this);
         presenter = new RecommentFragPresenter(getContext(), this);
         refreshLayout.setColorSchemeResources(R.color.standard_color_yellow);
-        presenter.init();
+        initData();
+
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -88,6 +88,10 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         return view;
     }
 
+    public void initData() {
+        presenter.init();
+
+    }
 
     private int hasChangePosition = 0;
 
