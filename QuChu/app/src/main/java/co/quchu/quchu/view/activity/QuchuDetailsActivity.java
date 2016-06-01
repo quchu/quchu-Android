@@ -490,6 +490,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                 case R.id.detail_store_address_ll:
 
                     if (!"台北".equals(SPUtils.getCityName())) {
+                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_MAP));
                         MobclickAgent.onEvent(this, "map_c");
 
                         Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);

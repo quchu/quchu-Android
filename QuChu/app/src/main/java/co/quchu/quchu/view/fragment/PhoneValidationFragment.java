@@ -77,6 +77,11 @@ public class PhoneValidationFragment extends Fragment {
         if (!TextUtils.isEmpty(userName)){
             mEmptyForum = false;
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+            if (StringUtils.isMobileNO(userName)){
+                tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+            }else{
+                tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
+            }
         }else{
             mEmptyForum = true;
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
@@ -86,6 +91,8 @@ public class PhoneValidationFragment extends Fragment {
         }else{
             tvSendValidCode.setBackgroundColor(getResources().getColor(R.color.standard_color_h3_dark));
         }
+
+
     }
 
     private boolean verifyForm() {

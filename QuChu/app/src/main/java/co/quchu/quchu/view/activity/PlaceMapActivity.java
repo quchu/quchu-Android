@@ -202,7 +202,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected int activitySetup() {
-        return 0;
+        return TRANSITION_TYPE_LEFT;
     }
 
     private void initData() {
@@ -472,6 +472,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
         if (event.getFlag()== EventFlags.EVENT_FINISH_THIS) {
+            finish();
+        }else if(event.getFlag()== EventFlags.EVENT_FINISH_MAP){
             finish();
         }
     }
