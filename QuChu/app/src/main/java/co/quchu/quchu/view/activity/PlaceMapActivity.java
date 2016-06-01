@@ -98,7 +98,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         });
 
 
-        mMapPin = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin);
+        mMapPin = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_blue);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
         currentPosition.setOnClickListener(this);
