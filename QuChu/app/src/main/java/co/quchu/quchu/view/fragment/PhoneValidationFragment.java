@@ -181,8 +181,12 @@ public class PhoneValidationFragment extends Fragment {
         tvLoginViaThisNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Fragment f = new LoginByPhoneFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(LoginByPhoneFragment.BUNDLE_KEY_PHONE_NUMBER,etUsername.getText().toString());
+                f.setArguments(bundle);
                 getFragmentManager().beginTransaction()
-                        .replace(mContainerId,new LoginByPhoneFragment())
+                        .replace(mContainerId,f)
                         .addToBackStack(TAG)
                         .commitAllowingStateLoss();
                 getFragmentManager().executePendingTransactions();
