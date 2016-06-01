@@ -118,7 +118,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                 loginTypeIcon.setImageResource(R.mipmap.ic_weibo);
                 break;
             case SPUtils.LOGIN_TYPE_WEIXIN:
-                loginTypeIcon.setImageResource(R.mipmap.ic_wechat);
+                loginTypeIcon.setImageResource(R.mipmap.ic_wechatpay);
                 break;
             default:
                 loginTypeIcon.setImageResource(R.mipmap.ic_phone);

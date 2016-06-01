@@ -722,27 +722,35 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             switch (id){
                 case 18:
                     holder.ivIcon.setImageResource(R.mipmap.ic_cash);
+                    holder.tvItemName.setText(R.string.cash);
                     break;
                 case 19:
                     holder.ivIcon.setImageResource(R.mipmap.ic_visacard);
+                    holder.tvItemName.setText(R.string.visacard);
                     break;
                 case 21:
                     holder.ivIcon.setImageResource(R.mipmap.ic_parking_slot);
+                    holder.tvItemName.setText(R.string.parking_slot);
                     break;
                 case 31:
                     holder.ivIcon.setImageResource(R.mipmap.ic_private_room);
+                    holder.tvItemName.setText(R.string.private_room);
                     break;
                 case 61:
                     holder.ivIcon.setImageResource(R.mipmap.ic_wechatpay);
+                    holder.tvItemName.setText(R.string.wechatpay);
                     break;
                 case 63:
                     holder.ivIcon.setImageResource(R.mipmap.ic_alipay);
+                    holder.tvItemName.setText(R.string.alipay);
                     break;
                 case 64:
                     holder.ivIcon.setImageResource(R.mipmap.ic_no_seat);
+                    holder.tvItemName.setText(R.string.no_seat);
                     break;
                 case 91:
                     holder.ivIcon.setImageResource(R.mipmap.ic_deliver);
+                    holder.tvItemName.setText(R.string.deliver);
                     break;
             }
         }
@@ -753,8 +761,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            @Bind(R.id.sdvIcon)
+            @Bind(R.id.ivIcon)
             ImageView ivIcon;
+            @Bind(R.id.tvItemName)
+            TextView tvItemName;
 
             public ViewHolder(View itemView) {
                 super(itemView);

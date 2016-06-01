@@ -76,7 +76,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         adapter = new RecommendAdapter(getActivity(), cardList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.addOnScrollListener();
+        //recyclerView.addOnScrollListener();
         recyclerView.addOnPageChangedListener(this);
         presenter = new RecommentFragPresenter(getContext(), this);
         refreshLayout.setColorSchemeResources(R.color.standard_color_yellow);

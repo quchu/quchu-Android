@@ -1,13 +1,9 @@
 package co.quchu.quchu.widget.recyclerviewpager;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
-/**
- * HorizontalScrollListener
- * User: Chenhs
- * Date: 2015-11-04
- */
 public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
     private RecyclerViewPager mRecyclerView;
 
@@ -17,15 +13,13 @@ public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
 
     @Override
     public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
-
+        System.out.println("onScrolled"+"onScrollStateChanged  "+scrollState);
     }
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//            LogUtils.json("onScrolled==i=" + i + "////i2=" + i2);
+        System.out.println("onScrolled"+  dx + "|" + dy);
 //                mPositionText.setText("First: " + mRecyclerView.getFirstVisiblePosition());
-
-
         int childCount = mRecyclerView.getChildCount();
         int width = mRecyclerView.getChildAt(0).getWidth();
         int padding = (mRecyclerView.getWidth() - width) / 2;
@@ -44,11 +38,11 @@ public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
 
                 v.setScaleY(1 - rate * 0.1f);
                 v.setScaleX(1 - rate * 0.1f);
-                if (v.getLeft()==padding){
-                    v.setAlpha(1);
-                }else{
-                    v.setAlpha(1-rate+.5f);
-                }
+//                if (v.getLeft()==padding){
+//                    v.setAlpha(1);
+//                }else{
+//                    v.setAlpha(1-rate+.5f);
+//                }
 
             } else {
                 //往右 从 padding 到 recyclerView.getWidth()-padding 的过程中，由大到小
@@ -57,11 +51,13 @@ public class HorizontalScrollListener extends RecyclerView.OnScrollListener {
                 }
                 v.setScaleY(0.9f + rate * 0.1f);
                 v.setScaleX(0.9f + rate * 0.1f);
-                v.setAlpha(.5f+rate);
+//                v.setAlpha(.5f+rate);
 
             }
         }
     }
 }
+
+
 
 
