@@ -172,5 +172,6 @@
     <string name="alipay">支付宝</string>
     <string name="no_seat">无座</string>
     <string name="deliver">配送</string>
+    <string name="login_via_this_number">使用此手机号码登录</string>
 
 </resources>

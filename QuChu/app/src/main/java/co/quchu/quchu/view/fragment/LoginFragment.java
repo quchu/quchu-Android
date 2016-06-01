@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -145,5 +146,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     public void loginFail(String message) {
 
     }
+
 
 }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.Timer;
@@ -30,8 +31,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.ErrorView;
 
@@ -58,6 +61,9 @@ public class PhoneValidationFragment extends Fragment {
     RelativeLayout rlValidCode;
     @Bind(R.id.tvNext)
     TextView tvNext;
+    @Bind(R.id.tvLoginViaThisNumber)
+    TextView tvLoginViaThisNumber;
+
     @Bind(R.id.errorView)
     ErrorView errorView;
     public static final String TAG = "PhoneValidationFragment";
@@ -66,7 +72,8 @@ public class PhoneValidationFragment extends Fragment {
     private boolean mIsRegistration = true;
     private boolean mVerifyed = false;
     public static final String BUNDLE_KEY_REGISTRATION = "BUNDLE_KEY_REGISTRATION";
-    private int mContainerId = -1;
+
+    private int mContainerId = R.id.flContent;
 
     public void updateButtonStatus(){
         if (null==etUsername){
@@ -120,12 +127,12 @@ public class PhoneValidationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_validation_phone, container, false);
         ButterKnife.bind(this, view);
-
         if (null!=getArguments()){
             mIsRegistration = getArguments().getBoolean(BUNDLE_KEY_REGISTRATION,true);
         }
         //((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration_step_1:R.string.forget_pwd_step_1);
 
+        tvLoginViaThisNumber.setVisibility(View.GONE);
         ivIconClear.setVisibility(View.INVISIBLE);
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override
@@ -163,12 +170,23 @@ public class PhoneValidationFragment extends Fragment {
         tvNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContainerId = mContainerId == -1? ((ViewGroup)getView().getParent()).getId():mContainerId;
+
                 if (mVerifyed){
                     verifySms();
                 }else{
                     Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        tvLoginViaThisNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction()
+                        .replace(mContainerId,new LoginByPhoneFragment())
+                        .addToBackStack(TAG)
+                        .commitAllowingStateLoss();
+                getFragmentManager().executePendingTransactions();
+                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
             }
         });
         return view;
@@ -295,6 +313,7 @@ public class PhoneValidationFragment extends Fragment {
                 public void notUnique(String msg) {
                     isRunning = false;
                     tvNext.setText(R.string.promote_duplicate_username);
+                    tvLoginViaThisNumber.setVisibility(View.VISIBLE);
                 }
             });
         }else{

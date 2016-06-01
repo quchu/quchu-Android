@@ -65,6 +65,10 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
     private boolean mEmptyForum = false;
 
     public static final String TAG = "LoginByPhoneFragment";
+    public static final String BUNDLE_KEY_PHONE_NUMBER = "BUNDLE_KEY_PHONE_NUMBER";
+    public String mPhoneNumber = "";
+
+
     public boolean mDisplayPassword = false;
 
     public void updateButtonStatus(){
@@ -94,7 +98,12 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_phone_login, container, false);
         ButterKnife.bind(this, view);
-        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(R.string.login_via_phone);
+        if (null!=getArguments()){
+            mPhoneNumber = getArguments().getString(BUNDLE_KEY_PHONE_NUMBER);
+        }
+        if (StringUtils.isMobileNO(mPhoneNumber)){
+            etUsername.setText(mPhoneNumber);
+        }
         etUsername.setOnFocusChangeListener(this);
         etPassword.setOnFocusChangeListener(this);
         etUsername.addTextChangedListener(this);
@@ -164,6 +173,8 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
     @Override
     public void onResume() {
         super.onResume();
+        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(R.string.login_via_phone);
+
         etUsername.requestFocus();
         etUsername.postDelayed(new Runnable() {
 

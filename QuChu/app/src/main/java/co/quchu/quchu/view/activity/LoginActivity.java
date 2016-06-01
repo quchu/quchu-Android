@@ -7,6 +7,8 @@ import android.widget.FrameLayout;
 
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import java.util.Timer;
@@ -16,7 +18,9 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.fragment.LoginByPhoneFragment;
 import co.quchu.quchu.view.fragment.LoginFragment;
 import co.quchu.quchu.view.fragment.PhoneValidationFragment;
@@ -83,4 +87,5 @@ public class LoginActivity extends BaseActivity {
     protected int activitySetup() {
         return TRANSITION_TYPE_LEFT;
     }
+
 }
