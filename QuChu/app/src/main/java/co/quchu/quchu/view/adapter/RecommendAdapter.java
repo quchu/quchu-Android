@@ -3,8 +3,7 @@ package co.quchu.quchu.view.adapter;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.PagerAdapter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -28,8 +27,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.fragment.RecommendFragment;
 
 /**
  * RecommendAdapter
@@ -37,7 +38,7 @@ import co.quchu.quchu.utils.StringUtils;
  * Date: 2015-12-08
  * 趣处推荐 适配器 adapter
  */
-public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.RecommendHolder> {
+public class RecommendAdapter extends PagerAdapter {
 
 
     private Activity mContext;
@@ -52,12 +53,13 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
 
 
     @Override
-    public RecommendAdapter.RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, parent, false), listener);
-    }
+    public Object instantiateItem(ViewGroup container, int position) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, container, false);
+        if (position != 0) {
+            view.setScaleY(RecommendFragment.MIN_SCALE);
+        }
+        RecommendHolder holder = new RecommendHolder(view, listener, position);
 
-    @Override
-    public void onBindViewHolder(RecommendAdapter.RecommendHolder holder, int position) {
         RecommendModel model = dataSet.get(position);
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (model.isIsActivity()) {
@@ -66,15 +68,10 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             holder.item_place_event_tv.setVisibility(View.GONE);
         }
 
-        //Html.fromHtml(mContext.getString(R.string.avg_cost)
-        // +"<font color=#"+Integer.toHexString(mContext.getResources().getColor(R.color.standard_color_red)& 0x00ffffff)+">"
-        // +model.getPrice()+"</font>元")
-
-
         String price;
-        if (!TextUtils.isEmpty(model.getPrice())){
+        if (!TextUtils.isEmpty(model.getPrice())) {
             price = model.getPrice().split(",")[0];
-        }else{
+        } else {
             price = "-";
         }
 
@@ -138,18 +135,26 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
             holder.item_recommend_card_distance_tv.setText(builder);
 
         }
-
+        container.addView(view);
+        return view;
     }
 
     @Override
-    public int getItemCount() {
-        if (dataSet == null)
-            return 0;
-        else
-            return dataSet.size();
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeView((View) object);
     }
 
-    class RecommendHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getCount() {
+        return dataSet == null ? 0 : dataSet.size();
+    }
+
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return view == object;
+    }
+
+    class RecommendHolder {
         @Bind(R.id.photo)
         SimpleDraweeView itemRecommendCardPhotoSdv;
         @Bind(R.id.item_recommend_card_address_tv)
@@ -167,25 +172,27 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.Reco
         @Bind(R.id.rbRating)
         RatingBar rbRating;
 
-        @Bind(R.id.root_cv)
-        CardView rootCv;
         @Bind(R.id.distance)
         TextView item_recommend_card_distance_tv;
         private CardClickListener listener;
+        private int position;
+        View itemView;
 
-        public RecommendHolder(View itemView, CardClickListener listener) {
-            super(itemView);
+        public RecommendHolder(View itemView, CardClickListener listener, int position) {
             ButterKnife.bind(this, itemView);
+            LogUtils.e("初始化page" + position);
+            this.itemView = itemView;
             this.listener = listener;
             tag1.setVisibility(View.GONE);
             tag2.setVisibility(View.GONE);
             tag3.setVisibility(View.GONE);
+            this.position = position;
         }
 
         @OnClick({R.id.root_cv})
         public void cardClick(View view) {
             if (listener != null)
-                listener.onCardLick(view, getPosition());
+                listener.onCardLick(view, position);
         }
     }
 

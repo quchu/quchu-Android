@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +25,9 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.TagsModel;
-import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
@@ -38,7 +36,6 @@ import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
 import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout;
-import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
 
 
 /**
@@ -47,9 +44,9 @@ import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment extends BaseFragment implements RecommendAdapter.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
-    @Bind(R.id.recyclerView)
-    RecyclerViewPager recyclerView;
+public class RecommendFragment extends BaseFragment implements RecommendAdapter.CardClickListener, IRecommendFragment, ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
+    @Bind(R.id.viewpager)
+    ViewPager viewpager;
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
     @Bind(R.id.refreshLayout)
@@ -61,7 +58,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     public List<RecommendModel> cardList = new ArrayList<>();
     private RecommendAdapter adapter;
     private RecommentFragPresenter presenter;
-    private int currentIndex = -1;
+    private int currentIndex = 0;
     private int dataCount = -1;
 
     private String from = QuchuDetailsActivity.FROM_TYPE_HOME;
@@ -71,13 +68,13 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
-        LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layout);
+        viewpager.setClipToPadding(false);
+        viewpager.setPadding(80, 40, 80, 40);
+        viewpager.setPageMargin(40);
+        viewpager.addOnPageChangeListener(this);
         adapter = new RecommendAdapter(getActivity(), cardList, this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
-        //recyclerView.addOnScrollListener();
-        recyclerView.addOnPageChangedListener(this);
+        viewpager.setAdapter(adapter);
+        viewpager.setPageTransformer(false, this);
         presenter = new RecommentFragPresenter(getContext(), this);
         refreshLayout.setColorSchemeResources(R.color.standard_color_yellow);
         initData();
@@ -85,12 +82,9 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                pageNums = 1;
                 presenter.initTabData(true, selectedTag);
             }
         });
-        recyclerView.addOnScrollListener();
-        //recyclerView.addOnLayoutChangeListener();
         return view;
     }
 
@@ -99,28 +93,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     }
 
-    @Override
-    public void OnPageChanged(int oldPosition, int newPosition) {
-        LogUtils.json("newPosition-> " + newPosition + " oldPosition-> " + oldPosition
-                + " cardList.size()" + (cardList.size()) + " pageNums-> " + pageNums + " pageCounts-> " + pageCounts);
-
-        MobclickAgent.onEvent(getContext(), "recommendation_c");
-        if (newPosition > oldPosition) {
-            MobclickAgent.onEvent(getContext(), "slideright_c");
-        }
-        if (newPosition > oldPosition && cardList.size() < dataCount) {
-            if (newPosition == cardList.size() - 2 && !isLoading) {
-                isLoading = true;
-                presenter.loadMore(selectedTag, (cardList.size() / 10) + 1);
-            } else if (isLoading) {
-                DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
-            }
-        }
-        currentIndex = newPosition;
-    }
-
-
-    private int pageCounts, pageNums = 1;
     private int hasChangePosition = 0;
 
     @Override
@@ -137,7 +109,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                         MobclickAgent.onEvent(getContext(), "detail_tag_c");
                     }
 
-
                     MobclickAgent.onEvent(getActivity(), "detail_c");
                     Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(position).getPid());
@@ -145,42 +116,10 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     getActivity().startActivity(intent);
                 }
                 break;
-//            case R.id.item_recommend_card_collect_iv:
-//                //收藏
-//                setFavorite(position);
-//                break;
-//            case R.id.item_recommend_card_interest_iv:
-//                //分享
-//                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(cardList.get(position).getPid(), cardList.get(position).getName(), true);
-//                shareDialogFg.show(getActivity().getSupportFragmentManager(), "share_place");
-//                break;
+
         }
     }
 
-    private void setFavorite(final int position) {
-        if (AppContext.user.isIsVisitors()) {
-            VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
-            vDialog.show(getActivity().getSupportFragmentManager(), "visitor");
-        } else {
-            InterestingDetailPresenter.setDetailFavorite(getActivity(), cardList.get(position).getPid(), cardList.get(position).isIsf(), new InterestingDetailPresenter.DetailDataListener() {
-                @Override
-                public void onSuccessCall(String str) {
-                    cardList.get(position).setIsf(!cardList.get(position).isIsf());
-                    adapter.notifyDataSetChanged();
-                    if (cardList.get(position).isIsf()) {
-                        Toast.makeText(getActivity(), "收藏成功!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onErrorCall(String str) {
-
-                }
-            });
-        }
-    }
 
     public void updateDateSet() {
         if (null != cardList && cardList.size() > hasChangePosition) {
@@ -204,11 +143,11 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 }
             });
             tabLayout.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.GONE);
+            viewpager.setVisibility(View.GONE);
             return;
         }
         tabLayout.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.VISIBLE);
+        viewpager.setVisibility(View.VISIBLE);
         errorView.hideView();
 
         tagList = list;
@@ -246,7 +185,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 LogUtils.json("selectedTag=" + selectedTag);
                 presenter.initTabData(false, selectedTag);
                 refreshLayout.setRefreshing(false);
-                //mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 500L);
             }
 
             @Override
@@ -286,18 +224,17 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     presenter.initTabData(false, selectedTag);
                 }
             });
-            recyclerView.setVisibility(View.GONE);
+            viewpager.setVisibility(View.GONE);
         } else {
-            if (recyclerView.getVisibility() == View.GONE) {
+            if (viewpager.getVisibility() == View.GONE) {
                 errorView.hideView();
-                recyclerView.setVisibility(View.VISIBLE);
+                viewpager.setVisibility(View.VISIBLE);
             }
             cardList.clear();
             cardList.addAll(arrayList);
             adapter.notifyDataSetChanged();
-            pageCounts = pageCount;
             if (cardList.size() > 0)
-                recyclerView.smoothScrollToPosition(0);
+                viewpager.setCurrentItem(0);
 
         }
     }
@@ -309,8 +246,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         if (isError) {
             Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
         } else {
-            pageCounts = pageCount;
-            pageNums = ++pageNum;
             if (arrayList != null && arrayList.size() > 0) {
                 cardList.addAll(arrayList);
                 adapter.notifyDataSetChanged();
@@ -361,8 +296,54 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         if (event.getFlag() == EventFlags.EVENT_QUCHU_DETAIL_UPDATED) {
             if ((Integer) event.getContent()[0] == cardList.get(currentIndex).getPid()) {
                 cardList.get(currentIndex).isout = true;
-                adapter.notifyItemChanged(currentIndex);
+                adapter.notifyDataSetChanged();
             }
         }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//        LogUtils.e("childCound" + viewpager.getChildCount());
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        MobclickAgent.onEvent(getContext(), "recommendation_c");
+//        if (newPosition > oldPosition) {
+//            MobclickAgent.onEvent(getContext(), "slideright_c");
+//        }
+        if (cardList.size() < dataCount) {
+            if (position == cardList.size() - 2 && !isLoading) {
+                isLoading = true;
+                presenter.loadMore(selectedTag, (cardList.size() / 10) + 1);
+            } else if (isLoading) {
+                DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+            }
+        }
+        currentIndex = position;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    public static float MIN_SCALE = .9f;
+
+    @Override
+    public void transformPage(View page, float position) {
+        LogUtils.e("id: " + page + " position:" + position);
+        if (position <= 1) {
+            if (position < 0) {//滑出的页 0.0 ~ -1 *
+                float scaleFactor = (1 - MIN_SCALE) * (0 - position);
+//                page.setScaleX(1 - scaleFactor);
+                page.setScaleY(1 - scaleFactor);
+            } else if (currentIndex != 0) {//滑进的页 1 ~ 0.0 *
+                float scaleFactor = (1 - MIN_SCALE) * (1 - position);
+//                page.setScaleX(MIN_SCALE + scaleFactor);
+                page.setScaleY(MIN_SCALE + scaleFactor);
+            }
+        }
+
     }
 }
