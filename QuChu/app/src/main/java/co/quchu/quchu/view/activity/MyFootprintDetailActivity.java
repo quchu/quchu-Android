@@ -8,7 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -153,7 +157,11 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
     private void initData() {
         headImage.setImageURI(Uri.parse(model.getAutorPhoto()));
         supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
-        detail.setText(model.getComment());
+//        detail.setText(model.getAutor() + ": " + model.getComment());
+
+        SpannableString string = new SpannableString(model.getAutor() + ": " + model.getComment());
+        string.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.colorPrimary)),0,model.getAutor().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        detail.setText(string);
 
         if (model.getPlaceId() == 0) {
             actionContainer.setVisibility(View.INVISIBLE);
@@ -246,7 +254,8 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
                 intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COMMENT, model.getComment());
                 intent1.putExtra(SharePreviewActivity.REQUEST_KEY_USER_NAME, model.getAutor());
                 intent1.putExtra(SharePreviewActivity.REQUEST_KEY_HEAD_IMAGE, model.getAutorPhoto());
-                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COVER, model.getImglist().get(viewPager.getCurrentItem()).getPath());
+                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COVER, model.getImglist().get(viewPager.getCurrentItem()));
+
                 startActivity(intent1);
 
 

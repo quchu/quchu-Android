@@ -13,6 +13,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ShareDialogFg;
+import co.quchu.quchu.model.ImageModel;
 
 public class SharePreviewActivity extends BaseActivity {
 
@@ -42,8 +43,9 @@ public class SharePreviewActivity extends BaseActivity {
         ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
         toolbar.getTitleTv().setText("分享");
-
-        simpleDraweeView.setImageURI(Uri.parse(getIntent().getStringExtra(REQUEST_KEY_COVER)));
+        ImageModel coverModel = getIntent().getParcelableExtra(REQUEST_KEY_COVER);
+        simpleDraweeView.setAspectRatio(coverModel.getWidth() / (float) coverModel.getHeight());
+        simpleDraweeView.setImageURI(Uri.parse(coverModel.getPath()));
         headImage.setImageURI(Uri.parse(getIntent().getStringExtra(REQUEST_KEY_HEAD_IMAGE)));
         name.setText(getIntent().getStringExtra(REQUEST_KEY_USER_NAME));
         commemt.setText(getIntent().getStringExtra(REQUEST_KEY_COMMENT));
