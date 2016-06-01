@@ -30,6 +30,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
@@ -79,7 +80,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     private LatLng myAddress;
     private MapView mapView;
     private ViewPager mVPNearby;
-    private BitmapDescriptor mMapPin,mMapPinRed;
+    private BitmapDescriptor mMapPin;
 
 
     @Override
@@ -88,9 +89,16 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_place_map);
         mapView = (MapView) findViewById(R.id.place_map_mv);
         mVPNearby = (ViewPager) findViewById(R.id.vpNearby);
+        View vReturn = findViewById(R.id.ivReturn);
+        vReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
 
         mMapPin = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin);
-        mMapPinRed = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_red);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
         currentPosition.setOnClickListener(this);
@@ -100,7 +108,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         }
         initData();
 
-        getEnhancedToolbar().getTitleTv().setText(R.string.nearby_quchu);
+        //getEnhancedToolbar().getTitleTv().setText(R.string.nearby_quchu);
 
         mAdapter = new AMapNearbyVPAdapter(mDataSet, new AMapNearbyVPAdapter.OnMapItemClickListener() {
             @Override
@@ -206,6 +214,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initData() {
+
+        //aMap.moveCamera(CameraUpdateFactory.zoomTo(.5f));
         if (StringUtils.isDouble(getIntent().getStringExtra("lat")))
             lat = Double.parseDouble(getIntent().getStringExtra("lat"));
         if (StringUtils.isDouble(getIntent().getStringExtra("lon")))
@@ -227,10 +237,16 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         markerOption.draggable(true);
         markerOption.visible(true);
         markerOption.setFlat(true);
-        markerOption.icon(mMapPinRed);
+        markerOption.icon(mMapPin);
         Marker marker = aMap.addMarker(markerOption);
+
         CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
                 placeAddress, mapView.getMap().getCameraPosition().zoom, 0, 0));
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.
+                fromResource(R.mipmap.ic_map_pin_me));
+
+        aMap.setMyLocationStyle(myLocationStyle);
         aMap.animateCamera(update);
         marker.showInfoWindow();
 //        marker.setObject(0);
@@ -274,24 +290,32 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private int mLocationUpdateCounter = 0;
+
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
-            if (amapLocation.getErrorCode() == 0) {
+            SPUtils.setLatitude(amapLocation.getLatitude());
+            SPUtils.setLongitude(amapLocation.getLongitude());
+//            LatLngBounds bounds = new LatLngBounds.Builder().include(placeAddress).include(myAddress).build();
+//            if (amapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
-                SPUtils.setLatitude(amapLocation.getLatitude());
-                SPUtils.setLongitude(amapLocation.getLongitude());
-                if (myAddress == null) {
-                    myAddress = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
-                    LatLngBounds bounds = new LatLngBounds.Builder()
-                            .include(placeAddress).include(myAddress).build();
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
-                }
-            } else if (amapLocation.getErrorCode() == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) {
-                LogUtils.e("定位失败,权限被拒绝");
-                aMap.setOnMapLoadedListener(this);
-                aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+
+            if (mLocationUpdateCounter<=1){
+                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeAddress,150));
             }
+            mLocationUpdateCounter +=1;
+//                if (myAddress == null) {
+//                    myAddress = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+//                    LatLngBounds bounds = new LatLngBounds.Builder()
+//                            .include(placeAddress).include(myAddress).build();
+//                    aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+//                }
+//            } else if (amapLocation.getErrorCode() == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) {
+//                LogUtils.e("定位失败,权限被拒绝");
+//                aMap.setOnMapLoadedListener(this);
+//                aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+//            }
         }
     }
 
@@ -402,10 +426,10 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 //                .include(placeAddress).build();
 //        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
 
-        CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
-                placeAddress, 14, 0, 0));
-
-        aMap.animateCamera(update);
+//        CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
+//                placeAddress, 14, 0, 0));
+//
+//        aMap.animateCamera(update);
 
     }
 

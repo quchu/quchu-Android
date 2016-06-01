@@ -5,16 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/cp_enhanced_toolbar"
-        />
 
 
     <com.amap.api.maps.MapView
         android:id="@+id/place_map_mv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/appbar" />
+        android:layout_height="match_parent" />
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
@@ -37,4 +33,17 @@
         android:padding="@dimen/half_margin"
         android:src="@mipmap/ic_my_location"
         tools:ignore="ContentDescription" />
+
+
+    <ImageView
+        android:id="@+id/ivReturn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="@dimen/half_margin"
+        android:src="@mipmap/ic_map_return"
+        tools:ignore="ContentDescription" />
+
 </RelativeLayout>

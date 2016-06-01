@@ -289,7 +289,6 @@
             android:gravity="center"
             android:text="发现新趣处"
             android:textColor="@color/standard_color_h2_dark"
-            android:textSize="@dimen/word_title_body"
-            android:textStyle="bold" />
+            android:textSize="@dimen/word_title_body" />
     </LinearLayout>
 </RelativeLayout>
