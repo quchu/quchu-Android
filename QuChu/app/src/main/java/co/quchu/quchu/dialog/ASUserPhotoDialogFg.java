@@ -10,15 +10,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.tencent.tauth.Tencent;
-
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.adapter.DialogAccountSettingAdapter;
-import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.utils.KeyboardUtils;
 
@@ -28,29 +23,18 @@ import co.quchu.quchu.utils.KeyboardUtils;
  * Date: 2015-12-23
  */
 public class ASUserPhotoDialogFg extends DialogFragment implements AdapterView.OnItemClickListener {
-    /**
-     * Bundle key used to start the blur dialog with a given scale factor (float).
-     */
+
     @Bind(R.id.dialog_share_gv)
     GridView dialogShareGv;
 
-    private ArrayList<CityModel> cityList;
 
-    /**
-     * Retrieve a new instance of the sample fragment.
-     *
-     * @return well instantiated fragment.
-     * Serializable cityList
-     */
     public static ASUserPhotoDialogFg newInstance() {
         ASUserPhotoDialogFg fragment = new ASUserPhotoDialogFg();
         return fragment;
     }
 
     private int shareId = 0;
-    private String shareTitle = "";
     private boolean isPlace = false;
-    Tencent mTencent;
     String shareUrl = "";
     private UserPhotoOriginSelectedListener listener;
 
@@ -74,6 +58,7 @@ public class ASUserPhotoDialogFg extends DialogFragment implements AdapterView.O
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_setting, null);
         ButterKnife.bind(this, view);
+        dialogShareGv.setNumColumns(2);
         dialogShareGv.setAdapter(new DialogAccountSettingAdapter(getActivity()));
         dialogShareGv.setOnItemClickListener(this);
         shareUrl = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
@@ -94,13 +79,13 @@ public class ASUserPhotoDialogFg extends DialogFragment implements AdapterView.O
         if (KeyboardUtils.isFastDoubleClick())
             return;
         switch (position) {
+//            case 0:
+//                listener.selectedCamare();
+//                break;
             case 0:
-                listener.selectedCamare();
-                break;
-            case 1:
                 listener.selectedAblum();
                 break;
-            case 2:
+            case 1:
                 listener.selectedQuPhtot();
                 break;
         }
@@ -108,7 +93,6 @@ public class ASUserPhotoDialogFg extends DialogFragment implements AdapterView.O
     }
 
     public interface UserPhotoOriginSelectedListener {
-        void selectedCamare();
 
         void selectedAblum();
 

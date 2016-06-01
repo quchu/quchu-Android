@@ -207,12 +207,12 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
     //选中头像dialog 点击回调
     public ASUserPhotoDialogFg.UserPhotoOriginSelectedListener listener = new ASUserPhotoDialogFg.UserPhotoOriginSelectedListener() {
-        @Override
-        public void selectedCamare() {
-            initGralley();
-            int REQUEST_CODE_CAMERA = 0x02;
-            GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCallback);
-        }
+//        @Override
+//        public void selectedCamare() {
+//            initGralley();
+//            int REQUEST_CODE_CAMERA = 0x02;
+//            GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCallback);
+//        }
 
         @Override
         public void selectedAblum() {
