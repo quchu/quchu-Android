@@ -98,6 +98,7 @@ public class DetailModel implements Serializable{
         NearbyMapModel model = new NearbyMapModel();
         model.setAddress(this.getAddress());
         model.setCover(this.getCover());
+        model.setName(this.getName());
         //model.setDescribe(this.get);
         model.setGdLatitude(this.gdLatitude);
         model.setGdLongitude(this.gdLongitude);

@@ -42,6 +42,7 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.NearbyPresenter;
+import co.quchu.quchu.utils.DatabaseHelper;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -118,6 +119,8 @@ public class QuchuDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_quchu_details);
         ButterKnife.bind(this);
         from = getIntent().getStringExtra(REQUEST_KEY_FROM);

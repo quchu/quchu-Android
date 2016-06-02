@@ -12,8 +12,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper sInstance;
 
-    private static final String DATABASE_NAME = "db_quchu_events";
-    private static final String DATABASE_TABLE = "tb_user_behavior";
+    public static final String DATABASE_NAME = "db_quchu_events";
+    public static final String TABLE_NAME_USER_BEHAVIOR = "tb_user_behavior";
     private static final String SQL_CREATE_TABLE_USER_BEHAVIOR =
             "create table tb_user_behavior (id integer primary key autoincrement,pageName text not null,pageArguments text,pageValues text,timestamp long not null,status integer not null);";
 

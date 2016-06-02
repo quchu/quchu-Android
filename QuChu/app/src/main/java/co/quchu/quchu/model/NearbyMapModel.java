@@ -134,4 +134,24 @@ public class NearbyMapModel implements Serializable {
     public void setWidth(int width) {
         this.width = width;
     }
+
+    @Override
+    public String toString() {
+        return "NearbyMapModel{" +
+                "tags=" + tags +
+                ", distance=" + distance +
+                ", cover='" + cover + '\'' +
+                ", address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                ", describe='" + describe + '\'' +
+                ", rgb='" + rgb + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", gdLongitude='" + gdLongitude + '\'' +
+                ", gdLatitude='" + gdLatitude + '\'' +
+                ", pid=" + pid +
+                ", height=" + height +
+                ", width=" + width +
+                '}';
+    }
 }

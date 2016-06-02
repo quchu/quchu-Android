@@ -156,8 +156,14 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", gdlat, gdlon, new CommonListener<List<NearbyMapModel>>() {
             @Override
             public void successListener(List<NearbyMapModel> response) {
-
                 mDataSet.addAll(response);
+                for (int i = 0; i < mDataSet.size(); i++) {
+                    if (mDataSet.get(i).getPid()==mCurrentModel.getPid()){
+                        mDataSet.remove(i);
+                    }
+                }
+                mDataSet.add(0,mCurrentModel);
+
 
                 mAdapter.notifyDataSetChanged();
                 initMarks();
@@ -307,7 +313,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                 mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
 
             if (mLocationUpdateCounter<=1){
-                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeAddress,150));
+                aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeAddress,50));
             }
             mLocationUpdateCounter +=1;
 //                if (myAddress == null) {
