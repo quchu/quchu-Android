@@ -160,7 +160,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
 //        detail.setText(model.getAutor() + ": " + model.getComment());
 
         SpannableString string = new SpannableString(model.getAutor() + ": " + model.getComment());
-        string.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.colorPrimary)),0,model.getAutor().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        string.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)), 0, model.getAutor().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         detail.setText(string);
 
         if (model.getPlaceId() == 0) {
@@ -191,6 +191,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         supportContainer.setOnClickListener(this);
         edit.setOnClickListener(this);
         share.setOnClickListener(this);
+        headImage.setOnClickListener(this);
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             float x;
             float y;
@@ -268,6 +269,11 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
                 intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
                 intent.putExtra(AddFootprintActivity.REQUEST_KEY_IS_EDIT, true);
                 startActivity(intent);
+                break;
+            case R.id.headImage:
+                Intent intent2 = new Intent(this, UserCenterActivity.class);
+                intent2.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, model.getAutorId());
+                startActivity(intent2);
                 break;
         }
     }

@@ -24,6 +24,7 @@
         android:id="@+id/container_bottom"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:clickable="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp"
         android:background="@color/appBackgroundTrans"
