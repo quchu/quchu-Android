@@ -303,11 +303,11 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        LogUtils.e("childCound" + viewpager.getChildCount());
     }
 
     @Override
     public void onPageSelected(int position) {
+        LogUtils.e("childCound" + viewpager.getChildCount());
         MobclickAgent.onEvent(getContext(), "recommendation_c");
 //        if (newPosition > oldPosition) {
 //            MobclickAgent.onEvent(getContext(), "slideright_c");

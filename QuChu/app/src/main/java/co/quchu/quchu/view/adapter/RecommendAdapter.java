@@ -52,11 +52,19 @@ public class RecommendAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, container, false);
-        if (position != 0) {
-            view.setScaleY(RecommendFragment.MIN_SCALE);
+        RecommendHolder holder;
+
+        if (container.getTag() == null) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, container, false);
+
+            holder = new RecommendHolder(view, listener, position);
+        } else {
+            holder = (RecommendHolder) container.getTag();
+            container.setTag(null);
         }
-        RecommendHolder holder = new RecommendHolder(view, listener, position);
+        if (position != 0) {
+            holder.itemView.setScaleY(RecommendFragment.MIN_SCALE);
+        }
 
         RecommendModel model = dataSet.get(position);
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
@@ -73,7 +81,7 @@ public class RecommendAdapter extends PagerAdapter {
             price = "-";
         }
 
-        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext,R.color.standard_color_red,mContext.getString(R.string.avg_cost_with_rmb_symbol),price,"起"));
+        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext, R.color.standard_color_red, mContext.getString(R.string.avg_cost_with_rmb_symbol), price, "起"));
         holder.rbRating.setRating(model.getSuggest());
         //holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
@@ -114,6 +122,7 @@ public class RecommendAdapter extends PagerAdapter {
                         holder.tag3.setVisibility(View.VISIBLE);
                         break;
                 }
+                if (i == 2) break;
             }
         } else {
             holder.tag1.setVisibility(View.GONE);
@@ -133,13 +142,14 @@ public class RecommendAdapter extends PagerAdapter {
             holder.item_recommend_card_distance_tv.setText(builder);
 
         }
-        container.addView(view);
-        return view;
+        container.addView(holder.itemView);
+        return holder;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
+        container.removeView(((RecommendHolder) object).itemView);
+        container.setTag(object);
     }
 
     @Override
@@ -155,7 +165,7 @@ public class RecommendAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == object;
+        return view == ((RecommendHolder) object).itemView;
     }
 
     class RecommendHolder {
@@ -184,7 +194,7 @@ public class RecommendAdapter extends PagerAdapter {
 
         public RecommendHolder(View itemView, CardClickListener listener, int position) {
             ButterKnife.bind(this, itemView);
-            LogUtils.e("初始化page" + position);
+            LogUtils.e("初始化home  page" + position);
             this.itemView = itemView;
             this.listener = listener;
             tag1.setVisibility(View.GONE);
