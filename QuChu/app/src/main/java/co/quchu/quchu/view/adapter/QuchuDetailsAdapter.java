@@ -216,6 +216,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
 
             ((IntroImageViewHolder) holder).rbRating.setRating(mData.getSuggest());
+            ((IntroImageViewHolder) holder).rbRating.setClickable(false);
 
             if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setText(StringUtils.getColorSpan(((IntroImageViewHolder) holder).detail_avg_price_tv.getContext(),R.color.standard_color_red,"人均消费",mData.getPrice(),""));

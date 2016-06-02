@@ -10,7 +10,7 @@
         android:id="@+id/ivClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_back"
+        android:src="@mipmap/ic_dismiss_dialog"
         android:layout_margin="@dimen/base_margin"
         />
 
