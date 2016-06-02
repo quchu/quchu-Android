@@ -72,9 +72,9 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         viewpager.setPadding(80, 40, 80, 40);
         viewpager.setPageMargin(40);
         viewpager.addOnPageChangeListener(this);
-        adapter = new RecommendAdapter(getActivity(), cardList, this);
+        adapter = new RecommendAdapter(this, cardList, this);
         viewpager.setAdapter(adapter);
-        viewpager.setPageTransformer(false, this);
+//        viewpager.setPageTransformer(true, this);not use please  see adapter
         presenter = new RecommentFragPresenter(getContext(), this);
         refreshLayout.setColorSchemeResources(R.color.standard_color_yellow);
         initData();
@@ -336,14 +336,16 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         if (position <= 1) {
             if (position < 0) {//滑出的页 0.0 ~ -1 *
                 float scaleFactor = (1 - MIN_SCALE) * (0 - position);
-//                page.setScaleX(1 - scaleFactor);
                 page.setScaleY(1 - scaleFactor);
-            } else if (currentIndex != 0) {//滑进的页 1 ~ 0.0 *
+            } else {//滑进的页 1 ~ 0.0 *
                 float scaleFactor = (1 - MIN_SCALE) * (1 - position);
-//                page.setScaleX(MIN_SCALE + scaleFactor);
                 page.setScaleY(MIN_SCALE + scaleFactor);
             }
         }
 
+    }
+
+    public ViewPager getViewpager() {
+        return viewpager;
     }
 }

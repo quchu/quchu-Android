@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import butterknife.Bind;
@@ -42,9 +43,12 @@ public class RecommendAdapter extends PagerAdapter {
     private Activity mContext;
     private List<RecommendModel> dataSet;
     private CardClickListener listener;
+    private RecommendFragment fragment;
+    private ViewGroup viewPager;
 
-    public RecommendAdapter(Activity mContext, List<RecommendModel> arrayList, CardClickListener listener) {
-        this.mContext = mContext;
+    public RecommendAdapter(RecommendFragment fragment, List<RecommendModel> arrayList, CardClickListener listener) {
+        this.mContext = fragment.getActivity();
+        this.fragment = fragment;
         dataSet = arrayList;
         this.listener = listener;
     }
@@ -53,7 +57,7 @@ public class RecommendAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         RecommendHolder holder;
-
+        this.viewPager = container;
         if (container.getTag() == null) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, container, false);
 
@@ -62,8 +66,10 @@ public class RecommendAdapter extends PagerAdapter {
             holder = (RecommendHolder) container.getTag();
             container.setTag(null);
         }
-        if (position != 0) {
+        if (position != 0 && position != fragment.getViewpager().getCurrentItem()) {
             holder.itemView.setScaleY(RecommendFragment.MIN_SCALE);
+        } else {
+            holder.itemView.setScaleY(1);
         }
 
         RecommendModel model = dataSet.get(position);
@@ -228,6 +234,20 @@ public class RecommendAdapter extends PagerAdapter {
 
     public interface CardClickListener {
         void onCardLick(View view, int position);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        try {
+            Field field = fragment.getViewpager().getClass().getDeclaredField("mPageTransformer");
+            field.setAccessible(true);
+            field.set(fragment.getViewpager(), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException("release version error");
+        }
+        super.notifyDataSetChanged();
+        fragment.getViewpager().setPageTransformer(false, fragment);
     }
 
 }
