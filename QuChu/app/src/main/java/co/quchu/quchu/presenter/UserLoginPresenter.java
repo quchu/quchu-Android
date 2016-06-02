@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.sina.weibo.sdk.utils.MD5;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -169,7 +170,7 @@ public class UserLoginPresenter {
 
         Map<String, String> params = new HashMap<>();
         params.put("username", phoneNo);
-        params.put("password", password);
+        params.put("password", MD5.hexdigest(password));
         params.put("captcha", authCode);
         params.put("regType", "tel");
         params.put("equip", StringUtils.getMyUUID());
@@ -206,7 +207,7 @@ public class UserLoginPresenter {
      * @param listener 回调
      */
     public static void userLogin(Context context, String phoneNo, String password, final UserLoginListener listener) {
-        NetService.post(context, String.format(NetApi.Mlogin, phoneNo, password, StringUtils.getMyUUID()), null, new IRequestListener() {
+        NetService.post(context, String.format(NetApi.Mlogin, phoneNo, MD5.hexdigest(password), StringUtils.getMyUUID()), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 UserInfoHelper.saveUserInfo(response);
@@ -222,7 +223,7 @@ public class UserLoginPresenter {
     }
 
     public static void resetPassword(Context context, String phoneNo, String password, String authCode, final UserNameUniqueListener listener) {
-        NetService.post(context, String.format(NetApi.ResertPsw, phoneNo, password, authCode), null, new IRequestListener() {
+        NetService.post(context, String.format(NetApi.ResertPsw, phoneNo, MD5.hexdigest(password), authCode), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
