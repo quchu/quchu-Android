@@ -85,14 +85,17 @@
 
                 <TextView
                     android:id="@+id/tvFootprintCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     style="@style/TextView.H3"
-                    android:textColor="@color/standard_color_yellow"
-                    android:paddingLeft="25dp"
-                    android:paddingTop="5dp"
-                    android:layout_centerHorizontal="true"
-
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:background="@drawable/ic_shape_round_fill_yellow"
+                    android:textColor="@color/standard_color_h1_dark"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
                     />
 
             </RelativeLayout>

@@ -94,6 +94,33 @@ public class DetailModel implements Serializable{
 
 
 
+    public NearbyMapModel convert2NearbyMapItem(){
+        NearbyMapModel model = new NearbyMapModel();
+        model.setAddress(this.getAddress());
+        model.setCover(this.getCover());
+        //model.setDescribe(this.get);
+        model.setGdLatitude(this.gdLatitude);
+        model.setGdLongitude(this.gdLongitude);
+        model.setLatitude(this.getLatitude());
+        model.setLongitude(this.getLongitude());
+        model.setHeight(this.getHeight());
+        model.setWidth(this.getWidth());
+        model.setPid(this.getPid());
+
+        List<TagsModel> tagModel = new ArrayList<>();
+        if (null==this.getTags()){
+            model.setTags(tagModel);
+        }else{
+            for (int i = 0; i < this.getTags().size(); i++) {
+                TagsModel tag = new TagsModel();
+                tag.setZh(getTags().get(i).getZh());
+                tag.setTagId(getTags().get(i).getId());
+            }
+            model.setTags(tagModel);
+        }
+        return model;
+    }
+
 
     public void copyFrom(DetailModel objTarget){
 

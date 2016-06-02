@@ -1,11 +1,12 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Nikolai on 2016/4/17.
  */
-public class NearbyMapModel {
+public class NearbyMapModel implements Serializable {
 
     private List<TagsModel> tags;
     private float distance;

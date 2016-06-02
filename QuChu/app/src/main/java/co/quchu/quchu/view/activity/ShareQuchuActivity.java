@@ -71,7 +71,7 @@ public class ShareQuchuActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mJokingMode = !mJokingMode;
-                if (mJokingMode){
+                if (!mJokingMode){
                     getEnhancedToolbar().getRightTv().setText(R.string.share_mode_joking);
                     tvPlaceName.setText(mQuchuName);
 

@@ -499,6 +499,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                         mapIntent.putExtra("gdlon", dModel.gdLongitude);
                         mapIntent.putExtra("gdlat", dModel.gdLatitude);
                         mapIntent.putExtra("title", dModel.getName());
+                        mapIntent.putExtra("entity",dModel.convert2NearbyMapItem());
                         mapIntent.putExtra("placeAddress", dModel.getAddress());
                         startActivity(mapIntent);
                     } else {

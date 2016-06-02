@@ -81,6 +81,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     private MapView mapView;
     private ViewPager mVPNearby;
     private BitmapDescriptor mMapPin;
+    private NearbyMapModel mCurrentModel;
 
 
     @Override
@@ -156,6 +157,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void successListener(List<NearbyMapModel> response) {
                 mDataSet.addAll(response);
+
                 mAdapter.notifyDataSetChanged();
                 initMarks();
                 DialogUtil.dismissProgess();
@@ -224,6 +226,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
             gdlon = Double.parseDouble(getIntent().getStringExtra("gdlon"));
         if (StringUtils.isDouble(getIntent().getStringExtra("gdlat")))
             gdlat = Double.parseDouble(getIntent().getStringExtra("gdlat"));
+
+        mCurrentModel = (NearbyMapModel) getIntent().getSerializableExtra("entity");
 
         placeTitle = getIntent().getStringExtra("title");
         placeAddressStr = getIntent().getStringExtra("placeAddress");
