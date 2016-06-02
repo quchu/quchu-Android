@@ -156,6 +156,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", gdlat, gdlon, new CommonListener<List<NearbyMapModel>>() {
             @Override
             public void successListener(List<NearbyMapModel> response) {
+
                 mDataSet.addAll(response);
 
                 mAdapter.notifyDataSetChanged();
@@ -242,7 +243,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         markerOption.visible(true);
         markerOption.setFlat(true);
         markerOption.icon(mMapPin);
-        Marker marker = aMap.addMarker(markerOption);
+        //Marker marker = aMap.addMarker(markerOption);
 
         CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
                 placeAddress, mapView.getMap().getCameraPosition().zoom, 0, 0));
@@ -252,7 +253,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
         aMap.setMyLocationStyle(myLocationStyle);
         aMap.animateCamera(update);
-        marker.showInfoWindow();
+        //marker.showInfoWindow();
 //        marker.setObject(0);
 //        mMarks.add(marker);
     }

@@ -329,7 +329,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     private void showNoneHistory() {
         searchHistoryFl.setVisibility(View.VISIBLE);
         searchHistoryHintFl.setText("尚无搜索历史");
-        searchHistoryClearRl.setVisibility(View.GONE);
+        //searchHistoryClearRl.setVisibility(View.GONE);
         searchHistoryRv.setVisibility(View.GONE);
         searchResultFl.setVisibility(View.GONE);
     }
@@ -338,7 +338,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     private void showHistory() {
         searchHistoryFl.setVisibility(View.VISIBLE);
         searchHistoryRv.setVisibility(View.VISIBLE);
-        searchHistoryClearRl.setVisibility(View.VISIBLE);
+        //searchHistoryClearRl.setVisibility(View.VISIBLE);
         searchResultFl.setVisibility(View.GONE);
         searchHistoryHintFl.setText("历史记录");
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,true);
@@ -365,7 +365,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     private void updateHistory() {
         searchHistoryFl.setVisibility(View.VISIBLE);
         searchHistoryRv.setVisibility(View.VISIBLE);
-        searchHistoryClearRl.setVisibility(View.VISIBLE);
+        //searchHistoryClearRl.setVisibility(View.VISIBLE);
         searchResultFl.setVisibility(View.GONE);
         searchHistoryHintFl.setText("历史记录");
         SearchHistoryUtil.saveSearchHistory(searchModel);
@@ -380,7 +380,7 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
     public void showSearchResult() {
         searchHistoryFl.setVisibility(View.GONE);
         searchHistoryRv.setVisibility(View.GONE);
-        searchHistoryClearRl.setVisibility(View.GONE);
+//        searchHistoryClearRl.setVisibility(View.GONE);
         searchResultFl.setVisibility(View.VISIBLE);
 
     }

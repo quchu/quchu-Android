@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.utils.AppUtil;
 
 /**
  * LocationSelectedDialogFg
@@ -64,6 +65,13 @@ public class NavigateSelectedDialogFg extends DialogFragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_navigate_selected, null);
         ButterKnife.bind(this, view);
         builder.setView(view);
+        if (!AppUtil.isAppInstall("com.autonavi.minimap")){
+            navigateGdTv.setVisibility(View.GONE);
+        }else if(!AppUtil.isAppInstall("com.tencent.map")){
+            navigateTxTv.setVisibility(View.GONE);
+        }else if(!AppUtil.isAppInstall("com.baidu.BaiduMap")){
+            navigateBdTv.setVisibility(View.GONE);
+        }
         return builder.create();
     }
 
