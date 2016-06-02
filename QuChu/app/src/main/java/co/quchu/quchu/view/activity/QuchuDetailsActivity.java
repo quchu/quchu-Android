@@ -389,7 +389,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         InterestingDetailPresenter.updateRatingInfo(getApplicationContext(), dModel.getPid(), score, strTags, new InterestingDetailPresenter.DetailDataListener() {
             @Override
             public void onSuccessCall(String str) {
-                Toast.makeText(getApplicationContext(), "评价成功", Toast.LENGTH_LONG).show();
+                Toast.makeText(QuchuDetailsActivity.this, "评价成功", Toast.LENGTH_SHORT).show();
                 mVisitedInfoModel.setScore(score);
                 for (int i = 0; i < selection.size(); i++) {
                     mVisitedInfoModel.getResult().get(i).setPraise(selection.get(i).isPraise());

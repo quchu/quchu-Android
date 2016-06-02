@@ -47,7 +47,7 @@ public class ShareQuchuActivity extends BaseActivity {
     public String mQuchuName;
     public String mQuchuAddress;
     public int mQuchuId;
-    public boolean mJokingMode = false;
+    public boolean mJokingMode = true;
 
 
     public static Intent getStartIntent(Context context,String cover,String name,String address,int id){
@@ -65,17 +65,20 @@ public class ShareQuchuActivity extends BaseActivity {
         setContentView(R.layout.activity_share_quchu);
         ButterKnife.bind(this);
 
-        getEnhancedToolbar().getRightTv().setText(R.string.share_mode_joking);
+        getEnhancedToolbar().getRightTv().setText(R.string.share_mode_normal);
+
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mJokingMode = !mJokingMode;
                 if (mJokingMode){
                     getEnhancedToolbar().getRightTv().setText(R.string.share_mode_joking);
-                    tvPlaceName.setText("");
+                    tvPlaceName.setText(mQuchuName);
+
                 }else{
                     getEnhancedToolbar().getRightTv().setText(R.string.share_mode_normal);
-                    tvPlaceName.setText(mQuchuName);
+                    tvPlaceName.setText("");
+
                 }
             }
         });
@@ -87,7 +90,7 @@ public class ShareQuchuActivity extends BaseActivity {
         ivQuchuCover.setImageURI(Uri.parse(mQuchuCover));
         ivQuchuCover.setAspectRatio(1.5f);
         tvPlaceLocation.setText(mQuchuAddress);
-        tvPlaceName.setText(mQuchuName);
+        tvPlaceName.setText("");
         tvShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

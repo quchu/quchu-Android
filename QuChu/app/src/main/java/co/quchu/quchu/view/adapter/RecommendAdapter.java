@@ -89,7 +89,7 @@ public class RecommendAdapter extends PagerAdapter {
 
         holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext, R.color.standard_color_red, mContext.getString(R.string.avg_cost_with_rmb_symbol), price, "起"));
         holder.rbRating.setRating(model.getSuggest());
-        holder.rbRating.setClickable(false);
+        holder.rbRating.setIsIndicator(true);
         //holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
 
