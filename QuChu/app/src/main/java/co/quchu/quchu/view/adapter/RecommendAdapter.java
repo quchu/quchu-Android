@@ -13,8 +13,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -147,6 +145,12 @@ public class RecommendAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         return dataSet == null ? 0 : dataSet.size();
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+
+        return POSITION_NONE;
     }
 
     @Override

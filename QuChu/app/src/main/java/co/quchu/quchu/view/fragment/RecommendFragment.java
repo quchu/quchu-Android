@@ -303,7 +303,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//        LogUtils.e("childCound" + viewpager.getChildCount());
+        LogUtils.e("childCound" + viewpager.getChildCount());
     }
 
     @Override
@@ -332,7 +332,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Override
     public void transformPage(View page, float position) {
-        LogUtils.e("id: " + page + " position:" + position);
+//        LogUtils.e("id: " + page + " position:" + position);
         if (position <= 1) {
             if (position < 0) {//滑出的页 0.0 ~ -1 *
                 float scaleFactor = (1 - MIN_SCALE) * (0 - position);
