@@ -35,7 +35,7 @@ android {
         release {
             // 不显示Log
             buildConfigField "boolean", "DISPLAY_LOG", "false"
-            buildConfigField "int", "API_SERVER", "2" //0 prd ,1 uat, 2 sit
+            buildConfigField "int", "API_SERVER", "0" //0 prd ,1 uat, 2 sit
             //混淆
             minifyEnabled true
             //Zipalign优化
@@ -144,6 +144,7 @@ dependencies {
     compile files('libs/umeng-analytics-v5.6.4.jar')
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' // or 1.4-beta1
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    uatCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     compile 'com.jakewharton:butterknife:7.0.1'
 
     compile 'com.qiniu:qiniu-android-sdk:7.0.+'
