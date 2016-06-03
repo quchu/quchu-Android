@@ -84,32 +84,37 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         imageView.setOnClickListener(this);
         presenter.getUnreadMassageCound();
         initListener();
-        initData();
+
+        userHead = AppContext.user.getPhoto();
+        ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
     }
 
     @Override
     protected void onResume() {
+        super.onResume();
         MobclickAgent.onPageStart("profile");
-
+        presenter.getGene();
+        if (AppContext.user.isIsVisitors()) {
+            //游客
+            editOrLogin.setText("登陆");
+            editIcon.setVisibility(View.GONE);
+        } else {
+            editOrLogin.setText("编辑");
+            editIcon.setVisibility(View.VISIBLE);
+        }
         name.setText(AppContext.user.isIsVisitors() ? "未知生物" : AppContext.user.getFullname());
 //更换了头像
         if (!userHead.equals(AppContext.user.getPhoto())) {
             userHead = AppContext.user.getPhoto();
             ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
         }
-        super.onResume();
+
     }
 
     @Override
     protected void onPause() {
         MobclickAgent.onPageEnd("profile");
         super.onPause();
-    }
-
-    private void initData() {
-        userHead = AppContext.user.getPhoto();
-        ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
-        presenter.getGene();
     }
 
     private void initListener() {
@@ -120,14 +125,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         findPosition.setOnClickListener(this);
         editOrLogin.setOnClickListener(this);
 
-        if (AppContext.user.isIsVisitors()) {
-            //游客
-            editOrLogin.setText("登陆");
-            editIcon.setVisibility(View.GONE);
-        } else {
-            editOrLogin.setText("编辑");
-            editIcon.setVisibility(View.VISIBLE);
-        }
 
     }
 

@@ -23,10 +23,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.RecommendFragment;
@@ -44,7 +42,6 @@ public class RecommendAdapter extends PagerAdapter {
     private List<RecommendModel> dataSet;
     private CardClickListener listener;
     private RecommendFragment fragment;
-    private ViewGroup viewPager;
 
     public RecommendAdapter(RecommendFragment fragment, List<RecommendModel> arrayList, CardClickListener listener) {
         this.mContext = fragment.getActivity();
@@ -55,13 +52,12 @@ public class RecommendAdapter extends PagerAdapter {
 
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         RecommendHolder holder;
-        this.viewPager = container;
         if (container.getTag() == null) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, container, false);
 
-            holder = new RecommendHolder(view, listener, position);
+            holder = new RecommendHolder(view);
         } else {
             holder = (RecommendHolder) container.getTag();
             container.setTag(null);
@@ -150,6 +146,18 @@ public class RecommendAdapter extends PagerAdapter {
 
         }
         container.addView(holder.itemView);
+
+        if (listener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onCardLick(v, position);
+
+                }
+            });
+        }
+
+
         return holder;
     }
 
@@ -195,34 +203,20 @@ public class RecommendAdapter extends PagerAdapter {
 
         @Bind(R.id.distance)
         TextView item_recommend_card_distance_tv;
-        private CardClickListener listener;
-        private int position;
         View itemView;
 
-        public RecommendHolder(View itemView, CardClickListener listener, int position) {
+        public RecommendHolder(View itemView) {
             ButterKnife.bind(this, itemView);
-            LogUtils.e("初始化home  page" + position);
             this.itemView = itemView;
-            this.listener = listener;
             tag1.setVisibility(View.GONE);
             tag2.setVisibility(View.GONE);
             tag3.setVisibility(View.GONE);
-            this.position = position;
-        }
-
-        @OnClick({R.id.root_cv})
-        public void cardClick(View view) {
-            if (listener != null)
-                listener.onCardLick(view, position);
         }
     }
-
     private static long lastClickTime = 0L;
 
     /**
      * 防止重复点击
-     *
-     * @return
      */
     public static boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();

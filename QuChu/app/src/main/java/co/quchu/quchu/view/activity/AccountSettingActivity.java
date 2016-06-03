@@ -46,6 +46,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
+import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.ImageUtils;
@@ -168,10 +169,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
             case R.id.saveUserInfo:
                 saveUserChange();
                 break;
-//            case R.id.location:
-//                LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
-//                locationDIalogFg.show(getSupportFragmentManager(), "location");
-//                break;
             case R.id.bindAccound:
                 final Intent intent = new Intent(this, BindActivity.class);
                 startActivity(intent);
@@ -181,7 +178,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                 dialog.show(getSupportFragmentManager(), "");
                 break;
             case R.id.toolbar_tv_right:
-                ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance("确认退出?", "退出后将以游客模式登录");
+                final ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance("确认退出?", "退出后将以游客模式登录");
                 confirmDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
                     @Override
                     public void onClick(int index) {
@@ -190,11 +187,22 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                             vDialog.show(getSupportFragmentManager(), "visitor");
                             SPUtils.clearUserinfo(AppContext.mContext);
                             AppContext.user = null;
-                            Intent intent1 = new Intent(AccountSettingActivity.this, LoginActivity.class);
-                            intent1.putExtra("IsVisitorLogin", true);
-                            intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent1);
                             SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);
+
+                            UserLoginPresenter.visitorRegiest(AccountSettingActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
+                                @Override
+                                public void isUnique(JSONObject msg) {
+                                    confirmDialog.dismiss();
+                                    finish();
+                                }
+
+                                @Override
+                                public void notUnique(String msg) {
+
+                                }
+                            });
+
+
                         }
                     }
                 });

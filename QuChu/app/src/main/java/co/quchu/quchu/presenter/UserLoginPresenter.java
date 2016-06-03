@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.sina.weibo.sdk.utils.MD5;
 
 import org.json.JSONException;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
@@ -22,6 +24,7 @@ import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -102,15 +105,15 @@ public class UserLoginPresenter {
      * @param mobileNo 手机号码
      * @param listener 回调
      */
-    public static void requestVerifySms(Context context, String mobileNo,String type, final UserNameUniqueListener listener) {
+    public static void requestVerifySms(Context context, String mobileNo, String type, final UserNameUniqueListener listener) {
         NetService.get(context, String.format(NetApi.GetCaptcha, mobileNo, type), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
                 try {
-                    if (response.has("result")&&response.getString("result").equals("0")){
+                    if (response.has("result") && response.getString("result").equals("0")) {
                         listener.isUnique(null);
-                    }else{
+                    } else {
                         listener.notUnique("");
                     }
                 } catch (JSONException e) {
@@ -241,12 +244,13 @@ public class UserLoginPresenter {
 
     /**
      * 验证验证码
+     *
      * @param context
      * @param phoneNo
      * @param code
      * @param listener
      */
-    public static void verifyNext(Context context,String phoneNo,String code,final CommonListener listener){
+    public static void verifyNext(Context context, String phoneNo, String code, final CommonListener listener) {
 
         Map<String, String> params = new HashMap<>();
         params.put("phoneNumber", phoneNo);
@@ -254,22 +258,20 @@ public class UserLoginPresenter {
         GsonRequest<String> request = new GsonRequest<>(NetApi.autoCodeIsCorrect, String.class, params, new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                listener.errorListener(error,"","");
+                listener.errorListener(error, "", "");
             }
 
             @Override
             public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
                 if (result) {
-                    listener.successListener(null);
+                    listener.successListener(response);
                 } else {
-                    listener.errorListener(null,"","");
+                    listener.errorListener(null, "", "");
                 }
             }
         });
-        request.start(context, null);
+        request.start(context);
     }
-
-
 
 
     public interface UserNameUniqueListener {
@@ -291,12 +293,13 @@ public class UserLoginPresenter {
     /**
      * 游客注册
      */
-    public static void visitorRegiest(Context context, final UserNameUniqueListener listener) {
+    public static void visitorRegiest(final Context context, final UserNameUniqueListener listener) {
         NetService.post(context, String.format(NetApi.visitorRegiester, StringUtils.getMyUUID()), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json("visitorRegiest=" + response.toString());
                 UserInfoHelper.saveUserInfo(response);
+                AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(context), UserInfoModel.class);
                 if (null != listener)
                     listener.isUnique(response);
             }

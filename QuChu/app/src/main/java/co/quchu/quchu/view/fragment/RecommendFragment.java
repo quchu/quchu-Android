@@ -30,7 +30,6 @@ import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
@@ -61,6 +60,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     private int dataCount = -1;
 
     private String from = QuchuDetailsActivity.FROM_TYPE_HOME;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,8 +83,10 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 presenter.initTabData(true, selectedTag);
             }
         });
+        view.setClickable(true);
         return view;
     }
+
 
     public void initData() {
         presenter.init();
@@ -96,26 +98,19 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     @Override
     public void onCardLick(View view, int position) {
 
-        switch (view.getId()) {
-            case R.id.root_cv:
-                AppContext.selectedPlace = cardList.get(position);
-                hasChangePosition = position;
-                if (!KeyboardUtils.isFastDoubleClick()) {
-                    if (from.equals(QuchuDetailsActivity.FROM_TYPE_HOME)) {
-                        MobclickAgent.onEvent(getContext(), "detail_home_c");
-                    } else {
-                        MobclickAgent.onEvent(getContext(), "detail_tag_c");
-                    }
-
-                    MobclickAgent.onEvent(getActivity(), "detail_c");
-                    Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
-                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(position).getPid());
-                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, from);
-                    getActivity().startActivity(intent);
-                }
-                break;
-
+        AppContext.selectedPlace = cardList.get(viewpager.getCurrentItem());
+        hasChangePosition = viewpager.getCurrentItem();
+        if (from.equals(QuchuDetailsActivity.FROM_TYPE_HOME)) {
+            MobclickAgent.onEvent(getContext(), "detail_home_c");
+        } else {
+            MobclickAgent.onEvent(getContext(), "detail_tag_c");
         }
+        MobclickAgent.onEvent(getActivity(), "detail_c");
+        Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
+        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(viewpager.getCurrentItem()).getPid());
+        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, from);
+        getActivity().startActivity(intent);
+
     }
 
 

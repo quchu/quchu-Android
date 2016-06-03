@@ -42,7 +42,7 @@ public class MeActivityPresenter {
                 view.initGene(response);
             }
         });
-        request.start(context, null);
+        request.start(context);
     }
 
     public void getUnreadMassageCound() {
@@ -68,7 +68,7 @@ public class MeActivityPresenter {
 
             }
         });
-        request.start(context, null);
+        request.start(context);
     }
 
 }

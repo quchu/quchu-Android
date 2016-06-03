@@ -279,7 +279,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     @Override
     public void onBackPressed() {
         if (dataChange) {
-            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
+            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "继续编辑", "不保存退出");
             dialog.setListener(new CommonDialog.OnActionListener() {
                 @Override
                 public boolean dialogClick(int clickId) {
