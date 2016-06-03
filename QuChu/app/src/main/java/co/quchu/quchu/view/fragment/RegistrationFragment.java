@@ -152,13 +152,17 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
                                 SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
                                 getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
                                 getActivity().finish();
+                                mRequestRunning = false;
                             }
 
                             @Override
                             public void notUnique(String msg) {
                                 Toast.makeText(getActivity(),R.string.promote_account_create_success_login_manually,Toast.LENGTH_SHORT).show();
+                                mRequestRunning = false;
                             }
                         });
+                    }else{
+                        mRequestRunning = false;
                     }
                 }
             }

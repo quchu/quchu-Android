@@ -339,6 +339,7 @@ public class PhoneValidationFragment extends Fragment {
                     errorView.hideView();
                     scheduleCountDownTask();
                     mVerifyed = true;
+                    isRunning = false;
                 }
 
                 @Override
@@ -346,6 +347,7 @@ public class PhoneValidationFragment extends Fragment {
                     errorView.hideView();
                     Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
                     scheduleCountDownTask();
+                    isRunning = false;
                 }
             });
         }
@@ -376,8 +378,9 @@ public class PhoneValidationFragment extends Fragment {
             public void run() {
                 if (mSecs<=0){
                     mCountingTimer.cancel();
+                }else{
+                    mSecs-=1;
                 }
-                mSecs-=1;
                 mCountDownHandler.sendEmptyMessage(0);
             }
         },10,1000);
