@@ -40,7 +40,6 @@ import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.ImageUpload;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
-import co.quchu.quchu.photoselected.Bimp;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.adapter.FindPositionAdapter;
@@ -80,6 +79,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     private boolean mAllowPicking = false;
 
     private boolean dataChange;
+    private boolean mIsEdit;
 
     @Override
     protected int activitySetup() {
@@ -104,8 +104,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         titleName = toolbar.getTitleTv();
 
         toolbar.getRightTv().setText(R.string.save);
-        boolean isEdit = getIntent().getBooleanExtra(REQUEST_KEY_IS_EDIT, false);
-        if (isEdit) {
+        mIsEdit = getIntent().getBooleanExtra(REQUEST_KEY_IS_EDIT, false);
+        if (mIsEdit) {
             actionDelete.setVisibility(View.VISIBLE);
             actionDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -290,8 +290,8 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
             @Override
             public void onSuccess(PostCardModel model) {
                 DialogUtil.dismissProgessDirectly();
-                if (Bimp.imglist.size() > 0) {
-                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_QUCHU_DETAIL_UPDATED, pId));
+                if (mIsEdit) {
+                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FOOTPRINT_UPDATED, pId));
                     Toast.makeText(AddFootprintActivity.this, "脚印修改成功", Toast.LENGTH_SHORT).show();
                 } else {
                     EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_ADDED, pId));

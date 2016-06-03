@@ -88,6 +88,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
     @Bind(R.id.actionContainer)
     LinearLayout actionContainer;
     private PostCardItemModel model;
+    private ArrayList<FootprintModel.Entity> mEntitys;
 
 
     //底下文字背景处理
@@ -137,9 +138,9 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         model = intent.getParcelableExtra(REQUEST_KEY_IMAGE_LIST);
         int id = intent.getIntExtra(REQUEST_KEY_FOOTPRINT_ID, -1);
         int selectedPosition = intent.getIntExtra(REQUEST_KEY_SELECTED_POSITION, -1);
-        final ArrayList<FootprintModel.Entity> entitys = intent.getParcelableArrayListExtra(REQUEST_KEY_ENTITY_LIST);
-        if (entitys != null) {
-            PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), entitys);
+        mEntitys = intent.getParcelableArrayListExtra(REQUEST_KEY_ENTITY_LIST);
+        if (mEntitys != null) {
+            PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), mEntitys);
             viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -148,7 +149,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
 
                 @Override
                 public void onPageSelected(int position) {
-                    FootprintModel.Entity entity = entitys.get(position);
+                    FootprintModel.Entity entity = mEntitys.get(position);
                     headImage.setImageURI(Uri.parse(entity.head));
                     supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
 
@@ -264,64 +265,144 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         });
     }
 
+    private void setSupportCount(int cardId) {
+        for (FootprintModel.Entity item : mEntitys) {
+            if (item.cardId == cardId) {
+                if (item.isP) {
+                    item.isP = false;
+                    item.supportCount--;
+                } else {
+                    item.isP = true;
+                    item.supportCount++;
+                }
+            }
+        }
+        FootprintModel.Entity currentEntity = mEntitys.get(viewPager.getCurrentItem());
+        if (!currentEntity.isP) {                            //当前登录用户是否已经点赞
+            support.setImageResource(R.mipmap.ic_heart);
+        } else {
+            support.setImageResource(R.mipmap.ic_heart_yellow);
+        }
+        supportCount.setText(String.valueOf(currentEntity.supportCount));//点赞数目
+    }
 
     @Override
     public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.supportContainer://点赞
-                v.setEnabled(false);
-                PostCardPresenter.setPraise(this, model.isIsp(), true, model.getCardId(), new PostCardPresenter.MyPostCardListener() {
-                    @Override
-                    public void onSuccess(PostCardModel modeffl) {
-                        if (model.isIsp()) {
-                            LogUtils.e("取消点赞成功");
-                            model.setIsp(false);
-                            model.setPraiseNum(model.getPraiseNum() - 1);
-                            supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
-                            support.setImageResource(R.mipmap.ic_heart);
-                        } else {
-                            model.setIsp(true);
-                            LogUtils.e("点赞成功");
-                            model.setPraiseNum(model.getPraiseNum() + 1);
-                            supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
-                            support.setImageResource(R.mipmap.ic_heart_yellow);
-                        }
-                        v.setEnabled(true);
-                    }
+                if (model != null) {
+                    v.setEnabled(false);
+                    PostCardPresenter.setPraise(this, model.isIsp(), true, model.getCardId(), new PostCardPresenter.MyPostCardListener() {
+                        @Override
+                        public void onSuccess(PostCardModel modeffl) {
+                            if (model.isIsp()) {
+                                LogUtils.e("取消点赞成功");
+                                model.setIsp(false);
+                                model.setPraiseNum(model.getPraiseNum() - 1);
+                                supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
+                                support.setImageResource(R.mipmap.ic_heart);
+                            } else {
+                                model.setIsp(true);
+                                LogUtils.e("点赞成功");
+                                model.setPraiseNum(model.getPraiseNum() + 1);
+                                supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
+                                support.setImageResource(R.mipmap.ic_heart_yellow);
+                            }
 
-                    @Override
-                    public void onError(String error) {
-                        v.setEnabled(true);
-                        Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            v.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            v.setEnabled(true);
+                            Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if (mEntitys != null) {
+                    v.setEnabled(false);
+                    final FootprintModel.Entity entity = mEntitys.get(viewPager.getCurrentItem());
+                    PostCardPresenter.setPraise(this, entity.isP, true, entity.cardId, new PostCardPresenter.MyPostCardListener() {
+                        @Override
+                        public void onSuccess(PostCardModel modeffl) {
+                            setSupportCount(entity.cardId);
+                            v.setEnabled(true);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            v.setEnabled(true);
+                            Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
 
                 break;
             case R.id.share://分享
                 Intent intent1 = new Intent(this, SharePreviewActivity.class);
-                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_PLACE_NAME, model.getPlcaeName());
-                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_ID, model.getCardId());
-                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COMMENT, model.getComment());
-                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_USER_NAME, model.getAutor());
-                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_HEAD_IMAGE, model.getAutorPhoto());
-                intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COVER, model.getImglist().get(viewPager.getCurrentItem()));
-
+                if (model != null) {
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_PLACE_NAME, model.getPlcaeName());
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_ID, model.getCardId());
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COMMENT, model.getComment());
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_USER_NAME, model.getAutor());
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_HEAD_IMAGE, model.getAutorPhoto());
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COVER, model.getImglist().get(viewPager.getCurrentItem()));
+                } else {
+                    FootprintModel.Entity entity = mEntitys.get(viewPager.getCurrentItem());
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_PLACE_NAME, entity.PlcaeName);
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_ID, entity.cardId);
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COMMENT, entity.Comment);
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_USER_NAME, entity.name);
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_HEAD_IMAGE, entity.head);
+//                    ArrayList<ImageModel> data = new ArrayList<>();
+//                    for (FootprintModel.Entity item : mEntitys) {
+//                        if (item.cardId == entity.cardId) {
+//                            data.add(item.image);
+//                        }
+//                    }
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COVER, entity.image);
+                }
                 startActivity(intent1);
-
 
                 break;
             case R.id.edit://编辑
                 //获取一个脚印
                 Intent intent = new Intent(this, AddFootprintActivity.class);
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, model);
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, model.getPlcaeName());
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
-                intent.putExtra(AddFootprintActivity.REQUEST_KEY_IS_EDIT, true);
-                startActivity(intent);
+                if (model != null) {
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, model);
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, model.getPlcaeName());
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_IS_EDIT, true);
+                    startActivity(intent);
+                } else if (mEntitys != null) {
+                    FootprintModel.Entity entity = mEntitys.get(viewPager.getCurrentItem());
+                    PostCardItemModel model = new PostCardItemModel();
+                    model.setPlaceName(entity.PlcaeName);
+                    model.setPlaceId(entity.PlcaeId);
+                    model.setCardId(entity.cardId);
+                    model.setComment(entity.Comment);
+                    for (FootprintModel.Entity item : mEntitys) {
+                        if (item.cardId == entity.cardId) {
+                            model.addImageModel(item.image);
+                        }
+                    }
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, model);
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_IS_EDIT, true);
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, model.getPlcaeName());
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
+                    startActivity(intent);
+                }
+                if (!EventBus.getDefault().isRegistered(this))
+                    EventBus.getDefault().register(this);
                 break;
             case R.id.headImage:
                 Intent intent2 = new Intent(this, UserCenterActivity.class);
-                intent2.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, model.getAutorId());
+                if (model != null) {
+                    intent2.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, model.getAutorId());
+                } else if (mEntitys != null) {
+                    FootprintModel.Entity entity = mEntitys.get(viewPager.getCurrentItem());
+                    intent2.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, entity.autoId);
+                }
                 startActivity(intent2);
                 break;
         }
@@ -396,14 +477,16 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
 
     @Override
     protected void onStop() {
-        if (!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this);
+
         super.onStop();
     }
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel model) {
         if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+            finish();
+        }
+        if (mEntitys != null && model.getFlag() == EventFlags.EVENT_FOOTPRINT_UPDATED) {
             finish();
         }
     }

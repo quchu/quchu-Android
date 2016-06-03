@@ -30,7 +30,6 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.QuchuDetailsMoreDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
-import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -42,7 +41,6 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.NearbyPresenter;
-import co.quchu.quchu.utils.DatabaseHelper;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -526,7 +524,7 @@ public class QuchuDetailsActivity extends BaseActivity {
     public void onMessageEvent(QuchuEventModel event) {
 
         switch (event.getFlag()) {
-            case EventFlags.EVENT_QUCHU_DETAIL_UPDATED:
+            case EventFlags.EVENT_FOOTPRINT_UPDATED:
                 if (null != dModel && (Integer) event.getContent()[0] == dModel.getPid()) {
                     dModel.setMyCardId((Integer) event.getContent()[0]);
                 }

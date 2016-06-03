@@ -42,6 +42,46 @@ public class PostCardItemModel implements Parcelable {
         imglist.add(item);
     }
 
+    public boolean isf() {
+        return isf;
+    }
+
+    public boolean isme() {
+        return isme;
+    }
+
+    public boolean isp() {
+        return isp;
+    }
+
+    public String getPlaceAddress() {
+        return placeAddress;
+    }
+
+    public void setPlaceAddress(String placeAddress) {
+        this.placeAddress = placeAddress;
+    }
+
+    public String getPlaceCover() {
+        return placeCover;
+    }
+
+    public void setPlaceCover(String placeCover) {
+        this.placeCover = placeCover;
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+
+    public static Creator<PostCardItemModel> getCREATOR() {
+        return CREATOR;
+    }
+
     /**
      * imgId : 469
      * isCover : true

@@ -8,7 +8,7 @@ package co.quchu.quchu.utils;
  * EventBus 通知Key凭据
  */
 public class EventFlags {
-    public static final int EVENT_QUCHU_DETAIL_UPDATED = 0x0001;
+    public static final int EVENT_FOOTPRINT_UPDATED = 0x0001;//修改脚印
     public static final int EVENT_POST_CARD_DELETED = 0x0002;
     public static final int EVENT_QUCHU_RATING_UPDATE = 0x0003;
     public static final int EVENT_POST_CARD_ADDED = 0x0004;

@@ -70,10 +70,7 @@ public class FootPrintActivity extends BaseActivity {
                 int seletedPosition = 0;
                 for (int i = 0, s = mData.size(); i < s; i++) {
                     if (i == position) {
-                        seletedPosition = mData.size() - 1;
-                        if (seletedPosition < 0) {
-                            seletedPosition = 0;
-                        }
+                        seletedPosition = entitys.size() ;
                     }
                     FootprintModel model = mData.get(i);
                     List<FootprintModel.Entity> entity = model.convertToList();
@@ -137,7 +134,8 @@ public class FootPrintActivity extends BaseActivity {
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (event.getFlag() == EventFlags.EVENT_POST_CARD_ADDED || event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+        if (event.getFlag() == EventFlags.EVENT_POST_CARD_ADDED ||
+                event.getFlag() == EventFlags.EVENT_POST_CARD_DELETED||event.getFlag()==EventFlags.EVENT_FOOTPRINT_UPDATED) {
             mMaxPageNo = -1;
             loadData(false);
         }
@@ -147,9 +145,7 @@ public class FootPrintActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
+
     }
 
     @Override
@@ -170,6 +166,9 @@ public class FootPrintActivity extends BaseActivity {
     @Override
     protected void onPause() {
         MobclickAgent.onPageEnd("pic");
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         super.onPause();
     }
 }
