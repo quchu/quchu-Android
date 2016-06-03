@@ -19,7 +19,6 @@ import com.umeng.analytics.MobclickAgent;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -76,7 +75,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     RelativeLayout modiffPass;
 
 
-    private ArrayList<Integer> imageList;
     private boolean mProfileModified = false;
 
     @Override
@@ -86,7 +84,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
         toolbar.getTitleTv().setText("账号编辑");
-        imageList = AccountSettingPresenter.getQAvatar();
+
         TextView rightTv = toolbar.getRightTv();
         rightTv.setText("退出登录");
         rightTv.setOnClickListener(this);
@@ -207,12 +205,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
     //选中头像dialog 点击回调
     public ASUserPhotoDialogFg.UserPhotoOriginSelectedListener listener = new ASUserPhotoDialogFg.UserPhotoOriginSelectedListener() {
-//        @Override
-//        public void selectedCamare() {
-//            initGralley();
-//            int REQUEST_CODE_CAMERA = 0x02;
-//            GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCallback);
-//        }
 
         @Override
         public void selectedAblum() {
@@ -223,17 +215,15 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
         @Override
         public void selectedQuPhtot() {
-            if (imageList != null) {
+            QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
+            qAvatarDIalogFg.init(AccountSettingPresenter.getQAvatar(), new QAvatarSettingDialogFg.OnItenSelected() {
+                @Override
+                public void itemSelected(int imageId) {
+                    updateAvatar(imageId);
+                }
+            });
+            qAvatarDIalogFg.show(getSupportFragmentManager(), "qAvatar");
 
-                QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
-                qAvatarDIalogFg.init(imageList, new QAvatarSettingDialogFg.OnItenSelected() {
-                    @Override
-                    public void itemSelected(int imageId) {
-                        updateAvatar(imageId);
-                    }
-                });
-                qAvatarDIalogFg.show(getSupportFragmentManager(), "qAvatar");
-            }
         }
     };
     private FunctionConfig functionConfig;
@@ -351,10 +341,24 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
 
     public void updateAvatar(String avatarUrl) {
+
+        LogUtils.e("头像路径" + avatarUrl);
         if (!avatarUrl.startsWith("http")) {
             newUserPhoto = ImageUtils.saveImage2Sd(avatarUrl);
+//            co.quchu.quchu.gallery.utils.ImageUtils.loadWithAppropriateSize(accountSettingAvatarSdv, Uri.fromFile(new File(newUserPhoto)));
+//
+//            ImageRequest request = ImageRequestBuilder.newBuilderWithSource( Uri.fromFile(new File(newUserPhoto)))
+//                    .setResizeOptions(new ResizeOptions(accountSettingAvatarSdv.getWidth(),  accountSettingAvatarSdv.getHeight()))
+//                    .build();
+//            DraweeController controller = Fresco.newDraweeControllerBuilder()
+//                    .setOldController(accountSettingAvatarSdv.getController())
+//                    .setImageRequest(request)
+//                    .build();
+//            accountSettingAvatarSdv.setController(controller);
 
-            co.quchu.quchu.gallery.utils.ImageUtils.loadWithAppropriateSize(accountSettingAvatarSdv, Uri.fromFile(new File(newUserPhoto)));
+            accountSettingAvatarSdv.setImageURI(Uri.EMPTY);
+            accountSettingAvatarSdv.setImageURI(Uri.fromFile(new File(newUserPhoto)));
+
         } else {
             newUserPhoto = avatarUrl;
             accountSettingAvatarSdv.setImageURI(Uri.parse(newUserPhoto));
@@ -366,12 +370,13 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     public void updateAvatar(int avatarId) {
         mProfileModified = true;
         bitmaps = BitmapFactory.decodeResource(getResources(), avatarId);
+        accountSettingAvatarSdv.setImageURI(Uri.parse("res:///" + avatarId));
+
         LogUtils.json("bitmap ==null?=" + (bitmaps == null));
         AccountSettingPresenter.getQiNiuToken(AccountSettingActivity.this, bitmaps, new AccountSettingPresenter.UploadUserPhotoListener() {
             @Override
             public void onSuccess(String photoUrl) {
                 newUserPhoto = "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl;
-                accountSettingAvatarSdv.setImageURI(Uri.parse(newUserPhoto));
                 if (bitmaps != null) {
                     bitmaps.recycle();
                     bitmaps = null;
