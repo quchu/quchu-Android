@@ -58,6 +58,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.AMapNearbyVPAdapter;
 
+
 /**
  * Created by Administrator on 2016/1/24.
  * <p/>
@@ -68,7 +69,7 @@ import co.quchu.quchu.view.adapter.AMapNearbyVPAdapter;
  * 地图 点击可以导航界面
  */
 public class PlaceMapActivity extends BaseActivity implements View.OnClickListener, LocationSource, AMap.OnMapLoadedListener,
-        AMapLocationListener {
+        AMapLocationListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter {
     private OnLocationChangedListener mListener;
     private AMap aMap;
     private AMapLocationClient mlocationClient;
@@ -212,6 +213,9 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                     //.snippet(strDistance)
                     .icon(mMapPin)
                     .perspective(true).draggable(false).period(50));
+            if (i==0){
+                marker.showInfoWindow();
+            }
             marker.setObject(i);
             mMarks.add(marker);
         }
@@ -347,13 +351,9 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                 return false;
             }
         });
-        aMap.setOnInfoWindowClickListener(new AMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getObject());
-                popNavigation(nearbyMapModel.getLatitude(),nearbyMapModel.getLongitude(),nearbyMapModel.getGdLatitude(),nearbyMapModel.getGdLongitude());
-            }
-        });
+
+        aMap.setOnInfoWindowClickListener(this);
+        aMap.setInfoWindowAdapter(this);
     }
 
     @Override
@@ -511,5 +511,23 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         }else if(event.getFlag()== EventFlags.EVENT_FINISH_MAP){
             finish();
         }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getObject());
+        popNavigation(nearbyMapModel.getLatitude(),nearbyMapModel.getLongitude(),nearbyMapModel.getGdLatitude(),nearbyMapModel.getGdLongitude());
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        View infoWindow = getLayoutInflater().inflate(
+                R.layout.cp_amap_infowindow, null);
+        return infoWindow;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        return null;
     }
 }
