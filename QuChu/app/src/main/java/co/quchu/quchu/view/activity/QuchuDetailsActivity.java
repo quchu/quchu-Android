@@ -268,55 +268,6 @@ public class QuchuDetailsActivity extends BaseActivity {
             }
         });
 
-//        mRecyclerView.addOnScrollListener(new HidingScrollListener() {
-//            @Override
-//            public void onHide() {
-////                if ((System.currentTimeMillis() - mLastAnimated) < 600) {
-////                    return;
-////                }
-////                detail_bottom_group_ll.animate()
-////                        .translationY(detail_bottom_group_ll.getHeight())
-////                        .setInterpolator(new AccelerateDecelerateInterpolator())
-////                        .setDuration(300).setStartDelay(300)
-////                        .start();
-////                appbar.animate()
-////                        .translationY(-appbar.getHeight())
-////                        .setInterpolator(new AccelerateDecelerateInterpolator())
-////                        .setDuration(300).setStartDelay(300).withStartAction(new Runnable() {
-////                    @Override
-////                    public void run() {
-////                        appbar.setVisibility(View.GONE);
-////                        detail_bottom_group_ll.setVisibility(View.GONE);
-////                    }
-////                }).start();
-////                mLastAnimated = System.currentTimeMillis();
-//            }
-//
-//            @Override
-//            public void onShow() {
-////                if ((System.currentTimeMillis() - mLastAnimated) < 600) {
-////                    return;
-////                }
-////                detail_bottom_group_ll.animate()
-////                        .translationY(0)
-////                        .setInterpolator(new AccelerateDecelerateInterpolator())
-////                        .setDuration(300).setStartDelay(300)
-////                        .start();
-////                appbar.animate()
-////                        .translationY(0)
-////                        .setInterpolator(new AccelerateDecelerateInterpolator())
-////                        .setDuration(500).setStartDelay(100).withStartAction(new Runnable() {
-////                    @Override
-////                    public void run() {
-////                        appbar.setVisibility(View.VISIBLE);
-////                        detail_bottom_group_ll.setVisibility(View.VISIBLE);
-////                    }
-////                }).start();
-////                mLastAnimated = System.currentTimeMillis();
-//            }
-//        });
-
-
         changeCollectState(dModel.isIsf());
     }
 
@@ -452,22 +403,16 @@ public class QuchuDetailsActivity extends BaseActivity {
                     break;
 
                 case R.id.ivShare:
-
-                    if (AppContext.user.isIsVisitors()) {
-                        VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
-                        vDialog.show(getSupportFragmentManager(), "visitor");
-                    } else if (null != mVisitedInfoModel) {
-                        RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
-                        tagsFilterDialog.show(getSupportFragmentManager(), "");
-                        tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
-                            @Override
-                            public void onFinishPicking(List<TagsModel> selection, int score) {
-                                if (null != selection) {
-                                    ratingQuchu(selection, score);
-                                }
+                    RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
+                    tagsFilterDialog.show(getSupportFragmentManager(), "");
+                    tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
+                        @Override
+                        public void onFinishPicking(List<TagsModel> selection, int score) {
+                            if (null != selection) {
+                                ratingQuchu(selection, score);
                             }
-                        });
-                    }
+                        }
+                    });
 
                     break;
                 case R.id.ivFootprint:
