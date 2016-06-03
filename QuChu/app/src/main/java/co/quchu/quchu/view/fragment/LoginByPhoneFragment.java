@@ -201,7 +201,7 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
      */
     private void userLogin(String userName,String password) {
         errorView.showLoading();
-        UserLoginPresenter.userLogin(getActivity(), userName,MD5.hexdigest(password), new UserLoginListener() {
+        UserLoginPresenter.userLogin(getActivity(), userName,password, new UserLoginListener() {
                     @Override
                     public void loginSuccess(int type, String token, String appId) {
                         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
