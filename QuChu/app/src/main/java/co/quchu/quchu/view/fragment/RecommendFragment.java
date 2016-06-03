@@ -53,7 +53,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     HorizontalSwipeRefLayout refreshLayout;
     @Bind(R.id.errorView)
     ErrorView errorView;
-
     private boolean isLoading = false;
     public List<RecommendModel> cardList = new ArrayList<>();
     private RecommendAdapter adapter;
@@ -62,7 +61,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     private int dataCount = -1;
 
     private String from = QuchuDetailsActivity.FROM_TYPE_HOME;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

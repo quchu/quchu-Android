@@ -66,6 +66,13 @@ public static final int *;
 # 以下类过滤不混淆
 -keep public class * extends com.umeng.**
 -keep class com.umeng.** { *; }
+
+##反射字段混淆
+-keep class android.support.v4.view.ViewPager{*;}
+-keep class android.widget.ScrollView{*;}
+
+
+
 ## ----------------------------------
 ##   ########## wecha混淆    ########
 ## ----------------------------------

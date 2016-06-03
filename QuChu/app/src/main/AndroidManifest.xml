@@ -224,7 +224,7 @@
         <activity android:name=".gallery.PhotoEditActivity" />
         <activity android:name=".view.activity.FavoriteActivity" />
         <activity android:name=".view.activity.FindPositionListActivity" />
-        <activity android:name=".view.activity.SharePreviewActivity"></activity>
+        <activity android:name=".view.activity.SharePreviewActivity"/>
     </application>
 
 </manifest>
