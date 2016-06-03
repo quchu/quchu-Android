@@ -96,6 +96,18 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/tvForgetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextView.H3"
+        android:layout_below="@+id/rlPasswordField"
+        android:layout_centerHorizontal="true"
+        android:text="@string/forget_password"
+        android:layout_marginTop="@dimen/base_margin"
+        android:gravity="center"
+        />
+
+    <TextView
         android:id="@+id/tvLoginViaPhone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_item_size"

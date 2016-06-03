@@ -62,6 +62,8 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
     RelativeLayout rlPasswordField;
     @Bind(R.id.errorView)
     ErrorView errorView;
+    @Bind(R.id.tvForgetPassword)
+    TextView tvForgetPassword;
     private boolean mEmptyForum = false;
 
     public static final String TAG = "LoginByPhoneFragment";
@@ -219,7 +221,25 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
                         if (object.has("msg") && !object.isNull("msg")){
                             tvLoginViaPhone.setText(object.get("msg").toString());
                             tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                            tvForgetPassword.setVisibility(View.VISIBLE);
+                            tvForgetPassword.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Fragment f = new PhoneValidationFragment();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION,false);
+                                    bundle.putString(PhoneValidationFragment.BUNDLE_KEY_PHONE_NUMBER,etUsername.getText().toString());
+                                    f.setArguments(bundle);
+                                    getFragmentManager().beginTransaction()
+                                            .replace(R.id.flContent,f)
+                                            .addToBackStack(TAG)
+                                            .commitAllowingStateLoss();
+                                    getFragmentManager().executePendingTransactions();
+                                    ((BaseActivity)getActivity()).getEnhancedToolbar().show();
+                                }
+                            });
                         }
+                        //TODO
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

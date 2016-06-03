@@ -72,6 +72,8 @@ public class PhoneValidationFragment extends Fragment {
     private boolean mIsRegistration = true;
     private boolean mVerifyed = false;
     public static final String BUNDLE_KEY_REGISTRATION = "BUNDLE_KEY_REGISTRATION";
+    public static final String BUNDLE_KEY_PHONE_NUMBER = "BUNDLE_KEY_PHONE_NUMBER";
+    private String mPhoneNumber = "";
 
     private int mContainerId = R.id.flContent;
 
@@ -127,6 +129,7 @@ public class PhoneValidationFragment extends Fragment {
 
         if (null!=getArguments()){
             mIsRegistration = getArguments().getBoolean(BUNDLE_KEY_REGISTRATION,true);
+            mPhoneNumber = getArguments().getString(BUNDLE_KEY_PHONE_NUMBER);
         }
         //((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration_step_1:R.string.forget_pwd_step_1);
 
@@ -168,10 +171,14 @@ public class PhoneValidationFragment extends Fragment {
             }
         });
 
+
+        if (null!=mPhoneNumber){
+            etUsername.setText(mPhoneNumber);
+        }
         tvSendValidCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mEmptyForum &&verifyForm()){
+                if (null!=etUsername.getText() && StringUtils.isMobileNO(etUsername.getText().toString())){
                     getValidCode();
                 }
             }

@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -523,6 +524,11 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     public View getInfoWindow(Marker marker) {
         View infoWindow = getLayoutInflater().inflate(
                 R.layout.cp_amap_infowindow, null);
+        TextView textView = (TextView) infoWindow.findViewById(R.id.tvAddress);
+
+        NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getObject());
+        textView.setText(nearbyMapModel.getAddress());
+
         return infoWindow;
     }
 
