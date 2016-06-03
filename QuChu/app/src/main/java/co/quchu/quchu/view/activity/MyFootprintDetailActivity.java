@@ -29,6 +29,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -36,6 +37,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
@@ -60,6 +62,11 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
      * 从消息中心跳转 隐藏编辑按钮
      */
     public static final String REQUEST_KEY_FROM_MESSAGE = "message";
+    /**
+     * 从趣处详情脚印跳转
+     */
+    public static final String REQUEST_KEY_ENTITY_LIST = "entityList";
+    public static final String REQUEST_KEY_SELECTED_POSITION = "selectedPosition";
 
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
@@ -129,7 +136,49 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         Intent intent = getIntent();
         model = intent.getParcelableExtra(REQUEST_KEY_IMAGE_LIST);
         int id = intent.getIntExtra(REQUEST_KEY_FOOTPRINT_ID, -1);
-        if (model != null) {
+        int selectedPosition = intent.getIntExtra(REQUEST_KEY_SELECTED_POSITION, -1);
+        final ArrayList<FootprintModel.Entity> entitys = intent.getParcelableArrayListExtra(REQUEST_KEY_ENTITY_LIST);
+        if (entitys != null) {
+            PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), entitys);
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    FootprintModel.Entity entity = entitys.get(position);
+                    headImage.setImageURI(Uri.parse(entity.head));
+                    supportCount.setText(String.valueOf(entity.supportCount));//点赞数目
+
+                    SpannableString string = new SpannableString(entity.name + ": " + entity.Comment);
+                    string.setSpan(new ForegroundColorSpan(ContextCompat.getColor(MyFootprintDetailActivity.this,
+                            R.color.colorPrimary)), 0, entity.name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    detail.setText(string);
+
+                    if (entity.autoId != AppContext.user.getUserId() || getIntent().getBooleanExtra(REQUEST_KEY_FROM_MESSAGE, false)) {//如果不是自己的脚印
+                        edit.setVisibility(View.GONE);
+                    } else {
+                        edit.setVisibility(View.VISIBLE);
+                    }
+                    if (!entity.isP) {                            //当前登录用户是否已经点赞
+                        support.setImageResource(R.mipmap.ic_heart);
+                    } else {
+                        support.setImageResource(R.mipmap.ic_heart_yellow);
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+            viewPager.setAdapter(mPagerAdapter);
+            viewPager.setCurrentItem(selectedPosition);
+
+
+        } else if (model != null) {
             initData();
         } else if (id != -1) {
             MyFootprintPresenter presenter = new MyFootprintPresenter(this);
@@ -305,17 +354,27 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
 
     public class PagerAdapter extends FragmentPagerAdapter {
         private List<ImageModel> fragments;
+        private ArrayList<FootprintModel.Entity> entitys;
 
         public PagerAdapter(FragmentManager fm, List<ImageModel> fragments) {
             super(fm);
             this.fragments = fragments;
         }
 
+        public PagerAdapter(FragmentManager fm, ArrayList<FootprintModel.Entity> entitys) {
+            super(fm);
+            this.entitys = entitys;
+        }
+
         @Override
         public Fragment getItem(int position) {
             Bundle bund = new Bundle();
 
-            bund.putParcelable(FootprintDetailFragment.REQUEST_KEY_IMAGE_ENTITY, fragments.get(position));
+            if (entitys == null) {
+                bund.putParcelable(FootprintDetailFragment.REQUEST_KEY_IMAGE_ENTITY, fragments.get(position));
+            } else {
+                bund.putParcelable(FootprintDetailFragment.REQUEST_KEY_IMAGE_ENTITY, entitys.get(position).image);
+            }
             FootprintDetailFragment fragment = new FootprintDetailFragment();
             fragment.setArguments(bund);
             return fragment;
@@ -323,7 +382,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
 
         @Override
         public int getCount() {
-            return fragments == null ? 0 : fragments.size();
+            return fragments == null ? entitys.size() : fragments.size();
         }
 
     }

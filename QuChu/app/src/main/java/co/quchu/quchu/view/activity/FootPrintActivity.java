@@ -66,7 +66,21 @@ public class FootPrintActivity extends BaseActivity {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(FootPrintActivity.this, MyFootprintDetailActivity.class);
-                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, mData.get(position).convertToCompatModel());
+                ArrayList<FootprintModel.Entity> entitys = new ArrayList<>();
+                int seletedPosition = 0;
+                for (int i = 0, s = mData.size(); i < s; i++) {
+                    if (i == position) {
+                        seletedPosition = mData.size() - 1;
+                        if (seletedPosition < 0) {
+                            seletedPosition = 0;
+                        }
+                    }
+                    FootprintModel model = mData.get(i);
+                    List<FootprintModel.Entity> entity = model.convertToList();
+                    entitys.addAll(entity);
+                }
+                intent.putParcelableArrayListExtra(MyFootprintDetailActivity.REQUEST_KEY_ENTITY_LIST, entitys);
+                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_SELECTED_POSITION, seletedPosition);
                 startActivity(intent);
             }
         });
@@ -84,8 +98,6 @@ public class FootPrintActivity extends BaseActivity {
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mQuchuId);
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mQuchuName);
                     startActivity(intent);
-
-
                 }
             }
         });
