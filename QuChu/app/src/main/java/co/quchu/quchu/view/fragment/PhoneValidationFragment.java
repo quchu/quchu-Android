@@ -81,15 +81,12 @@ public class PhoneValidationFragment extends Fragment {
         }
         String userName = null==etUsername.getText()?"":etUsername.getText().toString();
         ivIconClear.setVisibility(userName.length()>0?View.VISIBLE:View.INVISIBLE);
-        if (!TextUtils.isEmpty(userName)){
-            mEmptyForum = false;
+        if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())){
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-            if (StringUtils.isMobileNO(userName)){
-                tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-            }else{
-                tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-            }
+            tvNext.setText(R.string.next);
+            mEmptyForum = false;
         }else{
+            tvNext.setText(R.string.next);
             mEmptyForum = true;
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
         }
@@ -112,7 +109,7 @@ public class PhoneValidationFragment extends Fragment {
         }else if (!StringUtils.isMobileNO(userName)){
             tvNext.setText(R.string.promote_invalid_username);
             tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        }else if(StringUtils.isMobileNO(userName) ){
+        }else if( !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())){
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
             status = true;
         }else{
@@ -127,6 +124,7 @@ public class PhoneValidationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_validation_phone, container, false);
         ButterKnife.bind(this, view);
+
         if (null!=getArguments()){
             mIsRegistration = getArguments().getBoolean(BUNDLE_KEY_REGISTRATION,true);
         }
@@ -150,11 +148,22 @@ public class PhoneValidationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 etUsername.setText("");
+                updateButtonStatus();
             }
         });
         etUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                updateButtonStatus();
+            }
+        });
+        etValidCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
                 updateButtonStatus();
             }
         });
@@ -170,11 +179,13 @@ public class PhoneValidationFragment extends Fragment {
         tvNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (mVerifyed){
-                    verifySms();
-                }else{
-                    Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
+                if(verifyForm()){
+                    if (mVerifyed){
+                        verifySms();
+                    }else{
+                        tvNext.setText(R.string.promote_verify_fail);
+                        tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    }
                 }
             }
         });

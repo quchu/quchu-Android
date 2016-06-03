@@ -26,12 +26,13 @@ import co.quchu.quchu.view.fragment.LoginFragment;
 import co.quchu.quchu.view.fragment.PhoneValidationFragment;
 import co.quchu.quchu.view.fragment.RegistrationFragment;
 import co.quchu.quchu.view.fragment.RestorePasswordFragment;
+import co.quchu.quchu.widget.RitalinLayout;
 
 public class LoginActivity extends BaseActivity {
 
 
     @Bind(R.id.flContent)
-    FrameLayout flContent;
+    RitalinLayout flContent;
 
     LoginFragment loginFragment;
     FragmentManager fragmentManager;
