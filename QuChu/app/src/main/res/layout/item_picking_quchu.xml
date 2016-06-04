@@ -11,5 +11,6 @@
         android:layout_height="56dp"
         android:gravity="center_vertical"
         android:textColor="@color/standard_color_h1_dark"
+        android:background="@drawable/color_selector_simple_dark"
         />
 </LinearLayout>

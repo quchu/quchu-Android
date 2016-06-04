@@ -474,12 +474,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             if (mEnableLoadMore){
                 ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
-                ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.VISIBLE);
+                ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.INVISIBLE);
                 ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
                 ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
                 ((LoadMoreViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.VISIBLE);
                         ((LoadMoreViewHolder) holder).textView.setText(R.string.loading_dialog_text);
                         ObjectAnimator rotation = ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore, "rotation", 0, 360);
                         rotation.setInterpolator(new LinearInterpolator());
@@ -494,7 +495,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 });
             }else{
                 ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.INVISIBLE);
-                ((LoadMoreViewHolder) holder).textView.setVisibility(View.INVISIBLE);
+                ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
+                ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
                 ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
             }
 

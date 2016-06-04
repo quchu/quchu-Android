@@ -90,7 +90,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     public void initData() {
         presenter.init();
-
     }
 
     private int hasChangePosition = 0;
