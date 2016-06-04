@@ -116,6 +116,7 @@ public class DetailModel implements Serializable{
                 TagsModel tag = new TagsModel();
                 tag.setZh(getTags().get(i).getZh());
                 tag.setTagId(getTags().get(i).getId());
+                tagModel.add(tag);
             }
             model.setTags(tagModel);
         }
