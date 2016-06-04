@@ -46,6 +46,8 @@ public class PickingQuchuActivity extends BaseActivity {
     EditText mEtSearchField;
     @Bind(R.id.rvContent)
     RecyclerView mRvContent;
+    @Bind(R.id.tvNoData)
+    TextView tvNoData;
     PickingQuchuAdapter mAdapter;
     List<SimpleQuchuSearchResultModel> mData = new ArrayList<>();
     private TextWatcher mTextWatcher;
@@ -175,6 +177,11 @@ public class PickingQuchuActivity extends BaseActivity {
             public void successListener(List<SimpleQuchuSearchResultModel> response) {
                 mData.clear();
                 mData.addAll(response);
+                if (mData.size()==0){
+                    tvNoData.setVisibility(View.VISIBLE);
+                }else{
+                    tvNoData.setVisibility(View.GONE);
+                }
                 mAdapter.notifyDataSetChanged();
             }
 

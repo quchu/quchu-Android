@@ -33,4 +33,13 @@
         android:id="@+id/rvContent"
         tools:listitem="@layout/item_picking_quchu"
         />
+    <TextView
+        android:id="@+id/tvNoData"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_item_size"
+        android:layout_below="@+id/etSearchField"
+        android:gravity="center"
+        android:text="@string/no_data"
+        android:visibility="gone"
+        />
 </RelativeLayout>

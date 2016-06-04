@@ -13,16 +13,23 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
@@ -121,10 +128,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                 ((BaseActivity)getActivity()).getEnhancedToolbar().show();
                 break;
             case R.id.llAuthorizationViaMm:
-                weixinLogin();
+
+                if (NetUtil.isNetworkConnected(getActivity())) {
+                    weixinLogin();
+                } else {
+                    Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.llAuthorizationViaWeibo:
+
+                if (NetUtil.isNetworkConnected(getActivity())) {
                 sinaLogin();
+                } else {
+                    Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
