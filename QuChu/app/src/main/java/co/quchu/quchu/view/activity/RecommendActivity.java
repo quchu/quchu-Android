@@ -144,6 +144,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                                 SPUtils.setCityId(finalCityIdInList);
                                 SPUtils.setCityName(finalCurrentLocation);
                                 updateRecommend();
+                                recommendTitleLocationIv.setText(SPUtils.getCityName());
                             }else{
                                 findViewById(R.id.recommend_title_location_rl).performClick();
                             }
