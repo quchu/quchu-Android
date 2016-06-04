@@ -209,7 +209,10 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 //            float distance = AMapUtils.calculateLineDistance(new LatLng(gdlat, gdlon),
 //            new LatLng(Double.valueOf(mDataSet.get(i).getGdLatitude()), Double.valueOf(mDataSet.get(i).getGdLongitude())));
             //String strDistance = "距离当前趣处：" + new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
-            LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(i).getGdLatitude()), Double.valueOf(mDataSet.get(i).getGdLongitude()));
+            LatLng latLng = new LatLng(0,0);
+            if (null!=mDataSet.get(i).getGdLatitude() && null!= mDataSet.get(i).getGdLongitude()){
+                latLng = new LatLng(Double.valueOf(mDataSet.get(i).getGdLatitude()), Double.valueOf(mDataSet.get(i).getGdLongitude()));
+            }
             Marker marker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getAddress())
                     //.snippet(strDistance)
                     .icon(mMapPin)
@@ -526,8 +529,11 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                 R.layout.cp_amap_infowindow, null);
         TextView textView = (TextView) infoWindow.findViewById(R.id.tvAddress);
 
-        NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getObject());
-        textView.setText(nearbyMapModel.getAddress());
+        if (null!=marker.getObject()){
+            NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getObject());
+            textView.setText(nearbyMapModel.getAddress());
+
+        }
 
         return infoWindow;
     }

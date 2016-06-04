@@ -34,12 +34,14 @@ import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 import co.quchu.quchu.widget.RecommendTitleGroup;
@@ -142,6 +144,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                                 SPUtils.setCityId(finalCityIdInList);
                                 SPUtils.setCityName(finalCurrentLocation);
                                 updateRecommend();
+                                recommendTitleLocationIv.setText(SPUtils.getCityName());
                             }else{
                                 findViewById(R.id.recommend_title_location_rl).performClick();
                             }
@@ -166,19 +169,25 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.recommend_title_location_rl:
                 MobclickAgent.onEvent(this, "location_c");
-                if (list != null) {
-                    showCityDialog();
-                } else {
-                    RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-                        @Override
-                        public void hasCityList(ArrayList<CityModel> list) {
-                            RecommendActivity.this.list = list;
-                            if (RecommendActivity.this.list != null) {
-                                showCityDialog();
+
+                if (NetUtil.isNetworkConnected(getApplicationContext())) {
+                    if (list != null) {
+                        showCityDialog();
+                    } else {
+                        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+                            @Override
+                            public void hasCityList(ArrayList<CityModel> list) {
+                                RecommendActivity.this.list = list;
+                                if (RecommendActivity.this.list != null) {
+                                    showCityDialog();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                } else {
+                    Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
                 }
+
 
                 break;
         }

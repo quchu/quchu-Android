@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:padding="@dimen/base_margin"
+            android:padding="@dimen/half_margin"
             android:src="@mipmap/ic_back" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:padding="8dp"
+            android:padding="@dimen/half_margin"
             android:src="@mipmap/ic_close" />
     </RelativeLayout>
 

@@ -436,18 +436,24 @@ public class QuchuDetailsActivity extends BaseActivity {
                 case R.id.detail_store_address_ll:
 
                     if (!"台北".equals(SPUtils.getCityName())) {
-                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_MAP));
-                        MobclickAgent.onEvent(this, "map_c");
 
-                        Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
-                        mapIntent.putExtra("lat", dModel.getLatitude());
-                        mapIntent.putExtra("lon", dModel.getLongitude());
-                        mapIntent.putExtra("gdlon", dModel.gdLongitude);
-                        mapIntent.putExtra("gdlat", dModel.gdLatitude);
-                        mapIntent.putExtra("title", dModel.getName());
-                        mapIntent.putExtra("entity",dModel.convert2NearbyMapItem());
-                        mapIntent.putExtra("placeAddress", dModel.getAddress());
-                        startActivity(mapIntent);
+                        if (NetUtil.isNetworkConnected(getApplicationContext())){
+
+                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_MAP));
+                            MobclickAgent.onEvent(this, "map_c");
+
+                            Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
+                            mapIntent.putExtra("lat", dModel.getLatitude());
+                            mapIntent.putExtra("lon", dModel.getLongitude());
+                            mapIntent.putExtra("gdlon", dModel.gdLongitude);
+                            mapIntent.putExtra("gdlat", dModel.gdLatitude);
+                            mapIntent.putExtra("title", dModel.getName());
+                            mapIntent.putExtra("entity",dModel.convert2NearbyMapItem());
+                            mapIntent.putExtra("placeAddress", dModel.getAddress());
+                            startActivity(mapIntent);
+                        }else{
+                            Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(QuchuDetailsActivity.this, "此趣处暂无导航信息!", Toast.LENGTH_SHORT).show();
                     }
