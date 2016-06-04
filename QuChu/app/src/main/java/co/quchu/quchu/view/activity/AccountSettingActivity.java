@@ -74,6 +74,8 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     ImageView loginTypeIcon;
     @Bind(R.id.modiffPass)
     RelativeLayout modiffPass;
+    @Bind(R.id.saveUserInfo)
+    TextView mSaveUserInfo;
 
 
     private boolean mProfileModified = false;
@@ -146,6 +148,8 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                 public boolean dialogClick(int clickId) {
                     if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
                         finish();
+                    } else {
+                        mSaveUserInfo.callOnClick();
                     }
                     return true;
                 }

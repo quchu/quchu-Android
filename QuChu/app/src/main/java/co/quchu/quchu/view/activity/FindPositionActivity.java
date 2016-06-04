@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.sina.weibo.sdk.utils.LogUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -163,6 +164,62 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                 }
             }
         });
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                LogUtil.e("", "文本长度" + s.length());
+                if (s.length() == 30) {
+                    Toast.makeText(FindPositionActivity.this, "名称长度已达到上限", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        position.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 40) {
+                    Toast.makeText(FindPositionActivity.this, "地址长度已达到上限", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        detail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 280) {
+                    Toast.makeText(FindPositionActivity.this, "详情长度已达到上限", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void sendToServer(String name, String position, String desc, String Images) {
@@ -187,11 +244,11 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
                 if (result) {
                     Toast.makeText(FindPositionActivity.this, "增加趣处成功", Toast.LENGTH_SHORT).show();
-                    DialogUtil.dismissProgessDirectly();
                     finish();
                 } else {
                     Toast.makeText(FindPositionActivity.this, msg, Toast.LENGTH_SHORT).show();
                 }
+                DialogUtil.dismissProgessDirectly();
             }
         });
         request.start(this);

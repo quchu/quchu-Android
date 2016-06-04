@@ -67,7 +67,7 @@
                 android:id="@+id/support"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_ratingbar_heart" />
+                android:src="@mipmap/ic_heart" />
 
             <TextView
                 android:id="@+id/supportCount"

@@ -80,16 +80,19 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         UserCenterPresenter.getUserCenterInfo(this, userId, new UserCenterPresenter.UserCenterInfoCallBack() {
             @Override
             public void onSuccess(UserCenterInfo userCenterInfo) {
-                userInfo = userCenterInfo;
+                if (userCenterInfo != null) {
+                    userInfo = userCenterInfo;
 
-                headImage.setImageURI(Uri.parse(userInfo.getPhoto()));
-                name.setText(userCenterInfo.getName());
-                followAction.setText(userCenterInfo.isIsFollow() ? "取消关注" : "关注");
-                alias.setText(userCenterInfo.getMark());
+                    headImage.setImageURI(Uri.parse(userInfo.getPhoto()));
+                    name.setText(userCenterInfo.getName());
+                    followAction.setText(userCenterInfo.isIsFollow() ? "取消关注" : "关注");
+                    alias.setText(userCenterInfo.getMark());
 
-                follow.setText("关注" + userCenterInfo.getHostNum());
-                friend.setText("趣粉" + userCenterInfo.getFollowNum());
-
+                    follow.setText("关注" + userCenterInfo.getHostNum());
+                    friend.setText("趣粉" + userCenterInfo.getFollowNum());
+                } else {
+                    Toast.makeText(UserCenterActivity.this, "并无该用户", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -126,7 +129,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         } else {
             UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userId, new UserCenterPresenter.UserCenterInfoCallBack() {
                 @Override
-                public void onSuccess(UserCenterInfo userCenterInfo) {
+                public void onSuccess(UserCenterInfo userC) {
                     if (userInfo.isIsFollow()) {
                         userInfo.setIsFollow(false);
                         userInfo.setFollowNum(userInfo.getFollowNum() - 1);
@@ -134,6 +137,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                         userInfo.setIsFollow(true);
                         userInfo.setFollowNum(userInfo.getFollowNum() + 1);
                     }
+                    friend.setText("趣粉" + userInfo.getFollowNum());
                     followAction.setText(userInfo.isIsFollow() ? "取消关注" : "关注");
                 }
 

@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,9 +26,11 @@ import co.quchu.quchu.view.adapter.MessageCenterAdapter;
  * User: Chenhs
  * Date: 2016-01-11
  */
-public class MessageCenterActivity extends BaseActivity implements PageLoadListener<MessageModel>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<MessageModel.ResultBean> {
+public class MessageCenterActivity extends BaseActivity implements PageLoadListener<MessageModel>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<MessageModel.ResultBean>, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.messages_rv)
     RecyclerView messagesRv;
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout mRefreshLayout;
     private MessageCenterAdapter adapter;
     private int pagesNo = 1;
 
@@ -44,6 +47,7 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
         messagesRv.setAdapter(adapter);
         MessageCenterPresenter.getMessageList(this, pagesNo, this);
         adapter.setItemClickListener(this);
+        mRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -69,16 +73,21 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
     @Override
     public void initData(MessageModel data) {
         adapter.initData(data.getResult());
+        mRefreshLayout.setRefreshing(false);
+
     }
 
     @Override
     public void moreData(MessageModel data) {
+        mRefreshLayout.setRefreshing(false);
+
         pagesNo = data.getPagesNo();
         adapter.addMoreData(data.getResult());
     }
 
     @Override
     public void nullData() {
+        mRefreshLayout.setRefreshing(false);
         adapter.setLoadMoreEnable(false);
     }
 
@@ -87,6 +96,7 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mRefreshLayout.setRefreshing(false);
                 MessageCenterPresenter.getMessageList(MessageCenterActivity.this, pageNo, MessageCenterActivity.this);
             }
         });
@@ -135,5 +145,11 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
                 startActivity(intent1);
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        pagesNo = 1;
+        MessageCenterPresenter.getMessageList(MessageCenterActivity.this, pagesNo, MessageCenterActivity.this);
     }
 }
