@@ -61,8 +61,13 @@ public class ImageUpload {
                 buffer.append(Uri.parse(item).getPath());
                 buffer.append("|");
                 succeed++;
+                if (succeed == totalSize) {
+                    listener.finish(buffer.toString());
+                    return;
+                }
                 continue;
             }
+
             String key = String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis());
             uploadManager.put(item, key, token,
                     new UpCompletionHandler() {

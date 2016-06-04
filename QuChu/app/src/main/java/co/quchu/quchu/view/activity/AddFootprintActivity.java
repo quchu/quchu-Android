@@ -180,10 +180,9 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         etContent.setText(null != mData ? mData.getComment() : "");
         tackImage = new PhotoInfo();
 
-        if (mData == null || mData.getImglist().size() < 4) {
-            tackImage.setPhotoPath("res:///" + R.mipmap.ic_take_photo);
-            photoInfos.add(tackImage);
-        }
+        tackImage.setPhotoPath("res:///" + R.mipmap.ic_take_photo);
+        photoInfos.add(tackImage);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
 
@@ -213,31 +212,35 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> im = new ArrayList<String>();
-                for (PhotoInfo item : photoInfos) {
-                    if (item.getPhotoPath().contains("file://")) {
-                        im.add(Uri.parse(item.getPhotoPath()).getPath());
-                    } else if (item.getPhotoPath().contains("http://")) {
-                        im.add(item.getPhotoPath());
+                if (dataChange()) {
+                    List<String> im = new ArrayList<>();
+                    for (PhotoInfo item : photoInfos) {
+                        if (item.getPhotoPath().contains("file://")) {
+                            im.add(Uri.parse(item.getPhotoPath()).getPath());
+                        } else if (item.getPhotoPath().contains("http://")) {
+                            im.add(item.getPhotoPath());
+                        }
                     }
-                }
-                if (im.size() > 0) {
-                    DialogUtil.showProgess(AddFootprintActivity.this, "上传中");
-                    new ImageUpload(AddFootprintActivity.this, im, new ImageUpload.UploadResponseListener() {
-                        @Override
-                        public void finish(String result) {
+                    if (im.size() > 0) {
+                        DialogUtil.showProgess(AddFootprintActivity.this, "上传中");
+                        new ImageUpload(AddFootprintActivity.this, im, new ImageUpload.UploadResponseListener() {
+                            @Override
+                            public void finish(String result) {
 
-                            saveCard(pId, etContent.getText().toString(), result);
-                        }
+                                saveCard(pId, etContent.getText().toString(), result);
+                            }
 
-                        @Override
-                        public void error() {
-                            DialogUtil.dismissProgessDirectly();
-                            Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void error() {
+                                DialogUtil.dismissProgessDirectly();
+                                Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(AddFootprintActivity.this, "至少留下一张图片才能转身离去", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(AddFootprintActivity.this, "至少留下一张图片才能转身离去", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddFootprintActivity.this, "您未做任何修改", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -258,7 +261,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                 public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                     for (PhotoInfo info : resultList) {
                         String path = info.getPhotoPath();
-                        if (!path.startsWith("file://") && !path.startsWith("res:///"))
+                        if (!path.startsWith("file://") && !path.startsWith("res:///") && !path.startsWith("http://"))
                             info.setPhotoPath("file://" + path);
                     }
                     photoInfos.clear();
@@ -322,8 +325,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
 
     @Override
     public void onBackPressed() {
-        String s = null != mData ? mData.getComment() : "";
-        if (dataChange || !etContent.getText().toString().trim().equals(s)) {
+        if (dataChange()) {
             CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "继续编辑", "不保存退出");
             dialog.setListener(new CommonDialog.OnActionListener() {
                 @Override
@@ -340,4 +342,10 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
             super.onBackPressed();
         }
     }
+
+    private boolean dataChange() {
+        String s = null != mData ? mData.getComment() : "";
+        return dataChange || !etContent.getText().toString().trim().equals(s);
+    }
+
 }

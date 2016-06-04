@@ -48,6 +48,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
 
 
     private SsoHandler ssoHandler;
+    private BindPhoneNumDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +97,9 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                     CommonDialog dialog = CommonDialog.newInstance("出错了", "手机号是唯一的身份标示,解除绑定后将无法正常登录.", "知道了", null);
                     dialog.show(getSupportFragmentManager(), "");
                 } else {
-                    BindPhoneNumDialog dialog = BindPhoneNumDialog.newInstance();
-                    dialog.setCancelable(false);
-                    dialog.show(getSupportFragmentManager(), "");
+                    mDialog = BindPhoneNumDialog.newInstance();
+                    mDialog.setCancelable(false);
+                    mDialog.show(getSupportFragmentManager(), "");
                 }
                 break;
             case R.id.bind_wecha:
@@ -293,6 +294,15 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
             ssoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        if (mDialog != null && mDialog.isVisible()) {
+//            mDialog.onBack();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     @Override
     protected void onResume() {

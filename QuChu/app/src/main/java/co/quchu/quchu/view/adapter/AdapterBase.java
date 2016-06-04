@@ -145,7 +145,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                 if (getItemCount() == 1) {
                     loadMoreHold.retryView.setText("这里什么都没有呢~");
                 } else {
-                    loadMoreHold.retryView.setText("没有更多了~");
+                    loadMoreHold.retryView.setText("已加载全部!");
                 }
 
             }

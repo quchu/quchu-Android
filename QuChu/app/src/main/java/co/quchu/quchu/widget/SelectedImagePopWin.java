@@ -52,6 +52,7 @@ public class SelectedImagePopWin extends PopupWindow {
         initGralley();
         bt1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                functionConfig.setMutiSelect(false);
                 GalleryFinal.openCamera(1, functionConfig, listener);
                 dismiss();
             }

@@ -35,7 +35,6 @@ import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ModiffPasswordDialog;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
-import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.gallery.CoreConfig;
 import co.quchu.quchu.gallery.FunctionConfig;
 import co.quchu.quchu.gallery.GalleryFinal;
@@ -187,8 +186,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onClick(int index) {
                         if (index == ConfirmDialogFg.INDEX_OK) {
-                            VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QBEEN);
-                            vDialog.show(getSupportFragmentManager(), "visitor");
                             SPUtils.clearUserinfo(AppContext.mContext);
                             AppContext.user = null;
                             SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);

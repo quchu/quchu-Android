@@ -101,7 +101,10 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             if (mFunctionConfig.getSelectedPhoto() != null) {
                 for (PhotoInfo item : mFunctionConfig.getSelectedPhoto()) {
                     if (!item.getPhotoPath().startsWith("res:///")) {
-                        mSelectPhotoMap.put(Uri.parse(item.getPhotoPath()).getPath(), item);
+                        if (!item.getPhotoPath().startsWith("http://"))
+                            mSelectPhotoMap.put(Uri.parse(item.getPhotoPath()).getPath(), item);
+                        else
+                            mSelectPhotoMap.put(item.getPhotoPath(), item);
                     }
                 }
             }

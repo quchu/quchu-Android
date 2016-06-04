@@ -42,7 +42,7 @@ public class FindPositionAdapter extends RecyclerView.Adapter<FindPositionAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHold holder, final int position) {
+    public void onBindViewHolder(final ViewHold holder, int position) {
         final PhotoInfo info = images.get(position);
         ImageUtils.ShowImage(info.getPhotoPath(), holder.simpleDraweeView);
         if (info.getPhotoPath().contains("res:///")) {
@@ -56,14 +56,14 @@ public class FindPositionAdapter extends RecyclerView.Adapter<FindPositionAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.itemClick(false, position, info);
+                listener.itemClick(false, holder.getAdapterPosition(), info);
             }
         });
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.itemClick(true, position, info);
+                listener.itemClick(true, holder.getAdapterPosition(), info);
             }
         });
     }

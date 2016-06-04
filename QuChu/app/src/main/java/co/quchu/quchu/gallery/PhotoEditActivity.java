@@ -153,12 +153,19 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
         } else {
             setContentView(R.layout.gf_activity_photo_edit);
 
-            mSelectPhotoMap = (HashMap<String, PhotoInfo>) this.getIntent().getSerializableExtra(SELECT_MAP);
+            mSelectPhotoMap = (HashMap<String, PhotoInfo>) getIntent().getSerializableExtra(SELECT_MAP);
             boolean mTakePhotoAction = this.getIntent().getBooleanExtra(TAKE_PHOTO_ACTION, false);
             mCropPhotoAction = this.getIntent().getBooleanExtra(CROP_PHOTO_ACTION, false);
 
             if (mSelectPhotoMap == null) {
                 mSelectPhotoMap = new HashMap<>();
+            }
+            if (mFunctionConfig.getSelectedPhoto() != null) {
+                for (PhotoInfo item : mFunctionConfig.getSelectedPhoto()) {
+                    if (!item.getPhotoPath().startsWith("res:///")) {
+                        mSelectPhotoMap.put(Uri.parse(item.getPhotoPath()).getPath(), item);
+                    }
+                }
             }
             mPhotoTempMap = new HashMap<>();
             mPhotoList = new ArrayList<>(mSelectPhotoMap.values());
@@ -223,10 +230,10 @@ public class PhotoEditActivity extends CropImageActivity implements AdapterView.
 
     @Override
     protected void takeResult(PhotoInfo info) {
-        if (!mFunctionConfig.isMutiSelect()) {
-            mPhotoList.clear();
-            mSelectPhotoMap.clear();
-        }
+//        if (!mFunctionConfig.isMutiSelect()) {
+//            mPhotoList.clear();
+//            mSelectPhotoMap.clear();
+//        }
         mPhotoList.add(info);
 
         mSelectPhotoMap.put(info.getPhotoPath(), info);

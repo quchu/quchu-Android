@@ -22,7 +22,6 @@ import co.quchu.quchu.utils.DateUtils;
  */
 public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootprintAdapter.ViewHold> {
 
-
     @Override
     public void onBindView(final ViewHold holder, final int position) {
         final PostCardItemModel model = data.get(position);

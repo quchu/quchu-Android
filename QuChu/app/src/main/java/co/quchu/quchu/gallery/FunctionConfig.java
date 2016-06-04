@@ -47,6 +47,10 @@ public class FunctionConfig implements Cloneable {
 
     private Collection<PhotoInfo> selectedPhoto;//已经选中的照片
 
+    public void setMutiSelect(boolean mutiSelect) {
+        this.mutiSelect = mutiSelect;
+    }
+
     private FunctionConfig(final Builder builder) {
         this.mutiSelect = builder.mutiSelect;
         this.maxSize = builder.maxSize;

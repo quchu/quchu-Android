@@ -268,7 +268,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                     dataChange = true;
                     for (PhotoInfo info : resultList) {
                         String path = info.getPhotoPath();
-                        if (!path.startsWith("file://") && !path.startsWith("res:///"))
+                        if (!path.startsWith("file://") && !path.startsWith("res:///")&&!path.startsWith("http://"))
                             info.setPhotoPath("file://" + path);
                     }
                     photoInfos.clear();
@@ -287,7 +287,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         if (isDelete) {
             dataChange = true;
             photoInfos.remove(position);
-            if (photoInfos.size() < 8 && photoInfos.size() > 0 && !photoInfos.get(0).getPhotoPath().contains("res:///")) {
+            if (photoInfos.size() < 4 && photoInfos.size() > 0 && !photoInfos.get(0).getPhotoPath().contains("res:///")) {
                 photoInfos.add(0, tackImage);
             }
             adapter.notifyDataSetChanged();

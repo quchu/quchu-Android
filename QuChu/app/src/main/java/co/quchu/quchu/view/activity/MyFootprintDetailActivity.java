@@ -483,12 +483,10 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel model) {
-        if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED) {
+        if (model.getFlag() == EventFlags.EVENT_POST_CARD_DELETED || model.getFlag() == EventFlags.EVENT_FOOTPRINT_UPDATED) {
             finish();
         }
-        if (mEntitys != null && model.getFlag() == EventFlags.EVENT_FOOTPRINT_UPDATED) {
-            finish();
-        }
+
     }
 
     @Override

@@ -62,6 +62,8 @@ public class BindPhoneNumDialog extends DialogFragment {
         ButterKnife.bind(this, view);
         builder.setView(view);
         viewPager.setAdapter(new MyPagerAdapter());
+
+
         return builder.create();
     }
 
@@ -98,8 +100,7 @@ public class BindPhoneNumDialog extends DialogFragment {
         ButterKnife.unbind(this);
     }
 
-
-    private void setListener(View view, int position) {
+    private void setListener(final View view, int position) {
 
         ImageView close = (ImageView) view.findViewById(R.id.close);
         TextView title = (TextView) view.findViewById(R.id.title);
@@ -107,7 +108,7 @@ public class BindPhoneNumDialog extends DialogFragment {
         Button common = (Button) view.findViewById(R.id.commonButton);
         final TextInputLayout inputLayout = (TextInputLayout) view.findViewById(R.id.inputLayout);
         Button autoCode = (Button) view.findViewById(R.id.reGetAotoCode);
-
+        ImageView back = (ImageView) view.findViewById(R.id.action_back);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,16 +118,24 @@ public class BindPhoneNumDialog extends DialogFragment {
                 dismiss();
             }
         });
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewPager.getCurrentItem() > 0) {
+                    viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                }
+            }
+        });
 
         switch (position) {
             case 0:
+                back.setVisibility(View.GONE);
                 title.setText("请输入手机号(1/3)");
                 inputLayout.setHint("手机号:");
                 common.setText("获取验证码");
                 autoCode.setVisibility(View.GONE);
                 editText.setKeyListener(DigitsKeyListener.getInstance(getActivity().getString(R.string.filter_phone)));
-
+                editText.setText(phoneNumber);
                 editText.requestFocus();
                 InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 manager.restartInput(editText);
@@ -229,6 +238,7 @@ public class BindPhoneNumDialog extends DialogFragment {
             @Override
             public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
                 if (result) {
+                    time=60;
                     viewPager.setCurrentItem(1);
                     if (handle != null)
                         handle.sendEmptyMessage(0);
@@ -264,9 +274,11 @@ public class BindPhoneNumDialog extends DialogFragment {
         request.start(getActivity());
     }
 
+
+    private static int time = 60;
+
     static class MyHandle extends Handler {
         Button autoCodeButton;
-        private int time = 60;
 
         public MyHandle(Button autoCodeButton) {
             this.autoCodeButton = autoCodeButton;

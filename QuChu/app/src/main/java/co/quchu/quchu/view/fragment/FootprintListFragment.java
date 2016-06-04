@@ -92,6 +92,7 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
     public void itemClick(RecyclerView.ViewHolder holder, PostCardItemModel item, int type, int position) {
         this.holder = holder;
         this.item = item;
+
         Intent intent = new Intent(getContext(), MyFootprintDetailActivity.class);
         intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, item);
         getActivity().startActivity(intent);

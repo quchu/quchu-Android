@@ -24,6 +24,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.adapter.DialogShareAdapter;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.thirdhelp.QQHelper;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
@@ -129,6 +130,10 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
+        if (!NetUtil.isNetworkConnected(getContext())) {
+            Toast.makeText(getContext(), "请保证网络连接", Toast.LENGTH_SHORT).show();
+            return;
+        }
         switch (position) {
             case 0:
                 WechatHelper.shareFriends(getActivity(), shareUrlFinal, shareTitle, true);
