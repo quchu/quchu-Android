@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +80,25 @@ public class RestorePasswordFragment extends Fragment {
                     return;
                 }
                 mRequestRunning = true;
-                if (StringUtils.isGoodPassword(etPassword.getText().toString())){
+                etPassword.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (null==etPassword.getText()||StringUtils.isEmpty(etPassword.getText().toString())){
+                            tvNext.setText(R.string.next);
+                            tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+                        }else {
+                            tvNext.setText(R.string.next);
+                            tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+                        }
+                    }
+                });
+                if (null!=etPassword.getText() && StringUtils.isGoodPassword(etPassword.getText().toString())){
                     UserLoginPresenter.resetPassword(getActivity(), mUserName, etPassword.getText().toString(), mVerifyCode, new UserLoginPresenter.UserNameUniqueListener() {
                         @Override
                         public void isUnique(JSONObject msg) {
@@ -90,6 +110,7 @@ public class RestorePasswordFragment extends Fragment {
                                     MobclickAgent.onProfileSignIn("loginphone_c", AppContext.user.getUserId() + "");
                                     getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
                                     getActivity().finish();
+                                    mRequestRunning = false;
                                 }
 
                                 @Override
@@ -106,6 +127,9 @@ public class RestorePasswordFragment extends Fragment {
                             Toast.makeText(getActivity(),R.string.promote_password_update_failure,Toast.LENGTH_SHORT).show();
                         }
                     });
+                }else{
+                    tvNext.setText(R.string.hint_new_password);
+                    tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
                 }
             }
         });
