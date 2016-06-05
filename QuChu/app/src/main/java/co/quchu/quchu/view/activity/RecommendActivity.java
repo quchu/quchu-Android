@@ -253,6 +253,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
             flContainer.animate()
                     .translationY(0)
                     .scaleY(1)
+                    .scaleX(1)
                     .setDuration(300)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .start();
@@ -269,6 +270,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                     .start();
             flContainer.animate().translationY(rlSearchBar.getHeight()/2)
                     .scaleY(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
+                    .scaleX(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
                     .setDuration(300)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .start();
