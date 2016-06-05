@@ -77,6 +77,16 @@ public class LocationSelectedDialogFg extends DialogFragment {
         super.onAttach(activity);
         Bundle args = getArguments();
         cityList = (ArrayList<CityModel>) args.getSerializable(CITY_LIST_MODEL);
+        CityModel current = null;
+        for (int i = 0; i < cityList.size(); i++) {
+            if (SPUtils.getCityName().equals(cityList.get(i).getCvalue())){
+                current  = cityList.get(i);
+                cityList.remove(i);
+            }
+        }
+        if (null!=current){
+            cityList.add(0,current);
+        }
     }
 
 

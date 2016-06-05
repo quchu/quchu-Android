@@ -49,7 +49,7 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
         ButterKnife.bind(this);
         mTagId = getIntent().getIntExtra(BUNDLE_KEY_TAG_ID, -1);
         mTagName = getIntent().getStringExtra(BUNDLE_KEY_TAG_NAME);
-        getEnhancedToolbar().getTitleTv().setText("包含"+mTagName+"的趣处");
+        getEnhancedToolbar().getTitleTv().setText(mTagName);
 
         mAdapter = new NearbyAdapter(mData, new NearbyAdapter.OnItemClickListener() {
             @Override
