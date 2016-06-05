@@ -267,18 +267,23 @@ public class SearchActivity extends BaseActivity implements SearchHistoryAdapter
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {//修改回车键功能
-                    if (StringUtils.isEmpty(searchInputEt.getText().toString())) {
-                        Toast.makeText(SearchActivity.this, "请输入搜索内容!", Toast.LENGTH_SHORT).show();
-                        searchInputEt.setFocusable(true);
-                    } else {
-                        if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
-                            Toast.makeText(SearchActivity.this, getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT).show();
-                        } else {
-                            addHistory();
-                            // 先隐藏键盘
-                            seachStr(searchInputEt.getText().toString(), false);
-                        }
-                    }
+                   if (NetUtil.isNetworkConnected(getApplicationContext())){
+                       if (StringUtils.isEmpty(searchInputEt.getText().toString())) {
+                           Toast.makeText(SearchActivity.this, "请输入搜索内容!", Toast.LENGTH_SHORT).show();
+                           searchInputEt.setFocusable(true);
+                       } else {
+                           if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
+                               Toast.makeText(SearchActivity.this, getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT).show();
+                           } else {
+                               addHistory();
+                               // 先隐藏键盘
+                               seachStr(searchInputEt.getText().toString(), false);
+                           }
+                       }
+                   }else{
+                       Toast.makeText(SearchActivity.this,R.string.network_error,Toast.LENGTH_SHORT).show();
+                       ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(SearchActivity.this.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+                   }
                 }
                 return false;
             }
