@@ -288,7 +288,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         newUserNickName = nickname.getText().toString().trim();
 
         if (newUserNickName.length() < 1 || newUserNickName.length() > 10) {
-            Toast.makeText(this, "昵称必须为1-10位汉字或英文", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "昵称必须为1-20位字符", Toast.LENGTH_SHORT).show();
             return;
         }
 

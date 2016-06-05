@@ -112,7 +112,6 @@ public class AppContext extends Application {
             @Override
             public void onLocationChanged(AMapLocation amapLocation) {
                 super.onLocationChanged(amapLocation);
-                stopLocation();
             }
         };
         //设置定位回调监听
@@ -130,7 +129,11 @@ public class AppContext extends Application {
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         mLocationOption.setMockEnable(false);
         //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(80 * 1000);
+        if (SPUtils.getLongitude()==0 && SPUtils.getLatitude()==0){
+            mLocationOption.setInterval(5 * 1000);
+        }else{
+            mLocationOption.setInterval(3600 * 1000);
+        }
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位

@@ -103,7 +103,6 @@ public class FootPrintActivity extends BaseActivity {
         rvFootPrint.addOnScrollListener(new EndlessRecyclerOnScrollListener(rvFootPrint.getLayoutManager()) {
             @Override
             public void onLoadMore(int current_page) {
-                System.out.println("on load more");
                 loadData(true);
             }
         });

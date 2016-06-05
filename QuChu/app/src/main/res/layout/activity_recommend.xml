@@ -11,7 +11,7 @@
     <RelativeLayout
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_heigh"
+        android:layout_height="@dimen/toolbar_item_size"
         android:layout_below="@+id/title"
         android:animateLayoutChanges="true"
         android:visibility="visible">

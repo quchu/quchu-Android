@@ -20,4 +20,5 @@ public class EventFlags {
     public static final int EVENT_CANCLE_FAVORITE_QUCHU = 0x300001;
 
     public static final int EVENT_SWITCH_2_LOGIN = 0x400001;
+    public static final int EVENT_LOCATION_UPDATED = 0x110001;
 }

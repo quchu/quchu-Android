@@ -1,11 +1,16 @@
 package co.quchu.quchu.base;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 
+import org.greenrobot.eventbus.EventBus;
+
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 
 /**
@@ -40,11 +45,14 @@ public class AppLocationListener implements AMapLocationListener {
 
                 SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_CITY, amapLocation.getCity());
                 SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_PROVINCE, amapLocation.getProvince());
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOCATION_UPDATED));
+
+                //Toast.makeText(AppContext.mContext,"location Success, " + amapLocation.getCity() + " " + amapLocation.getProvince(),Toast.LENGTH_LONG).show();
+                AppContext.stopLocation();
             } else {
+               // Toast.makeText(AppContext.mContext,"location Error, ErrCode:" + amapLocation.getErrorCode() + ", errInfo:" + amapLocation.getErrorInfo(),Toast.LENGTH_LONG).show();
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                Log.e("AmapError", "location Error, ErrCode:"
-                        + amapLocation.getErrorCode() + ", errInfo:"
-                        + amapLocation.getErrorInfo());
+                Log.e("AmapError", "location Error, ErrCode:" + amapLocation.getErrorCode() + ", errInfo:" + amapLocation.getErrorInfo());
             }
         }
     }

@@ -290,6 +290,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                 cardList.get(currentIndex).isout = true;
                 adapter.notifyDataSetChanged();
             }
+        }else if(event.getFlag() == EventFlags.EVENT_LOCATION_UPDATED){
+            adapter.notifyDataSetChanged();
         }
     }
 
