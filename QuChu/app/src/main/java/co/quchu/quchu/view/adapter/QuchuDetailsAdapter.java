@@ -318,22 +318,23 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                         ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
                         sdv.requestLayout();
-                    } else if (mVisitedUsers.getResult().size() > 0) {
-                    } else {
-                        SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
-                        Random random = new Random();
-                        int randomNumber = random.nextInt(3);
-                        sdv.setImageResource(RANDOM_AVATAR[randomNumber]);
-                        if (i > 0) {
-                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
-                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
-                        } else {
-                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
-                            lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
-                        }
-                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
-                        sdv.requestLayout();
                     }
+//                    else if (mVisitedUsers.getResult().size() > 0) {
+//                    } else {
+//                        SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
+//                        Random random = new Random();
+//                        int randomNumber = random.nextInt(3);
+//                        sdv.setImageResource(RANDOM_AVATAR[randomNumber]);
+//                        if (i > 0) {
+//                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
+//                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
+//                        } else {
+//                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
+//                            lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
+//                        }
+//                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
+//                        sdv.requestLayout();
+//                    }
 
                 }
                 ((ActionViewHolder) holder).llVisitedUsers.invalidate();

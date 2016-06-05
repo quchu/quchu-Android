@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -27,6 +28,7 @@ import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.FootPrintPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.adapter.FootPrintAdapter;
+import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 
 /**
@@ -96,6 +98,13 @@ public class FootPrintActivity extends BaseActivity {
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mQuchuName);
                     startActivity(intent);
                 }
+            }
+        });
+        rvFootPrint.addOnScrollListener(new EndlessRecyclerOnScrollListener(rvFootPrint.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int current_page) {
+                System.out.println("on load more");
+                loadData(true);
             }
         });
 

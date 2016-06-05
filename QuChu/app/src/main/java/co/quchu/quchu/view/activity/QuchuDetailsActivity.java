@@ -274,6 +274,7 @@ public class QuchuDetailsActivity extends BaseActivity {
         dModel.setIsf(isCollect);
         ivFavorite.setImageResource(isCollect ? R.mipmap.ic_star : R.mipmap.ic_star_light);
         tvFootprintCount.setText(String.valueOf(dModel.getCardCount()));
+        tvFootprintCount.setVisibility(dModel.getCardCount()>0?View.VISIBLE:View.INVISIBLE);
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 

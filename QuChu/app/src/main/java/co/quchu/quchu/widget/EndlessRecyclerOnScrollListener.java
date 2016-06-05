@@ -2,6 +2,7 @@ package co.quchu.quchu.widget;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
     public static String TAG = EndlessRecyclerOnScrollListener.class.getSimpleName();
@@ -13,38 +14,64 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
 
     private int current_page = 1;
 
-    private LinearLayoutManager mLinearLayoutManager;
+    private RecyclerView.LayoutManager mLinearLayoutManager;
 
-    public EndlessRecyclerOnScrollListener(LinearLayoutManager linearLayoutManager) {
-        this.mLinearLayoutManager = linearLayoutManager;
+    public EndlessRecyclerOnScrollListener(RecyclerView.LayoutManager layoutManager) {
+        this.mLinearLayoutManager = layoutManager;
     }
 
-    @Override
+        @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
+            visibleItemCount = recyclerView.getChildCount();
+            totalItemCount = mLinearLayoutManager.getItemCount();
 
-        visibleItemCount = recyclerView.getChildCount();
-        totalItemCount = mLinearLayoutManager.getItemCount();
-        firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+            if (mLinearLayoutManager instanceof LinearLayoutManager){
+                firstVisibleItem = ((LinearLayoutManager)mLinearLayoutManager).findFirstVisibleItemPosition();
 
 
-        if (loading) {
-            if (totalItemCount > previousTotal) {
-                loading = false;
-                previousTotal = totalItemCount;
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount)
+                        <= (firstVisibleItem + visibleThreshold)) {
+                    // End has been reached
+
+                    // Do something
+                    current_page++;
+
+                    onLoadMore(current_page);
+
+                    loading = true;
+                }
+            }else if(mLinearLayoutManager instanceof StaggeredGridLayoutManager){
+                int[] items = new int[3];
+                ((StaggeredGridLayoutManager)mLinearLayoutManager).findFirstVisibleItemPositions(items);
+                firstVisibleItem = items[0];
+
+                if (loading) {
+                    if (totalItemCount > previousTotal) {
+                        loading = false;
+                        previousTotal = totalItemCount;
+                    }
+                }
+                if (!loading && (totalItemCount - visibleItemCount)
+                        <= (firstVisibleItem + visibleThreshold)) {
+                    // End has been reached
+
+                    // Do something
+                    current_page++;
+
+                    onLoadMore(current_page);
+
+                    loading = true;
+                }
             }
-        }
-        if (!loading && (totalItemCount - visibleItemCount)
-                <= (firstVisibleItem + visibleThreshold)) {
-            // End has been reached
 
-            // Do something
-            current_page++;
 
-            onLoadMore(current_page);
-
-            loading = true;
-        }
     }
 
     public abstract void onLoadMore(int current_page);

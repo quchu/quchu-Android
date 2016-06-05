@@ -88,7 +88,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     style="@style/TextView.H3"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     android:gravity="center"
                     android:background="@drawable/ic_shape_round_fill_yellow"
                     android:textColor="@color/standard_color_h1_dark"
