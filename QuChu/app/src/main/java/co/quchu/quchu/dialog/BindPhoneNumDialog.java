@@ -12,6 +12,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -141,7 +143,6 @@ public class BindPhoneNumDialog extends DialogFragment {
                 manager.restartInput(editText);
                 manager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
                 manager.showSoftInputFromInputMethod(editText.getWindowToken(), 0);
-
                 common.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -156,6 +157,7 @@ public class BindPhoneNumDialog extends DialogFragment {
                 autoCode.setText("重新获取");
                 autoCode.setEnabled(false);
                 common.setText("确认");
+                editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
                 handle = new MyHandle(autoCode);
                 editText.setKeyListener(DigitsKeyListener.getInstance(getActivity().getString(R.string.filter_phone)));
 
@@ -163,7 +165,6 @@ public class BindPhoneNumDialog extends DialogFragment {
                     @Override
                     public void onClick(View v) {
                         getAutoCode(phoneNumber, inputLayout);
-                        handle.sendEmptyMessage(0);
                     }
                 });
                 common.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +177,7 @@ public class BindPhoneNumDialog extends DialogFragment {
             case 2:
                 title.setText("请创建登陆密码(3/3)");
                 inputLayout.setHint("登陆密码:");
+                editText.setInputType(InputType.TYPE_CLASS_TEXT);
                 common.setText("确认");
                 editText.setKeyListener(DigitsKeyListener.getInstance(getActivity().getString(R.string.passFilter)));
                 autoCode.setVisibility(View.GONE);
@@ -238,10 +240,12 @@ public class BindPhoneNumDialog extends DialogFragment {
             @Override
             public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
                 if (result) {
-                    time=60;
+                    time = 60;
                     viewPager.setCurrentItem(1);
-                    if (handle != null)
+                    if (handle != null) {
+                        handle.removeMessages(0);
                         handle.sendEmptyMessage(0);
+                    }
                 } else {
                     inputLayout.setError("手机号已经被绑定");
                 }
@@ -263,7 +267,6 @@ public class BindPhoneNumDialog extends DialogFragment {
             @Override
             public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
                 if (result) {
-                    handle.removeMessages(0);
                     viewPager.setCurrentItem(2);
                 } else {
                     layout.setError("验证码有误");
@@ -274,6 +277,13 @@ public class BindPhoneNumDialog extends DialogFragment {
         request.start(getActivity());
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (handle != null) {
+            handle.removeMessages(0);
+        }
+    }
 
     private static int time = 60;
 
