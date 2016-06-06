@@ -36,11 +36,23 @@ public class TagsFilterDialogAdapter extends RecyclerView.Adapter<TagsFilterDial
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvTag.setText(mData.get(position).getZh());
-        int color = holder.tvTag.getResources().getColor(mData.get(position).isPraise()?R.color.standard_color_black:R.color.standard_color_white);
-        holder.tvTag.setTextColor(color);
-        holder.tvTag.setChecked(mData.get(position).isPraise());
+        holder.cbTag.setChecked(mData.get(position).isPraise());
+        switch (position){
+            case 0:
+                holder.cbTag.setBackgroundResource(R.drawable.ic_nearby_tag_ele_selector);
+                break;
+            case 1:
+                holder.cbTag.setBackgroundResource(R.drawable.ic_nearby_tag_leile_selector);
+                break;
+            case 2:
+                holder.cbTag.setBackgroundResource(R.drawable.ic_nearby_tag_guang_selector);
+                break;
+            case 3:
+                holder.cbTag.setBackgroundResource(R.drawable.ic_nearby_tag_zhaolezi_selector);
+                break;
+        }
 
-        holder.tvTag.setOnClickListener(new View.OnClickListener() {
+        holder.cbTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null!=mListener) mListener.onSelected(position);
@@ -59,8 +71,10 @@ public class TagsFilterDialogAdapter extends RecyclerView.Adapter<TagsFilterDial
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        @Bind(R.id.cbTag)
+        CheckBox cbTag;
         @Bind(R.id.tvTag)
-        CheckBox tvTag;
+        TextView tvTag;
 
         public ViewHolder(View itemView) {
             super(itemView);

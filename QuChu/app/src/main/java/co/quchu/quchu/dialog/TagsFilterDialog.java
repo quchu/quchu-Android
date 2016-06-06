@@ -82,7 +82,7 @@ public class TagsFilterDialog extends DialogFragment {
                 dismissAllowingStateLoss();
             }
         });
-        rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+        rvTags.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         adapter = new TagsFilterDialogAdapter(mDataset, new TagsFilterDialogAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(int index) {

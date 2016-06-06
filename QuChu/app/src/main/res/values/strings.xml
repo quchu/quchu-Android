@@ -175,5 +175,6 @@
     <string name="login_via_this_number">使用此手机号码登录</string>
     <string name="forget_password">忘记密码</string>
     <string name="no_data">搜索无结果</string>
+    <string name="promote_no_network_naughty">报告！你已失联，接受不到讯号！</string>
 
 </resources>
