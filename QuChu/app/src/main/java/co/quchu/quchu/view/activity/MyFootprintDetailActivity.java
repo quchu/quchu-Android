@@ -87,6 +87,8 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
     LinearLayout supportContainer;
     @Bind(R.id.actionContainer)
     LinearLayout actionContainer;
+    @Bind(R.id.fooopDetailActionBack)
+    ImageView fooopDetailActionBack;
     private PostCardItemModel model;
     private ArrayList<FootprintModel.Entity> mEntitys;
 
@@ -132,7 +134,6 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_footprint_detail);
         ButterKnife.bind(this);
-        getEnhancedToolbar().getTitleTv().setText("");
         initListener();
         Intent intent = getIntent();
         model = intent.getParcelableExtra(REQUEST_KEY_IMAGE_LIST);
@@ -246,6 +247,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         edit.setOnClickListener(this);
         share.setOnClickListener(this);
         headImage.setOnClickListener(this);
+        fooopDetailActionBack.setOnClickListener(this);
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             float x;
             float y;
@@ -408,6 +410,9 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
                     intent2.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, entity.autoId);
                 }
                 startActivity(intent2);
+                break;
+            case R.id.fooopDetailActionBack:
+                finish();
                 break;
         }
     }

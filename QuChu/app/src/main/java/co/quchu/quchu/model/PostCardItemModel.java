@@ -35,6 +35,31 @@ public class PostCardItemModel implements Parcelable {
     private List<ImageModel> imglist;
 
 
+    public List<FootprintModel.Entity> convertToList() {
+        List<FootprintModel.Entity> data = new ArrayList<>();
+        if (imglist != null)
+            for (ImageModel item : imglist) {
+                FootprintModel.Entity entity = new FootprintModel.Entity();
+                entity.autoId = this.getAutorId();
+                entity.head = this.getAutorPhoto();
+                entity.isP = this.isp();
+                entity.supportCount = this.getPraiseNum();
+                entity.time = this.getTime();
+                entity.image = item;
+                entity.cardId = this.getCardId();
+                entity.PlcaeName = this.getPlaceName();
+                entity.PlcaeId = this.getPlaceId();
+                entity.Comment = this.getComment();
+                entity.name=this.getAutor();
+                data.add(entity);
+            }
+        return data;
+    }
+
+
+
+
+
     public void addImageModel(ImageModel item) {
         if (imglist == null) {
             imglist = new ArrayList<>();
@@ -81,6 +106,14 @@ public class PostCardItemModel implements Parcelable {
     public static Creator<PostCardItemModel> getCREATOR() {
         return CREATOR;
     }
+
+
+
+
+
+
+
+
 
     /**
      * imgId : 469

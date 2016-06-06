@@ -7,14 +7,28 @@
     android:fitsSystemWindows="true"
     tools:context="co.quchu.quchu.view.activity.MyFootprintDetailActivity">
 
-    <include layout="@layout/cp_enhanced_toolbar" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@android:color/black">
+
+        <ImageView
+            android:id="@+id/fooopDetailActionBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/base_margin"
+            android:rotation="180"
+            android:src="@mipmap/ic_forward" />
+    </FrameLayout>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appbar"
         android:layout_marginBottom="40dp"
+        android:layout_marginTop="?actionBarSize"
         android:clickable="true"
         android:descendantFocusability="blocksDescendants"
         android:focusable="true" />
@@ -24,10 +38,10 @@
         android:id="@+id/container_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp"
         android:background="@color/appBackgroundTrans"
+        android:clickable="true"
         android:padding="@dimen/half_margin">
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -75,8 +89,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="4dp"
                 android:gravity="center"
-                tools:text="88"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                tools:text="88" />
 
         </LinearLayout>
 
@@ -93,8 +107,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingTop="@dimen/half_margin"
             android:paddingBottom="@dimen/half_margin"
+            android:paddingTop="@dimen/half_margin"
             android:src="@mipmap/ic_share" />
 
         <FrameLayout

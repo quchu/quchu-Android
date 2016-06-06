@@ -331,10 +331,10 @@ public class QuchuDetailsActivity extends BaseActivity {
         for (int i = 0; i < selection.size(); i++) {
             if (selection.get(i).isPraise()) {
                 strTags += selection.get(i).getTagId();
-                strTags += "|";
+                strTags += ",";
             }
         }
-        if (strTags.contains("|")) {
+        if (strTags.contains(",")) {
             strTags = strTags.substring(0, strTags.length() - 1);
         }
         if (mIsRatingRunning) return;
