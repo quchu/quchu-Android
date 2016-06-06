@@ -17,7 +17,7 @@ import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.photoselected.FrescoImageLoader;
+import co.quchu.quchu.gallery.FrescoImageLoader;
 
 /**
  * Created by linqipeng on 2016/3/15 16:12

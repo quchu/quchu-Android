@@ -43,7 +43,7 @@ import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
-import co.quchu.quchu.photoselected.FrescoImageLoader;
+import co.quchu.quchu.gallery.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;

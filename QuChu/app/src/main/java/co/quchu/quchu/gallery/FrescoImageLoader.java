@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package co.quchu.quchu.photoselected;
+package co.quchu.quchu.gallery;
 
 import android.app.Activity;
 import android.content.Context;
@@ -44,7 +44,6 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import co.quchu.quchu.gallery.widget.GFImageView;
-import co.quchu.quchu.gallery.ImageLoader;
 
 
 public class FrescoImageLoader implements ImageLoader {
