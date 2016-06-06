@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBackground"
     android:orientation="vertical"
     tools:context="co.quchu.quchu.view.activity.WhatIsActivity">
 
     <include layout="@layout/cp_enhanced_toolbar" />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/appBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:src="@mipmap/ic_gene_introduce_img" />
 </LinearLayout>

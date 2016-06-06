@@ -139,6 +139,7 @@ public class BindPhoneNumDialog extends DialogFragment {
                 editText.setKeyListener(DigitsKeyListener.getInstance(getActivity().getString(R.string.filter_phone)));
                 editText.setText(phoneNumber);
                 editText.requestFocus();
+                editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
                 InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 manager.restartInput(editText);
                 manager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);

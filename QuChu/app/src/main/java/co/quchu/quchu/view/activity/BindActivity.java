@@ -179,6 +179,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                                 Toast.makeText(BindActivity.this, "合并成功", Toast.LENGTH_SHORT).show();
                                 UserInfoHelper.saveUserInfo(response);
                                 //数据不变 暂时不刷新
+                                initListener();
 //                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATA, response));
                             }
                         });
@@ -188,14 +189,11 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                         Intent intent = new Intent(BindActivity.this, StatementActivity.class);
                         intent.putExtra(StatementActivity.REQUEST_KEY_TITLE, "什么是账号合并");
                         intent.putExtra(StatementActivity.REQUEST_KEY_CONTENT, "账号合并是将用户已经绑定的第三方账号与当前帐号的数据进行合并，合并后允许用户使用多种方式登录，个人信息和行为会被融合，例如收藏，点赞，发表的脚印等，合并后趣处将为用户更全面的推荐内容。\n" +
-                                "账号合并的目的：由于人工智能算法是针对用户行为进行分析的，所以每个账号都记录了用户的行为数据，趣处认为如果用户曾经使用其他账号登录过并留下行为数据，那些数据应当被视为用户行为的一个重要组成部分被保存，所以在工程师的努力下，我们有幸能将自己的特长转化为你的愉悦体验，并将为此一直努力下去。\n" +
-                                "\n" +
-                                "\n" +
-                                "\n" +
+                                "\n账号合并的目的：由于人工智能算法是针对用户行为进行分析的，所以每个账号都记录了用户的行为数据，趣处认为如果用户曾经使用其他账号登录过并留下行为数据，那些数据应当被视为用户行为的一个重要组成部分被保存，所以在工程师的努力下，我们有幸能将自己的特长转化为你的愉悦体验，并将为此一直努力下去。\n" +
+                                "\n\n\n" +
                                 "——趣处人工智能实验室");
                         startActivity(intent);
                         return false;
-
                 }
                 return true;
             }
@@ -226,16 +224,14 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                 } else {
                     switch (exception) {
                         case "10132":
-                            Toast.makeText(BindActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
-                            saveInfo(true, isWecha);
                             merger(isWecha ? 2 : 3, token, appId);
                             break;
                         case "10133":
                         case "10134":
-                            Toast.makeText(BindActivity.this, "绑定失败" + exception, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BindActivity.this, "该账号已被使用" + exception, Toast.LENGTH_SHORT).show();
                             break;
                         default:
-                            Toast.makeText(BindActivity.this, "绑定失败" + exception, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BindActivity.this, "该账号已被使用" + exception, Toast.LENGTH_SHORT).show();
                     }
 
                 }

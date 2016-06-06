@@ -141,7 +141,7 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
         mEntitys = intent.getParcelableArrayListExtra(REQUEST_KEY_ENTITY_LIST);
         if (mEntitys != null) {
             PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), mEntitys);
-            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -174,10 +174,14 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
                 public void onPageScrollStateChanged(int state) {
 
                 }
-            });
+            };
+
+            viewPager.addOnPageChangeListener(pageChangeListener);
             viewPager.setAdapter(mPagerAdapter);
             viewPager.setCurrentItem(selectedPosition);
-
+            if (selectedPosition == 0) {
+                pageChangeListener.onPageSelected(0);
+            }
 
         } else if (model != null) {
             initData();

@@ -306,7 +306,8 @@ public class UserLoginPresenter {
 
             @Override
             public boolean onError(String error) {
-                return false;
+                Toast.makeText(context, "网路异常", Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
     }
