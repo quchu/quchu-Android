@@ -150,6 +150,7 @@
     <string name="share">分享</string>
     <string name="share_to">分享到</string>
     <string name="promote_duplicate_username">该手机号已经被注册</string>
+    <string name="promote_username_not_existed">该手机号未被使用</string>
     <string name="click_to_load_more">点击加载更多</string>
     <string name="quchu_detail_share_text">我发现了一个好地方\n\n敢和我一起去吗 ?</string>
     <string name="share_mode_joking">调侃模式</string>

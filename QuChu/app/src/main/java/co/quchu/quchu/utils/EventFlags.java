@@ -8,6 +8,9 @@ package co.quchu.quchu.utils;
  * EventBus 通知Key凭据
  */
 public class EventFlags {
+
+    public static final int EVENT_LOGIN_ACTIVITY_SHOW_RETURN = 0x1001;    //登录界面显示返回
+    public static final int EVENT_LOGIN_ACTIVITY_HIDE_RETURN = 0x1002;    //登录界面隐藏返回
     public static final int EVENT_FOOTPRINT_UPDATED = 0x0001;//修改脚印
     public static final int EVENT_POST_CARD_DELETED = 0x0002;
     public static final int EVENT_QUCHU_RATING_UPDATE = 0x0003;

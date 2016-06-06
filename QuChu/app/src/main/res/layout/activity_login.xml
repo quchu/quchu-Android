@@ -3,6 +3,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+
     <include layout="@layout/cp_enhanced_toolbar"/>
 
     <co.quchu.quchu.widget.RitalinLayout
@@ -10,4 +13,15 @@
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_close"
+        android:padding="@dimen/base_margin"
+        android:layout_margin="@dimen/base_margin"
+        />
+
 </RelativeLayout>

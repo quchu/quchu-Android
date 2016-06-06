@@ -96,6 +96,7 @@ public class DetailModel implements Serializable{
 
     public NearbyMapModel convert2NearbyMapItem(){
         NearbyMapModel model = new NearbyMapModel();
+        System.out.println("convert "+ this.getAddress());
         model.setAddress(this.getAddress());
         model.setCover(this.getCover());
         model.setName(this.getName());

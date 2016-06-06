@@ -82,8 +82,9 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     private LatLng myAddress;
     private MapView mapView;
     private ViewPager mVPNearby;
-    private BitmapDescriptor mMapPin;
+    private BitmapDescriptor mMapPin,mMapPinBlue;
     private NearbyMapModel mCurrentModel;
+    private int mLastMarker = -1;
 
 
     @Override
@@ -101,7 +102,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         });
 
 
-        mMapPin = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_blue);
+        mMapPin = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_yellow);
+        mMapPinBlue = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_blue);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
         currentPosition.setOnClickListener(this);
@@ -143,6 +145,12 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void run() {
                         mMarks.get(position).showInfoWindow();
+                        mMarks.get(position).setIcon(mMapPinBlue);
+                        if (mLastMarker<mMarks.size()&&mLastMarker>=0){
+                            mMarks.get(mLastMarker).setIcon(mMapPin);
+                            mMarks.get(mLastMarker).setZIndex(0);
+                        }
+                        mLastMarker = position;
                     }
                 }, 250l);
             }
@@ -217,10 +225,12 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                     //.snippet(strDistance)
                     .icon(mMapPin)
                     .perspective(true).draggable(false).period(50));
+            marker.setObject(i);
             if (i==0){
                 marker.showInfoWindow();
+                marker.setIcon(mMapPinBlue);
+                mLastMarker = i;
             }
-            marker.setObject(i);
             mMarks.add(marker);
         }
     }

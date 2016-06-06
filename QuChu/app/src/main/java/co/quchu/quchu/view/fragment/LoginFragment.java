@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -150,7 +151,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     @Override
     public void onResume() {
         super.onResume();
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOGIN_ACTIVITY_SHOW_RETURN));
         ((BaseActivity)getActivity()).getEnhancedToolbar().hide();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOGIN_ACTIVITY_HIDE_RETURN));
     }
 
     @Override

@@ -263,7 +263,7 @@ public class PhoneValidationFragment extends Fragment {
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                Toast.makeText(getActivity(),R.string.promote_verify_pass,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
                 isVerifying = false;
             }
         });
@@ -339,24 +339,45 @@ public class PhoneValidationFragment extends Fragment {
                 }
             });
         }else{
+            isRunning = false;
+            if (mSecs > 0) {
+                return;
+            }
+            errorView.showLoading();
 
-            UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(),UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
+            UserLoginPresenter.decideMobileCanLogin(getActivity(), etUsername.getText().toString(), new UserLoginPresenter.UserNameUniqueListener() {
                 @Override
                 public void isUnique(JSONObject msg) {
-                    errorView.hideView();
-                    scheduleCountDownTask();
-                    mVerifyed = true;
+                    Toast.makeText(getActivity(),R.string.promote_username_not_existed,Toast.LENGTH_SHORT).show();
                     isRunning = false;
+                    errorView.hideView();
                 }
 
                 @Override
                 public void notUnique(String msg) {
-                    errorView.hideView();
-                    Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
-                    scheduleCountDownTask();
                     isRunning = false;
+
+                    UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(),UserLoginPresenter.getCaptcha_reset, new UserLoginPresenter.UserNameUniqueListener() {
+                        @Override
+                        public void isUnique(JSONObject msg) {
+                            errorView.hideView();
+                            scheduleCountDownTask();
+                            mVerifyed = true;
+                            isRunning = false;
+                        }
+
+                        @Override
+                        public void notUnique(String msg) {
+                            errorView.hideView();
+                            Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
+                            scheduleCountDownTask();
+                            isRunning = false;
+                        }
+                    });
                 }
             });
+
+
         }
 
     }

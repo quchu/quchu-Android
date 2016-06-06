@@ -3,7 +3,9 @@ package co.quchu.quchu.view.activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
@@ -39,6 +41,9 @@ public class LoginActivity extends BaseActivity {
     public SsoHandler handler;
     public long mRequestVerifyCode = -1;
 
+    @Bind(R.id.ivClose)
+    ImageView ivClose;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -52,7 +57,14 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         ButterKnife.bind(this);
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.this.finish();
+            }
+        });
 
         getEnhancedToolbar().hide();
 
@@ -87,6 +99,36 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected int activitySetup() {
         return TRANSITION_TYPE_LEFT;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        switch (event.getFlag()) {
+            case EventFlags.EVENT_LOGIN_ACTIVITY_HIDE_RETURN:
+                ivClose.setVisibility(View.GONE);
+                break;
+            case EventFlags.EVENT_LOGIN_ACTIVITY_SHOW_RETURN:
+                ivClose.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ivClose.setVisibility(View.VISIBLE);
+                    }
+                },300);
+                break;
+        }
     }
 
 }
