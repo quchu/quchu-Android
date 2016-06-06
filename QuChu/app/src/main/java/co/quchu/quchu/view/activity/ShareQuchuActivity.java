@@ -66,6 +66,10 @@ public class ShareQuchuActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         getEnhancedToolbar().getRightTv().setText(R.string.share_mode_normal);
+        getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.standard_color_white));
+        getEnhancedToolbar().getTitleTv().setText("");
+        getEnhancedToolbar().getLeftIv().setImageResource(R.mipmap.ic_forward);
+        getEnhancedToolbar().getLeftIv().setRotation(180);
 
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,11 +78,13 @@ public class ShareQuchuActivity extends BaseActivity {
                 if (!mJokingMode){
                     getEnhancedToolbar().getRightTv().setText(R.string.share_mode_joking);
                     tvPlaceName.setText(mQuchuName);
-
+                    tvPlaceName.setTextColor(getResources().getColor(R.color.standard_color_black));
+                    tvPlaceName.setBackgroundColor(getResources().getColor(R.color.transparent));
                 }else{
                     getEnhancedToolbar().getRightTv().setText(R.string.share_mode_normal);
-                    tvPlaceName.setText("");
-
+                    tvPlaceName.setText(R.string.guess_where_is_it);
+                    tvPlaceName.setTextColor(getResources().getColor(R.color.standard_color_white));
+                    tvPlaceName.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
                 }
             }
         });
@@ -90,7 +96,11 @@ public class ShareQuchuActivity extends BaseActivity {
         ivQuchuCover.setImageURI(Uri.parse(mQuchuCover));
         ivQuchuCover.setAspectRatio(1.5f);
         tvPlaceLocation.setText(mQuchuAddress);
-        tvPlaceName.setText("");
+
+        tvPlaceName.setText(R.string.guess_where_is_it);
+        tvPlaceName.setTextColor(getResources().getColor(R.color.standard_color_white));
+        tvPlaceName.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+
         tvShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

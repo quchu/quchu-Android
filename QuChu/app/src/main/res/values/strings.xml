@@ -159,6 +159,7 @@
     <string name="promote_verify_fail">验证失败，请输入正确的验证码</string>
     <string name="quchu_detail">趣处详情</string>
     <string name="guess_what_you_like">猜你喜欢</string>
+    <string name="guess_where_is_it">猜猜这是哪</string>
     <string name="registration_step_1">注册（1/2）</string>
     <string name="registration_step_2">注册（2/2）</string>
     <string name="forget_pwd_step_1">找回密码（1/2）</string>

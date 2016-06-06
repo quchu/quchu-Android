@@ -8,8 +8,9 @@
 
     <color name="translucent_white">#7fffffff</color>                               //白色半透明
     <color name="translucent_dark">#7f000000</color>                                //黑色半透明
-    <color name="translucent_deep_dark">#cf000000</color>                           //黑色半透明深
-    <color name="transparent">#00000000</color>                                     //完全透明
+    <color name="translucent_dark_deep">#cf000000</color>                           //黑色半透明深
+    <color name="translucent_dark_light">#3f000000</color>                           //黑色半透明
+    <color name="transparent">#00000000</color>                                     //完全透明浅
 
     <color name="standard_color_black">#000</color>
     <color name="standard_color_white">#ffffff</color>
