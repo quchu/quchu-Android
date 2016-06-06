@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,15 +45,14 @@ import co.quchu.quchu.utils.StringUtils;
  * email:437943145@qq.com
  * desc :
  */
-public class BindPhoneNumDialog extends DialogFragment {
+public class BindPhoneNumDialog extends DialogFragment implements ViewPager.OnPageChangeListener {
 
     @Bind(R.id.recyclerView)
     ViewPager viewPager;
-    @Bind(R.id.dialog_bind_edit)
-    EditText FocusEditText;
     private static MyHandle handle;
 
     private String phoneNumber;
+    private TextInputEditText editTextPassword;
 
     public static BindPhoneNumDialog newInstance() {
         return new BindPhoneNumDialog();
@@ -64,13 +62,35 @@ public class BindPhoneNumDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_bind_phone, null);
-
         ButterKnife.bind(this, view);
         builder.setView(view);
+        viewPager.addOnPageChangeListener(this);
         viewPager.setAdapter(new MyPagerAdapter());
 
-
         return builder.create();
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if (position == 2) {
+            editTextPassword.requestFocus();
+            editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+//            FocusEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+            InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.restartInput(editTextPassword);
+            manager.showSoftInput(editTextPassword, InputMethodManager.SHOW_FORCED);
+            manager.showSoftInputFromInputMethod(editTextPassword.getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
 
@@ -127,9 +147,8 @@ public class BindPhoneNumDialog extends DialogFragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewPager.getCurrentItem() > 0) {
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-                }
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+
             }
         });
 
@@ -138,16 +157,19 @@ public class BindPhoneNumDialog extends DialogFragment {
                 back.setVisibility(View.GONE);
                 title.setText("请输入手机号(1/3)");
                 inputLayout.setHint("手机号:");
+//                FocusEditText.setInputType(InputType.TYPE_CLASS_PHONE);
                 common.setText("获取验证码");
                 autoCode.setVisibility(View.GONE);
                 editText.setKeyListener(DigitsKeyListener.getInstance(getActivity().getString(R.string.filter_phone)));
                 editText.setText(phoneNumber);
                 editText.requestFocus();
                 editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
-                InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                manager.restartInput(editText);
-                manager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
-                manager.showSoftInputFromInputMethod(editText.getWindowToken(), 0);
+
+//                InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                manager.restartInput(editText);
+//                manager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+//                manager.showSoftInputFromInputMethod(editText.getWindowToken(), 0);
+
                 common.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -180,17 +202,16 @@ public class BindPhoneNumDialog extends DialogFragment {
                 });
                 break;
             case 2:
+                editTextPassword = (TextInputEditText) view.findViewById(R.id.editText);
                 title.setText("请创建登陆密码(3/3)");
                 inputLayout.setHint("登陆密码:");
-                FocusEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-                editText.setInputType(InputType.TYPE_CLASS_TEXT);
                 common.setText("确认");
-                editText.setKeyListener(DigitsKeyListener.getInstance(getActivity().getString(R.string.passFilter)));
+                editTextPassword.setKeyListener(DigitsKeyListener.getInstance(getActivity().getString(R.string.passFilter)));
                 autoCode.setVisibility(View.GONE);
                 common.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setPassword(editText.getText().toString(), inputLayout);
+                        setPassword(editTextPassword.getText().toString(), inputLayout);
                     }
                 });
                 break;
@@ -264,6 +285,13 @@ public class BindPhoneNumDialog extends DialogFragment {
         params.put("phoneNumber", phoneNumber);
         params.put("verifyCode", code);
 
+        if (code.length() == 0) {
+            layout.setError("验证码有误");
+            return;
+        } else {
+            layout.setError(null);
+        }
+
         GsonRequest<String> request = new GsonRequest<>(NetApi.autoCodeIsCorrect, String.class, params, new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
@@ -274,6 +302,7 @@ public class BindPhoneNumDialog extends DialogFragment {
             public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
                 if (result) {
                     viewPager.setCurrentItem(2);
+
                 } else {
                     layout.setError("验证码有误");
                 }

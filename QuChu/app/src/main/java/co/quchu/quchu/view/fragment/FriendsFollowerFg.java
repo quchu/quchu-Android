@@ -92,6 +92,7 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
 
     @Override
     public void nullData() {
+        refreshLayout.setRefreshing(false);
         mAdapter.setLoadMoreEnable(false);
     }
 

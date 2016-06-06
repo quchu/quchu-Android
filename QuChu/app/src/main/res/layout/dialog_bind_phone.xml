@@ -8,7 +8,6 @@
 
     <EditText
         android:layout_width="0dp"
-        android:id="@+id/dialog_bind_edit"
         android:layout_height="0dp"
         android:text="请求焦点,勿删" />
 
