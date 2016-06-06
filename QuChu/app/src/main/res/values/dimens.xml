@@ -14,7 +14,7 @@
     <dimen name="visited_users_avatar_size">24dp</dimen>
 
 
-    <dimen name="rounded_radius">5px</dimen>
+    <dimen name="rounded_radius">20px</dimen>
     <!--//设置中item高度-->
     <dimen name="item_height">50dp</dimen>
 

@@ -10,10 +10,9 @@
     android:clickable="false"
     android:layout_marginTop="@dimen/dialog_margin"
     android:fitsSystemWindows="true"
-    android:padding="1px"
     card_view:cardElevation="0dp"
     card_view:cardCornerRadius="@dimen/rounded_radius"
-    >
+    card_view:cardPreventCornerOverlap="false">
 
     <TextView
         android:id="@+id/activity"
@@ -32,10 +31,14 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/photo"
-
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            card_view:roundedCornerRadius="@dimen/rounded_radius"
+            card_view:roundTopRight="true"
+            card_view:roundTopLeft="true"
+            card_view:roundBottomLeft="false"
+            card_view:roundBottomRight="false"
             card_view:actualImageScaleType="centerCrop" />
 
 

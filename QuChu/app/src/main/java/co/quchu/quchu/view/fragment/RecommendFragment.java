@@ -67,8 +67,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
         viewpager.setClipToPadding(false);
-        viewpager.setPadding(80, 40, 80, 40);
-        viewpager.setPageMargin(40);
+        viewpager.setPadding(60, 40, 60, 40);
+        viewpager.setPageMargin(20);
         viewpager.addOnPageChangeListener(this);
         adapter = new RecommendAdapter(this, cardList, this);
         viewpager.setAdapter(adapter);
