@@ -110,15 +110,11 @@ public class UserLoginPresenter {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
-                try {
-                    if (response.has("result") && response.getString("result").equals("0")) {
+                    if (response.has("result") ) {
                         listener.isUnique(null);
                     } else {
                         listener.notUnique("");
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
             }
 
