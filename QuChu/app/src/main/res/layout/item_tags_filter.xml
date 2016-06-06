@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tvTag"
-    android:background="@drawable/shape_lineframe_black"
+    android:background="@drawable/ic_nearby_tag_ele_selector"
     android:textSize="@dimen/word_size_body"
     android:paddingTop="@dimen/tow_dp_margin"
     android:paddingBottom="@dimen/tow_dp_margin"
@@ -9,9 +9,10 @@
     android:layout_marginRight="@dimen/quarter_margin"
     android:layout_marginTop="@dimen/quarter_margin"
     android:layout_marginBottom="@dimen/half_margin"
-
     android:gravity="center"
     android:maxLines="1"
     android:textColor="@color/standard_color_h2_dark"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:button="@null"
+    />

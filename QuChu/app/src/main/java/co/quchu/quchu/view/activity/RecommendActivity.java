@@ -261,7 +261,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(classifyFragment).show(recommendFragment).commit();
         } else {
-
             tvSearch.animate()
                     .translationY(0)
                     .alpha(1)

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.List;
@@ -35,9 +36,9 @@ public class TagsFilterDialogAdapter extends RecyclerView.Adapter<TagsFilterDial
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvTag.setText(mData.get(position).getZh());
-        holder.tvTag.setBackgroundResource(mData.get(position).isPraise()?R.drawable.shape_lineframe_white_fill:R.drawable.shape_lineframe_white);
         int color = holder.tvTag.getResources().getColor(mData.get(position).isPraise()?R.color.standard_color_black:R.color.standard_color_white);
         holder.tvTag.setTextColor(color);
+        holder.tvTag.setChecked(mData.get(position).isPraise());
 
         holder.tvTag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +60,7 @@ public class TagsFilterDialogAdapter extends RecyclerView.Adapter<TagsFilterDial
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.tvTag)
-        TextView tvTag;
+        CheckBox tvTag;
 
         public ViewHolder(View itemView) {
             super(itemView);
