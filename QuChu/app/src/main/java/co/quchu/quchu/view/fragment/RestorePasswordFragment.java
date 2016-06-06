@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.SPUtils;
@@ -76,6 +77,10 @@ public class RestorePasswordFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                if (!NetUtil.isNetworkConnected(getActivity())){
+                    Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (mRequestRunning){
                     return;
                 }
@@ -98,20 +103,13 @@ public class RestorePasswordFragment extends Fragment {
                         }
                     }
                 });
-                System.out.println("RPF 1");
                 if (null!=etPassword.getText() && StringUtils.isGoodPassword(etPassword.getText().toString())){
-                    System.out.println("RPF 2");
-
                     UserLoginPresenter.resetPassword(getActivity(), mUserName, etPassword.getText().toString(), mVerifyCode, new UserLoginPresenter.UserNameUniqueListener() {
                         @Override
                         public void isUnique(JSONObject msg) {
-                            System.out.println("RPF 3");
-
                             UserLoginPresenter.userLogin(getActivity(), mUserName, etPassword.getText().toString(), new UserLoginListener() {
                                 @Override
                                 public void loginSuccess(int type, String token, String appId) {
-                                    System.out.println("RPF 4");
-
                                     Toast.makeText(getActivity(),R.string.promote_password_update_success,Toast.LENGTH_SHORT).show();
                                     SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
                                     MobclickAgent.onProfileSignIn("loginphone_c", AppContext.user.getUserId() + "");
@@ -122,8 +120,6 @@ public class RestorePasswordFragment extends Fragment {
 
                                 @Override
                                 public void loginFail(String errorMsg) {
-                                    System.out.println("RPF 5");
-
                                     mRequestRunning = false;
                                     Toast.makeText(getActivity(),R.string.promote_password_update_success_login_manually,Toast.LENGTH_SHORT).show();
                                 }
@@ -132,15 +128,12 @@ public class RestorePasswordFragment extends Fragment {
 
                         @Override
                         public void notUnique(String msg) {
-                            System.out.println("RPF 6");
-
                             mRequestRunning = false;
                             Toast.makeText(getActivity(),R.string.promote_password_update_failure,Toast.LENGTH_SHORT).show();
                         }
                     });
                 }else{
-                    System.out.println("RPF 7");
-
+                    mRequestRunning = false;
                     tvNext.setText(R.string.hint_new_password);
                     tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
                 }

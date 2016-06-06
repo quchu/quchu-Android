@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sina.weibo.sdk.utils.MD5;
 import com.umeng.analytics.MobclickAgent;
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.SPUtils;
@@ -202,6 +204,11 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
      * 用户登录
      */
     private void userLogin(String userName,String password) {
+
+        if (!NetUtil.isNetworkConnected(getActivity())){
+            Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+            return;
+        }
         errorView.showLoading();
         UserLoginPresenter.userLogin(getActivity(), userName,password, new UserLoginListener() {
                     @Override

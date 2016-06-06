@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -132,6 +133,11 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
             @Override
             public void onClick(View v) {
 
+
+                if (!NetUtil.isNetworkConnected(getActivity())){
+                    Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(!mEmptyForum&&verifyForm()) {
 
                     if (mRequestRunning){

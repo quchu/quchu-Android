@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -216,6 +217,12 @@ public class PhoneValidationFragment extends Fragment {
 
     boolean isVerifying = false;
     private void verifySms(){
+
+        if (!NetUtil.isNetworkConnected(getActivity())){
+            Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (isVerifying){
             return;
         }
@@ -299,6 +306,13 @@ public class PhoneValidationFragment extends Fragment {
     }
     private boolean isRunning = false;
     private void getValidCode(){
+
+
+        if (!NetUtil.isNetworkConnected(getActivity())){
+            Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
         if (isRunning){
             return;
         }
