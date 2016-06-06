@@ -40,6 +40,9 @@ public class FootPrintActivity extends BaseActivity {
     RecyclerView rvFootPrint;
     @Bind(R.id.tvAddFootprint)
     TextView tvAddFootPrint;
+    @Bind(R.id.tvEmpty)
+    TextView tvEmpty;
+
     FootPrintAdapter mAdapter;
     private int mMaxPageNo = -1;
     private int mCurrentPageNo = 1;
@@ -129,6 +132,11 @@ public class FootPrintActivity extends BaseActivity {
                 if (null != model) {
                     mData.addAll(model);
                     mAdapter.notifyDataSetChanged();
+                }
+                if (null==mData||mData.size()==0){
+                    tvEmpty.setVisibility(View.VISIBLE);
+                }else{
+                    tvEmpty.setVisibility(View.GONE);
                 }
                 mIsLoading = false;
                 if (DialogUtil.isDialogShowing()) {

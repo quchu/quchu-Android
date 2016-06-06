@@ -312,7 +312,7 @@ public class PhoneValidationFragment extends Fragment {
             Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
         if (isRunning){
             return;
         }
