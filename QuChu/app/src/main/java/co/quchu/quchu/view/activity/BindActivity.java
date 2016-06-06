@@ -93,14 +93,14 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bind_phone:
-                if (AppContext.user.isphone()) {
-                    CommonDialog dialog = CommonDialog.newInstance("出错了", "手机号是唯一的身份标示,解除绑定后将无法正常登录.", "知道了", null);
-                    dialog.show(getSupportFragmentManager(), "");
-                } else {
+//                if (AppContext.user.isphone()) {
+//                    CommonDialog dialog = CommonDialog.newInstance("出错了", "手机号是唯一的身份标示,解除绑定后将无法正常登录.", "知道了", null);
+//                    dialog.show(getSupportFragmentManager(), "");
+//                } else {
                     mDialog = BindPhoneNumDialog.newInstance();
                     mDialog.setCancelable(false);
                     mDialog.show(getSupportFragmentManager(), "");
-                }
+//                }
                 break;
             case R.id.bind_wecha:
                 if (AppContext.user.isIsweixin()) {

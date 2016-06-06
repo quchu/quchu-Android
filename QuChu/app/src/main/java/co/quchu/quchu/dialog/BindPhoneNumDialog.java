@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,8 @@ public class BindPhoneNumDialog extends DialogFragment {
 
     @Bind(R.id.recyclerView)
     ViewPager viewPager;
+    @Bind(R.id.dialog_bind_edit)
+    EditText FocusEditText;
     private static MyHandle handle;
 
     private String phoneNumber;
@@ -61,6 +64,7 @@ public class BindPhoneNumDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_bind_phone, null);
+
         ButterKnife.bind(this, view);
         builder.setView(view);
         viewPager.setAdapter(new MyPagerAdapter());
@@ -178,6 +182,7 @@ public class BindPhoneNumDialog extends DialogFragment {
             case 2:
                 title.setText("请创建登陆密码(3/3)");
                 inputLayout.setHint("登陆密码:");
+                FocusEditText.setInputType(InputType.TYPE_CLASS_TEXT);
                 editText.setInputType(InputType.TYPE_CLASS_TEXT);
                 common.setText("确认");
                 editText.setKeyListener(DigitsKeyListener.getInstance(getActivity().getString(R.string.passFilter)));

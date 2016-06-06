@@ -262,7 +262,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
             if (resultList != null && resultList.size() > 0 && !StringUtils.isEmpty(resultList.get(0).getPhotoPath())) {
                 updateAvatar(resultList.get(0).getPhotoPath());
-                LogUtils.e("头像:" + resultList.get(0).getPhotoPath());
             }
         }
 
@@ -351,7 +350,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
     public void updateAvatar(String avatarUrl) {
 
-        LogUtils.e("头像路径" + avatarUrl);
         if (!avatarUrl.startsWith("http")) {
             newUserPhoto = ImageUtils.saveImage2Sd(avatarUrl);
 //            co.quchu.quchu.gallery.utils.ImageUtils.loadWithAppropriateSize(accountSettingAvatarSdv, Uri.fromFile(new File(newUserPhoto)));
@@ -365,6 +363,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 //                    .build();
 //            accountSettingAvatarSdv.setController(controller);
 
+            LogUtils.e("头像路径" + newUserPhoto);
             accountSettingAvatarSdv.setImageURI(Uri.EMPTY);
             accountSettingAvatarSdv.setImageURI(Uri.fromFile(new File(newUserPhoto)));
 
