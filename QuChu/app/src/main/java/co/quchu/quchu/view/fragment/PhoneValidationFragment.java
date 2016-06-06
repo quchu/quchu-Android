@@ -322,7 +322,6 @@ public class PhoneValidationFragment extends Fragment {
             UserLoginPresenter.decideMobileCanLogin(getActivity(), etUsername.getText().toString(), new UserLoginPresenter.UserNameUniqueListener() {
                 @Override
                 public void isUnique(JSONObject msg) {
-                    System.out.println("shenmejb 1");
                     isRunning = false;
                     if (mSecs > 0) {
                         return;
@@ -332,7 +331,6 @@ public class PhoneValidationFragment extends Fragment {
                     UserLoginPresenter.requestVerifySms(getActivity(), etUsername.getText().toString(),UserLoginPresenter.getCaptcha_regiest, new UserLoginPresenter.UserNameUniqueListener() {
                         @Override
                         public void isUnique(JSONObject msg) {
-                            System.out.println("shenmejb 2");
                             errorView.hideView();
                             scheduleCountDownTask();
                             mVerifyed = true;
@@ -340,8 +338,6 @@ public class PhoneValidationFragment extends Fragment {
 
                         @Override
                         public void notUnique(String msg) {
-                            System.out.println("shenmejb 3");
-
                             errorView.hideView();
                             Toast.makeText(getActivity(),R.string.promote_verify_fail,Toast.LENGTH_SHORT).show();
                             scheduleCountDownTask();

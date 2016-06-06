@@ -57,7 +57,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
 
-        toolbar.getTitleTv().setText("绑定第三方账号");
+        toolbar.getTitleTv().setText("绑定");
     }
 
     private void initListener() {

@@ -13,7 +13,7 @@
     <!-- ********** 趣基因 ********* -->
 
 
-    <string name="hint_add_footprint">每个故事都应该有个精彩的开头...</string>
+    <string name="hint_add_footprint">每个故事都应该有个精彩的空格...</string>
     <!-- ********** 氛围 ********* -->
     <!-- ********** 趣星人 ********* -->
     <string name="text_login_resetpassowrd">密码重置成功，请重新登录</string>
@@ -81,7 +81,7 @@
 
     <string name="passFilter">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
     <string name="filter_phone">1234567890</string>
-    <string name="add_foot_print_long">留下一个自己的脚印</string>
+    <string name="add_foot_print_long">摁个脚印</string>
     <string name="create_account_via_phone">手机号注册</string>
     <string name="login_via_phone">手机号登录</string>
     <string name="forgotten_password">忘记密码</string>

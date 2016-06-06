@@ -222,7 +222,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                         }
                     }
                     if (im.size() > 0) {
-                        DialogUtil.showProgess(AddFootprintActivity.this, "上传中");
+                        DialogUtil.showProgess(AddFootprintActivity.this, "母星正在接受中");
                         new ImageUpload(AddFootprintActivity.this, im, new ImageUpload.UploadResponseListener() {
                             @Override
                             public void finish(String result) {

@@ -263,7 +263,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         boolean checked;
         if (mSelectPhotoMap.get(info.getPhotoPath()) == null) {
             if (mFunctionConfig.isMutiSelect() && mSelectPhotoMap.size() == mFunctionConfig.getMaxSize()) {
-                toast("最多只能添加" + mFunctionConfig.getMaxSize() + "张图片");
+                toast("一次" + mFunctionConfig.getMaxSize() + "张，不能再多了");
                 return;
             } else {
                 mSelectPhotoMap.put(info.getPhotoPath(), info);

@@ -128,10 +128,10 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                 ConfirmDialogFg confirmDialogFg = null;
                 if (!inList){
                     //城市列表中没有当前位置
-                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","当前所在城市还没有开放服务，是否要切换城市");
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","你当前所在的城市尚未占领，是否要切换城市");
                 }else if(inList){
                     //城市列表中有但不是当前位置
-                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","你目前在"+currentLocation+"，是否切换到"+currentLocation);
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","检测到你在"+currentLocation+"，是否切换？");
                 }
                 final boolean finalInList = inList;
                 final int finalCityIdInList = cityIdInList;
