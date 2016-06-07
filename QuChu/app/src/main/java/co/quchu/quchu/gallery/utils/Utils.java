@@ -111,6 +111,7 @@ public class Utils {
                 return bm;
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return bitmap;
     }

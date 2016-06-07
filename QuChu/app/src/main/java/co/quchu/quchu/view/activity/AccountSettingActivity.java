@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -27,6 +28,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
@@ -36,6 +38,7 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ModiffPasswordDialog;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
 import co.quchu.quchu.gallery.CoreConfig;
+import co.quchu.quchu.gallery.FrescoImageLoader;
 import co.quchu.quchu.gallery.FunctionConfig;
 import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoInfo;
@@ -43,7 +46,6 @@ import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
-import co.quchu.quchu.gallery.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
@@ -106,7 +108,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         nickname.setText(AppContext.user.getFullname());
         nickname.setSelection(user.getFullname().length());
         photoNumber.setText(AppContext.user.getUsername());
-        accountSettingUserLocation.setText(SPUtils.getCityName());
+        accountSettingUserLocation.setText(AppContext.user.getLocation());
         if ("男".equals(user.getGender())) {
             radioGroup.check(R.id.man);
         } else {
@@ -202,12 +204,22 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
                                 }
                             });
-
-
                         }
                     }
                 });
                 confirmDialog.show(getSupportFragmentManager(), "confirm");
+                break;
+            case R.id.location:
+                accountSettingUserLocation.setText("定位中...");
+                AppLocationListener.addLocationListener(new AppLocationListener.LocationListener() {
+                    @Override
+                    public void location(AMapLocation amapLocation) {
+                        accountSettingUserLocation.setText(amapLocation.getCity());
+                        AppContext.stopLocation();
+                        AppLocationListener.removeListener(this);
+                    }
+                });
+                AppContext.initLocation();
                 break;
         }
     }
@@ -313,7 +325,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
     public void putUserInfo(String photoUrl) {
         AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this,
-                newUserNickName, photoUrl, radioGroup.getCheckedRadioButtonId() == R.id.man ? "男" : "女", SPUtils.getCityName() + "", new AccountSettingPresenter.UploadUserPhotoListener() {
+                newUserNickName, photoUrl, radioGroup.getCheckedRadioButtonId() == R.id.man ? "男" : "女", accountSettingUserLocation.getText().toString(), new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
                         refreshUserInfo();

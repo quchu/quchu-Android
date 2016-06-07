@@ -60,10 +60,10 @@
                     android:layout_marginTop="5dp"
                     android:background="@color/standard_color_red"
                     android:gravity="center"
+                    android:minWidth="40dp"
                     android:paddingLeft="@dimen/half_margin"
                     android:paddingRight="@dimen/half_margin"
-                    android:textColor="@color/standard_color_white"
-                    tools:text="好奇猫" />
+                    android:textColor="@color/standard_color_white" />
 
                 <TextView
                     android:id="@+id/followAction"
@@ -79,8 +79,8 @@
                 <View
                     android:id="@+id/line_user_center"
                     style="@style/HorizontalLine"
-                    android:layout_marginTop="@dimen/double_margin"
-                    android:layout_below="@id/headImage" />
+                    android:layout_below="@id/headImage"
+                    android:layout_marginTop="@dimen/double_margin" />
 
                 <LinearLayout
                     android:id="@+id/container_none"

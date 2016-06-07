@@ -28,7 +28,6 @@
             android:paddingBottom="@dimen/half_margin"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
-
             android:text="@string/empty_button_text"
             android:textColor="@color/standard_color_white"
             android:textSize="@dimen/word_size_body" />
