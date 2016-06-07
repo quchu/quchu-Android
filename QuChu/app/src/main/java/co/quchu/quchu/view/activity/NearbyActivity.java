@@ -249,7 +249,7 @@ public class NearbyActivity extends BaseActivity {
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (event.getFlag()== EventFlags.EVENT_FINISH_THIS) {
+        if (event.getFlag()== EventFlags.EVENT_GOTO_HOME_PAGE) {
             finish();
         }
     }

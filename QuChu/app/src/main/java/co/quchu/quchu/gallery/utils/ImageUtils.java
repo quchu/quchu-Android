@@ -5,8 +5,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.view.ViewTreeObserver;
 
@@ -22,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * ImageUtils
@@ -68,11 +71,55 @@ public class ImageUtils {
             DraweeController controller = Fresco.newDraweeControllerBuilder()
                     .setOldController(v.getController())
                     .setImageRequest(request)
+
                     .build();
             v.setController(controller);
         }
 
     }
+    /**
+     * 读取图片属性：旋转的角度
+     * @param path 图片绝对路径
+     * @return degree旋转的角度
+     */
+    public static int readPictureDegree(String path) {
+        int degree  = 0;
+        try {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return degree;
+    }
+    /*
+     * 旋转图片
+     * @param angle
+     * @param bitmap
+     * @return Bitmap
+     */
+    public static Bitmap rotaingImageView(int angle , Bitmap bitmap) {
+        //旋转图片 动作
+        Matrix matrix = new Matrix();;
+        matrix.postRotate(angle);
+        System.out.println("angle2=" + angle);
+        // 创建新的图片
+        return Bitmap.createBitmap(bitmap, 0, 0,
+                bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+
 
     public static byte[] getBitmapBytes(Bitmap bitmap, boolean paramBoolean) {
         Bitmap localBitmap = Bitmap.createBitmap(80, 80, Bitmap.Config.RGB_565);

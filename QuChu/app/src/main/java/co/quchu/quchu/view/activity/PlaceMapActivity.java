@@ -20,7 +20,6 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
@@ -29,7 +28,6 @@ import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
@@ -40,7 +38,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.net.URISyntaxException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +53,6 @@ import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.AMapNearbyVPAdapter;
@@ -537,7 +533,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (event.getFlag()== EventFlags.EVENT_FINISH_THIS) {
+        if (event.getFlag()== EventFlags.EVENT_GOTO_HOME_PAGE) {
             finish();
         }else if(event.getFlag()== EventFlags.EVENT_FINISH_MAP){
             finish();

@@ -48,22 +48,22 @@ public class CoreConfig {
         this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
         this.themeConfig = builder.themeConfig;
         this.functionConfig = builder.functionConfig;
-        if(builder.noAnimcation) {
+        if (builder.noAnimcation) {
             this.animRes = -1;
         } else {
             this.animRes = builder.animRes;
         }
         this.onScrollListener = builder.onScrollListener;
 
-        if ( takePhotoFolder == null ) {
-            takePhotoFolder = new File(Environment.getExternalStorageDirectory(), "/DCIM/" + "quchu/");
+        if (takePhotoFolder == null) {
+            takePhotoFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "quchu");
         }
-        if(!takePhotoFolder.exists()) {
+        if (!takePhotoFolder.exists()) {
             takePhotoFolder.mkdirs();
         }
 
-        if ( editPhotoCacheFolder == null ) {
-            editPhotoCacheFolder = new File(Environment.getExternalStorageDirectory() + "/quchu/edittemp/");
+        if (editPhotoCacheFolder == null) {
+            editPhotoCacheFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "quchu/edit");
         }
         if (!editPhotoCacheFolder.exists()) {
             editPhotoCacheFolder.mkdirs();
@@ -115,7 +115,8 @@ public class CoreConfig {
         }
 
         /**
-         *  禁止动画
+         * 禁止动画
+         *
          * @return
          */
         public Builder setNoAnimcation(boolean noAnimcation) {
@@ -125,6 +126,7 @@ public class CoreConfig {
 
         /**
          * 添加滑动事件用于优化图片加载，只有停止滑动了才去加载图片
+         *
          * @param listener
          * @return
          */

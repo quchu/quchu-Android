@@ -395,7 +395,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                     quchuDetailsMoreDialog.setOnButtonClickListener(new QuchuDetailsMoreDialog.OnButtonClickListener() {
                         @Override
                         public void onReturnClick() {
-                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_THIS));
+                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
                         }
 
                         @Override
@@ -571,7 +571,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                     dModel.setCardCount(dModel.getCardCount() - 1);
                 }
                 break;
-            case EventFlags.EVENT_FINISH_THIS:
+            case EventFlags.EVENT_GOTO_HOME_PAGE:
                 finish();
                 break;
         }

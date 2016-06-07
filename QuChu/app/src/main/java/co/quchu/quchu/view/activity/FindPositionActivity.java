@@ -268,13 +268,14 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                     dataChange = true;
                     for (PhotoInfo info : resultList) {
                         String path = info.getPhotoPath();
-                        if (!path.startsWith("file://") && !path.startsWith("res:///")&&!path.startsWith("http://"))
+                        if (!path.startsWith("file://") && !path.startsWith("res:///") && !path.startsWith("http://"))
                             info.setPhotoPath("file://" + path);
                     }
                     photoInfos.clear();
                     photoInfos.addAll(resultList);
                     if (photoInfos.size() < 4)
                         photoInfos.add(0, tackImage);
+                    adapter.setImages(photoInfos);
                     adapter.notifyDataSetChanged();
                 }
 
