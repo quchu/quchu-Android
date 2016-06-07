@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -37,6 +38,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.PostCardItemModel;
@@ -49,7 +51,7 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.fragment.FootprintDetailFragment;
 
-public class MyFootprintDetailActivity extends BaseActivity implements View.OnClickListener {
+public class MyFootprintDetailActivity extends BaseBehaviorActivity implements View.OnClickListener {
 
 
     @Bind(R.id.container)
@@ -92,6 +94,20 @@ public class MyFootprintDetailActivity extends BaseActivity implements View.OnCl
     private PostCardItemModel model;
     private ArrayList<FootprintModel.Entity> mEntitys;
 
+
+
+    @Override
+    public ArrayMap<String, String> getUserBehaviorArguments() {
+
+        ArrayMap<String,String> data = new ArrayMap<>();
+        data.put("footprintid",String.valueOf(getIntent().getIntExtra(REQUEST_KEY_FOOTPRINT_ID,-1)));
+        return data;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 114;
+    }
 
     //底下文字背景处理
 //        ImagePipeline pipeline = Fresco.getImagePipeline();

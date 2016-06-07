@@ -7,61 +7,69 @@
     android:layout_marginBottom="@dimen/dialog_margin"
     android:layout_marginLeft="@dimen/half_margin"
     android:layout_marginRight="@dimen/half_margin"
-    android:clickable="false"
     android:layout_marginTop="@dimen/dialog_margin"
+    android:clickable="false"
     android:fitsSystemWindows="true"
-    card_view:cardElevation="0dp"
     card_view:cardCornerRadius="@dimen/rounded_radius"
+    card_view:cardElevation="0dp"
     card_view:cardPreventCornerOverlap="false">
 
-    <TextView
-        android:id="@+id/activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/ic_party"
-        android:text=""
-        android:layout_margin="@dimen/half_margin"
-        android:textColor="@color/standard_color_white"
-        android:textSize="@dimen/standard_text_size_h1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/photo"
-            android:layout_weight="1"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            card_view:roundedCornerRadius="@dimen/rounded_radius"
-            card_view:roundTopRight="true"
-            card_view:roundTopLeft="true"
-            card_view:roundBottomLeft="false"
-            card_view:roundBottomRight="false"
-            card_view:actualImageScaleType="centerCrop" />
+            android:layout_weight="1">
 
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                card_view:actualImageScaleType="centerCrop"
+                card_view:roundBottomLeft="false"
+                card_view:roundBottomRight="false"
+                card_view:roundTopLeft="true"
+                card_view:roundTopRight="true"
+                card_view:roundedCornerRadius="@dimen/rounded_radius" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/activity"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                card_view:actualImageScaleType="centerCrop"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                card_view:roundBottomLeft="false"
+                card_view:roundBottomRight="false"
+                card_view:roundTopLeft="true"
+                card_view:roundTopRight="false"
+                card_view:roundedCornerRadius="15dp" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
+            android:layout_weight="1">
 
 
             <RatingBar
                 android:id="@+id/rbRating"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/base_margin"
-                android:layout_gravity="center_horizontal"
                 android:layout_below="@+id/detail_avg_price_tv"
-                android:progressDrawable="@drawable/custom_ratingbar_selector"
-                android:numStars="5"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/base_margin"
                 android:isIndicator="true"
-                android:stepSize=".5"
-                android:rating="3.5" />
+                android:numStars="5"
+                android:progressDrawable="@drawable/custom_ratingbar_selector"
+                android:rating="3.5"
+                android:stepSize=".5" />
 
 
             <LinearLayout
@@ -79,11 +87,11 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_tag_bg"
                     android:paddingBottom="@dimen/tow_dp_margin"
+                    android:paddingLeft="@dimen/half_margin"
+                    android:paddingRight="@dimen/half_margin"
                     android:paddingTop="@dimen/tow_dp_margin"
                     android:text="标签1"
                     android:textColor="@color/tagTextColor"
-                    android:paddingLeft="@dimen/half_margin"
-                    android:paddingRight="@dimen/half_margin"
                     android:textSize="@dimen/standard_text_size_h4" />
 
                 <TextView
@@ -97,8 +105,8 @@
                     android:paddingRight="@dimen/half_margin"
                     android:paddingTop="@dimen/tow_dp_margin"
                     android:textColor="@color/tagTextColor"
-                    android:visibility="gone"
-                    android:textSize="@dimen/standard_text_size_h4" />
+                    android:textSize="@dimen/standard_text_size_h4"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/recommend_tag3"
@@ -111,8 +119,8 @@
                     android:paddingRight="@dimen/half_margin"
                     android:paddingTop="@dimen/tow_dp_margin"
                     android:textColor="@color/tagTextColor"
-                    android:visibility="gone"
-                    android:textSize="@dimen/standard_text_size_h4" />
+                    android:textSize="@dimen/standard_text_size_h4"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -128,33 +136,31 @@
 
             <TextView
                 android:id="@+id/desc"
+                style="@style/TextView.H1"
                 android:layout_below="@id/divider"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/base_margin"
-                android:text="@string/empty_string"
-                style="@style/TextView.H1" />
+                android:text="@string/empty_string" />
 
 
             <TextView
                 android:id="@+id/distance"
+                style="@style/TextView.H2"
                 android:layout_below="@id/desc"
-                android:layout_marginTop="@dimen/quarter_margin"
-                android:text="距您当前位置0km"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/quarter_margin"
                 android:drawableLeft="@mipmap/ic_label_location_tiny"
                 android:gravity="center"
-                style="@style/TextView.H2"
-                />
+                android:text="距您当前位置0km" />
 
             <TextView
                 android:id="@+id/item_recommend_card_address_tv"
+                style="@style/TextView.H2"
                 android:layout_below="@+id/distance"
                 android:layout_centerHorizontal="true"
                 android:drawableLeft="@mipmap/ic_label_money"
                 android:gravity="center"
-                android:text="人均消费"
-                style="@style/TextView.H2"
-                />
+                android:text="人均消费" />
         </RelativeLayout>
     </LinearLayout>
 

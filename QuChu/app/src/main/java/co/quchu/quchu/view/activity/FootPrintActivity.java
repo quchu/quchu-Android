@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.FootprintModel;
@@ -34,7 +36,7 @@ import co.quchu.quchu.widget.SpacesItemDecoration;
 /**
  * Created by Nico on 16/4/7.
  */
-public class FootPrintActivity extends BaseActivity {
+public class FootPrintActivity extends BaseBehaviorActivity {
 
     @Bind(R.id.rvFootPrint)
     RecyclerView rvFootPrint;
@@ -52,6 +54,20 @@ public class FootPrintActivity extends BaseActivity {
     private String mQuchuName;
     public static final String BUNDLE_KEY_QUCHU_ID = "BUNDLE_KEY_QUCHU_ID";
     public static final String BUNDLE_KEY_QUCHU_NAME = "BUNDLE_KEY_QUCHU_NAME";
+
+
+    @Override
+    public ArrayMap<String, String> getUserBehaviorArguments() {
+
+        ArrayMap<String,String> data = new ArrayMap<>();
+        data.put("pid",String.valueOf(getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID,-1)));
+        return data;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 112;
+    }
 
     @Override
     protected int activitySetup() {

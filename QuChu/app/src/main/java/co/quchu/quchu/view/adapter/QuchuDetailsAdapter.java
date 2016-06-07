@@ -105,8 +105,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LAYOUT_TYPE_LOAD_MORE
     };
 
-    public static final int[] RANDOM_AVATAR = {R.mipmap.ic_random_user_avatar_a, R.mipmap.ic_random_user_avatar_b,
-            R.mipmap.ic_random_user_avatar_c, R.mipmap.ic_random_user_avatar_d};
+    //public static final int[] RANDOM_AVATAR = {R.mipmap.ic_random_user_avatar_a, R.mipmap.ic_random_user_avatar_b,
+//            R.mipmap.ic_random_user_avatar_c, R.mipmap.ic_random_user_avatar_d};
 
     public QuchuDetailsAdapter(Activity activity, DetailModel dModel, View.OnClickListener onClickListener) {
         if (null == onClickListener) {

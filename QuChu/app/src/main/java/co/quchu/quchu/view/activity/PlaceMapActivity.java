@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -45,6 +46,7 @@ import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.NavigateSelectedDialogFg;
 import co.quchu.quchu.model.NearbyMapModel;
@@ -69,7 +71,7 @@ import co.quchu.quchu.view.adapter.AMapNearbyVPAdapter;
  * <p/>
  * 地图 点击可以导航界面
  */
-public class PlaceMapActivity extends BaseActivity implements View.OnClickListener, LocationSource, AMap.OnMapLoadedListener,
+public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnClickListener, LocationSource, AMap.OnMapLoadedListener,
         AMapLocationListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter {
     private OnLocationChangedListener mListener;
     private AMap aMap;
@@ -85,6 +87,21 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
     private BitmapDescriptor mMapPin,mMapPinBlue;
     private NearbyMapModel mCurrentModel;
     private int mLastMarker = -1;
+
+
+
+    @Override
+    public ArrayMap<String, String> getUserBehaviorArguments() {
+
+        ArrayMap<String,String> data = new ArrayMap<>();
+        data.put("pid",String.valueOf(getIntent().getIntExtra("pid",-1)));
+        return data;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 113;
+    }
 
 
     @Override

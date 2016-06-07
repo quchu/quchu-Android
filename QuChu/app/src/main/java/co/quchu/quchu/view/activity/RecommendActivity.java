@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.ArrayMap;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -30,6 +31,7 @@ import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
@@ -52,7 +54,7 @@ import co.quchu.quchu.widget.RecommendTitleGroup;
  * Date: 2015-12-07
  * 趣处分类、推荐
  */
-public class RecommendActivity extends BaseActivity implements View.OnClickListener {
+public class RecommendActivity extends BaseBehaviorActivity implements View.OnClickListener {
     @Bind(R.id.recommend_title_location_tv)
     TextView recommendTitleLocationIv;
 
@@ -75,6 +77,17 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
     public int viewPagerIndex = 0;
     private RecommendFragment recommendFragment;
     private ClassifyFragment classifyFragment;
+
+
+    @Override
+    public ArrayMap<String, String> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 110;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

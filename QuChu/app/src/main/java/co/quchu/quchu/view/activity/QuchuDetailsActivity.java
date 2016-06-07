@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,6 +28,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.QuchuDetailsMoreDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
@@ -54,7 +56,7 @@ import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
  * Date: 2015-12-09
  * 趣处详情
  */
-public class QuchuDetailsActivity extends BaseActivity {
+public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
 
     @Bind(R.id.detail_recyclerview)
@@ -145,6 +147,19 @@ public class QuchuDetailsActivity extends BaseActivity {
 
         getRatingInfo();
 
+    }
+
+    @Override
+    public ArrayMap<String, String> getUserBehaviorArguments() {
+
+        ArrayMap<String,String> data = new ArrayMap<>();
+        data.put("pid",String.valueOf(getIntent().getIntExtra(REQUEST_KEY_PID, -1)));
+        return data;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 111;
     }
 
     private void getVisitorsAnlysis() {
@@ -238,6 +253,11 @@ public class QuchuDetailsActivity extends BaseActivity {
         mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                if(!NetUtil.isNetworkConnected(getApplicationContext())){
+                    Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (mLoadingMore) {
                     return;
                 }
@@ -444,6 +464,7 @@ public class QuchuDetailsActivity extends BaseActivity {
                             MobclickAgent.onEvent(this, "map_c");
 
                             Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
+                            mapIntent.putExtra("pid",dModel.getPid());
                             mapIntent.putExtra("lat", dModel.getLatitude());
                             mapIntent.putExtra("lon", dModel.getLongitude());
                             mapIntent.putExtra("gdlon", dModel.gdLongitude);

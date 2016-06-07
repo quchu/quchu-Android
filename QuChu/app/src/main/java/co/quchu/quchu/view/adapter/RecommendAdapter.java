@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
@@ -13,9 +14,11 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.lang.reflect.Field;
@@ -72,6 +75,12 @@ public class RecommendAdapter extends PagerAdapter {
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (model.isIsActivity()) {
             holder.item_place_event_tv.setVisibility(View.VISIBLE);
+            Uri uri = new Uri.Builder()
+                    .scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+                    .path(String.valueOf(R.mipmap.ic_party))
+                    .build();
+            holder.item_place_event_tv.setImageURI(uri);
+
         } else {
             holder.item_place_event_tv.setVisibility(View.GONE);
         }
@@ -189,7 +198,7 @@ public class RecommendAdapter extends PagerAdapter {
         @Bind(R.id.item_recommend_card_address_tv)
         TextView itemRecommendCardAddressTv;
         @Bind(R.id.activity)
-        TextView item_place_event_tv;
+        SimpleDraweeView item_place_event_tv;
         @Bind(R.id.desc)
         TextView item_recommend_card_name_tv;
         @Bind(R.id.recommend_tag1)
