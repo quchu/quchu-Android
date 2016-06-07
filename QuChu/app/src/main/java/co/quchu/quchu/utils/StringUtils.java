@@ -352,13 +352,10 @@ public class StringUtils {
         float distance = AMapUtils.calculateLineDistance(new LatLng(latitude, longitude), new LatLng(targetLatitude, targetLonitude));
         if(distance/1000<=10){
             return new DecimalFormat("##.#").format(((distance / 1000) / 100f) * 100) + "km";
-            //xx.xkm
         }else if(distance/1000>10&&distance/1000<100){
             return new DecimalFormat("#").format(((distance / 1000) / 100f) * 100) + "km";
-            //xxkm
         }else if(distance/1000>100){
             return "100Km+";
-            //100km+
         }else{
             return new DecimalFormat("##.#").format(((distance / 1000) / 100f) * 100) + "km";
         }

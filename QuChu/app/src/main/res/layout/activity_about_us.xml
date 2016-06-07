@@ -29,6 +29,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/half_margin"
                 android:gravity="center_horizontal"
+                android:lineSpacingExtra="4sp"
+                android:textSize="14sp"
                 android:text="@string/about_us_text" />
 
         </ScrollView>
