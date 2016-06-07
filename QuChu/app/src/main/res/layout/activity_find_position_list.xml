@@ -45,7 +45,7 @@
             android:gravity="center"
             android:text="我发现了一个新趣处"
             android:textColor="@color/standard_color_h2_dark"
-            android:textSize="@dimen/word_title_body" />
+            android:textSize="@dimen/word_size_body" />
     </LinearLayout>
 
     <View
