@@ -21,9 +21,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.UserBehaviorModel;
 import co.quchu.quchu.model.UserInfoModel;
@@ -178,6 +176,13 @@ public class AppContext extends Application {
         //启动定位
         mLocationClient.startLocation();
     }
+
+
+
+
+
+
+
 
     public static void stopLocation() {
         if (null != mLocationClient) {

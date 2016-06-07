@@ -30,6 +30,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
     private boolean loadMoreEnable = true;
     protected List<DT> data;
     protected OnItemClickListener<DT> itemClickListener;
+    private ObjectAnimator rotation;
 
     public void setItemClickListener(OnItemClickListener<DT> itemClickListener) {
         this.itemClickListener = itemClickListener;
@@ -100,9 +101,11 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
         if (holder instanceof LoadMoreViewHolder) {
             final LoadMoreViewHolder loadMoreHold = (LoadMoreViewHolder) holder;
             if (loadMoreEnable) {
+                loadMoreHold.loadView.setImageResource(R.mipmap.ic_loadmore);
                 loadMoreHold.retryView.setText("加载中~~");
+                ((LoadMoreViewHolder) holder).massage.setVisibility(View.GONE);
                 loadMoreHold.itemView.setVisibility(View.VISIBLE);
-                ObjectAnimator rotation = ObjectAnimator.ofFloat(loadMoreHold.loadView, "rotation", 0, 360);
+                rotation = ObjectAnimator.ofFloat(loadMoreHold.loadView, "rotation", 0, 360);
                 rotation.setInterpolator(new LinearInterpolator());
                 rotation.setRepeatMode(ValueAnimator.RESTART);
                 rotation.setRepeatCount(ValueAnimator.INFINITE);
@@ -115,17 +118,21 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                 loadMoreHold.retryView.setOnClickListener(null);
                 loadMoreHold.retryView.setBackground(null);
             } else if (netError) {
-                loadMoreHold.loadView.clearAnimation();
-                loadMoreHold.loadView.setVisibility(View.INVISIBLE);
-                loadMoreHold.retryView.setText("网络异常了~~点击重试");
+                if (rotation != null)
+                    rotation.cancel();
+                loadMoreHold.loadView.setImageResource(R.mipmap.ic_data_isnull);
+                loadMoreHold.retryView.setText("点击重试");
+                ((LoadMoreViewHolder) holder).massage.setVisibility(View.VISIBLE);
+
                 loadMoreHold.retryView.setClickable(true);
-                loadMoreHold.retryView.setBackgroundResource(R.drawable.shape_data_null_button_bg);
+                loadMoreHold.retryView.setBackgroundResource(R.drawable.shape_lineframe_black_fill);
                 loadMoreHold.retryView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         v.setClickable(false);
                         loadMoreHold.loadView.setVisibility(View.VISIBLE);
-                        ObjectAnimator rotation = ObjectAnimator.ofFloat(loadMoreHold.loadView, "rotation", 0, 360);
+                        loadMoreHold.loadView.setImageResource(R.mipmap.ic_loadmore);
+                        rotation = ObjectAnimator.ofFloat(loadMoreHold.loadView, "rotation", 0, 360);
                         rotation.setInterpolator(new LinearInterpolator());
                         rotation.setRepeatMode(ValueAnimator.RESTART);
                         rotation.setRepeatCount(ValueAnimator.INFINITE);
@@ -138,16 +145,16 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                     }
                 });
             } else {
+                ((LoadMoreViewHolder) holder).massage.setVisibility(View.GONE);
                 loadMoreHold.retryView.setBackground(null);
                 loadMoreHold.retryView.setOnClickListener(null);
                 loadMoreHold.loadView.clearAnimation();
                 loadMoreHold.loadView.setVisibility(View.INVISIBLE);
                 if (getItemCount() == 1) {
-                    loadMoreHold.retryView.setText("这里什么都没有呢~");
+                    loadMoreHold.retryView.setText("暂无数据~");
                 } else {
                     loadMoreHold.retryView.setText("已加载全部!");
                 }
-
             }
         } else {
             onBindView(holder, position);
@@ -189,6 +196,8 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
         ImageView loadView;
         @Bind(R.id.textView)
         TextView retryView;
+        @Bind(R.id.loadmore_massage)
+        TextView massage;
 
         public LoadMoreViewHolder(View itemView) {
             super(itemView);
@@ -198,7 +207,6 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
 
     public interface OnItemClickListener<DT> {
         /**
-         *
          * @param position please use holder.getAdapterPosition()
          */
         void itemClick(RecyclerView.ViewHolder holder, DT item, int type, @Deprecated int position);

@@ -14,8 +14,18 @@
 
     <TextView
         android:id="@+id/textView"
-        android:padding="8dp"
-        android:text="加载中~~"
         style="@style/TextView.H3"
-        />
+        android:padding="8dp"
+        android:text="加载中~~" />
+
+    <TextView
+        android:id="@+id/loadmore_massage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dialog_margin"
+        android:text="@string/promote_no_network_naughty"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="@dimen/word_size_body"
+        android:visibility="gone" />
 </LinearLayout>
