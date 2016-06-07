@@ -1,6 +1,6 @@
 package co.quchu.quchu.utils;
 
-import android.os.Environment;
+import co.quchu.quchu.base.AppContext;
 
 /**
  * FileUtils
@@ -8,7 +8,7 @@ import android.os.Environment;
  * Date: 2015-12-04
  */
 public class FileUtils {
-    public static String SDPATH = Environment.getExternalStorageDirectory().getAbsolutePath()
+    public static String SDPATH = AppContext.mContext.getCacheDir().getAbsolutePath()
             + "/Quchu/";
 
 

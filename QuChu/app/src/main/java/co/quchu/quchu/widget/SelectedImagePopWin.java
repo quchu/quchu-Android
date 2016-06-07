@@ -11,13 +11,13 @@ import android.widget.PopupWindow;
 import java.util.List;
 
 import co.quchu.quchu.BuildConfig;
+import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.gallery.CoreConfig;
+import co.quchu.quchu.gallery.FrescoImageLoader;
 import co.quchu.quchu.gallery.FunctionConfig;
 import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoInfo;
-import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.gallery.FrescoImageLoader;
 
 /**
  * Created by linqipeng on 2016/3/15 16:12
@@ -28,7 +28,7 @@ public class SelectedImagePopWin extends PopupWindow {
     private List<PhotoInfo> photo;
     private int maxSize;
 
-    public SelectedImagePopWin(Context mContext, View parent, List<PhotoInfo> photo, int maxSize, final GalleryFinal.OnHanlderResultCallback listener) {
+    public SelectedImagePopWin(Context mContext, final View parent, List<PhotoInfo> photo, int maxSize, final GalleryFinal.OnHanlderResultCallback listener) {
         this.photo = photo;
         this.maxSize = maxSize;
         View view = View
@@ -52,14 +52,13 @@ public class SelectedImagePopWin extends PopupWindow {
         initGralley();
         bt1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                functionConfig.setMutiSelect(false);
-                GalleryFinal.openCamera(1, functionConfig, listener);
+                GalleryFinal.openCamera(parent.getContext(), 1, functionConfig, listener);
                 dismiss();
             }
         });
         bt2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                GalleryFinal.openGalleryMuti(1, functionConfig, listener);
+                GalleryFinal.openGalleryMuti(parent.getContext(), 1, functionConfig, listener);
                 dismiss();
             }
         });

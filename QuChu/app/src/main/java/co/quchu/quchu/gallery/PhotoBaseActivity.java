@@ -28,20 +28,16 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import cn.finalteam.toolsfinal.ActivityManager;
-import cn.finalteam.toolsfinal.DateUtils;
 import cn.finalteam.toolsfinal.DeviceUtils;
-import cn.finalteam.toolsfinal.FileUtils;
-import cn.finalteam.toolsfinal.Logger;
-import cn.finalteam.toolsfinal.StringUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.gallery.utils.MediaScanner;
 import co.quchu.quchu.gallery.utils.Utils;
+import co.quchu.quchu.utils.LogUtils;
 import pub.devrel.easypermissions.EasyPermissions;
 
 /**
@@ -98,30 +94,31 @@ public abstract class PhotoBaseActivity extends BaseActivity implements EasyPerm
     /**
      * 拍照
      */
-    protected void takePhotoAction() {
+    protected void takePhotoAction(Uri path) {
         if (!DeviceUtils.existSDCard()) {
             toast("没有SD卡不能拍照呢~");
             return;
         }
-
-        File takePhotoFolder = null;
-        if (StringUtils.isEmpty(mPhotoTargetFolder)) {
-            takePhotoFolder = GalleryFinal.getCoreConfig().getTakePhotoFolder();
-        } else {
-            takePhotoFolder = new File(mPhotoTargetFolder);
-        }
-
-        File toFile = new File(takePhotoFolder, "IMG" + DateUtils.format(new Date(), "yyyyMMddHHmmss") + ".jpg");
-        boolean suc = FileUtils.makeFolders(toFile);
-        Logger.d("create folder=" + toFile.getAbsolutePath());
-        if (suc) {
-            mTakePhotoUri = Uri.fromFile(toFile);
-            Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakePhotoUri);
-            startActivityForResult(captureIntent, GalleryFinal.TAKE_REQUEST_CODE);
-        } else {
-            Logger.e("create file failure");
-        }
+        mTakePhotoUri = path;
+//        File takePhotoFolder = null;
+//        if (StringUtils.isEmpty(mPhotoTargetFolder)) {
+//            takePhotoFolder = GalleryFinal.getCoreConfig().getTakePhotoFolder();
+//        } else {
+//            takePhotoFolder = new File(mPhotoTargetFolder);
+//        }
+//
+//        File toFile = new File(takePhotoFolder, "IMG" + DateUtils.format(new Date(), "yyyyMMddHHmmss") + ".jpg");
+//        boolean suc = FileUtils.makeFolders(toFile);
+//        Logger.d("create folder=" + toFile.getAbsolutePath());
+//        if (suc) {
+//        mTakePhotoUri = Uri.fromFile(toFile);
+        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, path);
+        LogUtils.e("拍照前:" + mTakePhotoUri);
+        startActivityForResult(captureIntent, GalleryFinal.TAKE_REQUEST_CODE);
+//        } else {
+//            Logger.e("create file failure");
+//        }
     }
 
     @Override
@@ -145,7 +142,13 @@ public abstract class PhotoBaseActivity extends BaseActivity implements EasyPerm
      * 更新相册
      */
     private void updateGallery(String filePath) {
-        mMediaScanner.scanFile(filePath, "image/jpeg");
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(filePath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+
+//        mMediaScanner.scanFile(filePath, "image/jpeg");
     }
 
     protected void resultData(ArrayList<PhotoInfo> photoList) {

@@ -35,12 +35,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.concurrent.CountDownLatch;
 
 import cn.finalteam.toolsfinal.FileUtils;
 import cn.finalteam.toolsfinal.Logger;
 import co.quchu.quchu.R;
-import co.quchu.quchu.gallery.GalleryFinal;
 
 /*
  * Modified from original in AOSP.
@@ -66,7 +64,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
 
     private int sampleSize;
     private RotateBitmap rotateBitmap;
-    private CropImageView imageView;
+//    private CropImageView imageView;
     private HighlightView cropView;
 
     private boolean cropEnabled;
@@ -85,27 +83,27 @@ public abstract class CropImageActivity extends MonitoredActivity {
         }
     }
 
-    public void initCrop(CropImageView imageView, boolean square, int maxX, int maxY) {
-        if (square) {
-            this.aspectX = 1;
-            this.aspectY = 1;
-        }
-        this.maxX = maxX;
-        this.maxY = maxY;
-        this.imageView = imageView;
-
-        imageView.context = this;
-        imageView.setRecycler(new ImageViewTouchBase.Recycler() {
-            @Override
-            public void recycle(Bitmap b) {
-                b.recycle();
-                System.gc();
-            }
-        });
-    }
+//    public void initCrop(CropImageView imageView, boolean square, int maxX, int maxY) {
+//        if (square) {
+//            this.aspectX = 1;
+//            this.aspectY = 1;
+//        }
+//        this.maxX = maxX;
+//        this.maxY = maxY;
+//        this.imageView = imageView;
+//
+//        imageView.context = this;
+//        imageView.setRecycler(new ImageViewTouchBase.Recycler() {
+//            @Override
+//            public void recycle(Bitmap b) {
+//                b.recycle();
+//                System.gc();
+//            }
+//        });
+//    }
 
     public void setSourceUri(Uri sourceUri) {
-        if(rotateBitmap != null) {
+        if (rotateBitmap != null) {
             rotateBitmap.recycle();
             rotateBitmap = null;
         }
@@ -114,7 +112,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
         this.sampleSize = 0;
         this.rotateBitmap = null;
         this.cropView = null;
-        this.imageView.clear();
+//        this.imageView.clear();
         if (sourceUri != null) {
             exifRotation = CropUtil.getExifRotation(CropUtil.getFromMediaUri(this, getContentResolver(), sourceUri));
 
@@ -125,12 +123,8 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 BitmapFactory.Options option = new BitmapFactory.Options();
                 option.inSampleSize = sampleSize;
                 rotateBitmap = new RotateBitmap(BitmapFactory.decodeStream(is, null, option), exifRotation);
-            } catch (IOException e) {
-                Logger.e(e);
-//                setCropSaveException(e);
-            } catch (OutOfMemoryError e) {
-                Logger.e(e);
-//                setCropSaveException(e);
+            } catch (Exception e) {
+                e.printStackTrace();
             } finally {
                 CropUtil.closeSilently(is);
             }
@@ -184,33 +178,33 @@ public abstract class CropImageActivity extends MonitoredActivity {
         if (isFinishing()) {
             return;
         }
-        imageView.setImageRotateBitmapResetBase(rotateBitmap, true);
-        CropUtil.startBackgroundJob(this, null, getResources().getString(R.string.waiting),
-                new Runnable() {
-                    public void run() {
-                        final CountDownLatch latch = new CountDownLatch(1);
-                        handler.post(new Runnable() {
-                            public void run() {
-                                if (imageView.getScale() == 1F) {
-                                    imageView.center();
-                                }
-                                latch.countDown();
-                            }
-                        });
-                        try {
-                            latch.await();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        new Cropper().crop();
-                    }
-                }, handler
-        );
+//        imageView.setImageRotateBitmapResetBase(rotateBitmap, true);
+//        CropUtil.startBackgroundJob(this, null, getResources().getString(R.string.waiting),
+//                new Runnable() {
+//                    public void run() {
+//                        final CountDownLatch latch = new CountDownLatch(1);
+//                        handler.post(new Runnable() {
+//                            public void run() {
+//                                if (imageView.getScale() == 1F) {
+//                                    imageView.center();
+//                                }
+//                                latch.countDown();
+//                            }
+//                        });
+//                        try {
+//                            latch.await();
+//                        } catch (InterruptedException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        new Cropper().crop();
+//                    }
+//                }, handler
+//        );
     }
 
     public void setCropEnabled(boolean enabled) {
         this.cropEnabled = enabled;
-        if ( enabled ) {
+        if (enabled) {
             startCrop();
         }
     }
@@ -222,7 +216,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 return;
             }
 
-            HighlightView hv = new HighlightView(imageView, GalleryFinal.getGalleryTheme().getCropControlColor());
+//            HighlightView hv = new HighlightView(imageView, GalleryFinal.getGalleryTheme().getCropControlColor());
             final int width = rotateBitmap.getWidth();
             final int height = rotateBitmap.getHeight();
 
@@ -245,29 +239,30 @@ public abstract class CropImageActivity extends MonitoredActivity {
             int y = (height - cropHeight) / 2;
 
             RectF cropRect = new RectF(x, y, x + cropWidth, y + cropHeight);
-            hv.setup(imageView.getUnrotatedMatrix(), imageRect, cropRect, aspectX != 0 && aspectY != 0);
-            imageView.add(hv);
+//            hv.setup(imageView.getUnrotatedMatrix(), imageRect, cropRect, aspectX != 0 && aspectY != 0);
+//            imageView.add(hv);
         }
 
-        public void crop() {
-            handler.post(new Runnable() {
-                public void run() {
-                    makeDefault();
-                    imageView.invalidate();
-                    if (imageView.highlightViews.size() == 1) {
-                        cropView = imageView.highlightViews.get(0);
-                        cropView.setFocus(true);
-                    }
-                }
-            });
-        }
+//        public void crop() {
+//            handler.post(new Runnable() {
+//                public void run() {
+//                    makeDefault();
+//                    imageView.invalidate();
+//                    if (imageView.highlightViews.size() == 1) {
+//                        cropView = imageView.highlightViews.get(0);
+//                        cropView.setFocus(true);
+//                    }
+//                }
+//            });
+//        }
     }
 
     /**
      * 保存裁剪图片
+     *
      * @param saveFile
      */
-    public void onSaveClicked( File saveFile) {
+    public void onSaveClicked(File saveFile) {
         if (cropView == null || isSaving) {
             return;
         }
@@ -299,9 +294,9 @@ public abstract class CropImageActivity extends MonitoredActivity {
         }
 
         if (croppedImage != null) {
-            imageView.setImageRotateBitmapResetBase(new RotateBitmap(croppedImage, exifRotation), true);
-            imageView.center();
-            imageView.highlightViews.clear();
+//            imageView.setImageRotateBitmapResetBase(new RotateBitmap(croppedImage, exifRotation), true);
+//            imageView.center();
+//            imageView.highlightViews.clear();
         }
         saveImage(croppedImage, saveFile);
     }
@@ -370,7 +365,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
     }
 
     private void clearImageView() {
-        imageView.clear();
+//        imageView.clear();
         if (rotateBitmap != null) {
             rotateBitmap.recycle();
         }
@@ -385,7 +380,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
                 if (outputStream != null) {
                     String ext = FileUtils.getFileExtension(saveFile.getAbsolutePath());
                     Bitmap.CompressFormat format;
-                    if ( ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") ) {
+                    if (ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg")) {
                         format = Bitmap.CompressFormat.JPEG;
                         croppedImage.compress(format, 90, outputStream);
                     } else {
@@ -411,7 +406,7 @@ public abstract class CropImageActivity extends MonitoredActivity {
         final Bitmap b = croppedImage;
         handler.post(new Runnable() {
             public void run() {
-                imageView.clear();
+//                imageView.clear();
                 b.recycle();
             }
         });

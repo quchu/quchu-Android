@@ -181,7 +181,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
         tackImage = new PhotoInfo();
 
         tackImage.setPhotoPath("res:///" + R.mipmap.ic_take_photo);
-        photoInfos.add(tackImage);
+
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
@@ -198,7 +198,9 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
             }
         }
 
-
+        if (photoInfos.size() < 4) {
+            photoInfos.add(0, tackImage);
+        }
         adapter.setImages(photoInfos);
         adapter.setListener(this);
         if (null == mData) {

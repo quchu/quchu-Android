@@ -218,12 +218,25 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".gallery.PhotoSelectActivity" />
-        <activity android:name=".gallery.PhotoPreviewActivity" />
-        <activity android:name=".gallery.PhotoEditActivity" />
-        <activity android:name=".view.activity.FavoriteActivity" />
-        <activity android:name=".view.activity.FindPositionListActivity" />
-        <activity android:name=".view.activity.SharePreviewActivity"/>
+        <activity
+            android:name=".gallery.PhotoSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gallery.PhotoPreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gallery.PhotoEditActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.FavoriteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.FindPositionListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.SharePreviewActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

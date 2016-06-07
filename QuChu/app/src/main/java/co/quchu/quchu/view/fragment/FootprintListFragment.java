@@ -23,6 +23,7 @@ import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.activity.MyFootprintDetailActivity;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MyFootprintAdapter;
 
@@ -92,10 +93,21 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
     public void itemClick(RecyclerView.ViewHolder holder, PostCardItemModel item, int type, int position) {
         this.holder = holder;
         this.item = item;
+        Intent intent;
+        switch (type) {
+            case MyFootprintAdapter.CLICK_TYPE_IMAGE:
+                intent = new Intent(getContext(), MyFootprintDetailActivity.class);
+                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, item);
+                getActivity().startActivity(intent);
 
-        Intent intent = new Intent(getContext(), MyFootprintDetailActivity.class);
-        intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, item);
-        getActivity().startActivity(intent);
+                break;
+            case MyFootprintAdapter.CLICK_TYPE_NAME:
+                intent = new Intent(getContext(), QuchuDetailsActivity.class);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_SUBJECT);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPlaceId());
+                startActivity(intent);
+                break;
+        }
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -129,6 +141,9 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
                 if (item.getCardId() == (int) model.getContent()[0]) {
                     adapter.removeItem(holder, item);
                 }
+                break;
+            case EventFlags.EVENT_GOTO_HOME_PAGE:
+                getActivity().finish();
                 break;
         }
     }

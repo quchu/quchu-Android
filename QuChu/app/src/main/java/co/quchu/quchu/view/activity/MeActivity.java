@@ -17,6 +17,9 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,8 +32,10 @@ import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.model.MyGeneModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.MeActivityPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.widget.LinearProgressView;
 
 public class MeActivity extends BaseActivity implements IMeActivity, View.OnClickListener {
@@ -152,6 +157,9 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                     intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_TITLE, "我的脚印");
                     intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_NAME, AppContext.user.getFullname());
                     startActivity(intent);
+                    if (!EventBus.getDefault().isRegistered(this)) {
+                        EventBus.getDefault().register(this);
+                    }
                 }
                 break;
             case R.id.friend://趣友圈
@@ -219,6 +227,21 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                     progress4.setProgress(progress, label, i);
                     break;
             }
+        }
+    }
+
+    @Subscribe
+    public void onEvenBug(QuchuEventModel model) {
+        if (model.getFlag() == EventFlags.EVENT_GOTO_HOME_PAGE) {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 

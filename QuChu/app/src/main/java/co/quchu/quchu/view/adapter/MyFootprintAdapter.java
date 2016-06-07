@@ -22,6 +22,9 @@ import co.quchu.quchu.utils.DateUtils;
  */
 public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootprintAdapter.ViewHold> {
 
+    public static final int CLICK_TYPE_IMAGE = 2;
+    public static final int CLICK_TYPE_NAME = 1;
+
     @Override
     public void onBindView(final ViewHold holder, final int position) {
         final PostCardItemModel model = data.get(position);
@@ -64,11 +67,19 @@ public class MyFootprintAdapter extends AdapterBase<PostCardItemModel, MyFootpri
         }
         holder.commemt.setText(model.getPraiseNum() + "次");
         holder.time.setText(DateUtils.getDateToString(DateUtils.DATA_FORMAT_MM_DD_YYYY, model.getTime()));
+
         if (itemClickListener != null) {
             holder.simpleDraweeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.itemClick(holder, model, 0, position);
+                    itemClickListener.itemClick(holder, model, CLICK_TYPE_IMAGE, position);
+                }
+            });
+            holder.address.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.itemClick(holder, model, CLICK_TYPE_NAME, position);
+
                 }
             });
         }
