@@ -40,29 +40,29 @@ public class StatementActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
         ButterKnife.bind(this);
-        EnhancedToolbar toolbar = getEnhancedToolbar();
-        toolbar.getTitleTv().setText(getIntent().getStringExtra(REQUEST_KEY_TITLE));
+//        EnhancedToolbar toolbar = getEnhancedToolbar();
+//        toolbar.getTitleTv().setText(getIntent().getStringExtra(REQUEST_KEY_TITLE));
 
         textView.setText(getIntent().getStringExtra(REQUEST_KEY_CONTENT));
 
 
-        getEnhancedToolbar().getRightTv().setText(" ");
-        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mClickTimes += 1;
-                if (mClickTimes >= 5) {
-                    mClickTimes = 0;
-                    getVersionInfo();
-                }
-                textView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mClickTimes = 0;
-                    }
-                }, 2000);
-            }
-        });
+//        getEnhancedToolbar().getRightTv().setText(" ");
+//        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mClickTimes += 1;
+//                if (mClickTimes >= 5) {
+//                    mClickTimes = 0;
+//                    getVersionInfo();
+//                }
+//                textView.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mClickTimes = 0;
+//                    }
+//                }, 2000);
+//            }
+//        });
 
     }
 
