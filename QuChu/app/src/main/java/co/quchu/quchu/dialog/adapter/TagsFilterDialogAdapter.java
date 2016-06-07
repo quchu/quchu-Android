@@ -37,13 +37,13 @@ public class TagsFilterDialogAdapter extends RecyclerView.Adapter<TagsFilterDial
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvTag.setText(mData.get(position).getZh());
         holder.cbTag.setChecked(mData.get(position).isPraise());
-        if (mData.get(position).equals("饿了")){
+        if (mData.get(position).getZh().equals("饿了")){
             holder.cbTag.setBackgroundResource(R.drawable.ic_nearby_tag_ele_selector);
-        }else if(mData.get(position).equals("累了")){
+        }else if(mData.get(position).getZh().equals("累了")){
             holder.cbTag.setBackgroundResource(R.drawable.ic_nearby_tag_leile_selector);
-        }else if(mData.get(position).equals("逛逛")){
+        }else if(mData.get(position).getZh().equals("逛逛")){
             holder.cbTag.setBackgroundResource(R.drawable.ic_nearby_tag_guang_selector);
-        }else if(mData.get(position).equals("找乐子")){
+        }else if(mData.get(position).getZh().equals("找乐子")){
             holder.cbTag.setBackgroundResource(R.drawable.ic_nearby_tag_zhaolezi_selector);
         }
 

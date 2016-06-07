@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +56,12 @@ public class RestorePasswordFragment extends Fragment {
     TextView tvTips;
     @Bind(R.id.tvNext)
     TextView tvNext;
+    @Bind(R.id.ivIconClear)
+    ImageView ivIconClear;
+    @Bind(R.id.ivSwitchVisible)
+    ImageView ivSwitchVisible;
+    public boolean mDisplayPassword = false;
+
 
 
     @Override
@@ -137,6 +145,20 @@ public class RestorePasswordFragment extends Fragment {
                     tvNext.setText(R.string.hint_new_password);
                     tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
                 }
+            }
+        });
+
+
+        ivSwitchVisible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!mDisplayPassword){
+                    etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }else{
+                    etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+                mDisplayPassword = !mDisplayPassword;
             }
         });
         return view;
