@@ -64,9 +64,10 @@ public class LinearProgressView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        float radio = getHeight() / 2;
+        float radio = getHeight() / 2f;
         paint.reset();
         paint.setAntiAlias(true);
+        paint.setShader(null);
         paint.setStrokeWidth(3);
         //draw text
         paint.setTextSize(getResources().getDimension(R.dimen.standard_text_size_h4));
@@ -82,6 +83,7 @@ public class LinearProgressView extends View {
         if (!TextUtils.isEmpty(text)) {
             paint.getTextBounds(text, 0, text.length(), rect);
             paint.setTypeface(Typeface.DEFAULT);
+            paint.setShader(null);
             paint.setColor(ContextCompat.getColor(getContext(), R.color.standard_color_h3_dark));
             canvas.drawText(text, getWidth() / 2 - rect.width() / 2, getHeight() / 2 + rect.height() / 2, paint);
         }
@@ -89,6 +91,7 @@ public class LinearProgressView extends View {
         // draw  bg,文字宽度为50
         rectF.left = StringUtils.dip2px(getContext(), 30);
         rectF.right = getWidth() - paint.getStrokeWidth();
+        rectF.top = 0;
         rectF.bottom = getHeight();
 
         paint.reset();
@@ -96,18 +99,19 @@ public class LinearProgressView extends View {
         paint.setColor(ContextCompat.getColor(getContext(), R.color.standard_color_h3_dark));
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
-        paint.setStrokeWidth(3);
         canvas.drawRoundRect(rectF, radio, radio, paint);
 
         //draw progress
-        rectF.left = StringUtils.dip2px(getContext(), 30) - paint.getStrokeWidth();
-        rectF.right = getWidth() * progress / 100f;
-        rectF.bottom = getHeight();
+        rectF.left = StringUtils.dip2px(getContext(), 30) + 3;
+        rectF.right = getWidth() * progress / 100f-3;
+        rectF.top =3;
+        rectF.bottom = getHeight()-3 ;
 
         paint.reset();
         paint.setDither(true);
         paint.setAntiAlias(true);
         paint.setShader(linearGradient);
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRoundRect(rectF, radio, radio, paint);
     }

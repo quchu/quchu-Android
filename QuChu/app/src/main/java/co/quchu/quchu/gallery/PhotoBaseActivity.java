@@ -17,6 +17,7 @@
 package co.quchu.quchu.gallery;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +36,7 @@ import cn.finalteam.toolsfinal.DeviceUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.gallery.model.PhotoInfo;
+import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.gallery.utils.MediaScanner;
 import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.utils.LogUtils;
@@ -125,8 +127,23 @@ public abstract class PhotoBaseActivity extends BaseActivity implements EasyPerm
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == GalleryFinal.TAKE_REQUEST_CODE) {
             if (resultCode == RESULT_OK && mTakePhotoUri != null) {
-                final String path = mTakePhotoUri.getPath();
-                final PhotoInfo info = new PhotoInfo();
+
+
+                String path = mTakePhotoUri.getPath();
+                DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+                Bitmap bitmap = Utils.rotateBitmap(mTakePhotoUri.getPath(), ImageUtils.readPictureDegree(path), metrics.widthPixels, metrics.heightPixels);
+
+                try {
+                    ImageUtils.saveFile(bitmap, path);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    toast(getString(R.string.take_photo_fail));
+                    finishGalleryFinalPage();
+                    return;
+                }
+
+                PhotoInfo info = new PhotoInfo();
                 info.setPhotoId(Utils.getRandom(10000, 99999));
                 info.setPhotoPath(path);
                 updateGallery(path);
