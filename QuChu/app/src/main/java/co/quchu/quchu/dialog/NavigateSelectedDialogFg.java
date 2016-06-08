@@ -65,11 +65,13 @@ public class NavigateSelectedDialogFg extends DialogFragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_navigate_selected, null);
         ButterKnife.bind(this, view);
         builder.setView(view);
-        if (!AppUtil.isAppInstall("com.autonavi.minimap")){
+        if (!AppUtil.isAppInstall(getActivity(),"com.autonavi.minimap")){
             navigateGdTv.setVisibility(View.GONE);
-        }else if(!AppUtil.isAppInstall("com.tencent.map")){
+        }
+        if(!AppUtil.isAppInstall(getActivity(),"com.tencent.map")){
             navigateTxTv.setVisibility(View.GONE);
-        }else if(!AppUtil.isAppInstall("com.baidu.BaiduMap")){
+        }
+        if(!AppUtil.isAppInstall(getActivity(),"com.baidu.BaiduMap")){
             navigateBdTv.setVisibility(View.GONE);
         }
         return builder.create();

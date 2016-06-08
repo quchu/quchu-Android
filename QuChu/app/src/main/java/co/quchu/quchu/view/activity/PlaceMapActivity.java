@@ -473,7 +473,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
     private void jump2BaiduMap(String latt,String lontt,String gdLatt,String gdLont) {
         Intent intent;
-        if (AppUtil.isAppInstall("com.baidu.BaiduMap")) {
+        if (AppUtil.isAppInstall(PlaceMapActivity.this,"com.baidu.BaiduMap")) {
             try {
                 intent = Intent.getIntent("intent://map/direction?origin=latlng:" + latt + "," + lontt + "|name:我的位置&destination=" + placeTitle + "&mode=walking®ion=&src=厦门趣处网络科技有限公司|趣处#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
                 startActivity(intent);
@@ -487,7 +487,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
     private void jump2TencentMap(String latt,String lontt,String gdLatt,String gdLont) {
         Intent tencentMap;
-        if (AppUtil.isAppInstall("com.tencent.map")) {
+        if (AppUtil.isAppInstall(PlaceMapActivity.this,"com.tencent.map")) {
             try {
                 tencentMap = Intent.getIntent("qqmap://map/routeplan?type=walk&from=我的位置&fromcoord=" + SPUtils.getLatitude() + "," + SPUtils.getLongitude() + "&to=" + placeTitle + "&tocoord=" + gdLatt + "," + gdLont);
                 startActivity(tencentMap);
@@ -503,7 +503,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
     }
 
     private void jump2Amap(String latt,String lontt,String gdLatt,String gdLont) {
-        if (AppUtil.isAppInstall("com.autonavi.minimap")) {
+        if (AppUtil.isAppInstall(PlaceMapActivity.this,"com.autonavi.minimap")) {
             try {
                 Intent amapIntent = Intent.getIntent("androidamap://route?sourceApplication=趣处&slat=" + SPUtils.getLatitude() + "&slon=" + SPUtils.getLongitude() + "&sname=我的位置&dlat=" + gdLatt + "&dlon=" + gdLont + "&dname=" + placeTitle + "&dev=0&m=0&t=4");
                 amapIntent.addCategory("android.intent.category.DEFAULT");

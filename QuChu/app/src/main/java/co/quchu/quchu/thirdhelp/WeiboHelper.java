@@ -133,7 +133,7 @@ public class WeiboHelper {
     }
 
     public void share2Weibo(final Activity activity, String shareUrl, String shareTitle) {
-        if (!AppUtil.isAppInstall("com.sina.weibo")) {
+        if (!AppUtil.isAppInstall(activity,"com.sina.weibo")) {
             Toast.makeText(activity, "请检查是否已安装微博客户端!", Toast.LENGTH_SHORT).show();
             return;
         }
