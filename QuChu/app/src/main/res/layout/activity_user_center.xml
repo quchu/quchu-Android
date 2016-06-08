@@ -35,7 +35,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginLeft="@dimen/base_margin"
-                    fresco:placeholderImage="@mipmap/avatar_2"
+                    fresco:placeholderImage="@mipmap/head_place_hold"
                     fresco:roundAsCircle="true" />
 
                 <TextView
@@ -54,16 +54,19 @@
                 <TextView
                     android:id="@+id/alias"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/desc"
                     android:layout_below="@id/desc"
                     android:layout_marginTop="5dp"
-                    android:background="@color/standard_color_red"
+                    android:background="@drawable/me_user_tag"
                     android:gravity="center"
-                    android:minWidth="40dp"
-                    android:paddingLeft="@dimen/half_margin"
-                    android:paddingRight="@dimen/half_margin"
-                    android:textColor="@color/standard_color_white" />
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="@dimen/base_margin"
+                    android:paddingRight="@dimen/base_margin"
+                    android:paddingTop="4dp"
+                    android:textColor="@color/standard_color_h3_dark"
+                    tools:text="好奇猫" />
+
 
                 <TextView
                     android:id="@+id/followAction"

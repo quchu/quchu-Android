@@ -22,6 +22,7 @@
         fresco:roundAsCircle="true"
         fresco:roundBottomLeft="true"
         fresco:roundBottomRight="true"
+        fresco:placeholderImage="@mipmap/head_place_hold"
         fresco:roundTopLeft="true"
         fresco:roundTopRight="true"
         fresco:roundedCornerRadius="180dp" />

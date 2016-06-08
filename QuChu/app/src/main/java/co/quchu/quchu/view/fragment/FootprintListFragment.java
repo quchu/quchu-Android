@@ -12,10 +12,14 @@ import android.view.ViewGroup;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -97,7 +101,20 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
         switch (type) {
             case MyFootprintAdapter.CLICK_TYPE_IMAGE:
                 intent = new Intent(getContext(), MyFootprintDetailActivity.class);
-                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, item);
+//                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_IMAGE_LIST, item);
+                ArrayList<FootprintModel.Entity> entitys = new ArrayList<>();
+                int seletedPosition = 0;
+                for (int i = 0, s = adapter.getData().size(); i < s; i++) {
+                    if (i == position) {
+                        seletedPosition = entitys.size();
+                    }
+                    PostCardItemModel model = adapter.getData().get(i);
+                    List<FootprintModel.Entity> entity = model.convertToList();
+                    entitys.addAll(entity);
+                }
+                intent.putParcelableArrayListExtra(MyFootprintDetailActivity.REQUEST_KEY_ENTITY_LIST, entitys);
+                intent.putExtra(MyFootprintDetailActivity.REQUEST_KEY_SELECTED_POSITION, seletedPosition);
+
                 getActivity().startActivity(intent);
 
                 break;

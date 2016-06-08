@@ -6,10 +6,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +18,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.StringTokenizer;
 
 import butterknife.Bind;
@@ -194,7 +192,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case LAYOUT_TYPE_IMAGE:
                 return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
             case LAYOUT_TYPE_LABEL:
-                return new LabelViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label,parent,false));
+                return new LabelViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
             case LAYOUT_TYPE_NEARBY:
                 return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_nearby_quchu, parent, false));
             case LAYOUT_TYPE_LOAD_MORE:
@@ -213,13 +211,14 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         if (holder instanceof IntroImageViewHolder) {
 
-            ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName() : "");
+            ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName().trim() : "");
 
             ((IntroImageViewHolder) holder).rbRating.setRating(mData.getSuggest());
             ((IntroImageViewHolder) holder).rbRating.setIsIndicator(true);
 
             if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.setText(StringUtils.getColorSpan(((IntroImageViewHolder) holder).detail_avg_price_tv.getContext(),R.color.standard_color_red,"人均消费",mData.getPrice(),""));
+                ((IntroImageViewHolder) holder).detail_avg_price_tv.
+                        setText(StringUtils.getColorSpan(((IntroImageViewHolder) holder).detail_avg_price_tv.getContext(), R.color.standard_color_red, "人均消费", "¥" + mData.getPrice(), ""));
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
             } else {
                 ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.GONE);
@@ -235,9 +234,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             ((IntroImageViewHolder) holder).tag1.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,mData.getTags().get(0).getId());
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,mData.getTags().get(0).getZh());
+                                    Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getTags().get(0).getId());
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, mData.getTags().get(0).getZh());
                                     mAnchorActivity.startActivity(intent);
                                 }
                             });
@@ -248,9 +247,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             ((IntroImageViewHolder) holder).tag2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,mData.getTags().get(1).getId());
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,mData.getTags().get(1).getZh());
+                                    Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getTags().get(1).getId());
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, mData.getTags().get(1).getZh());
                                     mAnchorActivity.startActivity(intent);
                                 }
                             });
@@ -261,9 +260,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             ((IntroImageViewHolder) holder).tag3.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent intent = new Intent(mAnchorActivity,QuchuListSpecifyTagActivity.class);
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,mData.getTags().get(2).getId());
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,mData.getTags().get(2).getZh());
+                                    Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getTags().get(2).getId());
+                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, mData.getTags().get(2).getZh());
                                     mAnchorActivity.startActivity(intent);
                                 }
                             });
@@ -283,7 +282,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (mVisitedUsers.getUserOutCount() == 0) {
                     ((ActionViewHolder) holder).tvVisitorCount.setText(R.string.no_visitor);
                 } else {
-                    ((ActionViewHolder) holder).tvVisitorCount.setText(StringUtils.getColorSpan(((ActionViewHolder) holder).llVisitedUsers.getContext(),R.color.standard_color_red,"有",String.valueOf(mVisitedUsers.getUserOutCount()),"人去过这里"));
+                    ((ActionViewHolder) holder).tvVisitorCount.setText(StringUtils.getColorSpan(((ActionViewHolder) holder).llVisitedUsers.getContext(), R.color.standard_color_red, "有", String.valueOf(mVisitedUsers.getUserOutCount()), "人去过这里"));
                 }
                 LinearLayout.LayoutParams lpVisitedUsersAvatar;
                 //ic_care_friends_avatar
@@ -296,6 +295,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
                         roundingParams.setRoundAsCircle(true);
                         sdv.getHierarchy().setRoundingParams(roundingParams);
+                        sdv.getHierarchy().setPlaceholderImage(R.mipmap.head_place_hold);
+                        sdv.getHierarchy().setFailureImage(ContextCompat.getDrawable(mAnchorActivity, R.mipmap.head_place_hold));
                         if (i > 0) {
                             lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
                             lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
@@ -338,6 +339,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 }
                 ((ActionViewHolder) holder).llVisitedUsers.invalidate();
+                ((ActionViewHolder) holder).llVisitedUsers.requestLayout();
             }
 
 
@@ -348,6 +350,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setSelected(true);
             } else if (!StringUtils.isEmpty(mData.getTraffic())) {
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址：" + String.format(mAnchorActivity.getResources().getString(R.string.detail_address_hint_text), mData.getAddress(), mData.getTraffic()));
+            } else {
+                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址:-");
             }
             ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(mOnItemClickListener);
             if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
@@ -355,27 +359,27 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 StringBuffer phoneHtml = new StringBuffer();
                 while (token.hasMoreTokens()) {
                     String phoneNum = token.nextToken();
-                    phoneHtml.append("<font color=#"+Integer.toHexString(((ContactInfoViewHolder) holder).detail_store_address_tv.getResources().getColor(R.color.standard_color_h2_dark)& 0x00ffffff)+"><a href='tel:").append(phoneNum).append("'>").append(phoneNum).append("</a> </font>  ");
+                    phoneHtml.append("<font color=#" + Integer.toHexString(((ContactInfoViewHolder) holder).detail_store_address_tv.getResources().getColor(R.color.standard_color_h2_dark) & 0x00ffffff) + "><a href='tel:").append(phoneNum).append("'>").append(phoneNum).append("</a> </font>  ");
                 }
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：");
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.append(Html.fromHtml(phoneHtml.toString()));
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        BottomListDialog b = new BottomListDialog(mAnchorActivity,mData.getTel().split(" "));
+                        BottomListDialog b = new BottomListDialog(mAnchorActivity, mData.getTel().split(" "));
                         b.show();
                     }
                 });
             } else {
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.clearComposingText();
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：-");
             }
         } else if (holder instanceof RatingInfoViewHolder) {
             if (null != mAnalysisModel && null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size() > 0) {
                 try {
 
-                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((int) (mAnalysisModel.getResult().get(0).getCount()*1.0f / mAnalysisModel.getUserOutCount() * 100));
-                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((int) (mAnalysisModel.getResult().get(1).getCount()*1.0f / mAnalysisModel.getUserOutCount() * 100));
-                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((int) (mAnalysisModel.getResult().get(2).getCount()*1.0f / mAnalysisModel.getUserOutCount() * 100));
+                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((int) (mAnalysisModel.getResult().get(0).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
+                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((int) (mAnalysisModel.getResult().get(1).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
+                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((int) (mAnalysisModel.getResult().get(2).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
                     ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
                     ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
                     ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
@@ -385,13 +389,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {
 
-            if (!mData.isIsActivity() && null!=mData.getIcons()) {
+            if (!mData.isIsActivity() && null != mData.getIcons()) {
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
-                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setLayoutManager(new NestedGridLayoutManager(((AdditionalInfoViewHolder) holder).rvInfoGrid.getContext(),4));
+                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setLayoutManager(new NestedGridLayoutManager(((AdditionalInfoViewHolder) holder).rvInfoGrid.getContext(), 4));
                 ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
 
-                if (null==((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag() || !((boolean)((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag())){
-                    ((AdditionalInfoViewHolder) holder).rvInfoGrid.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin),4));
+                if (null == ((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag() || !((boolean) ((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag())) {
+                    ((AdditionalInfoViewHolder) holder).rvInfoGrid.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin), 4));
                     ((AdditionalInfoViewHolder) holder).rvInfoGrid.setTag(true);
                 }
             } else {
@@ -441,7 +445,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (null != mData.getImglist()) {
                     imgIndex -= mData.getImglist().size();
                 }
-                imgIndex -=1;
+                imgIndex -= 1;
                 if (null == mData.getNearPlace().get(imgIndex - 1) || null == mData.getNearPlace().get(imgIndex - 1)) {
                     return;
                 }
@@ -473,9 +477,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         } else if (holder instanceof LoadMoreViewHolder) {
 
-            if (mEnableLoadMore){
+            if (mEnableLoadMore) {
                 ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
-                ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.INVISIBLE);
+                ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.GONE);
                 ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
                 ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
                 ((LoadMoreViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
@@ -494,8 +498,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         }
                     }
                 });
-            }else{
-                ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.INVISIBLE);
+            } else {
+                ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.GONE);
                 ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
                 ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
                 ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
@@ -530,6 +534,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ImageView ivLoadMore;
         @Bind(R.id.textView)
         TextView textView;
+
         LoadMoreViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -700,7 +705,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public class AdditionalInfoAdapter extends RecyclerView.Adapter<AdditionalInfoAdapter.ViewHolder>{
+    public class AdditionalInfoAdapter extends RecyclerView.Adapter<AdditionalInfoAdapter.ViewHolder> {
 
         List<DetailModel.IconsEntity> mIconSet;
 
@@ -710,14 +715,14 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public AdditionalInfoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_additional_info,parent,false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_additional_info, parent, false));
         }
 
         @Override
         public void onBindViewHolder(AdditionalInfoAdapter.ViewHolder holder, int position) {
 
             int id = mIconSet.get(position).getId();
-            switch (id){
+            switch (id) {
                 case 18:
                     holder.ivIcon.setImageResource(R.mipmap.ic_cash);
                     holder.tvItemName.setText(R.string.cash);
@@ -755,7 +760,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public int getItemCount() {
-            return null!= mIconSet ? mIconSet.size():0;
+            return null != mIconSet ? mIconSet.size() : 0;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {

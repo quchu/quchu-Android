@@ -33,8 +33,9 @@ public class SharePreviewActivity extends BaseActivity {
     public static final String REQUEST_KEY_COMMENT = "comment";
     public static final String REQUEST_KEY_HEAD_IMAGE = "headImage";
 
-    public static final String REQUEST_KEY_ID = "id";
+    public static final String REQUEST_KEY_FOOTPRINT_ID = "id";
     public static final String REQUEST_KEY_PLACE_NAME = "placeName";
+    public static final String REQUEST_KEY_IMAGE_ID = "imageId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +53,8 @@ public class SharePreviewActivity extends BaseActivity {
         actionShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(getIntent().getIntExtra(REQUEST_KEY_ID, 0),
-                        getIntent().getStringExtra(REQUEST_KEY_PLACE_NAME), false);
+                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(getIntent().getIntExtra(REQUEST_KEY_FOOTPRINT_ID, 0),
+                        getIntent().getStringExtra(REQUEST_KEY_PLACE_NAME), false, getIntent().getIntExtra(REQUEST_KEY_IMAGE_ID, 0));
                 shareDialogFg.show(getSupportFragmentManager(), "share_postcard");
             }
         });

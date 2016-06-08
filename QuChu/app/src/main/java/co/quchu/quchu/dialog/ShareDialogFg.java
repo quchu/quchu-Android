@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,17 +44,31 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     private static final String SHRETITLE = "share_title";
     private static final String ISSHARE_PLACE = "isshare_place";
     private static final String SHARE_URL = "SHARE_URL";
+    private static final String SHARE_IMAGE_ID = "imageId";
     private static final int CUSTOM_SHIT = 0x0000001;
     @Bind(R.id.dialog_share_gv)
     GridView dialogShareGv;
     @Bind(R.id.actionClose)
     ImageView actionClose;
+    private Bundle args;
+    private int imageId;
 
 
-    public static ShareDialogFg newInstance(int shareId, String titles, boolean isPlace) {
+//    public static ShareDialogFg newInstance(int shareId, String titles, boolean isPlace) {
+//        ShareDialogFg fragment = new ShareDialogFg();
+//        Bundle args = new Bundle();
+//        args.putInt(SHAREID, shareId);
+//        args.putString(SHRETITLE, titles);
+//        args.putBoolean(ISSHARE_PLACE, isPlace);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+
+    public static ShareDialogFg newInstance(int shareId, String titles, boolean isPlace, @Nullable int imageId) {
         ShareDialogFg fragment = new ShareDialogFg();
         Bundle args = new Bundle();
         args.putInt(SHAREID, shareId);
+        args.putInt(SHARE_IMAGE_ID, imageId);
         args.putString(SHRETITLE, titles);
         args.putBoolean(ISSHARE_PLACE, isPlace);
         fragment.setArguments(args);
@@ -82,11 +97,12 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        Bundle args = getArguments();
+        args = getArguments();
         shareId = args.getInt(SHAREID);
         shareTitle = args.getString(SHRETITLE);
         isPlace = args.getBoolean(ISSHARE_PLACE);
         shareUrl = args.getString(SHARE_URL);
+        imageId = args.getInt(SHARE_IMAGE_ID);
         mTencent = Tencent.createInstance("1104964977", AppContext.mContext);
 
     }
@@ -110,7 +126,11 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
 
         dialogShareGv.setAdapter(new DialogShareAdapter(getContext()));
         dialogShareGv.setOnItemClickListener(this);
-        shareUrlFinal = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
+        if (isPlace) {
+            shareUrlFinal = String.format(NetApi.sharePlace, shareId);
+        } else {
+            shareUrlFinal = String.format(NetApi.sharePostCard, shareId, imageId);
+        }
 
         if (shareId == CUSTOM_SHIT) {
             shareUrlFinal = shareUrl;
@@ -157,7 +177,6 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
             request.start(getContext());
 
         }
-
         ShareDialogFg.this.dismiss();
     }
 

@@ -37,7 +37,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.model.ImageModel;
@@ -95,12 +94,11 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
     private ArrayList<FootprintModel.Entity> mEntitys;
 
 
-
     @Override
     public ArrayMap<String, String> getUserBehaviorArguments() {
 
-        ArrayMap<String,String> data = new ArrayMap<>();
-        data.put("footprintid",String.valueOf(getIntent().getIntExtra(REQUEST_KEY_FOOTPRINT_ID,-1)));
+        ArrayMap<String, String> data = new ArrayMap<>();
+        data.put("footprintid", String.valueOf(getIntent().getIntExtra(REQUEST_KEY_FOOTPRINT_ID, -1)));
         return data;
     }
 
@@ -363,19 +361,23 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
             case R.id.share://分享
                 Intent intent1 = new Intent(this, SharePreviewActivity.class);
                 if (model != null) {
+
                     intent1.putExtra(SharePreviewActivity.REQUEST_KEY_PLACE_NAME, model.getPlcaeName());
-                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_ID, model.getCardId());
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_FOOTPRINT_ID, model.getCardId());
                     intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COMMENT, model.getComment());
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_IMAGE_ID, model.getImglist().get(viewPager.getCurrentItem()).getImgId());
                     intent1.putExtra(SharePreviewActivity.REQUEST_KEY_USER_NAME, model.getAutor());
                     intent1.putExtra(SharePreviewActivity.REQUEST_KEY_HEAD_IMAGE, model.getAutorPhoto());
                     intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COVER, model.getImglist().get(viewPager.getCurrentItem()));
                 } else {
                     FootprintModel.Entity entity = mEntitys.get(viewPager.getCurrentItem());
                     intent1.putExtra(SharePreviewActivity.REQUEST_KEY_PLACE_NAME, entity.PlcaeName);
-                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_ID, entity.cardId);
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_FOOTPRINT_ID, entity.cardId);
                     intent1.putExtra(SharePreviewActivity.REQUEST_KEY_COMMENT, entity.Comment);
                     intent1.putExtra(SharePreviewActivity.REQUEST_KEY_USER_NAME, entity.name);
                     intent1.putExtra(SharePreviewActivity.REQUEST_KEY_HEAD_IMAGE, entity.head);
+                    intent1.putExtra(SharePreviewActivity.REQUEST_KEY_IMAGE_ID, entity.image.getImgId());
+
 //                    ArrayList<ImageModel> data = new ArrayList<>();
 //                    for (FootprintModel.Entity item : mEntitys) {
 //                        if (item.cardId == entity.cardId) {
@@ -418,13 +420,18 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                     EventBus.getDefault().register(this);
                 break;
             case R.id.headImage:
-                Intent intent2 = new Intent(this, UserCenterActivity.class);
+                int userID = 0;
+
                 if (model != null) {
-                    intent2.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, model.getAutorId());
+                    userID = model.getAutorId();
                 } else if (mEntitys != null) {
-                    FootprintModel.Entity entity = mEntitys.get(viewPager.getCurrentItem());
-                    intent2.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, entity.autoId);
+                    userID = mEntitys.get(viewPager.getCurrentItem()).autoId;
                 }
+                if (userID == 0) {
+                    return;
+                }
+                Intent intent2 = new Intent(this, UserCenterActivity.class);
+                intent2.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, userID);
                 startActivity(intent2);
                 break;
             case R.id.fooopDetailActionBack:

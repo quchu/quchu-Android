@@ -1,7 +1,6 @@
 package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
@@ -14,7 +13,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -92,7 +90,7 @@ public class RecommendAdapter extends PagerAdapter {
             price = "-";
         }
 
-        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext, R.color.standard_color_red, mContext.getString(R.string.avg_cost_with_rmb_symbol), price, "起"));
+        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext, R.color.standard_color_red, mContext.getString(R.string.avg_cost_with_rmb_symbol), "¥"+price, "起"));
         holder.rbRating.setRating(model.getSuggest());
         holder.rbRating.setIsIndicator(true);
         //holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));

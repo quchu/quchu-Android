@@ -9,9 +9,6 @@
         layout="@layout/layout_mai_title" />
 
 
-
-
-
     <RelativeLayout
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
@@ -27,7 +24,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/base_margin"
             android:background="@drawable/shape_search_quchu"
             android:gravity="center"
             android:maxLines="1"
@@ -39,10 +36,11 @@
             android:textSize="@dimen/word_size_body" />
 
     </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground"
-        android:layout_below="@+id/title" />
+        android:layout_below="@+id/title"
+        android:background="@color/colorBackground" />
 </RelativeLayout>

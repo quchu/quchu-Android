@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/standard_color_white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/base_margin"
+    android:paddingRight="@dimen/base_margin">
 
     <LinearLayout
         android:id="@+id/detail_store_address_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
-        android:layout_marginTop="@dimen/base_margin"
+        android:layout_marginTop="@dimen/double_margin"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/detail_store_address_tv"
+            style="@style/TextView.H2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:drawablePadding="8dp"
-            android:drawableRight="@mipmap/ic_friends_arrow"
             android:drawableLeft="@mipmap/ic_location"
+            android:drawablePadding="8dp"
+            android:drawableRight="@mipmap/ic_go_right"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -32,38 +32,31 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:text="@string/empty_string"
-            style="@style/TextView.H2"/>
+            android:text="地址:" />
 
     </LinearLayout>
 
-    <View
-        style="@style/DetailHorizontalLine"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
-        />
+    <View style="@style/DetailHorizontalLine" />
 
     <LinearLayout
         android:id="@+id/detail_store_phone_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
-        android:layout_marginTop="@dimen/base_margin"
         android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginTop="@dimen/base_margin"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/detail_store_phone_tv"
+            style="@style/TextView.H2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:drawablePadding="8dp"
             android:drawableLeft="@mipmap/ic_call"
-            android:drawableRight="@mipmap/ic_friends_arrow"
-            android:text="@string/empty_string"
-            style="@style/TextView.H2"/>
+            android:drawablePadding="8dp"
+            android:drawableRight="@mipmap/ic_go_right"
+            android:text="电话:" />
 
     </LinearLayout>
 

@@ -67,25 +67,36 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         if (AppContext.user.isIsweixin()) {
             bindWecha.setText("解除绑定");
             bindWecha.setBackgroundColor(ContextCompat.getColor(this, R.color.standard_color_h2_dark));
+            bindWecha.setTextColor(ContextCompat.getColor(this,R.color.standard_color_white));
         } else {
             bindWecha.setText("绑定");
             bindWecha.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            bindWecha.setTextColor(ContextCompat.getColor(this,R.color.standard_color_h2_dark));
+
         }
 
         if (AppContext.user.isIsweibo()) {
             bindSina.setText("解除绑定");
             bindSina.setBackgroundColor(ContextCompat.getColor(this, R.color.standard_color_h2_dark));
+            bindSina.setTextColor(ContextCompat.getColor(this,R.color.standard_color_white));
+
         } else {
             bindSina.setText("绑定");
             bindSina.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            bindSina.setTextColor(ContextCompat.getColor(this,R.color.standard_color_h2_dark));
+
         }
 
         if (AppContext.user.isphone()) {
             bindPhone.setText("解除绑定");
             bindPhone.setBackgroundColor(ContextCompat.getColor(this, R.color.standard_color_h2_dark));
+            bindPhone.setTextColor(ContextCompat.getColor(this,R.color.standard_color_white));
+
         } else {
             bindPhone.setText("绑定");
             bindPhone.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            bindPhone.setTextColor(ContextCompat.getColor(this,R.color.standard_color_h2_dark));
+
         }
     }
 

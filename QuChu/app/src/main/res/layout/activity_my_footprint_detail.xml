@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp"
-        android:background="@color/appBackgroundTrans"
+        android:background="@drawable/shape_gradient_footprint"
         android:clickable="true"
         android:padding="@dimen/half_margin">
 
@@ -48,7 +49,9 @@
             android:id="@+id/headImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:roundAsCircle="true" />
+
+            app:roundAsCircle="true"
+            fresco:placeholderImage="@mipmap/head_place_hold" />
 
         <TextView
             android:id="@+id/detail"
@@ -66,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/lineBackground_gray"
+        android:background="@color/standard_color_h1_dark"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 

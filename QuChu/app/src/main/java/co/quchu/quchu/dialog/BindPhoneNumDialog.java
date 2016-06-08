@@ -25,8 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.sina.weibo.sdk.utils.MD5;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,6 +59,8 @@ public class BindPhoneNumDialog extends DialogFragment implements ViewPager.OnPa
     public static BindPhoneNumDialog newInstance() {
         return new BindPhoneNumDialog();
     }
+
+    private String autoCode;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -223,11 +227,13 @@ public class BindPhoneNumDialog extends DialogFragment implements ViewPager.OnPa
             layout.setError("请输入6-12位密码");
             return;
         }
-        HashMap<String, String> params = new HashMap<>();
-        params.put("phoneNumber", phoneNumber);
-        params.put("salt", password);
+        String format = String.format(Locale.SIMPLIFIED_CHINESE, NetApi.ResertPsw, phoneNumber, MD5.hexdigest(password), autoCode);
 
-        GsonRequest<String> request = new GsonRequest<>(NetApi.bindPassword, String.class, params, new ResponseListener<String>() {
+//        HashMap<String, String> params = new HashMap<>();
+//        params.put("phoneNumber", phoneNumber);
+//        params.put("salt", MD5.hexdigest(password));
+
+        GsonRequest<String> request = new GsonRequest<>(format, String.class, new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 layout.setError("网络异常");
@@ -291,6 +297,7 @@ public class BindPhoneNumDialog extends DialogFragment implements ViewPager.OnPa
         } else {
             layout.setError(null);
         }
+        autoCode = code;
 
         GsonRequest<String> request = new GsonRequest<>(NetApi.autoCodeIsCorrect, String.class, params, new ResponseListener<String>() {
             @Override

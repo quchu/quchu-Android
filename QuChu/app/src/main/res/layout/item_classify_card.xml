@@ -8,6 +8,7 @@
     android:clickable="true"
     android:fitsSystemWindows="true"
     android:foreground="?attr/selectableItemBackground"
+    android:layout_marginBottom="@dimen/half_margin"
     app:cardCornerRadius="8dp">
 
     <com.facebook.drawee.view.SimpleDraweeView

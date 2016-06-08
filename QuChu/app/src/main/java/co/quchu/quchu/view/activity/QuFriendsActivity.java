@@ -14,6 +14,9 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,8 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.fragment.FriendsFollowerFg;
 import co.quchu.quchu.widget.AnimationViewPager.RotatePageTransformer;
 
@@ -97,6 +102,7 @@ public class QuFriendsActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        EventBus.getDefault().register(this);
     }
 
     public void setFaloowNum(int hostNum, int followNum) {
@@ -135,6 +141,18 @@ public class QuFriendsActivity extends BaseActivity {
     protected void onResume() {
         MobclickAgent.onPageStart("social");
         super.onResume();
+    }
+
+    @Subscribe
+    public void onEventBus(QuchuEventModel model) {
+        if (model.getFlag() == EventFlags.EVENT_GOTO_HOME_PAGE)
+            finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

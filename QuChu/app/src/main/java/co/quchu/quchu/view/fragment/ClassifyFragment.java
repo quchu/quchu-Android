@@ -31,7 +31,6 @@ import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.view.adapter.ClassifyAdapter;
-import co.quchu.quchu.view.adapter.ClassifyDecoration;
 import co.quchu.quchu.widget.DampView;
 import co.quchu.quchu.widget.ErrorView;
 
@@ -57,7 +56,7 @@ public class ClassifyFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
+//        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
         getRootTagsData();
         return view;
     }

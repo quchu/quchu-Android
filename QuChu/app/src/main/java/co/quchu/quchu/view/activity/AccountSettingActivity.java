@@ -141,7 +141,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         userGenderChanged = !AppContext.user.getGender().equals(gender);
 
 
-        if (mProfileModified || userNameChanged || userGenderChanged) {
+        if (mProfileModified || userNameChanged || userGenderChanged || !accountSettingUserLocation.getText().toString().equals(AppContext.user.getLocation())) {
             CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
 
             dialog.setListener(new CommonDialog.OnActionListener() {
@@ -302,7 +302,10 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
             Toast.makeText(this, "昵称必须为1-10位字符", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if (StringUtils.containsEmoji(newUserNickName)){
+            Toast.makeText(this, "昵称不能使用表情", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
         if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {

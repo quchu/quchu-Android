@@ -8,25 +8,20 @@
     android:orientation="vertical">
 
     <View
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
         style="@style/DetailHorizontalLine"
-        />
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin" />
+
     <TextView
         android:id="@+id/detail_store_business_hours_key_tv"
+        style="@style/TextView.H2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/ic_time"
+        android:layout_marginBottom="@dimen/half_margin"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginTop="@dimen/base_margin"
+        android:drawableLeft="@mipmap/ic_time"
         android:drawablePadding="8dp"
-        android:layout_marginBottom="@dimen/half_margin"
-        android:text="@string/time"
-        style="@style/TextView.H2" />
+        android:text="@string/time" />
 
-    <View
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        style="@style/DetailHorizontalLine"
-        />
 </LinearLayout>

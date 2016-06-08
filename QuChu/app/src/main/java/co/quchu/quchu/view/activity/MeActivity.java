@@ -63,7 +63,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     @Bind(R.id.progress4)
     LinearProgressView progress4;
     @Bind(R.id.findPosition)
-    LinearLayout findPosition;
+    TextView findPosition;
     @Bind(R.id.followAction)
     TextView editOrLogin;
     @Bind(R.id.editIcon)

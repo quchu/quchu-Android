@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class FindPositionListActivity extends BaseActivity implements AdapterBas
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.findPosition)
-    LinearLayout findPosition;
+    TextView findPosition;
     private QuchuPresenter presenter;
     private int pagesNo = 1;
     private FindAdapter adapter;

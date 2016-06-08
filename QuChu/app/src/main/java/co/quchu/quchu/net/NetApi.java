@@ -69,7 +69,7 @@ public interface NetApi {
 
     String getPlaceUserCard = HOST + "/place/getPlaceUserCard?pId=%d";  //获取趣处中我留下的明信片
     String sharePlace = HOST + "/share/place?pId=%d";  //分享趣处
-    String sharePostCard = HOST + "/footprint/share?postCardId=%d";  //分享明信片
+    String sharePostCard = HOST + "/footprint/share?postCardId=%d&imageId=%d";  //分享明信片
 
 
     String getUserGene = HOST + "/personal/getUserGene";  //获取用户基因
