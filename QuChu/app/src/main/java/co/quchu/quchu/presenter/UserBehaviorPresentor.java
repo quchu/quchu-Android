@@ -6,10 +6,21 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import co.quchu.quchu.model.FootprintModel;
 import co.quchu.quchu.model.UserBehaviorModel;
+import co.quchu.quchu.net.IRequestListener;
+import co.quchu.quchu.net.NetApi;
+import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.DatabaseHelper;
 
 /**
@@ -106,6 +117,32 @@ public class UserBehaviorPresentor {
         }
     }
 
-    
+
+    public static void postBehaviors(final Context context, List<UserBehaviorModel> data) {
+
+
+        JSONObject jsonObject = null;
+        JSONArray jsonArray;
+        try {
+            jsonObject = new JSONObject();
+            jsonArray = new JSONArray(new Gson().toJson(data));
+            jsonObject.put("UserBehaviors",jsonArray);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        NetService.post(context, NetApi.postUserBehavior,jsonObject, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                delBehaviors(context);
+            }
+
+            @Override
+            public boolean onError(String error) {
+                return false;
+            }
+        });
+    }
+
 
 }

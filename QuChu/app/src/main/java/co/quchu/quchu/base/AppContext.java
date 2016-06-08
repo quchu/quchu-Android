@@ -84,13 +84,7 @@ public class AppContext extends Application {
         super.onCreate();
         UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
         registBroadcastReceiver();
-        //if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=100){
-        List<UserBehaviorModel> data = UserBehaviorPresentor.getBehaviors(getApplicationContext());
-        for (int i = 0; i < data.size(); i++) {
-            System.out.println(data.get(i).toString());
-        }
-        //UserBehaviorPresentor.delBehaviors(getApplicationContext());
-        //}
+
         refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
         token = SPUtils.getUserToken(getApplicationContext());
@@ -101,7 +95,7 @@ public class AppContext extends Application {
         }
 
 
-//禁用页面自动统计
+        //禁用页面自动统计
         MobclickAgent.openActivityDurationTrack(false);
         ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
@@ -114,6 +108,10 @@ public class AppContext extends Application {
 
         }
         initWidths();
+
+        if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=100){
+            UserBehaviorPresentor.postBehaviors(getApplicationContext(),UserBehaviorPresentor.getBehaviors(getApplicationContext()));
+        }
     }
 
 

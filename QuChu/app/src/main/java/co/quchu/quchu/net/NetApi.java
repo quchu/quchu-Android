@@ -134,6 +134,8 @@ public interface NetApi {
      */
     String shareCollect = HOST + "/sns/shareCard?cardId=%d";//分享脚印数据收集
 
+    String postUserBehavior = HOST + "/record/browseTimeSpent";
+
 
     /****************** POST *******************/
 }
