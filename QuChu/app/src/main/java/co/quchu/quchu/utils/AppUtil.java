@@ -125,7 +125,6 @@ public class AppUtil {
         pm = activity.getPackageManager();
         packages = pm.getInstalledApplications(0);
         for (ApplicationInfo packageInfo : packages) {
-            System.out.println("packageName "+ packageInfo.packageName +"    "+targetPackage);
             if(packageInfo.packageName.equals(targetPackage))
                 return true;
         }

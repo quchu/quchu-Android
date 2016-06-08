@@ -22,6 +22,7 @@ import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
+
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.UserBehaviorModel;
 import co.quchu.quchu.model.UserInfoModel;
@@ -49,8 +50,8 @@ public class AppContext extends Application {
     public static PackageInfo packageInfo;
 
 
-
     private BroadcastReceiver mPowerKeyReceiver = null;
+
     private void registBroadcastReceiver() {
         final IntentFilter theFilter = new IntentFilter();
         theFilter.addAction(Intent.ACTION_SCREEN_ON);
@@ -63,7 +64,7 @@ public class AppContext extends Application {
 
                 if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
                     UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "sleep", "", System.currentTimeMillis());
-                }else if(strAction.equals(Intent.ACTION_SCREEN_ON)){
+                } else if (strAction.equals(Intent.ACTION_SCREEN_ON)) {
                     UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "wakeup", "", System.currentTimeMillis());
                 }
             }
@@ -84,11 +85,11 @@ public class AppContext extends Application {
         UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
         registBroadcastReceiver();
         //if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=100){
-            List<UserBehaviorModel> data = UserBehaviorPresentor.getBehaviors(getApplicationContext());
-            for (int i = 0; i < data.size(); i++) {
-                System.out.println(data.get(i).toString());
-            }
-            //UserBehaviorPresentor.delBehaviors(getApplicationContext());
+        List<UserBehaviorModel> data = UserBehaviorPresentor.getBehaviors(getApplicationContext());
+        for (int i = 0; i < data.size(); i++) {
+            System.out.println(data.get(i).toString());
+        }
+        //UserBehaviorPresentor.delBehaviors(getApplicationContext());
         //}
         refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
@@ -145,7 +146,7 @@ public class AppContext extends Application {
         if (!AppUtil.isOpen(mContext))
             AppUtil.openGPS(mContext);
         mLocationClient = new AMapLocationClient(mContext);
-        mLocationListener = new AppLocationListener(){
+        mLocationListener = new AppLocationListener() {
             @Override
             public void onLocationChanged(AMapLocation amapLocation) {
                 super.onLocationChanged(amapLocation);
@@ -166,9 +167,9 @@ public class AppContext extends Application {
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         mLocationOption.setMockEnable(false);
         //设置定位间隔,单位毫秒,默认为2000ms
-        if (SPUtils.getLongitude()==0 && SPUtils.getLatitude()==0){
+        if (SPUtils.getLongitude() == 0 && SPUtils.getLatitude() == 0) {
             mLocationOption.setInterval(5 * 1000);
-        }else{
+        } else {
             mLocationOption.setInterval(3600 * 1000);
         }
         //给定位客户端对象设置定位参数
@@ -176,12 +177,6 @@ public class AppContext extends Application {
         //启动定位
         mLocationClient.startLocation();
     }
-
-
-
-
-
-
 
 
     public static void stopLocation() {
