@@ -74,7 +74,7 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
 
     }
 
-    private void animation(int offset) {
+    public void animation(int offset) {
         ValueAnimator animator = ValueAnimator.ofInt(offset);
         animator.setDuration(200);
         animator.setInterpolator(new LinearInterpolator());

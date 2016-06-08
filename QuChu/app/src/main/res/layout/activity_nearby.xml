@@ -11,15 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appbar"
+        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin"
         android:paddingLeft="@dimen/base_margin"
         android:paddingRight="@dimen/base_margin" />
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_below="@id/rvSelection"
-            android:id="@+id/detail_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none"
-            tools:listitem="@layout/item_nearby_quchu" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/detail_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rvSelection"
+        android:scrollbars="none"
+        tools:listitem="@layout/item_nearby_quchu" />
 
 </RelativeLayout>

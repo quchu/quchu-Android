@@ -3,12 +3,13 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cvRoot"
-    android:layout_marginBottom="@dimen/base_margin"
+    android:layout_marginBottom="@dimen/half_margin"
     android:layout_marginLeft="@dimen/base_margin"
-    android:layout_marginRight="@dimen/base_margin">
+    android:layout_marginRight="@dimen/base_margin"
+    android:layout_marginTop="@dimen/half_margin">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -63,8 +64,8 @@
             android:singleLine="true"
             android:textColor="@color/standard_color_white"
             android:visibility="invisible"
-            tools:visibility="visible"
-            tools:text="厦门观音山.dfd" />
+            tools:text="厦门观音山.dfd"
+            tools:visibility="visible" />
 
 
         <ImageView

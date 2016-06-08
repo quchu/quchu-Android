@@ -31,7 +31,6 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.NearbyAdapter;
 import co.quchu.quchu.view.adapter.NearbyFilterSelectionAdapter;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
-import co.quchu.quchu.widget.SpacesItemDecoration;
 
 /**
  * Created by Nico on 16/4/11.
@@ -153,7 +152,7 @@ public class NearbyActivity extends BaseActivity {
         rvSelection.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
         detailRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         detailRecyclerview.setAdapter(mAdapter);
-        detailRecyclerview.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
+//        detailRecyclerview.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
         detailRecyclerview.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) detailRecyclerview.getLayoutManager()) {
             @Override
             public void onLoadMore(int current_page) {

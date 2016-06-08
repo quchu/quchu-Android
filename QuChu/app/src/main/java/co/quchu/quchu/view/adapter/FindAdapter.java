@@ -54,15 +54,16 @@ public class FindAdapter extends AdapterBase<FindBean.ResultEntity, FindAdapter.
         holder.swipeDeleteItem.scrollTo(0, 0);
         if (bean.getImage().size() > 0) {
             holder.simpleDraweeView.setImageURI(Uri.parse(bean.getImage().get(0).getImgpath()));
-        } else {
-            holder.simpleDraweeView.setImageURI(Uri.EMPTY);
         }
         if (itemClickListener != null) {
 
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (v.getId() == R.id.swipe_delete_content && holder.swipeDeleteItem.getScrollX() > 0) {
+                        holder.swipeDeleteItem.animation(-holder.swipeDeleteItem.getScrollX());
+                        return;
+                    }
                     itemClickListener.itemClick(holder, bean, v.getId(), position);
                 }
             };
