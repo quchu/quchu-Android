@@ -84,7 +84,7 @@ public class GalleryFinal {
      * @param config
      * @param callback
      */
-    public static void openGallerySingle(int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
+    public static void openGallerySingle(Context context,int requestCode, FunctionConfig config, OnHanlderResultCallback callback) {
         if (mCoreConfig.getImageLoader() == null) {
             Logger.e("Please init GalleryFinal.");
             if (callback != null) {
@@ -110,8 +110,8 @@ public class GalleryFinal {
         mCurrentFunctionConfig = config;
 
         Intent intent = new Intent(mCoreConfig.getContext(), PhotoSelectActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mCoreConfig.getContext().startActivity(intent);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+       context.startActivity(intent);
     }
 
 

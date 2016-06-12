@@ -9,7 +9,7 @@ import co.quchu.quchu.base.AppContext;
  */
 public class FileUtils {
     public static String SDPATH = AppContext.mContext.getCacheDir().getAbsolutePath()
-            + "/Quchu/";
+            + "/Quchu";
 
 
 }

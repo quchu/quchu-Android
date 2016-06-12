@@ -64,12 +64,14 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     LinearProgressView progress4;
     @Bind(R.id.findPosition)
     TextView findPosition;
-    @Bind(R.id.followAction)
+    @Bind(R.id.editOrLoginTV)
     TextView editOrLogin;
     @Bind(R.id.editIcon)
     ImageView editIcon;
     @Bind(R.id.unReadMassage)
     TextView unReadMassage;
+    @Bind(R.id.editOrLoginAction)
+    RelativeLayout editOrLoginAction;
 
     private MeActivityPresenter presenter;
 
@@ -128,7 +130,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         friend.setOnClickListener(this);
         massage.setOnClickListener(this);
         findPosition.setOnClickListener(this);
-        editOrLogin.setOnClickListener(this);
+        editOrLoginAction.setOnClickListener(this);
 
 
     }
@@ -185,7 +187,7 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
             case R.id.toolbar_iv_right:
                 MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "menu_setting");
                 break;
-            case R.id.followAction:
+            case R.id.editOrLoginAction:
                 if (user.isIsVisitors()) {
                     intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);

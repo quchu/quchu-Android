@@ -37,6 +37,7 @@
             android:layout_marginTop="50dp"
             android:layout_toRightOf="@id/headImage"
             android:background="@drawable/shape_edit_bg"
+            android:id="@+id/editOrLoginAction"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin">
@@ -51,7 +52,7 @@
                 android:src="@mipmap/ic_edit_small" />
 
             <TextView
-                android:id="@+id/followAction"
+                android:id="@+id/editOrLoginTV"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_toRightOf="@id/editIcon"

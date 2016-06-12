@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +31,6 @@ import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
-import co.quchu.quchu.widget.ErrorView;
 
 /**
  * Created by Nico on 16/5/13.
@@ -46,18 +44,18 @@ public class RestorePasswordFragment extends Fragment {
     public String mUserName = "";
     public String mVerifyCode = "";
 
-    @Bind(R.id.ivIconPassword)
-    ImageView ivIconPassword;
+//    @Bind(R.id.ivIconPassword)
+//    ImageView ivIconPassword;
     @Bind(R.id.etPassword)
     EditText etPassword;
-    @Bind(R.id.rlPasswordField)
-    RelativeLayout rlPasswordField;
-    @Bind(R.id.tvTips)
-    TextView tvTips;
+//    @Bind(R.id.rlPasswordField)
+//    RelativeLayout rlPasswordField;
+//    @Bind(R.id.tvTips)
+//    TextView tvTips;
     @Bind(R.id.tvNext)
     TextView tvNext;
-    @Bind(R.id.ivIconClear)
-    ImageView ivIconClear;
+//    @Bind(R.id.ivIconClear)
+//    ImageView ivIconClear;
     @Bind(R.id.ivSwitchVisible)
     ImageView ivSwitchVisible;
     public boolean mDisplayPassword = false;

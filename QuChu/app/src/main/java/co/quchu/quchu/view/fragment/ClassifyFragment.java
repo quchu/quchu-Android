@@ -137,7 +137,7 @@ public class ClassifyFragment extends BaseFragment {
                 });
             }
         });
-        request.start(getContext(), null);
+        request.start(getContext());
     }
 
 

@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
@@ -33,6 +32,8 @@ public class StatementActivity extends BaseActivity {
 
     public static final String REQUEST_KEY_TITLE = "title";
     public static final String REQUEST_KEY_CONTENT = "content";
+    @Bind(R.id.version)
+    TextView version;
 
 
     @Override
@@ -40,7 +41,9 @@ public class StatementActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
         ButterKnife.bind(this);
-        EnhancedToolbar toolbar = getEnhancedToolbar();
+        getEnhancedToolbar();
+        version.setText(AppContext.packageInfo.versionName);
+
         //toolbar.getTitleTv().setText(getIntent().getStringExtra(REQUEST_KEY_TITLE));
         textView.setText(getIntent().getStringExtra(REQUEST_KEY_CONTENT));
         getEnhancedToolbar().getRightTv().setText(" ");

@@ -13,7 +13,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.net.NetApi;
 
 /**
  * ShareDialogFg
@@ -34,7 +33,7 @@ public class ASUserPhotoDialogFg extends DialogFragment implements View.OnClickL
         return new ASUserPhotoDialogFg();
     }
 
-    String shareUrl = "";
+//    String shareUrl = "";
     private UserPhotoOriginSelectedListener listener;
 
     @Override
@@ -60,9 +59,9 @@ public class ASUserPhotoDialogFg extends DialogFragment implements View.OnClickL
         dialog.setContentView(view);
 
 
-        boolean isPlace = false;
-        int shareId = 0;
-        shareUrl = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
+//        boolean isPlace = false;
+//        int shareId = 0;
+//        shareUrl = String.format(isPlace ? NetApi.sharePlace : NetApi.sharePostCard, shareId);
 
         selectCancle.setOnClickListener(this);
         selectQutouxiang.setOnClickListener(this);

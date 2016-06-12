@@ -29,9 +29,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import cn.finalteam.toolsfinal.FileUtils;
 import co.quchu.quchu.R;
@@ -143,21 +141,21 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mGvPhotoList.setOnItemClickListener(this);
     }
 
-    protected void deleteSelect(int photoId) {
-        try {
-            Iterator<Map.Entry<String, PhotoInfo>> entries = mSelectPhotoMap.entrySet().iterator();
-            while (entries.hasNext()) {
-                Map.Entry<String, PhotoInfo> entry = entries.next();
-                if (entry.getValue() != null && entry.getValue().getPhotoId() == photoId) {
-                    entries.remove();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        refreshAdapter();
-    }
+//    protected void deleteSelect(int photoId) {
+//        try {
+//            Iterator<Map.Entry<String, PhotoInfo>> entries = mSelectPhotoMap.entrySet().iterator();
+//            while (entries.hasNext()) {
+//                Map.Entry<String, PhotoInfo> entry = entries.next();
+//                if (entry.getValue() != null && entry.getValue().getPhotoId() == photoId) {
+//                    entries.remove();
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        refreshAdapter();
+//    }
 
     private void refreshAdapter() {
         mHanlder.sendEmptyMessageDelayed(HANDLER_REFRESH_LIST_EVENT, 100);

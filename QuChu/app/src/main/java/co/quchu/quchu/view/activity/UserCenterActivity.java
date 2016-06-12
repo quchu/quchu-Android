@@ -33,7 +33,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     TextView name;
     @Bind(R.id.alias)
     TextView alias;
-    @Bind(R.id.followAction)
+    @Bind(R.id.editOrLoginTV)
     TextView followAction;
     @Bind(R.id.follow)
     TextView follow;
@@ -107,7 +107,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.followAction:
+            case R.id.editOrLoginTV:
                 followSomebody();
                 break;
             case R.id.friend:

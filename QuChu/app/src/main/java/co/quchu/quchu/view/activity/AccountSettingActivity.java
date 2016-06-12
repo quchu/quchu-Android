@@ -231,7 +231,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         public void selectedAblum() {
             initGralley();
             int REQUEST_CODE_GALLERY = 0x01;
-            GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
+            GalleryFinal.openGallerySingle(AccountSettingActivity.this,REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
         }
 
         @Override
@@ -379,7 +379,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 //            accountSettingAvatarSdv.setController(controller);
 
             LogUtils.e("头像路径" + newUserPhoto);
-            accountSettingAvatarSdv.setImageURI(Uri.EMPTY);
+//            accountSettingAvatarSdv.setImageURI(Uri.EMPTY);
             accountSettingAvatarSdv.setImageURI(Uri.fromFile(new File(newUserPhoto)));
 
         } else {
