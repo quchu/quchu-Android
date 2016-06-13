@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -93,6 +94,9 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
 
     @Override
     public void netError(final int pageNo, String massage) {
+        Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+        mRefreshLayout.setRefreshing(false);
+
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

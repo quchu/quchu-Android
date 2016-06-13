@@ -3,6 +3,7 @@ package co.quchu.quchu.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,7 +32,6 @@ import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.view.adapter.ClassifyAdapter;
-import co.quchu.quchu.widget.DampView;
 import co.quchu.quchu.widget.ErrorView;
 
 /**
@@ -40,13 +40,13 @@ import co.quchu.quchu.widget.ErrorView;
  * Date: 2015-12-07
  * 分类
  */
-public class ClassifyFragment extends BaseFragment {
+public class ClassifyFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.fragment_firends_rv)
     RecyclerView recyclerView;
     @Bind(R.id.errorView)
     ErrorView errorView;
-    @Bind(R.id.dampView)
-    DampView dampView;
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
     private ClassifyAdapter cAdapter;
 
     @Nullable
@@ -57,7 +57,11 @@ public class ClassifyFragment extends BaseFragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
+        refreshLayout.setOnRefreshListener(this);
+
         getRootTagsData();
+
+
         return view;
     }
 
@@ -71,7 +75,7 @@ public class ClassifyFragment extends BaseFragment {
         }.getType(), new ResponseListener<List<ClassifyModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                dampView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.GONE);
                 DialogUtil.dismissProgessDirectly();
                 errorView.showViewDefault(new View.OnClickListener() {
                     @Override
@@ -80,14 +84,15 @@ public class ClassifyFragment extends BaseFragment {
                         getRootTagsData();
                     }
                 });
+                refreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onResponse(final List<ClassifyModel> response, boolean result, @Nullable String exception, @Nullable String msg) {
                 DialogUtil.dismissProgessDirectly();
-                dampView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
                 errorView.hideView();
-
+                refreshLayout.setRefreshing(false);
 
                 cAdapter = new ClassifyAdapter(getActivity(), response);
                 recyclerView.setAdapter(cAdapter);
@@ -127,9 +132,9 @@ public class ClassifyFragment extends BaseFragment {
 
                             //http://sit.quchu.co/app-main-service/searchSpecial/getSearchSpecialListByTagId?tagId=283&cityId=1
 
-                            String url = String.format(NetApi.quchu_topic_h5,model.getTagId(),SPUtils.getCityId());
+                            String url = String.format(NetApi.quchu_topic_h5, model.getTagId(), SPUtils.getCityId());
                             Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                            intent.putExtra(WebViewActivity.BUNDLE_KEY_WEBVIEW_URL,url);
+                            intent.putExtra(WebViewActivity.BUNDLE_KEY_WEBVIEW_URL, url);
                             //intent.putExtra(ClassifyDetailActivity.PARAMETER_TITLE, title);
                             getActivity().startActivity(intent);
                         }
@@ -157,5 +162,10 @@ public class ClassifyFragment extends BaseFragment {
     public void onPause() {
         MobclickAgent.onPageEnd("h_discovery");
         super.onPause();
+    }
+
+    @Override
+    public void onRefresh() {
+        getRootTagsData();
     }
 }

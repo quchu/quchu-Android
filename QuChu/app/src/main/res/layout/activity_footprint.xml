@@ -8,13 +8,13 @@
 
     <include layout="@layout/cp_enhanced_toolbar" />
 
-    <co.quchu.quchu.widget.DampView
+    <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/appbar"
-        android:paddingTop="@dimen/base_margin"
-        android:background="@android:color/white" />
+        android:background="@android:color/white"
+        android:paddingTop="@dimen/base_margin" />
 
 
 </RelativeLayout>

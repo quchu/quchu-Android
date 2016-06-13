@@ -2,10 +2,12 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +27,14 @@ import co.quchu.quchu.view.adapter.FindAdapter;
 /**
  * 我发现的趣处列表
  */
-public class FindPositionListActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, PageLoadListener<FindBean>, AdapterBase.OnItemClickListener<FindBean.ResultEntity> {
+public class FindPositionListActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, PageLoadListener<FindBean>, AdapterBase.OnItemClickListener<FindBean.ResultEntity>, SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.findPosition)
     TextView findPosition;
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
     private QuchuPresenter presenter;
     private int pagesNo = 1;
     private FindAdapter adapter;
@@ -62,10 +66,7 @@ public class FindPositionListActivity extends BaseActivity implements AdapterBas
         adapter.setItemClickListener(this);
 
         recyclerView.setAdapter(adapter);
-
-
-
-
+        refreshLayout.setOnRefreshListener(this);
 
     }
 
@@ -113,7 +114,7 @@ public class FindPositionListActivity extends BaseActivity implements AdapterBas
         }
     }
 
-    public void deleteSucceed(RecyclerView.ViewHolder holder ,FindBean.ResultEntity entity) {
+    public void deleteSucceed(RecyclerView.ViewHolder holder, FindBean.ResultEntity entity) {
         adapter.removeItem(holder, entity);
     }
 
@@ -121,28 +122,44 @@ public class FindPositionListActivity extends BaseActivity implements AdapterBas
     @Override
     public void initData(FindBean bean) {
         pagesNo = bean.getPagesNo();
+        refreshLayout.setRefreshing(false);
+
         adapter.initData(bean.getResult());
     }
 
     @Override
     public void moreData(FindBean data) {
         pagesNo = data.getPagesNo();
+        refreshLayout.setRefreshing(false);
+
         adapter.addMoreData(data.getResult());
     }
 
     @Override
     public void nullData() {
+        refreshLayout.setRefreshing(false);
+
         adapter.setLoadMoreEnable(false);
     }
 
     @Override
     public void netError(final int pagesNo, String massage) {
+        refreshLayout.setRefreshing(false);
+        Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.getFindData(pagesNo, FindPositionListActivity.this);
             }
         });
+
+    }
+
+    @Override
+    public void onRefresh() {
+        pagesNo = 1;
+        presenter.getFindData(pagesNo, this);
 
     }
 }

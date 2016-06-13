@@ -2,10 +2,12 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -25,10 +27,12 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FavoriteAdapter;
 
-public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean>, PageLoadListener<FavoriteBean> {
+public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean>, PageLoadListener<FavoriteBean>, SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
     private FavoriteAdapter adapter;
     private QuchuPresenter presenter;
     private int pagesNo = 1;
@@ -50,13 +54,10 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
         adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);
         presenter.getFavoriteData(pagesNo, this);
+
+        refreshLayout.setOnRefreshListener(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     protected int activitySetup() {
@@ -87,6 +88,8 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
 
     @Override
     public void initData(FavoriteBean bean) {
+        refreshLayout.setRefreshing(false);
+
         adapter.initData(bean.getResult());
         pagesNo = bean.getPagesNo();
 
@@ -95,16 +98,23 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
     @Override
     public void moreData(FavoriteBean data) {
         pagesNo = data.getPagesNo();
+        refreshLayout.setRefreshing(false);
+
         adapter.addMoreData(data.getResult());
     }
 
     @Override
     public void nullData() {
+        refreshLayout.setRefreshing(false);
+
         adapter.setLoadMoreEnable(false);
     }
 
     @Override
     public void netError(final int pagesNo, String massage) {
+        refreshLayout.setRefreshing(false);
+        Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,5 +138,12 @@ public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoad
                 adapter.removeItem(holder, item);
             }
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        pagesNo = 1;
+        presenter.getFavoriteData(pagesNo, this);
+
     }
 }

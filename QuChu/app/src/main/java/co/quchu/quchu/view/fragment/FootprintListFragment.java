@@ -3,11 +3,13 @@ package co.quchu.quchu.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,10 +38,13 @@ import co.quchu.quchu.view.adapter.MyFootprintAdapter;
  * email:437943145@qq.com
  * desc :
  */
-public class FootprintListFragment extends BaseFragment implements AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel>, PageLoadListener<PostCardModel> {
+public class FootprintListFragment extends BaseFragment implements AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel>, PageLoadListener<PostCardModel>, SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    //    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
 
     private MyFootprintPresenter presenter;
     private int userId;
@@ -59,9 +64,9 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_footprint_list, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        refreshLayout = (SwipeRefreshLayout) inflater.inflate(R.layout.fragment_footprint_list, container, false);
+        ButterKnife.bind(this, refreshLayout);
+        return refreshLayout;
     }
 
     @Override
@@ -76,6 +81,9 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
         userId = getArguments().getInt(REQUEST_KEY_USER_ID);
 
         presenter = new MyFootprintPresenter(getContext());
+
+        refreshLayout.setOnRefreshListener(this);
+
     }
 
     @Override
@@ -137,12 +145,15 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
     public void initData(PostCardModel data) {
         pagesNo = data.getPagesNo();
         recyclerView.setVisibility(View.VISIBLE);
+        refreshLayout.setRefreshing(false);
         adapter.initData(data.getResult());
     }
 
     @Override
     public void moreData(PostCardModel data) {
         pagesNo = data.getPagesNo();
+        refreshLayout.setRefreshing(false);
+
         adapter.addMoreData(data.getResult());
     }
 
@@ -170,16 +181,28 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
 
     @Override
     public void nullData() {
+        refreshLayout.setRefreshing(false);
+
         adapter.setLoadMoreEnable(false);
     }
 
     @Override
     public void netError(final int pageNo, String massage) {
+        refreshLayout.setRefreshing(false);
+        Toast.makeText(getContext(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.getMyFoiotrintList(userId, pageNo, FootprintListFragment.this);
             }
         });
+    }
+
+
+    @Override
+    public void onRefresh() {
+        pagesNo = 1;
+        presenter.getMyFoiotrintList(userId, pagesNo, FootprintListFragment.this);
     }
 }
