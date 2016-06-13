@@ -119,6 +119,9 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
 
                 break;
             case MyFootprintAdapter.CLICK_TYPE_NAME:
+                if (item.getPlaceId() == 0) {
+                    return;
+                }
                 intent = new Intent(getContext(), QuchuDetailsActivity.class);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_SUBJECT);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPlaceId());

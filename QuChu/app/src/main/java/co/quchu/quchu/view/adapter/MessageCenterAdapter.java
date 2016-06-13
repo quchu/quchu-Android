@@ -84,7 +84,6 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, R
                         }
 
                         break;
-
                     case "favorite":
                         commomHolder.itemMessageFollowTv.setVisibility(View.GONE);
                         break;
@@ -92,6 +91,9 @@ public class MessageCenterAdapter extends AdapterBase<MessageModel.ResultBean, R
                         commomHolder.itemMessageFollowTv.setVisibility(View.GONE);
                         break;
                     case "share":
+                        commomHolder.itemMessageFollowTv.setVisibility(View.GONE);
+                        break;
+                    case "feedback":
                         commomHolder.itemMessageFollowTv.setVisibility(View.GONE);
                         break;
                 }

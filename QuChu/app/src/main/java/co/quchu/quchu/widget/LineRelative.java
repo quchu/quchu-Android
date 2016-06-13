@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -42,6 +41,5 @@ public class LineRelative extends RelativeLayout {
         super.onDraw(canvas);
         int positionX = StringUtils.dip2px(getContext(), 16);
         canvas.drawLine(positionX, 0, positionX, getHeight(), paint);
-        LogUtils.e("ondraw执行了");
     }
 }

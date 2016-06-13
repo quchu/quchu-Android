@@ -48,7 +48,7 @@
                 card_view:roundBottomRight="false"
                 card_view:roundTopLeft="true"
                 card_view:roundTopRight="false"
-                card_view:roundedCornerRadius="15dp" />
+                card_view:roundedCornerRadius="@dimen/rounded_radius" />
         </RelativeLayout>
 
         <RelativeLayout

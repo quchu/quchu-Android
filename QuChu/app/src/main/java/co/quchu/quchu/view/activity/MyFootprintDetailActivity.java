@@ -56,15 +56,13 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
     @Bind(R.id.container)
     ViewPager viewPager;
 
-    public static final String REQUEST_KEY_IMAGE_LIST = "model";
-
-    public static final String REQUEST_KEY_FOOTPRINT_ID = "id";
     /**
      * 从消息中心跳转 隐藏编辑按钮
      */
     public static final String REQUEST_KEY_FROM_MESSAGE = "message";
+    public static final String REQUEST_KEY_FOOTPRINT_ID = "id";
     /**
-     * 从趣处详情脚印跳转
+     * 从趣处详情或者个人脚印列表
      */
     public static final String REQUEST_KEY_ENTITY_LIST = "entityList";
     public static final String REQUEST_KEY_SELECTED_POSITION = "selectedPosition";
@@ -150,7 +148,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
         ButterKnife.bind(this);
         initListener();
         Intent intent = getIntent();
-        model = intent.getParcelableExtra(REQUEST_KEY_IMAGE_LIST);
+//        model = intent.getParcelableExtra(REQUEST_KEY_IMAGE_LIST);
         int id = intent.getIntExtra(REQUEST_KEY_FOOTPRINT_ID, -1);
         int selectedPosition = intent.getIntExtra(REQUEST_KEY_SELECTED_POSITION, -1);
         mEntitys = intent.getParcelableArrayListExtra(REQUEST_KEY_ENTITY_LIST);
@@ -183,6 +181,14 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                     } else {
                         support.setImageResource(R.mipmap.ic_heart_yellow);
                     }
+
+                    if (entity.PlcaeId == 0) {
+                        actionContainer.setVisibility(View.INVISIBLE);
+                    } else {
+                        actionContainer.setVisibility(View.VISIBLE);
+                    }
+
+
                 }
 
                 @Override
@@ -198,9 +204,11 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                 pageChangeListener.onPageSelected(0);
             }
 
-        } else if (model != null) {
-            initData();
-        } else if (id != -1) {
+        }
+//        else if (model != null) {
+//            initData();
+//        }
+        else if (id != -1) {
             MyFootprintPresenter presenter = new MyFootprintPresenter(this);
 
             presenter.getFootprintDetail(id, new ResponseListener<PostCardItemModel>() {
