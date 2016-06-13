@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.webkit.SslErrorHandler;
@@ -34,6 +35,8 @@ public class WebViewActivity extends BaseActivity {
 
     public static final String BUNDLE_KEY_WEBVIEW_URL = "BUNDLE_KEY_WEB_URL";
     public static final String BUNDLE_KEY_WEBVIEW_TITLE = "BUNDLE_KEY_WEBVIEW_TITLE";
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
     private String mPageTitle;
     public static final String TAG = "WebViewActivity";
 
@@ -58,7 +61,7 @@ public class WebViewActivity extends BaseActivity {
             }
         });
 
-        WebChromeClient webChromeClient = new WebChromeClient() {
+        final WebChromeClient webChromeClient = new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 if (null == mPageTitle && !StringUtils.isEmpty(title)) {
@@ -84,7 +87,12 @@ public class WebViewActivity extends BaseActivity {
             showErrorToast();
         }
 
-
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mWebView.reload();
+            }
+        });
     }
 
     @Override
@@ -112,7 +120,7 @@ public class WebViewActivity extends BaseActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-            if (null!=url&&url.startsWith("intent")){
+            if (null != url && url.startsWith("intent")) {
 //                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 //                if (intent.resolveActivity(getPackageManager())==null){
 //                    Toast.makeText(WebViewActivity.this,"你还没有安装大众点评",Toast.LENGTH_SHORT).show();
@@ -130,14 +138,14 @@ public class WebViewActivity extends BaseActivity {
 //                        }
 //                    });
 //                }
-            }else{
-                if (null!=url&&url.indexOf("searchInfo.quchu.co?placeId=")>0){
-                    int pid =  Integer.valueOf(url.substring(url.lastIndexOf("=")+1,url.length()));
-                    Intent intent = new Intent(WebViewActivity.this,QuchuDetailsActivity.class);
-                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID,pid);
-                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM,QuchuDetailsActivity.FROM_TYPE_TAG);
+            } else {
+                if (null != url && url.indexOf("searchInfo.quchu.co?placeId=") > 0) {
+                    int pid = Integer.valueOf(url.substring(url.lastIndexOf("=") + 1, url.length()));
+                    Intent intent = new Intent(WebViewActivity.this, QuchuDetailsActivity.class);
+                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, pid);
+                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_TAG);
                     startActivity(intent);
-                }else{
+                } else {
                     view.loadUrl(url);
                 }
             }
@@ -148,6 +156,7 @@ public class WebViewActivity extends BaseActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             DialogUtil.dismissProgess();
+            refreshLayout.setRefreshing(false);
         }
 
         @Override
