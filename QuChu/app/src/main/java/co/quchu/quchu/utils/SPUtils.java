@@ -243,6 +243,13 @@ public class SPUtils {
     }
 
 
+    public static boolean getShowRecommendGuide(){
+        boolean show = getBooleanFromSPMap(AppContext.mContext,AppKey.DISPLAY_RECOMMEND_GUID,false);
+        putBooleanToSPMap(AppContext.mContext,AppKey.DISPLAY_RECOMMEND_GUID,true);
+        return show;
+    }
+
+
 //    /**
 //     * 初始化 引导页 标志
 //     */

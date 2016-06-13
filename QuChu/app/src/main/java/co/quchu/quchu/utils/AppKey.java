@@ -78,6 +78,12 @@ public interface AppKey {
      * 我的明信片界面是否需要弹出引导页
      */
     String IS_POSTCARD_GUIDE = "is_postcard_guide";
+
+    /**
+     * 推荐页引导
+     */
+    String DISPLAY_RECOMMEND_GUID = "DISPLAY_RECOMMEND_GUID";
+
     /**
      * 我的明信片照片界面是否需要弹出引导页
      */

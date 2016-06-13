@@ -95,7 +95,6 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
     public long firstTime = 0;
     private ArrayList<CityModel> list = new ArrayList<>();
-    private boolean isGuide = false;
     public int viewPagerIndex = 0;
     private RecommendFragment recommendFragment;
     private ClassifyFragment classifyFragment;
@@ -117,8 +116,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
-        isGuide = getIntent().getBooleanExtra("isGuide", false);
-        if (isGuide){
+        if (!SPUtils.getShowRecommendGuide()){
 
             vGST1.setVisibility(View.VISIBLE);
             vGSC1.setVisibility(View.VISIBLE);
@@ -387,9 +385,6 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
     @Override
     protected void onResume() {
-        if (isGuide) {
-            isGuide = false;
-        }
         resumeUpdateDataTimes = 0;
         netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
         super.onResume();
