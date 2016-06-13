@@ -233,7 +233,7 @@ public class BindPhoneNumDialog extends DialogFragment implements ViewPager.OnPa
 //        params.put("phoneNumber", phoneNumber);
 //        params.put("salt", MD5.hexdigest(password));
 
-        GsonRequest<String> request = new GsonRequest<>(format, String.class, new ResponseListener<String>() {
+        GsonRequest<String> request = new GsonRequest<>(format, new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 layout.setError("网络异常");
