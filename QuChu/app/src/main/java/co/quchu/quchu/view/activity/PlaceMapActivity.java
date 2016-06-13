@@ -150,6 +150,9 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
             @Override
             public void onPageSelected(final int position) {
                 MobclickAgent.onEvent(PlaceMapActivity.this, "maplist_c");
+                if (mDataSet.get(position).getGdLatitude()==null||mDataSet.get(position).getGdLongitude()==null){
+                    return;
+                }
                 LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(position).getGdLatitude()), Double.valueOf(mDataSet.get(position).getGdLongitude()));
                 CameraUpdate s = CameraUpdateFactory.changeLatLng(latLng);
 

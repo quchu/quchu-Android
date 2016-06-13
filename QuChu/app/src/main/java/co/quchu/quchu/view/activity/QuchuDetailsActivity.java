@@ -248,7 +248,9 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     private void bindingDetailData(DetailModel model) {
         dModel.copyFrom(model);
-
+        if(null==mQuchuDetailAdapter){
+            return;
+        }
         mQuchuDetailAdapter.notifyDataSetChanged();
         mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
             @Override
