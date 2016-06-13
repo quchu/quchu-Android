@@ -47,7 +47,7 @@
         android:id="@+id/ivGuideStep1Top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_heigh"
-        android:background="@color/translucent_dark"
+        android:background="@color/translucent_dark_deep"
         android:visibility="gone"
         />
 
@@ -57,7 +57,7 @@
         android:layout_marginTop="48dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/translucent_dark"
+        android:background="@color/translucent_dark_deep"
         android:visibility="gone"
         />
 
@@ -76,7 +76,7 @@
         android:id="@+id/ivGuideStep2Top"
         android:layout_width="match_parent"
         android:layout_height="118dp"
-        android:background="@color/translucent_dark"
+        android:background="@color/translucent_dark_deep"
         android:visibility="gone"
         />
 
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ivGuideStep2Top"
         android:layout_above="@+id/ivGuideStep2Bottom"
-        android:background="@color/translucent_dark"
+        android:background="@color/translucent_dark_deep"
         android:visibility="gone"
         />
     <View
@@ -96,7 +96,7 @@
         android:layout_below="@id/ivGuideStep2Top"
         android:layout_above="@+id/ivGuideStep2Bottom"
         android:layout_alignParentRight="true"
-        android:background="@color/translucent_dark"
+        android:background="@color/translucent_dark_deep"
         android:visibility="gone"
         />
 
@@ -105,7 +105,7 @@
         android:id="@+id/ivGuideStep2Bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/translucent_dark"
+        android:background="@color/translucent_dark_deep"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
         />
