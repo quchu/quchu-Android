@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -71,6 +72,27 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     @Bind(R.id.ivArrow)
     ImageView ivArrow;
 
+    @Bind(R.id.ivGuideStep1Top)
+    View vGST1;
+    @Bind(R.id.ivGuideStep1Content)
+    View vGSC1;
+    @Bind(R.id.ivGuideStep1Bottom)
+    View vGSB1;
+    @Bind(R.id.ivGuideStep2Top)
+    View vGST2;
+    @Bind(R.id.ivGuideStep2Content)
+    View vGSC2;
+    @Bind(R.id.ivGuideStep2Bottom)
+    View vGSB2;
+    @Bind(R.id.vCover2Left)
+    View vGSC2L;
+    @Bind(R.id.vCover2Right)
+    View vGSC2R;
+
+    @Bind(R.id.vEventReceiver)
+    View vReceiver;
+
+
     public long firstTime = 0;
     private ArrayList<CityModel> list = new ArrayList<>();
     private boolean isGuide = false;
@@ -78,6 +100,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     private RecommendFragment recommendFragment;
     private ClassifyFragment classifyFragment;
 
+    private int mClickTimes = 0;
 
     @Override
     public ArrayMap<String, String> getUserBehaviorArguments() {
@@ -95,6 +118,50 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
         isGuide = getIntent().getBooleanExtra("isGuide", false);
+        if (isGuide){
+
+            vGST1.setVisibility(View.VISIBLE);
+            vGSC1.setVisibility(View.VISIBLE);
+            vGSB1.setVisibility(View.VISIBLE);
+
+            vReceiver.setVisibility(View.VISIBLE);
+            vReceiver.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (mClickTimes==0){
+                        vGST1.setVisibility(View.GONE);
+                        vGSC1.setVisibility(View.GONE);
+                        vGSB1.setVisibility(View.GONE);
+                        vGST2.setVisibility(View.VISIBLE);
+                        vGSC2.setVisibility(View.VISIBLE);
+                        vGSB2.setVisibility(View.VISIBLE);
+                        vGSC2L.setVisibility(View.VISIBLE);
+                        vGSC2R.setVisibility(View.VISIBLE);
+
+                        float halfContentSize = (flContainer.getHeight()/2) - (getResources().getDimensionPixelSize(R.dimen.dialog_margin));
+                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) vGSB2.getLayoutParams();
+                        lp.height = (int) halfContentSize;
+
+
+                        vGSB2.requestLayout();
+                        vGSB2.invalidate();
+
+                    }else if(mClickTimes>=1){
+                        vGST2.setVisibility(View.GONE);
+                        vGSC2.setVisibility(View.GONE);
+                        vGSB2.setVisibility(View.GONE);
+                        vGSC2L.setVisibility(View.GONE);
+                        vGSC2R.setVisibility(View.GONE);
+                        vReceiver.setVisibility(View.GONE);
+                        vReceiver.setOnClickListener(null);
+                    }
+                    mClickTimes += 1;
+                }
+            });
+        }
+
+
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
         classifyFragment = new ClassifyFragment();
