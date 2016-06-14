@@ -21,11 +21,11 @@ public class QuchuDetailsMoreDialog extends Dialog {
 
     public OnButtonClickListener mListener;
     public QuchuDetailsMoreDialog(Context context) {
-        super(context, R.style.dialog_bottom);
+        super(context, R.style.dialog_bottom_no_dim);
     }
 
 
-    @OnClick({R.id.tvCloseAll,R.id.tvPreOrder,R.id.tvShare,R.id.tvCancel})
+    @OnClick({R.id.tvCloseAll,R.id.tvPreOrder,R.id.tvShare,R.id.tvCancel,R.id.rlRoot})
     public void detailClick(View v) {
         if (null!=mListener){
             switch (v.getId()){
@@ -38,7 +38,7 @@ public class QuchuDetailsMoreDialog extends Dialog {
                 case R.id.tvShare:
                     mListener.onShareClick();
                     break;
-                case R.id.tvCancel:
+                default:
                     break;
             }
             dismiss();
@@ -50,7 +50,7 @@ public class QuchuDetailsMoreDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dg_bottom_quchu_detail_more);
         ButterKnife.bind(this);
-        getWindow().getAttributes().windowAnimations = R.style.dialog_bottom;
+        getWindow().getAttributes().windowAnimations = R.style.dialog_bottom_no_dim;
         Window window = getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         window.setBackgroundDrawableResource(android.R.color.transparent);

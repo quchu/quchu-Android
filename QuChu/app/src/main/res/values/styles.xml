@@ -147,4 +147,9 @@
         <item name="android:windowBackground">@null</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
+
+    <style name="dialog_bottom_no_dim" parent="@style/dialog_bottom">
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>
