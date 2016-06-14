@@ -105,12 +105,6 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        ActivityManager.getActivityManager().finishActivity(this);
-
-    }
 
     private Uri mTakePhotoUri;
 
@@ -172,7 +166,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, getString(R.string.take_photo_fail), Toast.LENGTH_SHORT).show();
-                    finishGalleryFinalPage();
+                    finish();
                     return;
                 }
 
@@ -228,21 +222,16 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
 
     protected void resultData(ArrayList<PhotoInfo> photoList) {
         GalleryFinal.OnHanlderResultCallback callback = GalleryFinal.getCallback();
-        int requestCode = GalleryFinal.getRequestCode();
+
         if (callback != null) {
+            int requestCode = GalleryFinal.getRequestCode();
             if (photoList != null && photoList.size() > 0) {
                 callback.onHanlderSuccess(requestCode, photoList);
             } else {
                 callback.onHanlderFailure(requestCode, getString(R.string.photo_list_empty));
             }
         }
-        finishGalleryFinalPage();
-    }
-
-    private void finishGalleryFinalPage() {
         finish();
-//        ActivityManager.getActivityManager().finishActivity(PhotoEditActivity.class);
-//        ActivityManager.getActivityManager().finishActivity(PhotoSelectActivity.class);
     }
 
 

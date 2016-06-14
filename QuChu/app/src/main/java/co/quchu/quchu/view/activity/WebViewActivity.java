@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
@@ -179,5 +180,13 @@ public class WebViewActivity extends BaseActivity {
             showErrorToast();
             Log.d(TAG, "onReceivedHttpError");
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ((ViewGroup) mWebView.getParent()).removeAllViews();
+        mWebView.destroy();
+        mWebView = null;
     }
 }

@@ -195,8 +195,8 @@ public class PhotoSelectActivity extends BaseActivity implements View.OnClickLis
 
     protected void resultData(ArrayList<PhotoInfo> photoList) {
         GalleryFinal.OnHanlderResultCallback callback = GalleryFinal.getCallback();
-        int requestCode = GalleryFinal.getRequestCode();
         if (callback != null) {
+            int requestCode = GalleryFinal.getRequestCode();
             if (photoList != null && photoList.size() > 0) {
                 callback.onHanlderSuccess(requestCode, photoList);
             } else {

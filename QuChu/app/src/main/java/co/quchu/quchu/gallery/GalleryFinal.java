@@ -19,8 +19,12 @@ package co.quchu.quchu.gallery;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 import co.quchu.quchu.R;
@@ -40,7 +44,7 @@ public class GalleryFinal {
     private static FunctionConfig mGlobalFunctionConfig;
     //    private static ThemeConfig mThemeConfig;
     private static CoreConfig mCoreConfig;
-
+    //    private static SoftReference<OnHanlderResultCallback> softReference;
     private static OnHanlderResultCallback mCallback;
     private static int mRequestCode;
 
@@ -50,12 +54,6 @@ public class GalleryFinal {
         mGlobalFunctionConfig = coreConfig.getFunctionConfig();
     }
 
-    public static FunctionConfig copyGlobalFuncationConfig() {
-        if (mGlobalFunctionConfig != null) {
-            return mGlobalFunctionConfig.clone();
-        }
-        return null;
-    }
 
     public static CoreConfig getCoreConfig() {
         return mCoreConfig;
@@ -103,6 +101,7 @@ public class GalleryFinal {
         config.mutiSelect = false;
         mRequestCode = requestCode;
         mCallback = callback;
+//        softReference = new SoftReference<>(callback);
         mCurrentFunctionConfig = config;
 
         Intent intent = new Intent(mCoreConfig.getContext(), PhotoSelectActivity.class);
@@ -139,6 +138,8 @@ public class GalleryFinal {
         }
         mRequestCode = requestCode;
         mCallback = callback;
+//        softReference = new SoftReference<>(callback);
+
         mCurrentFunctionConfig = config;
 
         if (config != null) {
@@ -178,6 +179,7 @@ public class GalleryFinal {
         }
         mRequestCode = requestCode;
         mCallback = callback;
+//        softReference = new SoftReference<>(callback);
 
 //        config.mutiSelect = false;//拍照为单选
         mCurrentFunctionConfig = config;
@@ -189,29 +191,35 @@ public class GalleryFinal {
     }
 
 
-//    /**
-//     * 缓存文件
-//     */
-//    public static void cleanCacheFile() {
-//        if (mCurrentFunctionConfig != null && mCoreConfig.getEditPhotoCacheFolder() != null) {
-//            //清楚裁剪冗余图片
-//            new Thread() {
-//                @Override
-//                public void run() {
-//                    super.run();
-//                    FileUtils.deleteFile(mCoreConfig.getEditPhotoCacheFolder());
-//                }
-//            }.start();
-//        }
-//    }
-
     public static int getRequestCode() {
         return mRequestCode;
     }
 
+    @Nullable
     public static OnHanlderResultCallback getCallback() {
-        return mCallback;
+        OnHanlderResultCallbackAgent agent = new OnHanlderResultCallbackAgent(mCallback);
+        OnHanlderResultCallback o = (OnHanlderResultCallback) Proxy.
+                newProxyInstance(mCallback.getClass().getClassLoader(), mCallback.getClass().getInterfaces(), agent);
+
+        return o;
     }
+
+
+    static class OnHanlderResultCallbackAgent implements InvocationHandler {
+        Object object;
+
+        public OnHanlderResultCallbackAgent(Object object) {
+            this.object = object;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            Object invoke = method.invoke(object, args);
+            mCallback = null;
+            return invoke;
+        }
+    }
+
 
     /**
      * 处理结果
