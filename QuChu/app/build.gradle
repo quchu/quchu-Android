@@ -48,14 +48,15 @@ android {
         debug {
             buildConfigField "int", "API_SERVER", "2"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
-            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "a9fc455f40856c0f9dc957d1bbdd6b09"]
             applicationIdSuffix ".debug"
         }
 
         uat {
             buildConfigField "int", "API_SERVER", "1"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
-            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "e069ed759bd31de835a577ffd733f14f"]
+//            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
             applicationIdSuffix ".uat"
         }
 

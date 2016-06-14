@@ -75,18 +75,19 @@ public class RoundProgressView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        float arcWidth = getWidth() * .15f;
-        float arcMargin = getWidth() * .15f;
+        float arcWidth_bg = getWidth() * .15f;
+        float arcWidth_progress = getWidth() * .1f;
+        float bound = (arcWidth_bg - arcWidth_progress) / 2;
 
         //圆背景
-        paint.reset();
-//        paint.setShader(roundBg);
-//        paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(ContextCompat.getColor(getContext(),R.color.bg_round_bound));
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, getWidth() / 2f, paint);
+//        paint.reset();
+////        paint.setShader(roundBg);
+////        paint.setColor(Color.RED);
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setColor(ContextCompat.getColor(getContext(),R.color.bg_round_bound));
+//        paint.setAntiAlias(true);
+//        paint.setDither(true);
+//        canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, getWidth() / 2f, paint);
 
 
 //        进度背景
@@ -95,14 +96,13 @@ public class RoundProgressView extends View {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setShader(null);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(arcWidth);
+        paint.setStrokeWidth(arcWidth_bg);
         paint.setColor(ContextCompat.getColor(getContext(), R.color.bg_progress));
 //        paint.setColor(ContextCompat.getColor(getContext(), R.color.standard_color_red));
-
-        rectF.left = arcMargin;
-        rectF.top = arcMargin;
-        rectF.right = getWidth() - arcMargin;
-        rectF.bottom = getHeight() - arcMargin;
+        rectF.left = arcWidth_bg;
+        rectF.top = arcWidth_bg;
+        rectF.right = getWidth() - arcWidth_bg;
+        rectF.bottom = getHeight() - arcWidth_bg;
 //
         canvas.drawArc(rectF, 120, 300, false, paint);
 
@@ -111,21 +111,28 @@ public class RoundProgressView extends View {
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(arcWidth);
+        paint.setStrokeWidth(arcWidth_progress);
         paint.setShader(sweepGradient);
         paint.setDither(true);
         float pro = 300f * progress / 100;
+
+        rectF.left = arcWidth_progress + 2*bound;
+        rectF.top = arcWidth_progress + 2*bound;
+        rectF.right = getWidth() - arcWidth_progress-2*bound;
+        rectF.bottom = getHeight() - arcWidth_progress-2*bound;
+
         if (pro != 0)
             canvas.drawArc(rectF, 120, pro, false, paint);
 
-        //画中心圆
+//        //画中心圆
         paint.reset();
         paint.setShader(null);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(ContextCompat.getColor(getContext(), R.color.bg_round));
+        paint.setStrokeWidth(0);
+        paint.setColor(ContextCompat.getColor(getContext(), R.color.bg_round_bound));
 
-        float radius = getWidth() / 2 - arcMargin - arcWidth;
+        float radius = getWidth() / 2f - arcWidth_bg*1.5f;
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, paint);
 
         //画进度文字

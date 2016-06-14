@@ -27,8 +27,8 @@
 
             <co.quchu.quchu.widget.RoundProgressView
                 android:id="@+id/rpvItemLeft"
-                android:layout_width="60dp"
-                android:layout_height="60dp" />
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
 
             <TextView
                 android:id="@+id/tvRatingLeft"
@@ -46,8 +46,8 @@
 
             <co.quchu.quchu.widget.RoundProgressView
                 android:id="@+id/rpvItemMiddle"
-                android:layout_width="60dp"
-                android:layout_height="60dp" />
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
 
             <TextView
                 android:id="@+id/tvRatingMiddle"
@@ -64,8 +64,8 @@
 
             <co.quchu.quchu.widget.RoundProgressView
                 android:id="@+id/rpvItemRight"
-                android:layout_width="60dp"
-                android:layout_height="60dp" />
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
 
             <TextView
                 android:id="@+id/tvRatingRight"
