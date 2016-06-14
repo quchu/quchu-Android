@@ -105,7 +105,7 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
         int actionWidthSpec = MeasureSpec.makeMeasureSpec(actionWidth, MeasureSpec.EXACTLY);
 
 
-        int contentWidth = getResources().getDisplayMetrics().widthPixels - StringUtils.dip2px(getContext(), 32);
+        int contentWidth = getResources().getDisplayMetrics().widthPixels - StringUtils.dip2px(getContext(), 16);
         int ContentWidth = MeasureSpec.makeMeasureSpec(contentWidth, MeasureSpec.EXACTLY);
 
         itemView.measure(MeasureSpec.makeMeasureSpec(contentWidth + actionWidth, MeasureSpec.AT_MOST), heightMeasureSpec);

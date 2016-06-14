@@ -9,9 +9,9 @@
     <include layout="@layout/cp_enhanced_toolbar" />
 
     <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/refreshLayout"
         android:layout_below="@id/appbar"
         android:layout_marginBottom="50dp">
 
@@ -19,8 +19,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/standard_color_white"
-            android:paddingTop="@dimen/base_margin" />
+            android:background="@color/standard_color_white" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

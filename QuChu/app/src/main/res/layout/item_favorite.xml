@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/base_margin"
-    android:layout_marginLeft="@dimen/base_margin"
-    android:layout_marginRight="@dimen/base_margin">
+    android:layout_marginTop="@dimen/half_margin"
+    android:layout_marginLeft="@dimen/half_margin"
+    android:layout_marginRight="@dimen/half_margin">
 
     <co.quchu.quchu.widget.SwipeDeleteLayout
         android:id="@+id/swipe_delete_item"

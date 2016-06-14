@@ -194,7 +194,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case LAYOUT_TYPE_LABEL:
                 return new LabelViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
             case LAYOUT_TYPE_NEARBY:
-                return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_nearby_quchu, parent, false));
+                return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_nearby_quchu_detail, parent, false));
             case LAYOUT_TYPE_LOAD_MORE:
                 return new LoadMoreViewHolder(mLayoutInflater.inflate(R.layout.cp_loadmore_horizontal, parent, false));
             default:

@@ -7,5 +7,9 @@
         android:width="0.5dp"
         android:color="@color/standard_color_white" />
     <solid android:color="@android:color/transparent" />
-
+    <padding
+        android:bottom="@dimen/tow_dp_margin"
+        android:left="@dimen/half_margin"
+        android:right="@dimen/half_margin"
+        android:top="@dimen/tow_dp_margin" />
 </shape>

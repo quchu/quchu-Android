@@ -13,7 +13,7 @@
     <!-- ********** 趣基因 ********* -->
 
 
-    <string name="hint_add_footprint">每个故事都应该有个精彩的空格...</string>
+    <string name="hint_add_footprint">每个故事都应该有个精彩的开头...</string>
     <!-- ********** 氛围 ********* -->
     <!-- ********** 趣星人 ********* -->
     <string name="text_login_resetpassowrd">密码重置成功，请重新登录</string>

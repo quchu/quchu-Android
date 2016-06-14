@@ -44,7 +44,7 @@ public class TagCloudView extends ViewGroup {
 
 
     private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
-    private static final int DEFAULT_TEXT_SIZE = 12;
+    private static final int DEFAULT_TEXT_SIZE = 14;
     private static final int DEFAULT_TEXT_BACKGROUND = R.drawable.tag_background;
     private static final int DEFAULT_VIEW_BORDER = 0;
     private static final int DEFAULT_TEXT_BORDER_HORIZONTAL = 8;
