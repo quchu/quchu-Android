@@ -11,11 +11,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.finalteam.toolsfinal.DeviceUtils;
 import co.quchu.quchu.R;
 import co.quchu.quchu.utils.AppUtil;
 
@@ -49,7 +47,7 @@ public class BottomListDialog extends Dialog {
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(wlp);
 
-        if (null==mItems){
+        if (null == mItems) {
             return;
         }
 
@@ -59,17 +57,17 @@ public class BottomListDialog extends Dialog {
             final String strItem = mItems[i];
             TextView textView = new TextView(getContext());
             int margin = (int) getContext().getResources().getDimension(R.dimen.base_margin);
-            lp.setMargins(0,0,0,margin);
+            lp.setMargins(0, 0, 0, margin);
             textView.setLayoutParams(lp);
             textView.setText(strItem);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP ,24);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(getContext().getResources().getColor(R.color.standard_color_white));
             textView.setBackgroundColor(getContext().getResources().getColor(R.color.standard_color_h1_dark));
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppUtil.makeCall(getContext(),strItem);
+                    AppUtil.makeCall(getContext(), strItem);
                 }
             });
             mLlContainer.addView(textView);

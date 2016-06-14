@@ -84,7 +84,7 @@ public class SelectedImagePopWin extends PopupWindow {
         functionConfigBuilder.setRotateReplaceSource(true);
         functionConfigBuilder.setSelected(photo);//添加过滤集合
         functionConfig = functionConfigBuilder.build();
-        CoreConfig coreConfig = new CoreConfig.Builder(AppContext.mContext, new FrescoImageLoader(AppContext.mContext), null)
+        CoreConfig coreConfig = new CoreConfig.Builder(AppContext.mContext, new FrescoImageLoader(AppContext.mContext))
                 .setDebug(BuildConfig.DEBUG)
                 .setFunctionConfig(functionConfig)
                 .setPauseOnScrollListener(null)

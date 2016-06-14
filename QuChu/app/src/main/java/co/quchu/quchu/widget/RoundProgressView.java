@@ -3,7 +3,6 @@ package co.quchu.quchu.widget;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -81,9 +80,10 @@ public class RoundProgressView extends View {
 
         //圆背景
         paint.reset();
-        paint.setShader(roundBg);
-        paint.setColor(Color.RED);
+//        paint.setShader(roundBg);
+//        paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.FILL);
+        paint.setColor(ContextCompat.getColor(getContext(),R.color.bg_round_bound));
         paint.setAntiAlias(true);
         paint.setDither(true);
         canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, getWidth() / 2f, paint);

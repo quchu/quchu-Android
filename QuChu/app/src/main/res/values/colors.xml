@@ -53,11 +53,13 @@
     <color name="bg_progress3">#fee9ad</color>
     //进度渐变
 
-    <color name="bg_progress">#add0e7</color>
+    <color name="bg_progress">#e3e3e3</color>
     //进度背景
 
-    <color name="bg_round">#def2f2</color>
+    <color name="bg_round">#DBDBDB</color>
     //中心园背景
+
+    <color name="bg_round_bound">#EFEFEF</color>
 
     <!-- 自定义属性-->
     <color name="titleBackground">#383635</color>

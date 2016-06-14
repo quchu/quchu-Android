@@ -260,7 +260,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         functionConfigBuilder.setRotateReplaceSource(true);
         functionConfigBuilder.setMutiSelect(false);
         functionConfig = functionConfigBuilder.build();
-        CoreConfig coreConfig = new CoreConfig.Builder(this, new FrescoImageLoader(this), null)
+        CoreConfig coreConfig = new CoreConfig.Builder(this, new FrescoImageLoader(this))
                 .setDebug(BuildConfig.DEBUG)
                 .setFunctionConfig(functionConfig)
                 .setPauseOnScrollListener(null)
@@ -290,7 +290,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     public void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        GalleryFinal.cleanCacheFile();
+//        GalleryFinal.cleanCacheFile();
     }
 
 

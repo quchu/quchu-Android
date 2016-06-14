@@ -30,6 +30,12 @@ public class DateUtils {
         return sf.format(d);
     }
 
+    public static String getCurrentTime(String format) {
+        Date d = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(format, Locale.CHINESE);
+        return sf.format(d);
+    }
+
     public static String getDateToString(String format, String time) {
         Date d = new Date(getTimeStamp(time));
         SimpleDateFormat sf = new SimpleDateFormat(format, Locale.SIMPLIFIED_CHINESE);

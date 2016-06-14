@@ -26,13 +26,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import cn.finalteam.toolsfinal.FileUtils;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.gallery.adapter.PhotoListAdapter;
 import co.quchu.quchu.gallery.model.PhotoFolderInfo;
@@ -46,7 +48,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Author:pengjianbo
  * Date:15/10/10 下午3:54
  */
-public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class PhotoSelectActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private final int HANLDER_TAKE_PHOTO_EVENT = 1000;
     private final int HANDLER_REFRESH_LIST_EVENT = 1002;
@@ -60,7 +62,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     private PhotoListAdapter mPhotoListAdapter;
 
     private FunctionConfig mFunctionConfig;
-    private ThemeConfig mThemeConfig;
+//    private ThemeConfig mThemeConfig;
 
     //是否需要刷新相册
     private boolean mHasRefreshGallery = false;
@@ -82,13 +84,29 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         }
     };
 
+    protected void resultFailure(String errormsg, boolean delayFinish) {
+        GalleryFinal.OnHanlderResultCallback callback = GalleryFinal.getCallback();
+        int requestCode = GalleryFinal.getRequestCode();
+        if (callback != null) {
+            callback.onHanlderFailure(requestCode, errormsg);
+        }
+        finishGalleryFinalPage();
+    }
+
+    private void finishGalleryFinalPage() {
+//        ActivityManager.getActivityManager().finishActivity(PhotoEditActivity.class);
+//        ActivityManager.getActivityManager().finishActivity(PhotoSelectActivity.class);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFunctionConfig = GalleryFinal.getFunctionConfig();
-        mThemeConfig = GalleryFinal.getGalleryTheme();
+//        mThemeConfig = GalleryFinal.getGalleryTheme();
+//        ActivityManager.getActivityManager().addActivity(this);
 
-        if (mFunctionConfig == null || mThemeConfig == null) {
+        if (mFunctionConfig == null) {
             resultFailure(getString(R.string.please_reopen_gf), true);
         } else {
             setContentView(R.layout.gf_activity_photo_select);
@@ -110,7 +128,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
             mCurPhotoList = new ArrayList<>();
 
-            mPhotoListAdapter = new PhotoListAdapter(this, mCurPhotoList, mSelectPhotoMap, mScreenWidth);
+            mPhotoListAdapter = new PhotoListAdapter(this, mCurPhotoList, mSelectPhotoMap, (int) AppContext.Width);
             mGvPhotoList.setAdapter(mPhotoListAdapter);
 
 
@@ -121,6 +139,11 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
             mGvPhotoList.setOnScrollListener(GalleryFinal.getCoreConfig().getPauseOnScrollListener());
         }
 
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
     }
 
 
@@ -141,21 +164,6 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mGvPhotoList.setOnItemClickListener(this);
     }
 
-//    protected void deleteSelect(int photoId) {
-//        try {
-//            Iterator<Map.Entry<String, PhotoInfo>> entries = mSelectPhotoMap.entrySet().iterator();
-//            while (entries.hasNext()) {
-//                Map.Entry<String, PhotoInfo> entry = entries.next();
-//                if (entry.getValue() != null && entry.getValue().getPhotoId() == photoId) {
-//                    entries.remove();
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        refreshAdapter();
-//    }
 
     private void refreshAdapter() {
         mHanlder.sendEmptyMessageDelayed(HANDLER_REFRESH_LIST_EVENT, 100);
@@ -184,31 +192,18 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         mPhotoListAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void takeResult(PhotoInfo photoInfo) {
 
-        Message message = mHanlder.obtainMessage();
-        message.obj = photoInfo;
-        message.what = HANLDER_TAKE_PHOTO_EVENT;
-
-        if (!mFunctionConfig.isMutiSelect()) { //单选
-            mSelectPhotoMap.clear();
-            mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
-
-            if (mFunctionConfig.isEditPhoto()) {//裁剪
-                mHasRefreshGallery = true;
-                toPhotoEdit();
+    protected void resultData(ArrayList<PhotoInfo> photoList) {
+        GalleryFinal.OnHanlderResultCallback callback = GalleryFinal.getCallback();
+        int requestCode = GalleryFinal.getRequestCode();
+        if (callback != null) {
+            if (photoList != null && photoList.size() > 0) {
+                callback.onHanlderSuccess(requestCode, photoList);
             } else {
-                ArrayList<PhotoInfo> list = new ArrayList<>();
-                list.add(photoInfo);
-                resultData(list);
+                callback.onHanlderFailure(requestCode, getString(R.string.photo_list_empty));
             }
-
-            mHanlder.sendMessageDelayed(message, 100);
-        } else {//多选
-            mSelectPhotoMap.put(photoInfo.getPhotoPath(), photoInfo);
-            mHanlder.sendMessageDelayed(message, 100);
         }
+        finishGalleryFinalPage();
     }
 
     /**
@@ -247,9 +242,8 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         if (!mFunctionConfig.isMutiSelect()) {
             mSelectPhotoMap.clear();
             mSelectPhotoMap.put(info.getPhotoPath(), info);
-            String ext = FileUtils.getFileExtension(info.getPhotoPath());
-            if (mFunctionConfig.isEditPhoto() && (ext.equalsIgnoreCase("png")
-                    || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg"))) {
+//            String ext = FileUtils.getFileExtension(info.getPhotoPath());
+            if (mFunctionConfig.isEditPhoto()) {
                 toPhotoEdit();
             } else {
                 ArrayList<PhotoInfo> list = new ArrayList<>();
@@ -261,7 +255,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
         boolean checked;
         if (mSelectPhotoMap.get(info.getPhotoPath()) == null) {
             if (mFunctionConfig.isMutiSelect() && mSelectPhotoMap.size() == mFunctionConfig.getMaxSize()) {
-                toast("一次" + mFunctionConfig.getMaxSize() + "张，不能再多了");
+                Toast.makeText(this, "一次" + mFunctionConfig.getMaxSize() + "张，不能再多了", Toast.LENGTH_SHORT).show();
                 return;
             } else {
                 mSelectPhotoMap.put(info.getPhotoPath(), info);
@@ -287,16 +281,6 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
 
     public void refreshSelectCount() {
         mTvChooseCount.setText(getString(R.string.selected, mSelectPhotoMap.size(), mFunctionConfig.getMaxSize()));
-    }
-
-    @Override
-    public void onPermissionsGranted(List<String> list) {
-        getPhotos();
-    }
-
-    @Override
-    public void onPermissionsDenied(List<String> list) {
-        mTvEmptyView.setText(R.string.permissions_denied_tips);
     }
 
     /**
@@ -355,7 +339,7 @@ public class PhotoSelectActivity extends PhotoBaseActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPhotoTargetFolder = null;
+//        ActivityManager.getActivityManager().finishActivity(this);
         mSelectPhotoMap.clear();
         System.gc();
     }

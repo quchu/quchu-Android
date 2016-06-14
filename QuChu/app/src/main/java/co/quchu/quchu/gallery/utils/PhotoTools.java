@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.finalteam.toolsfinal.Logger;
 import co.quchu.quchu.R;
 import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoFolderInfo;
@@ -133,7 +132,6 @@ public class PhotoTools {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.e(ex);
         } finally {
             if (cursor != null) {
                 cursor.close();

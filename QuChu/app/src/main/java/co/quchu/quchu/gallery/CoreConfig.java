@@ -35,7 +35,7 @@ public class CoreConfig {
     private ImageLoader imageLoader;
     private File takePhotoFolder;
     private File editPhotoCacheFolder;
-    private ThemeConfig themeConfig;
+    //    private ThemeConfig themeConfig;
     private FunctionConfig functionConfig;
     private int animRes;
     private AbsListView.OnScrollListener onScrollListener;
@@ -46,7 +46,7 @@ public class CoreConfig {
         this.imageLoader = builder.imageLoader;
         this.takePhotoFolder = builder.takePhotoFolder;
         this.editPhotoCacheFolder = builder.editPhotoCacheFolder;
-        this.themeConfig = builder.themeConfig;
+//        this.themeConfig = builder.themeConfig;
         this.functionConfig = builder.functionConfig;
         if (builder.noAnimcation) {
             this.animRes = -1;
@@ -72,7 +72,7 @@ public class CoreConfig {
 
     public static class Builder {
         private Context context;
-        private ThemeConfig themeConfig;
+        //        private ThemeConfig themeConfig;
         private boolean debug;
         private ImageLoader imageLoader;
         private File takePhotoFolder;//配置拍照缓存目录
@@ -82,10 +82,10 @@ public class CoreConfig {
         private boolean noAnimcation;
         private AbsListView.OnScrollListener onScrollListener;
 
-        public Builder(Context context, ImageLoader imageLoader, ThemeConfig themeConfig) {
+        public Builder(Context context, ImageLoader imageLoader) {
             this.context = context;
             this.imageLoader = imageLoader;
-            this.themeConfig = themeConfig;
+//            this.themeConfig = themeConfig;
             this.animRes = R.anim.gf_flip_horizontal_in;
         }
 
@@ -148,7 +148,7 @@ public class CoreConfig {
         return context;
     }
 
-    public ImageLoader getImageLoader() {
+    public co.quchu.quchu.gallery.ImageLoader getImageLoader() {
         return imageLoader;
     }
 
@@ -164,9 +164,9 @@ public class CoreConfig {
         return animRes;
     }
 
-    public ThemeConfig getThemeConfig() {
-        return themeConfig;
-    }
+//    public ThemeConfig getThemeConfig() {
+//        return themeConfig;
+//    }
 
     public FunctionConfig getFunctionConfig() {
         return functionConfig;

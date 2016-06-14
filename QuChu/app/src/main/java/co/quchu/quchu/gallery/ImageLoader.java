@@ -19,9 +19,9 @@ package co.quchu.quchu.gallery;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 
-import java.io.Serializable;
+import com.facebook.drawee.view.SimpleDraweeView;
 
-import co.quchu.quchu.gallery.widget.GFImageView;
+import java.io.Serializable;
 
 
 /**
@@ -30,6 +30,6 @@ import co.quchu.quchu.gallery.widget.GFImageView;
  * Date:15/10/10 下午5:27
  */
 public interface ImageLoader extends Serializable{
-    void displayImage(Activity activity, String path, GFImageView imageView, Drawable defaultDrawable, int width, int height);
+    void displayImage(Activity activity, String path, SimpleDraweeView imageView, Drawable defaultDrawable, int width, int height);
     void clearMemoryCache();
 }

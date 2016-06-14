@@ -134,7 +134,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportVersion()}"
     compile "com.android.support:support-v4:${supportVersion()}"
 
-    //动画回弹效果
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.2.jar')
     compile files('libs/open_sdk_r5509.jar')
@@ -155,5 +154,4 @@ dependencies {
     compile 'com.facebook.fresco:fresco:0.10.0'
     compile 'com.facebook.fresco:webpsupport:0.10.0'
     compile 'pub.devrel:easypermissions:0.1.0'
-    compile 'cn.finalteam:toolsfinal:1.1.1'
 }
