@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:id="@+id/rlRoot"
     android:layout_gravity="bottom|right"
+    android:paddingBottom="56dp"
     >
 
     <LinearLayout
@@ -13,7 +14,7 @@
         android:orientation="vertical"
         android:layout_alignParentRight="true"
         android:background="@drawable/bg_map_pin_dark"
-        android:layout_marginBottom="56dp"
+
         >
 
 
