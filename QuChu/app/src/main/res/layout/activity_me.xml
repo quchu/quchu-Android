@@ -30,6 +30,7 @@
             fresco:roundAsCircle="true" />
 
         <RelativeLayout
+            android:id="@+id/editOrLoginAction"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginLeft="@dimen/double_margin"
@@ -37,7 +38,6 @@
             android:layout_marginTop="50dp"
             android:layout_toRightOf="@id/headImage"
             android:background="@drawable/shape_edit_bg"
-            android:id="@+id/editOrLoginAction"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin">
@@ -76,18 +76,18 @@
         <TextView
             android:id="@+id/alias"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/desc"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:background="@drawable/me_user_tag"
             android:gravity="center"
             android:paddingBottom="4dp"
-            android:paddingLeft="@dimen/base_margin"
-            android:paddingRight="@dimen/base_margin"
+            android:paddingLeft="@dimen/half_margin"
+            android:paddingRight="@dimen/half_margin"
             android:paddingTop="4dp"
             android:textColor="@color/standard_color_h2_dark"
-            android:textSize="@dimen/standard_text_size_h3"
+            android:textSize="@dimen/standard_text_size_h4"
             tools:text="好奇猫" />
     </RelativeLayout>
 

@@ -61,8 +61,8 @@
                     android:background="@drawable/me_user_tag"
                     android:gravity="center"
                     android:paddingBottom="4dp"
-                    android:paddingLeft="@dimen/base_margin"
-                    android:paddingRight="@dimen/base_margin"
+                    android:paddingLeft="@dimen/half_margin"
+                    android:paddingRight="@dimen/half_margin"
                     android:paddingTop="4dp"
                     android:textColor="@color/standard_color_h3_dark"
                     tools:text="好奇猫" />
