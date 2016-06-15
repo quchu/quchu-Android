@@ -33,6 +33,14 @@ public class NavigateSelectedDialogFg extends DialogFragment {
     TextView navigateBdTv;
     @Bind(R.id.navigate_tx_tv)
     TextView navigateTxTv;
+
+    @Bind(R.id.tvAMInstalled)
+    TextView tvAMInstalled;
+    @Bind(R.id.tvBDInstalled)
+    TextView tvBDInstalled;
+    @Bind(R.id.tvTCInstalled)
+    TextView tvTCInstalled;
+
     private ArrayList<CityModel> cityList;
     NavigateClickListener listener;
 
@@ -66,13 +74,13 @@ public class NavigateSelectedDialogFg extends DialogFragment {
         ButterKnife.bind(this, view);
         builder.setView(view);
         if (!AppUtil.isAppInstall(getActivity(),"com.autonavi.minimap")){
-            navigateGdTv.setVisibility(View.GONE);
+            tvAMInstalled.setVisibility(View.GONE);
         }
         if(!AppUtil.isAppInstall(getActivity(),"com.tencent.map")){
-            navigateTxTv.setVisibility(View.GONE);
+            tvTCInstalled.setVisibility(View.GONE);
         }
         if(!AppUtil.isAppInstall(getActivity(),"com.baidu.BaiduMap")){
-            navigateBdTv.setVisibility(View.GONE);
+            tvBDInstalled.setVisibility(View.GONE);
         }
         return builder.create();
     }
