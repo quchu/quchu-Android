@@ -32,8 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="已安装"
-            android:textColor="@color/standard_color_h3_dark"
-            android:textSize="@dimen/word_size_body" />
+            style="@style/TextView.H3" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -59,8 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="已安装"
-            android:textColor="@color/standard_color_h3_dark"
-            android:textSize="@dimen/word_size_body" />
+            style="@style/TextView.H3" />
     </RelativeLayout>
 
 
@@ -86,7 +84,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="已安装"
-            android:textColor="@color/standard_color_h3_dark"
-            android:textSize="@dimen/word_size_body" />
+            style="@style/TextView.H3" />
     </RelativeLayout>
 </LinearLayout>

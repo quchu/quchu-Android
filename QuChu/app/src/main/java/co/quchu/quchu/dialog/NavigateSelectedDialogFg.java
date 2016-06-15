@@ -27,12 +27,6 @@ import co.quchu.quchu.utils.AppUtil;
  */
 public class NavigateSelectedDialogFg extends DialogFragment {
 
-    @Bind(R.id.navigate_gd_tv)
-    TextView navigateGdTv;
-    @Bind(R.id.navigate_bd_tv)
-    TextView navigateBdTv;
-    @Bind(R.id.navigate_tx_tv)
-    TextView navigateTxTv;
 
     @Bind(R.id.tvAMInstalled)
     TextView tvAMInstalled;

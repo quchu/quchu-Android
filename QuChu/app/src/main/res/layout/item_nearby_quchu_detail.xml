@@ -6,6 +6,7 @@
     android:id="@+id/cvRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    card_view:cardPreventCornerOverlap="false"
     android:layout_marginLeft="@dimen/base_margin"
     android:layout_marginRight="@dimen/base_margin"
     android:layout_marginTop="@dimen/base_margin">
