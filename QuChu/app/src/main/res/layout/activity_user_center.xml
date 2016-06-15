@@ -60,6 +60,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/me_user_tag"
                     android:gravity="center"
+                    android:minWidth="@dimen/double_margin"
                     android:paddingBottom="4dp"
                     android:paddingLeft="@dimen/half_margin"
                     android:paddingRight="@dimen/half_margin"

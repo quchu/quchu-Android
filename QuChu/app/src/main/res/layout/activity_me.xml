@@ -84,6 +84,7 @@
             android:gravity="center"
             android:paddingBottom="4dp"
             android:paddingLeft="@dimen/half_margin"
+            android:minWidth="@dimen/double_margin"
             android:paddingRight="@dimen/half_margin"
             android:paddingTop="4dp"
             android:textColor="@color/standard_color_h2_dark"
