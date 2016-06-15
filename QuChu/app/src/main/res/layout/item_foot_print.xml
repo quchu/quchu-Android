@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.drawee.view.SimpleDraweeView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sdv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    fresco:failureImage="@mipmap/ic_image_empty"
+    fresco:failureImageScaleType="focusCrop"
+    fresco:placeholderImage="@mipmap/ic_image_empty"
+    fresco:placeholderImageScaleType="focusCrop"
+    fresco:roundingBorderWidth="1px"
+    fresco:roundingBorderColor="@color/standard_color_h3_dark"
+    fresco:roundedCornerRadius="@dimen/rounded_radius"
+    />

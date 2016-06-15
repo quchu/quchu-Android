@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/dialog_margin"
+    android:layout_marginLeft="@dimen/half_margin"
+    android:layout_marginRight="@dimen/half_margin"
     android:layout_marginTop="@dimen/dialog_margin"
-    android:clickable="true"
+    android:clickable="false"
     android:fitsSystemWindows="true"
-    android:foreground="?attr/selectableItemBackground"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="@dimen/cardview_elevation"
+    card_view:cardCornerRadius="@dimen/rounded_radius"
+    card_view:cardElevation="0dp"
     card_view:cardPreventCornerOverlap="false">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,214 +22,146 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/item_recommend_card_photo_sdv"
+                android:id="@+id/photo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 card_view:actualImageScaleType="centerCrop"
                 card_view:roundBottomLeft="false"
                 card_view:roundBottomRight="false"
                 card_view:roundTopLeft="true"
                 card_view:roundTopRight="true"
-                card_view:roundedCornerRadius="8dp" />
+                card_view:roundedCornerRadius="@dimen/rounded_radius" />
 
-            <TextView
-                android:id="@+id/item_place_event_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/base_margin"
-                android:background="@mipmap/ic_place_event"
-                android:text="活动"
-                android:textColor="@color/black"
-                android:textSize="@dimen/word_size_time" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
-                android:layout_marginBottom="@dimen/quarter_margin"
-                android:layout_marginRight="@dimen/half_margin"
-                android:orientation="horizontal">
-
-                <co.quchu.quchu.widget.TagCloudView
-                    android:id="@+id/detail_store_tagclound_tcv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    card_view:tcvBackground="@drawable/shape_recommend_card_tag_bg"
-                    card_view:tcvBorder="8dp"
-                    card_view:tcvCanTagClick="false"
-                    card_view:tcvItemBorderHorizontal="1dp"
-                    card_view:tcvItemBorderVertical="4dp"
-                    card_view:tcvRightResId="@null"
-                    card_view:tcvSingleLine="false"
-                    card_view:tcvTextColor="@color/text_color_white" />
-
-                <TextView
-                    android:id="@+id/item_recommend_card_distance_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="@dimen/quarter_margin"
-                    android:background="@drawable/shape_recommend_card_tag_bg"
-                    android:text="距您100km"
-                    android:textColor="@color/text_color_white"
-                    android:textSize="@dimen/word_size_time" />
-            </LinearLayout>
-            <!--            <TextView
-                            android:id="@+id/item_recommend_card_tag_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@id/item_recommend_card_photo_sdv"
-                            android:layout_marginBottom="@dimen/half_margin"
-                            android:layout_marginLeft="@dimen/half_margin"
-                            android:background="@mipmap/shape_recommend_card_tag_bg"
-                            android:textColor="@color/text_color_white"
-                            android:text="未知"
-                            android:textSize="@dimen/word_size_time" />-->
-
-
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/activity"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                card_view:actualImageScaleType="centerCrop"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                card_view:roundBottomLeft="false"
+                card_view:roundBottomRight="false"
+                card_view:roundTopLeft="true"
+                card_view:roundTopRight="false"
+                card_view:roundedCornerRadius="@dimen/rounded_radius" />
         </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/item_recommend_card_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/new_recommend_line_color"
-            android:textSize="@dimen/word_subhead_size" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/base_margin"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:background="@color/new_recommend_line_color" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dialog_margin"
-            android:layout_marginRight="@dimen/dialog_margin"
-            android:paddingBottom="@dimen/half_margin">
-
-            <TextView
-                android:id="@+id/recommend_action_tag1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/recommend_actiion_tag"
-                android:gravity="center"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/recommend_action_tag2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_weight="1"
-                android:background="@drawable/recommend_actiion_tag"
-                android:gravity="center"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/recommend_action_tag3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_weight="1"
-                android:background="@drawable/recommend_actiion_tag"
-                android:gravity="center"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
-        <co.quchu.quchu.widget.ratingbar.ProperRatingBar
-            android:id="@+id/item_recommend_card_prb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/half_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            card_view:prb_clickable="false"
-            card_view:prb_defaultRating="4"
-            card_view:prb_tickNormalDrawable="@mipmap/ic_ratingbar_off"
-            card_view:prb_tickSelectedDrawable="@mipmap/ic_ratingbar_on"
-            card_view:prb_tickSpacing="2dp"
-            card_view:prb_totalTicks="5" />
-
-        <TextView
-            android:id="@+id/item_recommend_card_address_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:textColor="@color/new_recommend_line_color"
-            android:textSize="@dimen/word_size_body" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/item_recommend_card_collect_iv"
+
+            <RatingBar
+                android:id="@+id/rbRating"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="@dimen/quarter_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/quarter_margin"
-                android:clickable="true"
-                android:padding="10dp"
-                android:src="@mipmap/ic_atmophere_unselected_dark" />
-
-
-            <ImageView
-                android:id="@+id/item_recommend_card_interest_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="24dp"
+                android:layout_below="@+id/detail_avg_price_tv"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="@dimen/quarter_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/quarter_margin"
-                android:padding="10dp"
-                android:src="@mipmap/ic_detail_share_back" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/base_margin"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressDrawable="@drawable/custom_ratingbar_selector"
+                android:rating="3.5"
+                android:stepSize=".5" />
 
 
-            <ImageView
-                android:id="@+id/item_recommend_card_reply_Iv"
+            <LinearLayout
+                android:id="@+id/tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="@dimen/quarter_margin"
+                android:layout_below="@id/rbRating"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/base_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/recommend_tag1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_tag_bg"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="@dimen/base_margin"
+                    android:paddingRight="@dimen/base_margin"
+                    android:paddingTop="4dp"
+                    android:text="标签1"
+                    android:textColor="@color/tagTextColor"
+                    android:textSize="@dimen/standard_text_size_h2" />
+
+                <TextView
+                    android:id="@+id/recommend_tag2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/half_margin"
+                    android:background="@drawable/shape_tag_bg"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="@dimen/base_margin"
+                    android:paddingRight="@dimen/base_margin"
+                    android:paddingTop="4dp"
+                    android:textColor="@color/tagTextColor"
+                    android:textSize="@dimen/standard_text_size_h2"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/recommend_tag3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/half_margin"
+                    android:background="@drawable/shape_tag_bg"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="@dimen/base_margin"
+                    android:paddingRight="@dimen/base_margin"
+                    android:paddingTop="4dp"
+                    android:textColor="@color/tagTextColor"
+                    android:textSize="@dimen/standard_text_size_h2"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@id/tags"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginTop="@dimen/base_margin"
+                android:background="@color/standard_color_h3_dark" />
+
+            <TextView
+                android:id="@+id/desc"
+                style="@style/TextView.H1"
+                android:layout_below="@id/divider"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/base_margin"
+                android:text="@string/empty_string" />
+
+
+            <TextView
+                android:id="@+id/distance"
+                style="@style/TextView.H2"
+                android:layout_below="@id/desc"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/quarter_margin"
-                android:padding="10dp"
-                android:src="@mipmap/ic_atmosphere_more_dark" />
+                android:drawableLeft="@mipmap/ic_label_location_tiny"
+                android:gravity="center"
+                android:text="距您当前位置0km" />
 
+            <TextView
+                android:id="@+id/item_recommend_card_address_tv"
+                style="@style/TextView.H2"
+                android:layout_below="@+id/distance"
+                android:layout_centerHorizontal="true"
+                android:drawableLeft="@mipmap/ic_label_money"
+                android:gravity="center"
+                android:text="人均消费" />
         </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp" />
-
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

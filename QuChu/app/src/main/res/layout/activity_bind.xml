@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="co.quchu.quchu.view.activity.BindActivity">
+
+
+    <include layout="@layout/cp_enhanced_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/half_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/ic_bind_type_phone"
+            android:drawablePadding="@dimen/half_margin"
+            android:gravity="center_vertical"
+            android:text="手机号"
+            android:textColor="@color/standard_color_h3_dark" />
+
+
+        <Button
+            android:id="@+id/bind_phone"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/colorPrimary"
+            android:text="绑定"
+            android:textColor="@color/standard_color_h2_dark" />
+
+
+    </RelativeLayout>
+
+    <View style="@style/HorizontalLine" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/half_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/ic_bind_type_sina"
+            android:drawablePadding="@dimen/half_margin"
+            android:gravity="center_vertical"
+
+            android:text="新浪微博"
+            android:textColor="@color/standard_color_h3_dark" />
+
+
+        <Button
+            android:id="@+id/bind_sina"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/colorPrimary"
+            android:text="绑定"
+            android:textColor="@color/standard_color_h2_dark" />
+
+
+    </RelativeLayout>
+
+    <View style="@style/HorizontalLine" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/half_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/ic_bind_type_weixin"
+            android:drawablePadding="@dimen/half_margin"
+            android:gravity="center_vertical"
+            android:text="微信"
+            android:textColor="@color/standard_color_h3_dark" />
+
+
+        <Button
+            android:id="@+id/bind_wecha"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/colorPrimary"
+            android:text="绑定"
+            android:textColor="@color/standard_color_h2_dark" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

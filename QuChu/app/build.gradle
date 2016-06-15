@@ -2,26 +2,40 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
 
     defaultConfig {
         applicationId "co.quchu.quchu"
+        targetSdkVersion 22
         minSdkVersion 16
-        targetSdkVersion 16
-        versionCode 1002
-        versionName "1.1.1"
-        renderscriptTargetApi 22
+        versionCode 1032
+        versionName "1.3.2"
+        renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
+
     }
     lintOptions {
         abortOnError false
         checkReleaseBuilds false
     }
+//
+//    vectorDrawables.generatedDensities = ['xhdpi', 'xxhdpi', 'hdpi']
+//    vectorDrawables.useSupportLibrary = true
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include 'x86', 'x86_64', 'arm64-v8a', 'armeabi-v7a', 'armeabi'
+//            universalApk false
+//        }
+//    }
     buildTypes {
+
         release {
             // 不显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "DISPLAY_LOG", "false"
+            buildConfigField "int", "API_SERVER", "0" //0 prd ,1 uat, 2 sit
             //混淆
             minifyEnabled true
             //Zipalign优化
@@ -29,7 +43,23 @@ android {
             // 移除无用的resource文件
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "8d635450932036faf3681a8960d884fa"]
         }
+        debug {
+            buildConfigField "int", "API_SERVER", "2"
+            buildConfigField "boolean", "DISPLAY_LOG", "true"
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "a9fc455f40856c0f9dc957d1bbdd6b09"]
+            applicationIdSuffix ".debug"
+        }
+
+        uat {
+            buildConfigField "int", "API_SERVER", "1"
+            buildConfigField "boolean", "DISPLAY_LOG", "true"
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "e069ed759bd31de835a577ffd733f14f"]
+//            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
+            applicationIdSuffix ".uat"
+        }
+
     }
     productFlavors {
         quchu_wandoujia {
@@ -76,9 +106,15 @@ android {
         quchu_official {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_official"] //官网包渠道名
         }
+        quchu_umeng {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_umeng"]
+        }
+        quchu_baidu {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_baidu"]
+        }
     }
 
-    useLibrary 'org.apache.http.legacy'
+//    useLibrary 'org.apache.http.legacy'
     sourceSets.main {
         jniLibs.srcDirs = ['libs']
     }
@@ -86,29 +122,21 @@ android {
 repositories {
     maven { url "https://jitpack.io" }
 }
-String  supportVersion(){
-    '23.2.1'
+
+String supportVersion() {
+    '23.4.0'
 }
+
 dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile project(':galleryfinal')
-//    compile "com.android.support:appcompat-v7:${supportVersion()}"
+//    compile project(':galleryfinal')
+    compile "com.android.support:appcompat-v7:${supportVersion()}"
     compile "com.android.support:cardview-v7:${supportVersion()}"
     compile "com.android.support:design:${supportVersion()}"
     compile "com.android.support:recyclerview-v7:${supportVersion()}"
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'com.github.orhanobut:logger:1.12'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.ogaclejapan.smarttablayout:library:1.4.2@aar'
-    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.4.2@aar'
-    compile 'com.qiniu:qiniu-android-sdk:7.0.+'
-    //七牛
-    compile 'com.facebook.rebound:rebound:0.3.8'//动画回弹效果
-    compile 'com.github.chrisbanes.photoview:library:1.2.3'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile files('libs/weibosdkcore.jar')
+    compile "com.android.support:support-v4:${supportVersion()}"
+
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.2.jar')
     compile files('libs/open_sdk_r5509.jar')
@@ -116,10 +144,17 @@ dependencies {
     compile files('libs/AMap_Location_v2.3.0_20160112.jar')
     compile files('libs/Android_Map_V2.7.20151124.jar')
     compile files('libs/umeng-analytics-v5.6.4.jar')
-    compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'com.google.code.gson:gson:2.6'
-//    compile 'com.facebook.fresco:webpsupport:0.9.0+'
-
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' // or 1.4-beta1
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    uatCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile 'com.qiniu:qiniu-android-sdk:7.0.+'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.he5ed.lib:volley:android-6.0.1_r5'
+    compile 'com.google.code.gson:gson:2.6.2'
+
+    compile 'com.facebook.fresco:fresco:0.10.0'
+    compile 'com.facebook.fresco:webpsupport:0.10.0'
+    compile 'pub.devrel:easypermissions:0.1.0'
 }

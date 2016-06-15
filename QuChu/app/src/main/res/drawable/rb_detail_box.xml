@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@mipmap/ic_detail_convenience_box_un" android:state_checked="false" />
-    <item android:drawable="@mipmap/ic_detail_convenience_box" android:state_checked="true" />
-</selector>

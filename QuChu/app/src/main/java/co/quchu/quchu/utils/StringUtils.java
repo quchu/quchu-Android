@@ -3,19 +3,27 @@ package co.quchu.quchu.utils;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.amap.api.maps.AMapUtils;
+import com.amap.api.maps.model.LatLng;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -34,6 +42,18 @@ public class StringUtils {
     public static boolean isFile(String path) {
 
         return new File(path).isFile();
+    }
+
+    public static Spanned getColorSpan(Context context, int resColor, String pre, String target, String end) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(pre)
+                .append("<font color=#")
+                .append(Integer.toHexString(context.getResources().getColor(resColor) & 0x00ffffff))
+                .append(">")
+                .append(target)
+                .append("</font>")
+                .append(end);
+        return Html.fromHtml(sb.toString());
     }
 
     public static String getRealPath() {
@@ -97,6 +117,7 @@ public class StringUtils {
         return (int) (dpValue * scale + 0.5f);
     }
 
+    @Deprecated
     public static int dip2px(float dpValue) {
         final float scale = AppContext.mContext.getResources().getDisplayMetrics().density;
 //        LogUtils.json(scale+" display");
@@ -166,6 +187,7 @@ public class StringUtils {
 
     /**
      * 是否数字
+     *
      * @param str
      * @return
      */
@@ -187,7 +209,7 @@ public class StringUtils {
      */
     public static void setTextHighlighting(TextView view, int startIndex, int endIndex) {
         SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
-        ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(R.color.planet_progress_yellow));
+        ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(R.color.standard_color_yellow));
         builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         view.setText(builder);
@@ -217,16 +239,21 @@ public class StringUtils {
      * @param mColor
      */
     public static void alterBoldTextColor(TextView view, int startIndex, int endIndex, int mColor) {
-        try{
+        try {
             SpannableStringBuilder builder = new SpannableStringBuilder(view.getText().toString());
-            ForegroundColorSpan redSpan = new ForegroundColorSpan(view.getResources().getColor(mColor));
+            ForegroundColorSpan redSpan = new ForegroundColorSpan(ContextCompat.getColor(view.getContext(), mColor));
             builder.setSpan(redSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             view.setText(builder);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static boolean isGoodPassword(String password) {
+        String pwdRegex = "^[0-9a-zA-Z]{6,16}$";
+
+        return !TextUtils.isEmpty(password) && Pattern.matches(pwdRegex, password);
     }
 
     /**
@@ -245,8 +272,7 @@ public class StringUtils {
         String telRegex = "[1][34578]\\d{9}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         //  String telRegex = "`((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8]))\\\\d{8}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         //  String telRegex = "((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
-        if (TextUtils.isEmpty(mobiles)) return false;
-        else return Pattern.matches(telRegex, mobiles);
+        return !TextUtils.isEmpty(mobiles) && Pattern.matches(telRegex, mobiles);
     }
 
     /**
@@ -299,8 +325,7 @@ public class StringUtils {
         if (!StringUtils.isEmpty(value)) {
             try {
                 Double.parseDouble(value);
-                if (value.contains(".")) return true;
-                return false;
+                return value.contains(".");
             } catch (NumberFormatException e) {
                 return false;
             } finally {
@@ -310,6 +335,7 @@ public class StringUtils {
             return false;
         }
     }
+
     /**
      * 格式化成小数点后两位
      *
@@ -320,5 +346,19 @@ public class StringUtils {
         BigDecimal b3 = new BigDecimal(price);
         double f3 = b3.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         return new Double(f3);
+    }
+
+    public static String getDistance(double latitude, double longitude, double targetLatitude, double targetLonitude) {
+        float distance = AMapUtils.calculateLineDistance(new LatLng(latitude, longitude), new LatLng(targetLatitude, targetLonitude));
+        if(distance/1000<=10){
+            return new DecimalFormat("##.#").format(((distance / 1000) / 100f) * 100) + "km";
+        }else if(distance/1000>10&&distance/1000<100){
+            return new DecimalFormat("#").format(((distance / 1000) / 100f) * 100) + "km";
+        }else if(distance/1000>100){
+            return "100Km+";
+        }else{
+            return new DecimalFormat("##.#").format(((distance / 1000) / 100f) * 100) + "km";
+        }
+
     }
 }

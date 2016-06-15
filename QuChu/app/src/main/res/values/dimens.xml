@@ -1,17 +1,34 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="title_bar_heigh">56dp</dimen>
+
+    <dimen name="standard_text_size_h1">18sp</dimen>
+    <dimen name="standard_text_size_h2">14sp</dimen>
+    <dimen name="standard_text_size_h3">13sp</dimen>
+    <dimen name="standard_text_size_h4">12sp</dimen>
+    <dimen name="toolbar_item_size">48dp</dimen>
+    <dimen name="toolbar_container_horizontal_padding">8dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="visited_users_avatar_size">24dp</dimen>
+
+
+    <dimen name="rounded_radius">20px</dimen>
+    <!--//设置中item高度-->
+    <dimen name="item_height">50dp</dimen>
+
+
     <!-- margin-->
     <dimen name="base_margin">16dp</dimen>
+    <dimen name="double_margin">32dp</dimen>
     <dimen name="half_margin">8dp</dimen>
     <dimen name="quarter_margin">4dp</dimen>
     <dimen name="dialog_margin">24dp</dimen>
-    <dimen name="login_logo_margin_top">128dp</dimen>
-    <dimen name="line_thickness">0.5dp</dimen>
+    <dimen name="line_thickness">0.2dp</dimen>
     <dimen name="tow_dp_margin">2dp</dimen>
     <!--字号-->
 
-    <dimen name="word_large_number">34sp</dimen>
     <dimen name="word_title_body">20sp</dimen>
     <dimen name="word_subhead_size">16sp</dimen>
     <dimen name="word_size_body">14sp</dimen>
@@ -23,32 +40,18 @@
     <dimen name="prb_drawable_tick_default_spacing">1dp</dimen>
     <!-- RatingBar end-->
     <!-- RecyclerView Item Margin-->
-    <dimen name="recycler_item_margin">0.1dp</dimen>
-    <dimen name="cardview_margintop">12dp</dimen>
     <dimen name="cardview_elevation">1dp</dimen>
     <!-- cardView 点击阴影-->
-    <dimen name="touch_raise">8dp</dimen>
     <dimen name="item_friends_icon_size">48dp</dimen>
-    <dimen name="item_care_friends_icon_size">56dp</dimen>
-    <dimen name="item_usercenter_icon_size">64dp</dimen>
 
 
-    <dimen name="rippleStrokeWidth">2dp</dimen>
-    <dimen name="rippleRadius">64dp</dimen>
     <!-- tabLayout 高度   我关注的|关注我的 -->
     <dimen name="subTabLayoutHeight">48dp</dimen>
     <!-- 带图 TabLayout -->
     <dimen name="ImageSubTabLayoutHeight">96dp</dimen>
-    <dimen name="account_setting_phone_marginleft">104dp</dimen>
-    <dimen name="horizontal_progressbar_height">14dp</dimen>
 
     <!--趣处详情-->
-    <dimen name="detail_text_margin_right">18dp</dimen>
-    <dimen name="detail_card_radius">8dp</dimen>
     <dimen name="detail_horizontal_line_height">0.5dp</dimen>
-    <dimen name="detail_button_group_height">48dp</dimen>
-    <dimen name="detail_marginright">12dp</dimen>
-    <dimen name="add_postcard_margin_del">6dp</dimen>
     <dimen name="card_view_radius_dp">10dp</dimen>
 
     <dimen name="gf_title_bar_height">56dp</dimen>
@@ -56,10 +59,13 @@
     <dimen name="fab_icon_size">24dp</dimen>
     <dimen name="fab_shadow_offset">3dp</dimen>
     <dimen name="fab_shadow_radius">9dp</dimen>
-    <dimen name="fab_stroke_width">0.0dp</dimen>
     <dimen name="location_edit_height">48dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="app_bar_height">280dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
 
 </resources>

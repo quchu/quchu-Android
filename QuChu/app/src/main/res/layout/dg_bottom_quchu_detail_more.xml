@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/rlRoot"
+    android:layout_gravity="bottom|right"
+    android:paddingBottom="56dp"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/bg_map_pin_dark"
+
+        >
+
+
+        <TextView
+            android:id="@+id/tvCloseAll"
+            style="@style/TextView.H3"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:gravity="center"
+            android:text="返回首页"
+            android:textColor="@color/standard_color_white" />
+
+        <TextView
+            android:id="@+id/tvPreOrder"
+            style="@style/TextView.H3"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:gravity="center"
+            android:text="@string/pre_order"
+            android:textColor="@color/standard_color_white" />
+
+        <TextView
+            android:id="@+id/tvShare"
+            style="@style/TextView.H3"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:textColor="@color/standard_color_white"
+            android:gravity="center"
+            android:text="@string/share" />
+
+        <TextView
+            android:id="@+id/tvCancel"
+            style="@style/TextView.H3"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:textColor="@color/standard_color_white"
+            android:gravity="center"
+            android:text="@string/cancel" />
+    </LinearLayout>
+
+
+</RelativeLayout>

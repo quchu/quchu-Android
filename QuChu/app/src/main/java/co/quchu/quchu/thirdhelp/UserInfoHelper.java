@@ -26,7 +26,6 @@ public class UserInfoHelper {
                     AppContext.token = userInfo.getString("token");
                     SPUtils.setUserInfo(AppContext.mContext, userInfo.toString());
                     AppContext.user = new Gson().fromJson(userInfo.toString(), UserInfoModel.class);
-                    //    AppContext.gatherDataModel=new GatherDataModel();
                     LogUtils.json("user info save success ");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -35,4 +34,12 @@ public class UserInfoHelper {
         }
     }
 
+    public static void saveUserInfo(UserInfoModel userInfo) {
+        String json = new Gson().toJson(userInfo);
+        try {
+            saveUserInfo(new JSONObject(json));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

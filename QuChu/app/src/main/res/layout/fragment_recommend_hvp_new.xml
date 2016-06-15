@@ -10,18 +10,9 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/new_recommend_tablayout_color"
-        app:tabIndicatorHeight="0dp"
-        app:tabMode="fixed" />
+        android:background="@color/colorPrimary"
+        app:tabIndicatorColor="@color/standard_color_h1_dark" />
 
-
-    <ImageView
-        android:id="@+id/f_recommend_bimg_top"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tabLayout"
-        android:scaleType="fitXY"
-        android:src="@color/appBackground" />
 
     <co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout
         android:id="@+id/refreshLayout"
@@ -30,14 +21,14 @@
         android:layout_below="@id/tabLayout">
 
 
-        <co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager
-            android:id="@+id/recyclerView"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
+            android:onClick="onViewPagerClick"
+            android:clickable="true"
             android:overScrollMode="always"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
             app:singlePageFling="true"
             app:triggerOffset="0.1" />
     </co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout>
@@ -49,9 +40,4 @@
         android:layout_below="@id/tabLayout"
         android:visibility="gone" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_below="@id/tabLayout"
-        android:background="@mipmap/shadow_bottom" />
 </RelativeLayout>

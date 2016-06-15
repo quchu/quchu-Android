@@ -2,17 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
     android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/account_setting_title_bar"
-        layout="@layout/title_bar" />
+    <include layout="@layout/cp_enhanced_toolbar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/follow_rv"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
+        android:id="@+id/refreshLayout"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_activity_bg"
-        android:layout_below="@id/account_setting_title_bar" />
+        android:layout_below="@+id/appbar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/follow_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/standard_color_white" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

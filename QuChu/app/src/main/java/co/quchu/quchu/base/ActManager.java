@@ -1,13 +1,9 @@
 package co.quchu.quchu.base;
 
 import android.app.Activity;
-import android.content.Intent;
 
 import java.util.LinkedList;
 
-import co.quchu.quchu.view.activity.MenusActivity;
-
-//import com.orhanobut.logger.Logger;
 
 public class ActManager {
 
@@ -87,7 +83,7 @@ public class ActManager {
      * 结束所有Activity，但保留最后一个
      */
     public void finishActivitiesAndKeepLastOne() {
-        for (int i = 1, size = activityStack.size() ; i < size; i++) {
+        for (int i = 1, size = activityStack.size(); i < size; i++) {
             activityStack.get(1).finish();
             activityStack.remove(1);
         }
@@ -122,23 +118,23 @@ public class ActManager {
         return activityStack != null && activityStack.size() > 0;
     }
 
-    /**
-     * 清楚 menusactivity 之后入栈
-     */
-    public void Back2MenusAct() {
-        boolean isMenu = false;
-        for (Activity activity : activityStack) {
-            if (isMenu) {
-                activity.finish();
-            }
-            if (activity instanceof MenusActivity) {
-                isMenu = true;
-            }
-        }
-
-        if (!isMenu) {
-            currentActivity().startActivity(new Intent(currentActivity(), MenusActivity.class));
-        }
-    }
+//    /**
+//     * 清楚 menusactivity 之后入栈
+//     */
+//    public void Back2MenusAct() {
+//        boolean isMenu = false;
+//        for (Activity activity : activityStack) {
+//            if (isMenu) {
+//                activity.finish();
+//            }
+//            if (activity instanceof MenusActivity) {
+//                isMenu = true;
+//            }
+//        }
+//
+//        if (!isMenu) {
+//            currentActivity().startActivity(new Intent(currentActivity(), MenusActivity.class));
+//        }
+//    }
 
 }

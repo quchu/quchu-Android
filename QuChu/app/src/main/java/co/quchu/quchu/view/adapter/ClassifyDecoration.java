@@ -31,18 +31,18 @@ public class ClassifyDecoration extends RecyclerView.ItemDecoration {
         if (lineNum == -1) {
             if (parent.getChildPosition(view) == 0) {
                 outRect.top = 2 * space;
-                outRect.right = 2 * space;
-                outRect.left = 2 * space;
+                outRect.right = 0;
+                outRect.left = 0;
                 outRect.bottom = space;
             } else if (parent.getChildPosition(view) == itemCount) {
                 outRect.top = space;
-                outRect.right = 2 * space;
-                outRect.left = 2 * space;
+                outRect.right = 0;
+                outRect.left = 0;
                 outRect.bottom = 3 * space;
             } else {
                 outRect.top = space;
-                outRect.right = 2 * space;
-                outRect.left = 2 * space;
+                outRect.right = 0;
+                outRect.left = 0;
                 outRect.bottom = space;
             }
 

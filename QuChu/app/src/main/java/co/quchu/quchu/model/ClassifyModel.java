@@ -23,6 +23,15 @@ public class ClassifyModel {
     private String minImg;
     private double weight;
     private String zh;
+    private int tagId;
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
 
     public void setEn(String en) {
         this.en = en;

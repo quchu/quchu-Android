@@ -2,7 +2,13 @@ package co.quchu.quchu.presenter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
@@ -13,25 +19,57 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * AccountSettingPresenter
  * User: Chenhs
  * Date: 2016-01-21
  * 账户设置
- *  8336f98e7571483f21b11c13cf603268 正式
- *  ab3d26f0aa7f5fe92a6032a8837bbf2f debug
+ * 8336f98e7571483f21b11c13cf603268 正式
+ * ab3d26f0aa7f5fe92a6032a8837bbf2f debug
  */
 public class AccountSettingPresenter {
+
+    private Context context;
+    private static final int AUTH_CODE = 1;
+
+    private TextView authView;
+    private MyHandle handle;
+    private static final String mAuthDesc = "秒后重新获取";
+    private int mAuthCounter;
+
+    public AccountSettingPresenter(Context context) {
+        this.context = context;
+    }
+
+
+    class MyHandle extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == AUTH_CODE) {
+                authView.setText(--mAuthCounter + mAuthDesc);
+                if (mAuthCounter < 1) {
+                    authView.setText("再次获取验证码");
+                    authView.setEnabled(true);
+                } else {
+                    handle.sendEmptyMessageDelayed(AUTH_CODE, 1000);
+                }
+            }
+        }
+    }
+
 
     public static void getQiNiuToken(Context mContext, final String filePath, final UploadUserPhotoListener listener) {
         NetService.get(mContext, NetApi.getQiniuToken, new IRequestListener() {
@@ -57,11 +95,11 @@ public class AccountSettingPresenter {
         });
     }
 
-    //  private static Bitmap uploadBitmap = null;
 
     private static void addImage2QiNiu(String filePath, String qiniuToken, UploadManager uploadManager, final UploadUserPhotoListener listener) {
+
         String defaulQiNiuFileName = "%d-%d.JPEG";
-        uploadBitmap = ImageUtils.getimage(filePath);
+        final Bitmap uploadBitmap = ImageUtils.getimage(filePath);
         if (uploadBitmap != null)
             uploadManager.put(ImageUtils.Bitmap2Bytes(uploadBitmap, 90), String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis()), qiniuToken,
                     new UpCompletionHandler() {
@@ -72,7 +110,6 @@ public class AccountSettingPresenter {
                                 try {
                                     if (info.isOK()) {
                                         uploadBitmap.recycle();
-                                        uploadBitmap = null;
                                         String url = response.getString("key");
                                         listener.onSuccess(url);
                                     } else {
@@ -91,6 +128,7 @@ public class AccountSettingPresenter {
                             }, null));
     }
 
+
     public interface UploadUserPhotoListener {
         void onSuccess(String photoUrl);
 
@@ -99,35 +137,36 @@ public class AccountSettingPresenter {
 
     /**
      * 保存用户信息
-     *
-     * @param mContext
-     * @param userName
-     * @param userPhoto
-     * @param userGender
-     * @param userLocation
-     * @param userPw
-     * @param userRePw
-     * @param listener
      */
-    public static void postUserInfo2Server(Context mContext, String userName, String userPhoto, String userGender, String userLocation, String userPw, String userRePw, final UploadUserPhotoListener listener) {
+    public static void postUserInfo2Server(final Context mContext, String userName, String userPhoto, String userGender, String userLocation,
+                                           final UploadUserPhotoListener listener) {
 
-        String netUrl = NetApi.updateUser + "?user.name=" + userName + "&user.gander=" + ("男".equals(userGender) ? "M" : "W") + "&user.location=" + userLocation;
-        if (!StringUtils.isEmpty(userPhoto))
-            netUrl += "&user.photo=" + userPhoto;
-        if (!StringUtils.isEmpty(userPw))
-            netUrl += "&user.password=" + userPw + "&user.restpsw=" + userRePw;
-        NetService.post(mContext, netUrl, null, new IRequestListener() {
+        Map<String, String> params = new HashMap<>();
+        params.put("user.name", userName);
+        params.put("user.gander", ("男".equals(userGender) ? "M" : "W"));
+        params.put("user.location", userLocation);
+        params.put("user.photo", userPhoto);
+//        params.put("user.password", TextUtils.isEmpty(userPw) ? "" : MD5.hexdigest(userPw));
+//        params.put("user.restpsw", TextUtils.isEmpty(userRePw) ? "" : MD5.hexdigest(userRePw));
+
+        GsonRequest<Object> request = new GsonRequest<>(NetApi.updateUser, Object.class, params, new ResponseListener<Object>() {
             @Override
-            public void onSuccess(JSONObject response) {
-                listener.onSuccess("");
+            public void onErrorResponse(@Nullable VolleyError error) {
+                Toast.makeText(mContext, "网络异常", Toast.LENGTH_SHORT).show();
+                listener.onError();
             }
 
             @Override
-            public boolean onError(String error) {
-                listener.onError();
-                return false;
+            public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
+                if (result) {
+                    listener.onSuccess("");
+                } else {
+                    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                    listener.onError();
+                }
             }
         });
+        request.start(mContext, null);
     }
 
 
@@ -213,7 +252,7 @@ public class AccountSettingPresenter {
         });
     }
 
-    private static Bitmap uploadBitmap = null;
+//    private static Bitmap uploadBitmap = null;
 
     private static void addImage2QiNiu(Bitmap bitmapA, String qiniuToken, UploadManager uploadManager, final UploadUserPhotoListener listener) {
         String defaulQiNiuFileName = "%d-%d.JPEG";

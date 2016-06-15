@@ -15,7 +15,6 @@ import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by linqipeng on 2016/2/26 11:18
@@ -33,8 +32,7 @@ public class RecommendFragModel implements IRecommendFragModel {
     public void getTab(final CommonListener<List<TagsModel>> listener) {
         String uri = String.format(NetApi.getCategoryTags, SPUtils.getCityId());
 
-        GsonRequest<List<TagsModel>> request = new GsonRequest<>(Request.Method.GET, uri, new TypeToken<List<TagsModel>>() {
-        }.getType(), new ResponseListener<List<TagsModel>>() {
+        GsonRequest<List<TagsModel>> request = new GsonRequest<>(Request.Method.GET, uri, new TypeToken<List<TagsModel>>() {}.getType(), new ResponseListener<List<TagsModel>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 listener.errorListener(error, "", "");
@@ -55,7 +53,6 @@ public class RecommendFragModel implements IRecommendFragModel {
         urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(), isDefaultData,
                 SPUtils.getLatitude(), SPUtils.getLongitude(), 1
         );
-        LogUtils.json(urlStr);
 
         GsonRequest<RecommendModelNew> request = new GsonRequest<>(urlStr, RecommendModelNew.class, new ResponseListener<RecommendModelNew>() {
             @Override
@@ -76,7 +73,6 @@ public class RecommendFragModel implements IRecommendFragModel {
         String urlStr = String.format(NetApi.getPlaceList, SPUtils.getCityId(), type,
                 SPUtils.getLatitude(), SPUtils.getLongitude(), pageNumber);
         LogUtils.json(urlStr);
-
         GsonRequest<RecommendModelNew> request = new GsonRequest<>(urlStr, RecommendModelNew.class, new ResponseListener<RecommendModelNew>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {

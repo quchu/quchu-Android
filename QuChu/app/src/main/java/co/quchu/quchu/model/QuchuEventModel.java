@@ -6,9 +6,9 @@ package co.quchu.quchu.model;
 public class QuchuEventModel {
 
     private int mFlag;
-    private Object mContent;
+    private Object[] mContent;
 
-    public QuchuEventModel(int flag, Object ojbContent) {
+    public QuchuEventModel(int flag, Object... ojbContent) {
         this.mFlag = flag;
         this.mContent = ojbContent;
     }
@@ -21,11 +21,11 @@ public class QuchuEventModel {
         this.mFlag = flag;
     }
 
-    public Object getContent() {
+    public Object[] getContent() {
         return mContent;
     }
 
-    public void setContent(Object content) {
+    public void setContent(Object... content) {
         this.mContent = content;
     }
 }

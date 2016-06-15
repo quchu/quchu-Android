@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -7,41 +8,46 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import co.quchu.galleryfinal.CoreConfig;
-import co.quchu.galleryfinal.FunctionConfig;
-import co.quchu.galleryfinal.GalleryFinal;
-import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
+import co.quchu.quchu.dialog.CommonDialog;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.GenderSelectedDialogFg;
-import co.quchu.quchu.dialog.LocationSettingDialogFg;
+import co.quchu.quchu.dialog.ModiffPasswordDialog;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
-import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.gallery.CoreConfig;
+import co.quchu.quchu.gallery.FrescoImageLoader;
+import co.quchu.quchu.gallery.FunctionConfig;
+import co.quchu.quchu.gallery.GalleryFinal;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
-import co.quchu.quchu.photoselected.FrescoImageLoader;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
+import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.ImageUtils;
@@ -54,42 +60,41 @@ import co.quchu.quchu.utils.StringUtils;
  * User: Chenhs
  * Date: 2015-12-04
  */
-public class AccountSettingActivity extends BaseActivity {
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
-    @Bind(R.id.account_setting_avatar_sdv)
+public class AccountSettingActivity extends BaseActivity implements View.OnClickListener {
+    @Bind(R.id.headView)
     SimpleDraweeView accountSettingAvatarSdv;
-    @Bind(R.id.account_setting_avatar_editer_tv)
-    TextView accountSettingAvatarEditerTv;
-    @Bind(R.id.account_setting_nickname_et)
-    EditText accountSettingNicknameEt;
-    @Bind(R.id.account_setting_gender_tv)
-    TextView accountSettingGenderTv;
-    @Bind(R.id.account_setting_phone_tv)
-    TextView accountSettingPhoneTv;
-    @Bind(R.id.account_setting_user_location)
+    @Bind(R.id.nickname)
+    EditText nickname;
+    @Bind(R.id.photoNumber)
+    TextView photoNumber;
+    @Bind(R.id.location)
     TextView accountSettingUserLocation;
-    @Bind(R.id.account_setting_new_pwd_et)
-    EditText accountSettingNewPwdEt;
-    @Bind(R.id.account_setting_new_pwd_again_et)
-    EditText accountSettingNewPwdAgainEt;
-    @Bind(R.id.account_setting_location_iv)
-    ImageView accountSettingLocationIv;
-    @Bind(R.id.account_setting_save_tv)
-    TextView accountSettingSaveTv;
+    @Bind(R.id.radioGroup)
+    RadioGroup radioGroup;
+    @Bind(R.id.loginTypeIcon)
+    ImageView loginTypeIcon;
+    @Bind(R.id.modiffPass)
+    RelativeLayout modiffPass;
+    @Bind(R.id.saveUserInfo)
+    TextView mSaveUserInfo;
 
-    private ArrayList<Integer> imageList;
+
+    private boolean mProfileModified = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_setting);
         ButterKnife.bind(this);
-        initTitleBar();
-        userInfoBinding();
-        imageList = AccountSettingPresenter.getQAvatar();
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        toolbar.getTitleTv().setText("账号编辑");
 
+        TextView rightTv = toolbar.getRightTv();
+        rightTv.setText("退出登录");
+        rightTv.setOnClickListener(this);
+        userInfoBinding();
     }
+
 
     @Override
     protected int activitySetup() {
@@ -97,78 +102,149 @@ public class AccountSettingActivity extends BaseActivity {
     }
 
     private void userInfoBinding() {
-        titleContentTv.setText(getTitle());
-        if (AppContext.user == null) {
-            if (!StringUtils.isEmpty(SPUtils.getUserInfo(this)))
-                AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
+
+        UserInfoModel user = AppContext.user;
+        accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+        nickname.setText(AppContext.user.getFullname());
+        nickname.setSelection(user.getFullname().length());
+        photoNumber.setText(AppContext.user.getUsername());
+        accountSettingUserLocation.setText(AppContext.user.getLocation());
+        if ("男".equals(user.getGender())) {
+            radioGroup.check(R.id.man);
+        } else {
+            radioGroup.check(R.id.girl);
         }
 
-        if (AppContext.user != null) {
-            accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
-            accountSettingNicknameEt.setText(AppContext.user.getFullname());
-            accountSettingPhoneTv.setText(AppContext.user.getUsername());
-            newUserGender = AppContext.user.getGender();
-            accountSettingGenderTv.setText(newUserGender);
-            //   SPUtils.getValueFromSPMap(this, AppKey.LOCATION_CITY)
-            newUserLocation = AppContext.user.getLocation();
-            accountSettingUserLocation.setText(newUserLocation);
+        switch (SPUtils.getLoginType()) {
+            case SPUtils.LOGIN_TYPE_WEIBO:
+                loginTypeIcon.setImageResource(R.mipmap.ic_weibo);
+                break;
+            case SPUtils.LOGIN_TYPE_WEIXIN:
+                loginTypeIcon.setImageResource(R.mipmap.ic_wechatpay);
+                break;
+            default:
+                loginTypeIcon.setImageResource(R.mipmap.ic_phone);
         }
-
+        if (user.isphone()) {
+            modiffPass.setVisibility(View.VISIBLE);
+        }
     }
 
-    ArrayList<CityModel> genderList;
+    @Override
+    public void onBackPressed() {
+        boolean userNameChanged;
+        userNameChanged = !nickname.getText().toString().equals(AppContext.user.getFullname());
+        boolean userGenderChanged;
 
-    @OnClick({R.id.account_setting_avatar_sdv, R.id.account_setting_avatar_editer_tv, R.id.account_setting_gender_tv
-            , R.id.account_setting_save_tv, R.id.account_setting_user_location, R.id.account_setting_location_iv})
-    public void accountClick(View v) {
+        String gender = radioGroup.getCheckedRadioButtonId() == R.id.man ? "男" : "女";
+
+        userGenderChanged = !AppContext.user.getGender().equals(gender);
+
+
+        if (mProfileModified || userNameChanged || userGenderChanged || !accountSettingUserLocation.getText().toString().equals(AppContext.user.getLocation())) {
+            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
+
+            dialog.setListener(new CommonDialog.OnActionListener() {
+                @Override
+                public boolean dialogClick(int clickId) {
+                    if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
+                        finish();
+                    } else {
+                        mSaveUserInfo.callOnClick();
+                    }
+                    return true;
+                }
+            });
+
+            dialog.show(getSupportFragmentManager(), "");
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @OnClick({R.id.headView, R.id.editHeadImage
+            , R.id.location, R.id.modiffPass, R.id.bindAccound, R.id.saveUserInfo})
+    public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.account_setting_avatar_sdv:
-            case R.id.account_setting_avatar_editer_tv:
+            case R.id.editHeadImage:
                 ASUserPhotoDialogFg photoDialogFg = ASUserPhotoDialogFg.newInstance();
                 photoDialogFg.setOnOriginListener(listener);
-                photoDialogFg.show(getFragmentManager(), "photo");
+                photoDialogFg.show(getSupportFragmentManager(), "photo");
                 break;
-            case R.id.account_setting_save_tv:
+            case R.id.saveUserInfo:
                 saveUserChange();
                 break;
-            case R.id.account_setting_gender_tv:
-                genderList = new ArrayList<>();
-                genderList.add(new CityModel("男", 0, "男".equals(newUserGender)));
-                genderList.add(new CityModel("女", 0, "女".equals(newUserGender)));
-                GenderSelectedDialogFg genderDialogFg = GenderSelectedDialogFg.newInstance(genderList);
-                genderDialogFg.show(getFragmentManager(), "gender");
+            case R.id.bindAccound:
+                final Intent intent = new Intent(this, BindActivity.class);
+                startActivity(intent);
                 break;
-            case R.id.account_setting_user_location:
-            case R.id.account_setting_location_iv:
-                LocationSettingDialogFg locationDIalogFg = LocationSettingDialogFg.newInstance();
-                locationDIalogFg.show(getFragmentManager(), "location");
+            case R.id.modiffPass:
+                ModiffPasswordDialog dialog = ModiffPasswordDialog.newInstance();
+                dialog.show(getSupportFragmentManager(), "");
+                break;
+            case R.id.toolbar_tv_right:
+                final ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance("确认退出?", "退出后将以游客模式登录");
+                confirmDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
+                    @Override
+                    public void onClick(int index) {
+                        if (index == ConfirmDialogFg.INDEX_OK) {
+                            SPUtils.clearUserinfo(AppContext.mContext);
+                            AppContext.user = null;
+                            SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);
+
+                            UserLoginPresenter.visitorRegiest(AccountSettingActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
+                                @Override
+                                public void isUnique(JSONObject msg) {
+                                    confirmDialog.dismiss();
+                                    finish();
+                                }
+
+                                @Override
+                                public void notUnique(String msg) {
+
+                                }
+                            });
+                        }
+                    }
+                });
+                confirmDialog.show(getSupportFragmentManager(), "confirm");
+                break;
+            case R.id.location:
+                accountSettingUserLocation.setText("定位中...");
+                AppLocationListener.addLocationListener(new AppLocationListener.LocationListener() {
+                    @Override
+                    public void location(AMapLocation amapLocation) {
+                        accountSettingUserLocation.setText(amapLocation.getCity());
+                        AppContext.stopLocation();
+                        AppLocationListener.removeListener(this);
+                    }
+                });
+                AppContext.initLocation();
                 break;
         }
     }
-
-    private final int REQUEST_CODE_GALLERY = 0x01;
-    private final int REQUEST_CODE_CAMERA = 0x02;
 
     //选中头像dialog 点击回调
     public ASUserPhotoDialogFg.UserPhotoOriginSelectedListener listener = new ASUserPhotoDialogFg.UserPhotoOriginSelectedListener() {
-        @Override
-        public void selectedCamare() {
-            initGralley();
-            GalleryFinal.openCamera(REQUEST_CODE_CAMERA, functionConfig, mOnHanlderResultCallback);
-        }
 
         @Override
         public void selectedAblum() {
             initGralley();
-            GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
+            int REQUEST_CODE_GALLERY = 0x01;
+            GalleryFinal.openGallerySingle(AccountSettingActivity.this,REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
         }
 
         @Override
         public void selectedQuPhtot() {
-            if (imageList != null) {
-                QAvatarSettingDialogFg qAvatarDIalogFg = QAvatarSettingDialogFg.newInstance(imageList);
-                qAvatarDIalogFg.show(getFragmentManager(), "qAvatar");
-            }
+            QAvatarSettingDialogFg qAvatarDIalogFg = new QAvatarSettingDialogFg();
+            qAvatarDIalogFg.init(AccountSettingPresenter.getQAvatar(), new QAvatarSettingDialogFg.OnItenSelected() {
+                @Override
+                public void itemSelected(int imageId) {
+                    updateAvatar(imageId);
+                }
+            });
+            qAvatarDIalogFg.show(getSupportFragmentManager(), "qAvatar");
+
         }
     };
     private FunctionConfig functionConfig;
@@ -182,8 +258,9 @@ public class AccountSettingActivity extends BaseActivity {
         functionConfigBuilder.setForceCrop(false);//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
         functionConfigBuilder.setForceCropEdit(true);
         functionConfigBuilder.setRotateReplaceSource(true);
+        functionConfigBuilder.setMutiSelect(false);
         functionConfig = functionConfigBuilder.build();
-        CoreConfig coreConfig = new CoreConfig.Builder(this, new FrescoImageLoader(this), null)
+        CoreConfig coreConfig = new CoreConfig.Builder(this, new FrescoImageLoader(this))
                 .setDebug(BuildConfig.DEBUG)
                 .setFunctionConfig(functionConfig)
                 .setPauseOnScrollListener(null)
@@ -207,58 +284,51 @@ public class AccountSettingActivity extends BaseActivity {
     };
 
     private String newUserPhoto = "";
-    private String newUserGender = "";
     private String newUserNickName = "";
-    private String newUserLocation = "";
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        GalleryFinal.cleanCacheFile();
+        ButterKnife.unbind(this);
+//        GalleryFinal.cleanCacheFile();
     }
 
-    private String newUserPw = "", newUserPwAgain = "";
 
     //保存修改信息
     public void saveUserChange() {
-        newUserPw = accountSettingNewPwdEt.getText().toString().trim();
-        newUserPwAgain = accountSettingNewPwdAgainEt.getText().toString().trim();
-        newUserNickName = StringUtils.isEmpty(accountSettingNicknameEt.getText().toString().trim()) ? AppContext.user.getFullname()
-                : accountSettingNicknameEt.getText().toString().trim();
+        newUserNickName = nickname.getText().toString().trim();
 
-        newUserGender = accountSettingGenderTv.getText().toString().trim();
-        newUserLocation = accountSettingUserLocation.getText().toString().trim();
+        if (newUserNickName.length() < 1 || newUserNickName.length() > 10) {
+            Toast.makeText(this, "昵称必须为1-10位字符", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (StringUtils.containsEmoji(newUserNickName)){
+            Toast.makeText(this, "昵称不能使用表情", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        if (StringUtils.isEmpty(newUserPw) && newUserPwAgain.equals(newUserPw) || (newUserPw.equals(newUserPwAgain) && newUserPw.length() > 6)) {
-            DialogUtil.showProgess(this, R.string.loading_dialog_text);
-            if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
-                AccountSettingPresenter.getQiNiuToken(this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
-                    @Override
-                    public void onSuccess(String photoUrl) {
-                        putUserInfo("http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl);
-                    }
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {
+            AccountSettingPresenter.getQiNiuToken(AccountSettingActivity.this, newUserPhoto, new AccountSettingPresenter.UploadUserPhotoListener() {
+                @Override
+                public void onSuccess(String photoUrl) {
+                    putUserInfo("http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl);
+                }
 
-                    @Override
-                    public void onError() {
-                        DialogUtil.dismissProgess();
-                        Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            } else if (!StringUtils.isEmpty(newUserPhoto) && newUserPhoto.startsWith("http")) {
-                putUserInfo(newUserPhoto);
-            } else {
-                putUserInfo("");
-            }
-
+                @Override
+                public void onError() {
+                    DialogUtil.dismissProgess();
+                    Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
-            Toast.makeText(this, "密码必须六位数以上,且跟确认密码相同", Toast.LENGTH_SHORT).show();
+            putUserInfo(newUserPhoto);
         }
     }
 
     public void putUserInfo(String photoUrl) {
         AccountSettingPresenter.postUserInfo2Server(AccountSettingActivity.this,
-                newUserNickName, photoUrl, newUserGender, newUserLocation, newUserPw, newUserPwAgain, new AccountSettingPresenter.UploadUserPhotoListener() {
+                newUserNickName, photoUrl, radioGroup.getCheckedRadioButtonId() == R.id.man ? "男" : "女", accountSettingUserLocation.getText().toString(), new AccountSettingPresenter.UploadUserPhotoListener() {
                     @Override
                     public void onSuccess(String photoUrl) {
                         refreshUserInfo();
@@ -266,7 +336,7 @@ public class AccountSettingActivity extends BaseActivity {
 
                     @Override
                     public void onError() {
-                        Toast.makeText(AccountSettingActivity.this, "账户信息修改失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AccountSettingActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                         DialogUtil.dismissProgess();
                     }
                 });
@@ -277,36 +347,41 @@ public class AccountSettingActivity extends BaseActivity {
         NetService.get(this, NetApi.getMyUserInfo, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                LogUtils.json("==" + response);
                 UserInfoHelper.saveUserInfo(response);
                 Toast.makeText(AccountSettingActivity.this, "账户信息修改成功", Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgess();
                 SPUtils.putBooleanToSPMap(AccountSettingActivity.this, AppKey.IS_MENU_NEED_REFRESH, true);
+                finish();
             }
 
             @Override
             public boolean onError(String error) {
-                Toast.makeText(AccountSettingActivity.this, "账户信息修改失败", Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgess();
                 return false;
             }
         });
     }
 
-    public void updateGender(String userGender) {
-        newUserGender = userGender;
-        accountSettingGenderTv.setText(newUserGender);
-    }
-
-    public void updateLocation(String locationDes) {
-        newUserLocation = locationDes;
-        accountSettingUserLocation.setText(newUserLocation);
-    }
 
     public void updateAvatar(String avatarUrl) {
+
         if (!avatarUrl.startsWith("http")) {
             newUserPhoto = ImageUtils.saveImage2Sd(avatarUrl);
-            accountSettingAvatarSdv.setImageURI(Uri.parse("file://" + newUserPhoto));
+//            co.quchu.quchu.gallery.utils.ImageUtils.loadWithAppropriateSize(accountSettingAvatarSdv, Uri.fromFile(new File(newUserPhoto)));
+//
+//            ImageRequest request = ImageRequestBuilder.newBuilderWithSource( Uri.fromFile(new File(newUserPhoto)))
+//                    .setResizeOptions(new ResizeOptions(accountSettingAvatarSdv.getWidth(),  accountSettingAvatarSdv.getHeight()))
+//                    .build();
+//            DraweeController controller = Fresco.newDraweeControllerBuilder()
+//                    .setOldController(accountSettingAvatarSdv.getController())
+//                    .setImageRequest(request)
+//                    .build();
+//            accountSettingAvatarSdv.setController(controller);
+
+            LogUtils.e("头像路径" + newUserPhoto);
+//            accountSettingAvatarSdv.setImageURI(Uri.EMPTY);
+            accountSettingAvatarSdv.setImageURI(Uri.fromFile(new File(newUserPhoto)));
+
         } else {
             newUserPhoto = avatarUrl;
             accountSettingAvatarSdv.setImageURI(Uri.parse(newUserPhoto));
@@ -316,13 +391,15 @@ public class AccountSettingActivity extends BaseActivity {
     Bitmap bitmaps = null;
 
     public void updateAvatar(int avatarId) {
+        mProfileModified = true;
         bitmaps = BitmapFactory.decodeResource(getResources(), avatarId);
+        accountSettingAvatarSdv.setImageURI(Uri.parse("res:///" + avatarId));
+
         LogUtils.json("bitmap ==null?=" + (bitmaps == null));
-        AccountSettingPresenter.getQiNiuToken(this, bitmaps, new AccountSettingPresenter.UploadUserPhotoListener() {
+        AccountSettingPresenter.getQiNiuToken(AccountSettingActivity.this, bitmaps, new AccountSettingPresenter.UploadUserPhotoListener() {
             @Override
             public void onSuccess(String photoUrl) {
                 newUserPhoto = "http://7xo7ey.com1.z0.glb.clouddn.com/" + photoUrl;
-                accountSettingAvatarSdv.setImageURI(Uri.parse(newUserPhoto));
                 if (bitmaps != null) {
                     bitmaps.recycle();
                     bitmaps = null;
@@ -340,12 +417,15 @@ public class AccountSettingActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("AccountSettingActivity");
+        MobclickAgent.onPageEnd("edit");
     }
 
     @Override
     protected void onResume() {
+
         super.onResume();
-        MobclickAgent.onPageStart("AccountSettingActivity");
+        MobclickAgent.onPageStart("edit");
     }
+
+
 }

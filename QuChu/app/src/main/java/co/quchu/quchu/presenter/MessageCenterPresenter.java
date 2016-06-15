@@ -4,15 +4,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import co.quchu.quchu.model.MessageModel;
 import co.quchu.quchu.net.GsonRequest;
@@ -21,7 +14,6 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * MessageCenterPresenter
@@ -30,47 +22,24 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class MessageCenterPresenter {
 
-    public static void getMessageList(Context mContext, final MessageGetDataListener listener) {
-//        NetService.get(mContext, NetApi.getMessageList, new IRequestListener() {
-//            @Override
-//            public void onSuccess(JSONObject response) {
-//                LogUtils.json("Message==" + response);
-//                try {
-//                    if (response.has("result") && !"null".equals(response.getString("result")) && !StringUtils.isEmpty(response.getString("result")) && response.getJSONArray("result").length() > 0) {
-//                        JSONArray arrayList = response.getJSONArray("result");
-//                        ArrayList<MessageModel> messageList = new ArrayList<MessageModel>();
-//                        Gson gson = new Gson();
-//                        for (int i = 0; i < arrayList.length(); i++) {
-//                            MessageModel model = gson.fromJson(arrayList.getString(i), MessageModel.class);
-//                            messageList.add(model);
-//                        }
-//                        listener.onSuccess(messageList);
-//                    } else {
-//                        listener.onError();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    listener.onError();
-//                }
-//            }
-//
-//            @Override
-//            public boolean onError(String error) {
-//                listener.onError();
-//                return false;
-//            }
-//        });
+    public static void getMessageList(Context mContext, final int pageNo, final PageLoadListener<MessageModel> listener) {
+        String uri = NetApi.getMessageList + "?pageno=" + pageNo;
 
-        GsonRequest<List<MessageModel>> request = new GsonRequest<>(NetApi.getMessageList, new TypeToken<List<MessageModel>>() {
-        }.getType(), new ResponseListener<List<MessageModel>>() {
+        GsonRequest<MessageModel> request = new GsonRequest<>(uri, MessageModel.class, new ResponseListener<MessageModel>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                listener.onError();
+                listener.netError(pageNo, "");
             }
 
             @Override
-            public void onResponse(List<MessageModel> response, boolean result, @Nullable String exception, @Nullable String msg) {
-                listener.onSuccess(response);
+            public void onResponse(MessageModel response, boolean result, @Nullable String exception, @Nullable String msg) {
+                if (response == null) {
+                    listener.nullData();
+                } else if (pageNo == 1) {
+                    listener.initData(response);
+                } else {
+                    listener.moreData(response);
+                }
             }
         });
         request.start(mContext, null);
@@ -78,8 +47,9 @@ public class MessageCenterPresenter {
 
     }
 
+
     public interface MessageGetDataListener {
-        void onSuccess(List<MessageModel> arrayList);
+        void onSuccess(MessageModel arrayList);
 
         void onError();
     }

@@ -238,7 +238,6 @@ public class HorizontalSwipeRefLayout extends ViewGroup implements NestedScrolli
     }
 
     /**
-     * Simple constructor to use when creating a SwipeRefreshLayout from code.
      *
      * @param context
      */
@@ -247,7 +246,6 @@ public class HorizontalSwipeRefLayout extends ViewGroup implements NestedScrolli
     }
 
     /**
-     * Constructor that is called when inflating SwipeRefreshLayout from XML.
      *
      * @param context
      * @param attrs
@@ -1136,7 +1134,7 @@ public class HorizontalSwipeRefLayout extends ViewGroup implements NestedScrolli
      * triggers a refresh should implement this interface.
      */
     public interface OnRefreshListener {
-        public void onRefresh();
+        void onRefresh();
     }
 }
 

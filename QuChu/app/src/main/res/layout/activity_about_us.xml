@@ -1,78 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".view.activity.StatementActivity">
 
-    <LinearLayout
-        android:id="@+id/about_us_title_bar_ll"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_heigh"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <RelativeLayout
-            android:id="@+id/about_us_title_back_rl"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:src="@mipmap/ic_title_back" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/title_content_tv"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/planet_text_color_white"
-            android:textSize="@dimen/word_title_body" />
-
-        <RelativeLayout
-            android:id="@+id/about_us_right_rl"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/base_margin"
-            android:visibility="invisible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/ic_menus_title_more" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/about_us_title_bar_ll"
-        android:layout_margin="@dimen/base_margin"
-        card_view:cardBackgroundColor="@color/white"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="8dp"
-        card_view:cardPreventCornerOverlap="false">
-
-        <ScrollView
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="always"
-            android:scrollbars="none">
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:gravity="center"
+                app:layout_collapseMode="parallax"
+
+                app:layout_collapseParallaxMultiplier="0.7">
+
+                <ImageView
+                    android:id="@+id/ivLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="center"
+                    android:src="@mipmap/ic_logo" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivLogo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/half_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:textColor="@color/standard_color_h1_dark"
+                        android:textSize="@dimen/standard_text_size_h1" />
+
+                    <TextView
+                        android:id="@+id/version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/quarter_margin"
+                        android:textColor="@color/standard_color_h2_dark"
+                        android:textSize="@dimen/standard_text_size_h3"
+                        tools:text="v1.3.0" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <co.quchu.quchu.base.EnhancedToolbar
+                android:id="@+id/enhancedToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                android:gravity="center_vertical"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/half_margin"
-                android:background="@mipmap/ic_about_us_text" />
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="4sp"
+                android:paddingBottom="@dimen/half_margin"
+                android:text="@string/about_us_text"
+                android:textSize="14sp" />
 
-        </ScrollView>
-    </android.support.v7.widget.CardView>
-</RelativeLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:card_view="http://schemas.android.com/apk/res-auto"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:fitsSystemWindows="true"--><!--android:orientation="vertical">-->
+
+    <!--&lt;!&ndash;<include layout="@layout/cp_enhanced_toolbar" />&ndash;&gt;--><!--<RelativeLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="220dp"--><!--android:gravity="center"--><!--android:background="@color/standard_color_yellow"--><!--&gt;--><!--<ImageView--><!--android:id="@+id/ivLogo"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_centerInParent="true"--><!--android:src="@mipmap/ic_logo"--><!--/>--><!--<LinearLayout--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:orientation="horizontal"--><!--android:layout_centerHorizontal="true"--><!--android:layout_below="@+id/ivLogo"--><!--android:paddingTop="8dp"--><!--&gt;-->
+
+
+    <!--</LinearLayout>-->
+
+    <!--</RelativeLayout>-->
+
+    <!--<ScrollView--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:overScrollMode="always"--><!--android:scrollbars="none">-->
+
+    <!--</ScrollView>--><!--</LinearLayout>-->

@@ -16,7 +16,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
- * FlickrButtonGroup
  * User: Chenhs
  * Date: 2015-11-12
  * 控件为三个button 左中右
@@ -215,17 +214,17 @@ public class RecommendTitleGroup extends RelativeLayout implements View.OnClickL
     }
 
     private void animationStartChange(boolean isHotSelected) {
-        widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.black));
-        widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.black));
+        widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
+        widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
     }
 
     private void animationEndChange(boolean isHotSelected) {
         if (isHotSelected) {
-            widgetSwitchNewBtn.setTextColor(getResources().getColor(R.color.text_color_white));
-            widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.black));
+            widgetSwitchNewBtn.setTextColor(getResources().getColor(R.color.standard_color_h1_dark));
+            widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
         } else {
-            widgetSwitchNewBtn.setTextColor(getResources().getColor(R.color.black));
-            widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.text_color_white));
+            widgetSwitchNewBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
+            widgetSwitchHotBtn.setTextColor(getResources().getColor(R.color.standard_color_h1_dark));
         }
     }
 

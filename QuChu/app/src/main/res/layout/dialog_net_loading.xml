@@ -10,18 +10,6 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <!--    <ProgressBar
-
-     android:background="@mipmap/shape_loading_dialog_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateDrawable="@anim/loading_progress"
-            android:indeterminateDuration="650" />-->
-    <!--    <co.quchu.quchu.widget.IndicatorView.AVLoadingIndicatorView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:indicator="Pacman"
-            app:indicator_color="@color/load_progress_yellow" />-->
     <ImageView
         android:id="@+id/loading_iv"
         android:layout_width="wrap_content"
@@ -33,6 +21,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:textColor="@color/load_progress_yellow"
+        android:textColor="@color/standard_color_yellow"
         android:textSize="14sp" />
 </LinearLayout>

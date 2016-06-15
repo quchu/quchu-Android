@@ -4,16 +4,14 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,23 +24,39 @@ import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptor;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
+import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.NavigateSelectedDialogFg;
+import co.quchu.quchu.model.NearbyMapModel;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.AppUtil;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.adapter.AMapNearbyVPAdapter;
+
 
 /**
  * Created by Administrator on 2016/1/24.
@@ -53,68 +67,198 @@ import co.quchu.quchu.utils.StringUtils;
  * <p/>
  * 地图 点击可以导航界面
  */
-public class PlaceMapActivity extends BaseActivity implements View.OnClickListener, LocationSource, AMap.OnMapLoadedListener,
-        AMapLocationListener {
-    MapView mapView;
-    RelativeLayout about_us_title_back_rl;
+public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnClickListener, LocationSource, AMap.OnMapLoadedListener,
+        AMapLocationListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter {
     private OnLocationChangedListener mListener;
     private AMap aMap;
     private AMapLocationClient mlocationClient;
-
     double lat = 0, lont = 0, gdlon = 0, gdlat = 0;
-    String placeTitle, placeAddressStr = "";
-    LatLng placeAddress;
-    LatLng myAddress;
+    private List<NearbyMapModel> mDataSet = new ArrayList<>();
+    private AMapNearbyVPAdapter mAdapter;
+    private String placeTitle, placeAddressStr = "";
+    private LatLng placeAddress;
+    private LatLng myAddress;
+    private MapView mapView;
+    private ViewPager mVPNearby;
+    private BitmapDescriptor mMapPin,mMapPinBlue;
+    private NearbyMapModel mCurrentModel;
+    private int mLastMarker = -1;
+
+
+
+    @Override
+    public ArrayMap<String, String> getUserBehaviorArguments() {
+
+        ArrayMap<String,String> data = new ArrayMap<>();
+        data.put("pid",String.valueOf(getIntent().getIntExtra("pid",-1)));
+        return data;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 113;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_map);
         mapView = (MapView) findViewById(R.id.place_map_mv);
+        mVPNearby = (ViewPager) findViewById(R.id.vpNearby);
+        View vReturn = findViewById(R.id.ivReturn);
+        vReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
+        mMapPin = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_yellow);
+        mMapPinBlue = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_blue);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
-        TextView title_right_navigate_tv = (TextView) findViewById(R.id.title_right_navigate_tv);
-        about_us_title_back_rl = (RelativeLayout) findViewById(R.id.about_us_title_back_rl);
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
         currentPosition.setOnClickListener(this);
-        about_us_title_back_rl.setOnClickListener(this);
         if (aMap == null) {
             aMap = mapView.getMap();
             setUpMap();
         }
         initData();
-        title_right_navigate_tv.setOnClickListener(new View.OnClickListener() {
+
+        //getEnhancedToolbar().getTitleTv().setText(R.string.nearby_quchu);
+
+        mAdapter = new AMapNearbyVPAdapter(mDataSet, new AMapNearbyVPAdapter.OnMapItemClickListener() {
             @Override
-            public void onClick(View v) {
-                NavigateSelectedDialogFg navigateDialogFg = NavigateSelectedDialogFg.newInstance();
-                navigateDialogFg.setNavigateClickListener(new NavigateSelectedDialogFg.NavigateClickListener() {
-                    @Override
-                    public void choiceGd() {
-                        jump2Amap();
-                    }
+            public void onItemClick(int position) {
+                Intent intent = new Intent(PlaceMapActivity.this,QuchuDetailsActivity.class);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM,QuchuDetailsActivity.FROM_TYPE_MAP);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID,mDataSet.get(position).getPid());
+                startActivity(intent);
+            }
+        });
+        mVPNearby.setAdapter(mAdapter);
+        mVPNearby.setClipToPadding(false);
+        mVPNearby.setPadding(40, 0, 40, 20);
+        mVPNearby.setPageMargin(20);
+        mVPNearby.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                    @Override
-                    public void choiceBd() {
-                        jump2BaiduMap();
-                    }
+            }
 
+            @Override
+            public void onPageSelected(final int position) {
+                MobclickAgent.onEvent(PlaceMapActivity.this, "maplist_c");
+                if (mDataSet.get(position).getGdLatitude()==null||mDataSet.get(position).getGdLongitude()==null){
+                    return;
+                }
+                LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(position).getGdLatitude()), Double.valueOf(mDataSet.get(position).getGdLongitude()));
+                CameraUpdate s = CameraUpdateFactory.changeLatLng(latLng);
+
+                aMap.animateCamera(s);
+                mVPNearby.postDelayed(new Runnable() {
                     @Override
-                    public void choiceTx() {
-                        jump2TencentMap();
+                    public void run() {
+                        mMarks.get(position).showInfoWindow();
+                        mMarks.get(position).setIcon(mMapPinBlue);
+                        if (mLastMarker<mMarks.size()&&mLastMarker>=0){
+                            mMarks.get(mLastMarker).setIcon(mMapPin);
+                            mMarks.get(mLastMarker).setZIndex(0);
+                        }
+                        mLastMarker = position;
                     }
-                });
-                navigateDialogFg.show(getFragmentManager(), "navigate");
+                }, 250l);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        NearbyPresenter.getMapNearbyData(this, SPUtils.getCityId(), "", gdlat, gdlon, new CommonListener<List<NearbyMapModel>>() {
+            @Override
+            public void successListener(List<NearbyMapModel> response) {
+                mDataSet.addAll(response);
+                for (int i = 0; i < mDataSet.size(); i++) {
+                    if (mDataSet.get(i).getPid()==mCurrentModel.getPid()){
+                        mDataSet.remove(i);
+                    }
+                }
+                mDataSet.add(0,mCurrentModel);
+
+
+                mAdapter.notifyDataSetChanged();
+                initMarks();
+                DialogUtil.dismissProgess();
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                DialogUtil.dismissProgess();
+
             }
         });
 
 
     }
 
+    private List<Marker> mMarks = new ArrayList<>();
+
+    public void popNavigation(final String latt, final String lontt,final String gdlatt,final String gdlontt){
+        NavigateSelectedDialogFg navigateDialogFg = NavigateSelectedDialogFg.newInstance();
+        navigateDialogFg.setNavigateClickListener(new NavigateSelectedDialogFg.NavigateClickListener() {
+            @Override
+            public void choiceGd() {
+                jump2Amap(latt,lontt,gdlatt,gdlontt);
+            }
+
+            @Override
+            public void choiceBd() {
+                jump2BaiduMap(latt,lontt,gdlatt,gdlontt);
+            }
+
+            @Override
+            public void choiceTx() {
+                jump2TencentMap(latt,lontt,gdlatt,gdlontt);
+            }
+        });
+        navigateDialogFg.show(getFragmentManager(), "navigate");
+    }
+    private void initMarks() {
+        for (int i = 0; i < mDataSet.size(); i++) {
+//            float distance = AMapUtils.calculateLineDistance(new LatLng(gdlat, gdlon),
+//            new LatLng(Double.valueOf(mDataSet.get(i).getGdLatitude()), Double.valueOf(mDataSet.get(i).getGdLongitude())));
+            //String strDistance = "距离当前趣处：" + new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km";
+            LatLng latLng = new LatLng(0,0);
+            if (null!=mDataSet.get(i).getGdLatitude() && null!= mDataSet.get(i).getGdLongitude()){
+                latLng = new LatLng(Double.valueOf(mDataSet.get(i).getGdLatitude()), Double.valueOf(mDataSet.get(i).getGdLongitude()));
+            }
+            Marker marker = aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).position(latLng).title(mDataSet.get(i).getAddress())
+                    //.snippet(strDistance)
+                    .icon(mMapPin)
+                    .perspective(true).draggable(false).period(50));
+            marker.setObject(i);
+            if (i==0){
+                marker.showInfoWindow();
+                marker.setIcon(mMapPinBlue);
+                mLastMarker = i;
+            }
+            mMarks.add(marker);
+        }
+    }
+
     @Override
     protected int activitySetup() {
-        return 0;
+        return TRANSITION_TYPE_LEFT;
     }
 
     private void initData() {
+
+        //aMap.moveCamera(CameraUpdateFactory.zoomTo(.5f));
         if (StringUtils.isDouble(getIntent().getStringExtra("lat")))
             lat = Double.parseDouble(getIntent().getStringExtra("lat"));
         if (StringUtils.isDouble(getIntent().getStringExtra("lon")))
@@ -124,6 +268,8 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         if (StringUtils.isDouble(getIntent().getStringExtra("gdlat")))
             gdlat = Double.parseDouble(getIntent().getStringExtra("gdlat"));
 
+        mCurrentModel = (NearbyMapModel) getIntent().getSerializableExtra("entity");
+
         placeTitle = getIntent().getStringExtra("title");
         placeAddressStr = getIntent().getStringExtra("placeAddress");
         placeAddress = new LatLng(gdlat, gdlon);
@@ -131,13 +277,25 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(placeAddress);
-        markerOption.title(placeTitle).snippet(placeAddressStr);
+        markerOption.title(placeAddressStr);//.snippet(placeAddressStr);
         markerOption.perspective(true);
         markerOption.draggable(true);
         markerOption.visible(true);
         markerOption.setFlat(true);
-//        markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.avatar_1));
-        aMap.addMarker(markerOption);
+        markerOption.icon(mMapPin);
+        //Marker marker = aMap.addMarker(markerOption);
+
+        CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                placeAddress, mapView.getMap().getCameraPosition().zoom, 0, 0));
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.
+                fromResource(R.mipmap.ic_map_pin_me));
+
+        aMap.setMyLocationStyle(myLocationStyle);
+        aMap.animateCamera(update);
+        //marker.showInfoWindow();
+//        marker.setObject(0);
+//        mMarks.add(marker);
     }
 
     @Override
@@ -168,7 +326,7 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
                 CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
                         new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude()), mapView.getMap().getCameraPosition().zoom, 0, 0));
 
-                mapView.getMap().animateCamera(update);
+                aMap.animateCamera(update);
 
                 break;
             default:
@@ -177,29 +335,39 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private int mLocationUpdateCounter = 0;
+
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
-            if (amapLocation.getErrorCode() == 0) {
+            SPUtils.setLatitude(amapLocation.getLatitude());
+            SPUtils.setLongitude(amapLocation.getLongitude());
+//            LatLngBounds bounds = new LatLngBounds.Builder().include(placeAddress).include(myAddress).build();
+//            if (amapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
-                SPUtils.setLatitude(amapLocation.getLatitude());
-                SPUtils.setLongitude(amapLocation.getLongitude());
-                if (myAddress == null) {
-                    myAddress = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
-                    LatLngBounds bounds = new LatLngBounds.Builder()
-                            .include(placeAddress).include(myAddress).build();
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
-                }
-            } else if (amapLocation.getErrorCode() == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) {
-                LogUtils.e("定位失败,权限被拒绝");
-                aMap.setOnMapLoadedListener(this);
-                aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+
+            if (mLocationUpdateCounter<=1){
+                aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeAddress,50));
             }
+            mLocationUpdateCounter +=1;
+//                if (myAddress == null) {
+//                    myAddress = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+//                    LatLngBounds bounds = new LatLngBounds.Builder()
+//                            .include(placeAddress).include(myAddress).build();
+//                    aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+//                }
+//            } else if (amapLocation.getErrorCode() == AMapLocation.ERROR_CODE_FAILURE_LOCATION_PERMISSION) {
+//                LogUtils.e("定位失败,权限被拒绝");
+//                aMap.setOnMapLoadedListener(this);
+//                aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+//            }
         }
     }
 
     private void setUpMap() {
 
+
+        aMap.getUiSettings().setZoomControlsEnabled(false);
         aMap.setLocationSource(this);// 设置定位监听
 //        aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
@@ -208,10 +376,14 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                LogUtils.e("点击事件");
+                int index = (int) marker.getObject();
+                mVPNearby.setCurrentItem(index);
                 return false;
             }
         });
+
+        aMap.setOnInfoWindowClickListener(this);
+        aMap.setInfoWindowAdapter(this);
     }
 
     @Override
@@ -251,10 +423,9 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
      */
     @Override
     protected void onResume() {
+        MobclickAgent.onPageStart("map");
         super.onResume();
         mapView.onResume();
-
-        MobclickAgent.onPageStart("PlaceMapActivity");
     }
 
     /**
@@ -262,10 +433,10 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
      */
     @Override
     protected void onPause() {
+        MobclickAgent.onPageEnd("map");
         super.onPause();
         mapView.onPause();
         deactivate();
-        MobclickAgent.onPageEnd("PlaceMapActivity");
     }
 
     /**
@@ -296,18 +467,18 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
 //                .include(placeAddress).build();
 //        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
 
-        CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
-                placeAddress, 14, 0, 0));
-
-        aMap.animateCamera(update);
+//        CameraUpdate update = CameraUpdateFactory.newCameraPosition(new CameraPosition(
+//                placeAddress, 14, 0, 0));
+//
+//        aMap.animateCamera(update);
 
     }
 
-    private void jump2BaiduMap() {
+    private void jump2BaiduMap(String latt,String lontt,String gdLatt,String gdLont) {
         Intent intent;
-        if (AppUtil.isAppInstall("com.baidu.BaiduMap")) {
+        if (AppUtil.isAppInstall(PlaceMapActivity.this,"com.baidu.BaiduMap")) {
             try {
-                intent = Intent.getIntent("intent://map/direction?origin=latlng:" + lat + "," + lont + "|name:我的位置&destination=" + placeTitle + "&mode=walking®ion=&src=厦门趣处网络科技有限公司|趣处#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
+                intent = Intent.getIntent("intent://map/direction?origin=latlng:" + latt + "," + lontt + "|name:我的位置&destination=" + placeTitle + "&mode=walking®ion=&src=厦门趣处网络科技有限公司|趣处#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
                 startActivity(intent);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -317,27 +488,27 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void jump2TencentMap() {
+    private void jump2TencentMap(String latt,String lontt,String gdLatt,String gdLont) {
         Intent tencentMap;
-        if (AppUtil.isAppInstall("com.tencent.map")) {
+        if (AppUtil.isAppInstall(PlaceMapActivity.this,"com.tencent.map")) {
             try {
-                tencentMap = Intent.getIntent("qqmap://map/routeplan?type=walk&from=我的位置&fromcoord=" + SPUtils.getLatitude() + "," + SPUtils.getLongitude() + "&to=" + placeTitle + "&tocoord=" + gdlat + "," + gdlon);
+                tencentMap = Intent.getIntent("qqmap://map/routeplan?type=walk&from=我的位置&fromcoord=" + SPUtils.getLatitude() + "," + SPUtils.getLongitude() + "&to=" + placeTitle + "&tocoord=" + gdLatt + "," + gdLont);
                 startActivity(tencentMap);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
         } else {
             //  Toast.makeText(this, "请检查是否已安装腾讯地图", Toast.LENGTH_SHORT).show();
-            tencentMap = new Intent(Intent.ACTION_VIEW, Uri.parse("http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord=" + SPUtils.getLatitude() + "," + SPUtils.getLongitude() + "&to=" + placeTitle + "&tocoord=" + gdlat + "," + gdlon + "&policy=1&referer=趣处"));
+            tencentMap = new Intent(Intent.ACTION_VIEW, Uri.parse("http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord=" + SPUtils.getLatitude() + "," + SPUtils.getLongitude() + "&to=" + placeTitle + "&tocoord=" + gdLatt + "," + gdLont + "&policy=1&referer=趣处"));
             tencentMap.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
             startActivity(tencentMap);
         }
     }
 
-    private void jump2Amap() {
-        if (AppUtil.isAppInstall("com.autonavi.minimap")) {
+    private void jump2Amap(String latt,String lontt,String gdLatt,String gdLont) {
+        if (AppUtil.isAppInstall(PlaceMapActivity.this,"com.autonavi.minimap")) {
             try {
-                Intent amapIntent = Intent.getIntent("androidamap://route?sourceApplication=趣处&slat=" + SPUtils.getLatitude() + "&slon=" + SPUtils.getLongitude() + "&sname=我的位置&dlat=" + gdlat + "&dlon=" + gdlon + "&dname=" + placeTitle + "&dev=0&m=0&t=4");
+                Intent amapIntent = Intent.getIntent("androidamap://route?sourceApplication=趣处&slat=" + SPUtils.getLatitude() + "&slon=" + SPUtils.getLongitude() + "&sname=我的位置&dlat=" + gdLatt + "&dlon=" + gdLont + "&dname=" + placeTitle + "&dev=0&m=0&t=4");
                 amapIntent.addCategory("android.intent.category.DEFAULT");
                 amapIntent.setAction("android.intent.action.VIEW");
                 amapIntent.setPackage("com.autonavi.minimap");
@@ -348,5 +519,53 @@ public class PlaceMapActivity extends BaseActivity implements View.OnClickListen
         } else {
             Toast.makeText(this, "请检查是否已安装高德地图", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        if (event.getFlag()== EventFlags.EVENT_GOTO_HOME_PAGE) {
+            finish();
+        }else if(event.getFlag()== EventFlags.EVENT_FINISH_MAP){
+            finish();
+        }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getObject());
+        popNavigation(nearbyMapModel.getLatitude(),nearbyMapModel.getLongitude(),nearbyMapModel.getGdLatitude(),nearbyMapModel.getGdLongitude());
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        View infoWindow = getLayoutInflater().inflate(
+                R.layout.cp_amap_infowindow, null);
+        TextView textView = (TextView) infoWindow.findViewById(R.id.tvAddress);
+
+        if (null!=marker.getObject()){
+            NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getObject());
+            textView.setText(nearbyMapModel.getAddress());
+
+        }
+
+        return infoWindow;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        return null;
     }
 }

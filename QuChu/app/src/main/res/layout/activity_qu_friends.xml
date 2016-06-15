@@ -1,67 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/appBackground"
+    android:background="@android:color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
-
-    <include
-        layout="@layout/planet_body"
+    <co.quchu.quchu.base.EnhancedToolbar
+        android:id="@+id/enhancedToolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/title_bar"
-        android:layout_weight="1.1" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:gravity="center_vertical"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_height="0dp">
-        <com.ogaclejapan.smarttablayout.SmartTabLayout
-            android:id="@+id/qu_friends_tab_stl"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/double_margin">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/headImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            fresco:placeholderImage="@mipmap/head_place_hold"
+            fresco:roundAsCircle="true" />
+
+        <TextView
+            android:id="@+id/whatIs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/headImage"
+            android:layout_marginTop="@dimen/base_margin"
+            android:text="探索我的趣友圈" />
+
+        <View
+            android:id="@+id/line_friend"
+            style="@style/HorizontalLine"
+            android:layout_below="@id/whatIs" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
             android:layout_height="48dp"
-            app:stl_indicatorWithoutPadding="true"
-            app:stl_indicatorInFront="false"
-            app:stl_indicatorInterpolation="smart"
-            app:stl_indicatorGravity="bottom"
-            app:stl_indicatorColor="@color/gene_textcolor_yellow"
-            app:stl_indicatorThickness="2dp"
-            app:stl_indicatorCornerRadius="1dp"
-            app:stl_underlineColor="@color/lineBackground_gray"
-            app:stl_underlineThickness="1dp"
-            app:stl_dividerColor="@color/lineBackground_gray"
-            app:stl_dividerThickness="1dp"
-            app:stl_defaultTabBackground="?attr/selectableItemBackground"
-            app:stl_defaultTabTextAllCaps="false"
-            app:stl_defaultTabTextColor="@color/friends_custom_tab"
-            app:stl_defaultTabTextSize="@dimen/word_subhead_size"
-            app:stl_defaultTabTextHorizontalPadding="@dimen/base_margin"
-            app:stl_defaultTabTextMinWidth="8dp"
-            app:stl_distributeEvenly="true"
-            app:stl_clickable="true"
-            />
-        <!--
-              app:stl_overlineColor="@color/lineBackground_gray"
-            app:stl_overlineThickness="1dp"
+            android:layout_below="@id/line_friend"
+            app:tabIndicatorColor="@color/standard_color_yellow"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/standard_color_yellow"
+            app:tabTextColor="@color/standard_color_h3_dark" />
 
-        -->
-        <android.support.v4.view.ViewPager
-            android:id="@+id/qu_friends_vp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/qu_friends_tab_stl"
-            android:overScrollMode="always"
-            />
-    </LinearLayout>
+        <View
+            style="@style/VerticalLine"
+            android:layout_height="48dp"
+            android:layout_below="@id/line_friend"
+            android:layout_centerHorizontal="true" />
+
+        <View
+            style="@style/HorizontalLine"
+            android:layout_height="@dimen/base_margin"
+            android:layout_below="@id/tabLayout"
+            android:background="@color/bg_pager" />
+    </RelativeLayout>
+
+
+    <co.quchu.quchu.widget.NoScrollViewPager
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

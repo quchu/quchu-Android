@@ -1,10 +1,10 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,15 +14,14 @@ import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.MoreButtonView;
 
 /**
  * FeedbackActivity
@@ -31,14 +30,6 @@ import co.quchu.quchu.widget.MoreButtonView;
  * 快速反馈
  */
 public class FeedbackActivity extends BaseActivity {
-    @Bind(R.id.title_back_rl)
-    RelativeLayout titleBackRl;
-    @Bind(R.id.title_back_iv)
-    ImageView titleBackIv;
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
-    @Bind(R.id.title_more_rl)
-    MoreButtonView titleMoreRl;
     @Bind(R.id.feedback_hint_tv)
     TextView feedbackHintTv;
     @Bind(R.id.feedback_editer_bet)
@@ -50,14 +41,15 @@ public class FeedbackActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
         ButterKnife.bind(this);
-        titleContentTv.setText(getTitle());
-        titleMoreRl.setImage(R.mipmap.ic_feed_back_submit);
-        titleMoreRl.isNeedAnimation(false);
+        EnhancedToolbar toolbar = getEnhancedToolbar();
         feedbackHintTv.setText(String.format(feedBackStr, AppUtil.getVerName(this)));
-        //  titleBackIv.setImageDrawable(getResources().getDrawable(R.mipmap.ic_menus_title_more));
-        titleMoreRl.setMoreClick(new MoreButtonView.MoreClicklistener() {
+
+        TextView textView = toolbar.getRightTv();
+        textView.setText("提交");
+        textView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void moreClick() {
+            public void onClick(View v) {
+
                 if (StringUtils.isEmpty(feedbackEditerBet.getText().toString())) {
                     Toast.makeText(FeedbackActivity.this, "请填写您在使用趣处过程中产生的任何疑问、反馈或建议", Toast.LENGTH_SHORT).show();
                 } else {
@@ -77,6 +69,7 @@ public class FeedbackActivity extends BaseActivity {
                 }
             }
         });
+
     }
 
     @Override
@@ -85,15 +78,6 @@ public class FeedbackActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.title_back_rl)
-    public void feedClick(View view) {
-        switch (view.getId()) {
-            case R.id.title_back_rl:
-                this.finish();
-                break;
-
-        }
-    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -104,6 +88,17 @@ public class FeedbackActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        feedbackEditerBet.requestFocus();
+
+        feedbackEditerBet.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                InputMethodManager keyboard = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(feedbackEditerBet, 0);
+            }
+        }, 200);
         MobclickAgent.onPageStart("FeedbackActivity");
     }
 }

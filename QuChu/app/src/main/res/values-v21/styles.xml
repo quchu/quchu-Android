@@ -1,16 +1,14 @@
-<resources>
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+<resources>>
+
+
+    <style name="AppTheme" parent="AppThemeBase">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/appBackground</item>
-        <item name="colorPrimary">@color/appBackground</item>
-        <item name="colorPrimaryDark">@color/appBackground</item>
-        <item name="colorAccent">@color/planet_progress_yellow</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:navigationBarColor">@color/appBackground</item>
+        <item name="android:statusBarColor">@color/standard_color_black</item>
     </style>
-    <style name="AppTheme.NoActionBar_top" parent="AppTheme.NoActionBar">
-        <item name="android:windowIsTranslucent">false</item>
-    </style>
+
+    <!--<style name="AppThemeTransparentStatusBar" parent="AppThemeBase">-->
+        <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
+        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
+    <!--</style>-->
 </resources>

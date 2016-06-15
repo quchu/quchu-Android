@@ -2,24 +2,27 @@ package co.quchu.quchu.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.analysis.GatherCityModel;
-import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
 import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.RecommendActivity;
@@ -30,7 +33,7 @@ import co.quchu.quchu.view.activity.RecommendActivity;
  * Date: 2015-12-23
  * 城市选择弹窗
  */
-public class LocationSelectedDialogFg extends BlurDialogFragment {
+public class LocationSelectedDialogFg extends DialogFragment {
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
      */
@@ -47,6 +50,12 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     TextView tvBottomTips;
 
     private ArrayList<CityModel> cityList;
+    private OnDissMissListener mOnDissMissListener;
+
+    public void setOnDissMissListener(OnDissMissListener pOnDissMissListener){
+        mOnDissMissListener = pOnDissMissListener;
+    }
+
 
     /**
      * Retrieve a new instance of the sample fragment.
@@ -68,8 +77,26 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
         super.onAttach(activity);
         Bundle args = getArguments();
         cityList = (ArrayList<CityModel>) args.getSerializable(CITY_LIST_MODEL);
+        CityModel current = null;
+        for (int i = 0; i < cityList.size(); i++) {
+            if (SPUtils.getCityName().equals(cityList.get(i).getCvalue())){
+                current  = cityList.get(i);
+                cityList.remove(i);
+            }
+        }
+        if (null!=current){
+            cityList.add(0,current);
+        }
     }
 
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (null!= mOnDissMissListener){
+            mOnDissMissListener.onDissMiss();
+        }
+    }
 
     private LocationSelectedAdapter adapter;
 
@@ -84,6 +111,14 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
         dialog.setContentView(view);
 
         initSelected();
+        View imageView = view.findViewById(R.id.ivClose);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissAllowingStateLoss();
+            }
+        });
+
         dialogLocationRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         adapter = new LocationSelectedAdapter(cityList, null, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
             @Override
@@ -91,22 +126,14 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
                 //保存数据 而后关闭
                 SPUtils.setCityId(CityId);
                 SPUtils.setCityName(cityName);
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED));
                 if (getActivity() instanceof RecommendActivity)
                     ((RecommendActivity) getActivity()).updateRecommend();
-                if (AppContext.gatherList == null)
-                    AppContext.gatherList = new ArrayList<>();
-                AppContext.gatherList.add(new GatherCityModel(cityList.get(adapter.getSelectedIndex()).getCid()));
                 dismiss();
             }
         });
         dialogLocationRv.setAdapter(adapter);
         tvBottomTips.setVisibility(View.VISIBLE);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
         return dialog;
     }
 
@@ -143,29 +170,8 @@ public class LocationSelectedDialogFg extends BlurDialogFragment {
     }
 
 
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
+    public interface OnDissMissListener{
+        void onDissMiss();
     }
 
 

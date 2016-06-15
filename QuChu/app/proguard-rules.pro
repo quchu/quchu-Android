@@ -19,11 +19,15 @@
 ## -----------------------------------------
 ################## eventbus混淆  ########
 ## -----------------------------------------
--keep class org.greenrobot.eventbus.** {*;}
+-keepattributes *Annotation*
 -keepclassmembers class ** {
-    public void onEvent*(**);
-    void onEvent*(**);
-    public void onMessageEvent*(**);
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
 }
 
 ## -----------------------------------------
@@ -62,6 +66,13 @@ public static final int *;
 # 以下类过滤不混淆
 -keep public class * extends com.umeng.**
 -keep class com.umeng.** { *; }
+
+##反射字段混淆
+-keep class android.support.v4.view.ViewPager{*;}
+-keep class android.widget.ScrollView{*;}
+
+
+
 ## ----------------------------------
 ##   ########## wecha混淆    ########
 ## ----------------------------------

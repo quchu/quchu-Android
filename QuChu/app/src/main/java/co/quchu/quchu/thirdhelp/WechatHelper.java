@@ -1,6 +1,7 @@
 package co.quchu.quchu.thirdhelp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +25,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -31,42 +34,41 @@ import co.quchu.quchu.utils.StringUtils;
  * Date: 2015-11-30
  */
 public class WechatHelper {
-    private IWXAPI api;
-    private Activity mActivity;
+    private static IWXAPI api;
+    private static Context mActivity;
     public static final String WECHAT_APP_ID = "wx812a0a8cd108d233";
     private static final String APPSECRET = "b38180312951c88c3c24a5223e53daac";
+    private static WechatHelper instance;
 
-    public Activity getmActivity() {
-        return mActivity;
+    private WechatHelper() {
     }
 
-    private static UserLoginListener listener;
+    /**
+     * 他内部重新创建了实例  没静态不行啊  坑爹的
+     */
+    private UserLoginListener listener;
 
-    public WechatHelper(Activity activity, UserLoginListener listener) {
-        mActivity = activity;
-        api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
-                false);
-        api.registerApp(WECHAT_APP_ID);
-        this.listener = listener;
-    }
 
-    public WechatHelper(Activity activity) {
-        mActivity = activity;
-        api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
-                false);
-        api.registerApp(WECHAT_APP_ID);
+    public static WechatHelper getInstance(Context context) {
+        mActivity = context.getApplicationContext();
+
+        if (instance == null) {
+            instance = new WechatHelper();
+            api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
+                    false);
+            api.registerApp(WECHAT_APP_ID);
+        }
+        return instance;
+
     }
 
     public IWXAPI getApi() {
         return api;
     }
 
-    public void login() {
-        if (api == null && mActivity != null) {
-            api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
-                    false);
-            api.registerApp(WECHAT_APP_ID);
-        }
+    public void login(UserLoginListener listener) {
+        isBind = false;
+        this.listener = listener;
         if (!api.isWXAppInstalled()) {
             Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
             return;
@@ -77,12 +79,28 @@ public class WechatHelper {
         api.sendReq(req);
     }
 
+    private boolean isBind = false;
+
+    public void bind(UserLoginListener listener) {
+        isBind = true;
+        this.listener = listener;
+        if (!api.isWXAppInstalled()) {
+            Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "quchu";
+        api.sendReq(req);
+    }
+
+
     public void actionFromWX(SendAuth.Resp resp) {
 
         int errCode = resp.errCode;
         switch (errCode) {
             case 0:// 同意授权
-                LogUtils.json("openId=" + resp.openId + "///state=" + resp.state + "//code==" + resp.code + ";lang;" + resp.lang + "//country" + resp.country);
+                LogUtils.json("同意授权openId=" + resp.openId + "///state=" + resp.state + "//code==" + resp.code + ";lang;" + resp.lang + "//country" + resp.country);
                 getWechatToken(resp.code);
                 break;
             case -2:// 取消授权
@@ -105,7 +123,12 @@ public class WechatHelper {
                     String openid = response.getString("openid");
                     if (!StringUtils.isEmpty(access_token) && !StringUtils.isEmpty(openid)) {
                         LogUtils.json("access_token != null");
-                        regiestWechat2Server(access_token, openid);
+                        if (isBind) {
+                            listener.loginSuccess(2, access_token, openid);
+                        } else {
+                            LogUtils.json("注册");
+                            regiestWechat2Server(access_token, openid);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -120,14 +143,18 @@ public class WechatHelper {
 
     }
 
-    private void regiestWechat2Server(String token, String appId) {
+    private void regiestWechat2Server(final String token, final String appId) {
         NetService.get(mActivity, String.format(NetApi.WechatLogin, token, appId, StringUtils.getMyUUID()), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 LogUtils.json(response.toString());
                 UserInfoHelper.saveUserInfo(response);
-                if (null != listener)
-                    listener.loginSuccess();
+                if (null != listener) {
+                    SPUtils.putLoginType(SPUtils.LOGIN_TYPE_WEIXIN);
+                    MobclickAgent.onProfileSignIn("loginwechat_c", AppContext.user.getUserId() + "");
+                    listener.loginSuccess(2, token, appId);
+                }
+
             }
 
             @Override
@@ -137,9 +164,8 @@ public class WechatHelper {
         });
     }
 
-    public static void shareFriends(Activity activity, String shareUrl, String title,
+    public static void shareFriends(Activity mActivity, String shareUrl, String title,
                                     boolean isShare4Friends) {
-        Activity mActivity = activity;
         IWXAPI api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
                 false);
         api.registerApp(WECHAT_APP_ID);
@@ -194,182 +220,5 @@ public class WechatHelper {
         return result;
     }
 
-    /* public void share2WeChat(String id,
-                             String description, Bitmap bitmap) {
-        share2WeChat(id, description, bitmap, false);
-    }
 
-
-    public void shareFriends(String id,
-                             String description, Bitmap bitmap, boolean isShare4Friends) {
-        if (!api.isWXAppInstalled()) {
-            Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        WXMediaMessage msg;
-        if (StringUtils.isEmpty(id)) {
-            WXImageObject imageObject = new WXImageObject();
-            imageObject.imageData = ImageUtils.Bitmap2Bytes(bitmap, 90);
-            msg = new WXMediaMessage(imageObject);
-        } else {
-            WXWebpageObject webpage = new WXWebpageObject();
-            webpage.webpageUrl = String.format(NetApi.MY_TOPIC_SHARE, id);
-            msg = new WXMediaMessage(webpage);
-            if (isShare4Friends) {
-                msg.description = "←戳\n" +
-                        "(*^◎^*)";
-            }
-            msg.title = description;
-            if (bitmap == null) {
-                bitmap = BitmapFactory.decodeResource(mActivity.getResources(),
-                        R.mipmap.ic_share_logo);
-//                msg.thumbData = Util.bmpToByteArray(bitmap, true);
-            }
-//            else{
-//                msg.thumbData = Util.bmpToByteArray(bitmap, true);
-//            }
-            msg.thumbData = Util.bmpToByteArray(bitmap, true);
-
-        }
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = buildTransaction("webpage");
-        req.message = msg;
-        if (isShare4Friends) {
-            req.scene = SendMessageToWX.Req.WXSceneSession;
-        } else {
-            req.scene = SendMessageToWX.Req.WXSceneTimeline;
-        }
-        api.sendReq(req);
-    }
-
-
-    public void shareFriends(String id,
-                             String description, byte[] bytes, boolean isShare4Friends) {
-        if (!api.isWXAppInstalled()) {
-            Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        WXMediaMessage msg;
-        if (StringUtils.isEmpty(id)) {
-            WXImageObject imageObject = new WXImageObject();
-            imageObject.imageData = bytes;
-            msg = new WXMediaMessage(imageObject);
-        } else {
-            WXWebpageObject webpage = new WXWebpageObject();
-            webpage.webpageUrl = String.format(NetApi.MY_TOPIC_SHARE, id);
-            msg = new WXMediaMessage(webpage);
-            if (isShare4Friends) {
-                msg.description = "←戳\n" +
-                        "(*^◎^*)";
-            }
-            msg.title = description;
-            if (bytes == null) {
-                bytes = Util.bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
-                        R.mipmap.ic_share_logo), true);
-            }
-            msg.thumbData = bytes;
-
-        }
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = buildTransaction("webpage");
-        req.message = msg;
-        if (isShare4Friends) {
-            req.scene = SendMessageToWX.Req.WXSceneSession;
-        } else {
-            req.scene = SendMessageToWX.Req.WXSceneTimeline;
-        }
-        api.sendReq(req);
-    }
-    /* public void share2WeChat(String id,
-                             String description, Bitmap bitmap) {
-        share2WeChat(id, description, bitmap, false);
-    }
-
-
-    public void shareFriends(String id,
-                             String description, Bitmap bitmap, boolean isShare4Friends) {
-        if (!api.isWXAppInstalled()) {
-            Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        WXMediaMessage msg;
-        if (StringUtils.isEmpty(id)) {
-            WXImageObject imageObject = new WXImageObject();
-            imageObject.imageData = ImageUtils.Bitmap2Bytes(bitmap, 90);
-            msg = new WXMediaMessage(imageObject);
-        } else {
-            WXWebpageObject webpage = new WXWebpageObject();
-            webpage.webpageUrl = String.format(NetApi.MY_TOPIC_SHARE, id);
-            msg = new WXMediaMessage(webpage);
-            if (isShare4Friends) {
-                msg.description = "←戳\n" +
-                        "(*^◎^*)";
-            }
-            msg.title = description;
-            if (bitmap == null) {
-                bitmap = BitmapFactory.decodeResource(mActivity.getResources(),
-                        R.mipmap.ic_share_logo);
-//                msg.thumbData = Util.bmpToByteArray(bitmap, true);
-            }
-//            else{
-//                msg.thumbData = Util.bmpToByteArray(bitmap, true);
-//            }
-            msg.thumbData = Util.bmpToByteArray(bitmap, true);
-
-        }
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = buildTransaction("webpage");
-        req.message = msg;
-        if (isShare4Friends) {
-            req.scene = SendMessageToWX.Req.WXSceneSession;
-        } else {
-            req.scene = SendMessageToWX.Req.WXSceneTimeline;
-        }
-        api.sendReq(req);
-    }
-
-
-    public void shareFriends(String id,
-                             String description, byte[] bytes, boolean isShare4Friends) {
-        if (!api.isWXAppInstalled()) {
-            Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        WXMediaMessage msg;
-        if (StringUtils.isEmpty(id)) {
-            WXImageObject imageObject = new WXImageObject();
-            imageObject.imageData = bytes;
-            msg = new WXMediaMessage(imageObject);
-        } else {
-            WXWebpageObject webpage = new WXWebpageObject();
-            webpage.webpageUrl = String.format(NetApi.MY_TOPIC_SHARE, id);
-            msg = new WXMediaMessage(webpage);
-            if (isShare4Friends) {
-                msg.description = "←戳\n" +
-                        "(*^◎^*)";
-            }
-            msg.title = description;
-            if (bytes == null) {
-                bytes = Util.bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
-                        R.mipmap.ic_share_logo), true);
-            }
-            msg.thumbData = bytes;
-
-        }
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = buildTransaction("webpage");
-        req.message = msg;
-        if (isShare4Friends) {
-            req.scene = SendMessageToWX.Req.WXSceneSession;
-        } else {
-            req.scene = SendMessageToWX.Req.WXSceneTimeline;
-        }
-        api.sendReq(req);
-    }
-
-*/
 }

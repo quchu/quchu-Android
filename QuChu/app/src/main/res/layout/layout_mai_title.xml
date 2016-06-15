@@ -3,47 +3,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_heigh"
-    android:background="@color/appBackground">
+    android:background="@color/colorPrimary"
+    tools:showIn="@layout/activity_recommend">
 
     <RelativeLayout
         android:id="@+id/recommend_title_location_rl"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/recommend_title_location_iv"
+        <TextView
+            android:id="@+id/recommend_title_location_tv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/toolbar_item_size"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginStart="@dimen/base_margin"
-            android:src="@mipmap/ic_recommed_title_location"
-            tools:ignore="ContentDescription" />
-    </RelativeLayout>
+            android:gravity="center"
+            android:text="Null"
+            android:textColor="@color/standard_color_h1_dark"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/title_content_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@color/planet_text_color_white"
-        android:textSize="@dimen/word_title_body"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/recommend_title_location_tv"
+            android:src="@mipmap/ic_down_menu" />
+    </RelativeLayout>
 
     <co.quchu.quchu.widget.RecommendTitleGroup
         android:id="@+id/recommend_title_center_rtg"
-        android:layout_width="184dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="visible" />
 
-    <co.quchu.quchu.widget.MoreButtonView
-        android:id="@+id/recommend_title_more_rl"
+    <ImageView
+        android:id="@+id/recommend_title_more_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingRight="16dp"
-        android:src="@mipmap/ic_title_more" />
+        android:padding="@dimen/base_margin"
+        android:src="@mipmap/ic_user" />
 </RelativeLayout>

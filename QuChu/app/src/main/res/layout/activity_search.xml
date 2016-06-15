@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
     android:fitsSystemWindows="true">
 
     <RelativeLayout
@@ -10,13 +9,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/shape_activity_bg">
 
-        <co.quchu.quchu.widget.VerTextView
-            android:id="@+id/search_result_isnull_vtv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="4dp"
-            android:visibility="invisible" />
 
         <LinearLayout
             android:id="@+id/search_title_bar_ll"
@@ -51,7 +43,7 @@
                     android:hint="搜索趣处或活动"
                     android:imeOptions="actionSearch"
                     android:singleLine="true"
-                    android:textColor="@color/text_color_white"
+                    android:textColor="@color/standard_color_h2_dark"
                     android:textColorHint="@color/user_login_text_hint_text_color"
                     android:textSize="@dimen/word_size_body" />
             </LinearLayout>
@@ -67,9 +59,65 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/half_margin"
                     android:text="取消"
-                    android:textColor="@color/gene_textcolor_yellow"
+                    android:textColor="@color/standard_color_h1_dark"
                     android:textSize="@dimen/word_subhead_size" />
             </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llTags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/search_title_bar_ll"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/search_tag1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_lineframe_white"
+                android:paddingBottom="@dimen/quarter_margin"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:paddingTop="@dimen/quarter_margin"
+                android:textColor="@color/standard_color_h3_dark"
+                android:textSize="@dimen/word_size_time"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/search_tag2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/half_margin"
+                android:layout_toRightOf="@+id/search_tag1"
+                android:background="@drawable/shape_lineframe_white"
+                android:paddingBottom="@dimen/quarter_margin"
+
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:paddingTop="@dimen/quarter_margin"
+                android:textColor="@color/standard_color_h3_dark"
+                android:textSize="@dimen/word_size_time"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/search_tag3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/half_margin"
+                android:layout_toRightOf="@+id/search_tag2"
+                android:background="@drawable/shape_lineframe_white"
+                android:paddingBottom="@dimen/quarter_margin"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:paddingTop="@dimen/quarter_margin"
+                android:textColor="@color/standard_color_h3_dark"
+                android:textSize="@dimen/word_size_time"
+                android:visibility="invisible" />
+
         </LinearLayout>
 
         <FrameLayout
@@ -77,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            android:layout_below="@id/search_title_bar_ll">
+            android:layout_below="@id/llTags">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,7 +140,7 @@
                     android:layout_marginLeft="@dimen/base_margin"
                     android:layout_marginTop="@dimen/base_margin"
                     android:text="历史记录"
-                    android:textColor="@color/text_color_white"
+                    android:textColor="@color/standard_color_h2_dark"
                     android:textSize="@dimen/word_subhead_size" />
 
                 <android.support.v7.widget.RecyclerView
@@ -110,7 +158,8 @@
                     android:layout_height="wrap_content"
 
                     android:layout_margin="@dimen/base_margin"
-                    android:background="@color/load_progress_yellow">
+                    android:visibility="gone"
+                    android:background="@color/standard_color_yellow">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -119,7 +168,7 @@
                         android:layout_marginBottom="@dimen/half_margin"
                         android:layout_marginTop="@dimen/half_margin"
                         android:text="清除所有历史记录"
-                        android:textColor="@color/black"
+                        android:textColor="@color/standard_color_h1_dark"
                         android:textSize="@dimen/word_subhead_size" />
                 </RelativeLayout>
             </LinearLayout>
@@ -129,7 +178,7 @@
             android:id="@+id/search_result_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/search_title_bar_ll"
+            android:layout_below="@id/search_history_fl"
             android:visibility="gone">
 
 
@@ -137,8 +186,6 @@
                 android:id="@+id/search_result_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/dialog_margin"
-                android:layout_marginRight="@dimen/dialog_margin"
                 android:layout_marginTop="@dimen/base_margin"
                 android:overScrollMode="always" />
 

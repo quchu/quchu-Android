@@ -2,162 +2,148 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 
-import org.json.JSONObject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.FavoriteModel;
-import co.quchu.quchu.net.IRequestListener;
-import co.quchu.quchu.net.NetApi;
-import co.quchu.quchu.net.NetService;
-import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.view.adapter.FavoriteGridAdapter;
-import co.quchu.quchu.widget.textcounter.CounterView;
+import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.model.FavoriteBean;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.presenter.PageLoadListener;
+import co.quchu.quchu.presenter.QuchuPresenter;
+import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.view.adapter.AdapterBase;
+import co.quchu.quchu.view.adapter.FavoriteAdapter;
 
-/**
- * FavoriteActivity
- * User: Chenhs
- * Date: 2015-12-14
- */
-public class FavoriteActivity extends BaseActivity {
-    //    @Bind(R.id.favorite_place_name_tv)
-//    TextView favoritePlaceNameTv;
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
-    @Bind(R.id.favorite_place_counter_cv)
-    CounterView favoritePlaceCounterCv;
-    @Bind(R.id.favorite_place_gv)
-    GridView favoritePlaceGv;
-    //    @Bind(R.id.favorite_postcard_name_tv)
-//    TextView favoritePostcardNameTv;
-    @Bind(R.id.favorite_postcard_counter_cv)
-    CounterView favoritePostcardCounterCv;
-    @Bind(R.id.favorite_postcard_gv)
-    GridView favoritePostcardGv;
-    //    @Bind(R.id.favorite_place_cv)
-//    CardView favoritePlaceCv;
-//    @Bind(R.id.favorite_postcard_cv)
-//    CardView favoritePostcardCv;
-//    @Bind(R.id.favorite_postcard_gvcv)
-//    CardView favoritePostcardGvcv;
-//    @Bind(R.id.favorite_place_name_gvcv)
-//    CardView favoritePlaceNameGvcv;
-    private FavoriteModel model;
+public class FavoriteActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean>, PageLoadListener<FavoriteBean>, SwipeRefreshLayout.OnRefreshListener {
+
+    @Bind(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
+    private FavoriteAdapter adapter;
+    private QuchuPresenter presenter;
+    private int pagesNo = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
         ButterKnife.bind(this);
-        titleContentTv.setText(getTitle());
-        initTitleBar();
-        initFavoriteData();
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        TextView titleTv = toolbar.getTitleTv();
+        titleTv.setText("收藏");
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        presenter = new QuchuPresenter(this);
+        adapter = new FavoriteAdapter();
+        adapter.setLoadmoreListener(this);
+        adapter.setItemClickListener(this);
+        recyclerView.setAdapter(adapter);
+        presenter.getFavoriteData(pagesNo, this);
+
+        refreshLayout.setOnRefreshListener(this);
     }
+
 
     @Override
     protected int activitySetup() {
         return TRANSITION_TYPE_LEFT;
     }
 
-    private void initFavoriteData() {
-        DialogUtil.showProgess(this, getResources().getString(R.string.loading_dialog_text));
-        NetService.get(this, NetApi.getFavorite, new IRequestListener() {
-            @Override
-            public void onSuccess(JSONObject response) {
-                LogUtils.json("Favorite==" + response);
-                if (!response.has("msg")) {
-                    Gson gson = new Gson();
-                    model = gson.fromJson(response.toString(), FavoriteModel.class);
-                    if (model != null) {
-                        favoritePlaceGv.setAdapter(new FavoriteGridAdapter(FavoriteActivity.this, model, true));
-                        favoritePostcardGv.setAdapter(new FavoriteGridAdapter(FavoriteActivity.this, model, false));
-                        initCountView();
-                        favoritePlaceCounterCv.start();
-                        favoritePostcardCounterCv.start();
-                        favoritePlaceGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Intent intent = new Intent(FavoriteActivity.this, QuchuDetailsActivity.class);
-                                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, model.getPlace().getData().get(position).getId());
-                                startActivity(intent);
-                            }
-                        });
-                        favoritePostcardGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                //跳转
-                                if (model.getCard() != null && model.getCard().getData().size() > 0)
-                                    startActivity(new Intent(FavoriteActivity.this, PostCardActivity.class).putExtra("isFavoritePostCard", true));
-                                else
-                                    Toast.makeText(FavoriteActivity.this, "暂未收藏明信片!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                    DialogUtil.dismissProgess();
-                }
-            }
-
-            @Override
-            public boolean onError(String error) {
-                DialogUtil.dismissProgess();
-                return false;
-            }
-        });
+    @Override
+    public void onLoadmore() {
+        presenter.getFavoriteData(pagesNo + 1, this);
     }
 
-    private void initCountView() {
-        favoritePlaceCounterCv.setEndValue(model.getPlace().getCount());
-        favoritePlaceCounterCv.setIncrement(model.getPlace().getCount() % 10);
-        favoritePlaceCounterCv.setTimeInterval(80); // the time interval (ms) at which the text changes
-        favoritePostcardCounterCv.setEndValue(model.getCard().getCount());
-        favoritePostcardCounterCv.setIncrement(model.getCard().getCount() % 10);
-        favoritePostcardCounterCv.setTimeInterval(80); // the time interval (ms) at which the text changes
+    RecyclerView.ViewHolder holder;
+    FavoriteBean.ResultBean item;
 
-    }
-
-    @OnClick({R.id.favorite_place_cv, R.id.favorite_postcard_cv, R.id.favorite_postcard_gvcv, R.id.favorite_place_name_gvcv})
-    public void favoriteClick(View v) {
-        if (KeyboardUtils.isFastDoubleClick())
-            return;
-        switch (v.getId()) {
-            case R.id.favorite_postcard_cv:
-//            case R.id.favorite_postcard_gvcv:
-                if (model.getCard() != null && model.getCard().getData().size() > 0)
-                    startActivity(new Intent(this, PostCardActivity.class).putExtra("isFavoritePostCard", true));
-                else
-                    Toast.makeText(this, "暂未收藏明信片!", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.favorite_place_cv:
-//            case R.id.favorite_place_name_gvcv:
-                startActivity(new Intent(this, FavoritePlaceActivity.class));
-                break;
+    @Override
+    public void itemClick(RecyclerView.ViewHolder holder, FavoriteBean.ResultBean item, int type, int position) {
+        MobclickAgent.onEvent(this, "detail_profile_c");
+        this.holder = holder;
+        this.item = item;
+        Intent intent = new Intent(this, QuchuDetailsActivity.class);
+        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
+        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_PROFILE);
+        startActivity(intent);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    public void initData(FavoriteBean bean) {
+        refreshLayout.setRefreshing(false);
 
-        MobclickAgent.onPageEnd("FavoriteActivity");
+        adapter.initData(bean.getResult());
+        pagesNo = bean.getPagesNo();
+
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("FavoriteActivity");
+    public void moreData(FavoriteBean data) {
+        pagesNo = data.getPagesNo();
+        refreshLayout.setRefreshing(false);
+
+        adapter.addMoreData(data.getResult());
+    }
+
+    @Override
+    public void nullData() {
+        refreshLayout.setRefreshing(false);
+
+        adapter.setLoadMoreEnable(false);
+    }
+
+    @Override
+    public void netError(final int pagesNo, String massage) {
+        refreshLayout.setRefreshing(false);
+        Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+
+        adapter.setNetError(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.getFavoriteData(pagesNo, FavoriteActivity.this);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe
+    public void unFavorite(QuchuEventModel bean) {
+        if (bean.getFlag() == EventFlags.EVENT_CANCLE_FAVORITE_QUCHU) {
+            if (!(Boolean) bean.getContent()[0] && (int) bean.getContent()[1] == item.getPid()) {
+                adapter.removeItem(holder, item);
+            }
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        pagesNo = 1;
+        presenter.getFavoriteData(pagesNo, this);
+
     }
 }

@@ -1,24 +1,30 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/appBackground</item>
-        <item name="colorPrimaryDark">@color/appBackground</item>
-        <item name="colorAccent">@color/planet_progress_yellow</item>
+    <style name="AppThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 
-    <style name="AppTheme.NoActionBar" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="AppTheme" parent="AppThemeBase">
+        <!--<item name="android:windowIsTranslucent">false</item>-->
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar_top" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">false</item>
+    <style name="Base.CardView" parent="android:Widget">
+        <item name="cardCornerRadius">@dimen/cardview_default_radius</item>
+        <item name="cardElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardMaxElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardPreventCornerOverlap">true</item>
     </style>
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -29,19 +35,15 @@
     <style name="VerticalLine">
         <item name="android:layout_width">@dimen/line_thickness</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/lineBackground_gray</item>
+        <item name="android:background">@color/standard_color_h3_dark</item>
     </style>
 
-    <style name="DetailVerticalLine">
-        <item name="android:layout_width">@dimen/detail_horizontal_line_height</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/detail_line_color</item>
-    </style>
+
     <!-- 横向分隔线 -->
     <style name="HorizontalLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/line_thickness</item>
-        <item name="android:background">@color/lineBackground_gray</item>
+        <item name="android:background">@color/standard_color_h3_dark</item>
     </style>
 
     <style name="DetailHorizontalLine">
@@ -50,7 +52,7 @@
         <item name="android:layout_marginTop">@dimen/half_margin</item>
         <item name="android:layout_marginRight">@dimen/half_margin</item>
         <item name="android:layout_height">@dimen/detail_horizontal_line_height</item>
-        <item name="android:background">@color/detail_line_color</item>
+        <item name="android:background">@color/standard_color_h3_dark</item>
     </style>
 
     <style name="AccountBHl" parent="HorizontalLine">
@@ -65,20 +67,6 @@
         <item name="android:background">@color/user_login_view_bg_color</item>
     </style>
 
-    <style name="QuchuRatingBarStyle" parent="android:Widget.RatingBar">
-        <!--<item name="progressDrawable">@mipmap/ratingbar_full</item>-->
-        <!--<item name="indeterminateDrawable">@mipmap/ratingbar_full</item>-->
-        <item name="android:progressDrawable">@drawable/ratingbar_layer_list</item>
-        <item name="android:indeterminateDrawable">@drawable/ratingbar_layer_list</item>
-    </style>
-
-    <!-- ************* SwipeBackLayout ************ -->
-    <style name="SwipeBackLayout">
-        <item name="edge_size">50dip</item>
-        <item name="shadow_left">@mipmap/shadow_left</item>
-        <item name="shadow_right">@mipmap/shadow_right</item>
-        <item name="shadow_bottom">@mipmap/shadow_bottom</item>
-    </style>
 
 
     <!-- 下拉菜单 设置界面 dialog style -->
@@ -90,31 +78,10 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="mypopwindow_anim_style">
-        <item name="android:windowEnterAnimation">@anim/in_top_to_bottom</item>
-        <!-- 指定显示的动画xml -->
-        <item name="android:windowExitAnimation">@anim/out_bottom_to_top</item>
-        <!-- 指定消失的动画xml -->
-    </style>
 
-    <style name="DetailTextStyle_sub">
-        <item name="textColor">@color/text_color_white</item>
-        <item name="textSize">@dimen/word_subhead_size</item>
-    </style>
+
     <!-- 详情界面 便利标签 radiobutton 风格 -->
 
-    <style name="DetailRadioButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_centerInParent">true</item>
-        <item name="android:button">@null</item>
-        <item name="android:checked">false</item>
-        <item name="android:clickable">false</item>
-        <item name="android:gravity">center</item>
-        <item name="android:singleLine">false</item>
-        <item name="android:textColor">@color/rb_detail_textcolor_seletcer</item>
-        <item name="android:textSize">@dimen/word_size_time</item>
-    </style>
 
     <style name="BlurDialogFragment.Default.Animation" parent="@android:style/Animation.Activity">
         <item name="android:windowEnterAnimation">@anim/default_dialog_in</item>
@@ -123,10 +90,66 @@
     <!--对话框-->
     <style name="dialog_two_button" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColor">@color/planet_progress_yellow</item>
+        <item name="android:textColor">@color/standard_color_yellow</item>
         <item name="android:background">@color/appBackground</item>
 
     </style>
 
 
+    <style name="ToolbarContainer">
+        <item name="android:paddingLeft">@dimen/toolbar_container_horizontal_padding</item>
+        <item name="android:paddingRight">@dimen/toolbar_container_horizontal_padding</item>
+    </style>
+
+    <style name="ToolbarItem">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ToolbarItem.TextView" parent="ToolbarItem">
+        <item name="android:textColor">@color/standard_color_h1_dark</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ToolbarItem.ActionTextView" parent="ToolbarItem.TextView">
+        <item name="android:textSize">@dimen/text_size_14</item>
+    </style>
+
+    <style name="ToolbarItem.TitleTextView" parent="ToolbarItem.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+    <style name="TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextView.H1" parent="TextView">
+        <item name="android:textSize">@dimen/standard_text_size_h1</item>
+        <item name="android:textColor">@color/standard_color_h1_dark</item>
+    </style>
+
+    <style name="TextView.H2" parent="TextView">
+        <item name="android:textSize">@dimen/standard_text_size_h2</item>
+        <item name="android:textColor">@color/standard_color_h2_dark</item>
+    </style>
+
+    <style name="TextView.H3" parent="TextView">
+        <item name="android:textSize">@dimen/standard_text_size_h3</item>
+        <item name="android:textColor">@color/standard_color_h3_dark</item>
+    </style>
+
+
+    <style name="dialog_bottom" parent="@android:style/Theme.Dialog">
+        <item name="android:windowEnterAnimation">@anim/slide_n_fade_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
+    <style name="dialog_bottom_no_dim" parent="@style/dialog_bottom">
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>

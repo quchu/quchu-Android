@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/cp_enhanced_toolbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_gf_crop_texture">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_source_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--<co.quchu.quchu.gallery.widget.crop.CropImageView-->
+        <!--android:id="@+id/iv_crop_photo"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:visibility="gone" />-->
+
+        <TextView
+            android:id="@+id/tv_empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <co.quchu.quchu.gallery.widget.FloatingActionButton
+            android:id="@+id/fab_crop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:background="@color/colorPrimary"
+            app:backgroundTint="#ff87ffeb"
+            app:fabIcon="@drawable/ic_gf_done"
+            app:rippleColor="#33728dff" />
+    </FrameLayout>
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/ll_gallery"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--android:visibility="gone">-->
+
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#d2d2d7" />-->
+
+    <!--<co.quchu.quchu.gallery.widget.HorizontalListView-->
+    <!--android:id="@+id/lv_gallery"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="100dp" />-->
+    <!--</LinearLayout>-->
+
+</LinearLayout>

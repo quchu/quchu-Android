@@ -21,7 +21,6 @@ import java.util.Locale;
 
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.utils.ImageUtils;
-import co.quchu.quchu.utils.LogUtils;
 
 /**
  * Created by linqipeng on 2016/3/15 17:21
@@ -62,8 +61,13 @@ public class ImageUpload {
                 buffer.append(Uri.parse(item).getPath());
                 buffer.append("|");
                 succeed++;
+                if (succeed == totalSize) {
+                    listener.finish(buffer.toString());
+                    return;
+                }
                 continue;
             }
+
             String key = String.format(defaulQiNiuFileName, AppContext.user.getUserId(), System.currentTimeMillis());
             uploadManager.put(item, key, token,
                     new UpCompletionHandler() {

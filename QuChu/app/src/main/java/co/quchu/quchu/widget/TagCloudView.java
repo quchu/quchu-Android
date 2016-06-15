@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,7 +19,7 @@ import co.quchu.quchu.R;
 /**
  * Created by NeXT on 15-7-29.
  */
-public class TagCloudView extends ViewGroup{
+public class TagCloudView extends ViewGroup {
 
     private static final String TAG = TagCloudView.class.getSimpleName();
     private static final int TYPE_TEXT_NORMAL = 1;
@@ -40,34 +39,22 @@ public class TagCloudView extends ViewGroup{
     private int mTagBorderVer;
 
     private int mTagResId;
-/*    private int mRightImageResId;*/
     private boolean mSingleLine;
-    private boolean mShowRightImage;
-    private boolean mShowEndText;
     private boolean mCanTagClick;
-    private String endTextString;
 
-    private int imageWidth;
-    private int imageHeight;
-    private ImageView imageView = null;
-
-    private int endTextWidth = 0;
-    private int endTextHeight = 0;
-    private TextView endText = null;
 
     private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
-    private static final int DEFAULT_TEXT_SIZE = 12;
+    private static final int DEFAULT_TEXT_SIZE = 14;
     private static final int DEFAULT_TEXT_BACKGROUND = R.drawable.tag_background;
     private static final int DEFAULT_VIEW_BORDER = 0;
     private static final int DEFAULT_TEXT_BORDER_HORIZONTAL = 8;
     private static final int DEFAULT_TEXT_BORDER_VERTICAL = 5;
 
     private static final int DEFAULT_TAG_RESID = R.layout.item_tag;
-/*    private static final int DEFAULT_RIGHT_IMAGE = R.mipmap.arrow_right;*/
+    /*    private static final int DEFAULT_RIGHT_IMAGE = R.mipmap.arrow_right;*/
     private static final boolean DEFAULT_SINGLE_LINE = false;
     private static final boolean DEFAULT_SHOW_RIGHT_IMAGE = false;
     private static final boolean DEFAULT_SHOW_END_TEXT = true;
-    private static final String DEFAULT_END_TEXT_STRING = " … ";
     private static final boolean DEFAULT_CAN_TAG_CLICK = true;
 
     public TagCloudView(Context context) {
@@ -100,11 +87,7 @@ public class TagCloudView extends ViewGroup{
                 R.styleable.TagCloudView_tcvItemBorderVertical, DEFAULT_TEXT_BORDER_VERTICAL);
         mCanTagClick = a.getBoolean(R.styleable.TagCloudView_tcvCanTagClick, DEFAULT_CAN_TAG_CLICK);
 
-        /*mRightImageResId = a.getResourceId(R.styleable.TagCloudView_tcvRightResId, DEFAULT_RIGHT_IMAGE);*/
         mSingleLine = a.getBoolean(R.styleable.TagCloudView_tcvSingleLine, DEFAULT_SINGLE_LINE);
-        mShowRightImage = a.getBoolean(R.styleable.TagCloudView_tcvShowRightImg, DEFAULT_SHOW_RIGHT_IMAGE);
-        mShowEndText = a.getBoolean(R.styleable.TagCloudView_tcvShowEndText, DEFAULT_SHOW_END_TEXT);
-        endTextString = a.getString(R.styleable.TagCloudView_tcvEndText);
 
         mTagResId = a.getResourceId(R.styleable.TagCloudView_tcvTagResId, DEFAULT_TAG_RESID);
 
@@ -118,10 +101,36 @@ public class TagCloudView extends ViewGroup{
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int childCount = getChildCount();
+        if (mSingleLine) {
+            //当前行总宽度
+            int width = getWidth() - getPaddingRight() - getPaddingLeft();
+            //当前行布局完成的宽度
+            int currentWidth = 0;
+            int baseLeft = getPaddingLeft();
+            for (int i = 0; i < childCount; i++) {
+                View childView = getChildAt(i);
+                //如果当前tag没有超过 父view的宽度
+                if ((currentWidth + childView.getMeasuredWidth() + mTagBorderHor) < width) {
+                    int left = baseLeft;
+                    int top = getPaddingTop() + getPaddingTop();
+                    int bottom = top + childView.getMeasuredHeight();
+                    int right = left + childView.getMeasuredWidth();
+
+                    childView.layout(left, top, right, bottom);
+                    baseLeft = left + childView.getMeasuredWidth() + mTagBorderHor;
+                    currentWidth += childView.getMeasuredWidth() + mTagBorderHor;
+                } else {
+                    //tag位置超过当前行最大宽度
+                    childView.setVisibility(GONE);
+                }
+            }
+        }
     }
 
     /**
      * 计算 ChildView 宽高
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
@@ -139,13 +148,12 @@ public class TagCloudView extends ViewGroup{
         //计算 childView 宽高
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 
-        initSingleLineView(widthMeasureSpec, heightMeasureSpec);
 
         int totalWidth = 0;
         int totalHeight = mTagBorderVer;
 
         if (mSingleLine) {
-            totalHeight = getSingleTotalHeight(totalWidth, totalHeight);
+            totalHeight = getSingleTotalHeight(sizeWidth, sizeHeight);
         } else {
             totalHeight = getMultiTotalHeight(totalWidth, totalHeight);
         }
@@ -160,120 +168,34 @@ public class TagCloudView extends ViewGroup{
 
     }
 
-    /**
-     * 初始化 singleLine 模式需要的视图
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
-     */
-    private void initSingleLineView(int widthMeasureSpec, int heightMeasureSpec) {
-        if (!mSingleLine) {
-            return;
-        }
-   /*     if (mShowRightImage) {
-            imageView = new ImageView(getContext());
-            imageView.setImageResource(mRightImageResId);
-            imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            measureChild(imageView, widthMeasureSpec, heightMeasureSpec);
-            imageWidth = imageView.getMeasuredWidth();
-            imageHeight = imageView.getMeasuredHeight();
-            addView(imageView);
-        }*/
-
-        if (mShowEndText) {
-            endText = (TextView) mInflater.inflate(mTagResId, null);
-            if (mTagResId == DEFAULT_TAG_RESID) {
-                endText.setBackgroundResource(mBackground);
-                endText.setTextSize(TypedValue.COMPLEX_UNIT_SP, mTagSize);
-                endText.setTextColor(mTagColor);
-            }
-            @SuppressLint("DrawAllocation")
-            LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            endText.setLayoutParams(layoutParams);
-            endText.setText(endTextString == null || endTextString.equals("") ? DEFAULT_END_TEXT_STRING : endTextString);
-            measureChild(endText, widthMeasureSpec, heightMeasureSpec);
-            endTextHeight = endText.getMeasuredHeight();
-            endTextWidth = endText.getMeasuredWidth();
-            addView(endText);
-            endText.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onTagClickListener != null) {
-                        onTagClickListener.onTagClick(-1);
-                    }
-                }
-            });
-        }
-    }
 
     /**
      * 为 singleLine 模式布局，并计算视图高度
+     *
      * @param totalWidth
      * @param totalHeight
      * @return
      */
     private int getSingleTotalHeight(int totalWidth, int totalHeight) {
-        int childWidth;
-        int childHeight;
+        int childCount = getChildCount();
+//        int maxWidth = getMeasuredWidth();
+        int maxHeight = getPaddingBottom() + getPaddingTop();
 
-        totalWidth += mViewBorder;
-
-        int textTotalWidth = getTextTotalWidth();
-        if (textTotalWidth < sizeWidth - imageWidth) {
-            endText = null;
-            endTextWidth = 0;
-        }
-
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            childWidth = child.getMeasuredWidth();
-            childHeight = child.getMeasuredHeight();
-
-
-            if (i == 0) {
-                totalWidth += childWidth;
-                totalHeight = childHeight + mViewBorder;
+        int currentWidth = 0;
+        for (int i = 0; i < childCount; i++) {
+            View childView = getChildAt(i);
+            if ((currentWidth += childView.getMeasuredWidth()) < totalWidth) {
+                maxHeight = Math.max(maxHeight, childView.getMeasuredHeight());
             } else {
-                totalWidth += childWidth + mTagBorderHor;
-            }
-
-            if ((child.getTag() != null) && ((int)child.getTag() == TYPE_TEXT_NORMAL)) {
-                if (totalWidth + mTagBorderHor + mViewBorder + mViewBorder + endTextWidth + imageWidth < sizeWidth) {
-                    child.layout(
-                            totalWidth - childWidth + mTagBorderVer,
-                            totalHeight - childHeight,
-                            totalWidth + mTagBorderVer,
-                            totalHeight);
-                } else {
-                    totalWidth -= childWidth + mViewBorder;
-                    break;
-                }
+                return maxHeight;
             }
         }
-
-        if (endText != null) {
-            endText.layout(
-                    totalWidth + mViewBorder + mTagBorderVer,
-                    totalHeight - endTextHeight,
-                    totalWidth + mViewBorder + mTagBorderVer + endTextWidth,
-                    totalHeight);
-        }
-
-        totalHeight += mViewBorder;
-
-        if (imageView != null) {
-            imageView.layout(
-                    sizeWidth - imageWidth - mViewBorder,
-                    (totalHeight - imageHeight) / 2,
-                    sizeWidth - mViewBorder,
-                    (totalHeight - imageHeight) / 2 + imageHeight);
-        }
-
-        return totalHeight;
+        return maxHeight;
     }
 
     /**
      * 为 multiLine 模式布局，并计算视图高度
+     *
      * @param totalWidth
      * @param totalHeight
      * @return
@@ -292,7 +214,7 @@ public class TagCloudView extends ViewGroup{
                 totalHeight = childHeight + mViewBorder;
             }
             // + marginLeft 保证最右侧与 ViewGroup 右边距有边界
-            if (totalWidth + mTagBorderHor + mViewBorder> sizeWidth) {
+            if (totalWidth + mTagBorderHor + mViewBorder > sizeWidth) {
                 totalWidth = mViewBorder;
                 totalHeight += childHeight + mTagBorderVer;
                 child.layout(
@@ -312,19 +234,6 @@ public class TagCloudView extends ViewGroup{
         return totalHeight + mViewBorder;
     }
 
-    private int getTextTotalWidth() {
-        if (getChildCount() == 0) {
-            return 0;
-        }
-        int totalChildWidth = 0;
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            if (child.getTag() != null && (int)child.getTag() == TYPE_TEXT_NORMAL) {
-                totalChildWidth += child.getMeasuredWidth() + mViewBorder;
-            }
-        }
-        return totalChildWidth + mTagBorderHor * 2;
-    }
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -371,7 +280,7 @@ public class TagCloudView extends ViewGroup{
         this.onTagClickListener = onTagClickListener;
     }
 
-    public interface OnTagClickListener{
+    public interface OnTagClickListener {
         void onTagClick(int position);
     }
 

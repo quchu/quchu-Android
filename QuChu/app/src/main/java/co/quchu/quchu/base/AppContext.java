@@ -1,53 +1,77 @@
 package co.quchu.quchu.base;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
 
+import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.google.gson.Gson;
-//import com.squareup.leakcanary.LeakCanary;
-//import com.squareup.leakcanary.RefWatcher;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
+import com.umeng.analytics.MobclickAgent;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import co.quchu.quchu.model.PlacePostCardModel;
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.model.UserBehaviorModel;
 import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.net.ImageUpload;
+import co.quchu.quchu.presenter.UserBehaviorPresentor;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
-
-
-/**
- *
- */
 public class AppContext extends Application {
     public static Context mContext;
     public static UserInfoModel user;//用户信息
 
-    public static PlacePostCardModel ppcModel;//趣处明信片信息 用户返回后刷新
     // 屏幕宽度
     public static float Width = 0;
     // 屏幕高度
     public static float Height = 0;
-    public static ArrayList<Object> gatherList;//用户行为采集list
     public static RecommendModel selectedPlace; //推荐分类 数据源
     public static boolean dCardListNeedUpdate = false;
 
     public static String token = "";
 
+
     private RefWatcher refWatcher;
+    public static PackageInfo packageInfo;
+
+
+    private BroadcastReceiver mPowerKeyReceiver = null;
+
+    private void registBroadcastReceiver() {
+        final IntentFilter theFilter = new IntentFilter();
+        theFilter.addAction(Intent.ACTION_SCREEN_ON);
+        theFilter.addAction(Intent.ACTION_SCREEN_OFF);
+
+        mPowerKeyReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String strAction = intent.getAction();
+
+                if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
+                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "sleep", "", System.currentTimeMillis());
+                } else if (strAction.equals(Intent.ACTION_SCREEN_ON)) {
+                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "wakeup", "", System.currentTimeMillis());
+                }
+            }
+        };
+
+        getApplicationContext().registerReceiver(mPowerKeyReceiver, theFilter);
+    }
 
     public static RefWatcher getRefWatcher(Context context) {
         AppContext application = (AppContext) context.getApplicationContext();
@@ -58,34 +82,36 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
+        registBroadcastReceiver();
+
         refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
         token = SPUtils.getUserToken(getApplicationContext());
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
-   /*     AnalyticsConfig.setChannel("quchu_360");
-        LogUtils.json("userinfo=" + SPUtils.getUserInfo(mContext));
-        LogUtils.json("userToken=" + SPUtils.getUserToken(mContext));*/
-
-
+        //禁用页面自动统计
+        MobclickAgent.openActivityDurationTrack(false);
         ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
+                .setWebpSupportEnabled(true)
                 .build();
         Fresco.initialize(getApplicationContext(), imagePipelineConfig);
-//        GenericDraweeHierarchyBuilder builder =
-//                new GenericDraweeHierarchyBuilder(getResources());
-//        GenericDraweeHierarchy hierarchy = builder
-//                .setFadeDuration(300)
-//                .build();
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {
-            if (user == null) {
-                LogUtils.json(SPUtils.getUserInfo(this));
-                user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
-            }
+            LogUtils.json(SPUtils.getUserInfo(this));
+            user = new Gson().fromJson(SPUtils.getUserInfo(this), UserInfoModel.class);
+
         }
-        gatherList = new ArrayList<>();
-//        initImageLoader();
         initWidths();
+
+        if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=100){
+            UserBehaviorPresentor.postBehaviors(getApplicationContext(),UserBehaviorPresentor.getBehaviors(getApplicationContext()));
+        }
     }
 
 
@@ -95,21 +121,6 @@ public class AppContext extends Application {
         Height = dm.heightPixels;
     }
 
-//    private void initImageLoader() {
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//                mContext).threadPriority(Thread.NORM_PRIORITY - 2)
-//                .denyCacheImageMultipleSizesInMemory()
-//                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-//                .tasksProcessingOrder(QueueProcessingType.LIFO)
-//                .memoryCacheSize(2 * 1024 * 1024) //缓存到内存的最大数据
-//                .memoryCacheSize(50 * 1024 * 1024) //设置内存缓存的大小
-//                .diskCacheFileCount(200)
-//                .writeDebugLogs() // Remove for release app
-//                .build();
-//        // Initialize ImageLoader with configuration.
-//        ImageLoader.getInstance().init(config);
-//        //    SPUtils.initGuideIndex();
-//    }
 
     @Override
     public void onTerminate() {
@@ -133,7 +144,12 @@ public class AppContext extends Application {
         if (!AppUtil.isOpen(mContext))
             AppUtil.openGPS(mContext);
         mLocationClient = new AMapLocationClient(mContext);
-        mLocationListener = new AppLocationListener();
+        mLocationListener = new AppLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation amapLocation) {
+                super.onLocationChanged(amapLocation);
+            }
+        };
         //设置定位回调监听
         mLocationClient.setLocationListener(mLocationListener);
         //初始化定位参数
@@ -149,12 +165,17 @@ public class AppContext extends Application {
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         mLocationOption.setMockEnable(false);
         //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(80 * 1000);
+        if (SPUtils.getLongitude() == 0 && SPUtils.getLatitude() == 0) {
+            mLocationOption.setInterval(5 * 1000);
+        } else {
+            mLocationOption.setInterval(3600 * 1000);
+        }
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位
         mLocationClient.startLocation();
     }
+
 
     public static void stopLocation() {
         if (null != mLocationClient) {

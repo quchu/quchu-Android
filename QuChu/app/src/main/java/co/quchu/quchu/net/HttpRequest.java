@@ -48,6 +48,7 @@ public class HttpRequest extends JsonObjectRequest {
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(AppContext.mContext))) {
             headers.put("quchu-token", SPUtils.getUserToken(AppContext.mContext));
         }
+        headers.put("quchuVersion", AppContext.packageInfo.versionName);
       /*  headers.put("quchu-token",SPUtils.getUserToken(AppContext.mContext) );
         LogUtils.json("getHeaders == user=="+SPUtils.getUserToken(AppContext.mContext) );*/
         return headers;
@@ -97,7 +98,7 @@ public class HttpRequest extends JsonObjectRequest {
         return _Body;
     }
 
-    public static enum HttpMethod {
+    public enum HttpMethod {
         GET("GET"), POST("POST"), PUT("PUT"), HEAD("HEAD"), MOVE("MOVE"), COPY(
                 "COPY"), DELETE("DELETE"), OPTIONS("OPTIONS"), TRACE("TRACE"), CONNECT(
                 "CONNECT");

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/ic_nearby_tag_ele"  android:state_checked="false" />
+    <item android:drawable="@mipmap/ic_nearby_tag_ele_selected" android:state_checked="true" />
+</selector>

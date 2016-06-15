@@ -5,14 +5,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.ArrayMap;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -20,18 +28,25 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.analysis.UserAnalysisUtils;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
+import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
+import co.quchu.quchu.presenter.VersionInfoPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
-import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.RecommendTitleGroup;
 
 /**
@@ -40,56 +55,189 @@ import co.quchu.quchu.widget.RecommendTitleGroup;
  * Date: 2015-12-07
  * 趣处分类、推荐
  */
-public class RecommendActivity extends BaseActivity {
-    @Bind(R.id.recommend_title_location_iv)
-    ImageView recommendTitleLocationIv;
+public class RecommendActivity extends BaseBehaviorActivity implements View.OnClickListener {
+    @Bind(R.id.recommend_title_location_tv)
+    TextView recommendTitleLocationIv;
 
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
-    @Bind(R.id.recommend_title_more_rl)
-    MoreButtonView recommendTitleMoreRl;
+    @Bind(R.id.recommend_title_more_iv)
+    ImageView recommendTitleMoreRl;
     @Bind(R.id.recommend_title_center_rtg)
     RecommendTitleGroup recommendTitleCenterRtg;
+    @Bind(R.id.search_bar)
+    RelativeLayout rlSearchBar;
+    @Bind(R.id.search_input_et)
+    TextView tvSearch;
+    @Bind(R.id.container)
+    FrameLayout flContainer;
+    @Bind(R.id.ivArrow)
+    ImageView ivArrow;
+
+    @Bind(R.id.ivGuideStep1Top)
+    View vGST1;
+    @Bind(R.id.ivGuideStep1Content)
+    View vGSC1;
+    @Bind(R.id.ivGuideStep1Bottom)
+    View vGSB1;
+    @Bind(R.id.ivGuideStep2Top)
+    View vGST2;
+    @Bind(R.id.ivGuideStep2Content)
+    View vGSC2;
+    @Bind(R.id.ivGuideStep2Bottom)
+    View vGSB2;
+    @Bind(R.id.vCover2Left)
+    View vGSC2L;
+    @Bind(R.id.vCover2Right)
+    View vGSC2R;
+
+    @Bind(R.id.vEventReceiver)
+    View vReceiver;
+
 
     public long firstTime = 0;
-    private ArrayList<CityModel> list;
-    private boolean isGuide = false;
+    private ArrayList<CityModel> list = new ArrayList<>();
     public int viewPagerIndex = 0;
     private RecommendFragment recommendFragment;
     private ClassifyFragment classifyFragment;
+
+    private int mClickTimes = 0;
+
+    @Override
+    public ArrayMap<String, String> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 110;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
-        isGuide = getIntent().getBooleanExtra("isGuide", false);
-        if (isGuide) {
-            startActivity(new Intent(this, PlanetActivity.class));
+        if (!SPUtils.getShowRecommendGuide()){
+
+            vGST1.setVisibility(View.VISIBLE);
+            vGSC1.setVisibility(View.VISIBLE);
+            vGSB1.setVisibility(View.VISIBLE);
+
+            vReceiver.setVisibility(View.VISIBLE);
+            vReceiver.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (mClickTimes==0){
+                        vGST1.setVisibility(View.GONE);
+                        vGSC1.setVisibility(View.GONE);
+                        vGSB1.setVisibility(View.GONE);
+                        vGST2.setVisibility(View.VISIBLE);
+                        vGSC2.setVisibility(View.VISIBLE);
+                        vGSB2.setVisibility(View.VISIBLE);
+                        vGSC2L.setVisibility(View.VISIBLE);
+                        vGSC2R.setVisibility(View.VISIBLE);
+
+                        float halfContentSize = (flContainer.getHeight()/2) - (getResources().getDimensionPixelSize(R.dimen.dialog_margin));
+                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) vGSB2.getLayoutParams();
+                        lp.height = (int) halfContentSize;
+
+
+                        vGSB2.requestLayout();
+                        vGSB2.invalidate();
+
+                    }else if(mClickTimes>=1){
+                        vGST2.setVisibility(View.GONE);
+                        vGSC2.setVisibility(View.GONE);
+                        vGSB2.setVisibility(View.GONE);
+                        vGSC2L.setVisibility(View.GONE);
+                        vGSC2R.setVisibility(View.GONE);
+                        vReceiver.setVisibility(View.GONE);
+                        vReceiver.setOnClickListener(null);
+                    }
+                    mClickTimes += 1;
+                }
+            });
         }
+
+
+        recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
         classifyFragment = new ClassifyFragment();
-
-        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
-
+        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
         initView();
-        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-            @Override
-            public void hasCityList(ArrayList<CityModel> list) {
-                RecommendActivity.this.list = list;
-            }
-        });
-
-        recommendTitleMoreRl.setMoreClick(this);
+        recommendTitleMoreRl.setOnClickListener(this);
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
+        tvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
+            }
+        });
+        VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
+
+        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+            @Override
+            public void hasCityList(ArrayList<CityModel> pList) {
+                list.clear();
+                list.addAll(pList);
+                checkIfCityChanged();
+            }
+        });
+
+    }
+
+    private void checkIfCityChanged(){
+        if (null!=list && null!= AppLocationListener.currentCity){
+            String currentLocation = AppLocationListener.currentCity;
+            int cityIdInList = -1;
+            if (currentLocation.endsWith("市")){
+                currentLocation = currentLocation.substring(0,currentLocation.length()-1);
+            }
+            boolean inList = false;
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getCvalue().equals(currentLocation)){
+                    inList = true;
+                    cityIdInList = list.get(i).getCid();
+                }
+            }
+            if (!currentLocation.equals(SPUtils.getCityName())){
+                ConfirmDialogFg confirmDialogFg = null;
+                if (!inList){
+                    //城市列表中没有当前位置
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","你当前所在的城市尚未占领，是否要切换城市");
+                }else if(inList){
+                    //城市列表中有但不是当前位置
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","检测到你在"+currentLocation+"，是否切换？");
+                }
+                final boolean finalInList = inList;
+                final int finalCityIdInList = cityIdInList;
+                final String finalCurrentLocation = currentLocation;
+                confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+                    @Override
+                    public void onClick(int index) {
+                        if (ConfirmDialogFg.INDEX_OK == index){
+                            if (finalInList){
+                                SPUtils.setCityId(finalCityIdInList);
+                                SPUtils.setCityName(finalCurrentLocation);
+                                updateRecommend();
+                                recommendTitleLocationIv.setText(SPUtils.getCityName());
+                            }else{
+                                findViewById(R.id.recommend_title_location_rl).performClick();
+                            }
+
+                        }
+                    }
+                });
+                confirmDialogFg.show(getSupportFragmentManager(),"~");
+            }
+        }
     }
 
     @Override
     protected int activitySetup() {
-        return 0;
+        return TRANSITION_TYPE_LEFT;
     }
 
     @OnClick({R.id.recommend_title_location_rl})
@@ -98,27 +246,54 @@ public class RecommendActivity extends BaseActivity {
             return;
         switch (view.getId()) {
             case R.id.recommend_title_location_rl:
-                if (list != null) {
-                    showCityDialog();
-                } else {
-                    RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-                        @Override
-                        public void hasCityList(ArrayList<CityModel> list) {
-                            RecommendActivity.this.list = list;
-                            if (RecommendActivity.this.list != null) {
-                                showCityDialog();
+                MobclickAgent.onEvent(this, "location_c");
+
+                if (NetUtil.isNetworkConnected(getApplicationContext())) {
+                    if (list != null) {
+                        showCityDialog();
+                    } else {
+                        RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+                            @Override
+                            public void hasCityList(ArrayList<CityModel> list) {
+                                RecommendActivity.this.list = list;
+                                if (RecommendActivity.this.list != null) {
+                                    showCityDialog();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                } else {
+                    Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
                 }
+
 
                 break;
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.recommend_title_more_iv:
+                MobclickAgent.onEvent(this, "Profile_c");
+                Intent intent = new Intent(this, MeActivity.class);
+
+                startActivity(intent);
+                break;
+        }
+    }
+
     private void showCityDialog() {
+        ivArrow.animate().rotation(180).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
         LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance(list);
-        lDialog.show(getFragmentManager(), "blur_sample");
+        lDialog.show(getSupportFragmentManager(), "blur_sample");
+        lDialog.setOnDissMissListener(new LocationSelectedDialogFg.OnDissMissListener() {
+            @Override
+            public void onDissMiss() {
+                ivArrow.animate().rotation(0).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
+            }
+        });
+
     }
 
     private void initView() {
@@ -138,12 +313,7 @@ public class RecommendActivity extends BaseActivity {
                 }
             }
         });
-        recommendTitleMoreRl.setMoreClick(new MoreButtonView.MoreClicklistener() {
-            @Override
-            public void moreClick() {
-                RecommendActivity.this.startActivity(new Intent(RecommendActivity.this, MenusActivity.class));
-            }
-        });
+
     }
 
 
@@ -152,22 +322,37 @@ public class RecommendActivity extends BaseActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
-            recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
-            titleContentTv.setVisibility(View.INVISIBLE);
-            recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
+            tvSearch.animate()
+                    .translationY(-rlSearchBar.getHeight())
+                    .alpha(0)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+            flContainer.animate()
+                    .translationY(0)
+                    .scaleY(1)
+                    .scaleX(1)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
 
-            transaction.
-//                    setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out).
-                    hide(classifyFragment).show(recommendFragment).commit();
-
+            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+            transaction.hide(classifyFragment).show(recommendFragment).commit();
         } else {
-            recommendTitleLocationIv.setImageResource(R.mipmap.ic_recommed_title_location);
-            recommendTitleCenterRtg.setViewVisibility(View.VISIBLE);
-            titleContentTv.setVisibility(View.INVISIBLE);
-
-            transaction
-//                    .setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out, R.anim.fragment_in, R.anim.fragment_out)
-                    .hide(recommendFragment).show(classifyFragment).commit();
+            tvSearch.animate()
+                    .translationY(0)
+                    .alpha(1)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+            flContainer.animate().translationY(rlSearchBar.getHeight()/2)
+                    .scaleY(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
+                    .scaleX(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+            transaction .hide(recommendFragment).show(classifyFragment).commit();
         }
         viewPagerIndex = index;
     }
@@ -191,9 +376,7 @@ public class RecommendActivity extends BaseActivity {
                 firstTime = secondTime;// 更新firstTime
                 return true;
             } else {
-                UserAnalysisUtils.sendUserBehavior(RecommendActivity.this);
                 ActManager.getAppManager().AppExit();
-                AppContext.stopLocation();
             }
 
         }
@@ -202,19 +385,9 @@ public class RecommendActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        if (isGuide) {
-            isGuide = false;
-        }
         resumeUpdateDataTimes = 0;
         netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
         super.onResume();
-        MobclickAgent.onPageStart("MainActivity");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("MainActivity");
     }
 
 
@@ -249,4 +422,28 @@ public class RecommendActivity extends BaseActivity {
     }
 
 
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        if (event.getFlag() == EventFlags.EVENT_NEW_CITY_SELECTED) {
+            recommendTitleLocationIv.setText(SPUtils.getCityName());
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 }

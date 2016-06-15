@@ -1,31 +1,24 @@
 package co.quchu.quchu.dialog;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.Gravity;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.ImageView;
 
-import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.blurdialogfragment.BlurDialogFragment;
-import co.quchu.quchu.model.CityModel;
-import co.quchu.quchu.view.activity.AboutUsActivity;
-import co.quchu.quchu.view.activity.AccountSettingActivity;
 import co.quchu.quchu.view.activity.FeedbackActivity;
-import co.quchu.quchu.view.activity.MenusActivity;
+import co.quchu.quchu.view.activity.MeActivity;
+import co.quchu.quchu.view.activity.StatementActivity;
 
 /**
  * LocationSelectedDialogFg
@@ -33,48 +26,17 @@ import co.quchu.quchu.view.activity.MenusActivity;
  * Date: 2015-12-23
  * 城市选择弹窗
  */
-public class MenuSettingDialogFg extends BlurDialogFragment {
-    /**
-     * Bundle key used to start the blur dialog with a given scale factor (float).
-     */
-    private static final String CITY_LIST_MODEL = "city_list_model";
-    @Bind(R.id.dialog_menu_setting_account_setting_tv)
-    TextView dialogMenuSettingAccountSettingTv;
-    @Bind(R.id.dialog_menu_setting_feedback_tv)
-    TextView dialogMenuSettingFeedbackTv;
-    @Bind(R.id.dialog_menu_setting_aboutus_tv)
-    TextView dialogMenuSettingAboutusTv;
-    @Bind(R.id.dialog_menu_setting_update_tv)
-    TextView dialogMenuSettingUpdateTv;
+public class MenuSettingDialogFg extends DialogFragment implements View.OnClickListener {
+    @Bind(R.id.actionClose)
+    ImageView actionClose;
 
-
-    private ArrayList<CityModel> cityList;
-
-    /**
-     * Retrieve a new instance of the sample fragment.
-     *
-     * @return well instantiated fragment.
-     * Serializable cityList
-     */
     public static MenuSettingDialogFg newInstance() {
-        MenuSettingDialogFg fragment = new MenuSettingDialogFg();
-        Bundle args = new Bundle();
-        // args.putSerializable(CITY_LIST_MODEL, cityList);
-        fragment.setArguments(args);
-        return fragment;
+        return new MenuSettingDialogFg();
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        Bundle args = getArguments();
-    /*    mRadius = args.getInt(BUNDLE_KEY_BLUR_RADIUS);
-        mDownScaleFactor = args.getFloat(BUNDLE_KEY_DOWN_SCALE_FACTOR);
-        mDimming = args.getBoolean(BUNDLE_KEY_DIMMING);
-        mDebug = args.getBoolean(BUNDLE_KEY_DEBUG);*/
-
-
     }
 
     @Override
@@ -88,70 +50,39 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_menu_setting, null);
         ButterKnife.bind(this, view);
-        Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_Translucent_NoTitleBar);
+        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(view);
-
+        actionClose.setOnClickListener(this);
+        view.setOnClickListener(this);
         return dialog;
     }
 
-    @OnClick({R.id.dialog_menu_setting_account_setting_tv, R.id.dialog_menu_setting_aboutus_tv,
+    @OnClick({R.id.dialog_menu_setting_aboutus_tv,
             R.id.dialog_menu_setting_feedback_tv, R.id.dialog_menu_setting_update_tv})
     public void menuSettingClick(View view) {
         switch (view.getId()) {
-            case R.id.dialog_menu_setting_account_setting_tv:
-                if (AppContext.user.isIsVisitors()) {
-                    MenuSettingDialogFg.this.dismiss();
-                    VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QACCOUNTSETTING);
-                    vDialog.show(getActivity().getFragmentManager(), "visitor");
-                } else {
-                    getActivity().startActivity(new Intent(getActivity(), AccountSettingActivity.class));
-                    MenuSettingDialogFg.this.dismiss();
-                    getActivity().finish();
-                }
-                break;
+
             case R.id.dialog_menu_setting_aboutus_tv:
-                //     Toast.makeText(getActivity(), "即将开发，敬请期待", Toast.LENGTH_SHORT).show();
-                getActivity().startActivity(new Intent(getActivity(), AboutUsActivity.class));
+                Intent intent = new Intent(getActivity(), StatementActivity.class);
+                intent.putExtra(StatementActivity.REQUEST_KEY_TITLE, "关于我们");
+                String about = String.format(Locale.CHINA, getString(R.string.about_us_text), AppContext.packageInfo.versionName);
+
+                intent.putExtra(StatementActivity.REQUEST_KEY_CONTENT, about);
+                getActivity().startActivity(intent);
+
                 MenuSettingDialogFg.this.dismiss();
-                //      getActivity().finish();
                 break;
             case R.id.dialog_menu_setting_feedback_tv:
                 getActivity().startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 MenuSettingDialogFg.this.dismiss();
-                //    getActivity().finish();
                 break;
             case R.id.dialog_menu_setting_update_tv:
-                if (getActivity() instanceof MenusActivity)
-                    ((MenusActivity) getActivity()).checkUpdate();
+                if (getActivity() instanceof MeActivity)
+                    ((MeActivity) getActivity()).checkUpdate();
                 MenuSettingDialogFg.this.dismiss();
                 break;
         }
 
-    }
-
-    @Override
-    protected boolean isDebugEnable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        return true;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        return 3.8f;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        return 8;
     }
 
 
@@ -161,4 +92,8 @@ public class MenuSettingDialogFg extends BlurDialogFragment {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        dismiss();
+    }
 }

@@ -26,7 +26,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
 
     public interface OnWxShareListenter {
-        public void upMissionSucces();
+        void upMissionSucces();
     }
 
     public void setOnWxShareListenter(OnWxShareListenter listener) {
@@ -38,7 +38,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        weChatHelper = new WechatHelper(this);
+        weChatHelper = WechatHelper.getInstance(this);
         weChatHelper.getApi().handleIntent(intent, this);
     }
 
@@ -67,7 +67,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 //				msg.what = AppContext.SHARE_SUCESS;
 //				handler.sendMessage(msg);
                     result = "分享成功";
-                    Toast.makeText(WXEntryActivity.this, "分享成功", 0).show();
+                    Toast.makeText(WXEntryActivity.this, "分享成功", Toast.LENGTH_SHORT).show();
 //                    if (null != sma) {
 //                        sma.shareEnd();
 //                    }
@@ -75,15 +75,15 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
                     result = "分享取消";
-                    Toast.makeText(WXEntryActivity.this, "分享取消", 0).show();
+                    Toast.makeText(WXEntryActivity.this, "分享取消", Toast.LENGTH_SHORT).show();
                     break;
                 case BaseResp.ErrCode.ERR_AUTH_DENIED:
                     result = "分享被拒绝";
-                    Toast.makeText(WXEntryActivity.this, "分享被拒绝", 0).show();
+                    Toast.makeText(WXEntryActivity.this, "分享被拒绝", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     result = "分享返回";
-                    Toast.makeText(WXEntryActivity.this, "分享返回", 0).show();
+                    Toast.makeText(WXEntryActivity.this, "分享返回", Toast.LENGTH_SHORT).show();
                     break;
             }
             finish();

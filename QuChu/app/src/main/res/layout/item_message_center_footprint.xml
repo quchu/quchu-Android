@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/base_margin"
+    android:layout_marginRight="@dimen/base_margin"
+    android:fitsSystemWindows="true">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/item_message_image"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="@dimen/base_margin"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:roundAsCircle="true" />
+
+
+    <TextView
+        android:id="@+id/item_message_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_marginTop="@dimen/base_margin"
+        android:layout_toRightOf="@id/item_message_image"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/standard_color_h3_dark"
+        android:textSize="@dimen/word_subhead_size"
+        tools:text="用户名" />
+
+    <TextView
+        android:id="@+id/item_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_message_title"
+        android:layout_below="@id/item_message_title"
+        android:layout_marginTop="@dimen/half_margin"
+        android:text="32分钟前"
+        android:textColor="@color/standard_color_h3_dark"
+        android:textSize="@dimen/word_size_time" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/item_message_cover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_message_image"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/double_margin"
+        android:layout_toRightOf="@id/item_message_image"
+        fresco:placeholderImage="@mipmap/ic_image_empty"
+        fresco:viewAspectRatio="2" />
+
+    <View
+        style="@style/HorizontalLine"
+        android:layout_below="@id/item_message_cover"
+        android:layout_marginTop="@dimen/base_margin" />
+</RelativeLayout>

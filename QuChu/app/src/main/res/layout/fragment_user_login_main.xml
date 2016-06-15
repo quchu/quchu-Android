@@ -4,33 +4,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!-- <co.quchu.quchu.widget.CircleWaveView
-         android:id="@+id/user_login_main_cwv"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_centerHorizontal="true"
-         android:layout_marginTop="@dimen/login_logo_margin_top"
-         app:rb_color="@color/gene_textcolor_yellow"
-         app:rb_duration="2100"
-         app:rb_radius="24dp"
-         app:rb_rippleAmount="1"
-         app:rb_scale="5">
 
-         <ImageView
-             android:id="@+id/user_login_main_circle_iv"
-             android:layout_width="230dp"
-             android:layout_height="230dp"
-             android:layout_centerInParent="true"
-             android:src="@mipmap/shape_circle_splash"
-             android:visibility="invisible" />
-
-         <ImageView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_centerInParent="true"
-             android:src="@mipmap/ic_user_login_logo" />
-
-     </co.quchu.quchu.widget.CircleWaveView>-->
     <RelativeLayout
         android:id="@+id/user_login_empty_v"
         android:layout_width="1dp"
@@ -66,19 +40,19 @@
             android:src="@mipmap/ic_user_loginview_logo" />
     </RelativeLayout>
 
-<!--    <TextView
-        android:id="@+id/user_login_visitor_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+    <!--    <TextView
+            android:id="@+id/user_login_visitor_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
 
-        android:gravity="center"
-        android:paddingLeft="@dimen/base_margin"
-        android:paddingRight="@dimen/base_margin"
-        android:text="访客浏览"
-        android:textColor="@color/text_color_white"
-        android:textSize="@dimen/word_subhead_size" />-->
+            android:gravity="center"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:text="访客浏览"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="@dimen/word_subhead_size" />-->
 
     <LinearLayout
         android:id="@+id/user_login_third_ll"

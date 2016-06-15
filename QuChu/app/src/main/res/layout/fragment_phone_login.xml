@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/rlUserNameField"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_item_size"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <ImageView
+            android:id="@+id/ivIconUserName"
+            android:layout_width="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
+            android:src="@mipmap/ic_phone" />
+
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/ivIconClear"
+            android:layout_toRightOf="@id/ivIconUserName"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:inputType="number"
+            android:maxLength="11"
+            style="@style/TextView.H3"
+            android:hint="@string/hint_input_cellphone_number"
+            android:background="@null"/>
+
+        <ImageView
+            android:id="@+id/ivIconClear"
+            android:layout_width="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_cancel" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlPasswordField"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_item_size"
+        android:layout_below="@+id/rlUserNameField"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/ivIconPassword"
+            android:layout_width="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
+            android:src="@mipmap/ic_lock" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/ivSwitchVisible"
+            android:layout_toRightOf="@id/ivIconPassword"
+            android:singleLine="true"
+            android:gravity="center_vertical"
+            android:digits="@string/passFilter"
+            android:hint="@string/hint_input_password"
+            android:maxLength="12"
+            style="@style/TextView.H3"
+            android:background="@null" />
+
+        <ImageView
+            android:id="@+id/ivSwitchVisible"
+            android:layout_width="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:scaleType="center"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_see" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvForgetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextView.H3"
+        android:layout_below="@+id/rlPasswordField"
+        android:layout_centerHorizontal="true"
+        android:text="@string/forget_password"
+        android:layout_marginTop="@dimen/base_margin"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/tvLoginViaPhone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_item_size"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/thirdLoginContainer"
+        android:layout_centerHorizontal="true"
+        android:background="@color/standard_color_black"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/standard_text_size_h1" />
+
+    <co.quchu.quchu.widget.ErrorView
+        android:id="@+id/errorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabLayout"
+        android:visibility="gone" />
+
+</RelativeLayout>

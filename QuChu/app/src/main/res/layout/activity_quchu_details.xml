@@ -1,149 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground_dark">
+    android:fitsSystemWindows="true"
+    tools:context=".view.activity.QuchuDetailsActivity">
 
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
-
-    <View
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:layout_below="@+id/title_bar"
-        android:background="@mipmap/shadow_bottom" />
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="0dp"
+            app:expandedTitleMarginStart="0dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdvHead"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:overlayImage="@drawable/bg_quchu_details_toolbar_gradient"
+                app:layout_collapseMode="parallax"/>
+
+
+            <co.quchu.quchu.base.EnhancedToolbar
+                android:id="@+id/enhancedToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/detail_bottom_group_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/appBackground_dark"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/detail_been_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/half_margin"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/quarter_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            android:layout_weight="1"
-            android:background="@drawable/shape_detail_bottom_bg"
-            android:gravity="center"
-            android:text="去过"
-            android:textColor="@color/gene_textcolor_yellow"
-            android:textSize="@dimen/word_size_body" />
-
-        <TextView
-            android:id="@+id/detail_want_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/half_margin"
-            android:layout_marginLeft="@dimen/quarter_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            android:layout_weight="1"
-            android:background="@drawable/shape_detail_bottom_bg"
-            android:gravity="center"
-            android:text="想去"
-            android:textColor="@color/gene_textcolor_yellow"
-            android:textSize="@dimen/word_size_body" />
-    </LinearLayout>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:id="@+id/detail_recyclerview"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/detail_bottom_group_ll"
-        android:layout_below="@id/title_bar"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/detail_marginright"
-        android:scrollbars="none"
-        />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-
-    <LinearLayout
-        android:id="@+id/detail_button_group_out_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title_bar"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:background="@color/appBackground_dark"
-        android:visibility="gone">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/detail_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/standard_color_white"
+            android:scrollbars="none" />
 
         <LinearLayout
+            android:id="@+id/detail_bottom_group_ll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/appBackground_dark"
+            android:orientation="horizontal">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageView
+                    android:id="@+id/ivFootprint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="@dimen/base_margin"
+                    android:background="@color/appBackground_dark"
+                    android:src="@mipmap/ic_feet" />
+
+                <TextView
+                    android:id="@+id/tvFootprintCount"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    style="@style/TextView.H3"
+                    android:textSize="10sp"
+                    android:gravity="center"
+                    android:background="@drawable/ic_shape_round_fill_yellow"
+                    android:textColor="@color/standard_color_h1_dark"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/ivShare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/base_margin"
+                android:src="@mipmap/ic_quguo" />
+
+
+            <ImageView
+                android:id="@+id/ivFavorite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/base_margin"
+                android:background="@color/appBackground_dark"
+                android:src="@mipmap/ic_star_light" />
+
+            <ImageView
+                android:id="@+id/ivMore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/base_margin"
+                android:src="@mipmap/ic_more" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/detail_button_group_height"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="2px"
-                android:layout_marginBottom="@dimen/quarter_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/detail_marginright"
-                android:background="@mipmap/ic_card_shadow_bg"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
+                <TextView
+                    android:id="@+id/tvFootPrint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/foot_print"
+                    android:gravity="center"
+                    android:padding="@dimen/half_margin"
+                    android:layout_marginLeft="@dimen/base_margin"
+                    android:layout_marginRight="@dimen/quarter_margin"
+                    android:textColor="@color/standard_color_h1_dark"
+                    android:background="@drawable/shape_lineframe_black"
+                    />
 
                 <RelativeLayout
-                    android:id="@+id/detail_button_collect_out_rl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
+                    android:id="@+id/rlQuguo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_drawable_left_quguo"
+                    android:layout_marginRight="@dimen/base_margin"
+                    android:layout_marginLeft="@dimen/quarter_margin"
+                    android:background="@drawable/shape_lineframe_black"
+                    >
                     <ImageView
-                        android:id="@+id/detail_button_collect_out_iv"
+                        android:id="@+id/ivQuguo"
+                        android:src="@mipmap/ic_drawable_left_quguo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@mipmap/ic_detail_uncollect" />
-                </RelativeLayout>
-
-                <View
-                    style="@style/DetailVerticalLine"
-                    android:layout_marginBottom="@dimen/tow_dp_margin"
-                    android:layout_marginTop="@dimen/quarter_margin" />
-
-
-                <RelativeLayout
-                    android:id="@+id/detail_button_share_out_rl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
+                        android:layout_toLeftOf="@+id/tvQuguo"
+                        android:layout_centerVertical="true"
+                        />
+                    <TextView
+                        android:id="@+id/tvQuguo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/status_quguo"
                         android:layout_centerInParent="true"
-                        android:src="@mipmap/ic_detail_share" />
-                </RelativeLayout>
-
-                <View
-                    style="@style/DetailVerticalLine"
-                    android:layout_marginBottom="@dimen/tow_dp_margin"
-                    android:layout_marginTop="@dimen/quarter_margin" />
-
-                <RelativeLayout
-                    android:id="@+id/detail_button_add_postcard_out_rl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@mipmap/ic_detail_add_postcard" />
+                        android:padding="@dimen/half_margin"
+                        android:textColor="@color/standard_color_h1_dark"
+                        />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
@@ -151,4 +180,9 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+

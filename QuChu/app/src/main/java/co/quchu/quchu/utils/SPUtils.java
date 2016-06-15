@@ -2,10 +2,15 @@ package co.quchu.quchu.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
+import com.google.gson.Gson;
 
 import java.util.Map;
 
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.model.UserInfoModel;
 
 /**
  * SPUtils
@@ -16,6 +21,10 @@ import co.quchu.quchu.base.AppContext;
 public class SPUtils {
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor edit;
+
+    public static final String LOGIN_TYPE_WEIXIN = "weixin";
+    public static final String LOGIN_TYPE_WEIBO = "weibo";
+    public static final String LOGIN_TYPE_PHONE = "phone";
 
     /**
      * 存储布尔值
@@ -84,17 +93,56 @@ public class SPUtils {
         return value;
     }
 
+    public static boolean getForceUpdateIfNecessary(Context context) {
+        PackageInfo pInfo = null;
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE + pInfo.versionName , false);
+    }
+
+    public static void setForceUpdateIfNecessary(Context context, boolean forceUpdate) {
+        PackageInfo pInfo = null;
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        preferences.edit().putBoolean(AppKey.SPF_KEY_FORCE_UPDATE + pInfo.versionName , forceUpdate).commit();
+    }
+
+    public static String getForceUpdateReason(Context context) {
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        return preferences.getString(AppKey.SPF_KEY_FORCE_UPDATE_REASON, "");
+    }
+
+    public static void setForceUpdateReason(Context context, String reason) {
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_REASON, reason).commit();
+    }
+
+    public static String getForceUpdateUrl(Context context) {
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        return preferences.getString(AppKey.SPF_KEY_FORCE_UPDATE_URL, "");
+    }
+
+    public static void setForceUpdateUrl(Context context, String reason) {
+        preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        preferences.edit().putString(AppKey.SPF_KEY_FORCE_UPDATE_URL, reason).commit();
+    }
+
     /**
      * 获取String
      */
 
     public static String getValueFromSPMap(Context mContext, String key, String defaults) {
-        if (null != mContext) {
-            preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-            return preferences.getString(key, defaults);
-        } else {
-            return null;
-        }
+        preferences = mContext.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
+        return preferences.getString(key, defaults);
+
     }
 
     /**
@@ -141,15 +189,6 @@ public class SPUtils {
     }
 
 
-    public static boolean animationShown(Context context) {
-        if (!getBooleanFromSPMap(context, AppKey.IS_LANDING_ANIMATION,false)){
-            putBooleanToSPMap(context,AppKey.IS_LANDING_ANIMATION,true);
-            return true;
-        }else{
-            return false;
-        }
-
-    }
 
 
     public static void setUserToken(Context context, String userToken) {
@@ -158,6 +197,9 @@ public class SPUtils {
 
     public static void setUserInfo(Context context, String userToken) {
         putValueToSPMap(context, AppKey.USERINFO, userToken);
+        AppContext.user = new Gson().fromJson(userToken, UserInfoModel.class);
+
+
     }
 
     public static String getUserInfo(Context context) {
@@ -165,7 +207,6 @@ public class SPUtils {
     }
 
     public static void clearUserinfo(Context mContext) {
-        putValueToSPMap(mContext, AppKey.USERINFO, "");
         putValueToSPMap(mContext, AppKey.USERTOKEN, "");
     }
 
@@ -174,7 +215,7 @@ public class SPUtils {
     }
 
     public static int getCityId() {
-        return Integer.parseInt(getValueFromSPMap(AppContext.mContext, AppKey.CITYID, "-1"));
+        return Integer.parseInt(getValueFromSPMap(AppContext.mContext, AppKey.CITYID, "1"));
     }
 
     public static void setCityName(String cityId) {
@@ -202,15 +243,32 @@ public class SPUtils {
     }
 
 
-    /**
-     * 初始化 引导页 标志
-     */
-    public static void initGuideIndex() {
-        putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_IMAGES_GUIDE, true);
-        putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_GUIDE, true);
-        putBooleanToSPMap(AppContext.mContext, AppKey.IS_PLANET_GUIDE, true);
-
+    public static boolean getShowRecommendGuide(){
+        boolean show = getBooleanFromSPMap(AppContext.mContext,AppKey.DISPLAY_RECOMMEND_GUID,false);
+        putBooleanToSPMap(AppContext.mContext,AppKey.DISPLAY_RECOMMEND_GUID,true);
+        return show;
     }
+
+
+//    /**
+//     * 初始化 引导页 标志
+//     */
+//    public static void initGuideIndex() {
+//        putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_IMAGES_GUIDE, true);
+//        putBooleanToSPMap(AppContext.mContext, AppKey.IS_POSTCARD_GUIDE, true);
+//        putBooleanToSPMap(AppContext.mContext, AppKey.IS_PLANET_GUIDE, true);
+//
+//    }
+
+    public static String getLoginType() {
+        return getValueFromSPMap(AppContext.mContext, AppKey.LOGIN_TYPE);
+    }
+
+    public static void putLoginType(String type) {
+        putValueToSPMap(AppContext.mContext, AppKey.LOGIN_TYPE, type);
+    }
+
+
 }
 
 

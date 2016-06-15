@@ -44,6 +44,16 @@ public class RecommendModel {
     private float suggest;
     private int width;
     public boolean isout;  //是否去过
+    private String price;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
     /**
      * key : 夜生活
      * value : 90
@@ -146,6 +156,11 @@ public class RecommendModel {
 
     public double getLatitude() {
         double v = 0;
+
+
+        if (null==latitude){
+            return v;
+        }
         try {
             v = Double.parseDouble(latitude);
         } catch (NumberFormatException e) {
@@ -159,6 +174,8 @@ public class RecommendModel {
         double v = 0;
         try {
             v = Double.parseDouble(longitude);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

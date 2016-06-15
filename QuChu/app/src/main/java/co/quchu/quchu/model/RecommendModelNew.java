@@ -25,8 +25,8 @@ public class RecommendModelNew {
     private int pageSize;
     private int pagesNo;
     private int resultCount;
-    private Object rowCount;
-    private Object rowEnd;
+    private int rowCount;
+    private int rowEnd;
     private int rowStart;
     /**
      * address : 嘉禾路197-199号磐基中心之名品中心L1层125号
@@ -67,11 +67,12 @@ public class RecommendModelNew {
         return resultCount;
     }
 
-    public Object getRowCount() {
+
+    public int getRowCount() {
         return rowCount;
     }
 
-    public Object getRowEnd() {
+    public int getRowEnd() {
         return rowEnd;
     }
 

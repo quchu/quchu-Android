@@ -1,43 +1,24 @@
 package co.quchu.quchu.view.adapter;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.net.IRequestListener;
-import co.quchu.quchu.net.NetApi;
-import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.FlyMeUtils;
-import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.QuchuDetailsActivity;
-import co.quchu.quchu.widget.HorizontalNumProgressBar;
 import co.quchu.quchu.widget.TagCloudView;
-import co.quchu.quchu.widget.ratingbar.ProperRatingBar;
 
 /**
  * RecommendAdapter
@@ -67,98 +48,46 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
 
     @Override
     public RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_search_cardview, parent, false));
+        holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_nearby_quchu, parent, false));
         return holder;
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+
     @Override
-    public void onBindViewHolder(RecommendHolder holder, int position) {
+    public void onBindViewHolder(RecommendHolder holder, final int position) {
         this.holder = holder;
         model = arrayList.get(position);
-        if (!StringUtils.isEmpty(model.getRgb())) {
-            holder.rootCv.setCardBackgroundColor(Color.parseColor("#" + model.getRgb()));
-        } else {
-            holder.rootCv.setCardBackgroundColor(Color.parseColor("#808080"));
-        }
-        holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
-        if (isFlyme) {
-            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.45f);
-        } else {
-            holder.itemRecommendCardPhotoSdv.setAspectRatio(1.33f);
-        }
-        holder.itemRecommendCardAddressTv.setText(model.getAddress());
-        holder.itemRecommendCardCityTv.setText(model.getDescribe());
-        holder.itemRecommendCardNameTv.setText(model.getName());
-        holder.itemRecommendCardPrb.setRating((int) (model.getSuggest() + 0.5) >= 5 ? 5 : ((int) (model.getSuggest())));
-
-        holder.itemRecommendCardProgressOne.setProgress(model.getGenes().get(0).getValue());
-        holder.itemRecommendCardProgressOne.setProgressName(model.getGenes().get(0).getKey());
-        holder.itemRecommendCardProgressTwo.setProgress(model.getGenes().get(1).getValue());
-        holder.itemRecommendCardProgressTwo.setProgressName(model.getGenes().get(1).getKey());
-        holder.itemRecommendCardProgressThree.setProgress(model.getGenes().get(2).getValue());
-        holder.itemRecommendCardProgressThree.setProgressName(model.getGenes().get(2).getKey());
-
-        if (model.isIsf()) {
-            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_collect));
-        } else {
-            holder.itemRecommendCardCollectIv.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_detail_uncollect));
-        }
-
-
-        if (null != model.getTags() && model.getTags().size() > 0) {
-            ArrayList<String> tags = new ArrayList<String>();
-            for (int i = 0; i < model.getTags().size(); i++) {
-                tags.add(model.getTags().get(i).getZh());
+        holder.tvName.setText(model.getName());
+        List<String> strTags = new ArrayList<>();
+        List<RecommendModel.TagsEntity> tags = model.getTags();
+        if (null!=tags && tags.size()>0){
+            for (int i = 0; i < tags.size(); i++) {
+                strTags.add(tags.get(i).getZh());
             }
-            holder.detailStoreTagcloundTcv.setVisibility(View.VISIBLE);
-            holder.detailStoreTagcloundTcv.setTags(tags);
-        } else {
-            holder.detailStoreTagcloundTcv.setVisibility(View.INVISIBLE);
         }
-        double latitude = SPUtils.getLatitude();
-        if (model.getLatitude() != 0 && SPUtils.getLatitude() != 0) {
-            holder.item_recommend_card_distance_tv.setVisibility(View.VISIBLE);
-            int distance = (int) AMapUtils.calculateLineDistance(new LatLng(model.getLatitude(), model.getLongitude()),
-                    new LatLng(SPUtils.getLatitude(), SPUtils.getLongitude()));
-
-            String s = "距您:" + ((distance / 1000) / 100f) * 100 + "km";
-            holder.item_recommend_card_distance_tv.setText(s);
-            StringUtils.alterBoldTextColor(holder.item_recommend_card_distance_tv, 2, 2 + s.length(), R.color.white);
-
-
-
-        } else {
-            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
-        }
-    }
-
-
-    private void setFavorite(final int position) {
-        String favoUrl = "";
-        if (arrayList.get(position).isIsf()) {
-            favoUrl = String.format(NetApi.userDelFavorite, arrayList.get(position).getPid(), NetApi.FavTypePlace);
-        } else {
-            favoUrl = String.format(NetApi.userFavorite, arrayList.get(position).getPid(), NetApi.FavTypePlace);
-        }
-        NetService.get(mContext, favoUrl, new IRequestListener() {
+        holder.tcvTag.setTags(strTags);
+        //holder.tvAddress.setText(model.getAddress());
+        holder.sdvImage.setImageURI(Uri.parse(model.getCover()));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(JSONObject response) {
-                if (arrayList.get(position).isIsf()) {
-                    Toast.makeText(mContext, "取消收藏!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(mContext, "收藏成功!", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                if (null!=mListener){
+                    mListener.onClick(position);
                 }
-                arrayList.get(position).setIsf(!arrayList.get(position).isIsf());
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public boolean onError(String error) {
-
-                return false;
             }
         });
+
     }
+
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener{
+        void onClick(int position);
+    }
+
 
     @Override
     public int getItemCount() {
@@ -169,60 +98,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendH
     }
 
     class RecommendHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.item_recommend_card_collect_iv)
-        ImageView itemRecommendCardCollectIv;
-        @Bind(R.id.item_recommend_card_name_tv)
-        TextView itemRecommendCardNameTv;
-        @Bind(R.id.item_recommend_card_city_tv)
-        TextView itemRecommendCardCityTv;
-        @Bind(R.id.item_recommend_card_photo_sdv)
-        SimpleDraweeView itemRecommendCardPhotoSdv;
-        @Bind(R.id.item_recommend_card_prb)
-        ProperRatingBar itemRecommendCardPrb;
-        @Bind(R.id.item_recommend_card_address_tv)
-        TextView itemRecommendCardAddressTv;
-//        @Bind(R.id.item_recommend_card_collect_rl)
-//        RelativeLayout itemRecommendCardCollectRl;
-//        @Bind(R.id.item_recommend_card_interest_rl)
-//        RelativeLayout itemRecommendCardInterestRl;
-//        @Bind(R.id.item_recommend_card_reply_rl)
-//        RelativeLayout itemRecommendCardReplyRl;
 
-        @Bind(R.id.item_recommend_card_progress_one)
-        HorizontalNumProgressBar itemRecommendCardProgressOne;
-        @Bind(R.id.item_recommend_card_progress_two)
-        HorizontalNumProgressBar itemRecommendCardProgressTwo;
-        @Bind(R.id.item_recommend_card_progress_three)
-        HorizontalNumProgressBar itemRecommendCardProgressThree;
-        @Bind(R.id.root_cv)
-        CardView rootCv;
-        @Bind(R.id.detail_store_tagclound_tcv)
-        TagCloudView detailStoreTagcloundTcv;
-        @Bind(R.id.item_recommend_card_distance_tv)
-        TextView item_recommend_card_distance_tv;
+        @Bind(R.id.desc)
+        TextView tvName;
+        @Bind(R.id.tag)
+        TagCloudView tcvTag;
+//        @Bind(R.id.address)
+//        TextView tvAddress;
+        @Bind(R.id.simpleDraweeView)
+        SimpleDraweeView sdvImage;
 
         public RecommendHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        @OnClick({R.id.root_cv, R.id.item_recommend_card_collect_rl, R.id.item_recommend_card_reply_rl, R.id.item_recommend_card_interest_rl})
-        public void searchClick(View v) {
-            if (KeyboardUtils.isFastDoubleClick())
-                return;
-            switch (v.getId()) {
-                case R.id.root_cv:
-                case R.id.item_recommend_card_reply_rl:
-                    mContext.startActivity(new Intent(mContext, QuchuDetailsActivity.class).putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, arrayList.get(getPosition()).getPid()));
-                    break;
-                case R.id.item_recommend_card_collect_rl:
-                    setFavorite(getPosition());
-                    break;
-                case R.id.item_recommend_card_interest_rl:
-                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(arrayList.get(getPosition()).getPid(), arrayList.get(getPosition()).getName(), true);
-                    shareDialogFg.show(mContext.getFragmentManager(), "share_dialog");
-                    break;
-            }
-        }
+
     }
 }

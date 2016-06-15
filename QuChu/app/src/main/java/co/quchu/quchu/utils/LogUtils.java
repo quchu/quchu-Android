@@ -2,9 +2,7 @@ package co.quchu.quchu.utils;
 
 import android.util.Log;
 
-import com.orhanobut.logger.Logger;
-
-import co.quchu.quchu.base.Constants;
+import co.quchu.quchu.BuildConfig;
 
 /**
  * LogUtils
@@ -16,60 +14,55 @@ public class LogUtils {
     private static String tag = "QuChu";
 
     public static void e(String msg) {
-        if (Constants.ISPRINTLOG) {
-            Logger.init();
-            Logger.e(msg);
+        if (BuildConfig.DISPLAY_LOG) {
+            Log.e(tag, msg);
         }
     }
 
     public static void i(String msg) {
-        if (Constants.ISPRINTLOG) {
-            Logger.init();
-            Logger.i(msg);
+        if (BuildConfig.DISPLAY_LOG) {
+            Log.i(tag, msg);
         }
     }
 
     public static void i(String TAG, String msg) {
-        if (Constants.ISPRINTLOG) {
-            Logger.init();
-            Logger.i(msg);
+        if (BuildConfig.DISPLAY_LOG) {
+            Log.i(TAG, msg);
         }
     }
 
     public static void v(String msg) {
-        if (Constants.ISPRINTLOG) {
-            Logger.init();
-            Logger.v(msg);
+        if (BuildConfig.DISPLAY_LOG) {
+            Log.v(tag, msg);
         }
     }
 
     public static void d(String msg) {
-        if (Constants.ISPRINTLOG) {
-            Logger.init();
-            Logger.d(msg);
+        if (BuildConfig.DISPLAY_LOG) {
+            Log.d(tag, msg);
         }
     }
 
     public static void w(String msg) {
-        if (Constants.ISPRINTLOG) {
-            Logger.init();
-            Logger.w(msg);
+        if (BuildConfig.DISPLAY_LOG) {
+            Log.w(tag, msg);
         }
     }
 
     /**
      * 打印json数据
+     *
      * @param msg
      */
-    public static void json(String msg){
-        if (Constants.ISPRINTLOG) {
-           Log.e(tag + "Json=", msg);
+    public static void json(String msg) {
+        if (BuildConfig.DISPLAY_LOG) {
+            Log.e(tag + "Json=", msg);
         }
     }
 
-    public static void netLog(Object msg){
-        if (Constants.ISPRINTLOG) {
-            Log.e(tag+"Net=",msg.toString());
+    public static void netLog(Object msg) {
+        if (BuildConfig.DISPLAY_LOG) {
+            Log.e(tag + "Net=", msg.toString());
         }
     }
 
@@ -78,16 +71,10 @@ public class LogUtils {
         for (int i = 0; i <= chunkCount; i++) {
             int max = 4000 * (i + 1);
             if (max >= msg.length()) {
-                Log.d(tag,s+"NetService== (" + i + "/" + chunkCount + "): " + msg.substring(4000 * i));
+                Log.d(tag, s + "NetService== (" + i + "/" + chunkCount + "): " + msg.substring(4000 * i));
             } else {
-                Log.d(tag,s+"NetService== (" + i + "/" + chunkCount + "): " + msg.substring(4000 * i, max));
+                Log.d(tag, s + "NetService== (" + i + "/" + chunkCount + "): " + msg.substring(4000 * i, max));
             }
         }
     }
-
-
-    /*
-    *Error:Execution failed for task ':app:dexDebug'.
-> com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException: Process 'command 'C:\Program Files\Java\jdk1.8.0_60\bin\java.exe'' finished with non-zero exit value 2
-    * */
 }
