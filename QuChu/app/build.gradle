@@ -9,8 +9,8 @@ android {
         applicationId "co.quchu.quchu"
         targetSdkVersion 22
         minSdkVersion 16
-        versionCode 1032
-        versionName "1.3.2"
+        versionCode 1033
+        versionName "1.3.1"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
 
@@ -74,11 +74,6 @@ android {
         quchu_uc {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_uc"]
         }
-
-        quchu_uat {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_uat"]
-        }
-
         quchu_anzhi {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_anzhi"]
         }
@@ -100,17 +95,14 @@ android {
         quchu_lephone {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_lephone"]
         }
-        quchu_sit {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_sit"]
-        }
         quchu_official {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_official"] //官网包渠道名
         }
         quchu_umeng {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_umeng"]
         }
-        quchu_baidu {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_baidu"]
+        quchu_weibo {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_weibo"]
         }
     }
 
