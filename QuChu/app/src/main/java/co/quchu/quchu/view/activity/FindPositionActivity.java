@@ -331,6 +331,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        GalleryFinal.setmCallback(null);
     }
 
 

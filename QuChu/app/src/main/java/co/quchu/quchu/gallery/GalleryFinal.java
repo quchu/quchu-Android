@@ -72,6 +72,10 @@ public class GalleryFinal {
 //    }
 
 
+    public static void setmCallback(OnHanlderResultCallback mCallback) {
+        GalleryFinal.mCallback = mCallback;
+    }
+
     /**
      * 打开Gallery-单选
      *
