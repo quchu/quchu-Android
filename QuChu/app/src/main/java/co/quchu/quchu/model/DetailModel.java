@@ -63,7 +63,7 @@ public class DetailModel implements Serializable{
     private boolean isActivity;
     private boolean isf;
     private boolean isout;
-    private boolean isMap;
+    private boolean isMap = true;
     private int width;
     private int pid;
     private int autorId;
