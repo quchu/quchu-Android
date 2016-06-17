@@ -59,7 +59,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/half_margin"
                     android:text="取消"
-                    android:textColor="@color/standard_color_h1_dark"
+                    android:textColor="@color/standard_color_h2_dark"
                     android:textSize="@dimen/word_subhead_size" />
             </RelativeLayout>
         </LinearLayout>
@@ -83,7 +83,7 @@
                 android:paddingLeft="@dimen/half_margin"
                 android:paddingRight="@dimen/half_margin"
                 android:paddingTop="@dimen/quarter_margin"
-                android:textColor="@color/standard_color_h3_dark"
+                android:textColor="@color/standard_color_h2_dark"
                 android:textSize="@dimen/word_size_time"
                 android:visibility="invisible" />
 
@@ -99,7 +99,7 @@
                 android:paddingLeft="@dimen/half_margin"
                 android:paddingRight="@dimen/half_margin"
                 android:paddingTop="@dimen/quarter_margin"
-                android:textColor="@color/standard_color_h3_dark"
+                android:textColor="@color/standard_color_h2_dark"
                 android:textSize="@dimen/word_size_time"
                 android:visibility="invisible" />
 
@@ -114,18 +114,25 @@
                 android:paddingLeft="@dimen/half_margin"
                 android:paddingRight="@dimen/half_margin"
                 android:paddingTop="@dimen/quarter_margin"
-                android:textColor="@color/standard_color_h3_dark"
+                android:textColor="@color/standard_color_h2_dark"
                 android:textSize="@dimen/word_size_time"
                 android:visibility="invisible" />
 
         </LinearLayout>
+        <View
+            android:layout_below="@id/llTags"
+            android:id="@+id/vDivider"
+            android:layout_height="1px"
+            android:layout_width="match_parent"
+            android:background="@color/standard_color_h3_dark"
+            />
 
         <FrameLayout
             android:id="@+id/search_history_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
-            android:layout_below="@id/llTags">
+            android:layout_below="@id/vDivider"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"

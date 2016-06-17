@@ -107,9 +107,9 @@ public class ShareQuchuActivity extends BaseActivity {
                 try {
                     String url;
                     if (mJokingMode){
-                        url = "http://sit.quchu.co/h5/place/place_info_"+mQuchuId+".html";
+                        url = "http://www.quchu.co/h5/place/place_info_"+mQuchuId+".html";
                     }else{
-                        url = "http://sit.quchu.co/h5/place_tk/place_info_"+mQuchuId+".html";
+                        url = "http://www.quchu.co/h5/place_tk/place_info_"+mQuchuId+".html";
                     }
                     ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(url,"趣处");
                     shareDialogFg.show(getSupportFragmentManager(), "share_dialog");

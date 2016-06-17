@@ -180,9 +180,8 @@ public class WechatHelper {
         webpage.webpageUrl = shareUrl;
         msg = new WXMediaMessage(webpage);
 
-        //  msg.description = "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;";
         msg.title = title;
-        msg.description = "←点我\n (*^O^*)";
+        msg.description = "一千个人，就有一千个趣处";
 
         msg.thumbData = bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
                 R.mipmap.ic_launcher), true);

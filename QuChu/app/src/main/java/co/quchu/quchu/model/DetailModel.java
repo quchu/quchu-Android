@@ -63,6 +63,7 @@ public class DetailModel implements Serializable{
     private boolean isActivity;
     private boolean isf;
     private boolean isout;
+    private boolean isMap;
     private int width;
     private int pid;
     private int autorId;
@@ -125,6 +126,14 @@ public class DetailModel implements Serializable{
     }
 
 
+    public boolean isMap() {
+        return isMap;
+    }
+
+    public void setMap(boolean map) {
+        isMap = map;
+    }
+
     public void copyFrom(DetailModel objTarget){
 
         setActivityInfo(objTarget.getActivityInfo());
@@ -153,6 +162,8 @@ public class DetailModel implements Serializable{
         setHeight(objTarget.getHeight());
         setSuggest(objTarget.getSuggest());
         setMyCardId(objTarget.getMyCardId());
+        setMap(objTarget.isMap());
+
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;
 
