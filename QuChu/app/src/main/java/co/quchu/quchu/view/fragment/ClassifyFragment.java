@@ -133,10 +133,8 @@ public class ClassifyFragment extends BaseFragment implements SwipeRefreshLayout
                             //http://sit.quchu.co/app-main-service/searchSpecial/getSearchSpecialListByTagId?tagId=283&cityId=1
 
                             String url = String.format(NetApi.quchu_topic_h5, model.getTagId(), SPUtils.getCityId());
-                            Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                            intent.putExtra(WebViewActivity.BUNDLE_KEY_WEBVIEW_URL, url);
                             //intent.putExtra(ClassifyDetailActivity.PARAMETER_TITLE, title);
-                            getActivity().startActivity(intent);
+                            WebViewActivity.enterActivity(getActivity(),url,model.getZh(),true);
                         }
                     }
                 });

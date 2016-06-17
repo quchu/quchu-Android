@@ -405,10 +405,10 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                             if (NetUtil.isNetworkConnected(getApplicationContext())) {
                                 if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
                                     MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
-                                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName());
+                                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName(),false);
                                 } else {
                                     MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
-                                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName());
+                                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName(),false);
                                 }
                             } else {
                                 Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();

@@ -160,6 +160,7 @@ public class EnhancedToolbar extends Toolbar {
                 v = new TextView(new ContextThemeWrapper(getContext(), R.style.ToolbarItem_ActionTextView));
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 lp.addRule(RelativeLayout.CENTER_VERTICAL);
+                lp.setMargins(0,0,getResources().getDimensionPixelSize(R.dimen.half_margin),0);
                 lp.width = LinearLayoutCompat.LayoutParams.WRAP_CONTENT;
                 break;
             case TYPE_LEFT_IV:

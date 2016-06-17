@@ -78,7 +78,7 @@
                 android:id="@+id/search_tag1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_lineframe_white"
+                android:background="@drawable/shape_lineframe_black"
                 android:paddingBottom="@dimen/quarter_margin"
                 android:paddingLeft="@dimen/half_margin"
                 android:paddingRight="@dimen/half_margin"
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/half_margin"
                 android:layout_toRightOf="@+id/search_tag1"
-                android:background="@drawable/shape_lineframe_white"
+                android:background="@drawable/shape_lineframe_black"
                 android:paddingBottom="@dimen/quarter_margin"
 
                 android:paddingLeft="@dimen/half_margin"
@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/half_margin"
                 android:layout_toRightOf="@+id/search_tag2"
-                android:background="@drawable/shape_lineframe_white"
+                android:background="@drawable/shape_lineframe_black"
                 android:paddingBottom="@dimen/quarter_margin"
                 android:paddingLeft="@dimen/half_margin"
                 android:paddingRight="@dimen/half_margin"
@@ -120,6 +120,7 @@
 
         </LinearLayout>
         <View
+            android:layout_marginTop="@dimen/half_margin"
             android:layout_below="@id/llTags"
             android:id="@+id/vDivider"
             android:layout_height="1px"

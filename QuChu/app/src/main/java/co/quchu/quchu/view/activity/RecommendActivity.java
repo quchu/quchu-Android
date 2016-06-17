@@ -163,7 +163,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
         classifyFragment = new ClassifyFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).hide(classifyFragment).commitAllowingStateLoss();
         initView();
         recommendTitleMoreRl.setOnClickListener(this);
         UmengUpdateAgent.setUpdateListener(null);
@@ -337,7 +337,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     .start();
 
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction.hide(classifyFragment).show(recommendFragment).commit();
+            transaction.hide(classifyFragment).show(recommendFragment).commitAllowingStateLoss();
         } else {
             tvSearch.animate()
                     .translationY(0)
@@ -352,7 +352,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .start();
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction .hide(recommendFragment).show(classifyFragment).commit();
+            transaction .hide(recommendFragment).show(classifyFragment).commitAllowingStateLoss();
         }
         viewPagerIndex = index;
     }
