@@ -28,7 +28,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/double_margin"
             fresco:actualImageScaleType="focusCrop"
-            fresco:placeholderImage="@mipmap/avatar_2"
+            fresco:placeholderImage="@mipmap/head_place_hold"
             fresco:roundAsCircle="true" />
         <!--card_view:roundingBorderWidth="3dp" -->
         <!--card_view:roundingBorderColor="@android:color/black"-->

@@ -231,7 +231,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         public void selectedAblum() {
             initGralley();
             int REQUEST_CODE_GALLERY = 0x01;
-            GalleryFinal.openGallerySingle(AccountSettingActivity.this,REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
+            GalleryFinal.openGallerySingle(AccountSettingActivity.this, REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
         }
 
         @Override
@@ -291,6 +291,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         super.onDestroy();
         ButterKnife.unbind(this);
 //        GalleryFinal.cleanCacheFile();
+        GalleryFinal.setmCallback(null);
     }
 
 
@@ -302,7 +303,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
             Toast.makeText(this, "昵称必须为1-10位字符", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (StringUtils.containsEmoji(newUserNickName)){
+        if (StringUtils.containsEmoji(newUserNickName)) {
             Toast.makeText(this, "昵称不能使用表情", Toast.LENGTH_SHORT).show();
             return;
         }
