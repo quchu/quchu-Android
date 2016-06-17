@@ -1,10 +1,13 @@
 package co.quchu.quchu.view.adapter;
 
+import android.animation.ObjectAnimator;
 import android.net.Uri;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,7 +17,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.FindBean;
+import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.SwipeDeleteLayout;
 
 /**
@@ -26,27 +32,28 @@ public class FindAdapter extends AdapterBase<FindBean.ResultEntity, FindAdapter.
 
     private boolean animationed;
 
+    public FindAdapter() {
+        animationed = SPUtils.getBooleanFromSPMap(AppContext.mContext, AppKey.SPF_KEY_SWIPE_DELETE_PROMPT_FIND, false);
+    }
+
     @Override
     public void onBindView(final ViewHold holder, final int position) {
         final FindBean.ResultEntity bean = data.get(position);
-//        if (position == 0 && !animationed) {
-//            animationed = true;
-//            ValueAnimator animation = ValueAnimator.ofInt(0, 20);
-//            animation.setInterpolator(new OvershootInterpolator());
-//            animation.setDuration(50);
-//            animation.setRepeatCount(5);
-//            animation.setRepeatMode(Animation.REVERSE);
-//            animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                @Override
-//                public void onAnimationUpdate(ValueAnimator animation) {
-//                    LogUtils.e("animationValues" + animation.getAnimatedValue());
-//                    holder.swipeDeleteItem.scrollTo((int) animation.getAnimatedValue(), 0);
-//                }
-//
-//            });
-//            animation.setStartDelay(500);
-//            animation.start();
-//        }
+        if (position == 0 && !animationed) {
+            animationed = true;
+            SPUtils.putBooleanToSPMap(AppContext.mContext, AppKey.SPF_KEY_SWIPE_DELETE_PROMPT_FIND, true);
+            holder.itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    ObjectAnimator animator = ObjectAnimator.ofInt(holder.swipeDeleteItem, "ScrollX", 0, holder.swipeDeleteAction.getWidth(), 0);
+                    animator.setDuration(800);
+                    animator.setStartDelay(500);
+                    animator.setInterpolator(new FastOutLinearInInterpolator());
+                    animator.start();
+                }
+            });
+        }
 
 
         holder.name.setText(bean.getName());

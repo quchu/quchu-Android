@@ -120,4 +120,8 @@ public interface AppKey {
      * 当前登陆的类型 微信 手机 游客 微博
      */
     String LOGIN_TYPE = "login_type";
+    /**
+     * 滑动删除提示
+     */
+    String SPF_KEY_SWIPE_DELETE_PROMPT_FIND="swipeDeletePrompt";
 }
