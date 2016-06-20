@@ -52,6 +52,9 @@ public class ImageUtils {
             v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+                    if (v.getWidth()==0||v.getHeight()==0){
+                        return;
+                    }
                      ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
                             .setResizeOptions(new ResizeOptions(v.getWidth(),  v.getHeight()))
                             .build();

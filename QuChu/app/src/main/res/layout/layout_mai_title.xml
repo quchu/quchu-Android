@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_heigh"
-    android:background="@color/colorPrimary"
+    android:background="@color/standard_color_white"
     tools:showIn="@layout/activity_recommend">
 
     <RelativeLayout
@@ -32,12 +32,7 @@
             android:src="@mipmap/ic_down_menu" />
     </RelativeLayout>
 
-    <co.quchu.quchu.widget.RecommendTitleGroup
-        android:id="@+id/recommend_title_center_rtg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="visible" />
+
 
     <ImageView
         android:id="@+id/recommend_title_more_iv"
@@ -47,5 +42,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:padding="@dimen/base_margin"
-        android:src="@mipmap/ic_user" />
+
+        android:src="@mipmap/ic_pull_menus_search" />
 </RelativeLayout>

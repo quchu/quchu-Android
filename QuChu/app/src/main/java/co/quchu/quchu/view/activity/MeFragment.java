@@ -3,7 +3,10 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,6 +30,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
@@ -38,7 +42,7 @@ import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.widget.LinearProgressView;
 
-public class MeActivity extends BaseActivity implements IMeActivity, View.OnClickListener {
+public class MeFragment extends BaseFragment implements IMeActivity, View.OnClickListener {
 
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
@@ -78,26 +82,32 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     //用户头像
     private String userHead;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_me);
-        ButterKnife.bind(this);
-        presenter = new MeActivityPresenter(this, this);
-        EnhancedToolbar toolbar = getEnhancedToolbar();
 
-        ImageView imageView = toolbar.getRightIv();
-        imageView.setImageResource(R.mipmap.ic_tools);
-        imageView.setOnClickListener(this);
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_me,container,false);
+
+        ButterKnife.bind(this,v);
+
+        presenter = new MeActivityPresenter(this, getActivity());
+//        EnhancedToolbar toolbar = ((BaseActivity)getActivity()).getEnhancedToolbar();
+//
+//        ImageView imageView = toolbar.getRightIv();
+//        imageView.setImageResource(R.mipmap.ic_tools);
+//        imageView.setOnClickListener(this);
         presenter.getUnreadMassageCound();
         initListener();
 
         userHead = AppContext.user.getPhoto();
         ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+        return v;
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("profile");
         presenter.getGene();
@@ -119,9 +129,9 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
     }
 
     @Override
-    protected void onPause() {
-        MobclickAgent.onPageEnd("profile");
+    public void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd("profile");
     }
 
     private void initListener() {
@@ -142,16 +152,16 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         switch (v.getId()) {
 
             case R.id.quchu://收藏
-                intent = new Intent(this, FavoriteActivity.class);
+                intent = new Intent(getActivity(), FavoriteActivity.class);
                 startActivity(intent);
                 break;
             case R.id.footPrint://脚印
                 if (user.isIsVisitors()) {
                     //游客
                     VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
-                    dialogFg.show(getSupportFragmentManager(), "");
+                    dialogFg.show(getActivity().getSupportFragmentManager(), "");
                 } else {
-                    intent = new Intent(this, MyFootprintActivity.class);
+                    intent = new Intent(getActivity(), MyFootprintActivity.class);
                     intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_ID, AppContext.user.getUserId());
                     intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_AGE, AppContext.user.getAge());
                     intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_COUND, AppContext.user.getCardCount());
@@ -168,31 +178,31 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
                 if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
                     //游客
                     VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
-                    dialogFg.show(getSupportFragmentManager(), "");
+                    dialogFg.show(getActivity().getSupportFragmentManager(), "");
                 } else {
-                    intent = new Intent(this, QuFriendsActivity.class);
+                    intent = new Intent(getActivity(), QuFriendsActivity.class);
 //                    Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this, headImage, QuFriendsActivity.KEY_TRANSITION_ANIMATION).toBundle();
                     startActivity(intent);
                 }
                 break;
             case R.id.massage://消息中心
-                intent = new Intent(this, MessageCenterActivity.class);
+                intent = new Intent(getActivity(), MessageCenterActivity.class);
                 startActivity(intent);
                 unReadMassage.setVisibility(View.INVISIBLE);
                 break;
             case R.id.findPosition://发现新去处
-                intent = new Intent(this, FindPositionListActivity.class);
+                intent = new Intent(getActivity(), FindPositionListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.toolbar_iv_right:
-                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "menu_setting");
+                MenuSettingDialogFg.newInstance().show(getActivity().getSupportFragmentManager(), "menu_setting");
                 break;
             case R.id.editOrLoginAction:
                 if (user.isIsVisitors()) {
-                    intent = new Intent(this, LoginActivity.class);
+                    intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
                 } else {
-                    intent = new Intent(this, AccountSettingActivity.class);
+                    intent = new Intent(getActivity(), AccountSettingActivity.class);
                     startActivity(intent);
                 }
                 break;
@@ -200,10 +210,6 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
 
     }
 
-    @Override
-    protected int activitySetup() {
-        return TRANSITION_TYPE_LEFT;
-    }
 
 
     @Override
@@ -232,15 +238,15 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
         }
     }
 
-    @Subscribe
-    public void onEvenBug(QuchuEventModel model) {
-        if (model.getFlag() == EventFlags.EVENT_GOTO_HOME_PAGE) {
-            finish();
-        }
-    }
+//    @Subscribe
+//    public void onEvenBug(QuchuEventModel model) {
+//        if (model.getFlag() == EventFlags.EVENT_GOTO_HOME_PAGE) {
+//            finish();
+//        }
+//    }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -260,17 +266,17 @@ public class MeActivity extends BaseActivity implements IMeActivity, View.OnClic
             public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
                 switch (updateStatus) {
                     case UpdateStatus.Yes: // has update
-                        UmengUpdateAgent.showUpdateDialog(MeActivity.this, updateInfo);
+                        UmengUpdateAgent.showUpdateDialog(getActivity(), updateInfo);
                         break;
                     case UpdateStatus.No: // has no update
-                        Toast.makeText(MeActivity.this, "当前已是最新版本!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "当前已是最新版本!", Toast.LENGTH_SHORT).show();
                         break;
                     case UpdateStatus.Timeout: // time out
-                        Toast.makeText(MeActivity.this, "网络超时,请稍后重试!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "网络超时,请稍后重试!", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
         });
-        UmengUpdateAgent.forceUpdate(this);
+        UmengUpdateAgent.forceUpdate(getActivity());
     }
 }

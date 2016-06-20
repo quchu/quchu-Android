@@ -179,5 +179,8 @@
     <string name="no_data">搜索无结果</string>
     <string name="promote_no_network_naughty">报告！你已失联，接受不到讯号！</string>
     <string name="promote_no_visitor">还没有人去过</string>
+    <string name="qu_recommend">趣推荐</string>
+    <string name="qu_discover">趣发现</string>
+    <string name="mine">我的</string>
 
 </resources>

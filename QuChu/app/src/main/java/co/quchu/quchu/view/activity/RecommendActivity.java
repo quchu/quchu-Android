@@ -8,10 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +31,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
@@ -44,7 +43,6 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.ClassifyFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 import co.quchu.quchu.widget.RecommendTitleGroup;
@@ -61,8 +59,6 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
     @Bind(R.id.recommend_title_more_iv)
     ImageView recommendTitleMoreRl;
-    @Bind(R.id.recommend_title_center_rtg)
-    RecommendTitleGroup recommendTitleCenterRtg;
     @Bind(R.id.search_bar)
     RelativeLayout rlSearchBar;
     @Bind(R.id.search_input_et)
@@ -72,25 +68,8 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     @Bind(R.id.ivArrow)
     ImageView ivArrow;
 
-    @Bind(R.id.ivGuideStep1Top)
-    View vGST1;
-    @Bind(R.id.ivGuideStep1Content)
-    View vGSC1;
-    @Bind(R.id.ivGuideStep1Bottom)
-    View vGSB1;
-    @Bind(R.id.ivGuideStep2Top)
-    View vGST2;
-    @Bind(R.id.ivGuideStep2Content)
-    View vGSC2;
-    @Bind(R.id.ivGuideStep2Bottom)
-    View vGSB2;
-    @Bind(R.id.vCover2Left)
-    View vGSC2L;
-    @Bind(R.id.vCover2Right)
-    View vGSC2R;
-
-    @Bind(R.id.vEventReceiver)
-    View vReceiver;
+    @Bind(R.id.rgTab)
+    RadioGroup rbBottomTab;
 
 
     public long firstTime = 0;
@@ -98,6 +77,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     public int viewPagerIndex = 0;
     private RecommendFragment recommendFragment;
     private ClassifyFragment classifyFragment;
+    private MeFragment meFragment;
 
     private int mClickTimes = 0;
 
@@ -116,54 +96,14 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
-        if (!SPUtils.getShowRecommendGuide()){
 
-            vGST1.setVisibility(View.VISIBLE);
-            vGSC1.setVisibility(View.VISIBLE);
-            vGSB1.setVisibility(View.VISIBLE);
-
-            vReceiver.setVisibility(View.VISIBLE);
-            vReceiver.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (mClickTimes==0){
-                        vGST1.setVisibility(View.GONE);
-                        vGSC1.setVisibility(View.GONE);
-                        vGSB1.setVisibility(View.GONE);
-                        vGST2.setVisibility(View.VISIBLE);
-                        vGSC2.setVisibility(View.VISIBLE);
-                        vGSB2.setVisibility(View.VISIBLE);
-                        vGSC2L.setVisibility(View.VISIBLE);
-                        vGSC2R.setVisibility(View.VISIBLE);
-
-                        float halfContentSize = (flContainer.getHeight()/2) - (getResources().getDimensionPixelSize(R.dimen.dialog_margin));
-                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) vGSB2.getLayoutParams();
-                        lp.height = (int) halfContentSize;
-
-
-                        vGSB2.requestLayout();
-                        vGSB2.invalidate();
-
-                    }else if(mClickTimes>=1){
-                        vGST2.setVisibility(View.GONE);
-                        vGSC2.setVisibility(View.GONE);
-                        vGSB2.setVisibility(View.GONE);
-                        vGSC2L.setVisibility(View.GONE);
-                        vGSC2R.setVisibility(View.GONE);
-                        vReceiver.setVisibility(View.GONE);
-                        vReceiver.setOnClickListener(null);
-                    }
-                    mClickTimes += 1;
-                }
-            });
-        }
 
 
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
         classifyFragment = new ClassifyFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).hide(classifyFragment).commitAllowingStateLoss();
+        meFragment = new MeFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).add(R.id.container, meFragment, null).hide(classifyFragment).hide(meFragment).commitAllowingStateLoss();
         initView();
         recommendTitleMoreRl.setOnClickListener(this);
         UmengUpdateAgent.setUpdateListener(null);
@@ -183,6 +123,25 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                 list.clear();
                 list.addAll(pList);
                 checkIfCityChanged();
+            }
+        });
+        rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rbRecommend:
+
+                        viewpagerSelected(0);
+                        break;
+                    case R.id.rbDiscovery:
+
+                        viewpagerSelected(1);
+                        break;
+                    case R.id.rbMine:
+
+                        viewpagerSelected(2);
+                        break;
+                }
             }
         });
 
@@ -271,17 +230,16 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.recommend_title_more_iv:
-                MobclickAgent.onEvent(this, "Profile_c");
-                Intent intent = new Intent(this, MeActivity.class);
 
-                startActivity(intent);
+    @OnClick({R.id.recommend_title_more_iv})
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.recommend_title_more_iv:
+                startActivity(new Intent(RecommendActivity.this,SearchActivity.class));
                 break;
         }
     }
+
 
     private void showCityDialog() {
         ivArrow.animate().rotation(180).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
@@ -297,23 +255,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     }
 
     private void initView() {
-
-        recommendTitleCenterRtg.setViewsClickable(true);
-        recommendTitleCenterRtg.setInitSelected(false);
         viewpagerSelected(0);
-
-        recommendTitleCenterRtg.setSelectedListener(new RecommendTitleGroup.RecoSelectedistener() {
-            @Override
-            public void onViewsClick(int flag) {
-                if (flag == 0) {
-                    LogUtils.json("selected == right");
-                    viewpagerSelected(1);
-                } else {
-                    viewpagerSelected(0);
-                }
-            }
-        });
-
     }
 
 
@@ -337,8 +279,8 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     .start();
 
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction.hide(classifyFragment).show(recommendFragment).commitAllowingStateLoss();
-        } else {
+            transaction.hide(classifyFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
+        } else if(index==1) {
             tvSearch.animate()
                     .translationY(0)
                     .alpha(1)
@@ -352,7 +294,24 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .start();
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction .hide(recommendFragment).show(classifyFragment).commitAllowingStateLoss();
+            transaction.hide(recommendFragment).hide(meFragment).show(classifyFragment).commitAllowingStateLoss();
+        } else if(index ==2){
+            tvSearch.animate()
+                    .translationY(-rlSearchBar.getHeight())
+                    .alpha(0)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+            flContainer.animate()
+                    .translationY(0)
+                    .scaleY(1)
+                    .scaleX(1)
+                    .setDuration(300)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .start();
+
+            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+            transaction.hide(classifyFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
         }
         viewPagerIndex = index;
     }

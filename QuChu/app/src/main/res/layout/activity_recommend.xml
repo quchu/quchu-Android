@@ -42,89 +42,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title"
+        android:layout_above="@+id/rgTab"
         android:background="@color/colorBackground" />
-    <View
-        android:id="@+id/ivGuideStep1Top"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_heigh"
-        android:background="@color/translucent_dark_deep"
-        android:visibility="gone"
-        />
 
-    <View
-        android:id="@+id/ivGuideStep1Bottom"
-        android:layout_below="@id/ivGuideStep1Top"
-        android:layout_marginTop="48dp"
+    <RadioGroup
+        android:id="@+id/rgTab"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/translucent_dark_deep"
-        android:visibility="gone"
-        />
-
-    <ImageView
-        android:id="@+id/ivGuideStep1Content"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_guide_step_1"
-        android:layout_marginTop="48dp"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:layout_below="@id/ivGuideStep1Top"
-        />
-
-    <View
-        android:id="@+id/ivGuideStep2Top"
-        android:layout_width="match_parent"
-        android:layout_height="118dp"
-        android:background="@color/translucent_dark_deep"
-        android:visibility="gone"
-        />
-
-    <View
-        android:id="@+id/vCover2Left"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ivGuideStep2Top"
-        android:layout_above="@+id/ivGuideStep2Bottom"
-        android:background="@color/translucent_dark_deep"
-        android:visibility="gone"
-        />
-    <View
-        android:id="@+id/vCover2Right"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ivGuideStep2Top"
-        android:layout_above="@+id/ivGuideStep2Bottom"
-        android:layout_alignParentRight="true"
-        android:background="@color/translucent_dark_deep"
-        android:visibility="gone"
-        />
-
-    <!--104 + 24 + imageHeight-->
-    <View
-        android:id="@+id/ivGuideStep2Bottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/translucent_dark_deep"
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        />
+        android:background="@color/standard_color_white"
+        >
+        <RadioButton
+            android:id="@+id/rbRecommend"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/qu_recommend"
+            />
+        <RadioButton
+            android:id="@+id/rbDiscovery"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/qu_discover"
+            />
+        <RadioButton
+            android:id="@+id/rbMine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/mine"
+            />
 
-    <ImageView
-        android:id="@+id/ivGuideStep2Content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_guide_step_2"
-        android:layout_alignTop="@+id/ivGuideStep2Bottom"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        />
-
-    <View
-        android:id="@+id/vEventReceiver"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        />
+    </RadioGroup>
 
 </RelativeLayout>

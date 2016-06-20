@@ -199,9 +199,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".view.activity.MeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.QuchuListSpecifyTagActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -220,9 +217,6 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".gallery.PhotoSelectActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".gallery.PhotoPreviewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".gallery.PhotoEditActivity"

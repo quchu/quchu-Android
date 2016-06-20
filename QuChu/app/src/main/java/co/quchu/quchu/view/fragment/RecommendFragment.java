@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseFragment;
@@ -32,6 +33,7 @@ import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import co.quchu.quchu.view.activity.SearchActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
 import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout;
@@ -138,7 +140,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             viewpager.setVisibility(View.GONE);
             return;
         }
-        tabLayout.setVisibility(View.VISIBLE);
+        tabLayout.setVisibility(View.GONE);
         viewpager.setVisibility(View.VISIBLE);
         errorView.hideView();
 
@@ -196,6 +198,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             presenter.initTabData(false, selectedTag);
         }
     }
+
 
     private String selectedTag = "";
 

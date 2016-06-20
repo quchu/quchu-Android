@@ -6,10 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/bg_pager"
     android:fitsSystemWindows="true"
-    tools:context="co.quchu.quchu.view.activity.MeActivity">
+    tools:context=".view.activity.MeFragment">
 
 
-    <include layout="@layout/cp_enhanced_toolbar" />
 
     <RelativeLayout
         android:id="@+id/layout_head"

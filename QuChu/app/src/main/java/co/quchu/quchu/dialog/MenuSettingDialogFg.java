@@ -17,7 +17,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.view.activity.FeedbackActivity;
-import co.quchu.quchu.view.activity.MeActivity;
+import co.quchu.quchu.view.activity.MeFragment;
 import co.quchu.quchu.view.activity.StatementActivity;
 
 /**
@@ -76,11 +76,11 @@ public class MenuSettingDialogFg extends DialogFragment implements View.OnClickL
                 getActivity().startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 MenuSettingDialogFg.this.dismiss();
                 break;
-            case R.id.dialog_menu_setting_update_tv:
-                if (getActivity() instanceof MeActivity)
-                    ((MeActivity) getActivity()).checkUpdate();
-                MenuSettingDialogFg.this.dismiss();
-                break;
+//            case R.id.dialog_menu_setting_update_tv:
+//                if (getActivity() instanceof MeFragment)
+//                    ((MeFragment) getActivity()).checkUpdate();
+//                MenuSettingDialogFg.this.dismiss();
+//                break;
         }
 
     }
