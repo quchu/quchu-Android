@@ -3,7 +3,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/bg_pager"
     android:fitsSystemWindows="true"
     tools:context=".view.activity.MeFragment">
@@ -279,6 +279,7 @@
 
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/findPosition"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height"

@@ -90,9 +90,9 @@ public class RecommendAdapter extends PagerAdapter {
             price = "-";
         }
 
-        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext, R.color.standard_color_red, mContext.getString(R.string.avg_cost_with_rmb_symbol), "¥"+price, "起"));
-        holder.rbRating.setRating(model.getSuggest());
-        holder.rbRating.setIsIndicator(true);
+//        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext, R.color.standard_color_red, mContext.getString(R.string.avg_cost_with_rmb_symbol), "¥"+price, "起"));
+//        holder.rbRating.setRating(model.getSuggest());
+//        holder.rbRating.setIsIndicator(true);
         //holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
 
@@ -139,19 +139,19 @@ public class RecommendAdapter extends PagerAdapter {
             holder.tag2.setVisibility(View.GONE);
             holder.tag3.setVisibility(View.GONE);
         }
-        if (0 == SPUtils.getLatitude() || 0 == SPUtils.getLongitude()) {
-            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
-        } else {
-            String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
-            String text = "距您当前位置" + distance;
-
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-            builder.append(text);
-            ForegroundColorSpan span_1 = new ForegroundColorSpan(mContext.getResources().getColor(R.color.standard_color_red));
-            builder.setSpan(span_1, 6, text.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            holder.item_recommend_card_distance_tv.setText(builder);
-
-        }
+//        if (0 == SPUtils.getLatitude() || 0 == SPUtils.getLongitude()) {
+//            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
+//        } else {
+//            String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
+//            String text = "距您当前位置" + distance;
+//
+//            SpannableStringBuilder builder = new SpannableStringBuilder();
+//            builder.append(text);
+//            ForegroundColorSpan span_1 = new ForegroundColorSpan(mContext.getResources().getColor(R.color.standard_color_red));
+//            builder.setSpan(span_1, 6, text.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+//            holder.item_recommend_card_distance_tv.setText(builder);
+//
+//        }
         container.addView(holder.itemView);
 
         if (listener != null) {
@@ -193,8 +193,8 @@ public class RecommendAdapter extends PagerAdapter {
     class RecommendHolder {
         @Bind(R.id.photo)
         SimpleDraweeView itemRecommendCardPhotoSdv;
-        @Bind(R.id.item_recommend_card_address_tv)
-        TextView itemRecommendCardAddressTv;
+//        @Bind(R.id.item_recommend_card_address_tv)
+//        TextView itemRecommendCardAddressTv;
         @Bind(R.id.activity)
         SimpleDraweeView item_place_event_tv;
         @Bind(R.id.desc)
@@ -205,11 +205,11 @@ public class RecommendAdapter extends PagerAdapter {
         TextView tag2;
         @Bind(R.id.recommend_tag3)
         TextView tag3;
-        @Bind(R.id.rbRating)
-        RatingBar rbRating;
+//        @Bind(R.id.rbRating)
+//        RatingBar rbRating;
 
-        @Bind(R.id.distance)
-        TextView item_recommend_card_distance_tv;
+//        @Bind(R.id.distance)
+//        TextView item_recommend_card_distance_tv;
         View itemView;
 
         public RecommendHolder(View itemView) {

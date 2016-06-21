@@ -48,12 +48,15 @@ import co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout;
 public class RecommendFragment extends BaseFragment implements RecommendAdapter.CardClickListener, IRecommendFragment, ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
     @Bind(R.id.viewpager)
     ViewPager viewpager;
-    @Bind(R.id.tabLayout)
-    TabLayout tabLayout;
+//    @Bind(R.id.tabLayout)
+//    TabLayout tabLayout;
     @Bind(R.id.refreshLayout)
     HorizontalSwipeRefLayout refreshLayout;
     @Bind(R.id.errorView)
     ErrorView errorView;
+    @Bind(R.id.tvPageIndicator)
+    TextView tvPageIndicator;
+
     private boolean isLoading = false;
     public List<RecommendModel> cardList = new ArrayList<>();
     private RecommendAdapter adapter;
@@ -69,11 +72,27 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
         viewpager.setClipToPadding(false);
-        viewpager.setPadding(60, 40, 60, 40);
+        viewpager.setPadding(60, 0, 60, 0);
         viewpager.setPageMargin(20);
         viewpager.addOnPageChangeListener(this);
         adapter = new RecommendAdapter(this, cardList, this);
         viewpager.setAdapter(adapter);
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tvPageIndicator.setText((position+1) +" of "+ viewpager.getChildCount());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 //        viewpager.setPageTransformer(true, this);not use please  see adapter
         presenter = new RecommentFragPresenter(getContext(), this);
         refreshLayout.setColorSchemeResources(R.color.standard_color_yellow);
@@ -136,63 +155,63 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     presenter.init();
                 }
             });
-            tabLayout.setVisibility(View.GONE);
+//            tabLayout.setVisibility(View.GONE);
             viewpager.setVisibility(View.GONE);
             return;
         }
-        tabLayout.setVisibility(View.GONE);
+//        tabLayout.setVisibility(View.GONE);
         viewpager.setVisibility(View.VISIBLE);
         errorView.hideView();
 
         tagList = list;
-        if (tabLayout.getTabCount() > 0) {
-            tabLayout.removeAllTabs();
-        }
-
-        for (int i = 0; i < list.size(); i++) {
-            TextView textView = (TextView) View.inflate(getActivity(), R.layout.text_view, null);
-            textView.setText(list.get(i).getZh());
-            if (i == 0) {
-                textView.setTextSize(15);
-            } else {
-                textView.setTextSize(13);
-            }
-            tabLayout.addTab(tabLayout.newTab().setCustomView(textView));
-        }
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) {
-                    from = QuchuDetailsActivity.FROM_TYPE_HOME;
-                } else {
-                    from = QuchuDetailsActivity.FROM_TYPE_TAG;
-                }
-
-
-                TextView view = (TextView) tab.getCustomView();
-                if (view != null) {
-                    view.setTextSize(15);
-                }
-                MobclickAgent.onEvent(getContext(), "tag_c");
-                selectedTag = tagList.get(tab.getPosition()).getEn();
-                LogUtils.json("selectedTag=" + selectedTag);
-                presenter.initTabData(false, selectedTag);
-                refreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                TextView view = (TextView) tab.getCustomView();
-                if (view != null) {
-                    view.setTextSize(13);
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+//        if (tabLayout.getTabCount() > 0) {
+//            tabLayout.removeAllTabs();
+//        }
+//
+//        for (int i = 0; i < list.size(); i++) {
+//            TextView textView = (TextView) View.inflate(getActivity(), R.layout.text_view, null);
+//            textView.setText(list.get(i).getZh());
+//            if (i == 0) {
+//                textView.setTextSize(15);
+//            } else {
+//                textView.setTextSize(13);
+//            }
+//            tabLayout.addTab(tabLayout.newTab().setCustomView(textView));
+//        }
+//        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                if (tab.getPosition() == 0) {
+//                    from = QuchuDetailsActivity.FROM_TYPE_HOME;
+//                } else {
+//                    from = QuchuDetailsActivity.FROM_TYPE_TAG;
+//                }
+//
+//
+//                TextView view = (TextView) tab.getCustomView();
+//                if (view != null) {
+//                    view.setTextSize(15);
+//                }
+//                MobclickAgent.onEvent(getContext(), "tag_c");
+//                selectedTag = tagList.get(tab.getPosition()).getEn();
+//                LogUtils.json("selectedTag=" + selectedTag);
+//                presenter.initTabData(false, selectedTag);
+//                refreshLayout.setRefreshing(false);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//                TextView view = (TextView) tab.getCustomView();
+//                if (view != null) {
+//                    view.setTextSize(13);
+//                }
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//            }
+//        });
         if (tagList.size() > 0) {
             selectedTag = tagList.get(0).getEn();
             presenter.initTabData(false, selectedTag);

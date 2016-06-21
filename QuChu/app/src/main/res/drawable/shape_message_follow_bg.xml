@@ -17,4 +17,6 @@
         android:left="16dp"
         android:right="16dp"
         android:top="4dp" />
+    <solid android:color="@color/transparent"/>
+
 </shape>
