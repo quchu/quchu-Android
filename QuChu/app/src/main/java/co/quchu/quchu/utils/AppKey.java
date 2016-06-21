@@ -124,4 +124,6 @@ public interface AppKey {
      * 滑动删除提示
      */
     String SPF_KEY_SWIPE_DELETE_PROMPT_FIND="swipeDeletePrompt";
+    String SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU="swipeDeletePrompt_quchu";
+    String SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_ESSAY="swipeDeletePrompt_essay";
 }

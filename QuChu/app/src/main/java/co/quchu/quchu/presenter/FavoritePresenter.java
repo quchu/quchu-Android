@@ -20,13 +20,13 @@ import co.quchu.quchu.view.activity.FindPositionListActivity;
 /**
  * Created by no21 on 2016/4/5.
  * email:437943145@qq.com
- * desc : 获取发现和收藏
+ * desc : 收藏的趣处和文章
  */
-public class QuchuPresenter {
+public class FavoritePresenter {
 
     private QuchuModel model;
 
-    public QuchuPresenter(Context context) {
+    public FavoritePresenter(Context context) {
         model = new QuchuModel(context);
     }
 
@@ -89,7 +89,7 @@ public class QuchuPresenter {
             @Override
             public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
                 if (result) {
-                    view.deleteSucceed(holder , entity);
+                    view.deleteSucceed(holder, entity);
                 } else {
                     Toast.makeText(view, "网络异常", Toast.LENGTH_SHORT).show();
                 }

@@ -20,7 +20,7 @@ import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.model.FindBean;
 import co.quchu.quchu.presenter.PageLoadListener;
-import co.quchu.quchu.presenter.QuchuPresenter;
+import co.quchu.quchu.presenter.FavoritePresenter;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FindAdapter;
 
@@ -35,7 +35,7 @@ public class FindPositionListActivity extends BaseActivity implements AdapterBas
     TextView findPosition;
     @Bind(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    private QuchuPresenter presenter;
+    private FavoritePresenter presenter;
     private int pagesNo = 1;
     private FindAdapter adapter;
 
@@ -59,7 +59,7 @@ public class FindPositionListActivity extends BaseActivity implements AdapterBas
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        presenter = new QuchuPresenter(this);
+        presenter = new FavoritePresenter(this);
 
         adapter = new FindAdapter();
         adapter.setLoadmoreListener(this);
