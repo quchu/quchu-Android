@@ -13,6 +13,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 
@@ -163,7 +165,6 @@ public class RecommendAdapter extends PagerAdapter {
                 }
             });
         }
-
 
         return holder;
     }

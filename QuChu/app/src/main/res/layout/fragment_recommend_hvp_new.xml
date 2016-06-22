@@ -7,13 +7,13 @@
 
 
     <RadioGroup
-        android:id="@+id/tabLayout"
+        android:id="@+id/rgDisplayMode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
         <RadioButton
-            android:id="@+id/rb"
+            android:id="@+id/rbFavorites"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_item_size"
             android:button="@null"
@@ -23,6 +23,7 @@
             />
 
         <RadioButton
+            android:id="@+id/rbAll"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_item_size"
             android:button="@null"
@@ -49,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/tvPageIndicator"
-        android:layout_below="@id/tabLayout">
+        android:layout_below="@id/rgDisplayMode">
 
 
         <android.support.v4.view.ViewPager
@@ -63,12 +64,20 @@
             app:singlePageFling="true"
             app:triggerOffset="0.1" />
     </co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_above="@id/tvPageIndicator"
+        android:layout_below="@id/rgDisplayMode"
+        ></android.support.v7.widget.RecyclerView>
 
     <co.quchu.quchu.widget.ErrorView
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tabLayout"
+        android:layout_below="@id/rgDisplayMode"
         android:visibility="gone" />
 
 </RelativeLayout>

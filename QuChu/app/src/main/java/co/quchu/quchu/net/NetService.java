@@ -166,7 +166,6 @@ public class NetService {
                                             if (response.has("exception") && !StringUtils.isEmpty(response.getString("exception")) && "已有记录".equals(response.getString("exception"))) {
                                                 Toast.makeText(AppContext.mContext, "已有记录", Toast.LENGTH_SHORT).show();
                                             } else {
-
                                                 Toast.makeText(AppContext.mContext, "网络出错", Toast.LENGTH_SHORT).show();
                                             }
                                         }

@@ -26,7 +26,7 @@ public abstract class BaseBehaviorActivity extends BaseActivity {
         UserBehaviorPresentor.insertBehavior(getApplicationContext(), getUserBehaviorPageId(), "enter", getStrUserBehavior(getUserBehaviorArguments()), System.currentTimeMillis());
     }
 
-    private String getStrUserBehavior(ArrayMap<String, String> dataSet) {
+    private String getStrUserBehavior(ArrayMap<String, Object> dataSet) {
         if (null== dataSet){
             return "";
         }
@@ -37,7 +37,19 @@ public abstract class BaseBehaviorActivity extends BaseActivity {
         try {
             writer.beginObject();
             for (String key : dataSet.keySet()) {
-                writer.name(key).value(dataSet.get(key));
+
+                if (dataSet.get(key) instanceof Integer){
+                    writer.name(key).value((Integer) dataSet.get(key));
+                }else if(dataSet.get(key) instanceof Double){
+                    writer.name(key).value((Double) dataSet.get(key));
+                }else if(dataSet.get(key) instanceof Boolean){
+                    writer.name(key).value((Boolean) dataSet.get(key));
+                }else if(dataSet.get(key) instanceof Long){
+                    writer.name(key).value((Long) dataSet.get(key));
+                }else{
+                    writer.name(key).value((String) dataSet.get(key));
+                }
+
             }
             writer.endObject();
             writer.close();
@@ -50,7 +62,7 @@ public abstract class BaseBehaviorActivity extends BaseActivity {
         return strArguments;
     }
 
-    public abstract ArrayMap<String, String> getUserBehaviorArguments();
+    public abstract ArrayMap<String, Object> getUserBehaviorArguments();
 
     public abstract int getUserBehaviorPageId();
 

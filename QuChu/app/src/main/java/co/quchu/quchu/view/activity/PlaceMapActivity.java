@@ -87,10 +87,10 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
 
     @Override
-    public ArrayMap<String, String> getUserBehaviorArguments() {
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
 
-        ArrayMap<String,String> data = new ArrayMap<>();
-        data.put("pid",String.valueOf(getIntent().getIntExtra("pid",-1)));
+        ArrayMap<String,Object> data = new ArrayMap<>();
+        data.put("pid",getIntent().getIntExtra("pid",-1));
         return data;
     }
 

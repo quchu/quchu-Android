@@ -112,6 +112,7 @@ public class AppContext extends Application {
         if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=100){
             UserBehaviorPresentor.postBehaviors(getApplicationContext(),UserBehaviorPresentor.getBehaviors(getApplicationContext()));
         }
+
     }
 
 

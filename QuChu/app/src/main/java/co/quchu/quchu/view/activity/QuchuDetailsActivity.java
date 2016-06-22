@@ -150,10 +150,10 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     }
 
     @Override
-    public ArrayMap<String, String> getUserBehaviorArguments() {
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
 
-        ArrayMap<String,String> data = new ArrayMap<>();
-        data.put("pid",String.valueOf(getIntent().getIntExtra(REQUEST_KEY_PID, -1)));
+        ArrayMap<String,Object> data = new ArrayMap<>();
+        data.put("pid",getIntent().getIntExtra(REQUEST_KEY_PID, -1));
         return data;
     }
 

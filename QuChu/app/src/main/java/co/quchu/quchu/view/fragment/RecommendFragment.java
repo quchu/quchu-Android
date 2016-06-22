@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,11 +36,14 @@ import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.presenter.RecommentFragPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SearchActivity;
 import co.quchu.quchu.view.adapter.RecommendAdapter;
+import co.quchu.quchu.view.adapter.RecommendGridAdapter;
 import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout;
+import co.quchu.quchu.widget.SpacesItemDecoration;
 
 
 /**
@@ -56,6 +63,10 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     ErrorView errorView;
     @Bind(R.id.tvPageIndicator)
     TextView tvPageIndicator;
+    @Bind(R.id.rgDisplayMode)
+    RadioGroup radioGroup;
+    @Bind(R.id.rvGrid)
+    RecyclerView rvGrid;
 
     private boolean isLoading = false;
     public List<RecommendModel> cardList = new ArrayList<>();
@@ -69,7 +80,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
+        final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
         viewpager.setClipToPadding(false);
         viewpager.setPadding(60, 0, 60, 0);
@@ -77,6 +88,10 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         viewpager.addOnPageChangeListener(this);
         adapter = new RecommendAdapter(this, cardList, this);
         viewpager.setAdapter(adapter);
+        rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.quarter_margin), 2));
+
+        rvGrid.setAdapter(new RecommendGridAdapter(cardList,null));
+        rvGrid.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -85,7 +100,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
             @Override
             public void onPageSelected(int position) {
-                tvPageIndicator.setText((position+1) +" of "+ viewpager.getChildCount());
+                tvPageIndicator.setText((position+1) +" of "+ adapter.getCount());
+
             }
 
             @Override
@@ -98,6 +114,54 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         refreshLayout.setColorSchemeResources(R.color.standard_color_yellow);
         initData();
 
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rbFavorites:
+                        final int screenHeight = ScreenUtils.getScreenHeight(getActivity());
+                        for (int i = 0; i < rvGrid.getChildCount(); i++) {
+                            rvGrid.getChildAt(i).animate().translationY(screenHeight).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(i*30).start();
+                        }
+                        rvGrid.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (int i = 0; i < viewpager.getChildCount(); i++) {
+                                    viewpager.getChildAt(i).animate().translationX(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(300).setStartDelay((i+1)*30).start();
+                                }
+                            }
+                        },0);
+                        rvGrid.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                rvGrid.setVisibility(View.GONE);
+                            }
+                        },1000l);
+
+                        break;
+                    case R.id.rbAll:
+                        int edge = -ScreenUtils.getScreenWidth(getActivity());
+
+                        for (int i = 0; i < viewpager.getChildCount(); i++) {
+                            viewpager.getChildAt(i).animate().translationX(edge * (i+1)).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(300).setStartDelay((i+1)*30).start();
+                        }
+
+                        rvGrid.setVisibility(View.VISIBLE);
+
+                        rvGrid.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (int i = 0; i < rvGrid.getChildCount(); i++) {
+                                    rvGrid.getChildAt(i).animate().translationY(0).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(i*30).start();
+                                }
+                            }
+                        },0);
+
+
+                        break;
+                }
+            }
+        });
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -139,6 +203,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             cardList.set(hasChangePosition, AppContext.selectedPlace);
             if (adapter != null)
                 adapter.notifyDataSetChanged();
+
         }
     }
 
@@ -155,63 +220,13 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                     presenter.init();
                 }
             });
-//            tabLayout.setVisibility(View.GONE);
             viewpager.setVisibility(View.GONE);
             return;
         }
-//        tabLayout.setVisibility(View.GONE);
         viewpager.setVisibility(View.VISIBLE);
         errorView.hideView();
 
         tagList = list;
-//        if (tabLayout.getTabCount() > 0) {
-//            tabLayout.removeAllTabs();
-//        }
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            TextView textView = (TextView) View.inflate(getActivity(), R.layout.text_view, null);
-//            textView.setText(list.get(i).getZh());
-//            if (i == 0) {
-//                textView.setTextSize(15);
-//            } else {
-//                textView.setTextSize(13);
-//            }
-//            tabLayout.addTab(tabLayout.newTab().setCustomView(textView));
-//        }
-//        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                if (tab.getPosition() == 0) {
-//                    from = QuchuDetailsActivity.FROM_TYPE_HOME;
-//                } else {
-//                    from = QuchuDetailsActivity.FROM_TYPE_TAG;
-//                }
-//
-//
-//                TextView view = (TextView) tab.getCustomView();
-//                if (view != null) {
-//                    view.setTextSize(15);
-//                }
-//                MobclickAgent.onEvent(getContext(), "tag_c");
-//                selectedTag = tagList.get(tab.getPosition()).getEn();
-//                LogUtils.json("selectedTag=" + selectedTag);
-//                presenter.initTabData(false, selectedTag);
-//                refreshLayout.setRefreshing(false);
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                TextView view = (TextView) tab.getCustomView();
-//                if (view != null) {
-//                    view.setTextSize(13);
-//                }
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//            }
-//        });
         if (tagList.size() > 0) {
             selectedTag = tagList.get(0).getEn();
             presenter.initTabData(false, selectedTag);
@@ -247,6 +262,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             cardList.clear();
             cardList.addAll(arrayList);
             adapter.notifyDataSetChanged();
+            tvPageIndicator.setText((viewpager.getCurrentItem()+1) +" of "+ adapter.getCount());
+
             if (cardList.size() > 0)
                 viewpager.setCurrentItem(0);
 
@@ -263,6 +280,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             if (arrayList != null && arrayList.size() > 0) {
                 cardList.addAll(arrayList);
                 adapter.notifyDataSetChanged();
+                tvPageIndicator.setText((viewpager.getCurrentItem()+1) +" of "+ adapter.getCount());
             }
         }
     }

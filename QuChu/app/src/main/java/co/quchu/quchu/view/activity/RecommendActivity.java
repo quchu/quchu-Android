@@ -82,7 +82,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     private int mClickTimes = 0;
 
     @Override
-    public ArrayMap<String, String> getUserBehaviorArguments() {
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
         return null;
     }
 

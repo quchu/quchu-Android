@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -93,10 +94,25 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
 
 
     @Override
-    public ArrayMap<String, String> getUserBehaviorArguments() {
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
 
-        ArrayMap<String, String> data = new ArrayMap<>();
-        data.put("footprintid", String.valueOf(getIntent().getIntExtra(REQUEST_KEY_FOOTPRINT_ID, -1)));
+        ArrayMap<String, Object> data = new ArrayMap<>();
+        int footprintId =getIntent().getIntExtra(REQUEST_KEY_FOOTPRINT_ID, -1);
+        int itemIndex = getIntent().getIntExtra(REQUEST_KEY_SELECTED_POSITION,-1);
+
+        if (footprintId ==-1){
+            ArrayList<Parcelable> s = getIntent().getParcelableArrayListExtra(REQUEST_KEY_ENTITY_LIST);
+            if (s==null){
+                return null;
+            }
+            if (itemIndex >=0 && itemIndex<s.size() && null!=s.get(itemIndex)){
+                FootprintModel.Entity fid = (FootprintModel.Entity)s.get(itemIndex);
+                data.put("footprintid", fid.cardId);
+            }
+
+        }else{
+            data.put("footprintid", footprintId);
+        }
         return data;
     }
 
