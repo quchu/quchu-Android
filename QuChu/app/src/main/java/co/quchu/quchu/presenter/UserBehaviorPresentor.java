@@ -127,6 +127,7 @@ public class UserBehaviorPresentor {
             jsonObject = new JSONObject();
             jsonArray = new JSONArray(new Gson().toJson(data));
             jsonObject.put("UserBehaviors",jsonArray);
+            jsonObject.put("Device","android");
 
         } catch (JSONException e) {
             e.printStackTrace();

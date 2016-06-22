@@ -82,7 +82,6 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
         registBroadcastReceiver();
 
         refWatcher = LeakCanary.install(this);
@@ -112,6 +111,7 @@ public class AppContext extends Application {
         if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=100){
             UserBehaviorPresentor.postBehaviors(getApplicationContext(),UserBehaviorPresentor.getBehaviors(getApplicationContext()));
         }
+        UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
 
     }
 
