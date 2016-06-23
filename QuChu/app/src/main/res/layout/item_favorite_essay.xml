@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/simpleDraweeView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_height="wrap_content"
+        fresco:overlayImage="@color/translucent_dark"
+        fresco:placeholderImage="@mipmap/ic_image_empty"
+        fresco:viewAspectRatio="1.5" />
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/simpleDraweeView"
+        android:layout_marginBottom="@dimen/double_margin"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:text="哈哈哈发的身份"
+        android:textColor="@color/standard_color_white"
+        android:textSize="@dimen/word_subhead_size" />
+
+    <View
+        style="@style/HorizontalLine"
+        android:layout_below="@id/simpleDraweeView" />
+</RelativeLayout>

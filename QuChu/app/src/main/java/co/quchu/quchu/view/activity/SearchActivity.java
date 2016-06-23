@@ -1,8 +1,10 @@
 package co.quchu.quchu.view.activity;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,43 +50,51 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Bind(R.id.search_input_et)
     EditText searchInputEt;
     @Bind(R.id.search_button_rl)
-    RelativeLayout searchButtonRl;
-    //    @Bind(R.id.search_title_bar_ll)
-//    LinearLayout searchTitleBarLl;
-    //    @Bind(R.id.search_history_rv)
-//    RecyclerView searchHistoryRv;
-//    @Bind(R.id.search_history_clear_rl)
-//    RelativeLayout searchHistoryClearRl;
-//    @Bind(R.id.search_history_fl)
-//    LinearLayout searchHistoryFl;
+    TextView searchButtonRl;
+
     @Bind(R.id.search_result_rv)
     RecyclerView searchResultRv;
-//    @Bind(R.id.search_result_fl)
-//    FrameLayout searchResultFl;
-//    @Bind(R.id.search_tag1)
-//    TextView tvTag1;
-//    @Bind(R.id.search_tag2)
-//    TextView tvTag2;
-//    @Bind(R.id.search_tag3)
-//    TextView tvTag3;
-//    @Bind(R.id.llTags)
-//    LinearLayout llTags;
+    @Bind(R.id.searchFilterTV1)
+    TextView searchFilterTV1;
+    @Bind(R.id.searchFilterTV2)
+    TextView searchFilterTV2;
 
-    //    SearchModel searchModel;
-    //    @Bind(R.id.search_history_hint_fl)
-//    TextView searchHistoryHintFl;
-    @Bind(R.id.actionCategory)
-    TextView actionCategory;
-    @Bind(R.id.actionSort)
-    TextView actionSort;
+    @Bind(R.id.searchFilterLL1)
+    LinearLayout searchFilterLL1;
+    @Bind(R.id.searchFilterLL2)
+    LinearLayout searchFilterLL2;
+    @Bind(R.id.searchFilterTV3)
+    TextView searchFilterTV3;
+    @Bind(R.id.searchFilterLL3)
+    LinearLayout searchFilterLL3;
+
+    @Bind(R.id.searchFilterIcon1)
+    ImageView searchFilterIcon1;
+    @Bind(R.id.searchFilterIcon2)
+    ImageView searchFilterIcon2;
+    @Bind(R.id.searchFilterIcon3)
+    ImageView searchFilterIcon3;
+    @Bind(R.id.searchFilterContainer)
+    LinearLayout searchFilterContainer;
+    @Bind(R.id.searchFilterLine)
+    View searchFilterLine;
+
     private ArrayList<RecommendModel> resultList;
     private SearchAdapter resultAdapter;
-    //    private SearchHistoryAdapter historyAdapter;
-//    LinearLayoutManager lm;
     private int mMaxPageNo = -1;
     private int mCurrentPageNo = 1;
     private boolean mIsLoading = false;
-    private PopupWindow categoryWindow;
+    private PopupWindow popupWindow;
+
+
+    private ImageView firstFilterIcon;
+    private TextView firstFilterTV;
+
+    private static final int SHOWING_POPUP_TYPE_CATEGORY = 1;
+    private static final int SHOWING_POPUP_TYPE_AREA = 2;
+    private static final int SHOWING_POPUP_TYPE_SORT = 3;
+
+    private int currentShowingPopupType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,30 +130,139 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
 
-    private void showPopupWindow(boolean isCategory) {
-        if (categoryWindow != null && categoryWindow.isShowing()) {
-            categoryWindow.dismiss();
-            return;
+    private void initPopupWindow() {
+
+
+        popupWindow = new PopupWindow((int) AppContext.Width, (int) (AppContext.Height - searchFilterLL1.getBottom()));
+        popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                if (firstFilterIcon != null) {
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 0);
+                    animator.setDuration(400);
+                    animator.start();
+                }
+                if (firstFilterTV != null) {
+                    firstFilterTV.setTextColor(ContextCompat.getColor(SearchActivity.this, R.color.standard_color_h2_dark));
+                }
+                firstFilterTV = null;
+                currentShowingPopupType = -1;
+                firstFilterIcon = null;
+            }
+        });
+
+    }
+
+
+    private void showPopupWindow(ImageView currentIcon, TextView currentTV, View contentView) {
+        if (popupWindow == null) initPopupWindow();
+        //箭头动画
+        ObjectAnimator animator = ObjectAnimator.ofFloat(currentIcon, "Rotation", 180);
+        animator.setDuration(400);
+        animator.start();
+        if (firstFilterIcon != null) {
+            animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 0);
+            animator.setDuration(400);
+            animator.start();
         }
 
+        currentTV.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+
+        if (firstFilterTV != null) {
+            firstFilterTV.setTextColor(ContextCompat.getColor(this, R.color.standard_color_h2_dark));
+        }
+
+        firstFilterTV = currentTV;
+        firstFilterIcon = currentIcon;
+
+        popupWindow.setContentView(contentView);
+        if (popupWindow.isShowing()) {
+            popupWindow.update();
+        } else {
+            popupWindow.showAsDropDown(searchFilterContainer);
+        }
+    }
+
+    private View getCategoryAndSortView() {
         View inflate = View.inflate(this, R.layout.layout_search_popupwindow, null);
-        categoryWindow = new PopupWindow(inflate, (int) AppContext.Width, (int) (AppContext.Height - actionCategory.getBottom()));
-        categoryWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+
         RecyclerView categoryRecyclerView = (RecyclerView) inflate.findViewById(R.id.recyclerView);
         ViewGroup.LayoutParams params = categoryRecyclerView.getLayoutParams();
         params.width = (int) AppContext.Width;
-        params.height = (int) (AppContext.Height - actionCategory.getBottom());
+        params.height = (int) (AppContext.Height - searchFilterLL1.getBottom());
         categoryRecyclerView.setLayoutParams(params);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         SearchFilterSortAdapter adapter = new SearchFilterSortAdapter();
         categoryRecyclerView.setAdapter(adapter);
+        return inflate;
+    }
 
-        categoryWindow.showAsDropDown(actionCategory);
+    @Override
+    public void onClick(View v) {
+        if (KeyboardUtils.isFastDoubleClick())
+            return;
+        switch (v.getId()) {
+            case R.id.search_button_rl:
+                this.finish();
+                break;
+            case R.id.searchFilterLL1:
+                if (currentShowingPopupType == SHOWING_POPUP_TYPE_CATEGORY) {
+                    popupWindow.dismiss();
+                } else {
+                    currentShowingPopupType = SHOWING_POPUP_TYPE_CATEGORY;
+                    showPopupWindow(searchFilterIcon1, searchFilterTV1, getCategoryAndSortView());
+                }
+                break;
+            case R.id.searchFilterLL2:
+                if (currentShowingPopupType == SHOWING_POPUP_TYPE_AREA) {
+                    popupWindow.dismiss();
+                } else {
+                    currentShowingPopupType = SHOWING_POPUP_TYPE_AREA;
+                    showPopupWindow(searchFilterIcon2, searchFilterTV2, getCategoryAndSortView());
+                }
+                break;
+            case R.id.searchFilterLL3:
+                if (currentShowingPopupType == SHOWING_POPUP_TYPE_SORT) {
+                    popupWindow.dismiss();
+                } else {
+                    currentShowingPopupType = SHOWING_POPUP_TYPE_SORT;
+                    showPopupWindow(searchFilterIcon3, searchFilterTV3, getCategoryAndSortView());
+                }
+
+                break;
+        }
+    }
+
+    @Override
+    protected int activitySetup() {
+        return TRANSITION_TYPE_LEFT;
+    }
+
+    private void initData() {
+
+        searchButtonRl.setOnClickListener(this);
+
+        searchFilterLL1.setOnClickListener(this);
+        searchFilterLL2.setOnClickListener(this);
+        searchFilterLL3.setOnClickListener(this);
+
+        resultAdapter = new SearchAdapter();
+        searchResultRv.setLayoutManager(new GridLayoutManager(this, 3));
+        searchResultRv.setAdapter(resultAdapter);
+        resultList = new ArrayList<>();
+
+        resultAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(SearchActivity.this, QuchuDetailsActivity.class);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, resultList.get(position).getPid());
+                startActivity(intent);
+            }
+        });
     }
 
     private void seachStr(String str, final boolean loadMore) {
-        System.out.println("mIsLoading " + mIsLoading);
         if (mIsLoading) return;
         if (loadMore && mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
         if (!loadMore) {
@@ -169,6 +289,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     if (mMaxPageNo == -1) {
                         mMaxPageNo = maxPageNo;
                     }
+                    searchFilterContainer.setVisibility(View.VISIBLE);
+                    searchFilterLine.setVisibility(View.VISIBLE);
+
+                    searchFilterTV1.setText("全部美食");
+                    searchFilterTV2.setText("全部商圈");
+                    searchFilterTV3.setText("智能排序");
+
                     searchResultRv.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
                     resultAdapter.setCategory(false);
                     resultList.addAll(arrayList);
@@ -176,7 +303,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(searchButtonRl.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     resultAdapter.changeDataSet(resultList);
-
                     searchResultRv.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) searchResultRv.getLayoutManager()) {
                         @Override
                         public void onLoadMore(int current_page) {
@@ -226,55 +352,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             }
         });
     }
-
-
-    private void initData() {
-
-        searchButtonRl.setOnClickListener(this);
-        actionCategory.setOnClickListener(this);
-        actionSort.setOnClickListener(this);
-
-        resultAdapter = new SearchAdapter();
-        searchResultRv.setLayoutManager(new GridLayoutManager(this, 3));
-        searchResultRv.setAdapter(resultAdapter);
-
-
-        resultList = new ArrayList<>();
-
-        resultAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(int position) {
-                Intent intent = new Intent(SearchActivity.this, QuchuDetailsActivity.class);
-                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, resultList.get(position).getPid());
-                startActivity(intent);
-            }
-        });
-
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (KeyboardUtils.isFastDoubleClick())
-            return;
-        switch (v.getId()) {
-            case R.id.search_button_rl:
-                this.finish();
-                break;
-            case R.id.actionCategory:
-                showPopupWindow(true);
-                break;
-            case R.id.actionSort:
-                showPopupWindow(false);
-                break;
-        }
-    }
-
-    @Override
-    protected int activitySetup() {
-        return TRANSITION_TYPE_LEFT;
-    }
-
 
 //    private void initHistory() {
 //        searchModel = SearchHistoryUtil.getSearchHistory();

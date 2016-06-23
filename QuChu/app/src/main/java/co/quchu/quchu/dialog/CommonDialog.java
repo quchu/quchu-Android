@@ -24,7 +24,7 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
 
     @Bind(R.id.title)
     TextView title;
-    @Bind(R.id.subTitle)
+    @Bind(R.id.searchFilterContainer)
     TextView subTitle;
     @Bind(R.id.passive)
     Button passive;

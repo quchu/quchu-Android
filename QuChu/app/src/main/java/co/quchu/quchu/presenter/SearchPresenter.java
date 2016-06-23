@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.NearbyItemModel;
-import co.quchu.quchu.model.NearbyMapModel;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.net.GsonRequest;
@@ -34,7 +32,6 @@ import co.quchu.quchu.utils.LogUtils;
  */
 public class SearchPresenter {
     public static void searchFromService(Context context, String seachStr, int pageNum,int cityId, final SearchResultListener listener) {
-
         NetService.get(context, String.format(NetApi.Seach, seachStr, pageNum,cityId), new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {

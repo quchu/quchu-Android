@@ -31,7 +31,7 @@
                 android:textSize="@dimen/word_subhead_size" />
 
             <TextView
-                android:id="@+id/subTitle"
+                android:id="@+id/searchFilterContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/base_margin"
