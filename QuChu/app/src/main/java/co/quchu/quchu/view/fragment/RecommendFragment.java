@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -76,6 +77,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     private int dataCount = -1;
 
     private String from = QuchuDetailsActivity.FROM_TYPE_HOME;
+    private boolean mAnimationRunning = false;
+    public static final int ANIMATION_DURATION = 350;
 
     @Nullable
     @Override
@@ -91,7 +94,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.quarter_margin), 2));
 
         rvGrid.setAdapter(new RecommendGridAdapter(cardList,null));
-        rvGrid.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        rvGrid.setLayoutManager(new GridLayoutManager(getContext(),2));
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -119,32 +122,41 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.rbFavorites:
-                        final int screenHeight = ScreenUtils.getScreenHeight(getActivity());
-                        for (int i = 0; i < rvGrid.getChildCount(); i++) {
-                            rvGrid.getChildAt(i).animate().translationY(screenHeight).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(i*30).start();
+                        viewpager.clearAnimation();
+                        rvGrid.clearAnimation();
+                        for (int i = rvGrid.getChildCount()-1; i >=0; i--) {
+                            if (rvGrid.getChildAt(i)==null){
+                                return;
+                            }
+                            rvGrid.getChildAt(i).clearAnimation();
+                            if (i==0){
+                                rvGrid.getChildAt(i).animate().translationY(150).alpha(0).setDuration(ANIMATION_DURATION).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay((rvGrid.getChildCount()-i)*30).withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        rvGrid.setVisibility(View.GONE);
+                                    }
+                                }).start();
+                            }else{
+                                rvGrid.getChildAt(i).animate().translationY(150).alpha(0).setDuration(ANIMATION_DURATION).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay((rvGrid.getChildCount()-i)*30).start();
+                            }
+
                         }
                         rvGrid.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                for (int i = 0; i < viewpager.getChildCount(); i++) {
-                                    viewpager.getChildAt(i).animate().translationX(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(300).setStartDelay((i+1)*30).start();
-                                }
+                                viewpager.animate().translationX(0).alpha(1).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(ANIMATION_DURATION).start();
                             }
-                        },0);
-                        rvGrid.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                rvGrid.setVisibility(View.GONE);
-                            }
-                        },1000l);
+                        },rvGrid.getChildCount()*30);
+
 
                         break;
                     case R.id.rbAll:
-                        int edge = -ScreenUtils.getScreenWidth(getActivity());
+                        viewpager.clearAnimation();
+                        rvGrid.clearAnimation();
+                        int edge = ScreenUtils.getScreenWidth(getActivity());
 
-                        for (int i = 0; i < viewpager.getChildCount(); i++) {
-                            viewpager.getChildAt(i).animate().translationX(edge * (i+1)).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(300).setStartDelay((i+1)*30).start();
-                        }
+                        viewpager.animate().translationX(edge).alpha(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(ANIMATION_DURATION).start();
+
 
                         rvGrid.setVisibility(View.VISIBLE);
 
@@ -152,10 +164,11 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                             @Override
                             public void run() {
                                 for (int i = 0; i < rvGrid.getChildCount(); i++) {
-                                    rvGrid.getChildAt(i).animate().translationY(0).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(i*30).start();
+                                    rvGrid.getChildAt(i).animate().translationY(0).alpha(1).setDuration(ANIMATION_DURATION).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(i*30).start();
+
                                 }
                             }
-                        },0);
+                        },90);
 
 
                         break;
