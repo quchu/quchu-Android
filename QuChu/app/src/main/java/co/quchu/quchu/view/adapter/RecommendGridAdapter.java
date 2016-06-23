@@ -59,11 +59,7 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
             animator.setStartDelay(delay);
         }
 
-        double imgWidth = mData.get(position).getWidth();
-        double imgHeight = mData.get(position).getHeight();
-        double aspectRatio = imgWidth/imgHeight;
-
-        holder.sdv.setAspectRatio((float) aspectRatio);
+        holder.sdv.setAspectRatio(.8f);
         holder.sdv.setImageURI(Uri.parse(mData.get(position).getCover()));
 
         holder.sdv.setOnClickListener(new View.OnClickListener() {

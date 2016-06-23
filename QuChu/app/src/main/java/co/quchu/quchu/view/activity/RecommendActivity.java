@@ -59,10 +59,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
     @Bind(R.id.recommend_title_more_iv)
     ImageView recommendTitleMoreRl;
-    @Bind(R.id.search_bar)
-    RelativeLayout rlSearchBar;
-    @Bind(R.id.search_input_et)
-    TextView tvSearch;
+
     @Bind(R.id.container)
     FrameLayout flContainer;
     @Bind(R.id.ivArrow)
@@ -109,12 +106,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
-        tvSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
-            }
-        });
+
         VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
 
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
@@ -264,51 +256,14 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
-            tvSearch.animate()
-                    .translationY(-rlSearchBar.getHeight())
-                    .alpha(0)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
-            flContainer.animate()
-                    .translationY(0)
-                    .scaleY(1)
-                    .scaleX(1)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
 
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(classifyFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
         } else if(index==1) {
-            tvSearch.animate()
-                    .translationY(0)
-                    .alpha(1)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
-            flContainer.animate().translationY(rlSearchBar.getHeight()/2)
-                    .scaleY(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
-                    .scaleX(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
+
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(recommendFragment).hide(meFragment).show(classifyFragment).commitAllowingStateLoss();
         } else if(index ==2){
-            tvSearch.animate()
-                    .translationY(-rlSearchBar.getHeight())
-                    .alpha(0)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
-            flContainer.animate()
-                    .translationY(0)
-                    .scaleY(1)
-                    .scaleX(1)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
 
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(classifyFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();

@@ -168,7 +168,7 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
                                 }
                             }
-                        },90);
+                        },0);
 
 
                         break;
