@@ -78,6 +78,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     LinearLayout searchFilterContainer;
     @Bind(R.id.searchFilterLine)
     View searchFilterLine;
+    @Bind(R.id.search_back)
+    ImageView searchBack;
 
     private ArrayList<RecommendModel> resultList;
     private SearchAdapter resultAdapter;
@@ -204,8 +206,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             return;
         switch (v.getId()) {
             case R.id.search_button_rl:
-                this.finish();
+                searchInputEt.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_ENTER));
                 break;
+            case R.id.search_back:
+                finish();
             case R.id.searchFilterLL1:
                 if (currentShowingPopupType == SHOWING_POPUP_TYPE_CATEGORY) {
                     popupWindow.dismiss();
@@ -246,6 +250,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         searchFilterLL1.setOnClickListener(this);
         searchFilterLL2.setOnClickListener(this);
         searchFilterLL3.setOnClickListener(this);
+        searchBack.setOnClickListener(this);
 
         resultAdapter = new SearchAdapter();
         searchResultRv.setLayoutManager(new GridLayoutManager(this, 3));
@@ -328,6 +333,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initEdittext() {
+
         searchInputEt.setOnKeyListener(new View.OnKeyListener() {//输入完后按键盘上的搜索键【回车键改为了搜索键】
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {

@@ -10,8 +10,15 @@
         android:id="@+id/search_title_bar_ll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_heigh"
-        android:background="@color/colorPrimary"
-        android:paddingLeft="@dimen/base_margin">
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/search_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:src="@mipmap/ic_back" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -20,6 +27,7 @@
             android:layout_weight="1"
             android:background="@color/standard_color_white"
             android:orientation="horizontal">
+
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -51,7 +59,7 @@
             android:layout_marginLeft="@dimen/half_margin"
             android:gravity="center"
             android:paddingRight="@dimen/base_margin"
-            android:text="取消"
+            android:text="搜索"
             android:textColor="@color/standard_color_h2_dark"
             android:textSize="@dimen/word_subhead_size" />
     </LinearLayout>
