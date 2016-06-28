@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -149,6 +150,19 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                         },rvGrid.getChildCount()*30);
 
 
+//                        tvPageIndicator.animate()
+//                                .withLayer()
+//                                .alpha(1)
+//                                .translationY(0)
+//                                .setInterpolator(new AccelerateDecelerateInterpolator())
+//                                .setDuration(ANIMATION_DURATION)
+//                                .withStartAction(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        tvPageIndicator.setVisibility(View.VISIBLE);
+//                                    }
+//                                }).start();
+
                         break;
                     case R.id.rbAll:
                         viewpager.clearAnimation();
@@ -169,8 +183,18 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                                 }
                             }
                         },0);
-
-
+//                        tvPageIndicator.animate()
+//                                .alpha(0)
+//                                .translationY(tvPageIndicator.getHeight())
+//                                .setInterpolator(new AccelerateDecelerateInterpolator())
+//                                .setDuration(ANIMATION_DURATION)
+//                                .withEndAction(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        tvPageIndicator.setVisibility(View.GONE);
+//                                    }
+//                                })
+//                                .start();
                         break;
                 }
             }
