@@ -18,19 +18,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            android:background="#fff"
+            app:contentScrim="@color/standard_color_white"
             app:expandedTitleMarginEnd="0dp"
             app:expandedTitleMarginStart="0dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/sdvHead"
+
+            <co.quchu.quchu.widget.WrapContentViewPager
+                android:id="@+id/vpGallery"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                app:overlayImage="@drawable/bg_quchu_details_toolbar_gradient"
-                app:layout_collapseMode="parallax"/>
+                app:layout_collapseMode="parallax"
+                />
 
 
             <co.quchu.quchu.base.EnhancedToolbar
@@ -39,6 +41,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
+
 
 
         </android.support.design.widget.CollapsingToolbarLayout>

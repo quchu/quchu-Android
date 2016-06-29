@@ -1,10 +1,12 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,13 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -27,12 +29,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
-import co.quchu.quchu.dialog.QuchuDetailsMoreDialog;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.dialog.QuchuDetailsMoreDialog;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
@@ -47,7 +49,9 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.adapter.GalleryAdapter;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
+
 
 
 /**
@@ -56,7 +60,7 @@ import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
  * Date: 2015-12-09
  * 趣处详情
  */
-public class QuchuDetailsActivity extends BaseBehaviorActivity {
+public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBarLayout.OnOffsetChangedListener {
 
 
     @Bind(R.id.detail_recyclerview)
@@ -65,8 +69,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     View detail_bottom_group_ll;
     @Bind(R.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.sdvHead)
-    SimpleDraweeView sdv;
 
 
     @Bind(R.id.ivFavorite)
@@ -74,20 +76,10 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     @Bind(R.id.tvFootprintCount)
     TextView tvFootprintCount;
 
-    //TODO
-    //TODO
-    //TODO
-    //TODO
-//    tvFootprint.setOnClickListener(mOnItemClickListener);
-//    rlQuguo.setOnClickListener(mOnItemClickListener);
-//    ivQuguo.setVisibility(mData.isIsout() ? View.VISIBLE : View.GONE);
-//
-//    if (mData.getCardCount() > 0) {
-//        tvFootprint.setText("脚印 " + mData.getCardCount());
-//    } else {
-//        tvFootprint.setText(R.string.foot_print);
-//    }
+    @Bind(R.id.vpGallery)
+    ViewPager vpGallery;
 
+    ImageView vFakeReturnButton;
 
     public static final String REQUEST_KEY_PID = "pid";
     public static final String REQUEST_KEY_FROM = "from";
@@ -125,6 +117,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
         ButterKnife.bind(this);
         from = getIntent().getStringExtra(REQUEST_KEY_FROM);
         getEnhancedToolbar().getTitleTv().setText("");
+        getEnhancedToolbar().getTitleTv().setAlpha(0f);
         getEnhancedToolbar().getLeftIv().setImageResource(R.mipmap.ic_forward);
         getEnhancedToolbar().getLeftIv().setRotation(180);
 
@@ -231,9 +224,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                 InterestingDetailPresenter.getInterestingData(this, pId, new InterestingDetailPresenter.getDetailDataListener() {
                     @Override
                     public void getDetailData(DetailModel model) {
-                        if (!StringUtils.isEmpty(model.getCover())) {
-                            sdv.setImageURI(Uri.parse(model.getCover()));
-                        }
+
                         bindingDetailData(model);
                         DialogUtil.dismissProgess();
                     }
@@ -247,10 +238,20 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
 
     private void bindingDetailData(DetailModel model) {
+
         dModel.copyFrom(model);
+        getEnhancedToolbar().getTitleTv().setText(dModel.getName());
         if(null==mQuchuDetailAdapter){
             return;
         }
+        if (null != dModel.getImglist()) {
+            List<ImageModel> imageSet = new ArrayList<>();
+            for (int i = 0; i < dModel.getImglist().size() && i<=3; i++) {
+                imageSet.add(dModel.getImglist().get(i).convert2ImageModel());
+            }
+            vpGallery.setAdapter(new GalleryAdapter(imageSet,getApplicationContext()));
+        }
+
         mQuchuDetailAdapter.notifyDataSetChanged();
         mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
             @Override
@@ -525,12 +526,14 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart(from);
+        appbar.addOnOffsetChangedListener(this);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
         MobclickAgent.onPageEnd(from);
+        appbar.removeOnOffsetChangedListener(this);
         super.onPause();
 
     }
@@ -574,6 +577,19 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                 finish();
                 break;
         }
+
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if (appbar.getTotalScrollRange()==0 || verticalOffset==0){
+            return;
+        }
+        float alpha = Math.abs(Float.valueOf(verticalOffset))/appbar.getTotalScrollRange();
+        getEnhancedToolbar().getTitleTv().setAlpha(alpha);
+        int color = (int) (255-(alpha*255));
+        getEnhancedToolbar().getLeftIv().setColorFilter(Color.argb(255,color,color,color), PorterDuff.Mode.MULTIPLY);
+
 
     }
 }

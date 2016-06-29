@@ -76,7 +76,6 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     private ClassifyFragment classifyFragment;
     private MeFragment meFragment;
 
-    private int mClickTimes = 0;
 
     @Override
     public ArrayMap<String, Object> getUserBehaviorArguments() {
@@ -259,14 +258,17 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(classifyFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
+            getEnhancedToolbar().show();
         } else if(index==1) {
 
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(recommendFragment).hide(meFragment).show(classifyFragment).commitAllowingStateLoss();
+            getEnhancedToolbar().hide();
         } else if(index ==2){
 
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(classifyFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
+            getEnhancedToolbar().show();
         }
         viewPagerIndex = index;
     }

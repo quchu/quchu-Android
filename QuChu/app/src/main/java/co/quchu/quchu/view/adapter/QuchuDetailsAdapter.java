@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.BottomListDialog;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedUsersModel;
@@ -562,6 +564,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView tag2;
         @Bind(R.id.recommend_tag3)
         TextView tag3;
+
 
         IntroImageViewHolder(View view) {
             super(view);
