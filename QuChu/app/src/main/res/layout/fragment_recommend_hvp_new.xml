@@ -12,7 +12,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
-
+        <RadioButton
+            android:id="@+id/rbFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:button="@null"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="我收藏的"
+            />
 
         <RadioButton
             android:id="@+id/rbAll"
@@ -24,17 +32,6 @@
             android:text="查看全部"
 
             />
-
-        <RadioButton
-            android:id="@+id/rbFavorites"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_item_size"
-            android:button="@null"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="我收藏的"
-            />
-
 
     </RadioGroup>
 

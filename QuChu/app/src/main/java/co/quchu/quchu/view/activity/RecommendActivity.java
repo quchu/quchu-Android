@@ -67,6 +67,8 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
     @Bind(R.id.rgTab)
     RadioGroup rbBottomTab;
+    @Bind(R.id.title)
+    View vTitle;
 
 
     public long firstTime = 0;
@@ -255,20 +257,32 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
-
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(classifyFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
-            getEnhancedToolbar().show();
+            vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
+                @Override
+                public void run() {
+                    vTitle.setVisibility(View.VISIBLE);
+                }
+            }).start();
         } else if(index==1) {
-
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(recommendFragment).hide(meFragment).show(classifyFragment).commitAllowingStateLoss();
-            getEnhancedToolbar().hide();
+            vTitle.animate().translationY(-vTitle.getHeight()).setDuration(300).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    vTitle.setVisibility(View.GONE);
+                }
+            }).start();
         } else if(index ==2){
-
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(classifyFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
-            getEnhancedToolbar().show();
+            vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
+                @Override
+                public void run() {
+                    vTitle.setVisibility(View.VISIBLE);
+                }
+            }).start();
         }
         viewPagerIndex = index;
     }

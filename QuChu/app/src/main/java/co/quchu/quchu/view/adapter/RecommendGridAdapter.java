@@ -35,7 +35,7 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_foot_print, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recommend_grid, parent, false);
         return new ViewHolder(view);
     }
     private int mFinalAnimatedIndex = -1;
@@ -59,7 +59,6 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
             animator.setStartDelay(delay);
         }
 
-        holder.sdv.setAspectRatio(.8f);
         holder.sdv.setImageURI(Uri.parse(mData.get(position).getCover()));
 
         holder.sdv.setOnClickListener(new View.OnClickListener() {

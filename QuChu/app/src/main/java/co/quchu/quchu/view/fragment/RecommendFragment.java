@@ -129,19 +129,26 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
                             if (rvGrid.getChildAt(i)==null){
                                 return;
                             }
-                            rvGrid.getChildAt(i).clearAnimation();
                             if (i==0){
-                                rvGrid.getChildAt(i).animate().translationY(150).alpha(0).setDuration(ANIMATION_DURATION).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay((rvGrid.getChildCount()-i)*30).withEndAction(new Runnable() {
+                                rvGrid.getChildAt(i).animate()
+                                        .translationY(150)
+                                        .setDuration(ANIMATION_DURATION)
+                                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                                        .setStartDelay((rvGrid.getChildCount()-i)*30).withEndAction(new Runnable() {
                                     @Override
-                                    public void run() {
-                                        rvGrid.setVisibility(View.GONE);
+                                    public void run() {rvGrid.setVisibility(View.GONE);
                                     }
                                 }).start();
                             }else{
-                                rvGrid.getChildAt(i).animate().translationY(150).alpha(0).setDuration(ANIMATION_DURATION).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay((rvGrid.getChildCount()-i)*30).start();
+                                rvGrid.getChildAt(i).animate()
+                                        .translationY(150)
+                                        .setDuration(ANIMATION_DURATION)
+                                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                                        .setStartDelay((rvGrid.getChildCount()-i)*30).start();
                             }
 
                         }
+                        rvGrid.animate().alpha(0).setDuration(ANIMATION_DURATION).start();
                         rvGrid.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -171,18 +178,19 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
                         viewpager.animate().translationX(edge).alpha(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(ANIMATION_DURATION).start();
 
-
                         rvGrid.setVisibility(View.VISIBLE);
 
                         rvGrid.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 for (int i = 0; i < rvGrid.getChildCount(); i++) {
-                                    rvGrid.getChildAt(i).animate().translationY(0).alpha(1).setDuration(ANIMATION_DURATION).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(i*30).start();
+                                    rvGrid.getChildAt(i).setTranslationY(150);
+                                    rvGrid.getChildAt(i).animate().translationY(0).setDuration(ANIMATION_DURATION).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(i*30).start();
 
                                 }
                             }
-                        },0);
+                        },10);
+                        rvGrid.animate().alpha(1).setDuration(ANIMATION_DURATION).start();
 //                        tvPageIndicator.animate()
 //                                .alpha(0)
 //                                .translationY(tvPageIndicator.getHeight())
