@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:id="@+id/search_title_bar_ll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_heigh"
-        android:background="@color/colorPrimary">
+        android:background="@color/standard_color_white">
 
         <ImageView
             android:id="@+id/search_back"
@@ -25,7 +26,7 @@
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:background="@color/standard_color_white"
+            android:background="@color/bg_pager"
             android:orientation="horizontal">
 
 
@@ -60,15 +61,17 @@
             android:gravity="center"
             android:paddingRight="@dimen/base_margin"
             android:text="搜索"
-            android:textColor="@color/standard_color_h2_dark"
+            android:textColor="@color/standard_color_h1_dark"
             android:textSize="@dimen/word_subhead_size" />
     </LinearLayout>
+
+    <View style="@style/HorizontalLine" />
 
     <LinearLayout
         android:id="@+id/searchFilterContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/double_margin"
-        android:layout_below="@id/search_title_bar_ll"
+        android:layout_height="40dp"
+        android:background="@color/standard_color_white"
         android:orientation="horizontal"
         android:visibility="invisible"
         tools:visibility="visible">
@@ -154,11 +157,5 @@
         android:paddingBottom="@dimen/half_margin"
         android:paddingTop="@dimen/half_margin" />
 
-    <View
-        android:id="@+id/searchFilterLine"
-        style="@style/HorizontalLine"
-        android:layout_below="@id/searchFilterContainer"
-        android:visibility="invisible" />
 
-
-</RelativeLayout>
+</LinearLayout>

@@ -20,26 +20,19 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseFragment;
-import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.model.MyGeneModel;
-import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.MeActivityPresenter;
-import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.widget.LinearProgressView;
 
 public class MeFragment extends BaseFragment implements IMeActivity, View.OnClickListener {
@@ -169,9 +162,9 @@ public class MeFragment extends BaseFragment implements IMeActivity, View.OnClic
                     intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_FOOTER_TITLE, "我的脚印");
                     intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_NAME, AppContext.user.getFullname());
                     startActivity(intent);
-                    if (!EventBus.getDefault().isRegistered(this)) {
-                        EventBus.getDefault().register(this);
-                    }
+//                    if (!EventBus.getDefault().isRegistered(this)) {
+//                        EventBus.getDefault().register(this);
+//                    }
                 }
                 break;
             case R.id.friend://趣友圈
@@ -245,13 +238,13 @@ public class MeFragment extends BaseFragment implements IMeActivity, View.OnClic
 //        }
 //    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+////        if (EventBus.getDefault().isRegistered(this)) {
+////            EventBus.getDefault().unregister(this);
+////        }
+//    }
 
     @Override
     public void notReadMassage(int cound) {

@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/standard_color_white"
     android:orientation="vertical">
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
-</LinearLayout>
+    <co.quchu.quchu.widget.AreaView
+        android:id="@+id/areaView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/area_area"
+            android:layout_width="150dp"
+            android:layout_height="match_parent" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/area_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/area_area" />
+
+
+    </co.quchu.quchu.widget.AreaView>
+</FrameLayout>
