@@ -40,7 +40,7 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
-import co.quchu.quchu.view.adapter.SearchFilterSortAdapter;
+import co.quchu.quchu.view.adapter.SearchPopWinAdapter;
 import co.quchu.quchu.widget.AreaView;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 
@@ -210,7 +210,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 areaView.setVisibility(View.GONE);
 
                 categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                SearchFilterSortAdapter adapter = new SearchFilterSortAdapter();
+                SearchPopWinAdapter adapter = new SearchPopWinAdapter();
                 categoryRecyclerView.setAdapter(adapter);
                 break;
             case 1:
@@ -231,8 +231,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.search_button_rl:
                 searchInputEt.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                }
                 break;
             case R.id.search_back:
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                }
                 finish();
             case R.id.searchFilterLL1:
                 if (currentShowingPopupType == SHOWING_POPUP_TYPE_CATEGORY) {
@@ -258,6 +264,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     showPopupWindow(searchFilterIcon3, searchFilterTV3, getPopWinView(2));
                 }
                 break;
+            case R.id.search_input_et:
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                }
+                break;
         }
     }
 
@@ -273,6 +284,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         searchFilterLL1.setOnClickListener(this);
         searchFilterLL2.setOnClickListener(this);
         searchFilterLL3.setOnClickListener(this);
+        searchInputEt.setOnClickListener(this);
         searchBack.setOnClickListener(this);
 
         resultAdapter = new SearchAdapter();
@@ -300,11 +312,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         resultAdapter.setCategory(true);
         resultAdapter.setCategoryList(categoryBeanList);
     }
-
-    public void initAreaList() {
-
-    }
-
 
     private void seachStr(String str, String categoryCode, String areaCode, String sortType, final boolean loadMore) {
         if (mIsLoading) return;
@@ -398,6 +405,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        } else
+            super.onBackPressed();
+    }
 //    private void initHistory() {
 //        searchModel = SearchHistoryUtil.getSearchHistory();
 ////        if (searchModel != null && searchModel.getSearchList().size() > 0) {

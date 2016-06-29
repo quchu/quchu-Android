@@ -11,6 +11,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/base_margin"
         android:visibility="gone" />
 
     <co.quchu.quchu.widget.AreaView
@@ -18,21 +19,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-
         android:visibility="gone"
         tools:visibility="visible">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/area_area"
-            android:layout_width="150dp"
-            android:layout_height="match_parent" />
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/base_margin" />
 
+        <View
+            android:id="@+id/search_win_lin"
+            style="@style/VerticalLine"
+            android:layout_toRightOf="@id/area_area" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/area_row"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@id/area_area" />
+            android:layout_toRightOf="@id/search_win_lin"
+            android:padding="@dimen/base_margin" />
 
 
     </co.quchu.quchu.widget.AreaView>

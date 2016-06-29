@@ -12,7 +12,7 @@ import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.AreaBean;
-import co.quchu.quchu.view.adapter.SearchFilterSortAdapter;
+import co.quchu.quchu.view.adapter.SearchPopWinAdapter;
 
 /**
  * Created by no21 on 2016/6/29.
@@ -45,8 +45,8 @@ public class AreaView extends RelativeLayout {
         area.setLayoutManager(new LinearLayoutManager(getContext()));
         row.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        area.setAdapter(new SearchFilterSortAdapter());
-        row.setAdapter(new SearchFilterSortAdapter());
+        area.setAdapter(new SearchPopWinAdapter());
+        row.setAdapter(new SearchPopWinAdapter());
     }
 
     public AreaView(Context context, AttributeSet attrs, int defStyleAttr) {
