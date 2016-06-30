@@ -12,7 +12,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,15 +36,15 @@ import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.fragment.ClassifyFragment;
+import co.quchu.quchu.view.fragment.ArticleFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
-import co.quchu.quchu.widget.RecommendTitleGroup;
 
 /**
  * RecommendActivity
@@ -75,7 +74,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     private ArrayList<CityModel> list = new ArrayList<>();
     public int viewPagerIndex = 0;
     private RecommendFragment recommendFragment;
-    private ClassifyFragment classifyFragment;
+    private ArticleFragment articleFragment;
     private MeFragment meFragment;
 
 
@@ -97,11 +96,12 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
 
 
+
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
-        classifyFragment = new ClassifyFragment();
+        articleFragment = new ArticleFragment();
         meFragment = new MeFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).add(R.id.container, meFragment, null).hide(classifyFragment).hide(meFragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, articleFragment, null).add(R.id.container, meFragment, null).hide(articleFragment).hide(meFragment).commitAllowingStateLoss();
         initView();
         recommendTitleMoreRl.setOnClickListener(this);
         UmengUpdateAgent.setUpdateListener(null);
@@ -258,7 +258,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction.hide(classifyFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
+            transaction.hide(articleFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
                 @Override
                 public void run() {
@@ -267,7 +267,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
             }).start();
         } else if(index==1) {
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction.hide(recommendFragment).hide(meFragment).show(classifyFragment).commitAllowingStateLoss();
+            transaction.hide(recommendFragment).hide(meFragment).show(articleFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(-vTitle.getHeight()).setDuration(300).withEndAction(new Runnable() {
                 @Override
                 public void run() {
@@ -276,7 +276,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
             }).start();
         } else if(index ==2){
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction.hide(classifyFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
+            transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
                 @Override
                 public void run() {
@@ -293,7 +293,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
      */
     public void updateRecommend() {
         recommendFragment.initData();
-        classifyFragment.getRootTagsData();
+        articleFragment.getRootTagsData();
     }
 
     @Override

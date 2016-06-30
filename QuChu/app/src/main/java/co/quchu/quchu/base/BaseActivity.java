@@ -1,6 +1,7 @@
 package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 
 
 /**
@@ -73,6 +75,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP && this instanceof QuchuDetailsActivity){
+            return;
+        }
         switch (activitySetup()) {
             case TRANSITION_TYPE_NOTHING:
                 break;

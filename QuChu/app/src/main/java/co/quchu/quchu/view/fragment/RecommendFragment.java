@@ -1,6 +1,8 @@
 package co.quchu.quchu.view.fragment;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -239,6 +241,9 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(viewpager.getCurrentItem()).getPid());
         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, from);
         getActivity().startActivity(intent);
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+        }
 
     }
 

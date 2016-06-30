@@ -2,6 +2,8 @@ package co.quchu.quchu.net;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
@@ -91,6 +94,29 @@ public class NetService {
             addToQueue(Request.Method.GET, pUrl, params, pListener, 0);
         }
 //        new HashMap<String, String>();
+    }
+
+    public static void get(Context cont, String pUrl, HashMap<String,String> params, IRequestListener pListener) {
+        StringBuilder sbArguments = new StringBuilder();
+        if (null != params) {
+            for (String key:params.keySet()) {
+                if (sbArguments.length()==0){
+                    sbArguments.append("?");
+                }else{
+                    sbArguments.append("&");
+                }
+                sbArguments.append(key);
+                sbArguments.append("=");
+                sbArguments.append(params.get(key));
+            }
+        }
+        LogUtils.d(pUrl+sbArguments);
+        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
+            DialogUtil.dismissProgess();
+        } else {
+            addToQueue(Request.Method.GET, pUrl+sbArguments, null, pListener, 0);
+        }
     }
 
 

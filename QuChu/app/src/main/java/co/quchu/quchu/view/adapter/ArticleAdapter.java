@@ -15,22 +15,22 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.ClassifyModel;
+import co.quchu.quchu.model.ArticleModel;
 import co.quchu.quchu.utils.KeyboardUtils;
 
 /**
- * ClassifyAdapter
+ * ArticleAdapter
  * User: Chenhs
  * Date: 2015-12-08
  */
-public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.ClassifyHolder> {
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ClassifyHolder> {
 
     private Context mContext;
-    private List<ClassifyModel> arrayList;
+    private List<ArticleModel> arrayList;
 
     private ClasifyClickListener listener;
 
-    public ClassifyAdapter(Context context, List<ClassifyModel> arrayList) {
+    public ArticleAdapter(Context context, List<ArticleModel> arrayList) {
         this.mContext = context;
         this.arrayList = arrayList;
     }
@@ -46,7 +46,7 @@ public class ClassifyAdapter extends RecyclerView.Adapter<ClassifyAdapter.Classi
 
     @Override
     public void onBindViewHolder(ClassifyHolder holder, int position) {
-        holder.itemClassifyImageSdv.setImageURI(Uri.parse(arrayList.get(position).getMaxImg()+""));
+        holder.itemClassifyImageSdv.setImageURI(Uri.parse(arrayList.get(position).getImageUrl()+""));
         holder.itemClassifyImageSdv.setAspectRatio(1.73f);
 
     }

@@ -141,4 +141,15 @@ public interface NetApi {
 
     String getFavoriteEssay=HOST+"/searchSpecial/getMyArticleList";
     /****************** POST *******************/
+
+
+    String getArticles = HOST + "/searchSpecial/getArticleByCityId";
+    String getArticleById = HOST + "/searchSpecial/getPlaceByArticleId";
+
+    String getMyScene = HOST + "/scene/getMySceneList";                 //pagesNo cityId
+    String getAllScene = HOST + "/scene/getAllSceneList";               //pagesNo cityId
+    String addFavoriteScene = HOST + "/scene/favoriteSceneById";        //sceneId
+    String delFavoriteScene = HOST + "/scene/delFavoriteSceneById";     //sceneId
+    String getSceneDetail = HOST + "/scene/getSceneDetail";             //sceneId,placeIds,longitude,latitude,cityId,pagesNo,name
+
 }

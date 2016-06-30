@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.android.volley.VolleyError;
 
+import org.json.JSONObject;
+
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -18,7 +20,7 @@ import co.quchu.quchu.utils.SPUtils;
 public class VersionInfoPresenter {
 
     public static void getVersionInfo(Context context, IRequestListener listener) {
-        NetService.get(context, NetApi.getVersionInfo, null, listener);
+        NetService.get(context, NetApi.getVersionInfo, new JSONObject(), listener);
     }
 
     public static void getIfForceUpdate(final Context context) {
