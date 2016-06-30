@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
@@ -11,7 +12,6 @@
         android:id="@+id/simpleDraweeView"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        fresco:placeholderImage="@mipmap/head_place_hold"
         fresco:roundAsCircle="true" />
 
     <TextView
@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/base_margin"
         android:gravity="center"
-        android:text="类别" />
+        tools:text="类别" />
 
 </LinearLayout>

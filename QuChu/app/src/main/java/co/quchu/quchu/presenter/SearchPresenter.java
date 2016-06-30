@@ -40,7 +40,7 @@ public class SearchPresenter {
         Map<String, String> object = new HashMap<>();
         object.put("value", seachStr);
         object.put("pageno", String.valueOf(pageNum));
-        object.put("cityId", seachStr);
+        object.put("cityId", String.valueOf(cityId));
 
         object.put("tagId", categoryCode);
         object.put("sortType", sortType);

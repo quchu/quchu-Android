@@ -21,7 +21,7 @@ public class SearchCategoryBean implements Parcelable {
     private String zh;
     private String en;
     private String code;
-    private String iconUrl;
+    private String imageUrl;
 
     public int getTagId() {
         return tagId;
@@ -56,11 +56,11 @@ public class SearchCategoryBean implements Parcelable {
     }
 
     public String getIconUrl() {
-        return iconUrl;
+        return imageUrl;
     }
 
     public void setIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
+        this.imageUrl = iconUrl;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class SearchCategoryBean implements Parcelable {
         dest.writeString(this.zh);
         dest.writeString(this.en);
         dest.writeString(this.code);
-        dest.writeString(this.iconUrl);
+        dest.writeString(this.imageUrl);
     }
 
     public SearchCategoryBean() {
@@ -85,7 +85,7 @@ public class SearchCategoryBean implements Parcelable {
         this.zh = in.readString();
         this.en = in.readString();
         this.code = in.readString();
-        this.iconUrl = in.readString();
+        this.imageUrl = in.readString();
     }
 
     public static final Parcelable.Creator<SearchCategoryBean> CREATOR = new Parcelable.Creator<SearchCategoryBean>() {

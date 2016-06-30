@@ -300,9 +300,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, ((RecommendModel) bean).getPid());
                     startActivity(intent);
                 } else {
-                    String categoryCode = ((SearchCategoryBean) bean).getCode();
-
-
+                    int categoryCode = ((SearchCategoryBean) bean).getTagId();
+                    seachStr("", String.valueOf(categoryCode), String.valueOf(SPUtils.getCityId()), "", false);
                 }
             }
         });

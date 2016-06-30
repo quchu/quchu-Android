@@ -7,9 +7,12 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import co.quchu.quchu.model.FavoriteBean;
+import co.quchu.quchu.model.FavoriteEssayBean;
 import co.quchu.quchu.model.FindBean;
 import co.quchu.quchu.model.QuchuModel;
 import co.quchu.quchu.net.GsonRequest;
@@ -25,8 +28,10 @@ import co.quchu.quchu.view.activity.FindPositionListActivity;
 public class FavoritePresenter {
 
     private QuchuModel model;
+    private Context context;
 
     public FavoritePresenter(Context context) {
+        this.context = context;
         model = new QuchuModel(context);
     }
 
@@ -97,6 +102,32 @@ public class FavoritePresenter {
         });
         request.start(view);
 
+    }
+
+    public void getFavoriteEssay(int cityId, final int pageNo, final PageLoadListener<FavoriteEssayBean> view) {
+        Map<String, String> params = new HashMap<>();
+        params.put("cityId", String.valueOf(cityId));
+        params.put("pagesNo", String.valueOf(pageNo));
+
+
+        GsonRequest<FavoriteEssayBean> request = new GsonRequest<>(NetApi.getFavoriteEssay, FavoriteEssayBean.class, params, new ResponseListener<FavoriteEssayBean>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                view.netError(pageNo, null);
+            }
+
+            @Override
+            public void onResponse(FavoriteEssayBean response, boolean result, String errorCode, @Nullable String msg) {
+                if (response == null) {
+                    view.nullData();
+                } else if (pageNo == 1) {
+                    view.initData(response);
+                } else {
+                    view.moreData(response);
+                }
+            }
+        });
+        request.start(context);
     }
 
 }
