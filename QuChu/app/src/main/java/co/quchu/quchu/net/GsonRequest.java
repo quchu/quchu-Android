@@ -215,8 +215,8 @@ public class GsonRequest<T> extends Request<T> {
         headers.put("Charset", "UTF-8");
 
         if (!TextUtils.isEmpty(AppContext.token)) {
-//            headers.put("quchu-token", AppContext.token);
-            headers.put("quchu-token", "c20d5d429dc966063da21f2a35da984cb1e6f025");
+            headers.put("quchu-token", AppContext.token);
+//            headers.put("quchu-token", "c20d5d429dc966063da21f2a35da984cb1e6f025");
             LogUtils.e("quchu-token:" + AppContext.token);
         }
         headers.put("quchuVersion", AppContext.packageInfo.versionName);
