@@ -67,12 +67,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Classify
             this.listener = listener;
         }
 
-        @OnClick(R.id.item_classify_root_cv)
+        @OnClick(R.id.item_classify_root)
         public void onCardClick(View v) {
             if (KeyboardUtils.isFastDoubleClick())
                 return;
             switch (v.getId()) {
-                case R.id.item_classify_root_cv:
+                case R.id.item_classify_root:
                     if (listener != null)
                         listener.cItemClick(v, getAdapterPosition());
                     break;
