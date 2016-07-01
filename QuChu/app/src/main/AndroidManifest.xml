@@ -231,6 +231,14 @@
         <activity
             android:name=".view.activity.SharePreviewActivity"
             android:screenOrientation="portrait" />
+
+        <receiver
+            android:name="co.quchu.quchu.base.GeTuiReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

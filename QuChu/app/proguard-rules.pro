@@ -282,5 +282,6 @@ public static final int *;
 
 -keep public class com.android.vending.licensing.ILicensingService
 
-
-
+##个推
+-dontwarn com.igexin.**
+-keep class com.igexin.**{*;}

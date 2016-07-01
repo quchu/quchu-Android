@@ -17,14 +17,12 @@ import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.google.gson.Gson;
+import com.igexin.sdk.PushManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.List;
-
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.model.UserBehaviorModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.UserBehaviorPresentor;
 import co.quchu.quchu.utils.AppUtil;
@@ -83,7 +81,7 @@ public class AppContext extends Application {
     public void onCreate() {
         super.onCreate();
         registBroadcastReceiver();
-
+        PushManager.getInstance().initialize(this.getApplicationContext());
         refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
         token = SPUtils.getUserToken(getApplicationContext());
