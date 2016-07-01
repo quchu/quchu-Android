@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -26,13 +28,13 @@ import co.quchu.quchu.utils.KeyboardUtils;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ClassifyHolder> {
 
     private Context mContext;
-    private List<ArticleModel> arrayList;
+    private List<ArticleModel> mDataSet;
 
     private ClasifyClickListener listener;
 
     public ArticleAdapter(Context context, List<ArticleModel> arrayList) {
         this.mContext = context;
-        this.arrayList = arrayList;
+        this.mDataSet = arrayList;
     }
 
     @Override
@@ -46,19 +48,37 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Classify
 
     @Override
     public void onBindViewHolder(ClassifyHolder holder, int position) {
-        holder.itemClassifyImageSdv.setImageURI(Uri.parse(arrayList.get(position).getImageUrl()+""));
+        holder.itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getImageUrl()+""));
         holder.itemClassifyImageSdv.setAspectRatio(1.73f);
+        holder.tvTitle.setText(mDataSet.get(position).getArticleName());
+        holder.tvDescription.setText(mDataSet.get(position).getArticleComtent());
+        holder.tvReviews.setText(mDataSet.get(position).getReadCount());
+        holder.tvFavorite.setText(mDataSet.get(position).getFavoriteCount());
+        holder.sdvAvatar.setImageURI(Uri.parse(mDataSet.get(position).getUserUrl()));
 
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return mDataSet.size();
     }
 
     public class ClassifyHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.item_classify_image_sdv)
         SimpleDraweeView itemClassifyImageSdv;
+
+        @Bind(R.id.tvTitle)
+        TextView tvTitle;
+        @Bind(R.id.tvDescription)
+        TextView tvDescription;
+        @Bind(R.id.tvReviews)
+        TextView tvReviews;
+        @Bind(R.id.tvFavorite)
+        TextView tvFavorite;
+        @Bind(R.id.sdvAvatar)
+        SimpleDraweeView sdvAvatar;
+
+
         private ClasifyClickListener listener;
 
         public ClassifyHolder(View itemView, ClasifyClickListener listener) {

@@ -20,6 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_classify_image_sdv"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
         android:text="title" />
 
     <TextView
@@ -27,12 +29,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTitle"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
         android:text="description" />
 
     <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
         android:layout_below="@+id/tvDescription">
 
         <TextView
@@ -50,11 +56,14 @@
             android:text="9996" />
     </RelativeLayout>
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdvAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/rl"
         android:layout_alignParentRight="true"
+        fresco:roundAsCircle="true"
+        android:layout_marginRight="@dimen/base_margin"
         android:src="@mipmap/ic_launcher" />
 </RelativeLayout>
 
