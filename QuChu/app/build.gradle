@@ -14,6 +14,16 @@ android {
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
 
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "CeEw7RJzkY9zsL39zvArq3",
+                GETUI_APP_KEY   : "ArD8yYRKxs5EZB2X9aVmR3",
+                GETUI_APP_SECRET: "56VjMk0sR390uEBISPXxv2",
+                PACKAGE_NAME    : applicationId
+        ]
+
+        ndk {//个推配置 如果 project 中包含其他 so 库且只支持某几种 cpu 架构，那么应该根据其他 so 库支持的 cpu 架构来配置
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","x86_64"
+        }
     }
     lintOptions {
         abortOnError false
@@ -48,8 +58,7 @@ android {
         debug {
             buildConfigField "int", "API_SERVER", "2"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
-            manifestPlaceholders = [AMAP_DEBUG_KEY: "a9fc455f40856c0f9dc957d1bbdd6b09"]
-            applicationIdSuffix ".debug"
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
         }
 
         uat {
@@ -62,45 +71,45 @@ android {
 
     }
     productFlavors {
-        quchu_wandoujia {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wandoujia"]
-        }
-        quchu_360 {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_360"]
-        }
-        quchu_baidu {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_baidu"]
-        }
-        quchu_uc {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_uc"]
-        }
-        quchu_anzhi {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_anzhi"]
-        }
-        quchu_xiaomi {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_xiaomi"]
-        }
-        quchu_huawei {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_huawei"]
-        }
-        quchu_flyme {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_flyme"]
-        }
-        quchu_yingyongbao {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_yingyongbao"]
-        }
-        quchu_wo {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wo"]
-        }
-        quchu_lephone {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_lephone"]
-        }
-        quchu_official {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_official"] //官网包渠道名
-        }
-        quchu_umeng {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_umeng"]
-        }
+//        quchu_wandoujia {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wandoujia"]
+//        }
+//        quchu_360 {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_360"]
+//        }
+//        quchu_baidu {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_baidu"]
+//        }
+//        quchu_uc {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_uc"]
+//        }
+//        quchu_anzhi {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_anzhi"]
+//        }
+//        quchu_xiaomi {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_xiaomi"]
+//        }
+//        quchu_huawei {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_huawei"]
+//        }
+//        quchu_flyme {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_flyme"]
+//        }
+//        quchu_yingyongbao {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_yingyongbao"]
+//        }
+//        quchu_wo {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wo"]
+//        }
+//        quchu_lephone {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_lephone"]
+//        }
+//        quchu_official {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_official"] //官网包渠道名
+//        }
+//        quchu_umeng {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_umeng"]
+//        }
         quchu_weibo {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_weibo"]
         }
@@ -122,7 +131,6 @@ String supportVersion() {
 dependencies {
     provided fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-//    compile project(':galleryfinal')
     compile "com.android.support:appcompat-v7:${supportVersion()}"
     compile "com.android.support:cardview-v7:${supportVersion()}"
     compile "com.android.support:design:${supportVersion()}"
@@ -145,7 +153,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.he5ed.lib:volley:android-6.0.1_r5'
     compile 'com.google.code.gson:gson:2.6.2'
-
+    compile 'com.getui:sdk:2.9.0.0'//个推
     compile 'com.facebook.fresco:fresco:0.10.0'
     compile 'com.facebook.fresco:webpsupport:0.10.0'
     compile 'pub.devrel:easypermissions:0.1.0'
