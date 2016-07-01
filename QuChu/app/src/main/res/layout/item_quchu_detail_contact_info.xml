@@ -10,8 +10,10 @@
     <LinearLayout
         android:id="@+id/detail_store_address_ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/double_margin"
+        android:layout_height="@dimen/standard_h2_height"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
@@ -23,7 +25,6 @@
             android:layout_weight="1"
             android:drawableLeft="@mipmap/ic_location"
             android:drawablePadding="8dp"
-            android:drawableRight="@mipmap/ic_go_right"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -31,19 +32,26 @@
             android:gravity="center_vertical"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="地址:" />
+            android:singleLine="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_go_right" />
 
     </LinearLayout>
 
-    <View style="@style/DetailHorizontalLine" />
+    <View style="@style/HorizontalLine" />
 
     <LinearLayout
+
         android:id="@+id/detail_store_phone_ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/half_margin"
-        android:layout_marginTop="@dimen/base_margin"
+        android:layout_height="@dimen/standard_h2_height"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
@@ -54,11 +62,45 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:drawableLeft="@mipmap/ic_call"
-            android:drawablePadding="8dp"
-            android:drawableRight="@mipmap/ic_go_right"
-            android:text="电话:" />
+            android:drawablePadding="8dp" />
 
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_go_right" />
     </LinearLayout>
+
+
+    <View style="@style/HorizontalLine" />
+
+    <TextView
+        android:id="@+id/detail_store_business_hours_key_tv"
+        style="@style/TextView.H2"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_h2_height"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:gravity="center_vertical"
+        android:drawableLeft="@mipmap/ic_time"
+        android:drawablePadding="8dp" />
+
+
+    <View style="@style/HorizontalLine" />
+
+
+    <TextView
+        android:gravity="center_vertical"
+        android:id="@+id/detail_avg_price_tv"
+        style="@style/TextView.H2"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_h2_height"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:drawableLeft="@mipmap/ic_rmb_symbol"
+        android:drawablePadding="8dp"/>
+
+    <View style="@style/HorizontalLine" />
 
 
 </LinearLayout>

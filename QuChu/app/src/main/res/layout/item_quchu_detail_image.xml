@@ -3,61 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/standard_color_white"
+
+    android:paddingLeft="@dimen/base_margin"
+    android:paddingRight="@dimen/base_margin"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/detail_store_name_tv"
         style="@style/TextView.H1"
-        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/standard_text_size_h0"
+        android:layout_alignParentLeft="true"
         android:layout_marginTop="@dimen/half_margin"
         android:text="@string/empty_string"
 
         />
 
 
-    <TextView
-        android:id="@+id/detail_avg_price_tv"
-        style="@style/TextView.H3"
-        android:layout_below="@+id/detail_store_name_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:text="Null" />
-
-
-    <RatingBar
-        android:id="@+id/rbRating"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_below="@+id/detail_avg_price_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/half_margin"
-        android:numStars="5"
-        android:progressDrawable="@drawable/custom_ratingbar_selector"
-        android:rating="3.5"
-        android:stepSize=".5" />
-
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rbRating"
+        android:layout_below="@+id/detail_store_name_tv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/half_margin"
-        android:gravity="center"
+        android:layout_alignParentLeft="true"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/recommend_tag1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_lineframe_red_fill"
+            android:background="@drawable/shape_lineframe_black"
             android:paddingBottom="4dp"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
             android:paddingTop="4dp"
-            android:textColor="@color/standard_color_white"
+            android:textColor="@color/standard_color_black"
             android:textSize="@dimen/standard_text_size_h4"
             android:visibility="gone" />
 
@@ -67,12 +49,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/half_margin"
             android:layout_toRightOf="@id/recommend_tag1"
-            android:background="@drawable/shape_lineframe_red_fill"
+            android:background="@drawable/shape_lineframe_black"
             android:paddingBottom="4dp"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
             android:paddingTop="4dp"
-            android:textColor="@color/standard_color_white"
+            android:textColor="@color/standard_color_black"
             android:textSize="@dimen/standard_text_size_h4"
             android:visibility="gone" />
 
@@ -82,12 +64,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/half_margin"
             android:layout_toRightOf="@id/recommend_tag2"
-            android:background="@drawable/shape_lineframe_red_fill"
+            android:background="@drawable/shape_lineframe_black"
             android:paddingBottom="4dp"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
             android:paddingTop="4dp"
-            android:textColor="@color/standard_color_white"
+            android:textColor="@color/standard_color_black"
             android:textSize="@dimen/standard_text_size_h4"
             android:visibility="gone" />
 

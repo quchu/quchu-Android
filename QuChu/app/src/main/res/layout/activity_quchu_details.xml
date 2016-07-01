@@ -26,14 +26,26 @@
 
 
 
-            <co.quchu.quchu.widget.WrapContentViewPager
-                android:id="@+id/vpGallery"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"
-                />
+                >
+                <co.quchu.quchu.widget.WrapContentViewPager
+                    android:id="@+id/vpGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
 
+                <co.quchu.quchu.widget.SimpleIndicatorView
+                    android:id="@+id/siv"
+                    android:layout_width="60dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    />
+            </RelativeLayout>
 
             <co.quchu.quchu.base.EnhancedToolbar
                 android:id="@+id/enhancedToolbar"

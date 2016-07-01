@@ -143,13 +143,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
+        int imgSize = null!=mData.getImglist()?mData.getImglist().size():0;
+        int nearbySize = null!=mData.getNearPlace()?mData.getNearPlace().size():0;
         if (position <= (BLOCK_INDEX + 1)) {
             return null != mData && mData.isIsActivity() ? VIEW_TYPES_PARTY[position] : VIEW_TYPES[position];
-        } else if (position >= (BLOCK_INDEX + 1) && position < (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
+        } else if (position >= (BLOCK_INDEX + 1) && position < (imgSize + (BLOCK_INDEX + 1))) {
             return LAYOUT_TYPE_IMAGE;
-        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1)) && position < (mData.getImglist().size() + (BLOCK_INDEX + 2))) {
+        } else if (position >= (imgSize + (BLOCK_INDEX + 1)) && position < (imgSize + (BLOCK_INDEX + 2))) {
             return LAYOUT_TYPE_LABEL;
-        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 2)) && position < (mData.getImglist().size() + BLOCK_INDEX + 2 + mData.getNearPlace().size())) {
+        } else if (position >= (imgSize + (BLOCK_INDEX + 2)) && position < (imgSize + BLOCK_INDEX + 2 + nearbySize)) {
             return LAYOUT_TYPE_NEARBY;
         } else {
             return LAYOUT_TYPE_LOAD_MORE;
@@ -169,16 +171,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                return new SimpleInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_info, parent, false));
             case LAYOUT_TYPE_CONTACT_INFO:
                 return new ContactInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_contact_info, parent, false));
-            case LAYOUT_TYPE_RATING_INFO:
-                return new RatingInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
+//            case LAYOUT_TYPE_RATING_INFO:
+//                return new RatingInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
             case LAYOUT_TYPE_ADDITIONAL_INFO:
                 if (null == mData || mData.isIsActivity()) {
                     return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
                 } else {
                     return new AdditionalInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
                 }
-            case LAYOUT_TYPE_OPENING_INFO:
-                return new OpeningInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_opening_info, parent, false));
+//            case LAYOUT_TYPE_OPENING_INFO:
+//                return new OpeningInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_opening_info, parent, false));
             case LAYOUT_TYPE_PARTY_STARTER_INFO:
                 if (null != mData && mData.isIsActivity()) {
                     return new StarterInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_starter_info, parent, false));
@@ -191,10 +193,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 } else {
                     return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
                 }
-            case LAYOUT_TYPE_IMAGE:
-                return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
-            case LAYOUT_TYPE_LABEL:
-                return new LabelViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
+//            case LAYOUT_TYPE_IMAGE:
+//                return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
+//            case LAYOUT_TYPE_LABEL:
+//                return new LabelViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
             case LAYOUT_TYPE_NEARBY:
                 return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_nearby_quchu_detail, parent, false));
             case LAYOUT_TYPE_LOAD_MORE:
@@ -215,16 +217,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName().trim() : "");
 
-            ((IntroImageViewHolder) holder).rbRating.setRating(mData.getSuggest());
-            ((IntroImageViewHolder) holder).rbRating.setIsIndicator(true);
-
-            if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.
-                        setText(StringUtils.getColorSpan(((IntroImageViewHolder) holder).detail_avg_price_tv.getContext(), R.color.standard_color_red, "人均消费", "¥" + mData.getPrice(), ""));
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
-            } else {
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.GONE);
-            }
 
             //TODO For some reason ,TagCloudView can cause laggy in this activity ,Consider using recyclerview for instead
             if (null != mData.getTags() && mData.getTags().size() > 0) {
@@ -348,22 +340,22 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (holder instanceof ContactInfoViewHolder) {
             mEnableLoadMore = true;
             if (null == mData.getTraffic() || StringUtils.isEmpty(mData.getTraffic())) {
-                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址：" + mData.getAddress());
+                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(mData.getAddress());
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setSelected(true);
             } else if (!StringUtils.isEmpty(mData.getTraffic())) {
-                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址：" + String.format(mAnchorActivity.getResources().getString(R.string.detail_address_hint_text), mData.getAddress(), mData.getTraffic()));
+                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(String.format(mAnchorActivity.getResources().getString(R.string.detail_address_hint_text), mData.getAddress(), mData.getTraffic()));
             } else {
-                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址:-");
+                ((ContactInfoViewHolder) holder).detail_store_address_tv.setVisibility(View.GONE);
             }
             ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(mOnItemClickListener);
             if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setVisibility(View.VISIBLE);
                 StringTokenizer token = new StringTokenizer(mData.getTel(), " ");
                 StringBuffer phoneHtml = new StringBuffer();
                 while (token.hasMoreTokens()) {
                     String phoneNum = token.nextToken();
                     phoneHtml.append("<font color=#" + Integer.toHexString(((ContactInfoViewHolder) holder).detail_store_address_tv.getResources().getColor(R.color.standard_color_h2_dark) & 0x00ffffff) + "><a href='tel:").append(phoneNum).append("'>").append(phoneNum).append("</a> </font>  ");
                 }
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：");
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.append(Html.fromHtml(phoneHtml.toString()));
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -373,22 +365,38 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                 });
             } else {
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：-");
+//                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：-");
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setVisibility(View.GONE);
             }
-        } else if (holder instanceof RatingInfoViewHolder) {
-            if (null != mAnalysisModel && null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size() > 0) {
-                try {
 
-                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((int) (mAnalysisModel.getResult().get(0).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
-                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((int) (mAnalysisModel.getResult().get(1).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
-                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((int) (mAnalysisModel.getResult().get(2).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
-                    ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
-                    ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
-                    ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
-                } catch (IndexOutOfBoundsException ex) {
-                    //ex.printStackTrace();
-                }
+            if (mData.isIsActivity() && null != mData.getBusinessHours() && null != mData.getRestDay()) {
+                ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setText(mData.getBusinessHours() );
+            } else {
+                ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setText(mData.getBusinessHours() );
             }
+
+            if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
+                ((ContactInfoViewHolder) holder).detail_avg_price_tv.setText(mData.getPrice()+"元/人");
+                //((ContactInfoViewHolder) holder).detail_avg_price_tv.setText(StringUtils.getColorSpan(((ContactInfoViewHolder) holder).detail_avg_price_tv.getContext(), R.color.standard_color_red, "人均消费", "¥" + mData.getPrice(), ""));
+                ((ContactInfoViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
+            } else {
+                ((ContactInfoViewHolder) holder).detail_avg_price_tv.setVisibility(View.GONE);
+            }
+
+        } else if (holder instanceof RatingInfoViewHolder) {
+//            if (null != mAnalysisModel && null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size() > 0) {
+//                try {
+//
+//                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((int) (mAnalysisModel.getResult().get(0).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
+//                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((int) (mAnalysisModel.getResult().get(1).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
+//                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((int) (mAnalysisModel.getResult().get(2).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
+//                    ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
+//                    ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
+//                    ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
+//                } catch (IndexOutOfBoundsException ex) {
+//                    //ex.printStackTrace();
+//                }
+//            }
         } else if (holder instanceof AdditionalInfoViewHolder) {
 
             if (!mData.isIsActivity() && null != mData.getIcons()) {
@@ -406,11 +414,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         } else if (holder instanceof OpeningInfoViewHolder) {
-            if (mData.isIsActivity() && null != mData.getBusinessHours() && null != mData.getRestDay()) {
-                ((OpeningInfoViewHolder) holder).detail_store_business_hours_key_tv.setText("报名时间：" + mData.getBusinessHours() + " " + mData.getRestDay());
-            } else {
-                ((OpeningInfoViewHolder) holder).detail_store_business_hours_key_tv.setText("营业时间：" + mData.getBusinessHours() + " " + mData.getRestDay());
-            }
+
         } else if (holder instanceof StarterInfoViewHolder) {
 
             ((StarterInfoViewHolder) holder).detail_activity_initiator_ll.setVisibility(mData.isIsActivity() ? View.VISIBLE : View.GONE);
@@ -424,22 +428,22 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((PartyInfoViewHolder) holder).detail_activity_info_ll.setVisibility(mData.isIsActivity() ? View.VISIBLE : View.GONE);
             ((PartyInfoViewHolder) holder).detail_activity_info_tv.setText(mData.isIsActivity() && null != mData.getActivityInfo() ? mData.getActivityInfo() : "");
         } else if (holder instanceof ImageViewHolder) {
-            int imgIndex = position - BLOCK_INDEX;
-            if (null != mData.getImglist() && mData.getImglist().size() > imgIndex) {
-
-                if (null != mData.getImglist().get(imgIndex).getImgpath()) {
-                    String strUri = mData.getImglist().get(imgIndex).getImgpath();
-                    ((ImageViewHolder) holder).item_card_image_sdv.setImageURI(Uri.parse(strUri));
-
-                    if (0 == mData.getImglist().get(imgIndex).getWidth() || 0 == mData.getImglist().get(imgIndex).getHeight()) {
-                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
-                    } else {
-                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio((float) mData.getImglist().get(imgIndex).getWidth() / (float) mData.getImglist().get(imgIndex).getHeight());
-                    }
-                }
-            } else {
-                ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
-            }
+//            int imgIndex = position - BLOCK_INDEX;
+//            if (null != mData.getImglist() && mData.getImglist().size() > imgIndex) {
+//
+//                if (null != mData.getImglist().get(imgIndex).getImgpath()) {
+//                    String strUri = mData.getImglist().get(imgIndex).getImgpath();
+//                    ((ImageViewHolder) holder).item_card_image_sdv.setImageURI(Uri.parse(strUri));
+//
+//                    if (0 == mData.getImglist().get(imgIndex).getWidth() || 0 == mData.getImglist().get(imgIndex).getHeight()) {
+//                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
+//                    } else {
+//                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio((float) mData.getImglist().get(imgIndex).getWidth() / (float) mData.getImglist().get(imgIndex).getHeight());
+//                    }
+//                }
+//            } else {
+//                ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
+//            }
 
         } else if (holder instanceof NearbyViewHolder) {
             if (null != mData.getNearPlace()) {
@@ -553,10 +557,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class IntroImageViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.detail_store_name_tv)
         TextView detail_store_name_tv;
-        @Bind(R.id.rbRating)
-        RatingBar rbRating;
-        @Bind(R.id.detail_avg_price_tv)
-        TextView detail_avg_price_tv;
 
         @Bind(R.id.recommend_tag1)
         TextView tag1;
@@ -594,6 +594,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LinearLayout detail_store_phone_ll;
         @Bind(R.id.detail_store_phone_tv)
         TextView detail_store_phone_tv;
+        @Bind(R.id.detail_store_business_hours_key_tv)
+        TextView detail_store_business_hours_key_tv;
+
+        @Bind(R.id.detail_avg_price_tv)
+        TextView detail_avg_price_tv;
 
         ContactInfoViewHolder(View view) {
             super(view);
@@ -635,9 +640,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static class OpeningInfoViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.detail_store_business_hours_key_tv)
-        TextView detail_store_business_hours_key_tv;
-
         OpeningInfoViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

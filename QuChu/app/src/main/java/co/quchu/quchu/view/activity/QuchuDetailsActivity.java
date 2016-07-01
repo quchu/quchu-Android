@@ -52,7 +52,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.GalleryAdapter;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
-
+import co.quchu.quchu.widget.SimpleIndicatorView;
 
 
 /**
@@ -79,6 +79,9 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
 
     @Bind(R.id.vpGallery)
     ViewPager vpGallery;
+
+    @Bind(R.id.siv)
+    SimpleIndicatorView siv;
 
     ImageView vFakeReturnButton;
 
@@ -254,6 +257,23 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
                 imageSet.add(dModel.getImglist().get(i).convert2ImageModel());
             }
             vpGallery.setAdapter(new GalleryAdapter(imageSet,getApplicationContext()));
+            siv.setIndicators(imageSet.size());
+            vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    siv.setCurrentIndex(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
         }
 
         mQuchuDetailAdapter.notifyDataSetChanged();

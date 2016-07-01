@@ -8,6 +8,6 @@
 
     card_view:placeholderImage="@mipmap/ic_image_empty"
     card_view:failureImage="@mipmap/ic_image_empty"
-    card_view:failureImageScaleType="centerCrop"
+    card_view:failureImageScaleType="center"
     card_view:actualImageScaleType="centerCrop"
-    card_view:placeholderImageScaleType="centerCrop"/>
+    card_view:placeholderImageScaleType="center"/>

@@ -2,6 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="title_bar_heigh">56dp</dimen>
 
+    <dimen name="standard_text_size_h0">26sp</dimen>
+
     <dimen name="standard_text_size_h1">18sp</dimen>
     <dimen name="standard_text_size_h2">14sp</dimen>
     <dimen name="standard_text_size_h3">13sp</dimen>
@@ -13,6 +15,8 @@
     <dimen name="text_size_10">10sp</dimen>
     <dimen name="visited_users_avatar_size">24dp</dimen>
 
+
+    <dimen name="standard_h2_height">36dp</dimen>
 
     <dimen name="rounded_radius">20px</dimen>
     <!--//设置中item高度-->
