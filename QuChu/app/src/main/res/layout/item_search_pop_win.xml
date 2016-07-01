@@ -26,6 +26,7 @@
             android:id="@+id/search_pop_item_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/standard_color_h2_dark"
             android:layout_gravity="center_vertical"
             android:singleLine="true"
             android:text="哈哈美国加拿大"

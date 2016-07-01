@@ -24,6 +24,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -32,6 +33,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.AreaBean;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.net.NetUtil;
@@ -40,7 +42,8 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
-import co.quchu.quchu.view.adapter.SearchPopWinAdapter;
+import co.quchu.quchu.view.adapter.SearchCategoryAdapter;
+import co.quchu.quchu.view.adapter.SearchPopWinBaseAdapter;
 import co.quchu.quchu.widget.AreaView;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 
@@ -102,6 +105,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private View popWinView;
     private RecyclerView categoryRecyclerView;
     private AreaView areaView;
+    private List<AreaBean> areaData;
+
+    private String categoryCode = "", areaCode = "", sortType = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +118,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         initEdittext();
         initData();
         SearchPresenter.getCategoryTag(this);
+        SearchPresenter.getAreaList(this);
     }
 
 
@@ -136,7 +144,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             }
         }, 200);
     }
-
 
     private void initPopupWindow() {
 
@@ -202,25 +209,48 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
             categoryRecyclerView.setLayoutParams(params);
             areaView.setLayoutParams(params);
-        }
 
+            areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
+                @Override
+                public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
+                    areaCode = String.valueOf(circleListBean.getCircleId());
+                    popupWindow.dismiss();
+                    seachStr(false);
+                }
+            });
+        }
         switch (type) {
             case 0:
                 categoryRecyclerView.setVisibility(View.VISIBLE);
                 areaView.setVisibility(View.GONE);
 
                 categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                SearchPopWinAdapter adapter = new SearchPopWinAdapter();
-                categoryRecyclerView.setAdapter(adapter);
+                if (categoryRecyclerView.getAdapter() == null) {
+                    SearchCategoryAdapter categoryAdapter = new SearchCategoryAdapter(categoryBeanList);
+                    categoryAdapter.setItemClickListener(new SearchPopWinBaseAdapter.OnItemClickListener<SearchCategoryBean>() {
+                        @Override
+                        public void itemClick(int position, SearchCategoryBean item) {
+                            categoryCode = String.valueOf(item.getTagId());
+                            popupWindow.dismiss();
+                            seachStr(false);
+                        }
+                    });
+                    categoryRecyclerView.setAdapter(categoryAdapter);
+                }
                 break;
             case 1:
                 areaView.setVisibility(View.VISIBLE);
                 categoryRecyclerView.setVisibility(View.GONE);
-                areaView.setDatas(null);
+                areaView.setDatas(areaData);
                 break;
         }
 
         return popWinView;
+    }
+
+
+    public void setAreaData(List<AreaBean> areaData) {
+        this.areaData = areaData;
     }
 
 
@@ -300,19 +330,25 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, ((RecommendModel) bean).getPid());
                     startActivity(intent);
                 } else {
-                    int categoryCode = ((SearchCategoryBean) bean).getTagId();
-                    seachStr("", String.valueOf(categoryCode), String.valueOf(SPUtils.getCityId()), "", false);
+                    categoryCode = String.valueOf(((SearchCategoryBean) bean).getTagId());
+                    seachStr(false);
                 }
             }
         });
     }
 
+    private ArrayList<SearchCategoryBean> categoryBeanList;
+
     public void initCategoryList(ArrayList<SearchCategoryBean> categoryBeanList) {
+        this.categoryBeanList = categoryBeanList;
         resultAdapter.setCategory(true);
         resultAdapter.setCategoryList(categoryBeanList);
     }
 
-    private void seachStr(String str, String categoryCode, String areaCode, String sortType, final boolean loadMore) {
+    private void seachStr(final boolean loadMore) {
+
+        String str = searchInputEt.getText().toString().trim();
+
         if (mIsLoading) return;
         if (loadMore && mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
         if (!loadMore) {
@@ -356,7 +392,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     searchResultRv.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) searchResultRv.getLayoutManager()) {
                         @Override
                         public void onLoadMore(int current_page) {
-                            seachStr(searchInputEt.getText().toString(), "", "", "", true);
+                            seachStr(true);
                         }
                     });
 
@@ -391,7 +427,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                             if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
                                 Toast.makeText(SearchActivity.this, getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT).show();
                             } else {
-                                seachStr(searchInputEt.getText().toString(), "", "", "", false);
+                                seachStr(false);
                             }
                         }
                     } else {

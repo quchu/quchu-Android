@@ -14,7 +14,7 @@ public class AreaBean  {
      * circleList : [{"circleId":177,"circleName":"其他"}]
      */
 
-    private int areaId;
+    private String areaId;
     private String areaName;
     /**
      * circleId : 177
@@ -23,11 +23,11 @@ public class AreaBean  {
 
     private List<CircleListBean> circleList;
 
-    public int getAreaId() {
+    public String getAreaId() {
         return areaId;
     }
 
-    public void setAreaId(int areaId) {
+    public void setAreaId(String areaId) {
         this.areaId = areaId;
     }
 
@@ -48,14 +48,14 @@ public class AreaBean  {
     }
 
     public static class CircleListBean {
-        private int circleId;
+        private String circleId;
         private String circleName;
 
-        public int getCircleId() {
+        public String getCircleId() {
             return circleId;
         }
 
-        public void setCircleId(int circleId) {
+        public void setCircleId(String circleId) {
             this.circleId = circleId;
         }
 

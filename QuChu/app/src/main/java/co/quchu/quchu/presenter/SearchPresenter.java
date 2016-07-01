@@ -17,9 +17,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.AreaBean;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.model.TagsModel;
@@ -27,6 +29,7 @@ import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.SearchActivity;
 
 /**
@@ -156,17 +159,16 @@ public class SearchPresenter {
     }
 
     public static void getAreaList(final SearchActivity context) {
-        GsonRequest<ArrayList<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getCagegoryTag, new TypeToken<ArrayList<SearchCategoryBean>>() {
-        }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
+        GsonRequest<ArrayList<AreaBean>> request = new GsonRequest<>(String.format(Locale.SIMPLIFIED_CHINESE, NetApi.getAreaList, SPUtils.getCityId()), new TypeToken<ArrayList<AreaBean>>() {
+        }.getType(), new ResponseListener<ArrayList<AreaBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onResponse(ArrayList<SearchCategoryBean> response, boolean result, String errorCode, @Nullable String msg) {
-                context.initCategoryList(response);
-
+            public void onResponse(ArrayList<AreaBean> response, boolean result, String errorCode, @Nullable String msg) {
+                context.setAreaData(response);
             }
         });
         request.start(context);

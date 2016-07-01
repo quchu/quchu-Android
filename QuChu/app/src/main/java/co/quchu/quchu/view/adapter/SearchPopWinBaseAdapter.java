@@ -1,7 +1,5 @@
 package co.quchu.quchu.view.adapter;
 
-import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +17,18 @@ import co.quchu.quchu.R;
  * email:437943145@qq.com
  * desc :
  */
-public class SearchPopWinAdapter extends RecyclerView.Adapter<SearchPopWinAdapter.ViewHolder> {
+public abstract class SearchPopWinBaseAdapter extends RecyclerView.Adapter<SearchPopWinBaseAdapter.ViewHolder> {
 
+    protected int selectedPosition = 0;
+    protected OnItemClickListener itemClickListener;
+
+    public void setSelectedPosition(int selectedPosition) {
+        this.selectedPosition = selectedPosition;
+    }
+
+    public <DT> void setItemClickListener(OnItemClickListener<DT> itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,21 +37,11 @@ public class SearchPopWinAdapter extends RecyclerView.Adapter<SearchPopWinAdapte
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.searchPopItemContent.setBackgroundColor(Color.BLACK);
-                holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_white));
-            }
-        });
-    }
+    public abstract void onBindViewHolder(ViewHolder holder, int position);
 
     @Override
-    public int getItemCount() {
-        return 100;
-    }
+    public abstract int getItemCount();
+
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.search_pop_item_iv)
@@ -57,5 +55,10 @@ public class SearchPopWinAdapter extends RecyclerView.Adapter<SearchPopWinAdapte
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnItemClickListener<DT> {
+
+        void itemClick(int position, DT item);
     }
 }
