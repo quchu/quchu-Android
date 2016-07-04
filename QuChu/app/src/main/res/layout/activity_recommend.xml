@@ -30,28 +30,38 @@
         <RadioButton
             android:id="@+id/rbRecommend"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/title_bar_heigh"
             android:layout_weight="1"
+            android:drawableTop="@drawable/ic_qu_tuijian_selector"
             android:button="@null"
+            android:layout_marginTop="@dimen/half_margin"
+            android:checked="true"
             android:gravity="center"
+            android:textColor="@color/color_selector_recommend"
             android:text="@string/qu_recommend"
             />
         <RadioButton
             android:id="@+id/rbDiscovery"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/title_bar_heigh"
             android:layout_weight="1"
+            android:drawableTop="@drawable/ic_qu_faxian_selecotr"
             android:button="@null"
-            android:gravity="center"
+            android:layout_marginTop="@dimen/half_margin"
+            android:gravity="center"            android:textColor="@color/color_selector_recommend"
+
             android:text="@string/qu_discover"
             />
         <RadioButton
+            android:layout_marginTop="@dimen/half_margin"
             android:id="@+id/rbMine"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_item_size"
+            android:layout_height="@dimen/title_bar_heigh"
             android:layout_weight="1"
+            android:drawableTop="@drawable/ic_wode_selector"
             android:button="@null"
-            android:gravity="center"
+            android:gravity="center"            android:textColor="@color/color_selector_recommend"
+
             android:text="@string/mine"
             />
 

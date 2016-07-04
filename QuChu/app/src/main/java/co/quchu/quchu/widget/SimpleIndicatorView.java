@@ -6,8 +6,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -38,7 +36,7 @@ public class SimpleIndicatorView extends View {
         mAnimator = ValueAnimator.ofFloat(0, 1);
         mPaintIndicators = new Paint();
         mPaintIndicators.setStrokeWidth(2);
-        mPaintIndicators.setColor(Color.parseColor("#ff231f"));
+        mPaintIndicators.setColor(Color.parseColor("#eaeaea"));
         mPaintIndicators.setStyle(Paint.Style.FILL);
         mPaintIndicators.setAntiAlias(true);
     }
@@ -98,7 +96,10 @@ public class SimpleIndicatorView extends View {
                 }else if(index == mSelectIndex){
                     zoomLevel = (mAnimateProgress * .25f)+.75f;
                 }
+
                 canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicators);
+
+
             }
         }
 

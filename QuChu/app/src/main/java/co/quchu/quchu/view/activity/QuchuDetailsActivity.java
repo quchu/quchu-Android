@@ -274,6 +274,8 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
 
                 }
             });
+        }else{
+            siv.setVisibility(View.INVISIBLE);
         }
 
         mQuchuDetailAdapter.notifyDataSetChanged();

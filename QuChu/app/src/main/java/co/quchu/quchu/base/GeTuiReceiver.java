@@ -18,13 +18,13 @@ public class GeTuiReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Bundle extras = intent.getExtras();
-        Set<String> keySet = extras.keySet();
-
-        for (String key : keySet) {
-
-
-            LogUtils.e("\n推送消息 key:" + key + " values:" + extras.get(key) + "byteString:" + extras.getByteArray(key) != null ? new String(extras.getByteArray(key)) : "空");
-        }
+//        Bundle extras = intent.getExtras();
+//        Set<String> keySet = extras.keySet();
+//
+//        for (String key : keySet) {
+//
+//
+//            LogUtils.e("\n推送消息 key:" + key + " values:" + extras.get(key) + "byteString:" + extras.getByteArray(key) != null ? new String(extras.getByteArray(key)) : "空");
+//        }
     }
 }
