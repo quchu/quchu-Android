@@ -36,6 +36,7 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.AreaBean;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchCategoryBean;
+import co.quchu.quchu.model.SearchSortBean;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
@@ -44,6 +45,7 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
 import co.quchu.quchu.view.adapter.SearchCategoryAdapter;
 import co.quchu.quchu.view.adapter.SearchPopWinBaseAdapter;
+import co.quchu.quchu.view.adapter.SearchSortAdapter;
 import co.quchu.quchu.widget.AreaView;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 
@@ -108,6 +110,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private List<AreaBean> areaData;
 
     private String categoryCode = "", areaCode = "", sortType = "";
+    private RecyclerView sortRecyclerView;
 
 
     @Override
@@ -119,6 +122,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         initData();
         SearchPresenter.getCategoryTag(this);
         SearchPresenter.getAreaList(this);
+        SearchPresenter.getSortTypeList(this);
     }
 
 
@@ -179,7 +183,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             animator.setDuration(400);
             animator.start();
         }
-
         currentTV.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
         if (firstFilterTV != null) {
@@ -201,6 +204,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         if (popWinView == null) {
             popWinView = View.inflate(this, R.layout.layout_search_popupwindow, null);
             categoryRecyclerView = (RecyclerView) popWinView.findViewById(R.id.recyclerView);
+            sortRecyclerView = (RecyclerView) popWinView.findViewById(R.id.search_pop_sort_rv);
             areaView = (AreaView) popWinView.findViewById(R.id.areaView);
 
             ViewGroup.LayoutParams params = categoryRecyclerView.getLayoutParams();
@@ -209,12 +213,16 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
             categoryRecyclerView.setLayoutParams(params);
             areaView.setLayoutParams(params);
+            sortRecyclerView.setLayoutParams(params);
 
             areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
                 @Override
                 public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
                     areaCode = String.valueOf(circleListBean.getCircleId());
                     popupWindow.dismiss();
+
+                    searchFilterTV2.setText(circleListBean.getCircleName());
+
                     seachStr(false);
                 }
             });
@@ -222,9 +230,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         switch (type) {
             case 0:
                 categoryRecyclerView.setVisibility(View.VISIBLE);
-                areaView.setVisibility(View.GONE);
+                areaView.setVisibility(View.INVISIBLE);
+                sortRecyclerView.setVisibility(View.INVISIBLE);
 
                 categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                sortRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                 if (categoryRecyclerView.getAdapter() == null) {
                     SearchCategoryAdapter categoryAdapter = new SearchCategoryAdapter(categoryBeanList);
                     categoryAdapter.setItemClickListener(new SearchPopWinBaseAdapter.OnItemClickListener<SearchCategoryBean>() {
@@ -232,6 +242,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         public void itemClick(int position, SearchCategoryBean item) {
                             categoryCode = String.valueOf(item.getTagId());
                             popupWindow.dismiss();
+                            searchFilterTV1.setText(item.getZh());
                             seachStr(false);
                         }
                     });
@@ -240,19 +251,44 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 break;
             case 1:
                 areaView.setVisibility(View.VISIBLE);
-                categoryRecyclerView.setVisibility(View.GONE);
+                categoryRecyclerView.setVisibility(View.INVISIBLE);
+                sortRecyclerView.setVisibility(View.INVISIBLE);
+
                 areaView.setDatas(areaData);
                 break;
+            case 2:
+                areaView.setVisibility(View.INVISIBLE);
+                categoryRecyclerView.setVisibility(View.INVISIBLE);
+                sortRecyclerView.setVisibility(View.VISIBLE);
+                if (sortRecyclerView.getAdapter() == null) {
+                    SearchSortAdapter sortAdapter = new SearchSortAdapter(sortList);
+                    sortAdapter.setItemClickListener(new SearchSortAdapter.OnItemClickListener<SearchSortBean>() {
+                        @Override
+                        public void itemClick(int position, SearchSortBean item) {
+                            sortType = String.valueOf(item.getSortId());
+                            popupWindow.dismiss();
+                            searchFilterTV3.setText(item.getSortName());
+                            seachStr(false);
+                        }
+                    });
+                    sortRecyclerView.setAdapter(sortAdapter);
+                }
+                break;
         }
-
         return popWinView;
     }
 
+    List<SearchSortBean> sortList;
 
     public void setAreaData(List<AreaBean> areaData) {
         this.areaData = areaData;
+        searchFilterTV2.setText("全部商圈");
     }
 
+    public void setSortList(List<SearchSortBean> sortList) {
+        this.sortList = sortList;
+        searchFilterTV3.setText(sortList.get(0).getSortName());
+    }
 
     @Override
     public void onClick(View v) {
@@ -331,6 +367,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     startActivity(intent);
                 } else {
                     categoryCode = String.valueOf(((SearchCategoryBean) bean).getTagId());
+                    searchFilterTV1.setText("全部" + ((SearchCategoryBean) bean).getZh());
+
                     seachStr(false);
                 }
             }
