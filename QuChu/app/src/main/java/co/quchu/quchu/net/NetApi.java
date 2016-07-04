@@ -139,6 +139,7 @@ public interface NetApi {
     String getCagegoryTag = HOST + "/public/getFunctionGroupTag";//搜索分类标签
     String getAreaList = HOST + "/public/getCircleListByCityId?cityId=%d";//搜索商圈列表
     String getSortList = HOST + "/public/getSearchSortList";//搜索商圈列表
+    String getTagByParentId = HOST + "/public/getTagByParentId";//搜索商圈列表
 
     String getFavoriteEssay=HOST+"/searchSpecial/getMyArticleList";
     /****************** POST *******************/

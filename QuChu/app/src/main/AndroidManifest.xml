@@ -116,6 +116,7 @@
         <!-- 搜索 -->
         <activity
             android:name=".view.activity.SearchActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.PlaceMapActivity"

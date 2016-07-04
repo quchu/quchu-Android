@@ -58,7 +58,7 @@ public class GeTuiReceiver extends BroadcastReceiver {
             case PushConsts.GET_CLIENTID:
                 // 获取ClientID(CID)
                 String cid = bundle.getString("clientid");
-
+                LogUtils.e("个推cid" + cid);
                 break;
         }
 

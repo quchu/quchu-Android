@@ -1,7 +1,6 @@
 package co.quchu.quchu.view.activity;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -9,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,10 +107,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private View popWinView;
     private RecyclerView categoryRecyclerView;
     private AreaView areaView;
-    private List<AreaBean> areaData;
 
     private String categoryCode = "", areaCode = "", sortType = "";
     private RecyclerView sortRecyclerView;
+    private SearchCategoryAdapter filterCategoryAdapter;
+    private SearchSortAdapter filterSortAdapter;
 
 
     @Override
@@ -120,9 +121,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         ButterKnife.bind(this);
         initEdittext();
         initData();
+        initPopupWindow();
         SearchPresenter.getCategoryTag(this);
-        SearchPresenter.getAreaList(this);
-        SearchPresenter.getSortTypeList(this);
     }
 
 
@@ -136,29 +136,18 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     protected void onPause() {
         MobclickAgent.onPageEnd("search");
         super.onPause();
-        searchInputEt.requestFocus();
-
-        searchInputEt.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                InputMethodManager keyboard = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                keyboard.showSoftInput(searchInputEt, 0);
-            }
-        }, 200);
     }
 
     private void initPopupWindow() {
 
-
         popupWindow = new PopupWindow((int) AppContext.Width, (int) (AppContext.Height - searchFilterLL1.getBottom()));
         popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+        popupWindow.setFocusable(false);
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 if (firstFilterIcon != null) {
-                    ObjectAnimator animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 0);
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 180);
                     animator.setDuration(400);
                     animator.start();
                 }
@@ -170,16 +159,67 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 firstFilterIcon = null;
             }
         });
+
+        popWinView = View.inflate(this, R.layout.layout_search_popupwindow, null);
+        categoryRecyclerView = (RecyclerView) popWinView.findViewById(R.id.recyclerView);
+        sortRecyclerView = (RecyclerView) popWinView.findViewById(R.id.search_pop_sort_rv);
+        areaView = (AreaView) popWinView.findViewById(R.id.areaView);
+
+        ViewGroup.LayoutParams params = categoryRecyclerView.getLayoutParams();
+        params.width = (int) AppContext.Width;
+        params.height = (int) (AppContext.Height - searchFilterLL1.getBottom());
+
+        categoryRecyclerView.setLayoutParams(params);
+        areaView.setLayoutParams(params);
+        sortRecyclerView.setLayoutParams(params);
+
+        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        sortRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //商圈
+        areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
+            @Override
+            public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
+                areaCode = TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaId() : "";
+                popupWindow.dismiss();
+                searchFilterTV2.setText(circleListBean.getCircleName());
+                seachStr(false);
+            }
+        });
+//类别
+        filterCategoryAdapter = new SearchCategoryAdapter();
+        categoryRecyclerView.setAdapter(filterCategoryAdapter);
+        filterCategoryAdapter.setItemClickListener(new SearchPopWinBaseAdapter.OnItemClickListener<SearchCategoryBean>() {
+            @Override
+            public void itemClick(int position, SearchCategoryBean item) {
+                categoryCode = String.valueOf(item.getTagId());
+                popupWindow.dismiss();
+                searchFilterTV1.setText(item.getZh());
+                seachStr(false);
+            }
+        });
+//排序
+        filterSortAdapter = new SearchSortAdapter();
+        sortRecyclerView.setAdapter(filterSortAdapter);
+        filterSortAdapter.setItemClickListener(new SearchSortAdapter.OnItemClickListener<SearchSortBean>() {
+            @Override
+            public void itemClick(int position, SearchSortBean item) {
+                sortType = String.valueOf(item.getSortId());
+                popupWindow.dismiss();
+                searchFilterTV3.setText(item.getSortName());
+                seachStr(false);
+            }
+        });
+
     }
 
     private void showPopupWindow(ImageView currentIcon, TextView currentTV, View contentView) {
-        if (popupWindow == null) initPopupWindow();
         //箭头动画
-        ObjectAnimator animator = ObjectAnimator.ofFloat(currentIcon, "Rotation", -180);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(currentIcon, "Rotation", 360);
         animator.setDuration(400);
         animator.start();
         if (firstFilterIcon != null) {
-            animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 0);
+            animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 180);
             animator.setDuration(400);
             animator.start();
         }
@@ -201,94 +241,65 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private View getPopWinView(int type) {
-        if (popWinView == null) {
-            popWinView = View.inflate(this, R.layout.layout_search_popupwindow, null);
-            categoryRecyclerView = (RecyclerView) popWinView.findViewById(R.id.recyclerView);
-            sortRecyclerView = (RecyclerView) popWinView.findViewById(R.id.search_pop_sort_rv);
-            areaView = (AreaView) popWinView.findViewById(R.id.areaView);
 
-            ViewGroup.LayoutParams params = categoryRecyclerView.getLayoutParams();
-            params.width = (int) AppContext.Width;
-            params.height = (int) (AppContext.Height - searchFilterLL1.getBottom());
-
-            categoryRecyclerView.setLayoutParams(params);
-            areaView.setLayoutParams(params);
-            sortRecyclerView.setLayoutParams(params);
-
-            areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
-                @Override
-                public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
-                    areaCode = String.valueOf(circleListBean.getCircleId());
-                    popupWindow.dismiss();
-
-                    searchFilterTV2.setText(circleListBean.getCircleName());
-
-                    seachStr(false);
-                }
-            });
-        }
         switch (type) {
             case 0:
                 categoryRecyclerView.setVisibility(View.VISIBLE);
                 areaView.setVisibility(View.INVISIBLE);
                 sortRecyclerView.setVisibility(View.INVISIBLE);
-
-                categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                sortRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-                if (categoryRecyclerView.getAdapter() == null) {
-                    SearchCategoryAdapter categoryAdapter = new SearchCategoryAdapter(categoryBeanList);
-                    categoryAdapter.setItemClickListener(new SearchPopWinBaseAdapter.OnItemClickListener<SearchCategoryBean>() {
-                        @Override
-                        public void itemClick(int position, SearchCategoryBean item) {
-                            categoryCode = String.valueOf(item.getTagId());
-                            popupWindow.dismiss();
-                            searchFilterTV1.setText(item.getZh());
-                            seachStr(false);
-                        }
-                    });
-                    categoryRecyclerView.setAdapter(categoryAdapter);
-                }
                 break;
             case 1:
+                if (areaData == null) {
+                    SearchPresenter.getAreaList(this);
+                }
                 areaView.setVisibility(View.VISIBLE);
                 categoryRecyclerView.setVisibility(View.INVISIBLE);
                 sortRecyclerView.setVisibility(View.INVISIBLE);
 
-                areaView.setDatas(areaData);
                 break;
             case 2:
+                if (sortList == null) {
+                    SearchPresenter.getSortTypeList(this);
+                }
                 areaView.setVisibility(View.INVISIBLE);
                 categoryRecyclerView.setVisibility(View.INVISIBLE);
                 sortRecyclerView.setVisibility(View.VISIBLE);
-                if (sortRecyclerView.getAdapter() == null) {
-                    SearchSortAdapter sortAdapter = new SearchSortAdapter(sortList);
-                    sortAdapter.setItemClickListener(new SearchSortAdapter.OnItemClickListener<SearchSortBean>() {
-                        @Override
-                        public void itemClick(int position, SearchSortBean item) {
-                            sortType = String.valueOf(item.getSortId());
-                            popupWindow.dismiss();
-                            searchFilterTV3.setText(item.getSortName());
-                            seachStr(false);
-                        }
-                    });
-                    sortRecyclerView.setAdapter(sortAdapter);
-                }
                 break;
         }
         return popWinView;
     }
 
-    List<SearchSortBean> sortList;
+    private List<SearchSortBean> sortList;
+    private ArrayList<SearchCategoryBean> categoryBeanList;
+    private ArrayList<SearchCategoryBean> categoryParentList;
+
+    private List<AreaBean> areaData;
 
     public void setAreaData(List<AreaBean> areaData) {
         this.areaData = areaData;
         searchFilterTV2.setText("全部商圈");
+        areaView.setDatas(areaData);
     }
 
     public void setSortList(List<SearchSortBean> sortList) {
         this.sortList = sortList;
+        filterSortAdapter.setDatas(sortList);
         searchFilterTV3.setText(sortList.get(0).getSortName());
     }
+
+    //获取大的分类
+    public void initCategoryList(ArrayList<SearchCategoryBean> categoryParentList) {
+        this.categoryParentList = categoryParentList;
+        resultAdapter.setCategory(true);
+        resultAdapter.setCategoryList(categoryParentList);
+    }
+
+    //小的分类
+    public void setCategoryList(ArrayList<SearchCategoryBean> categoryBeanList) {
+        this.categoryBeanList = categoryBeanList;
+        filterCategoryAdapter.setDatas(categoryBeanList);
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -368,20 +379,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 } else {
                     categoryCode = String.valueOf(((SearchCategoryBean) bean).getTagId());
                     searchFilterTV1.setText("全部" + ((SearchCategoryBean) bean).getZh());
-
+                    SearchPresenter.getTagByParentId(SearchActivity.this, ((SearchCategoryBean) bean).getTagId());
                     seachStr(false);
                 }
             }
         });
     }
 
-    private ArrayList<SearchCategoryBean> categoryBeanList;
-
-    public void initCategoryList(ArrayList<SearchCategoryBean> categoryBeanList) {
-        this.categoryBeanList = categoryBeanList;
-        resultAdapter.setCategory(true);
-        resultAdapter.setCategoryList(categoryBeanList);
-    }
 
     private void seachStr(final boolean loadMore) {
 
@@ -415,11 +419,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     }
                     searchFilterContainer.setVisibility(View.VISIBLE);
 
-                    // TODO: 2016/6/29
-                    searchFilterTV1.setText("全部美食");
-                    searchFilterTV2.setText("全部商圈");
-                    searchFilterTV3.setText("智能排序");
-
                     searchResultRv.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
                     resultAdapter.setCategory(false);
                     resultList.addAll(arrayList);
@@ -439,6 +438,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 }
                 mIsLoading = false;
                 DialogUtil.dismissProgess();
+
+                if (categoryBeanList == null && categoryParentList != null) {
+                    SearchPresenter.getTagByParentId(SearchActivity.this, categoryParentList.get(0).getTagId());
+                }
             }
 
             @Override
@@ -460,7 +463,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     if (NetUtil.isNetworkConnected(getApplicationContext())) {
                         if (StringUtils.isEmpty(searchInputEt.getText().toString())) {
                             Toast.makeText(SearchActivity.this, "请输入搜索内容!", Toast.LENGTH_SHORT).show();
-                            searchInputEt.setFocusable(true);
+//                            searchInputEt.setFocusable(true);
                         } else {
                             if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
                                 Toast.makeText(SearchActivity.this, getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT).show();
@@ -470,7 +473,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         }
                     } else {
                         Toast.makeText(SearchActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
-                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(SearchActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(firstFilterIcon.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                 }
                 return false;
