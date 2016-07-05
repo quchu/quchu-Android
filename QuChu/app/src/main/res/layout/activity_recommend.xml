@@ -9,61 +9,60 @@
         layout="@layout/layout_mai_title" />
 
 
-
-
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title"
         android:layout_above="@+id/rgTab"
+        android:layout_below="@+id/title"
         android:background="@color/colorBackground" />
 
     <RadioGroup
         android:id="@+id/rgTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@color/standard_color_white"
-        >
+        android:orientation="horizontal">
+
         <RadioButton
             android:id="@+id/rbRecommend"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_bar_heigh"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_qu_tuijian_selector"
-            android:button="@null"
             android:layout_marginTop="@dimen/half_margin"
+            android:layout_weight="1"
+            android:button="@null"
             android:checked="true"
+            android:drawableTop="@drawable/ic_qu_tuijian_selector"
             android:gravity="center"
-            android:textColor="@color/color_selector_recommend"
             android:text="@string/qu_recommend"
-            />
+            android:textColor="@color/color_selector_recommend" />
+
         <RadioButton
             android:id="@+id/rbDiscovery"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_bar_heigh"
+            android:layout_marginTop="@dimen/half_margin"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_qu_faxian_selecotr"
             android:button="@null"
-            android:layout_marginTop="@dimen/half_margin"
-            android:gravity="center"            android:textColor="@color/color_selector_recommend"
-
+            android:drawableTop="@drawable/ic_qu_faxian_selecotr"
+            android:gravity="center"
             android:text="@string/qu_discover"
-            />
+
+            android:textColor="@color/color_selector_recommend" />
+
         <RadioButton
-            android:layout_marginTop="@dimen/half_margin"
             android:id="@+id/rbMine"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_bar_heigh"
+            android:layout_marginTop="@dimen/half_margin"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_wode_selector"
             android:button="@null"
-            android:gravity="center"            android:textColor="@color/color_selector_recommend"
-
+            android:drawableTop="@drawable/ic_wode_selector"
+            android:gravity="center"
             android:text="@string/mine"
-            />
+
+            android:textColor="@color/color_selector_recommend" />
 
     </RadioGroup>
 

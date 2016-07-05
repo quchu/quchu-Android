@@ -43,5 +43,5 @@
         android:layout_centerVertical="true"
         android:padding="@dimen/base_margin"
 
-        android:src="@mipmap/ic_pull_menus_search" />
+        android:src="@mipmap/ic_search" />
 </RelativeLayout>

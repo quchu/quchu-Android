@@ -2,6 +2,7 @@ package co.quchu.quchu.view.fragment;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -65,8 +66,13 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     HorizontalSwipeRefLayout refreshLayout;
     @Bind(R.id.errorView)
     ErrorView errorView;
-    @Bind(R.id.tvPageIndicator)
-    TextView tvPageIndicator;
+    @Bind(R.id.tvPageIndicatorCurrent)
+    TextView tvPageIndicatorCurrent;
+    @Bind(R.id.tvPageIndicatorSize)
+    TextView TvPageIndicatorSize;
+    @Bind(R.id.tvPageIndicatorLabel)
+    TextView tvPageIndicatorLabel;
+
     @Bind(R.id.rgDisplayMode)
     RadioGroup radioGroup;
     @Bind(R.id.rvGrid)
@@ -98,6 +104,10 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
         rvGrid.setAdapter(new RecommendGridAdapter(cardList,null));
         rvGrid.setLayoutManager(new GridLayoutManager(getContext(),2));
+        Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"AGENCYFB.TTF");
+        TvPageIndicatorSize.setTypeface(face);
+        tvPageIndicatorLabel.setTypeface(face);
+        tvPageIndicatorCurrent.setTypeface(face);
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -106,8 +116,8 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
             @Override
             public void onPageSelected(int position) {
-                tvPageIndicator.setText((position+1) +" of "+ adapter.getCount());
-
+                tvPageIndicatorCurrent.setText(String.valueOf(position+1));
+                TvPageIndicatorSize.setText(String.valueOf(adapter.getCount()));
             }
 
             @Override
@@ -312,8 +322,9 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             cardList.clear();
             cardList.addAll(arrayList);
             adapter.notifyDataSetChanged();
-            tvPageIndicator.setText((viewpager.getCurrentItem()+1) +" of "+ adapter.getCount());
 
+            tvPageIndicatorCurrent.setText(String.valueOf(viewpager.getCurrentItem()+1+1));
+            TvPageIndicatorSize.setText(String.valueOf(adapter.getCount()));
             if (cardList.size() > 0)
                 viewpager.setCurrentItem(0);
 
@@ -330,7 +341,9 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
             if (arrayList != null && arrayList.size() > 0) {
                 cardList.addAll(arrayList);
                 adapter.notifyDataSetChanged();
-                tvPageIndicator.setText((viewpager.getCurrentItem()+1) +" of "+ adapter.getCount());
+
+                tvPageIndicatorCurrent.setText(String.valueOf(viewpager.getCurrentItem()+1));
+                TvPageIndicatorSize.setText(String.valueOf(adapter.getCount()));
             }
         }
     }

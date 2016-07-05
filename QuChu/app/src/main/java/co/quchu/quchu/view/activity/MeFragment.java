@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -32,35 +33,31 @@ import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.widget.LinearProgressView;
+import co.quchu.quchu.widget.PolygonProgressView;
 
-public class MeFragment extends BaseFragment implements IMeActivity, View.OnClickListener {
+public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
     @Bind(R.id.quchu)
-    LinearLayout quchu;
+    View quchu;
     @Bind(R.id.footPrint)
-    LinearLayout footPrint;
+    View footPrint;
     @Bind(R.id.friend)
-    LinearLayout friend;
+    View friend;
+    @Bind(R.id.polygonProgressView)
+    PolygonProgressView polygonProgressView;
     @Bind(R.id.massage)
-    RelativeLayout massage;
+    View massage;
     @Bind(R.id.alias)
     TextView tvUserNickName;
     @Bind(R.id.desc)
     TextView name;
-    @Bind(R.id.progress1)
-    LinearProgressView progress1;
-    @Bind(R.id.progress2)
-    LinearProgressView progress2;
-    @Bind(R.id.progress3)
-    LinearProgressView progress3;
-    @Bind(R.id.progress4)
-    LinearProgressView progress4;
-    @Bind(R.id.findPosition)
-    TextView findPosition;
+//    @Bind(R.id.findPosition)
+//    TextView findPosition;
     @Bind(R.id.editOrLoginTV)
     TextView editOrLogin;
     @Bind(R.id.editIcon)
@@ -85,13 +82,23 @@ public class MeFragment extends BaseFragment implements IMeActivity, View.OnClic
 
         ButterKnife.bind(this,v);
 
-        presenter = new MeActivityPresenter(this, getActivity());
+        presenter = new MeActivityPresenter(getActivity());
 //        EnhancedToolbar toolbar = ((BaseActivity)getActivity()).getEnhancedToolbar();
 //
 //        ImageView imageView = toolbar.getRightIv();
 //        imageView.setImageResource(R.mipmap.ic_tools);
 //        imageView.setOnClickListener(this);
-        presenter.getUnreadMassageCound();
+        presenter.getUnreadMassageCound(new CommonListener<Integer>() {
+            @Override
+            public void successListener(Integer response) {
+                notReadMassage(response);
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+
+            }
+        });
         initListener();
 
         userHead = AppContext.user.getPhoto();
@@ -103,7 +110,15 @@ public class MeFragment extends BaseFragment implements IMeActivity, View.OnClic
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("profile");
-        presenter.getGene();
+        presenter.getGene(new CommonListener<MyGeneModel>() {
+            @Override
+            public void successListener(MyGeneModel response) {
+                initGene(response);
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {}
+        });
         if (AppContext.user.isIsVisitors()) {
             //游客
             editOrLogin.setText("登陆");
@@ -132,7 +147,7 @@ public class MeFragment extends BaseFragment implements IMeActivity, View.OnClic
         footPrint.setOnClickListener(this);
         friend.setOnClickListener(this);
         massage.setOnClickListener(this);
-        findPosition.setOnClickListener(this);
+        //findPosition.setOnClickListener(this);
         editOrLoginAction.setOnClickListener(this);
 
 
@@ -205,30 +220,22 @@ public class MeFragment extends BaseFragment implements IMeActivity, View.OnClic
 
 
 
-    @Override
     public void initGene(MyGeneModel data) {
         List<MyGeneModel.GenesEntity> genes = data.getGenes();
-        for (int i = 0; i < genes.size(); i++) {
-            int progress = (int) genes.get(i).getWeight();
-            String label = genes.get(i).getZh();
-            switch (i) {
-                case 0:
-                    if (null != genes.get(i).getMark()) {
-                        tvUserNickName.setText(genes.get(i).getMark());
-                    }
-                    progress1.setProgress(progress, label, i);
-                    break;
-                case 1:
-                    progress2.setProgress(progress, label, i);
-                    break;
-                case 2:
-                    progress3.setProgress(progress, label, i);
-                    break;
-                case 3:
-                    progress4.setProgress(progress, label, i);
-                    break;
-            }
+        if (genes.size()<=0){
+            return;
         }
+        String[] labels = new String[genes.size()];
+        float [] values = new float[genes.size()];
+
+        for (int i = 0; i < genes.size(); i++) {
+            values[i] = (float) (genes.get(i).getWeight()/1000);
+            labels[i] = genes.get(i).getZh();
+        }
+
+        polygonProgressView.setVisibility(View.VISIBLE);
+        polygonProgressView.initial(genes.size(),values,labels);
+        polygonProgressView.animateProgress();
     }
 
 //    @Subscribe
@@ -246,7 +253,6 @@ public class MeFragment extends BaseFragment implements IMeActivity, View.OnClic
 ////        }
 //    }
 
-    @Override
     public void notReadMassage(int cound) {
         unReadMassage.setText(String.valueOf(cound));
         unReadMassage.setVisibility(View.VISIBLE);
