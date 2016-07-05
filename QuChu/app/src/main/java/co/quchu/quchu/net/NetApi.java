@@ -42,7 +42,7 @@ public interface NetApi {
     // String getDefaultPlaceList = HOST + "/place/getPlaceList?cityId=%d&latitude=%s&longitude=%s&pageno=%d";//获取趣处 推荐列表
     String getDefaultPlaceList = HOST + "/place/getPlaceList?tagsEn=%s&cityId=%d&latitude=%s&longitude=%s&pageno=%d";// 1.1 根据tag获取趣处 列表
     String GetCityList = HOST + "/place/getCityList";  //获取城市列表  或验证城市
-//    String Seach = HOST + "/search?value=%s&pageno=%d&cityId=%s";  //搜索 value=搜索内容  gageno=分页页码
+    //    String Seach = HOST + "/search?value=%s&pageno=%d&cityId=%s";  //搜索 value=搜索内容  gageno=分页页码
     String Seach = HOST + "/place/getPlaceByTagId";  //搜索 value=搜索内容  gageno=分页页码
     String getSearchTags = HOST + "/search/getSearchTags";//搜索标签
     String getDetail = HOST + "/place/getPlace?pId=%d";  //获取趣处详情信息 pid=趣处id
@@ -140,9 +140,12 @@ public interface NetApi {
     String getAreaList = HOST + "/public/getCircleListByCityId?cityId=%d";//搜索商圈列表
     String getSortList = HOST + "/public/getSearchSortList";//搜索商圈列表
     String getTagByParentId = HOST + "/public/getTagByParentId";//搜索商圈列表
+    String putGtClientById = HOST + "/public/putGtClientById";//个推id绑定
 
-    String getFavoriteEssay=HOST+"/searchSpecial/getMyArticleList";
-    /****************** POST *******************/
+    String getFavoriteEssay = HOST + "/searchSpecial/getMyArticleList";
+    /******************
+     * POST
+     *******************/
 
 
     String getArticles = HOST + "/searchSpecial/getArticleByCityId";

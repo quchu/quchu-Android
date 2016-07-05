@@ -14,6 +14,8 @@ import com.igexin.sdk.PushConsts;
 import java.util.Set;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.SearchActivity;
 
@@ -60,6 +62,7 @@ public class GeTuiReceiver extends BroadcastReceiver {
                 // 获取ClientID(CID)
                 String cid = bundle.getString("clientid");
                 LogUtils.e("个推cid" + cid);
+                new GsonRequest<String>(NetApi.putGtClientById + "?cId=" + cid, null).start(context);
                 break;
         }
 
