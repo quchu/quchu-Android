@@ -44,7 +44,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/half_margin"
                 android:background="@null"
-                android:hint="搜索趣处或活动"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="搜索您感兴趣的吃、喝、玩、乐"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:textColor="@color/standard_color_h2_dark"
@@ -88,12 +90,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="分类" />
+                android:text="全部分类"
+                android:textColor="@color/standard_color_h2_dark"
+                android:textSize="@dimen/standard_text_size_h2" />
 
             <ImageView
                 android:id="@+id/searchFilterIcon1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:rotation="180"
                 android:src="@mipmap/ic_down_menu" />
         </LinearLayout>
 
@@ -113,12 +118,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="排序" />
+                android:text="全部商圈"
+                android:textColor="@color/standard_color_h2_dark"
+                android:textSize="@dimen/standard_text_size_h2" />
 
             <ImageView
                 android:id="@+id/searchFilterIcon2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:rotation="180"
                 android:src="@mipmap/ic_down_menu" />
         </LinearLayout>
 
@@ -138,12 +146,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="排序" />
+                android:text="智能排序"
+                android:textColor="@color/standard_color_h2_dark"
+                android:textSize="@dimen/standard_text_size_h2" />
 
             <ImageView
                 android:id="@+id/searchFilterIcon3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:rotation="180"
                 android:src="@mipmap/ic_down_menu" />
         </LinearLayout>
     </LinearLayout>

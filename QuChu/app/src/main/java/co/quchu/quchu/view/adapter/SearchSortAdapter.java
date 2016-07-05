@@ -7,26 +7,26 @@ import android.view.View;
 import java.util.List;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.SearchCategoryBean;
+import co.quchu.quchu.model.SearchSortBean;
 
 /**
  * Created by no21 on 2016/7/1.
  * email:437943145@qq.com
  * desc :
  */
-public class SearchCategoryAdapter extends SearchPopWinBaseAdapter {
+public class SearchSortAdapter extends SearchPopWinBaseAdapter {
 
-    List<SearchCategoryBean> datas;
+    List<SearchSortBean> datas;
 
-    public void setDatas(List<SearchCategoryBean> datas) {
+    public void setDatas(List<SearchSortBean> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final SearchCategoryBean bean = datas.get(position);
-        holder.searchPopItemTv.setText(bean.getZh());
+        final SearchSortBean bean = datas.get(position);
+        holder.searchPopItemTv.setText(bean.getSortName());
         if (selectedPosition == position) {
             holder.searchPopItemContent.setBackgroundColor(Color.BLACK);
             holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_white));

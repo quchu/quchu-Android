@@ -40,6 +40,12 @@
             android:layout_toRightOf="@id/search_win_lin"
             android:padding="@dimen/base_margin" />
 
-
     </co.quchu.quchu.widget.AreaView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_pop_sort_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/base_margin"
+        android:visibility="gone" />
 </FrameLayout>

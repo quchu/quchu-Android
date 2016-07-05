@@ -24,6 +24,7 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.AreaBean;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchCategoryBean;
+import co.quchu.quchu.model.SearchSortBean;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
@@ -169,6 +170,38 @@ public class SearchPresenter {
             @Override
             public void onResponse(ArrayList<AreaBean> response, boolean result, String errorCode, @Nullable String msg) {
                 context.setAreaData(response);
+            }
+        });
+        request.start(context);
+    }
+
+    public static void getSortTypeList(final SearchActivity context) {
+        GsonRequest<ArrayList<SearchSortBean>> request = new GsonRequest<>(NetApi.getSortList, new TypeToken<ArrayList<SearchSortBean>>() {
+        }.getType(), new ResponseListener<ArrayList<SearchSortBean>>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(ArrayList<SearchSortBean> response, boolean result, String errorCode, @Nullable String msg) {
+                context.setSortList(response);
+            }
+        });
+        request.start(context);
+    }
+
+    public static void getTagByParentId(final SearchActivity context, int tagId) {
+        GsonRequest<ArrayList<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getTagByParentId + "?tagId=" + tagId, new TypeToken<ArrayList<SearchCategoryBean>>() {
+        }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(ArrayList<SearchCategoryBean> response, boolean result, String errorCode, @Nullable String msg) {
+                context.setCategoryList(response);
             }
         });
         request.start(context);
