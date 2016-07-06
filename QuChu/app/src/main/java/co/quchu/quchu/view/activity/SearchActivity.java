@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +11,8 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -97,7 +98,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
 
     private ImageView firstFilterIcon;
-    private TextView firstFilterTV;
 
     private static final int SHOWING_POPUP_TYPE_CATEGORY = 1;
     private static final int SHOWING_POPUP_TYPE_AREA = 2;
@@ -119,9 +119,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+        initPopupWindow();
         initEdittext();
         initData();
-        initPopupWindow();
         SearchPresenter.getCategoryTag(this);
     }
 
@@ -138,78 +138,92 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         super.onPause();
     }
 
+    private ImageView searchPopIndicator;
+
     private void initPopupWindow() {
 
-        popupWindow = new PopupWindow((int) AppContext.Width, (int) (AppContext.Height - searchFilterLL1.getBottom()));
-        popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
-        popupWindow.setFocusable(false);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        searchFilterLL1.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+
             @Override
-            public void onDismiss() {
-                if (firstFilterIcon != null) {
-                    ObjectAnimator animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 180);
-                    animator.setDuration(400);
-                    animator.start();
-                }
-                if (firstFilterTV != null) {
-                    firstFilterTV.setTextColor(ContextCompat.getColor(SearchActivity.this, R.color.standard_color_h2_dark));
-                }
-                firstFilterTV = null;
-                currentShowingPopupType = -1;
-                firstFilterIcon = null;
-            }
-        });
+            public void onGlobalLayout() {
+                searchFilterLL1.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int[] location = new int[2];
+                searchFilterLL1.getLocationOnScreen(location);
 
-        popWinView = View.inflate(this, R.layout.layout_search_popupwindow, null);
-        categoryRecyclerView = (RecyclerView) popWinView.findViewById(R.id.recyclerView);
-        sortRecyclerView = (RecyclerView) popWinView.findViewById(R.id.search_pop_sort_rv);
-        areaView = (AreaView) popWinView.findViewById(R.id.areaView);
+                int height = (int) (AppContext.Height - location[1] - searchFilterLL1.getHeight());
 
-        ViewGroup.LayoutParams params = categoryRecyclerView.getLayoutParams();
-        params.width = (int) AppContext.Width;
-        params.height = (int) (AppContext.Height - searchFilterLL1.getBottom());
+                popupWindow = new PopupWindow((int) AppContext.Width, height);
+                popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
+                popupWindow.setFocusable(false);
+                popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        if (firstFilterIcon != null) {
+                            ObjectAnimator animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 180);
+                            animator.setDuration(400);
+                            animator.start();
+                        }
+                        currentShowingPopupType = -1;
+                        firstFilterIcon = null;
+                    }
+                });
 
-        categoryRecyclerView.setLayoutParams(params);
-        areaView.setLayoutParams(params);
-        sortRecyclerView.setLayoutParams(params);
+                popWinView = View.inflate(SearchActivity.this, R.layout.layout_search_popupwindow, null);
+                categoryRecyclerView = (RecyclerView) popWinView.findViewById(R.id.recyclerView);
+                sortRecyclerView = (RecyclerView) popWinView.findViewById(R.id.search_pop_sort_rv);
+                areaView = (AreaView) popWinView.findViewById(R.id.areaView);
+                searchPopIndicator = (ImageView) popWinView.findViewById(R.id.search_pop_indicator);
+                ViewGroup.LayoutParams params = categoryRecyclerView.getLayoutParams();
+                params.width = (int) AppContext.Width;
+                params.height = height;
 
-        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        sortRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //商圈
-        areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
-            @Override
-            public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
-                areaCode = TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaId() : "";
-                popupWindow.dismiss();
-                searchFilterTV2.setText(circleListBean.getCircleName());
-                seachStr(false);
-            }
-        });
+                categoryRecyclerView.setLayoutParams(params);
+                areaView.setLayoutParams(params);
+                sortRecyclerView.setLayoutParams(params);
+
+                categoryRecyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                sortRecyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+
+                //商圈
+                areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
+                    @Override
+                    public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
+                        areaCode = TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaId() : "";
+                        popupWindow.dismiss();
+                        searchFilterTV2.setText(circleListBean.getCircleName());
+                        seachStr(false);
+                    }
+                });
 //类别
-        filterCategoryAdapter = new SearchCategoryAdapter();
-        categoryRecyclerView.setAdapter(filterCategoryAdapter);
-        filterCategoryAdapter.setItemClickListener(new SearchPopWinBaseAdapter.OnItemClickListener<SearchCategoryBean>() {
-            @Override
-            public void itemClick(int position, SearchCategoryBean item) {
-                categoryCode = String.valueOf(item.getTagId());
-                popupWindow.dismiss();
-                searchFilterTV1.setText(item.getZh());
-                seachStr(false);
-            }
-        });
+                filterCategoryAdapter = new SearchCategoryAdapter();
+                categoryRecyclerView.setAdapter(filterCategoryAdapter);
+                filterCategoryAdapter.setItemClickListener(new SearchPopWinBaseAdapter.OnItemClickListener<SearchCategoryBean>() {
+                    @Override
+                    public void itemClick(int position, SearchCategoryBean item) {
+                        categoryCode = String.valueOf(item.getTagId());
+                        popupWindow.dismiss();
+                        searchFilterTV1.setText(item.getZh());
+                        seachStr(false);
+                    }
+                });
 //排序
-        filterSortAdapter = new SearchSortAdapter();
-        sortRecyclerView.setAdapter(filterSortAdapter);
-        filterSortAdapter.setItemClickListener(new SearchSortAdapter.OnItemClickListener<SearchSortBean>() {
-            @Override
-            public void itemClick(int position, SearchSortBean item) {
-                sortType = String.valueOf(item.getSortId());
-                popupWindow.dismiss();
-                searchFilterTV3.setText(item.getSortName());
-                seachStr(false);
+                filterSortAdapter = new SearchSortAdapter();
+                sortRecyclerView.setAdapter(filterSortAdapter);
+                filterSortAdapter.setItemClickListener(new SearchSortAdapter.OnItemClickListener<SearchSortBean>() {
+                    @Override
+                    public void itemClick(int position, SearchSortBean item) {
+                        sortType = String.valueOf(item.getSortId());
+                        popupWindow.dismiss();
+                        searchFilterTV3.setText(item.getSortName());
+                        seachStr(false);
+                    }
+                });
+
             }
         });
+
 
     }
 
@@ -223,13 +237,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             animator.setDuration(400);
             animator.start();
         }
-        currentTV.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        if (firstFilterTV != null) {
-            firstFilterTV.setTextColor(ContextCompat.getColor(this, R.color.standard_color_h2_dark));
-        }
-
-        firstFilterTV = currentTV;
         firstFilterIcon = currentIcon;
 
         popupWindow.setContentView(contentView);
@@ -241,12 +249,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private View getPopWinView(int type) {
+        float xOff = (AppContext.Width * 2 * type + AppContext.Width) / 6;
+        ObjectAnimator animator = ObjectAnimator.ofFloat(searchPopIndicator, "TranslationX", xOff);
+        animator.setDuration(300);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.start();
 
         switch (type) {
             case 0:
                 categoryRecyclerView.setVisibility(View.VISIBLE);
                 areaView.setVisibility(View.INVISIBLE);
                 sortRecyclerView.setVisibility(View.INVISIBLE);
+
+
                 break;
             case 1:
                 if (areaData == null) {

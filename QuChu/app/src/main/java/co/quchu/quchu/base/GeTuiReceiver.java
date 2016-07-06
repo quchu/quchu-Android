@@ -28,7 +28,6 @@ public class GeTuiReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-
         Bundle bundle = intent.getExtras();
 
         switch (bundle.getInt(PushConsts.CMD_ACTION)) {
@@ -36,9 +35,8 @@ public class GeTuiReceiver extends BroadcastReceiver {
                 // 获取透传数据
                 byte[] payload = bundle.getByteArray("payload");
 
-                String taskid = bundle.getString("taskid");
-                String messageid = bundle.getString("messageid");
-
+//                String taskid = bundle.getString("taskid");
+//                String messageid = bundle.getString("messageid");
                 // smartPush第三方回执调用接口，actionid范围为90000-90999，可根据业务场景执行
 //                boolean result = PushManager.getInstance().sendFeedbackMessage(context, taskid, messageid, 90001);
 //                System.out.println("第三方回执接口调用" + (result ? "成功" : "失败"));
@@ -65,7 +63,6 @@ public class GeTuiReceiver extends BroadcastReceiver {
                 new GsonRequest<String>(NetApi.putGtClientById + "?cId=" + cid, null).start(context);
                 break;
         }
-
         Set<String> keySet = bundle.keySet();
         for (String key : keySet) {
             LogUtils.e("\n推送消息 key:" + key + " values:" + bundle.get(key) + "byteString:");

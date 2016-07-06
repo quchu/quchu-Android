@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -26,7 +25,7 @@ import co.quchu.quchu.model.AreaBean;
  * email:437943145@qq.com
  * desc :
  */
-public class AreaView extends RelativeLayout {
+public class AreaView extends LinearLayout {
 
 
     public AreaView(Context context) {
