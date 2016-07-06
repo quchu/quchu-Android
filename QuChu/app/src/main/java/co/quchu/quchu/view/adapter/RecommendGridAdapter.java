@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -16,19 +17,19 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.model.SceneModel;
+import co.quchu.quchu.model.SceneModel;
 
 /**
  * Created by Nico on 16/4/7.
  */
 public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdapter.ViewHolder> {
 
-    List<RecommendModel> mData;
+    List<SceneModel> mData;
 
     public OnItemClickListener mOnItemClickListener;
 
-    public RecommendGridAdapter(List<RecommendModel> pData, OnItemClickListener onItemClickListener) {
+    public RecommendGridAdapter(List<SceneModel> pData, OnItemClickListener onItemClickListener) {
         this.mData = pData;
         this.mOnItemClickListener = onItemClickListener;
     }
@@ -59,7 +60,7 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
             animator.setStartDelay(delay);
         }
 
-        holder.sdv.setImageURI(Uri.parse(mData.get(position).getCover()));
+        holder.sdv.setImageURI(Uri.parse(mData.get(position).getSceneCover()));
 
         holder.sdv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +70,33 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
                 }
             }
         });
+
+        holder.tvTitle.setText(mData.get(position).getSceneName());
+        holder.tvTag3.setVisibility(View.GONE);
+        holder.tvTag2.setVisibility(View.GONE);
+        holder.tvTag1.setVisibility(View.GONE);
+
+
+
+        if (null != mData.get(position).getSceneTitle() && mData.get(position).getSceneTitle().length > 0) {
+            for (int i = 0; i < mData.get(position).getSceneTitle().length; i++) {
+                switch (i) {
+                    case 0:
+                        holder.tvTag1.setText(mData.get(position).getSceneTitle()[i]);
+                        holder.tvTag1.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+                        holder.tvTag2.setText(mData.get(position).getSceneTitle()[i]);
+                        holder.tvTag2.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        holder.tvTag3.setText(mData.get(position).getSceneTitle()[i]);
+                        holder.tvTag3.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        }
+
     }
 
     public interface OnItemClickListener{
@@ -85,6 +113,15 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
 
         @Bind(R.id.sdv)
         SimpleDraweeView sdv;
+
+        @Bind(R.id.tvTitle)
+        TextView tvTitle;
+        @Bind(R.id.recommend_tag1)
+        TextView tvTag1;
+        @Bind(R.id.recommend_tag2)
+        TextView tvTag2;
+        @Bind(R.id.recommend_tag3)
+        TextView tvTag3;
 
         public ViewHolder(View itemView) {
             super(itemView);

@@ -21,7 +21,7 @@ import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.widget.TagCloudView;
 
 /**
- * RecommendAdapter
+ *
  * User: Chenhs
  * Date: 2015-12-08
  * 趣处推荐 适配器 adapter

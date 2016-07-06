@@ -292,7 +292,8 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
      * 城市切换后调用
      */
     public void updateRecommend() {
-        recommendFragment.initData();
+        //recommendFragment.initData();
+        //TODO refresh
         articleFragment.getRootTagsData();
     }
 
@@ -328,28 +329,11 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                 case 0x00:
                     netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 2000);
                     break;
-                case 0x02:
-                    resumeUpdateData();
-                    break;
             }
         }
     };
     private int resumeUpdateDataTimes = 0;
 
-    private void resumeUpdateData() {
-        if (AppContext.dCardListNeedUpdate) {
-            if (viewPagerIndex == 0) {
-                recommendFragment.updateDateSet();
-            }
-            AppContext.dCardListNeedUpdate = false;
-            resumeUpdateDataTimes = 0;
-        } else {
-            if (resumeUpdateDataTimes <= 3) {
-                resumeUpdateDataTimes++;
-                netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
-            }
-        }
-    }
 
 
     @Subscribe

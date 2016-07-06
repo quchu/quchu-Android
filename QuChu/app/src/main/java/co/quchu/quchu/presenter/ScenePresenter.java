@@ -1,0 +1,67 @@
+package co.quchu.quchu.presenter;
+
+import android.content.Context;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+
+import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.NearbyItemModel;
+import co.quchu.quchu.model.SceneModel;
+import co.quchu.quchu.net.IRequestListener;
+import co.quchu.quchu.net.NetApi;
+import co.quchu.quchu.net.NetService;
+
+/**
+ * Created by Nico on 16/7/5.
+ */
+public class ScenePresenter {
+
+
+
+    public static void getAllScene(Context context, int cityId,int pageNo, final CommonPageListener<List<SceneModel>> listener) {
+
+        HashMap<String,String> params = new HashMap<>();
+        params.put("cityId",String.valueOf(cityId));
+        params.put("pageNo",String.valueOf(pageNo));
+        NetService.get(context, NetApi.getAllScene, params,new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                if (response != null && response.has("result") && response.has("pageCount")) {
+                    int maxPageNo = -1;
+                    Gson gson = new Gson();
+                    List<SceneModel> sceneModels = null;
+                    try {
+                        maxPageNo = response.getInt("pageCount");
+                        sceneModels = gson.fromJson(response.getString("result"), new TypeToken<List<SceneModel>>() {
+                        }.getType());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    listener.successListener(sceneModels,maxPageNo);
+                }
+            }
+
+            @Override
+            public boolean onError(String error) {
+                DialogUtil.dismissProgess();
+                listener.errorListener(null,error,error);
+                return false;
+            }
+        });
+    }
+
+
+//
+//        getMyScene
+//        getAllScene
+//        addFavoriteScene
+//        delFavoriteScene
+//        getSceneDetail
+}

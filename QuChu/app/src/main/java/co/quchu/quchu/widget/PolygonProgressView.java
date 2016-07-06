@@ -10,14 +10,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import co.quchu.quchu.R;
@@ -25,7 +23,7 @@ import co.quchu.quchu.utils.ArrayUtils;
 
 
 /**
-  * Created by Nico on 16/7/4.
+ * Created by Nico on 16/7/4.
  */
 public class PolygonProgressView extends View {
 
@@ -36,7 +34,7 @@ public class PolygonProgressView extends View {
     private int p = -1;
     private int c = -1;
     private int sw = 4;
-    private int n = 5;
+    private int n = 4;
     private int r = -1;
     private int ap = 5;
     private int rO = 360 / 4;
@@ -51,8 +49,9 @@ public class PolygonProgressView extends View {
     private Paint pil;
     private Paint pl;
     private Paint pab;
-    private boolean ar = false;
     private Bitmap ba;
+    private boolean ar = false;
+    private Bitmap[] bl;
 
 
     public PolygonProgressView(Context context) {
@@ -81,6 +80,7 @@ public class PolygonProgressView extends View {
         if (ar) {
             return;
         }
+
 
         apv = new float[n];
         for (int i = 0; i < n; i++) {
@@ -156,7 +156,7 @@ public class PolygonProgressView extends View {
 
     }
 
-    public void initial(int side, float[] values, String[] labels) {
+    public void initial(int side, float[] values, String[] labels,Bitmap []pbl) {
 
         if (ar) {
             return;
@@ -165,6 +165,8 @@ public class PolygonProgressView extends View {
         pv = values;
         lbl = labels;
         pic = n > 0 ? 360 / n : 0;
+        bl = pbl;
+
     }
 
 
@@ -181,6 +183,7 @@ public class PolygonProgressView extends View {
             drawArcs(canvas, i);
             drawLabels(canvas, i, angle);
         }
+
         drawNodes(canvas);
         //drawAvatar(canvas);
     }
@@ -199,10 +202,11 @@ public class PolygonProgressView extends View {
     private void drawArcs(Canvas canvas, int i) {
 
         List<Integer> maxValues = ArrayUtils.getMaxValues((pv));
-        RectF rectF = new RectF(p, p, (r << 1) + p, (r << 1) + p);
+
+        RectF rectF = new RectF(p, p, (r * 2) + p, (r * 2) + p);
         if (maxValues.size() > i) {
             int sweepAngle = (int) (pic * apv[maxValues.get(i)]);
-            int startAngle = (int) ((maxValues.get(i) * pic) - (sweepAngle >> 1) - rO);
+            int startAngle = (int) ((maxValues.get(i) * pic) - (sweepAngle / 2) - rO);
             if (n == 0) {
                 ap = 0;
             }
@@ -219,23 +223,14 @@ public class PolygonProgressView extends View {
         }
 
         int maxLength = r;
+        Bitmap bitmap = bl[i];
 
-        String strNumericValues = new DecimalFormat("##").format(pv[i] * apv[i] * 100);
-
-        Rect textBoundLabel = new Rect();
-        Rect textBoundNumeric = new Rect();
-
-        pl.getTextBounds(lbl[i], 0, lbl[i].length(), textBoundLabel);
-        pl.getTextBounds(strNumericValues, 0, strNumericValues.length(), textBoundNumeric);
-
-        float actuallyValues = maxLength + textBoundLabel.width();
+        float actuallyValues = maxLength + bitmap.getWidth();
 
         float x = (int) (Math.cos(angle) * actuallyValues + c);
         float y = (int) (Math.sin(angle) * actuallyValues + c);
 
-        canvas.drawText(lbl[i], x - (textBoundLabel.width() >> 1), y + (textBoundLabel.height() >> 1), pl);
-
-        canvas.drawText(strNumericValues, x - (textBoundNumeric.width() >> 1), y - (textBoundLabel.height() >> 1), pl);
+        canvas.drawBitmap(bitmap,x - bitmap.getWidth()/2,y-bitmap.getHeight()/2,pab);
 
     }
 
@@ -253,7 +248,7 @@ public class PolygonProgressView extends View {
         float minimalValues = 0;
         float startX = 0;
         float startY = 0;
-        int maxHill = r - sw << 1;
+        int maxHill = r - sw / 2;
 
         if (min > 0) {
             minimalValues = maxHill * min;
@@ -291,10 +286,10 @@ public class PolygonProgressView extends View {
         if (s == -1) {
             s = Math.min(getHeight(), getWidth());
             p = s / 9;
-            c = s >> 1;
+            c = s / 2;
             r = c - p;
-            pv = new float[n];
             apv = new float[n];
+            pv = new float[n];
 
 
             pl = new Paint(pil);

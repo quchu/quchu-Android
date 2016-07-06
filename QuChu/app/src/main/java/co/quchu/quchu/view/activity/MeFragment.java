@@ -1,12 +1,17 @@
 package co.quchu.quchu.view.activity;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +26,7 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -67,10 +73,26 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Bind(R.id.editOrLoginAction)
     RelativeLayout editOrLoginAction;
 
+    @Bind(R.id.tv1)
+    TextView tv1;
+    @Bind(R.id.tv2)
+    TextView tv2;
+    @Bind(R.id.tv3)
+    TextView tv3;
+    @Bind(R.id.tv4)
+    TextView tv4;
+    @Bind(R.id.tv5)
+    TextView tv5;
+    @Bind(R.id.tv6)
+    TextView tv6;
+
     private MeActivityPresenter presenter;
 
     //用户头像
     private String userHead;
+    private boolean mProgressViewAnimated = false;
+
+    private int[] bmResource = new int[]{R.mipmap.ic_chihuo,R.mipmap.ic_haoqi,R.mipmap.ic_shejiao,R.mipmap.ic_wenyi,R.mipmap.ic_tuhao,R.mipmap.ic_shishang};
 
 
 
@@ -81,6 +103,14 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.activity_me,container,false);
 
         ButterKnife.bind(this,v);
+
+        Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "AGENCYFB.TTF");
+        tv1.setTypeface(face);
+        tv2.setTypeface(face);
+        tv3.setTypeface(face);
+        tv4.setTypeface(face);
+        tv5.setTypeface(face);
+        tv6.setTypeface(face);
 
         presenter = new MeActivityPresenter(getActivity());
 //        EnhancedToolbar toolbar = ((BaseActivity)getActivity()).getEnhancedToolbar();
@@ -96,13 +126,23 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-
             }
         });
         initListener();
 
         userHead = AppContext.user.getPhoto();
         ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+        System.out.println("!-!  ");
+        presenter.getGene(new CommonListener<MyGeneModel>() {
+            @Override
+            public void successListener(MyGeneModel response) {
+                genes = response.getGenes();
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+            }
+        });
         return v;
     }
 
@@ -110,15 +150,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("profile");
-        presenter.getGene(new CommonListener<MyGeneModel>() {
-            @Override
-            public void successListener(MyGeneModel response) {
-                initGene(response);
-            }
 
-            @Override
-            public void errorListener(VolleyError error, String exception, String msg) {}
-        });
+
         if (AppContext.user.isIsVisitors()) {
             //游客
             editOrLogin.setText("登陆");
@@ -219,23 +252,61 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
+    List<MyGeneModel.GenesEntity> genes;
 
-    public void initGene(MyGeneModel data) {
-        List<MyGeneModel.GenesEntity> genes = data.getGenes();
-        if (genes.size()<=0){
-            return;
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (null!=polygonProgressView&&!hidden && null!=genes && !mProgressViewAnimated){
+            polygonProgressView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    initGene();
+                    mProgressViewAnimated = true;
+                }
+            },800l);
         }
-        String[] labels = new String[genes.size()];
-        float [] values = new float[genes.size()];
+    }
+
+    public void initGene() {
+
+        final String[] labels = new String[genes.size()];
+        final float [] values = new float[genes.size()];
 
         for (int i = 0; i < genes.size(); i++) {
             values[i] = (float) (genes.get(i).getWeight()/1000);
             labels[i] = genes.get(i).getZh();
         }
 
-        polygonProgressView.setVisibility(View.VISIBLE);
-        polygonProgressView.initial(genes.size(),values,labels);
-        polygonProgressView.animateProgress();
+        polygonProgressView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Bitmap []bm = new Bitmap[6];
+                for (int i = 0; i < 6; i++) {
+                    bm[i] = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_tuhao);
+                }
+
+                polygonProgressView.initial(genes.size(),values,labels,bm);
+                polygonProgressView.animateProgress();
+                ValueAnimator va = ValueAnimator.ofFloat(0,1);
+                va.setInterpolator(new AccelerateDecelerateInterpolator());
+                va.setDuration(800);
+                va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        int progress = (int) ((float)animation.getAnimatedValue() * 999);
+                        tv1.setText(String.valueOf(progress));
+                        tv2.setText(String.valueOf(progress));
+                        tv3.setText(String.valueOf(progress));
+                        tv4.setText(String.valueOf(progress));
+                        tv5.setText(String.valueOf(progress));
+                        tv6.setText(String.valueOf(progress));
+                    }
+                });
+                va.start();
+            }
+        },100);
     }
 
 //    @Subscribe
