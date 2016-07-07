@@ -172,29 +172,38 @@ public class DetailModel implements Serializable{
         }else{
             genes.clear();
         }
-        genes.addAll(objTarget.getGenes());
+        if (objTarget.getGenes() != null) {
+            genes.addAll(objTarget.getGenes());
+        }
 
         if (null==icons){
             icons = new ArrayList<>();
         }else{
             icons.clear();
         }
-        icons.addAll(objTarget.getIcons());
+
+        if (objTarget.getIcons() != null) {
+            icons.addAll(objTarget.getIcons());
+        }
 
         if (null==imglist){
             imglist = new ArrayList<>();
         }else{
             imglist.clear();
         }
-        imglist.addAll(objTarget.getImglist());
 
+        if (objTarget.getImglist() != null) {
+            imglist.addAll(objTarget.getImglist());
+        }
 
         if (null==tags){
             tags = new ArrayList<>();
         }else{
             tags.clear();
         }
-        tags.addAll(objTarget.getTags());
+        if (objTarget.getTags() != null) {
+            tags.addAll(objTarget.getTags());
+        }
 
 
         if (null==recommendPlaces){
@@ -202,7 +211,10 @@ public class DetailModel implements Serializable{
         }else{
             recommendPlaces.clear();
         }
-        recommendPlaces.addAll(objTarget.getNearPlace());
+
+        if (objTarget.getNearPlace() != null) {
+            recommendPlaces.addAll(objTarget.getNearPlace());
+        }
 
         cardCount = objTarget.getCardCount();
 

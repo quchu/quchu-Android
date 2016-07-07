@@ -33,6 +33,13 @@
     </RelativeLayout>
 
 
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="@style/TextView.H1"
+        />
 
     <ImageView
         android:id="@+id/recommend_title_more_iv"

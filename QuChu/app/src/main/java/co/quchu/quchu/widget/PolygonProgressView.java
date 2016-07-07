@@ -8,8 +8,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -33,7 +35,7 @@ public class PolygonProgressView extends View {
     private int s = -1;
     private int p = -1;
     private int c = -1;
-    private int sw = 4;
+    private int sw = 6;
     private int n = 4;
     private int r = -1;
     private int ap = 5;
@@ -42,6 +44,8 @@ public class PolygonProgressView extends View {
     private float min = .5f;
     private float[] pv;
     private float[] apv;
+    private boolean ar = false;
+
     private String[] lbl = new String[]{};
     private Paint pr;
     private Paint pn;
@@ -49,8 +53,10 @@ public class PolygonProgressView extends View {
     private Paint pil;
     private Paint pl;
     private Paint pab;
+    private Rect rBB4;
+    private Rect rBAft;
+    private Bitmap bmBackground;
     private Bitmap ba;
-    private boolean ar = false;
     private Bitmap[] bl;
 
 
@@ -128,25 +134,26 @@ public class PolygonProgressView extends View {
 
         pr = new Paint();
         pr.setStrokeWidth(sw);
-        pr.setColor(Color.parseColor("#A4DBCB"));
+        pr.setColor(Color.parseColor("#bed4da"));
         pr.setAntiAlias(true);
         pr.setStrokeCap(Paint.Cap.ROUND);
         pr.setShader(null);
         pr.setStyle(Paint.Style.STROKE);
 
         pn = new Paint(pr);
-        pn.setColor(Color.parseColor("#7fB1EDDE"));
+        pn.setColor(Color.parseColor("#ffd102"));
         pn.setStrokeWidth(2);
         pn.setStyle(Paint.Style.FILL);
 
         pa = new Paint(pr);
-        pa.setColor(Color.parseColor("#88b6a9"));
+        pa.setColor(Color.parseColor("#ffd102"));
         pa.setStrokeCap(Paint.Cap.SQUARE);
-        pa.setStrokeWidth(5);
+        pa.setStrokeWidth(6);
 
         pil = new Paint(pr);
-        pil.setStrokeWidth(1);
-        pil.setColor(Color.parseColor("#e0e0e0"));
+        pil.setStrokeWidth(2);
+        pil.setStyle(Paint.Style.FILL);
+        pil.setColor(Color.parseColor("#e2edf1"));
 
         pab = new Paint();
         pab.setAntiAlias(true);
@@ -176,16 +183,28 @@ public class PolygonProgressView extends View {
         initProperties();
         drawCircle(canvas);
 
+        drawInnerPattern(canvas);
+
+
         for (int i = 0; i < n; i++) {
             double angle = ((Math.PI * 2 / n) * i) - (Math.toRadians(rO));
 
-            drawInnerLines(canvas, angle);
+//            drawInnerLines(canvas, angle);
             drawArcs(canvas, i);
             drawLabels(canvas, i, angle);
         }
 
+
         drawNodes(canvas);
-        //drawAvatar(canvas);
+        drawAvatar(canvas);
+    }
+
+    private void drawInnerPattern(Canvas canvas) {
+        canvas.save();
+        canvas.rotate(rO,c,c);
+        canvas.drawBitmap(bmBackground,rBB4,rBAft,pab);
+        canvas.restore();
+
     }
 
 
@@ -194,8 +213,6 @@ public class PolygonProgressView extends View {
 
         canvas.drawCircle(c, c, r * min * .6f, pab);
         canvas.drawBitmap(ba, c - (ba.getWidth() >> 1), c - (ba.getHeight() >> 1), pa);
-
-
     }
 
 
@@ -235,10 +252,11 @@ public class PolygonProgressView extends View {
     }
 
     private void drawInnerLines(Canvas canvas, double angle) {
-        float actuallyValues = r;
-        float x = (int) (Math.cos(angle) * actuallyValues + c);
-        float y = (int) (Math.sin(angle) * actuallyValues + c);
+        float actuallyValues = r* .85f;
+        float x = (int) (Math.cos(angle) * actuallyValues + c );
+        float y = (int) (Math.sin(angle) * actuallyValues + c );
         canvas.drawLine(c, c, x, y, pil);
+
     }
 
 
@@ -279,7 +297,7 @@ public class PolygonProgressView extends View {
 
     private void drawCircle(Canvas canvas) {
         canvas.drawCircle(c, c, r, pr);
-        canvas.drawCircle(c, c, r >> 1, pil);
+        //canvas.drawCircle(c, c, r * .6f, pil);
     }
 
     private void initProperties() {
@@ -298,8 +316,10 @@ public class PolygonProgressView extends View {
             pl.setStyle(Paint.Style.FILL);
             pl.setAntiAlias(true);
             pic = n > 0 ? 360 / n : 0;
-            ba = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
+            ba = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_logo),(int)(r*.4f),(int)(r*.4f),false);
+            bmBackground = BitmapFactory.decodeResource(getResources(),R.mipmap.bg);
+            rBB4 = new Rect(0,0,bmBackground.getHeight(),bmBackground.getWidth());
+            rBAft = new Rect(p,p,s-p,s-p);
         }
     }
 

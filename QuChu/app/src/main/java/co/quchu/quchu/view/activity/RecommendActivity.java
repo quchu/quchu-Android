@@ -69,6 +69,9 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     @Bind(R.id.title)
     View vTitle;
 
+    @Bind(R.id.tvTitle)
+    TextView tvTitle;
+
 
     public long firstTime = 0;
     private ArrayList<CityModel> list = new ArrayList<>();
@@ -257,6 +260,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
+            tvTitle.setText("");
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
@@ -275,6 +279,8 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                 }
             }).start();
         } else if(index ==2){
+
+            tvTitle.setText("ChanyF");
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
@@ -283,6 +289,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     vTitle.setVisibility(View.VISIBLE);
                 }
             }).start();
+
         }
         viewPagerIndex = index;
     }

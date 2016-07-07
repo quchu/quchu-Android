@@ -30,6 +30,7 @@
                 android:id="@+id/photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                card_view:actualImageScaleType="centerInside"
                 card_view:roundBottomLeft="false"
                 card_view:roundBottomRight="false"
                 card_view:roundTopLeft="true"

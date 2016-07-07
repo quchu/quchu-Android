@@ -6,7 +6,14 @@
     android:fitsSystemWindows="true">
 
 
+
+    <View
+        android:id="@+id/vDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#dbdbdb" />
     <RadioGroup
+        android:layout_below="@+id/vDivider"
         android:id="@+id/rgDisplayMode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,6 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/llPageIndicator"
+        android:layout_marginTop="@dimen/base_margin"
 
         android:layout_below="@id/rgDisplayMode">
 
@@ -98,6 +106,9 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvGrid"
+        android:layout_marginTop="@dimen/base_margin"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/llPageIndicator"
