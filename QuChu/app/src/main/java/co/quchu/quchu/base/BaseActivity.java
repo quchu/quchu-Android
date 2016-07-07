@@ -12,6 +12,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 
 
@@ -75,7 +76,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP && this instanceof QuchuDetailsActivity){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && this instanceof QuchuDetailsActivity) {
             return;
         }
         switch (activitySetup()) {
@@ -100,14 +101,29 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+        LogUtils.e("base activity onPause  " + getClass().getSimpleName());
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        LogUtils.e("base activity onResume  " + getClass().getSimpleName());
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LogUtils.e("base activity onStart  " + getClass().getSimpleName());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LogUtils.e("base activity onStop  " + getClass().getSimpleName());
+    }
 
     public EnhancedToolbar getEnhancedToolbar() {
         return null == enhancedToolbar ? initToolbar() : enhancedToolbar;

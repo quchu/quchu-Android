@@ -365,6 +365,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
 
     public void updateAvatar(String avatarUrl) {
+        mProfileModified = true;
 
         if (!avatarUrl.startsWith("http")) {
             newUserPhoto = ImageUtils.saveImage2Sd(avatarUrl);

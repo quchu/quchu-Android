@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -48,7 +47,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Classify
 
     @Override
     public void onBindViewHolder(ClassifyHolder holder, int position) {
-        holder.itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getImageUrl()+""));
+        holder.itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getImageUrl() + ""));
         holder.itemClassifyImageSdv.setAspectRatio(1.73f);
         holder.tvTitle.setText(mDataSet.get(position).getArticleName());
         holder.tvDescription.setText(mDataSet.get(position).getArticleComtent());
@@ -60,7 +59,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Classify
 
     @Override
     public int getItemCount() {
-        return mDataSet.size();
+        return mDataSet == null ? 0 : mDataSet.size();
     }
 
     public class ClassifyHolder extends RecyclerView.ViewHolder {
