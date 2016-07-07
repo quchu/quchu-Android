@@ -14,10 +14,11 @@ import com.igexin.sdk.PushConsts;
 import java.util.Set;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.view.activity.SearchActivity;
+import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
  * Created by no21 on 2016/7/1.
@@ -25,6 +26,8 @@ import co.quchu.quchu.view.activity.SearchActivity;
  * desc :
  */
 public class GeTuiReceiver extends BroadcastReceiver {
+    public static final String REQUEST_KEY_MODEL = "model";
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -49,9 +52,18 @@ public class GeTuiReceiver extends BroadcastReceiver {
                     builder.setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle("标题" + data)
                             .setContentText("第二行消息")
+                            .setAutoCancel(true)
                             .setTicker("New message");//第一次提示消息的时候显示在通知栏上
 
-                    builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, SearchActivity.class), 0));
+                    PushMessageBean bean = new PushMessageBean();
+                    bean.setType("02");
+
+                    Intent inten = new Intent(context, RecommendActivity.class);
+
+                    inten.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    inten.putExtra(REQUEST_KEY_MODEL, bean);
+
+                    builder.setContentIntent(PendingIntent.getActivity(context, 0, inten, PendingIntent.FLAG_UPDATE_CURRENT));
                     NotificationManagerCompat notificationManiage = NotificationManagerCompat.from(context);
                     notificationManiage.notify(0, builder.build());
                 }

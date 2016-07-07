@@ -28,7 +28,6 @@ import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
-import co.quchu.quchu.utils.AudioUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -63,14 +62,9 @@ public class SplashActivity extends BaseActivity {
     }
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: 2016/7/5  delete
-        AudioUtils.playAudio(this,R.raw.audio23);
-
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         View decorView = getWindow().getDecorView();
@@ -88,7 +82,6 @@ public class SplashActivity extends BaseActivity {
 
         mTvVersion.setText(getVersionName());
         mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
-
 
 
 //        final AnimatorSet animatorSetText = new AnimatorSet();
