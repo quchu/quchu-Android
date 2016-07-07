@@ -14,8 +14,11 @@ import com.igexin.sdk.PushConsts;
 import java.util.Set;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.PushMessageBean;
+import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.utils.LogUtils;
-import co.quchu.quchu.view.activity.SearchActivity;
+import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
  * Created by no21 on 2016/7/1.
@@ -23,9 +26,10 @@ import co.quchu.quchu.view.activity.SearchActivity;
  * desc :
  */
 public class GeTuiReceiver extends BroadcastReceiver {
+    public static final String REQUEST_KEY_MODEL = "model";
+
     @Override
     public void onReceive(Context context, Intent intent) {
-
 
         Bundle bundle = intent.getExtras();
 
@@ -34,9 +38,8 @@ public class GeTuiReceiver extends BroadcastReceiver {
                 // 获取透传数据
                 byte[] payload = bundle.getByteArray("payload");
 
-                String taskid = bundle.getString("taskid");
-                String messageid = bundle.getString("messageid");
-
+//                String taskid = bundle.getString("taskid");
+//                String messageid = bundle.getString("messageid");
                 // smartPush第三方回执调用接口，actionid范围为90000-90999，可根据业务场景执行
 //                boolean result = PushManager.getInstance().sendFeedbackMessage(context, taskid, messageid, 90001);
 //                System.out.println("第三方回执接口调用" + (result ? "成功" : "失败"));
@@ -49,9 +52,18 @@ public class GeTuiReceiver extends BroadcastReceiver {
                     builder.setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle("标题" + data)
                             .setContentText("第二行消息")
+                            .setAutoCancel(true)
                             .setTicker("New message");//第一次提示消息的时候显示在通知栏上
 
-                    builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, SearchActivity.class), 0));
+                    PushMessageBean bean = new PushMessageBean();
+                    bean.setType("02");
+
+                    Intent inten = new Intent(context, RecommendActivity.class);
+
+                    inten.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    inten.putExtra(REQUEST_KEY_MODEL, bean);
+
+                    builder.setContentIntent(PendingIntent.getActivity(context, 0, inten, PendingIntent.FLAG_UPDATE_CURRENT));
                     NotificationManagerCompat notificationManiage = NotificationManagerCompat.from(context);
                     notificationManiage.notify(0, builder.build());
                 }
@@ -60,9 +72,9 @@ public class GeTuiReceiver extends BroadcastReceiver {
                 // 获取ClientID(CID)
                 String cid = bundle.getString("clientid");
                 LogUtils.e("个推cid" + cid);
+                new GsonRequest<String>(NetApi.putGtClientById + "?cId=" + cid, null).start(context);
                 break;
         }
-
         Set<String> keySet = bundle.keySet();
         for (String key : keySet) {
             LogUtils.e("\n推送消息 key:" + key + " values:" + bundle.get(key) + "byteString:");

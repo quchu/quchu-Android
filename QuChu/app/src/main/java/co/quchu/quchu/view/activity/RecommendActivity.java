@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.KeyEvent;
@@ -31,12 +32,14 @@ import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
+import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
+import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
-import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -52,12 +55,15 @@ import co.quchu.quchu.view.fragment.RecommendFragment;
  * Date: 2015-12-07
  * 趣处分类、推荐
  */
-public class RecommendActivity extends BaseBehaviorActivity implements View.OnClickListener {
+public class RecommendActivity extends BaseBehaviorActivity {
     @Bind(R.id.recommend_title_location_tv)
     TextView recommendTitleLocationIv;
 
     @Bind(R.id.recommend_title_more_iv)
     ImageView recommendTitleMoreRl;
+
+    @Bind(R.id.recommend_title_location_rl)
+    View vLeft;
 
     @Bind(R.id.container)
     FrameLayout flContainer;
@@ -72,6 +78,12 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     @Bind(R.id.tvTitle)
     TextView tvTitle;
 
+    @Bind(R.id.ivDivider)
+    View vDivider;
+    @Bind(R.id.ivLeft)
+    View ivLeft;
+    @Bind(R.id.tvRight)
+    TextView tvRight;
 
     public long firstTime = 0;
     private ArrayList<CityModel> list = new ArrayList<>();
@@ -98,15 +110,12 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         ButterKnife.bind(this);
 
 
-
-
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
         articleFragment = new ArticleFragment();
         meFragment = new MeFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, articleFragment, null).add(R.id.container, meFragment, null).hide(articleFragment).hide(meFragment).commitAllowingStateLoss();
         initView();
-        recommendTitleMoreRl.setOnClickListener(this);
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
@@ -124,7 +133,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rbRecommend:
 
                         viewpagerSelected(0);
@@ -140,31 +149,54 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                 }
             }
         });
+        accessPushMessage();
+    }
+
+    private void accessPushMessage() {
+        Parcelable extra = getIntent().getParcelableExtra(GeTuiReceiver.REQUEST_KEY_MODEL);
+        if (extra != null) {
+            PushMessageBean bean = (PushMessageBean) extra;
+//            说明： 类型：( 01 PGC新内容发布  02  新场景发布  03 事件营销 )
+//            eventId  : 根据类别，打开应用相应页面的ID  type: 01 为文章ID  02:场景ID  03：文章ID
+            switch (bean.getType()) {
+                case "01":
+
+                    break;
+                case "02":
+
+                    break;
+                case "03":
+
+                    break;
+            }
+        }
+
 
     }
 
-    private void checkIfCityChanged(){
-        if (null!=list && null!= AppLocationListener.currentCity){
+
+    private void checkIfCityChanged() {
+        if (null != list && null != AppLocationListener.currentCity) {
             String currentLocation = AppLocationListener.currentCity;
             int cityIdInList = -1;
-            if (currentLocation.endsWith("市")){
-                currentLocation = currentLocation.substring(0,currentLocation.length()-1);
+            if (currentLocation.endsWith("市")) {
+                currentLocation = currentLocation.substring(0, currentLocation.length() - 1);
             }
             boolean inList = false;
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getCvalue().equals(currentLocation)){
+                if (list.get(i).getCvalue().equals(currentLocation)) {
                     inList = true;
                     cityIdInList = list.get(i).getCid();
                 }
             }
-            if (!currentLocation.equals(SPUtils.getCityName())){
+            if (!currentLocation.equals(SPUtils.getCityName())) {
                 ConfirmDialogFg confirmDialogFg = null;
-                if (!inList){
+                if (!inList) {
                     //城市列表中没有当前位置
-                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","你当前所在的城市尚未占领，是否要切换城市");
-                }else if(inList){
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "你当前所在的城市尚未占领，是否要切换城市");
+                } else if (inList) {
                     //城市列表中有但不是当前位置
-                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","检测到你在"+currentLocation+"，是否切换？");
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "检测到你在" + currentLocation + "，是否切换？");
                 }
                 final boolean finalInList = inList;
                 final int finalCityIdInList = cityIdInList;
@@ -172,20 +204,20 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                 confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                     @Override
                     public void onClick(int index) {
-                        if (ConfirmDialogFg.INDEX_OK == index){
-                            if (finalInList){
+                        if (ConfirmDialogFg.INDEX_OK == index) {
+                            if (finalInList) {
                                 SPUtils.setCityId(finalCityIdInList);
                                 SPUtils.setCityName(finalCurrentLocation);
                                 updateRecommend();
                                 recommendTitleLocationIv.setText(SPUtils.getCityName());
-                            }else{
+                            } else {
                                 findViewById(R.id.recommend_title_location_rl).performClick();
                             }
 
                         }
                     }
                 });
-                confirmDialogFg.show(getSupportFragmentManager(),"~");
+                confirmDialogFg.show(getSupportFragmentManager(), "~");
             }
         }
     }
@@ -195,11 +227,24 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         return TRANSITION_TYPE_LEFT;
     }
 
-    @OnClick({R.id.recommend_title_location_rl})
+    @OnClick({R.id.recommend_title_location_rl,R.id.tvRight,R.id.ivLeft,R.id.recommend_title_more_iv})
     public void titleClick(View view) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         switch (view.getId()) {
+
+
+            case R.id.recommend_title_more_iv:
+                startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
+                break;
+
+            case R.id.ivLeft:
+                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(),"~");
+                break;
+
+            case R.id.tvRight:
+                startActivity(new Intent(RecommendActivity.this,AccountSettingActivity.class));
+                break;
             case R.id.recommend_title_location_rl:
                 MobclickAgent.onEvent(this, "location_c");
 
@@ -226,15 +271,6 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         }
     }
 
-
-    @OnClick({R.id.recommend_title_more_iv})
-    public void onClick(View v){
-        switch (v.getId()){
-            case R.id.recommend_title_more_iv:
-                startActivity(new Intent(RecommendActivity.this,SearchActivity.class));
-                break;
-        }
-    }
 
 
     private void showCityDialog() {
@@ -269,7 +305,14 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     vTitle.setVisibility(View.VISIBLE);
                 }
             }).start();
-        } else if(index==1) {
+            vDivider.animate().scaleX(1).setDuration(300).start();
+
+            vLeft.setVisibility(View.VISIBLE);
+            recommendTitleMoreRl.setVisibility(View.VISIBLE);
+            ivLeft.setVisibility(View.GONE);
+            tvRight.setVisibility(View.GONE);
+
+        } else if (index == 1) {
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(recommendFragment).hide(meFragment).show(articleFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(-vTitle.getHeight()).setDuration(300).withEndAction(new Runnable() {
@@ -278,8 +321,8 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     vTitle.setVisibility(View.GONE);
                 }
             }).start();
+            vDivider.animate().scaleX(0).setDuration(300).start();
         } else if(index ==2){
-
             tvTitle.setText("ChanyF");
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
@@ -289,6 +332,14 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     vTitle.setVisibility(View.VISIBLE);
                 }
             }).start();
+            vDivider.animate().scaleX(1).setDuration(300).start();
+
+
+            vLeft.setVisibility(View.GONE);
+            recommendTitleMoreRl.setVisibility(View.GONE);
+
+            ivLeft.setVisibility(View.VISIBLE);
+            tvRight.setVisibility(View.VISIBLE);
 
         }
         viewPagerIndex = index;
@@ -301,7 +352,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     public void updateRecommend() {
         //recommendFragment.initData();
         //TODO refresh
-        articleFragment.getRootTagsData();
+        articleFragment.getArticles();
     }
 
     @Override

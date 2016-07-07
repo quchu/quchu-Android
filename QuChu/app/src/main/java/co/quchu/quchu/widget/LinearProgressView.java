@@ -103,9 +103,9 @@ public class LinearProgressView extends View {
 
         //draw progress
         rectF.left = StringUtils.dip2px(getContext(), 30) + 3;
-        rectF.right = getWidth() * progress / 100f-3;
-        rectF.top =3;
-        rectF.bottom = getHeight()-3 ;
+        rectF.right = getWidth() * progress / 100f - 3;
+        rectF.top = 3;
+        rectF.bottom = getHeight() - 3;
 
         paint.reset();
         paint.setDither(true);
@@ -121,8 +121,8 @@ public class LinearProgressView extends View {
     public void setProgress(int progress, String text, int position) {
 
 
-        if (progress < 0 || progress > 100)
-            throw new IllegalArgumentException("progress must between 0 100");
+//        if (progress < 0 || progress > 100)
+//            throw new IllegalArgumentException("progress must between 0 100,current is" + progress);
 
         this.position = position;
         this.text = text;

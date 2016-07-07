@@ -62,8 +62,6 @@ public class SplashActivity extends BaseActivity {
     }
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +82,6 @@ public class SplashActivity extends BaseActivity {
 
         mTvVersion.setText(getVersionName());
         mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
-
 
 
 //        final AnimatorSet animatorSetText = new AnimatorSet();

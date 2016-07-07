@@ -13,10 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height"
         android:layout_below="@id/appbar"
-        app:tabIndicatorColor="@color/standard_color_yellow"
+        android:background="@color/standard_color_white"
+        app:tabIndicatorColor="@color/standard_color_h1_dark"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/standard_color_yellow"
+        app:tabSelectedTextColor="@color/standard_color_h1_dark"
         app:tabTextColor="@color/standard_color_h3_dark" />
 
     <View
@@ -31,7 +32,4 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tabLayout" />
 
-    <View
-        style="@style/HorizontalLine"
-        android:layout_below="@id/tabLayout" />
 </RelativeLayout>

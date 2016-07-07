@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -30,13 +29,13 @@ import co.quchu.quchu.utils.ArrayUtils;
 public class PolygonProgressView extends View {
 
 
-    private static final long ADR = 800l;
-    private static final long AD = 50l;
+    private static final long ADR = 1000l;
+    private static final long AD = 75l;
     private int s = -1;
     private int p = -1;
     private int c = -1;
     private int sw = 6;
-    private int n = 4;
+    private int n = 6;
     private int r = -1;
     private int ap = 5;
     private int rO = 360 / 4;
@@ -53,6 +52,7 @@ public class PolygonProgressView extends View {
     private Paint pil;
     private Paint pl;
     private Paint pab;
+    private Paint pac;
     private Rect rBB4;
     private Rect rBAft;
     private Bitmap bmBackground;
@@ -160,6 +160,11 @@ public class PolygonProgressView extends View {
         pab.setColor(Color.WHITE);
         pab.setStyle(Paint.Style.FILL);
 
+        pac = new Paint();
+        pac.setAntiAlias(true);
+        pac.setColor(Color.WHITE);
+        pac.setStyle(Paint.Style.FILL);
+
 
     }
 
@@ -202,7 +207,7 @@ public class PolygonProgressView extends View {
     private void drawInnerPattern(Canvas canvas) {
         canvas.save();
         canvas.rotate(rO,c,c);
-        canvas.drawBitmap(bmBackground,rBB4,rBAft,pab);
+        canvas.drawBitmap(bmBackground,rBB4,rBAft,pil);
         canvas.restore();
 
     }
@@ -211,7 +216,8 @@ public class PolygonProgressView extends View {
     private void drawAvatar(Canvas canvas) {
 
 
-        canvas.drawCircle(c, c, r * min * .6f, pab);
+        canvas.drawCircle(c, c, r * min * .6f * apv[0], pac);
+        pa.setAlpha((int) (apv[0]*255));
         canvas.drawBitmap(ba, c - (ba.getWidth() >> 1), c - (ba.getHeight() >> 1), pa);
     }
 
@@ -247,15 +253,9 @@ public class PolygonProgressView extends View {
         float x = (int) (Math.cos(angle) * actuallyValues + c);
         float y = (int) (Math.sin(angle) * actuallyValues + c);
 
+        pab.setAlpha((int) (apv[0]*255));
+
         canvas.drawBitmap(bitmap,x - bitmap.getWidth()/2,y-bitmap.getHeight()/2,pab);
-
-    }
-
-    private void drawInnerLines(Canvas canvas, double angle) {
-        float actuallyValues = r* .85f;
-        float x = (int) (Math.cos(angle) * actuallyValues + c );
-        float y = (int) (Math.sin(angle) * actuallyValues + c );
-        canvas.drawLine(c, c, x, y, pil);
 
     }
 
@@ -275,7 +275,7 @@ public class PolygonProgressView extends View {
 
             float actuallyValues = pv[i] * maxHill * apv[i];
             if (minimalValues > 0) {
-                actuallyValues = minimalValues + (maxHill - minimalValues) * pv[i] * apv[i];
+                actuallyValues = (minimalValues + (maxHill - minimalValues) * pv[i] )* apv[i];
             }
 
             double angle = ((Math.PI * 2 / n) * i) - (Math.toRadians(rO));

@@ -27,11 +27,6 @@
             fresco:placeholderImage="@mipmap/ic_image_empty"
             fresco:placeholderImageScaleType="center"
             fresco:actualImageScaleType="centerInside"
-            fresco:roundedCornerRadius="@dimen/rounded_radius"
-            fresco:roundBottomLeft="false"
-            fresco:roundBottomRight="false"
-            fresco:roundTopLeft="true"
-            fresco:roundTopRight="true"
 
             />
 
