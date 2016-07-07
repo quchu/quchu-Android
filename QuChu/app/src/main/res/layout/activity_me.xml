@@ -152,7 +152,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="@dimen/quarter_margin"
+                        android:paddingBottom="@dimen/half_margin"
                         android:text="土豪基因"
                         android:textColor="@color/standard_color_h3_dark"
                         android:textSize="@dimen/standard_text_size_h4" />
@@ -186,7 +186,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="@dimen/quarter_margin"
+                        android:paddingBottom="@dimen/half_margin"
+
                         android:text="吃货基因"
                         android:textColor="@color/standard_color_h3_dark"
                         android:textSize="@dimen/standard_text_size_h4" />
@@ -220,7 +221,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="@dimen/quarter_margin"
+                        android:paddingBottom="@dimen/half_margin"
+
                         android:text="好奇基因"
                         android:textColor="@color/standard_color_h3_dark"
                         android:textSize="@dimen/standard_text_size_h4" />
@@ -266,7 +268,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="@dimen/quarter_margin"
+                        android:paddingBottom="@dimen/half_margin"
+
                         android:text="社交基因"
                         android:textColor="@color/standard_color_h3_dark"
                         android:textSize="@dimen/standard_text_size_h4" />
@@ -300,7 +303,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="@dimen/quarter_margin"
+                        android:paddingBottom="@dimen/half_margin"
+
                         android:text="时尚基因"
                         android:textColor="@color/standard_color_h3_dark"
                         android:textSize="@dimen/standard_text_size_h4" />
@@ -334,7 +338,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:padding="@dimen/quarter_margin"
+                        android:paddingBottom="@dimen/half_margin"
                         android:text="文艺基因"
                         android:textColor="@color/standard_color_h3_dark"
                         android:textSize="@dimen/standard_text_size_h4" />
