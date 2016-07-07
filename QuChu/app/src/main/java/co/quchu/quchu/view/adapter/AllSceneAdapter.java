@@ -27,26 +27,27 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 
 /**
- * RecommendAdapter
+ * AllSceneAdapter
  * User: Chenhs
  * Date: 2015-12-08
  * 趣处推荐 适配器 adapter
  */
-public class RecommendAdapter extends PagerAdapter {
+public class AllSceneAdapter extends PagerAdapter {
 
 
     private Activity mContext;
-    private List<RecommendModel> dataSet;
+    private List<SceneModel> dataSet;
     private CardClickListener listener;
     private RecommendFragment fragment;
 
-    public RecommendAdapter(RecommendFragment fragment, List<RecommendModel> arrayList, CardClickListener listener) {
+    public AllSceneAdapter(RecommendFragment fragment, List<SceneModel> arrayList, CardClickListener listener) {
         this.mContext = fragment.getActivity();
         this.fragment = fragment;
         dataSet = arrayList;
@@ -71,70 +72,27 @@ public class RecommendAdapter extends PagerAdapter {
             holder.itemView.setScaleY(1);
         }
 
-        RecommendModel model = dataSet.get(position);
-        holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
-        if (model.isIsActivity()) {
-            holder.item_place_event_tv.setVisibility(View.VISIBLE);
-            Uri uri = new Uri.Builder()
-                    .scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
-                    .path(String.valueOf(R.mipmap.ic_party))
-                    .build();
-            holder.item_place_event_tv.setImageURI(uri);
+        SceneModel model = dataSet.get(position);
+        holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getSceneCover()));
 
-        } else {
-            holder.item_place_event_tv.setVisibility(View.GONE);
-        }
+        holder.item_recommend_card_name_tv.setText(model.getSceneName());
 
-        String price;
-        if (!TextUtils.isEmpty(model.getPrice())) {
-            price = model.getPrice().split(",")[0];
-        } else {
-            price = "-";
-        }
-
-//        holder.itemRecommendCardAddressTv.setText(StringUtils.getColorSpan(mContext, R.color.standard_color_red, mContext.getString(R.string.avg_cost_with_rmb_symbol), "¥"+price, "起"));
-//        holder.rbRating.setRating(model.getSuggest());
-//        holder.rbRating.setIsIndicator(true);
-        //holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
-        holder.item_recommend_card_name_tv.setText(model.getName());
-
-
-        if (model.isout) {//用户去过该趣处
-            //去过标签 start
-            SpannableString spanText = new SpannableString(model.getName() + "，");
-            DynamicDrawableSpan drawableSpan2 = new DynamicDrawableSpan(
-                    DynamicDrawableSpan.ALIGN_BOTTOM) {
-                @Override
-                public Drawable getDrawable() {
-                    Drawable d = mContext.getResources().getDrawable(R.mipmap.ic_span_been);
-                    d.setBounds(StringUtils.dip2px(8), -StringUtils.dip2px(16), StringUtils.dip2px(40), 0);
-                    return d;
-                }
-            };
-            spanText.setSpan(drawableSpan2, model.getName().length(), model.getName().length() + 1
-                    , Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            holder.item_recommend_card_name_tv.setText(spanText);
-            //去过标签 end
-        } else {
-            holder.item_recommend_card_name_tv.setText(model.getName());
-        }
-        if (null != model.getTags() && model.getTags().size() > 0) {
-            for (int i = 0; i < model.getTags().size(); i++) {
+        if (null != model.getSceneTitle() && model.getSceneTitle().length > 0) {
+            for (int i = 0; i < model.getSceneTitle().length; i++) {
                 switch (i) {
                     case 0:
-                        holder.tag1.setText(model.getTags().get(i).getZh());
+                        holder.tag1.setText(model.getSceneTitle()[i]);
                         holder.tag1.setVisibility(View.VISIBLE);
                         break;
                     case 1:
-                        holder.tag2.setText(model.getTags().get(i).getZh());
+                        holder.tag2.setText(model.getSceneTitle()[i]);
                         holder.tag2.setVisibility(View.VISIBLE);
                         break;
                     case 2:
-                        holder.tag3.setText(model.getTags().get(i).getZh());
+                        holder.tag3.setText(model.getSceneTitle()[i]);
                         holder.tag3.setVisibility(View.VISIBLE);
                         break;
                 }
-                if (i == 2) break;
             }
         } else {
             holder.tag1.setVisibility(View.GONE);

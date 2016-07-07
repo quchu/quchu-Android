@@ -35,6 +35,7 @@ import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
+import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -54,12 +55,15 @@ import co.quchu.quchu.view.fragment.RecommendFragment;
  * Date: 2015-12-07
  * 趣处分类、推荐
  */
-public class RecommendActivity extends BaseBehaviorActivity implements View.OnClickListener {
+public class RecommendActivity extends BaseBehaviorActivity {
     @Bind(R.id.recommend_title_location_tv)
     TextView recommendTitleLocationIv;
 
     @Bind(R.id.recommend_title_more_iv)
     ImageView recommendTitleMoreRl;
+
+    @Bind(R.id.recommend_title_location_rl)
+    View vLeft;
 
     @Bind(R.id.container)
     FrameLayout flContainer;
@@ -71,6 +75,15 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     @Bind(R.id.title)
     View vTitle;
 
+    @Bind(R.id.tvTitle)
+    TextView tvTitle;
+
+    @Bind(R.id.ivDivider)
+    View vDivider;
+    @Bind(R.id.ivLeft)
+    View ivLeft;
+    @Bind(R.id.tvRight)
+    TextView tvRight;
 
     public long firstTime = 0;
     private ArrayList<CityModel> list = new ArrayList<>();
@@ -103,7 +116,6 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         meFragment = new MeFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, articleFragment, null).add(R.id.container, meFragment, null).hide(articleFragment).hide(meFragment).commitAllowingStateLoss();
         initView();
-        recommendTitleMoreRl.setOnClickListener(this);
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
@@ -215,11 +227,24 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         return TRANSITION_TYPE_LEFT;
     }
 
-    @OnClick({R.id.recommend_title_location_rl})
+    @OnClick({R.id.recommend_title_location_rl,R.id.tvRight,R.id.ivLeft,R.id.recommend_title_more_iv})
     public void titleClick(View view) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         switch (view.getId()) {
+
+
+            case R.id.recommend_title_more_iv:
+                startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
+                break;
+
+            case R.id.ivLeft:
+                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(),"~");
+                break;
+
+            case R.id.tvRight:
+                startActivity(new Intent(RecommendActivity.this,AccountSettingActivity.class));
+                break;
             case R.id.recommend_title_location_rl:
                 MobclickAgent.onEvent(this, "location_c");
 
@@ -247,15 +272,6 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     }
 
 
-    @OnClick({R.id.recommend_title_more_iv})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.recommend_title_more_iv:
-                startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
-                break;
-        }
-    }
-
 
     private void showCityDialog() {
         ivArrow.animate().rotation(180).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
@@ -280,6 +296,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
+            tvTitle.setText("");
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
@@ -288,6 +305,13 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     vTitle.setVisibility(View.VISIBLE);
                 }
             }).start();
+            vDivider.animate().scaleX(1).setDuration(300).start();
+
+            vLeft.setVisibility(View.VISIBLE);
+            recommendTitleMoreRl.setVisibility(View.VISIBLE);
+            ivLeft.setVisibility(View.GONE);
+            tvRight.setVisibility(View.GONE);
+
         } else if (index == 1) {
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(recommendFragment).hide(meFragment).show(articleFragment).commitAllowingStateLoss();
@@ -297,7 +321,9 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     vTitle.setVisibility(View.GONE);
                 }
             }).start();
-        } else if (index == 2) {
+            vDivider.animate().scaleX(0).setDuration(300).start();
+        } else if(index ==2){
+            tvTitle.setText("ChanyF");
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
@@ -306,6 +332,15 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                     vTitle.setVisibility(View.VISIBLE);
                 }
             }).start();
+            vDivider.animate().scaleX(1).setDuration(300).start();
+
+
+            vLeft.setVisibility(View.GONE);
+            recommendTitleMoreRl.setVisibility(View.GONE);
+
+            ivLeft.setVisibility(View.VISIBLE);
+            tvRight.setVisibility(View.VISIBLE);
+
         }
         viewPagerIndex = index;
     }
@@ -315,8 +350,9 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
      * 城市切换后调用
      */
     public void updateRecommend() {
-        recommendFragment.initData();
-        articleFragment.getRootTagsData();
+        //recommendFragment.initData();
+        //TODO refresh
+        articleFragment.getArticles();
     }
 
     @Override
@@ -351,28 +387,11 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                 case 0x00:
                     netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 2000);
                     break;
-                case 0x02:
-                    resumeUpdateData();
-                    break;
             }
         }
     };
     private int resumeUpdateDataTimes = 0;
 
-    private void resumeUpdateData() {
-        if (AppContext.dCardListNeedUpdate) {
-            if (viewPagerIndex == 0) {
-                recommendFragment.updateDateSet();
-            }
-            AppContext.dCardListNeedUpdate = false;
-            resumeUpdateDataTimes = 0;
-        } else {
-            if (resumeUpdateDataTimes <= 3) {
-                resumeUpdateDataTimes++;
-                netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
-            }
-        }
-    }
 
 
     @Subscribe

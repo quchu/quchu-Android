@@ -10,28 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.VolleyError;
-import com.google.gson.reflect.TypeToken;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.ArticleModel;
-import co.quchu.quchu.net.GsonRequest;
-import co.quchu.quchu.net.NetApi;
-import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.model.ArticleWithBannerModel;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
-import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.view.adapter.ArticleAdapter;
 import co.quchu.quchu.widget.ErrorView;
 
@@ -60,7 +51,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
         refreshLayout.setOnRefreshListener(this);
 
-        getRootTagsData();
+        getArticles();
 
 
         return view;
@@ -69,17 +60,17 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     /**
      * 获取分类信息
      */
-    public void getRootTagsData() {
+    public void getArticles() {
 
-        ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<List<ArticleModel>>() {
+        ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
-            public void successListener(List<ArticleModel> response) {
+            public void successListener(ArticleWithBannerModel response) {
                 DialogUtil.dismissProgessDirectly();
                 recyclerView.setVisibility(View.VISIBLE);
                 errorView.hideView();
                 refreshLayout.setRefreshing(false);
 
-                cAdapter = new ArticleAdapter(getActivity(), response);
+                cAdapter = new ArticleAdapter(getActivity(), response.getArticleList().getResult());
                 recyclerView.setAdapter(cAdapter);
                 cAdapter.setOnItemCliskListener(new ArticleAdapter.ClasifyClickListener() {
                     @Override
@@ -98,7 +89,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
                     @Override
                     public void onClick(View v) {
                         DialogUtil.showProgess(getActivity(), "加载中");
-                        getRootTagsData();
+                        getArticles();
                     }
                 });
                 refreshLayout.setRefreshing(false);
@@ -128,6 +119,6 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        getRootTagsData();
+        getArticles();
     }
 }

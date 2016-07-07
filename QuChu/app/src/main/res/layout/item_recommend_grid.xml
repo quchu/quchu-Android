@@ -20,16 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_marginRight="@dimen/half_margin"
             fresco:failureImage="@mipmap/ic_image_empty"
             fresco:failureImageScaleType="center"
             fresco:placeholderImage="@mipmap/ic_image_empty"
             fresco:placeholderImageScaleType="center"
-            fresco:actualImageScaleType="centerCrop"
-            fresco:roundedCornerRadius="@dimen/rounded_radius"
-            fresco:roundBottomLeft="false"
-            fresco:roundBottomRight="false"
-            fresco:roundTopLeft="true"
-            fresco:roundTopRight="true"
+            fresco:actualImageScaleType="centerInside"
 
             />
 
@@ -40,12 +37,14 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/standard_text_size_h2"
-                android:padding="@dimen/quarter_margin"
-                android:text="111" />
+                android:paddingTop="@dimen/quarter_margin"
+                android:textColor="@color/standard_color_h2_dark"
+                 />
 
             <LinearLayout
                 android:layout_marginBottom="@dimen/half_margin"

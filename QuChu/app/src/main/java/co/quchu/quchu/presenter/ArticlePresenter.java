@@ -13,7 +13,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 
+import co.quchu.quchu.model.ArticleBannerModel;
 import co.quchu.quchu.model.ArticleModel;
+import co.quchu.quchu.model.ArticleWithBannerModel;
+import co.quchu.quchu.model.PagerModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -26,7 +29,7 @@ public class ArticlePresenter {
 
 
 
-    public static void getArticles(final Context context, int cityId, int pageNo, final CommonListener<List<ArticleModel>> listener) {
+    public static void getArticles(final Context context, int cityId, int pageNo, final CommonListener<ArticleWithBannerModel> listener) {
 
 
         HashMap<String,String> params = new HashMap<>();
@@ -37,19 +40,18 @@ public class ArticlePresenter {
             @Override
             public void onSuccess(JSONObject response) {
 
-                int maxPageNo = -1;
-                List<ArticleModel> articleModels = null;
-                if (response != null && response.has("result") && response.has("pageCount")) {
+                ArticleWithBannerModel articleBannerModel = new ArticleWithBannerModel();
+                if (response != null && response.has("articleList") ) {
                     Gson gson = new Gson();
                     try {
-                        maxPageNo = response.getInt("pageCount");
-                        articleModels = gson.fromJson(response.getString("result"), new TypeToken<List<ArticleModel>>() {}.getType());
+                        PagerModel<ArticleModel> articleModels = gson.fromJson(response.getString("articleList"), new TypeToken<PagerModel<ArticleModel>>() {}.getType());
+                        articleBannerModel.setArticleList(articleModels);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                listener.successListener(articleModels);
+                listener.successListener(articleBannerModel);
             }
 
             @Override

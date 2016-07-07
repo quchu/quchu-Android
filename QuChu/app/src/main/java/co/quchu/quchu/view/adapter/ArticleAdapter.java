@@ -60,6 +60,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Classify
     @Override
     public int getItemCount() {
         return mDataSet == null ? 0 : mDataSet.size();
+
     }
 
     public class ClassifyHolder extends RecyclerView.ViewHolder {

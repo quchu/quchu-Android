@@ -30,12 +30,10 @@
                 android:id="@+id/photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                card_view:actualImageScaleType="centerCrop"
-                card_view:roundBottomLeft="false"
-                card_view:roundBottomRight="false"
-                card_view:roundTopLeft="true"
-                card_view:roundTopRight="true"
-                card_view:roundedCornerRadius="@dimen/rounded_radius" />
+                android:layout_marginLeft="@dimen/half_margin"
+                android:layout_marginRight="@dimen/half_margin"
+                card_view:actualImageScaleType="centerInside"
+ />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/activity"
