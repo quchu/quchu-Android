@@ -31,9 +31,10 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.PagerModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneModel;
-import co.quchu.quchu.presenter.CommonPageListener;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -225,15 +226,16 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
     }
 
     public void getData(final boolean loadMore) {
-        ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 0, new CommonPageListener<List<SceneModel>>() {
-            @Override
-            public void successListener(List<SceneModel> response, int maxPage) {
+        ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 0, new CommonListener<PagerModel<SceneModel>>() {
 
-                if (response != null && response.size() > 0) {
+            @Override
+            public void successListener(PagerModel<SceneModel> response) {
+
+                if (response != null && response.getResult()!=null) {
                     if (!loadMore){
                         cardList.clear();
                     }
-                    cardList.addAll(response);
+                    cardList.addAll(response.getResult());
                     adapter.notifyDataSetChanged();
 
                     tvPageIndicatorCurrent.setText(String.valueOf(viewpager.getCurrentItem() + 1));
@@ -248,12 +250,10 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         });
     }
 
-    private int hasChangePosition = 0;
 
     @Override
     public void onCardLick(View view, int position) {
 
-        hasChangePosition = viewpager.getCurrentItem();
         if (from.equals(QuchuDetailsActivity.FROM_TYPE_HOME)) {
             MobclickAgent.onEvent(getContext(), "detail_home_c");
         } else {

@@ -13,6 +13,7 @@ import java.util.List;
 
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.NearbyItemModel;
+import co.quchu.quchu.model.PagerModel;
 import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -25,7 +26,7 @@ public class ScenePresenter {
 
 
 
-    public static void getAllScene(Context context, int cityId,int pageNo, final CommonPageListener<List<SceneModel>> listener) {
+    public static void getAllScene(Context context, int cityId,int pageNo, final CommonListener<PagerModel<SceneModel>> listener) {
 
         HashMap<String,String> params = new HashMap<>();
         params.put("cityId",String.valueOf(cityId));
@@ -33,19 +34,8 @@ public class ScenePresenter {
         NetService.get(context, NetApi.getAllScene, params,new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                if (response != null && response.has("result") && response.has("pageCount")) {
-                    int maxPageNo = -1;
-                    Gson gson = new Gson();
-                    List<SceneModel> sceneModels = null;
-                    try {
-                        maxPageNo = response.getInt("pageCount");
-                        sceneModels = gson.fromJson(response.getString("result"), new TypeToken<List<SceneModel>>() {
-                        }.getType());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    listener.successListener(sceneModels,maxPageNo);
-                }
+                PagerModel<SceneModel> sceneModels = new Gson().fromJson(response.toString(), new TypeToken<PagerModel<SceneModel>>() {}.getType());
+                listener.successListener(sceneModels);
             }
 
             @Override
