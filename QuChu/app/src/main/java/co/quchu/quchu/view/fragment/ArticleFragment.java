@@ -21,6 +21,7 @@ import co.quchu.quchu.model.ArticleWithBannerModel;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.activity.ArticleDetailActivity;
 import co.quchu.quchu.view.adapter.ArticleAdapter;
 import co.quchu.quchu.widget.ErrorView;
 
@@ -65,7 +66,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
-            public void successListener(ArticleWithBannerModel response) {
+            public void successListener(final ArticleWithBannerModel response) {
                 DialogUtil.dismissProgessDirectly();
                 recyclerView.setVisibility(View.VISIBLE);
                 errorView.hideView();
@@ -76,8 +77,8 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
                 cAdapter.setOnItemClickListener(new ArticleAdapter.ArticleListener() {
                     @Override
                     public void cItemClick(View view, int position) {
-                        //ArticleModel model = response.get(position);
-
+                        String articleId = response.getArticleList().getResult().get(position).getArticleId();
+                        ArticleDetailActivity.enterActivity(getActivity(),articleId);
                     }
                 });
             }

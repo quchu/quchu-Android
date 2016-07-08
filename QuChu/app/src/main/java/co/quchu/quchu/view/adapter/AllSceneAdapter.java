@@ -73,7 +73,9 @@ public class AllSceneAdapter extends PagerAdapter {
         }
 
         SceneModel model = dataSet.get(position);
-        holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getSceneCover()));
+        if (null!=model&&null!=model.getSceneCover()){
+            holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getSceneCover()));
+        }
 
         holder.item_recommend_card_name_tv.setText(model.getSceneName());
 

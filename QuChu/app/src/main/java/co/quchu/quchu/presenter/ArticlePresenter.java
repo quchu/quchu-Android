@@ -54,7 +54,7 @@ public class ArticlePresenter {
     }
 
 
-    public static void getArticleById(final Context context, int cityId, int pageNo, int articleId) {
+    public static void getArticleById(final Context context, int cityId, int pageNo, String articleId) {
 
 
         HashMap<String,String> params = new HashMap<>();

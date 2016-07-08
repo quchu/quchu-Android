@@ -227,6 +227,9 @@
             android:name=".view.activity.FavoriteActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".view.activity.ArticleDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.activity.FindPositionListActivity"
             android:screenOrientation="portrait" />
         <activity
