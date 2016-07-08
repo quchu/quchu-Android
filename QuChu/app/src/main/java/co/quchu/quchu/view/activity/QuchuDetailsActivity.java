@@ -256,7 +256,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
             for (int i = 0; i < dModel.getImglist().size() && i<=3; i++) {
                 imageSet.add(dModel.getImglist().get(i).convert2ImageModel());
             }
-            vpGallery.setAdapter(new GalleryAdapter(imageSet,getApplicationContext()));
+            vpGallery.setAdapter(new GalleryAdapter(imageSet));
             siv.setIndicators(imageSet.size());
             siv.setVisibility(View.VISIBLE);
             vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

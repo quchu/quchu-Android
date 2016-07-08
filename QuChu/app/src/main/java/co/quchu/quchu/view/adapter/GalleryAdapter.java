@@ -24,12 +24,10 @@ import co.quchu.quchu.model.ImageModel;
 public class GalleryAdapter extends PagerAdapter {
 
     List<ImageModel> mData;
-    private Context mContext;
 
 
-    public GalleryAdapter(List<ImageModel> pData, Context context) {
+    public GalleryAdapter(List<ImageModel> pData) {
         this.mData = pData;
-        this.mContext = context;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class GalleryAdapter extends PagerAdapter {
 
     @Override
     public View instantiateItem(ViewGroup container, int position) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_sdv, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_sdv, container, false);
         container.addView(view);
         ((SimpleDraweeView) view).setImageURI(Uri.parse(mData.get(position).getPath()));
         ((SimpleDraweeView) view).setAspectRatio(1.2f);

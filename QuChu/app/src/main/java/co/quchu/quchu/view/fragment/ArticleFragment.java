@@ -2,7 +2,6 @@ package co.quchu.quchu.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +23,6 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.ArticleAdapter;
 import co.quchu.quchu.widget.ErrorView;
-import co.quchu.quchu.widget.SimpleIndicatorView;
 
 /**
  * ArticleFragment
@@ -40,7 +38,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     @Bind(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
 
-    
+
 
     private ArticleAdapter cAdapter;
 
@@ -75,7 +73,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
                 cAdapter = new ArticleAdapter(getActivity(), response.getArticleList().getResult(),response.getArticleTitleList());
                 recyclerView.setAdapter(cAdapter);
-                cAdapter.setOnItemCliskListener(new ArticleAdapter.ArticleListener() {
+                cAdapter.setOnItemClickListener(new ArticleAdapter.ArticleListener() {
                     @Override
                     public void cItemClick(View view, int position) {
                         //ArticleModel model = response.get(position);
