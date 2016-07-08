@@ -60,7 +60,7 @@ public class AreaView extends LinearLayout {
 
             final AreaBean areaBeanAll = new AreaBean();
             areaBeanAll.setAreaId("");
-            areaBeanAll.setAreaName("全部");
+            areaBeanAll.setAreaName("全部商圈");
             datas.add(0, areaBeanAll);
 
             RecyclerView area = (RecyclerView) findViewById(R.id.area_area);
@@ -82,9 +82,8 @@ public class AreaView extends LinearLayout {
             areaAdapter.setItemClickListener(new OnItemClickListener() {
                 @Override
                 public void itemClick(int position) {
-
                     rowAdapter.setRowBean(datas.get(position).getCircleList());
-                    rowAdapter.setSelectedPosition(0);
+                    rowAdapter.setSelectedPosition(-1);
                     rowAdapter.notifyDataSetChanged();
                     if (position == 0) {
                         areaSelectedListener.areaSelected(areaBeanAll, circleListBeanAll);

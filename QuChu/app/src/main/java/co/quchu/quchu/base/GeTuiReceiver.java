@@ -56,7 +56,7 @@ public class GeTuiReceiver extends BroadcastReceiver {
                             .setTicker("New message");//第一次提示消息的时候显示在通知栏上
 
                     PushMessageBean bean = new PushMessageBean();
-                    bean.setType("02");
+                    bean.setType("01");
 
                     Intent inten = new Intent(context, RecommendActivity.class);
 

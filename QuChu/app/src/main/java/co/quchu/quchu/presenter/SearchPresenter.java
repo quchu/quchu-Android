@@ -45,10 +45,11 @@ public class SearchPresenter {
         object.put("value", seachStr);
         object.put("pageno", String.valueOf(pageNum));
         object.put("cityId", String.valueOf(cityId));
-
         object.put("tagId", categoryCode);
         object.put("sortType", sortType);
         object.put("circleId", areaCode);
+        object.put("longitude", String.valueOf(SPUtils.getLongitude()));
+        object.put("latitude", String.valueOf(SPUtils.getLatitude()));
 
 
         GsonRequest<String> request = new GsonRequest<>(NetApi.Seach, null, object, new ResponseListener<String>() {

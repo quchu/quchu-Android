@@ -49,6 +49,15 @@ public class RecommendModel implements Parcelable {
     private int width;
     public boolean isout;  //是否去过
     private String price;
+    private String areaCircleName;
+
+    public String getAreaCircleName() {
+        return areaCircleName;
+    }
+
+    public void setAreaCircleName(String areaCircleName) {
+        this.areaCircleName = areaCircleName;
+    }
 
     public String getPrice() {
         return price;
@@ -162,7 +171,7 @@ public class RecommendModel implements Parcelable {
         double v = 0;
 
 
-        if (null==latitude){
+        if (null == latitude) {
             return v;
         }
         try {
