@@ -305,7 +305,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
                     vTitle.setVisibility(View.VISIBLE);
                 }
             }).start();
-            vDivider.animate().scaleX(1).setDuration(300).start();
+            vDivider.setVisibility(View.VISIBLE);
 
             vLeft.setVisibility(View.VISIBLE);
             recommendTitleMoreRl.setVisibility(View.VISIBLE);
@@ -321,9 +321,14 @@ public class RecommendActivity extends BaseBehaviorActivity {
                     vTitle.setVisibility(View.GONE);
                 }
             }).start();
-            vDivider.animate().scaleX(0).setDuration(300).start();
+            vDivider.setVisibility(View.GONE);
+
         } else if(index ==2){
-            tvTitle.setText("ChanyF");
+            if (null!=AppContext.user && !AppContext.user.isIsVisitors()){
+                tvTitle.setText(AppContext.user.getUsername());
+            }else{
+                tvTitle.setText("未知生物");
+            }
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
@@ -332,9 +337,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
                     vTitle.setVisibility(View.VISIBLE);
                 }
             }).start();
-            vDivider.animate().scaleX(1).setDuration(300).start();
 
-
+            vDivider.setVisibility(View.VISIBLE);
             vLeft.setVisibility(View.GONE);
             recommendTitleMoreRl.setVisibility(View.GONE);
 

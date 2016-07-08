@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -46,7 +47,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (null!=articleBannerModels){
             mBanner.clear();
             for (int i = 0; i < articleBannerModels.size(); i++) {
-
                 ImageModel imageModel = new ImageModel();
                 imageModel.setPath(articleBannerModels.get(i).getImageUrl());
                 mBanner.add(imageModel);
@@ -67,7 +67,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_BANNER){
-
             return new BannerHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_banner, parent, false));
         }else {
             return new ArticleHolder(LayoutInflater.from(mContext).inflate(R.layout.item_classify_card, parent, false), listener);
@@ -84,14 +83,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (position>0){
             position-=1;
             ((ArticleHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getImageUrl() + ""));
-            ((ArticleHolder) holder).itemClassifyImageSdv.setAspectRatio(1.73f);
+            ((ArticleHolder) holder).itemClassifyImageSdv.setAspectRatio(1.6f);
             ((ArticleHolder) holder).tvTitle.setText(mDataSet.get(position).getArticleName());
             ((ArticleHolder) holder).tvDescription.setText(mDataSet.get(position).getArticleComtent());
             ((ArticleHolder) holder).tvReviews.setText(mDataSet.get(position).getReadCount());
             ((ArticleHolder) holder).tvFavorite.setText(mDataSet.get(position).getFavoriteCount());
             ((ArticleHolder) holder).sdvAvatar.setImageURI(Uri.parse(mDataSet.get(position).getUserUrl()));
         }else {
-            if (null!=mBanner){
+            if (mBanner.size()>0){
                 ((BannerHolder) holder).siv.setIndicators(mBanner.size());
                 ((BannerHolder) holder).viewPager.setAdapter(new GalleryAdapter(mBanner));
                 ((BannerHolder) holder).viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -100,12 +99,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                     @Override
                     public void onPageSelected(int position) {
-                        ((BannerHolder) holder).siv.setIndicators(0);
+                        ((BannerHolder) holder).siv.setCurrentIndex(position);
                     }
 
                     @Override
                     public void onPageScrollStateChanged(int state) {}
                 });
+
                 holder.itemView.setVisibility(View.VISIBLE);
             }else{
                 holder.itemView.setVisibility(View.GONE);

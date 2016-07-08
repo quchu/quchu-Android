@@ -89,8 +89,8 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
         viewpager.setClipToPadding(false);
-        viewpager.setPadding(60, 0, 60, 0);
-        viewpager.setPageMargin(20);
+        viewpager.setPadding(160, 0, 160, 0);
+        viewpager.setPageMargin(80);
         viewpager.addOnPageChangeListener(this);
         adapter = new AllSceneAdapter(this, cardList, this);
         viewpager.setAdapter(adapter);

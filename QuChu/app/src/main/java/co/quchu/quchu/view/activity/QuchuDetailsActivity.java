@@ -286,6 +286,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
                 if(!NetUtil.isNetworkConnected(getApplicationContext())){
                     Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
                     return;
+
                 }
 
                 if (mLoadingMore) {

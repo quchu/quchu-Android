@@ -40,17 +40,9 @@ public class ArticlePresenter {
             @Override
             public void onSuccess(JSONObject response) {
 
-                ArticleWithBannerModel articleBannerModel = new ArticleWithBannerModel();
-                if (response != null && response.has("articleList") ) {
-                    Gson gson = new Gson();
-                    try {
-                        PagerModel<ArticleModel> articleModels = gson.fromJson(response.getString("articleList"), new TypeToken<PagerModel<ArticleModel>>() {}.getType());
-                        articleBannerModel.setArticleList(articleModels);
+                ArticleWithBannerModel articleBannerModel;
+                articleBannerModel = new Gson().fromJson(response.toString(), new TypeToken<ArticleWithBannerModel>() {}.getType());
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
                 listener.successListener(articleBannerModel);
             }
 
