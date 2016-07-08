@@ -216,6 +216,9 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if (mThreadRunning){
+                    return;
+                }
                 getData(false);
             }
         });
@@ -225,12 +228,17 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         return view;
     }
 
+
+    private boolean mThreadRunning = false;
+
     public void getData(final boolean loadMore) {
+        mThreadRunning = true;
+
         ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 0, new CommonListener<PagerModel<SceneModel>>() {
 
             @Override
             public void successListener(PagerModel<SceneModel> response) {
-
+                refreshLayout.setRefreshing(false);
                 if (response != null && response.getResult()!=null) {
                     if (!loadMore){
                         cardList.clear();
@@ -241,11 +249,13 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
                     tvPageIndicatorCurrent.setText(String.valueOf(viewpager.getCurrentItem() + 1));
                     TvPageIndicatorSize.setText(String.valueOf(adapter.getCount()));
                 }
+                mThreadRunning = false;
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-
+                refreshLayout.setRefreshing(false);
+                mThreadRunning = false;
             }
         });
     }

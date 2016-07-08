@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:id="@+id/root_cv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,6 +33,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/half_margin"
                 android:layout_marginRight="@dimen/half_margin"
+
+                fresco:failureImage="@mipmap/ic_image_empty"
+                fresco:failureImageScaleType="center"
+                fresco:placeholderImage="@mipmap/ic_image_empty"
+                fresco:placeholderImageScaleType="center"
                 card_view:actualImageScaleType="centerInside" />
 
             <com.facebook.drawee.view.SimpleDraweeView
@@ -124,7 +130,7 @@
                 android:layout_marginTop="@dimen/base_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="大众点评团购—精选本地优质商户，高品质\n团购，吃喝玩乐低至2折。"
+                android:text="大众点评团购—精选本地优质商户，高品质团购，吃喝玩乐低至2折。"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
                 android:gravity="center"

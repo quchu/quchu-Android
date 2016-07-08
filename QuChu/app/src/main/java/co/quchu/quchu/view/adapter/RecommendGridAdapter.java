@@ -59,7 +59,9 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
             animator.setStartDelay(delay);
         }
 
-        holder.sdv.setImageURI(Uri.parse(mData.get(position).getSceneCover()));
+        if(null!=mData.get(position) && null!=mData.get(position).getSceneCover()){
+            holder.sdv.setImageURI(Uri.parse(mData.get(position).getSceneCover()));
+        }
 
         holder.sdv.setOnClickListener(new View.OnClickListener() {
             @Override

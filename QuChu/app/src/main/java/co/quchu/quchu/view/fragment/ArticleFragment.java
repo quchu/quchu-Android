@@ -23,6 +23,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.ArticleDetailActivity;
 import co.quchu.quchu.view.adapter.ArticleAdapter;
+import co.quchu.quchu.view.adapter.CommonItemClickListener;
 import co.quchu.quchu.widget.ErrorView;
 
 /**
@@ -74,9 +75,9 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
                 cAdapter = new ArticleAdapter(getActivity(), response.getArticleList().getResult(),response.getArticleTitleList());
                 recyclerView.setAdapter(cAdapter);
-                cAdapter.setOnItemClickListener(new ArticleAdapter.ArticleListener() {
+                cAdapter.setOnItemClickListener(new CommonItemClickListener() {
                     @Override
-                    public void cItemClick(View view, int position) {
+                    public void onItemClick(View v, int position) {
                         String articleId = response.getArticleList().getResult().get(position).getArticleId();
                         ArticleDetailActivity.enterActivity(getActivity(),articleId);
                     }

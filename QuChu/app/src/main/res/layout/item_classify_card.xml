@@ -13,6 +13,13 @@
         android:id="@+id/item_classify_image_sdv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        fresco:failureImage="@mipmap/ic_image_empty"
+        fresco:failureImageScaleType="center"
+        fresco:placeholderImage="@mipmap/ic_image_empty"
+        fresco:placeholderImageScaleType="center"
+        fresco:actualImageScaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"
         fresco:viewAspectRatio="1.7" />
 
 
@@ -75,6 +82,6 @@
         android:layout_below="@+id/tvDescription"
         android:layout_marginTop="@dimen/quarter_margin"
         android:layout_marginBottom="@dimen/half_margin"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_image_empty" />
 </RelativeLayout>
 

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -36,7 +35,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<ArticleModel> mDataSet;
     private List<ImageModel> mBanner = new ArrayList<>();
 
-    private ArticleListener listener;
+    private CommonItemClickListener mListener;
 
     public static final int TYPE_BANNER = 0x001;
     public static final int TYPE_NORMAL = 0x002;
@@ -69,13 +68,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (viewType == TYPE_BANNER){
             return new BannerHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_banner, parent, false));
         }else {
-            return new ArticleHolder(LayoutInflater.from(mContext).inflate(R.layout.item_classify_card, parent, false), listener);
+            return new ArticleHolder(LayoutInflater.from(mContext).inflate(R.layout.item_classify_card, parent, false));
         }
     }
 
 
-    public void setOnItemClickListener(ArticleListener listener) {
-        this.listener = listener;
+    public void setOnItemClickListener(CommonItemClickListener listener) {
+        this.mListener = listener;
     }
 
     @Override
@@ -83,7 +82,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (position>0){
             position-=1;
             ((ArticleHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getImageUrl() + ""));
-            ((ArticleHolder) holder).itemClassifyImageSdv.setAspectRatio(1.6f);
             ((ArticleHolder) holder).tvTitle.setText(mDataSet.get(position).getArticleName());
             ((ArticleHolder) holder).tvDescription.setText(mDataSet.get(position).getArticleComtent());
             ((ArticleHolder) holder).tvReviews.setText(mDataSet.get(position).getReadCount());
@@ -150,12 +148,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         SimpleDraweeView sdvAvatar;
 
 
-        private ArticleListener listener;
 
-        public ArticleHolder(View itemView, ArticleListener listener) {
+        public ArticleHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            this.listener = listener;
         }
 
         @OnClick(R.id.item_classify_root)
@@ -164,14 +160,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 return;
             switch (v.getId()) {
                 case R.id.item_classify_root:
-                    if (listener != null)
-                        listener.cItemClick(v, getAdapterPosition());
+                    if (mListener != null)
+                        mListener.onItemClick(v, getAdapterPosition());
                     break;
             }
         }
     }
 
-    public interface ArticleListener {
-        void cItemClick(View view, int position);
-    }
 }
