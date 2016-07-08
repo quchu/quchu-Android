@@ -60,7 +60,6 @@ public class GeTuiReceiver extends BroadcastReceiver {
 
                     Intent inten = new Intent(context, RecommendActivity.class);
 
-                    inten.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     inten.putExtra(REQUEST_KEY_MODEL, bean);
 
                     builder.setContentIntent(PendingIntent.getActivity(context, 0, inten, PendingIntent.FLAG_UPDATE_CURRENT));
@@ -80,4 +79,7 @@ public class GeTuiReceiver extends BroadcastReceiver {
             LogUtils.e("\n推送消息 key:" + key + " values:" + bundle.get(key) + "byteString:");
         }
     }
+
+
+
 }

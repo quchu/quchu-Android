@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,7 +31,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.presenter.CommonPageListener;
@@ -129,6 +132,8 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
                     case R.id.rbFavorites:
                         viewpager.clearAnimation();
                         rvGrid.clearAnimation();
+                        viewpager.setVisibility(View.VISIBLE);
+
                         for (int i = rvGrid.getChildCount() - 1; i >= 0; i--) {
                             if (rvGrid.getChildAt(i) == null) {
                                 return;
@@ -191,11 +196,15 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
                                 for (int i = 0; i < rvGrid.getChildCount(); i++) {
                                     rvGrid.getChildAt(i).setTranslationY(150);
                                     rvGrid.getChildAt(i).animate().translationY(0).setDuration(ANIMATION_DURATION).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(i * 30).start();
-
                                 }
                             }
                         }, 10);
-                        rvGrid.animate().alpha(1).setDuration(ANIMATION_DURATION).start();
+                        rvGrid.animate().alpha(1).setDuration(ANIMATION_DURATION).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                viewpager.setVisibility(View.INVISIBLE);
+                            }
+                        }).start();
 //                        tvPageIndicator.animate()
 //                                .alpha(0)
 //                                .translationY(tvPageIndicator.getHeight())
@@ -224,13 +233,43 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        accessPushMessage();
+    }
+
+    public void accessPushMessage() {
+        Parcelable extra = getActivity().getIntent().getParcelableExtra(GeTuiReceiver.REQUEST_KEY_MODEL);
+        if (extra == null)
+            return;
+
+        PushMessageBean bean = (PushMessageBean) extra;
+//            说明： 类型：( 01 PGC新内容发布  02  新场景发布  03 事件营销 )
+//            eventId  : 根据类别，打开应用相应页面的ID  type: 01 为文章ID  02:场景ID  03：文章ID
+        switch (bean.getType()) {
+            case "01":
+
+                break;
+            case "02"://切换到场景工坊页面
+                viewpager.setVisibility(View.INVISIBLE);
+                radioGroup.check(R.id.rbAll);
+                break;
+            case "03":
+
+                break;
+        }
+
+    }
+
+
     public void getData(final boolean loadMore) {
         ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 0, new CommonPageListener<List<SceneModel>>() {
             @Override
             public void successListener(List<SceneModel> response, int maxPage) {
 
                 if (response != null && response.size() > 0) {
-                    if (!loadMore){
+                    if (!loadMore) {
                         cardList.clear();
                     }
                     cardList.addAll(response);
@@ -269,8 +308,6 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         }
 
     }
-
-
 
 
     public void loadMore(boolean isError, List<SceneModel> arrayList, int pageCount, int pageNum) {
@@ -329,7 +366,7 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
 
-       //TODO favorite udpate
+        //TODO favorite udpate
     }
 
     @Override
