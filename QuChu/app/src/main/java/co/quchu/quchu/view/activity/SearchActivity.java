@@ -110,7 +110,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private RecyclerView categoryRecyclerView;
     private AreaView areaView;
 
-    private String categoryCode = "", areaCode = "", sortType = "";
+    private String categoryCode = "", areaId = "", circleId = "", sortType = "";
     private RecyclerView sortRecyclerView;
     private SearchCategoryAdapter filterCategoryAdapter;
     private SearchSortAdapter filterSortAdapter;
@@ -192,7 +192,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
                     @Override
                     public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
-                        areaCode = TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaId() : circleListBean.getCircleId();
+                        areaId = areaBean.getAreaId();
+                        circleId = circleListBean.getCircleId();
+
                         popupWindow.dismiss();
                         searchFilterTV2.setText(TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaName() : circleListBean.getCircleName());
                         seachStr(false);
@@ -428,7 +430,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         MobclickAgent.onEvent(this, "search_type", p);
 
 
-        SearchPresenter.searchFromService(this, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, areaCode, sortType, new SearchPresenter.SearchResultListener() {
+        SearchPresenter.searchFromService(this, areaId, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, circleId, sortType, new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList, int maxPageNo) {
 
