@@ -78,10 +78,17 @@ public class SimpleIndicatorView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+
+        boolean singleIndicator = mIndicators==1;
         float weight = (mIndicators * 2)-1;
+        if (singleIndicator){
+            weight = (3 * 2)-1;
+        }
         float width = getWidth()/weight;
         float radius = width/2;
         float padding = (getWidth()-(weight*radius*2))/2;
+
 
         for (int i = 0; i < weight; i++) {
             if ((i+1)%2!=0){
@@ -97,7 +104,14 @@ public class SimpleIndicatorView extends View {
                     zoomLevel = (mAnimateProgress * .25f)+.75f;
                 }
 
-                canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicators);
+                if (singleIndicator){
+                    System.out.println(i);
+                    if (i==2){
+                        canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicators);
+                    }
+                }else{
+                    canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicators);
+                }
 
 
             }

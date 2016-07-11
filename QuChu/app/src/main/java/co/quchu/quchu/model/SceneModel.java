@@ -4,14 +4,23 @@ package co.quchu.quchu.model;
  * Created by Nico on 16/7/5.
  */
 public class SceneModel {
-    public String height;
-    public String rgb;
-    public String sceneContent;
-    public String sceneCover;
-    public int sceneId;
-    public String sceneName;
-    public String[] sceneTitle;
-    public String width;
+    private String height;
+    private String rgb;
+    private String sceneContent;
+    private String sceneCover;
+    private int sceneId;
+    private String sceneName;
+    private String[] sceneTitle;
+    private String width;
+    private String intro;
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
+    }
 
     public String getHeight() {
         return height;

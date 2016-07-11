@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import co.quchu.quchu.model.ArticleBannerModel;
+import co.quchu.quchu.model.ArticleDetailModel;
 import co.quchu.quchu.model.ArticleModel;
 import co.quchu.quchu.model.ArticleWithBannerModel;
 import co.quchu.quchu.model.PagerModel;
@@ -40,17 +41,9 @@ public class ArticlePresenter {
             @Override
             public void onSuccess(JSONObject response) {
 
-                ArticleWithBannerModel articleBannerModel = new ArticleWithBannerModel();
-                if (response != null && response.has("articleList") ) {
-                    Gson gson = new Gson();
-                    try {
-                        PagerModel<ArticleModel> articleModels = gson.fromJson(response.getString("articleList"), new TypeToken<PagerModel<ArticleModel>>() {}.getType());
-                        articleBannerModel.setArticleList(articleModels);
+                ArticleWithBannerModel articleBannerModel;
+                articleBannerModel = new Gson().fromJson(response.toString(), new TypeToken<ArticleWithBannerModel>() {}.getType());
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
                 listener.successListener(articleBannerModel);
             }
 
@@ -62,7 +55,7 @@ public class ArticlePresenter {
     }
 
 
-    public static void getArticleById(final Context context, int cityId, int pageNo, int articleId) {
+    public static void getArticleById(final Context context, int cityId, int pageNo, String articleId,final CommonListener<ArticleDetailModel> listener) {
 
 
         HashMap<String,String> params = new HashMap<>();
@@ -72,10 +65,16 @@ public class ArticlePresenter {
         NetService.get(context, NetApi.getArticleById,params, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
+
+                ArticleDetailModel articleDetailModel;
+                articleDetailModel = new Gson().fromJson(response.toString(), new TypeToken<ArticleDetailModel>() {}.getType());
+
+                listener.successListener(articleDetailModel);
             }
 
             @Override
             public boolean onError(String error) {
+                listener.errorListener(null,error,null);
                 return false;
             }
         });

@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -23,7 +21,9 @@ import co.quchu.quchu.model.ArticleWithBannerModel;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.activity.ArticleDetailActivity;
 import co.quchu.quchu.view.adapter.ArticleAdapter;
+import co.quchu.quchu.view.adapter.CommonItemClickListener;
 import co.quchu.quchu.widget.ErrorView;
 
 /**
@@ -39,6 +39,9 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     ErrorView errorView;
     @Bind(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
+
+
+
     private ArticleAdapter cAdapter;
 
     @Nullable
@@ -64,19 +67,19 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
-            public void successListener(ArticleWithBannerModel response) {
+            public void successListener(final ArticleWithBannerModel response) {
                 DialogUtil.dismissProgessDirectly();
                 recyclerView.setVisibility(View.VISIBLE);
                 errorView.hideView();
                 refreshLayout.setRefreshing(false);
 
-                cAdapter = new ArticleAdapter(getActivity(), response.getArticleList().getResult());
+                cAdapter = new ArticleAdapter(getActivity(), response.getArticleList().getResult(),response.getArticleTitleList());
                 recyclerView.setAdapter(cAdapter);
-                cAdapter.setOnItemCliskListener(new ArticleAdapter.ClasifyClickListener() {
+                cAdapter.setOnItemClickListener(new CommonItemClickListener() {
                     @Override
-                    public void cItemClick(View view, int position) {
-                        //ArticleModel model = response.get(position);
-
+                    public void onItemClick(View v, int position) {
+                        String articleId = response.getArticleList().getResult().get(position).getArticleId();
+                        ArticleDetailActivity.enterActivity(getActivity(),articleId);
                     }
                 });
             }

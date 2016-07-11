@@ -60,11 +60,13 @@ public class AllSceneAdapter extends PagerAdapter {
         }
 
         SceneModel model = dataSet.get(position);
-        if (!TextUtils.isEmpty(model.getSceneCover()))
+        if (null!=model&&null!=model.getSceneCover()){
             holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getSceneCover()));
+        }
 
         holder.item_recommend_card_name_tv.setText(model.getSceneName());
 
+        holder.tvDescription.setText(model.getIntro());
         if (null != model.getSceneTitle() && model.getSceneTitle().length > 0) {
             for (int i = 0; i < model.getSceneTitle().length; i++) {
                 switch (i) {
@@ -152,6 +154,8 @@ public class AllSceneAdapter extends PagerAdapter {
         TextView tag2;
         @Bind(R.id.recommend_tag3)
         TextView tag3;
+        @Bind(R.id.tvDescription)
+                TextView tvDescription;
 //        @Bind(R.id.rbRating)
 //        RatingBar rbRating;
 

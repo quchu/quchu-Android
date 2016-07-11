@@ -4,7 +4,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +59,10 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
             int delay = 10 * position;
             animator.setStartDelay(delay);
         }
-        if (!TextUtils.isEmpty(mData.get(position).getSceneCover()))
+
+        if (null != mData.get(position) && null != mData.get(position).getSceneCover()) {
             holder.sdv.setImageURI(Uri.parse(mData.get(position).getSceneCover()));
+        }
 
         holder.sdv.setOnClickListener(new View.OnClickListener() {
             @Override

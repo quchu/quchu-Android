@@ -256,7 +256,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
             for (int i = 0; i < dModel.getImglist().size() && i<=3; i++) {
                 imageSet.add(dModel.getImglist().get(i).convert2ImageModel());
             }
-            vpGallery.setAdapter(new GalleryAdapter(imageSet,getApplicationContext()));
+            vpGallery.setAdapter(new GalleryAdapter(imageSet));
             siv.setIndicators(imageSet.size());
             siv.setVisibility(View.VISIBLE);
             vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -286,6 +286,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
                 if(!NetUtil.isNetworkConnected(getApplicationContext())){
                     Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
                     return;
+
                 }
 
                 if (mLoadingMore) {

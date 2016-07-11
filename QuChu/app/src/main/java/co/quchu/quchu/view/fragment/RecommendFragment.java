@@ -33,10 +33,11 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.PagerModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneModel;
-import co.quchu.quchu.presenter.CommonPageListener;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -91,8 +92,8 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
         viewpager.setClipToPadding(false);
-        viewpager.setPadding(60, 0, 60, 0);
-        viewpager.setPageMargin(20);
+        viewpager.setPadding(160, 0, 160, 0);
+        viewpager.setPageMargin(80);
         viewpager.addOnPageChangeListener(this);
         adapter = new AllSceneAdapter(this, cardList, this);
         viewpager.setAdapter(adapter);
@@ -224,6 +225,9 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if (mThreadRunning) {
+                    return;
+                }
                 getData(false);
             }
         });
@@ -233,6 +237,11 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         return view;
     }
 
+//<<<<<<< HEAD
+
+    private boolean mThreadRunning = false;
+
+    //=======
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -262,37 +271,46 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
 
     }
 
+//>>>>>>> origin/develop
 
     public void getData(final boolean loadMore) {
-        ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 0, new CommonPageListener<List<SceneModel>>() {
-            @Override
-            public void successListener(List<SceneModel> response, int maxPage) {
+        mThreadRunning = true;
 
-                if (response != null && response.size() > 0) {
+//<<<<<<< HEAD
+        ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 0, new CommonListener<PagerModel<SceneModel>>() {
+
+            @Override
+            public void successListener(PagerModel<SceneModel> response) {
+                refreshLayout.setRefreshing(false);
+                if (response != null && response.getResult() != null) {
                     if (!loadMore) {
+//=======
+//                if (response != null && response.size() > 0) {
+//                    if (!loadMore) {
+//>>>>>>> origin/develop
                         cardList.clear();
                     }
-                    cardList.addAll(response);
+                    cardList.addAll(response.getResult());
                     adapter.notifyDataSetChanged();
 
                     tvPageIndicatorCurrent.setText(String.valueOf(viewpager.getCurrentItem() + 1));
                     TvPageIndicatorSize.setText(String.valueOf(adapter.getCount()));
                 }
+                mThreadRunning = false;
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-
+                refreshLayout.setRefreshing(false);
+                mThreadRunning = false;
             }
         });
     }
 
-    private int hasChangePosition = 0;
 
     @Override
     public void onCardLick(View view, int position) {
 
-        hasChangePosition = viewpager.getCurrentItem();
         if (from.equals(QuchuDetailsActivity.FROM_TYPE_HOME)) {
             MobclickAgent.onEvent(getContext(), "detail_home_c");
         } else {

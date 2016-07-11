@@ -3,7 +3,9 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_classify_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/base_margin"
+    android:background="@color/standard_color_white"
     android:orientation="vertical">
 
 
@@ -11,7 +13,13 @@
         android:id="@+id/item_classify_image_sdv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        fresco:roundedCornerRadius="8dp"
+
+        fresco:failureImage="@mipmap/ic_image_empty"
+        fresco:failureImageScaleType="center"
+        fresco:placeholderImage="@mipmap/ic_image_empty"
+        fresco:placeholderImageScaleType="center"
+        fresco:actualImageScaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"
         fresco:viewAspectRatio="1.7" />
 
 
@@ -19,26 +27,34 @@
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/half_margin"
+        android:textStyle="bold"
         android:layout_below="@+id/item_classify_image_sdv"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
+        style="@style/TextView.H1"
         android:text="title" />
 
     <TextView
         android:id="@+id/tvDescription"
+        android:layout_marginTop="@dimen/quarter_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTitle"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
-        android:text="description" />
+        android:text="description"
+        style="@style/TextView.H2"
+        />
 
     <RelativeLayout
         android:id="@+id/rl"
-        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/quarter_margin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/tvDescription">
 
         <TextView
@@ -58,12 +74,14 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdvAvatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/rl"
-        android:layout_alignParentRight="true"
+        android:layout_width="@dimen/visited_users_avatar_size"
+        android:layout_height="@dimen/visited_users_avatar_size"
+        android:layout_alignParentLeft="true"
         fresco:roundAsCircle="true"
-        android:layout_marginRight="@dimen/base_margin"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_below="@+id/tvDescription"
+        android:layout_marginTop="@dimen/quarter_margin"
+        android:layout_marginBottom="@dimen/half_margin"
+        android:src="@mipmap/ic_image_empty" />
 </RelativeLayout>
 
