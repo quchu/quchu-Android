@@ -18,10 +18,11 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchCategoryBean;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.TagCloudView;
 
 /**
- *
  * User: Chenhs
  * Date: 2015-12-08
  * 趣处推荐 适配器 adapter
@@ -84,7 +85,16 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             }
             holder.tcvTag.setTags(strTags);
-            holder.address.setText(model.getAddress());
+            holder.address.setText(model.getAreaCircleName());
+
+            if (0 == SPUtils.getLatitude() || 0 == SPUtils.getLongitude()) {
+                holder.distance.setVisibility(View.INVISIBLE);
+            } else {
+                holder.distance.setVisibility(View.VISIBLE);
+                String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
+                holder.distance.setText(distance);
+            }
+
             holder.sdvImage.setImageURI(Uri.parse(model.getCover()));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,6 +139,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         SimpleDraweeView sdvImage;
         @Bind(R.id.address)
         TextView address;
+        @Bind(R.id.distance)
+        TextView distance;
 
         public ResultHolder(View itemView) {
             super(itemView);

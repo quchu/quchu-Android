@@ -116,7 +116,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/llPageIndicator"
         android:layout_below="@id/rgDisplayMode"
-        android:visibility="gone"></android.support.v7.widget.RecyclerView>
+        android:visibility="gone"/>
 
     <co.quchu.quchu.widget.ErrorView
         android:id="@+id/errorView"

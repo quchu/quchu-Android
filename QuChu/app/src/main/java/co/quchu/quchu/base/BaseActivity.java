@@ -1,6 +1,7 @@
 package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +57,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 break;
         }
         super.onCreate(savedInstanceState);
+        LogUtils.e("base activity onCreate  " + getClass().getSimpleName());
 
     }
 
@@ -71,6 +73,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         refWatcher.watch(this);
         ActManager.getAppManager().finishActivity(this);
         GsonRequest.queue.cancelAll(getClass().getSimpleName());
+        LogUtils.e("base activity onDestroy  " + getClass().getSimpleName());
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        LogUtils.e("base activity onNewIntent  " + getClass().getSimpleName());
+
     }
 
     @Override

@@ -39,16 +39,18 @@ import co.quchu.quchu.view.activity.SearchActivity;
  * Date: 2015-12-10
  */
 public class SearchPresenter {
-    public static void searchFromService(Context context, String seachStr, int pageNum, int cityId, String categoryCode, String areaCode, String sortType, final SearchResultListener listener) {
+    public static void searchFromService(Context context, String areaId,String seachStr, int pageNum, int cityId, String categoryCode, String circleId, String sortType, final SearchResultListener listener) {
 
         Map<String, String> object = new HashMap<>();
         object.put("value", seachStr);
         object.put("pageno", String.valueOf(pageNum));
         object.put("cityId", String.valueOf(cityId));
-
         object.put("tagId", categoryCode);
         object.put("sortType", sortType);
-        object.put("circleId", areaCode);
+        object.put("areaId", areaId);
+        object.put("circleId", circleId);
+        object.put("longitude", String.valueOf(SPUtils.getLongitude()));
+        object.put("latitude", String.valueOf(SPUtils.getLatitude()));
 
 
         GsonRequest<String> request = new GsonRequest<>(NetApi.Seach, null, object, new ResponseListener<String>() {

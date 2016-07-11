@@ -57,13 +57,30 @@
             TagCloudView:tcvTextColor="@color/standard_color_h3_dark" />
 
         <TextView
-            android:id="@+id/address"
+            android:id="@+id/distance"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tag"
+            android:layout_marginRight="@dimen/half_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            android:drawableLeft="@mipmap/ic_loca"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/standard_color_h3_dark"
+            tools:text="厦门观音山.dfd" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tag"
             android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/double_margin"
             android:layout_marginTop="@dimen/half_margin"
+            android:layout_toLeftOf="@id/distance"
             android:drawableLeft="@mipmap/ic_loca"
             android:drawablePadding="@dimen/half_margin"
             android:ellipsize="marquee"
@@ -73,6 +90,7 @@
             android:singleLine="true"
             android:textColor="@color/standard_color_h3_dark"
             tools:text="厦门观音山.dfd" />
+
 
     </RelativeLayout>
 

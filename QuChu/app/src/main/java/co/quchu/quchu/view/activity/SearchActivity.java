@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -87,7 +88,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     LinearLayout searchFilterContainer;
     @Bind(R.id.search_back)
     ImageView searchBack;
-
+    @Bind(R.id.search_line)
+    View searchLine;
 
     private ArrayList<RecommendModel> resultList;
     private SearchAdapter resultAdapter;
@@ -108,7 +110,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private RecyclerView categoryRecyclerView;
     private AreaView areaView;
 
-    private String categoryCode = "", areaCode = "", sortType = "";
+    private String categoryCode = "", areaId = "", circleId = "", sortType = "";
     private RecyclerView sortRecyclerView;
     private SearchCategoryAdapter filterCategoryAdapter;
     private SearchSortAdapter filterSortAdapter;
@@ -190,9 +192,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
                     @Override
                     public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
-                        areaCode = TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaId() : "";
+                        areaId = areaBean.getAreaId();
+                        circleId = circleListBean.getCircleId();
+
                         popupWindow.dismiss();
-                        searchFilterTV2.setText(circleListBean.getCircleName());
+                        searchFilterTV2.setText(TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaName() : circleListBean.getCircleName());
                         seachStr(false);
                     }
                 });
@@ -307,6 +311,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         this.categoryParentList = categoryParentList;
         resultAdapter.setCategory(true);
         resultAdapter.setCategoryList(categoryParentList);
+        SearchPresenter.getTagByParentId(SearchActivity.this, categoryParentList.get(0).getTagId());
+
     }
 
     //小的分类
@@ -424,7 +430,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         MobclickAgent.onEvent(this, "search_type", p);
 
 
-        SearchPresenter.searchFromService(this, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, areaCode, sortType, new SearchPresenter.SearchResultListener() {
+        SearchPresenter.searchFromService(this, areaId, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, circleId, sortType, new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList, int maxPageNo) {
 
@@ -433,6 +439,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         mMaxPageNo = maxPageNo;
                     }
                     searchFilterContainer.setVisibility(View.VISIBLE);
+                    searchLine.setBackgroundColor(ContextCompat.getColor(SearchActivity.this, R.color.bg_pager));
+
 
                     searchResultRv.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
                     resultAdapter.setCategory(false);
@@ -454,9 +462,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 mIsLoading = false;
                 DialogUtil.dismissProgess();
 
-                if (categoryBeanList == null && categoryParentList != null) {
-                    SearchPresenter.getTagByParentId(SearchActivity.this, categoryParentList.get(0).getTagId());
-                }
+
             }
 
             @Override

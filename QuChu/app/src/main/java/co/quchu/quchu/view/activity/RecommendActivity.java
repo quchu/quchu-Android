@@ -152,28 +152,22 @@ public class RecommendActivity extends BaseBehaviorActivity {
         accessPushMessage();
     }
 
-    private void accessPushMessage() {
+    public void accessPushMessage() {
         Parcelable extra = getIntent().getParcelableExtra(GeTuiReceiver.REQUEST_KEY_MODEL);
-        if (extra != null) {
-            PushMessageBean bean = (PushMessageBean) extra;
+        if (extra == null)
+            return;
+
+        PushMessageBean bean = (PushMessageBean) extra;
 //            说明： 类型：( 01 PGC新内容发布  02  新场景发布  03 事件营销 )
 //            eventId  : 根据类别，打开应用相应页面的ID  type: 01 为文章ID  02:场景ID  03：文章ID
-            switch (bean.getType()) {
-                case "01":
-
-                    break;
-                case "02":
-
-                    break;
-                case "03":
-
-                    break;
-            }
+        switch (bean.getType()) {
+            case "01":
+            case "03":
+                rbBottomTab.check(R.id.rbDiscovery);
+                break;
         }
 
-
     }
-
 
     private void checkIfCityChanged() {
         if (null != list && null != AppLocationListener.currentCity) {
@@ -227,7 +221,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
-    @OnClick({R.id.recommend_title_location_rl,R.id.tvRight,R.id.ivLeft,R.id.recommend_title_more_iv})
+    @OnClick({R.id.recommend_title_location_rl, R.id.tvRight, R.id.ivLeft, R.id.recommend_title_more_iv})
     public void titleClick(View view) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
@@ -239,11 +233,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 break;
 
             case R.id.ivLeft:
-                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(),"~");
+                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "~");
                 break;
 
             case R.id.tvRight:
-                startActivity(new Intent(RecommendActivity.this,AccountSettingActivity.class));
+                startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
                 break;
             case R.id.recommend_title_location_rl:
                 MobclickAgent.onEvent(this, "location_c");
@@ -270,7 +264,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 break;
         }
     }
-
 
 
     private void showCityDialog() {
@@ -395,7 +388,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
         }
     };
     private int resumeUpdateDataTimes = 0;
-
 
 
     @Subscribe
