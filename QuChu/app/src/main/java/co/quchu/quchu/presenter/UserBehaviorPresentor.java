@@ -118,9 +118,10 @@ public class UserBehaviorPresentor {
     }
 
 
-    public static void postBehaviors(final Context context, List<UserBehaviorModel> data) {
+    public static void postBehaviors(final Context context, List<UserBehaviorModel> data, final CommonListener pListener) {
 
 
+        System.out.println("--- postBehaviors");
         JSONObject jsonObject = null;
         JSONArray jsonArray;
         try {
@@ -136,14 +137,17 @@ public class UserBehaviorPresentor {
             @Override
             public void onSuccess(JSONObject response) {
                 delBehaviors(context);
+                pListener.successListener(null);
             }
 
             @Override
             public boolean onError(String error) {
+                pListener.errorListener(null,null,null);
                 return false;
             }
         });
     }
+
 
 
 }

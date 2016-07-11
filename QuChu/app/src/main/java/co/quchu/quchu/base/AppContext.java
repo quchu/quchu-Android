@@ -1,5 +1,6 @@
 package co.quchu.quchu.base;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +15,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.android.volley.VolleyError;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.google.gson.Gson;
@@ -22,8 +24,12 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.List;
+
 import co.quchu.quchu.model.RecommendModel;
+import co.quchu.quchu.model.UserBehaviorModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserBehaviorPresentor;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
@@ -76,12 +82,24 @@ public class AppContext extends Application {
         return application.refWatcher;
     }
 
+    public static String getProcessName(Context cxt, int pid) {
+        ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+        if (runningApps == null) {
+            return null;
+        }
+        for (ActivityManager.RunningAppProcessInfo procInfo : runningApps) {
+            if (procInfo.pid == pid) {
+                return procInfo.processName;
+            }
+        }
+        return null;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         registBroadcastReceiver();
-        PushManager.getInstance().initialize(this.getApplicationContext());
         refWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
         token = SPUtils.getUserToken(getApplicationContext());
@@ -90,9 +108,13 @@ public class AppContext extends Application {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        String processName = getProcessName(this, android.os.Process.myPid());
+        if(processName.endsWith("pushservice")) {
+            PushManager.getInstance().initialize(this.getApplicationContext());
+        }
 
 
-        //禁用页面自动统计
+            //禁用页面自动统计
         MobclickAgent.openActivityDurationTrack(false);
         ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
@@ -106,10 +128,20 @@ public class AppContext extends Application {
         }
         initWidths();
 
+
         if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=100){
-            UserBehaviorPresentor.postBehaviors(getApplicationContext(),UserBehaviorPresentor.getBehaviors(getApplicationContext()));
+            UserBehaviorPresentor.postBehaviors(getApplicationContext(), UserBehaviorPresentor.getBehaviors(getApplicationContext()), new CommonListener() {
+                @Override
+                public void successListener(Object response) {
+                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
+                }
+
+                @Override
+                public void errorListener(VolleyError error, String exception, String msg) {
+                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
+                }
+            });
         }
-        UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
 
     }
 

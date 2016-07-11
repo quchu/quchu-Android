@@ -75,6 +75,7 @@ public class DetailModel implements Serializable{
     private List<ImglistEntity> imglist;
     private List<TagsEntity> tags;
     private List<NearPlace> recommendPlaces;
+    private List<CommentModel> reviewList;
     private int cardCount;
 
     public int getCardCount() {
@@ -97,7 +98,6 @@ public class DetailModel implements Serializable{
 
     public NearbyMapModel convert2NearbyMapItem(){
         NearbyMapModel model = new NearbyMapModel();
-        System.out.println("convert "+ this.getAddress());
         model.setAddress(this.getAddress());
         model.setCover(this.getCover());
         model.setName(this.getName());
@@ -216,12 +216,25 @@ public class DetailModel implements Serializable{
             recommendPlaces.addAll(objTarget.getNearPlace());
         }
 
+        if (null==reviewList){
+            reviewList = new ArrayList<>();
+        }
+        if (objTarget.getReviewList()!=null){
+            reviewList.addAll(objTarget.getReviewList());
+        }
+
         cardCount = objTarget.getCardCount();
 
 
     }
 
+    public List<CommentModel> getReviewList() {
+        return reviewList;
+    }
 
+    public void setReviewList(List<CommentModel> reviewList) {
+        this.reviewList = reviewList;
+    }
 
     public void setActivityInfo(String activityInfo) {
         this.activityInfo = activityInfo;
