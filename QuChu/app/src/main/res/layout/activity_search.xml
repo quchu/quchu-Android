@@ -98,8 +98,7 @@
                 android:id="@+id/searchFilterIcon1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rotation="180"
-                android:src="@mipmap/ic_down_menu" />
+                android:src="@mipmap/ic_down" />
         </LinearLayout>
 
         <View style="@style/VerticalLine" />
@@ -126,8 +125,7 @@
                 android:id="@+id/searchFilterIcon2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rotation="180"
-                android:src="@mipmap/ic_down_menu" />
+                android:src="@mipmap/ic_down" />
         </LinearLayout>
 
 
@@ -154,8 +152,7 @@
                 android:id="@+id/searchFilterIcon3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rotation="180"
-                android:src="@mipmap/ic_down_menu" />
+                android:src="@mipmap/ic_down" />
         </LinearLayout>
     </LinearLayout>
 

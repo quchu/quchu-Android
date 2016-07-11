@@ -162,7 +162,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onDismiss() {
                         if (firstFilterIcon != null) {
-                            ObjectAnimator animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 180);
+                            ObjectAnimator animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 0);
                             animator.setDuration(400);
                             animator.start();
                         }
@@ -233,11 +233,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     private void showPopupWindow(ImageView currentIcon, TextView currentTV, View contentView) {
         //箭头动画
-        ObjectAnimator animator = ObjectAnimator.ofFloat(currentIcon, "Rotation", 360);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(currentIcon, "Rotation", 180);
         animator.setDuration(400);
         animator.start();
         if (firstFilterIcon != null) {
-            animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 180);
+            animator = ObjectAnimator.ofFloat(firstFilterIcon, "Rotation", 0);
             animator.setDuration(400);
             animator.start();
         }
