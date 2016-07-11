@@ -5,6 +5,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -37,9 +38,12 @@ public class ArticleDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_article_detail);
         ButterKnife.bind(this);
 
+
         String articleId = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_ID);
 
 
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rv.setLayoutManager(mLayoutManager);
         ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), 1, articleId, new CommonListener<ArticleDetailModel>() {
             @Override
             public void successListener(final ArticleDetailModel response) {

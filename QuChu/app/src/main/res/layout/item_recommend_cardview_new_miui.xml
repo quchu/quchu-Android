@@ -130,7 +130,6 @@
                 android:layout_marginTop="@dimen/base_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="大众点评团购—精选本地优质商户，高品质团购，吃喝玩乐低至2折。"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
                 android:gravity="center"
