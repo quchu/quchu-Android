@@ -18,8 +18,14 @@ public class SearchCategoryAdapter extends SearchPopWinBaseAdapter {
 
     List<SearchCategoryBean> datas;
 
-    public void setDatas(List<SearchCategoryBean> datas) {
+    public void setDatas(List<SearchCategoryBean> datas, String allData) {
         this.datas = datas;
+        if (datas != null) {
+            SearchCategoryBean bean = new SearchCategoryBean();
+            bean.setCode("");
+            bean.setZh(allData);
+            datas.add(0, bean);
+        }
         notifyDataSetChanged();
     }
 

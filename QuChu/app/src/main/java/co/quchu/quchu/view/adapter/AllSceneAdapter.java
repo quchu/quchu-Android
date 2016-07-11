@@ -1,23 +1,14 @@
 package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.DynamicDrawableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.lang.reflect.Field;
@@ -26,11 +17,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SceneModel;
-import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.ScreenUtils;
-import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 
 /**
@@ -73,7 +60,8 @@ public class AllSceneAdapter extends PagerAdapter {
         }
 
         SceneModel model = dataSet.get(position);
-        holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getSceneCover()));
+        if (!TextUtils.isEmpty(model.getSceneCover()))
+            holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getSceneCover()));
 
         holder.item_recommend_card_name_tv.setText(model.getSceneName());
 
@@ -152,7 +140,7 @@ public class AllSceneAdapter extends PagerAdapter {
     class RecommendHolder {
         @Bind(R.id.photo)
         SimpleDraweeView itemRecommendCardPhotoSdv;
-//        @Bind(R.id.item_recommend_card_address_tv)
+        //        @Bind(R.id.item_recommend_card_address_tv)
 //        TextView itemRecommendCardAddressTv;
         @Bind(R.id.activity)
         SimpleDraweeView item_place_event_tv;
@@ -167,7 +155,7 @@ public class AllSceneAdapter extends PagerAdapter {
 //        @Bind(R.id.rbRating)
 //        RatingBar rbRating;
 
-//        @Bind(R.id.distance)
+        //        @Bind(R.id.distance)
 //        TextView item_recommend_card_distance_tv;
         View itemView;
 
@@ -179,6 +167,7 @@ public class AllSceneAdapter extends PagerAdapter {
             tag3.setVisibility(View.GONE);
         }
     }
+
     private static long lastClickTime = 0L;
 
     /**

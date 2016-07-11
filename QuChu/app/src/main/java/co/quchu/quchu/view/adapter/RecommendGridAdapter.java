@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +39,14 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recommend_grid, parent, false);
         return new ViewHolder(view);
     }
+
     private int mFinalAnimatedIndex = -1;
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
 
-        if (position>mFinalAnimatedIndex) {
+        if (position > mFinalAnimatedIndex) {
             mFinalAnimatedIndex = position;
             AnimatorSet animator = new AnimatorSet();
             int scrollY = position * 20;
@@ -58,13 +60,13 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
             int delay = 10 * position;
             animator.setStartDelay(delay);
         }
-
-        holder.sdv.setImageURI(Uri.parse(mData.get(position).getSceneCover()));
+        if (!TextUtils.isEmpty(mData.get(position).getSceneCover()))
+            holder.sdv.setImageURI(Uri.parse(mData.get(position).getSceneCover()));
 
         holder.sdv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=mOnItemClickListener){
+                if (null != mOnItemClickListener) {
                     mOnItemClickListener.onItemClick(position);
                 }
             }
@@ -74,7 +76,6 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
         holder.tvTag3.setVisibility(View.GONE);
         holder.tvTag2.setVisibility(View.GONE);
         holder.tvTag1.setVisibility(View.GONE);
-
 
 
         if (null != mData.get(position).getSceneTitle() && mData.get(position).getSceneTitle().length > 0) {
@@ -98,7 +99,7 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
 
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
