@@ -22,6 +22,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.DatabaseHelper;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by Nico on 16/6/2.
@@ -121,19 +122,34 @@ public class UserBehaviorPresentor {
     public static void postBehaviors(final Context context, List<UserBehaviorModel> data, final CommonListener pListener) {
 
 
-        System.out.println("--- postBehaviors");
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
+        JSONObject jsonObjectAll = null;
         JSONArray jsonArray;
         try {
             jsonObject = new JSONObject();
-            jsonArray = new JSONArray(new Gson().toJson(data));
+            jsonArray = new JSONArray();
+            for (int i = 0; i < data.size(); i++) {
+                JSONObject jsonObjectChild = new JSONObject();
+                jsonObjectChild.put("pageId",data.get(i).pageId);
+                jsonObjectChild.put("timestamp",data.get(i).timestamp);
+                if (!StringUtils.isEmpty(data.get(i).userBehavior)){
+                    jsonObjectChild.put("userBehavior",data.get(i).userBehavior);
+                }
+                if (!StringUtils.isEmpty(data.get(i).arguments)){
+                    jsonObjectChild.put("arguments",new JSONObject(data.get(i).arguments));
+                }
+                jsonArray.put(jsonObjectChild);
+            }
+            jsonObjectAll = new JSONObject();
             jsonObject.put("UserBehaviors",jsonArray);
             jsonObject.put("Device","android");
+            jsonObjectAll.put("UserBehaviors",jsonObject);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        NetService.post(context, NetApi.postUserBehavior,jsonObject, new IRequestListener() {
+        NetService.post(context, NetApi.postUserBehavior,jsonObjectAll, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 delBehaviors(context);

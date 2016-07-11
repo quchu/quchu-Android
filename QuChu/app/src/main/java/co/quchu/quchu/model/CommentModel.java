@@ -1,9 +1,11 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Nico on 16/7/11.
  */
-public class CommentModel {
+public class CommentModel implements Serializable{
 
     private String createDate;
     private String userName;

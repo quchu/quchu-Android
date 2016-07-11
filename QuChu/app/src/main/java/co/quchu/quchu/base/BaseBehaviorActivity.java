@@ -3,7 +3,15 @@ package co.quchu.quchu.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import co.quchu.quchu.presenter.UserBehaviorPresentor;
@@ -30,36 +38,16 @@ public abstract class BaseBehaviorActivity extends BaseActivity {
         if (null== dataSet){
             return "";
         }
-        String strArguments = "";
-        StringWriter sWriter = new StringWriter();
-        JsonWriter writer = new JsonWriter(sWriter);
-
-        try {
-            writer.beginObject();
-            for (String key : dataSet.keySet()) {
-
-                if (dataSet.get(key) instanceof Integer){
-                    writer.name(key).value((Integer) dataSet.get(key));
-                }else if(dataSet.get(key) instanceof Double){
-                    writer.name(key).value((Double) dataSet.get(key));
-                }else if(dataSet.get(key) instanceof Boolean){
-                    writer.name(key).value((Boolean) dataSet.get(key));
-                }else if(dataSet.get(key) instanceof Long){
-                    writer.name(key).value((Long) dataSet.get(key));
-                }else{
-                    writer.name(key).value((String) dataSet.get(key));
-                }
-
+        JSONObject jsonObject = new JSONObject();
+        for (String key : dataSet.keySet()) {
+            try {
+                jsonObject.put(key,dataSet.get(key));
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            writer.endObject();
-            writer.close();
-            strArguments = sWriter.toString();
-            sWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
-        return strArguments;
+        return jsonObject.toString();
     }
 
     public abstract ArrayMap<String, Object> getUserBehaviorArguments();
