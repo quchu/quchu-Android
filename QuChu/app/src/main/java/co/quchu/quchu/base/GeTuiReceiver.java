@@ -9,6 +9,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.igexin.sdk.PushConsts;
 
 import java.util.Random;
@@ -50,25 +51,23 @@ public class GeTuiReceiver extends BroadcastReceiver {
                     Log.d("GetuiSdkDemo", "receiver payload : " + data);
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                    Gson gson = new Gson();
+                    PushMessageBean messageBean = gson.fromJson(data, PushMessageBean.class);
+
                     builder.setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentTitle("标题" + data)
-                            .setContentText("第二行消息")
+                            .setContentTitle(messageBean.getTitle())
+                            .setContentText(messageBean.getContetn())
                             .setAutoCancel(true)
-                            .setTicker("New message");//第一次提示消息的时候显示在通知栏上
+                            .setTicker(messageBean.getContetn());//第一次提示消息的时候显示在通知栏上
 
-                    PushMessageBean bean = new PushMessageBean();
-                    bean.setType("01");
-                    bean.setEventId("23");
                     Intent inten = new Intent(context, RecommendActivity.class);
-
-                    inten.putExtra(REQUEST_KEY_MODEL, bean);
+                    inten.putExtra(REQUEST_KEY_MODEL, messageBean);
 
                     Random random = new Random();
                     int id = random.nextInt();
 
                     builder.setContentIntent(PendingIntent.getActivity(context, id, inten, PendingIntent.FLAG_UPDATE_CURRENT));
                     NotificationManagerCompat notificationManiage = NotificationManagerCompat.from(context);
-
                     notificationManiage.notify(id, builder.build());
                 }
                 break;

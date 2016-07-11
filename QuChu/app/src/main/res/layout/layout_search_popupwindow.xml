@@ -9,7 +9,7 @@
         android:id="@+id/search_pop_indicator"
         android:layout_width="@dimen/half_margin"
         android:layout_height="@dimen/half_margin"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_trigon" />
 
     <FrameLayout
         android:layout_width="match_parent"
