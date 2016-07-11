@@ -5,14 +5,11 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.PagerModel;
 import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.net.IRequestListener;

@@ -6,9 +6,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/quarter_margin"
     android:layout_marginLeft="@dimen/half_margin"
     android:layout_marginRight="@dimen/half_margin"
-    android:layout_marginTop="@dimen/half_margin"
+    android:layout_marginTop="@dimen/quarter_margin"
     card_view:cardCornerRadius="@dimen/half_margin">
 
     <RelativeLayout

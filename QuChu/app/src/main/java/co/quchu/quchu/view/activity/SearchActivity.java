@@ -289,8 +289,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private List<SearchSortBean> sortList;
-    private ArrayList<SearchCategoryBean> categoryBeanList;
-    private ArrayList<SearchCategoryBean> categoryParentList;
+//    private ArrayList<SearchCategoryBean> categoryBeanList;
+//    private ArrayList<SearchCategoryBean> categoryParentList;
 
     private List<AreaBean> areaData;
 
@@ -308,7 +308,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     //获取大的分类
     public void initCategoryList(ArrayList<SearchCategoryBean> categoryParentList) {
-        this.categoryParentList = categoryParentList;
+//        this.categoryParentList = categoryParentList;
         resultAdapter.setCategory(true);
         resultAdapter.setCategoryList(categoryParentList);
         SearchPresenter.getTagByParentId(SearchActivity.this, categoryParentList.get(0).getTagId());
@@ -317,8 +317,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     //小的分类
     public void setCategoryList(ArrayList<SearchCategoryBean> categoryBeanList) {
-        this.categoryBeanList = categoryBeanList;
-        filterCategoryAdapter.setDatas(categoryBeanList);
+//        this.categoryBeanList = categoryBeanList;
+        filterCategoryAdapter.setDatas(categoryBeanList, categoryGroupAllString, categoryGroupAllId);
     }
 
 
@@ -399,7 +399,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     startActivity(intent);
                 } else {
                     categoryCode = String.valueOf(((SearchCategoryBean) bean).getTagId());
-                    searchFilterTV1.setText("全部" + ((SearchCategoryBean) bean).getZh());
+                    categoryGroupAllString = "全部" + ((SearchCategoryBean) bean).getZh();
+                    categoryGroupAllId = ((SearchCategoryBean) bean).getCode();
+                    searchFilterTV1.setText(categoryGroupAllString);
                     SearchPresenter.getTagByParentId(SearchActivity.this, ((SearchCategoryBean) bean).getTagId());
                     seachStr(false);
                 }
@@ -407,12 +409,16 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
+    private String categoryGroupAllString = "全部美食";
+    private String categoryGroupAllId = "";
+
 
     private void seachStr(final boolean loadMore) {
 
         String str = searchInputEt.getText().toString().trim();
 
         if (mIsLoading) return;
+
         if (loadMore && mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
         if (!loadMore) {
             resultList.clear();
@@ -433,28 +439,36 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         SearchPresenter.searchFromService(this, areaId, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, circleId, sortType, new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList, int maxPageNo) {
+                searchResultRv.clearOnScrollListeners();
 
                 if (arrayList != null && arrayList.size() > 0) {
                     if (mMaxPageNo == -1) {
                         mMaxPageNo = maxPageNo;
                     }
+//                    if (searchFilterContainer.getVisibility() == View.INVISIBLE) {
                     searchFilterContainer.setVisibility(View.VISIBLE);
+//                        searchFilterContainer.animate().translationYBy(-searchFilterContainer.getHeight()).translationY(searchFilterContainer.getHeight()).setDuration(300).start();
+//                    }
+
+
                     searchLine.setBackgroundColor(ContextCompat.getColor(SearchActivity.this, R.color.bg_pager));
 
+                    if (searchResultRv.getLayoutManager() instanceof GridLayoutManager)
+                        searchResultRv.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
 
-                    searchResultRv.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
                     resultAdapter.setCategory(false);
                     resultList.addAll(arrayList);
 
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(searchButtonRl.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     resultAdapter.changeDataSet(resultList);
-                    searchResultRv.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) searchResultRv.getLayoutManager()) {
-                        @Override
-                        public void onLoadMore(int current_page) {
-                            seachStr(true);
-                        }
-                    });
+                    searchResultRv.addOnScrollListener(
+                            new EndlessRecyclerOnScrollListener((LinearLayoutManager) searchResultRv.getLayoutManager()) {
+                                @Override
+                                public void onLoadMore(int current_page) {
+                                    seachStr(true);
+                                }
+                            });
 
                 } else {
                     Toast.makeText(SearchActivity.this, "没有搜索到内容!", Toast.LENGTH_SHORT).show();
@@ -509,6 +523,17 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         } else
             super.onBackPressed();
     }
+
+    @Override
+    protected void onDestroy() {
+//        SearchHistoryUtil.saveSearchHistory(searchModel);
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
+        super.onDestroy();
+    }
+
+
 //    private void initHistory() {
 //        searchModel = SearchHistoryUtil.getSearchHistory();
 ////        if (searchModel != null && searchModel.getSearchList().size() > 0) {
@@ -531,11 +556,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 //
 //    }
 
-//    @Override
-//    protected void onDestroy() {
-//        SearchHistoryUtil.saveSearchHistory(searchModel);
-//        super.onDestroy();
-//    }
 
 //    /**
 //     * 显示无历史记录状态

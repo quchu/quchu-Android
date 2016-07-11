@@ -225,7 +225,7 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (mThreadRunning){
+                if (mThreadRunning) {
                     return;
                 }
                 getData(false);
@@ -239,6 +239,7 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
 
 
     private boolean mThreadRunning = false;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -277,8 +278,8 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
             @Override
             public void successListener(PagerModel<SceneModel> response) {
                 refreshLayout.setRefreshing(false);
-                if (response != null && response.getResult()!=null) {
-                    if (!loadMore){
+                if (response != null && response.getResult() != null) {
+                    if (!loadMore) {
                         cardList.clear();
                     }
                     cardList.addAll(response.getResult());
