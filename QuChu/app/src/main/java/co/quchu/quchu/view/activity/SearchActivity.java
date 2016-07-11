@@ -318,7 +318,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     //小的分类
     public void setCategoryList(ArrayList<SearchCategoryBean> categoryBeanList) {
 //        this.categoryBeanList = categoryBeanList;
-        filterCategoryAdapter.setDatas(categoryBeanList, categoryGroupAll);
+        filterCategoryAdapter.setDatas(categoryBeanList, categoryGroupAllString, categoryGroupAllId);
     }
 
 
@@ -399,8 +399,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     startActivity(intent);
                 } else {
                     categoryCode = String.valueOf(((SearchCategoryBean) bean).getTagId());
-                    categoryGroupAll = "全部" + ((SearchCategoryBean) bean).getZh();
-                    searchFilterTV1.setText(categoryGroupAll);
+                    categoryGroupAllString = "全部" + ((SearchCategoryBean) bean).getZh();
+                    categoryGroupAllId = ((SearchCategoryBean) bean).getCode();
+                    searchFilterTV1.setText(categoryGroupAllString);
                     SearchPresenter.getTagByParentId(SearchActivity.this, ((SearchCategoryBean) bean).getTagId());
                     seachStr(false);
                 }
@@ -408,7 +409,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    private String categoryGroupAll = "全部美食";
+    private String categoryGroupAllString = "全部美食";
+    private String categoryGroupAllId = "";
+
 
     private void seachStr(final boolean loadMore) {
 
@@ -442,7 +445,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     if (mMaxPageNo == -1) {
                         mMaxPageNo = maxPageNo;
                     }
+//                    if (searchFilterContainer.getVisibility() == View.INVISIBLE) {
                     searchFilterContainer.setVisibility(View.VISIBLE);
+//                        searchFilterContainer.animate().translationYBy(-searchFilterContainer.getHeight()).translationY(searchFilterContainer.getHeight()).setDuration(300).start();
+//                    }
+
+
                     searchLine.setBackgroundColor(ContextCompat.getColor(SearchActivity.this, R.color.bg_pager));
 
                     if (searchResultRv.getLayoutManager() instanceof GridLayoutManager)
@@ -515,6 +523,17 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         } else
             super.onBackPressed();
     }
+
+    @Override
+    protected void onDestroy() {
+//        SearchHistoryUtil.saveSearchHistory(searchModel);
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
+        super.onDestroy();
+    }
+
+
 //    private void initHistory() {
 //        searchModel = SearchHistoryUtil.getSearchHistory();
 ////        if (searchModel != null && searchModel.getSearchList().size() > 0) {
@@ -537,11 +556,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 //
 //    }
 
-//    @Override
-//    protected void onDestroy() {
-//        SearchHistoryUtil.saveSearchHistory(searchModel);
-//        super.onDestroy();
-//    }
 
 //    /**
 //     * 显示无历史记录状态

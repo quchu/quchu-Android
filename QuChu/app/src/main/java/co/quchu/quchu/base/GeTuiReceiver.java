@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.igexin.sdk.PushConsts;
 
+import java.util.Random;
 import java.util.Set;
 
 import co.quchu.quchu.R;
@@ -57,14 +58,18 @@ public class GeTuiReceiver extends BroadcastReceiver {
 
                     PushMessageBean bean = new PushMessageBean();
                     bean.setType("01");
-
+                    bean.setEventId("23");
                     Intent inten = new Intent(context, RecommendActivity.class);
 
                     inten.putExtra(REQUEST_KEY_MODEL, bean);
 
-                    builder.setContentIntent(PendingIntent.getActivity(context, 0, inten, PendingIntent.FLAG_UPDATE_CURRENT));
+                    Random random = new Random();
+                    int id = random.nextInt();
+
+                    builder.setContentIntent(PendingIntent.getActivity(context, id, inten, PendingIntent.FLAG_UPDATE_CURRENT));
                     NotificationManagerCompat notificationManiage = NotificationManagerCompat.from(context);
-                    notificationManiage.notify(0, builder.build());
+
+                    notificationManiage.notify(id, builder.build());
                 }
                 break;
             case PushConsts.GET_CLIENTID:
@@ -79,7 +84,6 @@ public class GeTuiReceiver extends BroadcastReceiver {
             LogUtils.e("\n推送消息 key:" + key + " values:" + bundle.get(key) + "byteString:");
         }
     }
-
 
 
 }

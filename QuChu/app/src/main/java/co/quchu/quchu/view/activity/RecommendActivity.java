@@ -162,6 +162,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
 //            eventId  : 根据类别，打开应用相应页面的ID  type: 01 为文章ID  02:场景ID  03：文章ID
         switch (bean.getType()) {
             case "01":
+                rbBottomTab.check(R.id.rbDiscovery);
+                ArticleDetailActivity.enterActivity(this, bean.getEventId());
+                break;
             case "03":
                 rbBottomTab.check(R.id.rbDiscovery);
                 break;
@@ -316,10 +319,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
             }).start();
             vDivider.setVisibility(View.GONE);
 
-        } else if(index ==2){
-            if (null!=AppContext.user && !AppContext.user.isIsVisitors()){
+        } else if (index == 2) {
+            if (null != AppContext.user && !AppContext.user.isIsVisitors()) {
                 tvTitle.setText(AppContext.user.getUsername());
-            }else{
+            } else {
                 tvTitle.setText("未知生物");
             }
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
