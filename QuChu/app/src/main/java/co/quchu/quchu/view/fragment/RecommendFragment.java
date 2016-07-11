@@ -33,11 +33,8 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.DialogUtil;
-<<<<<<< HEAD
 import co.quchu.quchu.model.PagerModel;
-=======
 import co.quchu.quchu.model.PushMessageBean;
->>>>>>> origin/develop
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.presenter.CommonListener;
@@ -240,10 +237,8 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         return view;
     }
 
-<<<<<<< HEAD
 
     private boolean mThreadRunning = false;
-=======
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -273,12 +268,10 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
 
     }
 
->>>>>>> origin/develop
 
     public void getData(final boolean loadMore) {
         mThreadRunning = true;
 
-<<<<<<< HEAD
         ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 0, new CommonListener<PagerModel<SceneModel>>() {
 
             @Override
@@ -286,10 +279,6 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
                 refreshLayout.setRefreshing(false);
                 if (response != null && response.getResult()!=null) {
                     if (!loadMore){
-=======
-                if (response != null && response.size() > 0) {
-                    if (!loadMore) {
->>>>>>> origin/develop
                         cardList.clear();
                     }
                     cardList.addAll(response.getResult());
