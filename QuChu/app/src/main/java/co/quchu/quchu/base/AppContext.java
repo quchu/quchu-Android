@@ -129,7 +129,7 @@ public class AppContext extends Application {
         initWidths();
 
 
-        if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=100){
+        if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=1){
             UserBehaviorPresentor.postBehaviors(getApplicationContext(), UserBehaviorPresentor.getBehaviors(getApplicationContext()), new CommonListener() {
                 @Override
                 public void successListener(Object response) {

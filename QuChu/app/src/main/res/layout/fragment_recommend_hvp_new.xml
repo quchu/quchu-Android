@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/llPageIndicator"
-        android:layout_marginTop="@dimen/base_margin"
+        android:layout_marginTop="@dimen/double_margin"
 
         android:layout_below="@id/rgDisplayMode">
 
@@ -109,7 +109,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvGrid"
-        android:layout_marginTop="@dimen/base_margin"
+        android:layout_marginTop="@dimen/half_margin"
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_marginRight="@dimen/half_margin"
         android:layout_width="match_parent"

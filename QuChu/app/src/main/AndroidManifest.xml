@@ -209,6 +209,9 @@
             android:name=".view.activity.MyFootprintActivity"
             android:label="我的脚印" />
         <activity
+            android:name=".view.activity.SceneDetailActivity"
+            android:label="场景详情" />
+        <activity
             android:name=".view.activity.MyFootprintDetailActivity"
             android:label="@string/title_activity_my_footprint_detail"
             android:screenOrientation="portrait" />

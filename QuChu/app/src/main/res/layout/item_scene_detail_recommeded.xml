@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/base_margin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_classify_image_sdv"
+        android:textColor="@color/standard_color_black"
+        android:background="@color/standard_color_white"
+        android:paddingLeft="@dimen/half_margin"
+        android:paddingRight="@dimen/half_margin"
+        android:layout_marginTop="@dimen/double_margin"
+        />
+
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/item_classify_image_sdv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        fresco:failureImage="@mipmap/ic_image_empty"
+        fresco:failureImageScaleType="center"
+        fresco:placeholderImage="@mipmap/ic_image_empty"
+        fresco:placeholderImageScaleType="center"
+        fresco:actualImageScaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"
+        fresco:viewAspectRatio="1.7" />
+
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/half_margin"
+        android:textStyle="bold"
+        android:layout_below="@+id/item_classify_image_sdv"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        style="@style/TextView.H1"
+        android:text="title" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_marginTop="@dimen/quarter_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        android:text="description"
+        style="@style/TextView.H2"
+        />
+</RelativeLayout>

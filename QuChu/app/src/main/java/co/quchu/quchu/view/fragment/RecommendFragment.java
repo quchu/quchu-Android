@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import co.quchu.quchu.view.activity.SceneDetailActivity;
 import co.quchu.quchu.view.adapter.AllSceneAdapter;
 import co.quchu.quchu.view.adapter.RecommendGridAdapter;
 import co.quchu.quchu.widget.ErrorView;
@@ -72,6 +74,9 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
     @Bind(R.id.tvPageIndicatorLabel)
     TextView tvPageIndicatorLabel;
 
+    @Bind(R.id.llPageIndicator)
+    LinearLayout llPageIndicator;
+
     @Bind(R.id.rgDisplayMode)
     RadioGroup radioGroup;
     @Bind(R.id.rvGrid)
@@ -97,9 +102,14 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         viewpager.addOnPageChangeListener(this);
         adapter = new AllSceneAdapter(this, cardList, this);
         viewpager.setAdapter(adapter);
-        rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.quarter_margin), 2));
+        rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin), 2));
 
-        rvGrid.setAdapter(new RecommendGridAdapter(cardList, null));
+        rvGrid.setAdapter(new RecommendGridAdapter(cardList, new RecommendGridAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+            }
+        }));
         rvGrid.setLayoutManager(new GridLayoutManager(getContext(), 2));
         Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "AGENCYFB.TTF");
         TvPageIndicatorSize.setTypeface(face);
@@ -167,6 +177,7 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
                             }
                         }, rvGrid.getChildCount() * 30);
 
+                        llPageIndicator.setVisibility(View.VISIBLE);
 
 //                        tvPageIndicator.animate()
 //                                .withLayer()
@@ -180,6 +191,7 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
 //                                        tvPageIndicator.setVisibility(View.VISIBLE);
 //                                    }
 //                                }).start();
+
 
                         break;
                     case R.id.rbAll:
@@ -218,6 +230,8 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
 //                                    }
 //                                })
 //                                .start();
+                        llPageIndicator.setVisibility(View.GONE);
+
                         break;
                 }
             }
@@ -309,10 +323,8 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
             MobclickAgent.onEvent(getContext(), "detail_tag_c");
         }
         MobclickAgent.onEvent(getActivity(), "detail_c");
-        Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
-        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(viewpager.getCurrentItem()).getSceneId());
-        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, from);
-        getActivity().startActivity(intent);
+
+        SceneDetailActivity.enterActivity(getActivity(),cardList.get(position).getSceneId(),cardList.get(position).getSceneName(),true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
         }

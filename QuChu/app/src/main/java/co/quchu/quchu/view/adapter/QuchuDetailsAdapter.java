@@ -467,6 +467,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((CommentViewHolder) holder).tvDate.setText(commentModel.getCreateDate());
                 ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
                 ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
+                ((CommentViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(commentModel.getUserPhoneUrl()));
 
 
             }
