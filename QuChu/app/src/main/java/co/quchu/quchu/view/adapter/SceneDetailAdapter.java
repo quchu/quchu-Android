@@ -65,7 +65,6 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_RECOMMENDED:
                 return new RecommendedViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_scene_detail_recommeded, parent, false));
             case TYPE_ARTICLE:
-                //if (null!=mData.getArticleModel()){}
                 return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
             case TYPE_PLACE_LIST:
                 return new PlaceViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_scene_detail_recommeded, parent, false));
@@ -122,8 +121,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
             }
-            ((RecommendedViewHolder) holder).tvCircleName.setText(null!=objScene.getPlaceInfo().getAreaCircleName()?objScene.getPlaceInfo().getAreaCircleName():"");
-            ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(objScene.getPlaceInfo().getLatitude()),Double.valueOf(objScene.getPlaceInfo().getLongitude())));
+            ((RecommendedViewHolder) holder).tvCircleName.setText(null != objScene.getPlaceInfo().getAreaCircleName() ? objScene.getPlaceInfo().getAreaCircleName() : "");
+            ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.getPlaceInfo().gdLatitude), Double.valueOf(objScene.getPlaceInfo().gdLongitude)));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -161,12 +160,9 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     ((PlaceViewHolder) holder).tags.getChildAt(i).setVisibility(View.VISIBLE);
                     ((TextView)((PlaceViewHolder) holder).tags.getChildAt(i)).setText(objScene.getTags().get(i).getZh());
                 }
-
             }
-
             ((PlaceViewHolder) holder).tvCircleName.setText(null!=objScene.getAreaCircleName()?objScene.getAreaCircleName():"");
-            ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(objScene.getLatitude()),Double.valueOf(objScene.getLongitude())));
-
+            ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(objScene.gdLatitude),Double.valueOf(objScene.gdLongitude)));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -297,6 +293,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView recommendTag3;
         @Bind(R.id.tags)
         LinearLayout tags;
+        @Bind(R.id.tvCircleName)
         TextView tvCircleName;
         @Bind(R.id.tvDistance)
         TextView tvDistance;
