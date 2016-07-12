@@ -87,6 +87,8 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
         });
         if (holder.tvDesc.getLineCount()>1){
             holder.tvDesc.setGravity(Gravity.LEFT);
+        }else{
+            holder.tvDesc.setGravity(Gravity.CENTER);
         }
         holder.tvTag3.setVisibility(View.GONE);
         holder.tvTag2.setVisibility(View.GONE);

@@ -370,9 +370,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         b.show();
                     }
                 });
+                ((ContactInfoViewHolder) holder).detail_store_phone_ll.setVisibility(View.VISIBLE);
+                ((ContactInfoViewHolder) holder).vDividerPhone.setVisibility(View.VISIBLE);
             } else {
 //                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：-");
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setVisibility(View.GONE);
+                ((ContactInfoViewHolder) holder).detail_store_phone_ll.setVisibility(View.GONE);
+                ((ContactInfoViewHolder) holder).vDividerPhone.setVisibility(View.GONE);
+
+
             }
 
             if (mData.isIsActivity() && null != mData.getBusinessHours() && null != mData.getRestDay()) {
@@ -628,6 +634,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView detail_store_phone_tv;
         @Bind(R.id.detail_store_business_hours_key_tv)
         TextView detail_store_business_hours_key_tv;
+        @Bind(R.id.vDividerPhone)
+        View vDividerPhone;
 
         @Bind(R.id.detail_avg_price_tv)
         TextView detail_avg_price_tv;

@@ -41,7 +41,9 @@
 
     </LinearLayout>
 
-    <View style="@style/HorizontalLine" />
+    <View style="@style/HorizontalLine"
+        android:id="@+id/vDividerPhone"
+        />
 
     <LinearLayout
 

@@ -71,6 +71,8 @@ public class MySceneAdapter extends PagerAdapter {
 
         if (holder.tvDescription.getLineCount()>1){
             holder.tvDescription.setGravity(Gravity.LEFT);
+        }else{
+            holder.tvDescription.setGravity(Gravity.CENTER);
         }
 
         if (null != model.getSceneTitle() && model.getSceneTitle().length > 0) {

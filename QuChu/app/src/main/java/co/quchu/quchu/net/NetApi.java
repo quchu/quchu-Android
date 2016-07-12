@@ -159,5 +159,6 @@ public interface NetApi {
     String addFavoriteArticle = HOST + "/searchSpecial/favoriteArticleById";
     String delFavoriteArticle = HOST + "/searchSpecial/delFavoriteArticleById";
 
-    String shareArticleUrl = HOST + "/searchSpecial/getSearchSpecialListByTagId?tagId=";
+    String shareArticleUrl = HOST + "/searchSpecial/getSearchSpecialListByArticleId?articleId=";
+
 }
