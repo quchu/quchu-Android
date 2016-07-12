@@ -61,7 +61,7 @@ public class UserBehaviorPresentor {
         Cursor c = DatabaseHelper
                 .getInstance(context)
                 .getReadableDatabase()
-                .query(DatabaseHelper.TABLE_NAME_USER_BEHAVIOR,new String[]{"id","pageId","behavior","arguments","timestamp"},null,null,null,null,"timestamp desc");
+                .query(DatabaseHelper.TABLE_NAME_USER_BEHAVIOR,new String[]{"id","pageId","behavior","arguments","timestamp"},null,null,null,null,"timestamp asc");
 
 
         while (c.moveToNext()){

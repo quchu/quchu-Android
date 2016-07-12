@@ -67,9 +67,9 @@ public class AppContext extends Application {
                 String strAction = intent.getAction();
 
                 if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
-                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "sleep", "", System.currentTimeMillis());
+                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "screen off", "", System.currentTimeMillis());
                 } else if (strAction.equals(Intent.ACTION_SCREEN_ON)) {
-                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "wakeup", "", System.currentTimeMillis());
+                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "screen on", "", System.currentTimeMillis());
                 }
             }
         };

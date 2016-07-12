@@ -21,18 +21,34 @@ import co.quchu.quchu.presenter.UserBehaviorPresentor;
  * Created by Nico on 16/6/2.
  */
 public abstract class BaseBehaviorActivity extends BaseActivity {
+
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        UserBehaviorPresentor.insertBehavior(getApplicationContext(), getUserBehaviorPageId(), "shutdown", "", System.currentTimeMillis());
+    public void finish() {
+        super.finish();
+        UserBehaviorPresentor.insertBehavior(getApplicationContext(), getUserBehaviorPageId(), "finish", "", System.currentTimeMillis());
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        UserBehaviorPresentor.insertBehavior(getApplicationContext(), getUserBehaviorPageId(), "pause", "", System.currentTimeMillis());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserBehaviorPresentor.insertBehavior(getApplicationContext(), getUserBehaviorPageId(), "resume", "", System.currentTimeMillis());
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UserBehaviorPresentor.insertBehavior(getApplicationContext(), getUserBehaviorPageId(), "enter", getStrUserBehavior(getUserBehaviorArguments()), System.currentTimeMillis());
     }
+
+
+
 
     private String getStrUserBehavior(ArrayMap<String, Object> dataSet) {
         if (null== dataSet){
