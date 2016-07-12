@@ -1,60 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_marginTop="@dimen/base_margin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/item_classify_image_sdv"
-        android:textColor="@color/standard_color_black"
-        android:background="@color/standard_color_white"
-        android:paddingLeft="@dimen/half_margin"
-        android:paddingRight="@dimen/half_margin"
-        android:layout_marginTop="@dimen/double_margin"
-        />
-
-
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/item_classify_image_sdv"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        >
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdvCover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-        fresco:failureImage="@mipmap/ic_image_empty"
-        fresco:failureImageScaleType="center"
-        fresco:placeholderImage="@mipmap/ic_image_empty"
-        fresco:placeholderImageScaleType="center"
-        fresco:actualImageScaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"
-        fresco:viewAspectRatio="1.7" />
+            fresco:failureImage="@mipmap/ic_image_empty"
+            fresco:failureImageScaleType="center"
+            fresco:placeholderImage="@mipmap/ic_image_empty"
+            fresco:placeholderImageScaleType="center"
+            fresco:actualImageScaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
+            fresco:viewAspectRatio="1.7" />
+
+        <TextView
+            android:id="@+id/tvHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/half_margin"
+            android:paddingRight="@dimen/half_margin"
+            android:layout_marginTop="@dimen/double_margin"
+            android:textColor="@color/standard_color_black"
+            android:background="@color/standard_color_white"
+            />
 
 
+    </RelativeLayout>
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/half_margin"
         android:textStyle="bold"
-        android:layout_below="@+id/item_classify_image_sdv"
+        android:layout_below="@+id/sdvCover"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         style="@style/TextView.H1"
         android:text="title" />
 
-    <TextView
-        android:id="@+id/tvDescription"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitle"
+    <LinearLayout
+        android:id="@+id/tags"
+        android:layout_marginTop="@dimen/half_margin"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
-        android:text="description"
-        style="@style/TextView.H2"
-        />
-</RelativeLayout>
+        android:paddingBottom="@dimen/base_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/recommend_tag1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_lineframe_black"
+            android:paddingBottom="4dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:paddingTop="4dp"
+            android:text="标签1"
+            android:textColor="@color/standard_color_h1_dark"
+            android:textSize="@dimen/standard_text_size_h3" />
+
+        <TextView
+            android:id="@+id/recommend_tag2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:background="@drawable/shape_lineframe_black"
+            android:paddingBottom="4dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:paddingTop="4dp"
+            android:textColor="@color/standard_color_h1_dark"
+            android:textSize="@dimen/standard_text_size_h3"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/recommend_tag3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:background="@drawable/shape_lineframe_black"
+            android:paddingBottom="4dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:paddingTop="4dp"
+            android:textColor="@color/standard_color_h1_dark"
+            android:textSize="@dimen/standard_text_size_h3"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+</LinearLayout>

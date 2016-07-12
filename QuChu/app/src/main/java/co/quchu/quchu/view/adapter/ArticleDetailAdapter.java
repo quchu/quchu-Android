@@ -56,7 +56,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (viewType == TYPE_BANNER) {
             return new BannerViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_banner, parent, false));
         } else {
-            return new PlaceViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
+            return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
         }
     }
 
@@ -69,11 +69,11 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         }else{
 
             position = position-1;
-            ((PlaceViewHolder) holder).tvDescription.setText(mDataSet.get(position).getContent());
-            ((PlaceViewHolder) holder).tvTitle.setText(mDataSet.get(position).getName());
-            ((PlaceViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getCover()));
+            ((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position).getContent());
+            ((ArticleViewHolder) holder).tvTitle.setText(mDataSet.get(position).getName());
+            ((ArticleViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getCover()));
             final int finalPosition = position;
-            ((PlaceViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+            ((ArticleViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null!=mListener){
@@ -94,7 +94,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public class BannerViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_classify_image_sdv)
+        @Bind(R.id.sdvCover)
         SimpleDraweeView itemClassifyImageSdv;
         @Bind(R.id.tvTitle)
         TextView tvTitle;
@@ -107,16 +107,16 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    public class PlaceViewHolder extends RecyclerView.ViewHolder {
+    public class ArticleViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.item_classify_image_sdv)
+        @Bind(R.id.sdvCover)
         SimpleDraweeView itemClassifyImageSdv;
         @Bind(R.id.tvTitle)
         TextView tvTitle;
         @Bind(R.id.tvDescription)
         TextView tvDescription;
 
-        public PlaceViewHolder(View itemView) {
+        public ArticleViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

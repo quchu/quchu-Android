@@ -7,7 +7,7 @@
 
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/item_classify_image_sdv"
+        android:id="@+id/sdvCover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/half_margin"
         android:textStyle="bold"
-        android:layout_below="@+id/item_classify_image_sdv"
+        android:layout_below="@+id/sdvCover"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         style="@style/TextView.H1"

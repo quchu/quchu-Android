@@ -133,7 +133,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public class ArticleHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.item_classify_image_sdv)
+        @Bind(R.id.sdvCover)
         SimpleDraweeView itemClassifyImageSdv;
 
         @Bind(R.id.tvTitle)

@@ -7,14 +7,14 @@ import java.util.List;
  */
 public class SceneHeaderModel {
 
-    private List<DetailModel> placeInfo;
+    private DetailModel placeInfo;
     private String title;
 
-    public List<DetailModel> getPlaceInfo() {
+    public DetailModel getPlaceInfo() {
         return placeInfo;
     }
 
-    public void setPlaceInfo(List<DetailModel> placeInfo) {
+    public void setPlaceInfo(DetailModel placeInfo) {
         this.placeInfo = placeInfo;
     }
 

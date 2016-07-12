@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,9 +65,15 @@ public class AllSceneAdapter extends PagerAdapter {
             holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getSceneCover()));
         }
 
+
         holder.item_recommend_card_name_tv.setText(model.getSceneName());
 
         holder.tvDescription.setText(model.getIntro());
+
+        if (holder.tvDescription.getLineCount()>1){
+            holder.tvDescription.setGravity(Gravity.LEFT);
+        }
+
         if (null != model.getSceneTitle() && model.getSceneTitle().length > 0) {
             for (int i = 0; i < model.getSceneTitle().length; i++) {
                 switch (i) {

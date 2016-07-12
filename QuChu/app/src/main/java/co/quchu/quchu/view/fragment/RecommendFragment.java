@@ -107,7 +107,10 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         rvGrid.setAdapter(new RecommendGridAdapter(cardList, new RecommendGridAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-
+                SceneDetailActivity.enterActivity(getActivity(),cardList.get(position).getSceneId(),cardList.get(position).getSceneName(),true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+                }
             }
         }));
         rvGrid.setLayoutManager(new GridLayoutManager(getContext(), 2));

@@ -10,7 +10,7 @@ public class SceneInfoModel {
     private String sceneContent;
     private String sceneCover;
     private String sceneName;
-    private String sceneTitle;
+    private String[] sceneTitle;
     private String width;
     private int sceneId;
 
@@ -62,11 +62,11 @@ public class SceneInfoModel {
         this.sceneName = sceneName;
     }
 
-    public String getSceneTitle() {
+    public String[] getSceneTitle() {
         return sceneTitle;
     }
 
-    public void setSceneTitle(String sceneTitle) {
+    public void setSceneTitle(String[] sceneTitle) {
         this.sceneTitle = sceneTitle;
     }
 

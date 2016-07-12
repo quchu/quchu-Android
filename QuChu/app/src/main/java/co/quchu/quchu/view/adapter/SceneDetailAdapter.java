@@ -1,7 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +14,14 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SceneDetailModel;
+import co.quchu.quchu.model.SceneHeaderModel;
 
 /**
  * Created by Nico on 16/7/8.
  */
 public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
 
     private Context mContext;
     private SceneDetailModel mData;
@@ -58,13 +59,14 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         switch (viewType) {
             case TYPE_INFO:
-                return new InfoViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_recommend_cardview_new_miui, parent, false));
+                return new InfoViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_scene_detail_info, parent, false));
             case TYPE_RECOMMENDED:
-                return new RecommendedViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
+                return new RecommendedViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_scene_detail_recommeded, parent, false));
             case TYPE_ARTICLE:
+                //if (null!=mData.getArticleModel()){}
                 return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
             case TYPE_PLACE_LIST:
-                return new PlaceViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
+                return new PlaceViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_scene_detail_recommeded, parent, false));
             default:
                 return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_quchu_detail_blank, parent, false));
         }
@@ -77,12 +79,74 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         if (holder instanceof InfoViewHolder) {
 
+            ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mData.getSceneInfo().getSceneCover()));
+            ((InfoViewHolder) holder).desc.setText(mData.getSceneInfo().getSceneName());
+            String[] tags = mData.getSceneInfo().getSceneTitle();
+            ((InfoViewHolder) holder).recommendTag1.setVisibility(View.GONE);
+            ((InfoViewHolder) holder).recommendTag2.setVisibility(View.GONE);
+            ((InfoViewHolder) holder).recommendTag3.setVisibility(View.GONE);
+            for (int i = 0; i < tags.length; i++) {
+                switch (i) {
+                    case 0:
+                        ((InfoViewHolder) holder).recommendTag1.setVisibility(View.VISIBLE);
+                        ((InfoViewHolder) holder).recommendTag1.setText(tags[i]);
+                        break;
+                    case 1:
+                        ((InfoViewHolder) holder).recommendTag2.setVisibility(View.VISIBLE);
+                        ((InfoViewHolder) holder).recommendTag2.setText(tags[i]);
+                        break;
+                    case 2:
+                        ((InfoViewHolder) holder).recommendTag3.setVisibility(View.VISIBLE);
+                        ((InfoViewHolder) holder).recommendTag3.setText(tags[i]);
+                        break;
+                }
+            }
+
+
         } else if (holder instanceof RecommendedViewHolder) {
+
+            SceneHeaderModel objScene = mData.getBestList().get(position-1);
+            ((RecommendedViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getPlaceInfo().getCover()));
+            ((RecommendedViewHolder) holder).tvTitle.setText(objScene.getPlaceInfo().getName());
+            ((RecommendedViewHolder) holder).tvHeader.setText(objScene.getTitle());
+
+            ((RecommendedViewHolder) holder).recommendTag1.setVisibility(View.GONE);
+            ((RecommendedViewHolder) holder).recommendTag2.setVisibility(View.GONE);
+            ((RecommendedViewHolder) holder).recommendTag3.setVisibility(View.GONE);
+            for (int i = 0; i < objScene.getPlaceInfo().getTags().size(); i++) {
+                if (((RecommendedViewHolder) holder).tags.getChildAt(i)!=null){
+                    ((RecommendedViewHolder) holder).tags.getChildAt(i).setVisibility(View.VISIBLE);
+                    ((TextView)((RecommendedViewHolder) holder).tags.getChildAt(i)).setText(objScene.getPlaceInfo().getTags().get(i).getZh());
+                }
+
+            }
+
 
         } else if (holder instanceof ArticleViewHolder) {
 
+            if (null!=mData.getArticleModel()){
+                ((ArticleViewHolder) holder).sdvCover.setImageURI(Uri.parse(mData.getArticleModel().getImageUrl()));
+                ((ArticleViewHolder) holder).tvTitle.setText(mData.getArticleModel().getArticleName());
+                ((ArticleViewHolder) holder).tvDescription.setText(mData.getArticleModel().getArticleComtent());
+            }
+
         } else if (holder instanceof PlaceViewHolder) {
 
+            DetailModel objScene = mData.getPlaceList().getResult().get(position-2-getRecommendedListSize());
+            ((PlaceViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getCover()));
+            ((PlaceViewHolder) holder).tvTitle.setText(objScene.getName());
+            ((PlaceViewHolder) holder).tvHeader.setVisibility(View.GONE);
+
+            ((PlaceViewHolder) holder).recommendTag1.setVisibility(View.GONE);
+            ((PlaceViewHolder) holder).recommendTag2.setVisibility(View.GONE);
+            ((PlaceViewHolder) holder).recommendTag3.setVisibility(View.GONE);
+            for (int i = 0; i < objScene.getTags().size(); i++) {
+                if (null!=((PlaceViewHolder) holder).tags.getChildAt(i)){
+                    ((PlaceViewHolder) holder).tags.getChildAt(i).setVisibility(View.VISIBLE);
+                    ((TextView)((PlaceViewHolder) holder).tags.getChildAt(i)).setText(objScene.getTags().get(i).getZh());
+                }
+
+            }
         }
     }
 
@@ -92,13 +156,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         if (null != mData && null != mData.getBestList()) {
 
-            for (int i = 0; i < mData.getBestList().size(); i++) {
-                if (null != mData.getBestList().get(i) && null != mData.getBestList().get(i).getPlaceInfo()) {
-                    for (int j = 0; j < mData.getBestList().get(i).getPlaceInfo().size(); j++) {
-                        recommended += 1;
-                    }
-                }
-            }
+            recommended += mData.getBestList().size();
         }
         return recommended;
     }
@@ -122,10 +180,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public class InfoViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.photo)
-        SimpleDraweeView photo;
-        @Bind(R.id.activity)
-        SimpleDraweeView activity;
+        @Bind(R.id.sdvCover)
+        SimpleDraweeView sdvCover;
         @Bind(R.id.desc)
         TextView desc;
         @Bind(R.id.recommend_tag1)
@@ -143,28 +199,69 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public InfoViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
     public class RecommendedViewHolder extends RecyclerView.ViewHolder {
 
+
+        @Bind(R.id.sdvCover)
+        SimpleDraweeView sdvCover;
+        @Bind(R.id.tvHeader)
+        TextView tvHeader;
+        @Bind(R.id.tvTitle)
+        TextView tvTitle;
+        @Bind(R.id.recommend_tag1)
+        TextView recommendTag1;
+        @Bind(R.id.recommend_tag2)
+        TextView recommendTag2;
+        @Bind(R.id.recommend_tag3)
+        TextView recommendTag3;
+        @Bind(R.id.tags)
+        LinearLayout tags;
+
         public RecommendedViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.sdvCover)
+        SimpleDraweeView sdvCover;
+        @Bind(R.id.tvTitle)
+        TextView tvTitle;
+        @Bind(R.id.tvDescription)
+        TextView tvDescription;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this,itemView);
         }
     }
 
     public class PlaceViewHolder extends RecyclerView.ViewHolder {
 
+
+        @Bind(R.id.sdvCover)
+        SimpleDraweeView sdvCover;
+        @Bind(R.id.tvHeader)
+        TextView tvHeader;
+        @Bind(R.id.tvTitle)
+        TextView tvTitle;
+        @Bind(R.id.recommend_tag1)
+        TextView recommendTag1;
+        @Bind(R.id.recommend_tag2)
+        TextView recommendTag2;
+        @Bind(R.id.recommend_tag3)
+        TextView recommendTag3;
+        @Bind(R.id.tags)
+        LinearLayout tags;
+
         public PlaceViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

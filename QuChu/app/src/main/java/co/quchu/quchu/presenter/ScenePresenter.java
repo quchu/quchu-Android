@@ -116,7 +116,8 @@ public class ScenePresenter {
         NetService.get(context, NetApi.getSceneDetail, params,new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                SceneDetailModel sceneDetailModel = new Gson().fromJson(response.toString(), new TypeToken<PagerModel<SceneDetailModel>>() {}.getType());
+
+                SceneDetailModel sceneDetailModel = new Gson().fromJson(response.toString(), SceneDetailModel.class);
                 listener.successListener(sceneDetailModel);
             }
 
