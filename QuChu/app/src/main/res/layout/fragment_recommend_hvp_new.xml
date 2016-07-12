@@ -86,27 +86,19 @@
     </LinearLayout>
 
 
-    <co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout
-        android:id="@+id/refreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/llPageIndicator"
-        android:layout_marginTop="@dimen/double_margin"
-
-        android:layout_below="@id/rgDisplayMode">
-
-
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
+            android:layout_below="@id/rgDisplayMode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/llPageIndicator"
+            android:layout_marginTop="@dimen/double_margin"
             android:clickable="true"
             android:clipToPadding="false"
             android:onClick="onViewPagerClick"
             android:overScrollMode="always"
             app:singlePageFling="true"
             app:triggerOffset="0.1" />
-    </co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvGrid"

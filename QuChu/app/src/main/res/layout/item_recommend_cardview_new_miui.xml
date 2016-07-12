@@ -76,8 +76,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
                 android:gravity="center"
                 style="@style/TextView.H2"
+
+                android:maxLines="2"
                 />
 
 
@@ -100,7 +104,7 @@
                     android:paddingRight="@dimen/half_margin"
                     android:paddingTop="2dp"
                     android:text="标签1"
-                    android:textColor="@color/standard_color_h1_dark"
+                    android:textColor="@color/standard_color_h3_dark"
                     android:textSize="@dimen/standard_text_size_h2" />
 
                 <TextView
@@ -113,7 +117,7 @@
                     android:paddingLeft="@dimen/half_margin"
                     android:paddingRight="@dimen/half_margin"
                     android:paddingTop="2dp"
-                    android:textColor="@color/standard_color_h1_dark"
+                    android:textColor="@color/standard_color_h3_dark"
                     android:textSize="@dimen/standard_text_size_h2"
                     android:visibility="gone" />
 
@@ -127,7 +131,7 @@
                     android:paddingLeft="@dimen/half_margin"
                     android:paddingRight="@dimen/half_margin"
                     android:paddingTop="2dp"
-                    android:textColor="@color/standard_color_h1_dark"
+                    android:textColor="@color/standard_color_h3_dark"
                     android:textSize="@dimen/standard_text_size_h2"
                     android:visibility="gone" />
 

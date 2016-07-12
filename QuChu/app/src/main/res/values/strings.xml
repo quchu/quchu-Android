@@ -182,5 +182,6 @@
     <string name="qu_recommend">趣推荐</string>
     <string name="qu_discover">趣发现</string>
     <string name="mine">我的</string>
+    <string name="add_to_favorite_success">添加场景成功</string>
 
 </resources>

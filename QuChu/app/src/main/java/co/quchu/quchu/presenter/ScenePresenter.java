@@ -5,17 +5,20 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PagerModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneDetailModel;
 import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.utils.EventFlags;
 
 /**
  * Created by Nico on 16/7/5.
@@ -64,13 +67,14 @@ public class ScenePresenter {
         });
     }
 
-    public static void addFavoriteScene(Context context, int sceneId, final CommonListener listener){
+    public static void addFavoriteScene(Context context, final int sceneId, final CommonListener listener){
         HashMap<String,String> params = new HashMap<>();
         params.put("sceneId",String.valueOf(sceneId));
         NetService.get(context, NetApi.addFavoriteScene, params,new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 listener.successListener(response);
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_SCENE_FAVORITE,sceneId));
             }
 
             @Override
@@ -88,6 +92,7 @@ public class ScenePresenter {
             @Override
             public void onSuccess(JSONObject response) {
                 listener.successListener(response);
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_SCENE_CANCEL_FAVORITE));
             }
 
             @Override

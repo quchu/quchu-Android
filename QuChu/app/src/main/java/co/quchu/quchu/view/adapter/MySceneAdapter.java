@@ -3,7 +3,6 @@ package co.quchu.quchu.view.adapter;
 import android.app.Activity;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +21,12 @@ import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 
 /**
- * AllSceneAdapter
+ * MySceneAdapter
  * User: Chenhs
  * Date: 2015-12-08
  * 趣处推荐 适配器 adapter
  */
-public class AllSceneAdapter extends PagerAdapter {
+public class MySceneAdapter extends PagerAdapter {
 
 
     private Activity mContext;
@@ -35,7 +34,7 @@ public class AllSceneAdapter extends PagerAdapter {
     private CardClickListener listener;
     private RecommendFragment fragment;
 
-    public AllSceneAdapter(RecommendFragment fragment, List<SceneModel> arrayList, CardClickListener listener) {
+    public MySceneAdapter(RecommendFragment fragment, List<SceneModel> arrayList, CardClickListener listener) {
         this.mContext = fragment.getActivity();
         this.fragment = fragment;
         dataSet = arrayList;
@@ -54,7 +53,7 @@ public class AllSceneAdapter extends PagerAdapter {
             holder = (RecommendHolder) container.getTag();
             container.setTag(null);
         }
-        if (position != 0 && position != fragment.getViewpager().getCurrentItem()) {
+        if (position != 0 && position != fragment.getVpMyScene().getCurrentItem()) {
             holder.itemView.setScaleY(RecommendFragment.MIN_SCALE);
         } else {
             holder.itemView.setScaleY(1);
@@ -200,15 +199,15 @@ public class AllSceneAdapter extends PagerAdapter {
     @Override
     public void notifyDataSetChanged() {
         try {
-            Field field = fragment.getViewpager().getClass().getDeclaredField("mPageTransformer");
+            Field field = fragment.getVpMyScene().getClass().getDeclaredField("mPageTransformer");
             field.setAccessible(true);
-            field.set(fragment.getViewpager(), null);
+            field.set(fragment.getVpMyScene(), null);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("release version error");
         }
         super.notifyDataSetChanged();
-        fragment.getViewpager().setPageTransformer(false, fragment);
+        fragment.getVpMyScene().setPageTransformer(false, fragment);
     }
 
 }
