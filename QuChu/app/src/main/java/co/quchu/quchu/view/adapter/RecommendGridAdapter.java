@@ -74,7 +74,7 @@ public class RecommendGridAdapter extends RecyclerView.Adapter<RecommendGridAdap
         });
 
         holder.tvTitle.setText(mData.get(position).getSceneName());
-        holder.tvDesc.setText(mData.get(position).getSceneContent());
+        holder.tvDesc.setText(mData.get(position).getIntro());
         holder.tvTag3.setVisibility(View.GONE);
         holder.tvTag2.setVisibility(View.GONE);
         holder.tvTag1.setVisibility(View.GONE);

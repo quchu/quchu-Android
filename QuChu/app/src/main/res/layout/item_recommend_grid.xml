@@ -19,7 +19,7 @@
             android:id="@+id/sdv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:layout_marginLeft="@dimen/half_margin"
             android:layout_marginRight="@dimen/half_margin"
             fresco:failureImage="@mipmap/ic_image_empty"
@@ -33,7 +33,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"
+            android:layout_weight="0.6"
             android:orientation="vertical">
 
             <TextView
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="@dimen/standard_text_size_h2"
+                android:textSize="@dimen/standard_text_size_h3"
                 android:paddingTop="@dimen/quarter_margin"
                 android:textColor="@color/standard_color_h2_dark"
                 />
@@ -62,6 +62,7 @@
                 android:layout_marginBottom="@dimen/half_margin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingTop="@dimen/quarter_margin"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -70,7 +71,7 @@
                     android:id="@+id/recommend_tag1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_lineframe_black"
+                    android:background="@drawable/shape_lineframe_black_thin"
                     android:paddingBottom="2dp"
                     android:paddingLeft="@dimen/half_margin"
                     android:paddingRight="@dimen/half_margin"
@@ -84,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/half_margin"
-                    android:background="@drawable/shape_lineframe_black"
+                    android:background="@drawable/shape_lineframe_black_thin"
                     android:paddingBottom="2dp"
                     android:paddingLeft="@dimen/half_margin"
                     android:paddingRight="@dimen/half_margin"
@@ -98,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/half_margin"
-                    android:background="@drawable/shape_lineframe_black"
+                    android:background="@drawable/shape_lineframe_black_thin"
                     android:paddingBottom="2dp"
                     android:paddingLeft="@dimen/half_margin"
                     android:paddingRight="@dimen/half_margin"
