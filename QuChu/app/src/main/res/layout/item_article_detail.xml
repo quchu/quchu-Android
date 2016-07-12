@@ -1,49 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_marginTop="@dimen/base_margin"
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/base_margin"
+    android:layout_marginRight="@dimen/base_margin"
+    android:layout_marginTop="@dimen/dialog_margin"
+    android:clickable="false"
+    android:fitsSystemWindows="true"
+    card_view:cardBackgroundColor="@color/standard_color_white"
+    card_view:cardCornerRadius="@dimen/rounded_radius"
+    card_view:cardElevation="0dp"
+    card_view:cardPreventCornerOverlap="false">
 
 
-
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/sdvCover"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        fresco:failureImage="@mipmap/ic_image_empty"
-        fresco:failureImageScaleType="center"
-        fresco:placeholderImage="@mipmap/ic_image_empty"
-        fresco:placeholderImageScaleType="center"
-        fresco:actualImageScaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"
-        fresco:viewAspectRatio="1.7" />
+        android:layout_marginTop="@dimen/base_margin"
+        android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/half_margin"
-        android:textStyle="bold"
-        android:layout_below="@+id/sdvCover"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
-        style="@style/TextView.H1"
-        android:text="title" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdvCover"
+            card_view:actualImageScaleType="centerCrop"
+            card_view:failureImage="@mipmap/ic_image_empty"
 
-    <TextView
-        android:id="@+id/tvDescription"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitle"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
-        android:text="description"
-        style="@style/TextView.H2"
-        />
-</LinearLayout>
+            card_view:failureImageScaleType="center"
+            card_view:placeholderImage="@mipmap/ic_image_empty"
+            card_view:placeholderImageScaleType="center"
+            card_view:viewAspectRatio="1.7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:roundBottomLeft="false"
+            card_view:roundBottomRight="false"
+            card_view:roundTopLeft="true"
+            card_view:roundTopRight="true"
+            card_view:roundedCornerRadius="@dimen/rounded_radius"
+            android:src="@mipmap/ic_launcher" />
+
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/TextView.H1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sdvCover"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            android:text="title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            style="@style/TextView.H2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:layout_marginTop="@dimen/quarter_margin"
+            android:paddingBottom="@dimen/base_margin"
+            android:text="description" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

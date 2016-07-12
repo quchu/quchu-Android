@@ -62,7 +62,7 @@
             android:gravity="center"
             android:textColor="@color/standard_color_h1_dark"
             android:textSize="@dimen/standard_text_size_h1"
-            android:text="1" />
+            android:text="0" />
 
         <TextView
             android:id="@+id/tvPageIndicatorLabel"
@@ -82,7 +82,7 @@
             android:gravity="center"
             android:textColor="@color/standard_color_h1_dark"
             android:textSize="@dimen/standard_text_size_h1"
-            android:text="20" />
+            android:text="0" />
     </LinearLayout>
 
 
