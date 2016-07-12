@@ -161,7 +161,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             switch (v.getId()) {
                 case R.id.item_classify_root:
                     if (mListener != null)
-                        mListener.onItemClick(v, getAdapterPosition());
+                        mListener.onItemClick(v, getAdapterPosition()-1);
                     break;
             }
         }
