@@ -16,7 +16,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
@@ -37,9 +36,11 @@ import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
@@ -241,7 +242,14 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 break;
 
             case R.id.tvRight:
-                startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
+                UserInfoModel user = AppContext.user;
+                if (user.isIsVisitors()) {
+                    //游客
+                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
+                    dialogFg.show(getSupportFragmentManager(), "");
+                } else {
+                    startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
+                }
                 break;
             case R.id.recommend_title_location_rl:
                 MobclickAgent.onEvent(this, "location_c");

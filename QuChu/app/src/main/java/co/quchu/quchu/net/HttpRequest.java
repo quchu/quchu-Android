@@ -45,7 +45,7 @@ public class HttpRequest extends JsonObjectRequest {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Charset", "UTF-8");
         headers.put("Content-Type", "application/json;charset=UTF-8");
-        if (!StringUtils.isEmpty(SPUtils.getUserInfo(AppContext.mContext))) {
+        if (!StringUtils.isEmpty(SPUtils.getUserToken(AppContext.mContext))) {
             headers.put("quchu-token", SPUtils.getUserToken(AppContext.mContext));
         }
         headers.put("quchuVersion", AppContext.packageInfo.versionName);

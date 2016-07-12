@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -41,7 +39,6 @@ import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
-import co.quchu.quchu.widget.LinearProgressView;
 import co.quchu.quchu.widget.PolygonProgressView;
 
 public class MeFragment extends BaseFragment implements View.OnClickListener {
@@ -62,7 +59,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     TextView tvUserNickName;
     @Bind(R.id.desc)
     TextView name;
-//    @Bind(R.id.findPosition)
+    //    @Bind(R.id.findPosition)
 //    TextView findPosition;
     @Bind(R.id.editOrLoginTV)
     TextView editOrLogin;
@@ -92,17 +89,15 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private String userHead;
     private boolean mProgressViewAnimated = false;
 
-    private int[] bmResource = new int[]{R.mipmap.ic_chihuo,R.mipmap.ic_haoqi,R.mipmap.ic_shejiao,R.mipmap.ic_wenyi,R.mipmap.ic_tuhao,R.mipmap.ic_shishang};
-
-
+    private int[] bmResource = new int[]{R.mipmap.ic_chihuo, R.mipmap.ic_haoqi, R.mipmap.ic_shejiao, R.mipmap.ic_wenyi, R.mipmap.ic_tuhao, R.mipmap.ic_shishang};
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_me,container,false);
+        View v = inflater.inflate(R.layout.activity_me, container, false);
 
-        ButterKnife.bind(this,v);
+        ButterKnife.bind(this, v);
 
         Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "AGENCYFB.TTF");
         tv1.setTypeface(face);
@@ -216,7 +211,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.friend://趣友圈
-                if (user.isIsVisitors() && (!user.isIsweixin() && !user.isIsweibo())) {
+                if (user.isIsVisitors()) {
                     //游客
                     VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
                     dialogFg.show(getActivity().getSupportFragmentManager(), "");
@@ -257,24 +252,24 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (null!=polygonProgressView&&!hidden && null!=genes && !mProgressViewAnimated){
+        if (null != polygonProgressView && !hidden && null != genes && !mProgressViewAnimated) {
             polygonProgressView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     initGene();
                     mProgressViewAnimated = true;
                 }
-            },800l);
+            }, 800l);
         }
     }
 
     public void initGene() {
 
         final String[] labels = new String[genes.size()];
-        final float [] values = new float[genes.size()];
+        final float[] values = new float[genes.size()];
 
         for (int i = 0; i < genes.size(); i++) {
-            values[i] = (float) (genes.get(i).getWeight()/1000);
+            values[i] = (float) (genes.get(i).getWeight() / 1000);
             labels[i] = genes.get(i).getZh();
         }
 
@@ -282,20 +277,20 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void run() {
 
-                Bitmap []bm = new Bitmap[6];
+                Bitmap[] bm = new Bitmap[6];
                 for (int i = 0; i < 6; i++) {
-                    bm[i] = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_tuhao);
+                    bm[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_tuhao);
                 }
 
-                polygonProgressView.initial(genes.size(),values,labels,bm);
+                polygonProgressView.initial(genes.size(), values, labels, bm);
                 polygonProgressView.animateProgress();
-                ValueAnimator va = ValueAnimator.ofFloat(0,1);
+                ValueAnimator va = ValueAnimator.ofFloat(0, 1);
                 va.setInterpolator(new AccelerateDecelerateInterpolator());
                 va.setDuration(800);
                 va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
-                        int progress = (int) ((float)animation.getAnimatedValue() * 999);
+                        int progress = (int) ((float) animation.getAnimatedValue() * 999);
                         tv1.setText(String.valueOf(progress));
                         tv2.setText(String.valueOf(progress));
                         tv3.setText(String.valueOf(progress));
@@ -306,7 +301,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 });
                 va.start();
             }
-        },100);
+        }, 100);
     }
 
 //    @Subscribe

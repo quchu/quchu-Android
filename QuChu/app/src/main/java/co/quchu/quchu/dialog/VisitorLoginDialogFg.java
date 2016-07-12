@@ -129,7 +129,7 @@ public class VisitorLoginDialogFg extends DialogFragment {
 
         switch (view.getId()) {
             case R.id.dialog_location_submit_tv:
-                MobclickAgent.onEvent(view.getContext(), "pop_ login_c");
+                MobclickAgent.onEvent(view.getContext(), "pop_login_c");
                 startActivity(new Intent(getActivity(), LoginActivity.class));
 
             case R.id.dialog_location_cancel_tv:
