@@ -137,6 +137,9 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((ArticleViewHolder) holder).sdvCover.setImageURI(Uri.parse(mData.getArticleModel().getImageUrl()));
                 ((ArticleViewHolder) holder).tvTitle.setText(mData.getArticleModel().getArticleName());
                 ((ArticleViewHolder) holder).tvDescription.setText(mData.getArticleModel().getArticleComtent());
+                holder.itemView.setVisibility(View.VISIBLE);
+            }else{
+                holder.itemView.setVisibility(View.GONE);
             }
 
         } else if (holder instanceof PlaceViewHolder) {

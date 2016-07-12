@@ -156,5 +156,8 @@ public interface NetApi {
     String addFavoriteScene = HOST + "/scene/favoriteSceneById";        //sceneId
     String delFavoriteScene = HOST + "/scene/delFavoriteSceneById";     //sceneId
     String getSceneDetail = HOST + "/scene/getSceneDetail";             //sceneId,placeIds,longitude,latitude,cityId,pagesNo,name
+    String addFavoriteArticle = HOST + "/searchSpecial/favoriteArticleById";
+    String delFavoriteArticle = HOST + "/searchSpecial/delFavoriteArticleById";
 
+    String shareArticleUrl = HOST + "/searchSpecial/getSearchSpecialListByTagId?tagId=";
 }

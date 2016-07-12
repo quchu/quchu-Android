@@ -54,6 +54,39 @@ public class ArticlePresenter {
         });
     }
 
+    public static void addFavoriteArticle(Context context, int articleId, final CommonListener listener){
+        HashMap<String,String> params = new HashMap<>();
+        params.put("articleId",String.valueOf(articleId));
+        NetService.get(context, NetApi.addFavoriteArticle, params, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                listener.successListener(null);
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.errorListener(null,null,null);
+                return false;
+            }
+        });
+    }
+
+    public static void delFavoriteArticle(Context context, int articleId, final CommonListener listener){
+        HashMap<String,String> params = new HashMap<>();
+        params.put("articleId",String.valueOf(articleId));
+        NetService.get(context, NetApi.delFavoriteArticle, params, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                listener.successListener(null);
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.errorListener(null,null,null);
+                return false;
+            }
+        });
+    }
 
     public static void getArticleById(final Context context, int cityId, int pageNo, String articleId,final CommonListener<ArticleDetailModel> listener) {
 

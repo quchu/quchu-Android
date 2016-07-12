@@ -22,22 +22,27 @@
             android:background="@color/standard_color_white"
             android:paddingBottom="@dimen/base_margin">
 
-
-            <co.quchu.quchu.widget.PolygonProgressView
-                android:id="@+id/polygonProgressView"
+            <RelativeLayout
+                android:id="@+id/llheadImage"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/headImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/base_margin"
-                android:visibility="gone"
-                fresco:placeholderImage="@mipmap/head_place_hold"
-                fresco:roundAsCircle="true" />
+                <co.quchu.quchu.widget.PolygonProgressView
+                    android:id="@+id/polygonProgressView"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/headImage"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/base_margin"
+                    android:visibility="visible"
+                    fresco:placeholderImage="@mipmap/head_place_hold"
+                    fresco:roundAsCircle="true" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/editOrLoginAction"
@@ -46,7 +51,7 @@
                 android:layout_marginLeft="@dimen/double_margin"
                 android:layout_marginStart="@dimen/double_margin"
                 android:layout_marginTop="50dp"
-                android:layout_toRightOf="@id/headImage"
+                android:layout_toRightOf="@id/llheadImage"
                 android:background="@drawable/shape_edit_bg"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/base_margin"
@@ -159,6 +164,7 @@
 
 
                 </co.quchu.quchu.widget.SquaredLinearLayout>
+
                 <co.quchu.quchu.widget.SquaredLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -194,6 +200,7 @@
 
 
                 </co.quchu.quchu.widget.SquaredLinearLayout>
+
                 <co.quchu.quchu.widget.SquaredLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -229,7 +236,6 @@
 
 
                 </co.quchu.quchu.widget.SquaredLinearLayout>
-
 
 
             </LinearLayout>
@@ -276,6 +282,7 @@
 
 
                 </co.quchu.quchu.widget.SquaredLinearLayout>
+
                 <co.quchu.quchu.widget.SquaredLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -311,6 +318,7 @@
 
 
                 </co.quchu.quchu.widget.SquaredLinearLayout>
+
                 <co.quchu.quchu.widget.SquaredLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -347,7 +355,6 @@
                 </co.quchu.quchu.widget.SquaredLinearLayout>
 
 
-
             </LinearLayout>
 
         </LinearLayout>
@@ -364,7 +371,6 @@
             android:paddingRight="@dimen/base_margin">
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -376,12 +382,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/toolbar_item_size"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/quarter_margin"
                     android:layout_weight="1"
                     android:drawableLeft="@mipmap/ic_jiaoying"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="脚印"
-                    android:layout_marginLeft="@dimen/quarter_margin"
                     android:textColor="@color/standard_color_h2_dark"
                     android:textSize="@dimen/word_size_body" />
 
@@ -392,6 +398,7 @@
             </LinearLayout>
 
             <View style="@style/HorizontalLine" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -403,9 +410,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/toolbar_item_size"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableLeft="@mipmap/ic_shoucang"
                     android:layout_marginLeft="@dimen/quarter_margin"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_favorite"
 
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
@@ -432,12 +439,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/toolbar_item_size"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/quarter_margin"
                     android:layout_weight="1"
                     android:drawableLeft="@mipmap/ic_quyouquan"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="趣友圈"
-                    android:layout_marginLeft="@dimen/quarter_margin"
 
                     android:textColor="@color/standard_color_h2_dark"
                     android:textSize="@dimen/word_size_body" />
@@ -461,11 +468,11 @@
                     android:id="@+id/tvMsg"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/toolbar_item_size"
+                    android:layout_marginLeft="@dimen/quarter_margin"
                     android:drawableLeft="@mipmap/ic_xiaoxi"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="消息"
-                    android:layout_marginLeft="@dimen/quarter_margin"
 
                     android:textColor="@color/standard_color_h2_dark"
                     android:textSize="@dimen/word_size_body" />
