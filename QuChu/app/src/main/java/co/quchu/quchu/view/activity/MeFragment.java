@@ -263,6 +263,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
+
+    private static final int []mBitmapSet = new int[]{R.mipmap.ic_tuhao,R.mipmap.ic_chihuo,R.mipmap.ic_haoqi,R.mipmap.ic_shejiao,R.mipmap.ic_shishang,R.mipmap.ic_wenyi};
     public void initGene() {
 
         final String[] labels = new String[genes.size()];
@@ -277,9 +279,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void run() {
 
-                Bitmap[] bm = new Bitmap[6];
-                for (int i = 0; i < 6; i++) {
-                    bm[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_tuhao);
+                Bitmap[] bm = new Bitmap[mBitmapSet.length];
+                for (int i = 0; i < mBitmapSet.length; i++) {
+                    bm[i] = BitmapFactory.decodeResource(getResources(), mBitmapSet[i]);
                 }
 
                 polygonProgressView.initial(genes.size(), values, labels, bm);
@@ -290,13 +292,13 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
-                        int progress = (int) ((float) animation.getAnimatedValue() * 999);
-                        tv1.setText(String.valueOf(progress));
-                        tv2.setText(String.valueOf(progress));
-                        tv3.setText(String.valueOf(progress));
-                        tv4.setText(String.valueOf(progress));
-                        tv5.setText(String.valueOf(progress));
-                        tv6.setText(String.valueOf(progress));
+                        float progress = (float) animation.getAnimatedValue();
+                        tv1.setText(String.valueOf((int)(progress * genes.get(0).getWeight())));
+                        tv2.setText(String.valueOf((int)(progress * genes.get(1).getWeight())));
+                        tv3.setText(String.valueOf((int)(progress * genes.get(2).getWeight())));
+                        tv4.setText(String.valueOf((int)(progress * genes.get(3).getWeight())));
+                        tv5.setText(String.valueOf((int)(progress * genes.get(4).getWeight())));
+                        tv6.setText(String.valueOf((int)(progress * genes.get(5).getWeight())));
                     }
                 });
                 va.start();

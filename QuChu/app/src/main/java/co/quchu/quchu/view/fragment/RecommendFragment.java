@@ -103,7 +103,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         mAllSceneGridAdapter = new AllSceneGridAdapter(mAllSceneList, new AllSceneGridAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(),true);
+                SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(),false);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
                 }
@@ -351,7 +351,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         }
         MobclickAgent.onEvent(getActivity(), "detail_c");
 
-        SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(),true);
+        SceneDetailActivity.enterActivity(getActivity(), mFavoriteSceneList.get(position).getSceneId(), mFavoriteSceneList.get(position).getSceneName(),true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
         }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Scene;
 import android.view.View;
 import android.widget.Toast;
 
@@ -44,7 +45,7 @@ public class SceneDetailActivity extends BaseActivity {
 
     @Bind(R.id.rv)
     RecyclerView rv;
-
+    boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +53,9 @@ public class SceneDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_simple_recyclerview);
         ButterKnife.bind(this);
 
-        int articleId = getIntent().getIntExtra(BUNDLE_KEY_SCENE_ID,-1);
+        final int articleId = getIntent().getIntExtra(BUNDLE_KEY_SCENE_ID,-1);
         String name = getIntent().getStringExtra(BUNDLE_KEY_SCENE_NAME);
-        boolean isFavorite = getIntent().getBooleanExtra(BUNDLE_KEY_SCENE_IS_FAVORITE,false);
+        isFavorite= getIntent().getBooleanExtra(BUNDLE_KEY_SCENE_IS_FAVORITE,false);
 
 
         getEnhancedToolbar().getTitleTv().setText(name);
@@ -67,10 +68,60 @@ public class SceneDetailActivity extends BaseActivity {
         ScenePresenter.getSceneDetail(getApplicationContext(), articleId, SPUtils.getCityId(), 1, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), null, new CommonListener<SceneDetailModel>() {
                 @Override
                 public void successListener(SceneDetailModel response) {
-                    rv.setAdapter(new SceneDetailAdapter(getApplicationContext(), response, new CommonItemClickListener() {
+                    getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onItemClick(View v, int position) {
+                        public void onClick(View v) {
+                            if (mFavoriteRunning){
+                                Toast.makeText(getApplicationContext(),R.string.process_running_please_wait,Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            if (isFavorite){
+                                ScenePresenter.delFavoriteScene(getApplicationContext(), articleId, new CommonListener() {
+                                    @Override
+                                    public void successListener(Object response) {
+                                        mFavoriteRunning = false;
+                                        isFavorite = false;
+                                        getEnhancedToolbar().getRightTv().setText("收藏");
+                                        Toast.makeText(getApplicationContext(),R.string.del_to_favorite_success,Toast.LENGTH_SHORT).show();
+                                    }
 
+                                    @Override
+                                    public void errorListener(VolleyError error, String exception, String msg) {
+                                        mFavoriteRunning = false;
+                                        Toast.makeText(getApplicationContext(),R.string.del_to_favorite_fail,Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }else{
+                                ScenePresenter.addFavoriteScene(getApplicationContext(), articleId, new CommonListener() {
+                                    @Override
+                                    public void successListener(Object response) {
+                                        mFavoriteRunning = false;
+                                        isFavorite = true;
+                                        getEnhancedToolbar().getRightTv().setText("取消收藏");
+                                        Toast.makeText(getApplicationContext(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void errorListener(VolleyError error, String exception, String msg) {
+                                        mFavoriteRunning = false;
+                                        Toast.makeText(getApplicationContext(),R.string.add_to_favorite_fail,Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    rv.setAdapter(new SceneDetailAdapter(getApplicationContext(), response, new SceneDetailAdapter.OnSceneItemClickListener() {
+                        @Override
+                        public void onArticleClick() {
+
+                        }
+
+                        @Override
+                        public void onPlaceClick(int pid) {
+                            Intent intent = new Intent(SceneDetailActivity.this, QuchuDetailsActivity.class);
+                            intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, pid);
+                            startActivity(intent);
                         }
                     }));
                 }
@@ -85,6 +136,7 @@ public class SceneDetailActivity extends BaseActivity {
 
     }
 
+    private boolean mFavoriteRunning = false;
 
     @Override
     public void onStart() {

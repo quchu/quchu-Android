@@ -26,7 +26,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context mContext;
     private SceneDetailModel mData;
 
-    private CommonItemClickListener mListener;
+    private OnSceneItemClickListener mListener;
 
     public static final int TYPE_INFO = 0x001;
     public static final int TYPE_RECOMMENDED = 0x002;
@@ -34,7 +34,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static final int TYPE_PLACE_LIST = 0x004;
 
 
-    public SceneDetailAdapter(Context mContext, SceneDetailModel sceneDetailModel, CommonItemClickListener listener) {
+    public SceneDetailAdapter(Context mContext, SceneDetailModel sceneDetailModel, OnSceneItemClickListener listener) {
         this.mContext = mContext;
         this.mData = sceneDetailModel;
         this.mListener = listener;
@@ -73,7 +73,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (null == mData) {
             return;
         }
@@ -105,7 +105,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         } else if (holder instanceof RecommendedViewHolder) {
 
-            SceneHeaderModel objScene = mData.getBestList().get(position-1);
+            final SceneHeaderModel objScene = mData.getBestList().get(position-1);
             ((RecommendedViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getPlaceInfo().getCover()));
             ((RecommendedViewHolder) holder).tvTitle.setText(objScene.getPlaceInfo().getName());
             ((RecommendedViewHolder) holder).tvHeader.setText(objScene.getTitle());
@@ -121,6 +121,15 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             }
 
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null!=mListener) {
+                        mListener.onPlaceClick(objScene.getPlaceInfo().getPid());
+                    }
+                }
+            });
+
 
         } else if (holder instanceof ArticleViewHolder) {
 
@@ -132,7 +141,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         } else if (holder instanceof PlaceViewHolder) {
 
-            DetailModel objScene = mData.getPlaceList().getResult().get(position-2-getRecommendedListSize());
+            final DetailModel objScene = mData.getPlaceList().getResult().get(position-2-getRecommendedListSize());
             ((PlaceViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getCover()));
             ((PlaceViewHolder) holder).tvTitle.setText(objScene.getName());
             ((PlaceViewHolder) holder).tvHeader.setVisibility(View.GONE);
@@ -147,9 +156,24 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
             }
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null!=mListener) {
+                        mListener.onPlaceClick(objScene.getPid());
+                    }
+                }
+            });
         }
+
     }
 
+
+    public interface OnSceneItemClickListener{
+        void onArticleClick();
+        void onPlaceClick(int pid);
+    }
 
     private int getRecommendedListSize() {
         int recommended = 0;
