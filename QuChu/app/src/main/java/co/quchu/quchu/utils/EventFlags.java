@@ -24,4 +24,9 @@ public class EventFlags {
 
     public static final int EVENT_SWITCH_2_LOGIN = 0x400001;
     public static final int EVENT_LOCATION_UPDATED = 0x110001;
+
+
+    public static final int EVENT_SCENE_FAVORITE = 0x50001;
+    public static final int EVENT_SCENE_CANCEL_FAVORITE = 0x50002;
+
 }

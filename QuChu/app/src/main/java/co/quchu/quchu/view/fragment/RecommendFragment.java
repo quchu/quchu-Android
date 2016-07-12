@@ -1,7 +1,6 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.ActivityOptions;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,6 +39,7 @@ import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScreenUtils;
@@ -84,7 +84,9 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
 
     private boolean isLoading = false;
     private List<SceneModel> cardList = new ArrayList<>();
-    private AllSceneAdapter adapter;
+    private List<SceneModel> favoriteScene = new ArrayList<>();
+    private AllSceneAdapter allSceneAdapter;
+    private RecommendGridAdapter recommendGridAdapter;
     private int currentIndex = 0;
     private int dataCount = -1;
 
@@ -100,11 +102,11 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         viewpager.setPadding(160, 0, 160, 0);
         viewpager.setPageMargin(80);
         viewpager.addOnPageChangeListener(this);
-        adapter = new AllSceneAdapter(this, cardList, this);
-        viewpager.setAdapter(adapter);
+        allSceneAdapter = new AllSceneAdapter(this, cardList, this);
+        viewpager.setAdapter(allSceneAdapter);
         rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin), 2));
 
-        rvGrid.setAdapter(new RecommendGridAdapter(cardList, new RecommendGridAdapter.OnItemClickListener() {
+        recommendGridAdapter = new RecommendGridAdapter(favoriteScene, new RecommendGridAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 SceneDetailActivity.enterActivity(getActivity(),cardList.get(position).getSceneId(),cardList.get(position).getSceneName(),true);
@@ -112,7 +114,8 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
                     ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
                 }
             }
-        }));
+        });
+        rvGrid.setAdapter(recommendGridAdapter);
         rvGrid.setLayoutManager(new GridLayoutManager(getContext(), 2));
         Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "AGENCYFB.TTF");
         TvPageIndicatorSize.setTypeface(face);
@@ -127,7 +130,7 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
             @Override
             public void onPageSelected(int position) {
                 tvPageIndicatorCurrent.setText(String.valueOf(position + 1));
-                TvPageIndicatorSize.setText(String.valueOf(adapter.getCount()));
+                TvPageIndicatorSize.setText(String.valueOf(allSceneAdapter.getCount()));
             }
 
             @Override
@@ -135,7 +138,6 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
 
             }
         });
-//        viewpager.setPageTransformer(true, this);not use please  see adapter
         refreshLayout.setColorSchemeResources(R.color.standard_color_yellow);
 
 
@@ -250,6 +252,7 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         });
         view.setClickable(true);
 
+        getMyScene();
         getData(false);
         return view;
     }
@@ -287,6 +290,28 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
     }
 
 
+    public void getMyScene(){
+        ScenePresenter.getMyScene(getContext(), SPUtils.getCityId(), 0, new CommonListener<PagerModel<SceneModel>>() {
+            @Override
+            public void successListener(PagerModel<SceneModel> response) {
+                if (response != null && response.getResult() != null) {
+                        favoriteScene.clear();
+                    favoriteScene.addAll(response.getResult());
+                    recommendGridAdapter.notifyDataSetChanged();
+
+                }
+                mThreadRunning = false;
+                refreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                mThreadRunning = false;
+                refreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
     public void getData(final boolean loadMore) {
         mThreadRunning = true;
 
@@ -294,24 +319,24 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
 
             @Override
             public void successListener(PagerModel<SceneModel> response) {
-                refreshLayout.setRefreshing(false);
                 if (response != null && response.getResult() != null) {
                     if (!loadMore) {
                         cardList.clear();
                     }
                     cardList.addAll(response.getResult());
-                    adapter.notifyDataSetChanged();
+                    allSceneAdapter.notifyDataSetChanged();
 
                     tvPageIndicatorCurrent.setText(String.valueOf(viewpager.getCurrentItem() + 1));
-                    TvPageIndicatorSize.setText(String.valueOf(adapter.getCount()));
+                    TvPageIndicatorSize.setText(String.valueOf(allSceneAdapter.getCount()));
                 }
                 mThreadRunning = false;
+                refreshLayout.setRefreshing(false);
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                refreshLayout.setRefreshing(false);
                 mThreadRunning = false;
+                refreshLayout.setRefreshing(false);
             }
         });
     }
@@ -343,10 +368,10 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
         } else {
             if (arrayList != null && arrayList.size() > 0) {
                 cardList.addAll(arrayList);
-                adapter.notifyDataSetChanged();
+                allSceneAdapter.notifyDataSetChanged();
 
                 tvPageIndicatorCurrent.setText(String.valueOf(viewpager.getCurrentItem() + 1));
-                TvPageIndicatorSize.setText(String.valueOf(adapter.getCount()));
+                TvPageIndicatorSize.setText(String.valueOf(allSceneAdapter.getCount()));
             }
         }
     }
@@ -390,8 +415,17 @@ public class RecommendFragment extends BaseFragment implements AllSceneAdapter.C
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
+        if (null==event){
+            return;
+        }
+        switch (event.getFlag()){
+            case EventFlags.EVENT_SCENE_FAVORITE:
 
-        //TODO favorite udpate
+                break;
+            case EventFlags.EVENT_SCENE_CANCEL_FAVORITE:
+
+                break;
+        }
     }
 
     @Override

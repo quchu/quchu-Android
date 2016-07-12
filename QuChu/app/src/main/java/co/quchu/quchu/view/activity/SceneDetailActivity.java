@@ -10,17 +10,22 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.ArticleDetailModel;
 import co.quchu.quchu.model.PagerModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneDetailModel;
 import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.ArticleDetailAdapter;
 import co.quchu.quchu.view.adapter.CommonItemClickListener;
@@ -75,28 +80,38 @@ public class SceneDetailActivity extends BaseActivity {
 
                 }
         });
-//        ScenePresenter.getSceneDetail(getApplicationContext(), SPUtils.getCityId(), 1, articleId, new CommonListener<ArticleDetailModel>() {
-//            @Override
-//            public void successListener(final ArticleDetailModel response) {
-//                rv.setAdapter(new ArticleDetailAdapter(getApplicationContext(), response.getPlaceList().getResult(), response.getArticle(), new CommonItemClickListener() {
-//                    @Override
-//                    public void onItemClick(View v, int position) {
-//                        Intent intent = new Intent(SceneDetailActivity.this, QuchuDetailsActivity.class);
-//                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, response.getPlaceList().getResult().get(position).getPlaceId());
-//                        startActivity(intent);
-//                    }
-//                }));
-//            }
-//
-//            @Override
-//            public void errorListener(VolleyError error, String exception, String msg) {
-//
-//            }
-//        });
+
 
 
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        if (null==event){
+            return;
+        }
+        switch (event.getFlag()){
+            case EventFlags.EVENT_SCENE_FAVORITE:
+
+                break;
+            case EventFlags.EVENT_SCENE_CANCEL_FAVORITE:
+
+                break;
+        }
+    }
 
     public static void enterActivity(Activity from, int sceneId,String sceneName,boolean favorite) {
         Intent intent = new Intent(from, SceneDetailActivity.class);
