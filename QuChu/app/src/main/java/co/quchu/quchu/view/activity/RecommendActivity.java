@@ -330,7 +330,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         } else if (index == 2) {
             if (null != AppContext.user && !AppContext.user.isIsVisitors()) {
-                tvTitle.setText(AppContext.user.getUsername());
+                tvTitle.setText(AppContext.user.getFullname());
             } else {
                 tvTitle.setText("未知生物");
             }
