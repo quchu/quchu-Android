@@ -17,6 +17,8 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SceneDetailModel;
 import co.quchu.quchu.model.SceneHeaderModel;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by Nico on 16/7/8.
@@ -120,6 +122,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
             }
+            ((RecommendedViewHolder) holder).tvCircleName.setText(null!=objScene.getPlaceInfo().getAreaCircleName()?objScene.getPlaceInfo().getAreaCircleName():"");
+            ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(objScene.getPlaceInfo().getLatitude()),Double.valueOf(objScene.getPlaceInfo().getLongitude())));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -159,6 +163,10 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
             }
+
+            ((PlaceViewHolder) holder).tvCircleName.setText(null!=objScene.getAreaCircleName()?objScene.getAreaCircleName():"");
+            ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(objScene.getLatitude()),Double.valueOf(objScene.getLongitude())));
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -247,6 +255,10 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView recommendTag3;
         @Bind(R.id.tags)
         LinearLayout tags;
+        @Bind(R.id.tvCircleName)
+        TextView tvCircleName;
+        @Bind(R.id.tvDistance)
+        TextView tvDistance;
 
         public RecommendedViewHolder(View itemView) {
             super(itemView);
@@ -285,6 +297,9 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView recommendTag3;
         @Bind(R.id.tags)
         LinearLayout tags;
+        TextView tvCircleName;
+        @Bind(R.id.tvDistance)
+        TextView tvDistance;
 
         public PlaceViewHolder(View itemView) {
             super(itemView);

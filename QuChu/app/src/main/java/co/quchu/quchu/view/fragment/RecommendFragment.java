@@ -96,8 +96,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin), 2));
         mMySceneAdapter = new MySceneAdapter(this, mFavoriteSceneList, this);
         vpMyScene.setClipToPadding(false);
-        vpMyScene.setPadding(160, 0, 160, 0);
-        vpMyScene.setPageMargin(80);
+        int padding = getResources().getDimensionPixelSize(R.dimen.recommend_card_padding);
+        vpMyScene.setPadding(padding, 0, padding, 0);
+        vpMyScene.setPageMargin(padding/2);
         vpMyScene.setAdapter(mMySceneAdapter);
 
         mAllSceneGridAdapter = new AllSceneGridAdapter(mAllSceneList, new AllSceneGridAdapter.OnItemClickListener() {

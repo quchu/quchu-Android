@@ -42,6 +42,7 @@ public class DetailModel implements Serializable{
      * width : 675
      */
 
+    private String areaCircleName;
     private String activityInfo;
     private String activityInfoHtml;
     private String address = "";
@@ -77,6 +78,14 @@ public class DetailModel implements Serializable{
     private List<NearPlace> recommendPlaces;
     private List<CommentModel> reviewList;
     private int cardCount;
+
+    public String getAreaCircleName() {
+        return areaCircleName;
+    }
+
+    public void setAreaCircleName(String areaCircleName) {
+        this.areaCircleName = areaCircleName;
+    }
 
     public int getCardCount() {
         return cardCount;
