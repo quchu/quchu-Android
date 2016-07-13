@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
@@ -15,6 +16,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import co.quchu.quchu.widget.EmptyView;
 
 
 /**
@@ -156,6 +158,20 @@ public abstract class BaseActivity extends AppCompatActivity {
             enhancedToolbar.getTitleTv().setText(getTitle());
             setSupportActionBar(enhancedToolbar);
             return enhancedToolbar;
+        } else {
+            return null;
+        }
+    }
+    private EmptyView emptyView;
+    public EmptyView getEmptyView(){
+        return null == emptyView ? initEmptyView() : emptyView;
+    }
+
+    private EmptyView initEmptyView() {
+        if (null != findViewById(R.id.rlEmptyView)) {
+            emptyView = new EmptyView();
+            emptyView.init(findViewById(R.id.rlEmptyView));
+            return emptyView;
         } else {
             return null;
         }

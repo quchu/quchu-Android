@@ -45,6 +45,7 @@ import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SceneDetailActivity;
 import co.quchu.quchu.view.adapter.MySceneAdapter;
 import co.quchu.quchu.view.adapter.AllSceneGridAdapter;
+import co.quchu.quchu.widget.EmptyView;
 import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 
@@ -55,7 +56,7 @@ import co.quchu.quchu.widget.SpacesItemDecoration;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment extends BaseFragment implements MySceneAdapter.CardClickListener, ViewPager.PageTransformer {
+public class RecommendFragment extends BaseFragment implements MySceneAdapter.CardClickListener, ViewPager.PageTransformer,EmptyView.OnRetryListener {
 
     @Bind(R.id.viewpager)
     ViewPager vpMyScene;
@@ -92,6 +93,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
+        initEmptyView(view);
 
         rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin), 2));
         mMySceneAdapter = new MySceneAdapter(this, mFavoriteSceneList, this);
@@ -298,6 +300,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
 
     public void getMyScene(){
+
+        getEmptyView().showLoading();
         ScenePresenter.getMyScene(getContext(), SPUtils.getCityId(), 1, new CommonListener<PagerModel<SceneModel>>() {
             @Override
             public void successListener(PagerModel<SceneModel> response) {
@@ -307,11 +311,16 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                     mMySceneAdapter.notifyDataSetChanged();
                     tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
                     TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+                    getEmptyView().hide();
+                }else{
+                    getEmptyView().noData(RecommendFragment.this);
                 }
+
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
+                getEmptyView().showRetry(RecommendFragment.this);
             }
         });
     }
@@ -451,13 +460,14 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         mAllSceneGridAdapter.notifyDataSetChanged();
 
         if (mAllSceneList.size()==0 && mFavoriteSceneList.size()>0){
-            tvPageIndicatorLabel.setText("你已经添加了所有场景");
+            tvPageIndicatorLabel.setText("你已经收藏全部场景");
             tvPageIndicatorCurrent.setText("");
             TvPageIndicatorSize.setText("");
         }else if(mFavoriteSceneList.size()==0 && mAllSceneList.size()>0){
             tvPageIndicatorLabel.setText("你还没有收藏的详情");
             tvPageIndicatorCurrent.setText("");
             TvPageIndicatorSize.setText("");
+
         }else{
             tvPageIndicatorLabel.setText("of");
             tvPageIndicatorCurrent.setText(String.valueOf(index + 1));
@@ -486,5 +496,10 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
     public ViewPager getVpMyScene() {
         return vpMyScene;
+    }
+
+    @Override
+    public void onRetry() {
+        getMyScene();
     }
 }
