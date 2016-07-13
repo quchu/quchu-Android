@@ -118,6 +118,17 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 //        ImageView imageView = toolbar.getRightIv();
 //        imageView.setImageResource(R.mipmap.ic_tools);
 //        imageView.setOnClickListener(this);
+
+        initListener();
+
+        getData();
+        return v;
+    }
+
+    private void getData(){
+
+        userHead = AppContext.user.getPhoto();
+        ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
         presenter.getUnreadMassageCound(new CommonListener<Integer>() {
             @Override
             public void successListener(Integer response) {
@@ -128,11 +139,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             public void errorListener(VolleyError error, String exception, String msg) {
             }
         });
-        initListener();
-
-        userHead = AppContext.user.getPhoto();
-        ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
-        System.out.println("!-!  ");
         presenter.getGene(new CommonListener<MyGeneModel>() {
             @Override
             public void successListener(MyGeneModel response) {
@@ -143,7 +149,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             public void errorListener(VolleyError error, String exception, String msg) {
             }
         });
-        return v;
     }
 
     @Override
@@ -311,19 +316,27 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }, 100);
     }
 
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        EventBus.getDefault().unregister(this);
-//        super.onStop();
-//    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        switch (event.getFlag()){
+            case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
+                getData();
+                break;
+        }
+    }
 
     public void notReadMassage(int cound) {
         unReadMassage.setText(String.valueOf(cound));

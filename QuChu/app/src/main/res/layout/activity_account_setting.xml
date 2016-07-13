@@ -78,6 +78,7 @@
             android:paddingRight="@dimen/base_margin">
 
             <RelativeLayout
+                android:id="@+id/rlUserName"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
@@ -108,7 +109,7 @@
 
             </RelativeLayout>
 
-            <View style="@style/HorizontalLine" />
+            <View  android:id="@+id/vDividerUserName" style="@style/HorizontalLine" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

@@ -80,6 +80,10 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     RelativeLayout modiffPass;
     @Bind(R.id.saveUserInfo)
     TextView mSaveUserInfo;
+    @Bind(R.id.vDividerUserName)
+    View vDividerUserName;
+    @Bind(R.id.rlUserName)
+    View rlUserName;
 
 
     private boolean mProfileModified = false;
@@ -96,6 +100,14 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         rightTv.setText("退出登录");
         rightTv.setOnClickListener(this);
         userInfoBinding();
+
+        if (null==AppContext.user || AppContext.user.isIsVisitors()){
+            vDividerUserName.setVisibility(View.GONE);
+            rlUserName.setVisibility(View.GONE);
+        }else{
+            vDividerUserName.setVisibility(View.VISIBLE);
+            rlUserName.setVisibility(View.VISIBLE);
+        }
     }
 
 

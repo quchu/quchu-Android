@@ -246,6 +246,12 @@
                 <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".base.NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

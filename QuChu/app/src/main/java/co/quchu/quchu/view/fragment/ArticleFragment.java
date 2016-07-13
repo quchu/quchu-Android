@@ -12,14 +12,19 @@ import android.view.ViewGroup;
 import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.ArticleWithBannerModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.ArticleDetailActivity;
 import co.quchu.quchu.view.adapter.ArticleAdapter;
@@ -118,6 +123,26 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     public void onPause() {
         MobclickAgent.onPageEnd("h_discovery");
         super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        switch (event.getFlag()){
+            case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
+                getArticles();
+                break;
+        }
     }
 
     @Override

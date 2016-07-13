@@ -30,4 +30,7 @@ public class EventFlags {
     public static final int EVENT_SCENE_FAVORITE = 0x50001;
     public static final int EVENT_SCENE_CANCEL_FAVORITE = 0x50002;
 
+    public static final int EVENT_DEVICE_NETWORK_AVAILABLE = 0x600001;
+    public static final int EVENT_DEVICE_NETWORK_UNAVAILABLE = 0x600002;
+
 }
