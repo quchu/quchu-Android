@@ -69,7 +69,12 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         Bundle args = new Bundle();
         args.putInt(SHAREID, shareId);
         args.putInt(SHARE_IMAGE_ID, imageId);
-        args.putString(SHRETITLE, titles);
+        if (!isPlace) {
+            args.putString(SHRETITLE, "送你一张美图，我想约你去"+titles);
+        } else {
+            args.putString(SHRETITLE, titles);
+        }
+
         args.putBoolean(ISSHARE_PLACE, isPlace);
         fragment.setArguments(args);
         return fragment;
