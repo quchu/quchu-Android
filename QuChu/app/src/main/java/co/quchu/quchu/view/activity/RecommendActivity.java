@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.KeyEvent;
@@ -95,6 +96,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
     private MeFragment meFragment;
 
 
+    private Fragment firstShowFragment;
+
     @Override
     public ArrayMap<String, Object> getUserBehaviorArguments() {
         return null;
@@ -116,8 +119,18 @@ public class RecommendActivity extends BaseBehaviorActivity {
         recommendFragment = new RecommendFragment();
         articleFragment = new ArticleFragment();
         meFragment = new MeFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, articleFragment, null).add(R.id.container, meFragment, null).hide(articleFragment).hide(meFragment).commitAllowingStateLoss();
+        firstShowFragment = recommendFragment;
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, recommendFragment, "page_1")
+//
+//                .add(R.id.container, meFragment, "page_3")
+//                .hide(articleFragment)
+//                .hide(meFragment)
+                .commitAllowingStateLoss();
         initView();
+
+
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
@@ -135,17 +148,28 @@ public class RecommendActivity extends BaseBehaviorActivity {
         rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 switch (checkedId) {
-                    case R.id.rbRecommend:
 
+                    case R.id.rbRecommend:
+                        transaction.show(recommendFragment).hide(firstShowFragment).commit();
+                        firstShowFragment = recommendFragment;
                         viewpagerSelected(0);
                         break;
                     case R.id.rbDiscovery:
-
+                        if (getSupportFragmentManager().findFragmentByTag("page_2") == null) {
+                            transaction.add(R.id.container, articleFragment, "page_2");
+                        }
+                        transaction.show(articleFragment).hide(firstShowFragment).commit();
+                        firstShowFragment = articleFragment;
                         viewpagerSelected(1);
                         break;
                     case R.id.rbMine:
-
+                        if (getSupportFragmentManager().findFragmentByTag("page_3") == null) {
+                            transaction.add(R.id.container, meFragment, "page_3");
+                        }
+                        transaction.show(meFragment).hide(firstShowFragment).commit();
+                        firstShowFragment = meFragment;
                         viewpagerSelected(2);
                         break;
                 }
@@ -153,6 +177,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         });
         accessPushMessage();
     }
+
 
     public void accessPushMessage() {
         Parcelable extra = getIntent().getParcelableExtra(GeTuiReceiver.REQUEST_KEY_MODEL);

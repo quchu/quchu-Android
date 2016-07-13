@@ -128,10 +128,13 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         userHead = AppContext.user.getPhoto();
         ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
         System.out.println("!-!  ");
+
         presenter.getGene(new CommonListener<MyGeneModel>() {
             @Override
             public void successListener(MyGeneModel response) {
                 genes = response.getGenes();
+                initGene();
+
             }
 
             @Override
@@ -252,19 +255,33 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (null != polygonProgressView && !hidden && null != genes && !mProgressViewAnimated) {
-            polygonProgressView.postDelayed(new Runnable() {
+//        if (null != polygonProgressView && !hidden && null != genes && !mProgressViewAnimated) {
+//            polygonProgressView.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    initGene();
+//                    mProgressViewAnimated = true;
+//                }
+//            }, 800l);
+//        }
+        if (presenter != null && !hidden && genes == null)
+            presenter.getGene(new CommonListener<MyGeneModel>() {
                 @Override
-                public void run() {
+                public void successListener(MyGeneModel response) {
+                    genes = response.getGenes();
                     initGene();
-                    mProgressViewAnimated = true;
+
                 }
-            }, 800l);
-        }
+
+                @Override
+                public void errorListener(VolleyError error, String exception, String msg) {
+                }
+            });
     }
 
 
-    private static final int []mBitmapSet = new int[]{R.mipmap.ic_tuhao,R.mipmap.ic_chihuo,R.mipmap.ic_haoqi,R.mipmap.ic_shejiao,R.mipmap.ic_shishang,R.mipmap.ic_wenyi};
+    private static final int[] mBitmapSet = new int[]{R.mipmap.ic_tuhao, R.mipmap.ic_chihuo, R.mipmap.ic_haoqi, R.mipmap.ic_shejiao, R.mipmap.ic_shishang, R.mipmap.ic_wenyi};
+
     public void initGene() {
 
         final String[] labels = new String[genes.size()];
@@ -293,12 +310,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         float progress = (float) animation.getAnimatedValue();
-                        tv1.setText(String.valueOf((int)(progress * genes.get(0).getWeight())));
-                        tv2.setText(String.valueOf((int)(progress * genes.get(1).getWeight())));
-                        tv3.setText(String.valueOf((int)(progress * genes.get(2).getWeight())));
-                        tv4.setText(String.valueOf((int)(progress * genes.get(3).getWeight())));
-                        tv5.setText(String.valueOf((int)(progress * genes.get(4).getWeight())));
-                        tv6.setText(String.valueOf((int)(progress * genes.get(5).getWeight())));
+                        tv1.setText(String.valueOf((int) (progress * genes.get(0).getWeight())));
+                        tv2.setText(String.valueOf((int) (progress * genes.get(1).getWeight())));
+                        tv3.setText(String.valueOf((int) (progress * genes.get(2).getWeight())));
+                        tv4.setText(String.valueOf((int) (progress * genes.get(3).getWeight())));
+                        tv5.setText(String.valueOf((int) (progress * genes.get(4).getWeight())));
+                        tv6.setText(String.valueOf((int) (progress * genes.get(5).getWeight())));
                     }
                 });
                 va.start();

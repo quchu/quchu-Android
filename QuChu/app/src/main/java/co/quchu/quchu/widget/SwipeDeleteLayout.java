@@ -39,7 +39,7 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SwipeDeleteLayout);
 
         contentMargin = array.getDimensionPixelSize(R.styleable.SwipeDeleteLayout_content_margin, 0);
-
+        array.recycle();
 
         setOverScrollMode(OVER_SCROLL_NEVER);
         setSmoothScrollingEnabled(false);
@@ -112,7 +112,7 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
         int actionWidthSpec = MeasureSpec.makeMeasureSpec(actionWidth, MeasureSpec.EXACTLY);
 
 
-        int contentWidth = getResources().getDisplayMetrics().widthPixels -  contentMargin;
+        int contentWidth = getResources().getDisplayMetrics().widthPixels - contentMargin;
         int ContentWidth = MeasureSpec.makeMeasureSpec(contentWidth, MeasureSpec.EXACTLY);
 
         itemView.measure(MeasureSpec.makeMeasureSpec(contentWidth + actionWidth, MeasureSpec.AT_MOST), heightMeasureSpec);
