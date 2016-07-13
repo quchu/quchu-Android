@@ -376,7 +376,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             } else {
                 tvTitle.setText("未知生物");
             }
-//            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
                 @Override

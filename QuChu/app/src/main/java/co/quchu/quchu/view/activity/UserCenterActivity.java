@@ -143,7 +143,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
                 @Override
                 public void onError() {
-                    Toast.makeText(UserCenterActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserCenterActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 }
             });
         }

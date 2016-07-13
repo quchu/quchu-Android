@@ -151,7 +151,7 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         if (KeyboardUtils.isFastDoubleClick())
             return;
         if (!NetUtil.isNetworkConnected(getContext())) {
-            Toast.makeText(getContext(), "请保证网络连接", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             return;
         }
         switch (position) {

@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
@@ -35,11 +36,11 @@ public class InterestingDetailPresenter {
                                 listener.getDetailData(detailModel);
                             else {
                                 DialogUtil.dismissProgess();
-                                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             DialogUtil.dismissProgess();
-                            Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
                         }
                     }
 

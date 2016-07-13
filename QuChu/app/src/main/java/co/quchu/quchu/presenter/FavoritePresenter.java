@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.model.FavoriteBean;
 import co.quchu.quchu.model.FavoriteEssayBean;
 import co.quchu.quchu.model.FindBean;
@@ -88,7 +89,7 @@ public class FavoritePresenter {
         GsonRequest<String> request = new GsonRequest<>(uri, new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(view, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -96,7 +97,7 @@ public class FavoritePresenter {
                 if (result) {
                     view.deleteSucceed(holder, entity);
                 } else {
-                    Toast.makeText(view, "网络异常", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view, (R.string.network_error), Toast.LENGTH_SHORT).show();
                 }
             }
         });

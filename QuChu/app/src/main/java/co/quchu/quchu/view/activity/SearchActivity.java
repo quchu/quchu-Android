@@ -407,7 +407,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     categoryGroupAllId = ((SearchCategoryBean) bean).getCode();
                     searchFilterTV1.setText(categoryGroupAllString);
                     SearchPresenter.getTagByParentId(SearchActivity.this, ((SearchCategoryBean) bean).getTagId());
+                    searchInputEt.setText(((SearchCategoryBean) bean).getZh());
                     seachStr(false);
+                    searchInputEt.setSelection(searchInputEt.getText().toString().trim().length());
                 }
             }
         });

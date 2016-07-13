@@ -89,7 +89,7 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
 
                             @Override
                             public void errorListener(VolleyError error, String exception, String msg) {
-                                Toast.makeText(getContext(), "网络异常", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

@@ -151,14 +151,22 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                 loadMoreHold.loadView.clearAnimation();
                 loadMoreHold.loadView.setVisibility(View.INVISIBLE);
                 if (getItemCount() == 1) {
-                    loadMoreHold.retryView.setText("暂无数据~");
+                    loadMoreHold.retryView.setText(getNullDataHint());
                 } else {
-                    loadMoreHold.retryView.setText("已加载全部!");
+                    loadMoreHold.retryView.setText(getAllDataHint());
                 }
             }
         } else {
             onBindView(holder, position);
         }
+    }
+
+    protected String getNullDataHint() {
+        return "暂无数据";
+    }
+
+    protected String getAllDataHint() {
+        return "已加载全部~";
     }
 
     @Override

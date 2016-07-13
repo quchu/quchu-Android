@@ -152,7 +152,7 @@ public class AccountSettingPresenter {
         GsonRequest<Object> request = new GsonRequest<>(NetApi.updateUser, Object.class, params, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(mContext, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, (R.string.network_error), Toast.LENGTH_SHORT).show();
                 listener.onError();
             }
 
