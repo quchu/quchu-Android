@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -51,7 +52,7 @@ public class NetService {
             //     NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
             DialogUtil.dismissProgess();
-            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
         } else {
 
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0,false);
@@ -81,7 +82,7 @@ public class NetService {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //  NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
             DialogUtil.dismissProgess();
         } else {
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0, true);
@@ -93,7 +94,7 @@ public class NetService {
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //    NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
             DialogUtil.dismissProgess();
         } else {
 //            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
@@ -123,7 +124,7 @@ public class NetService {
         }
         LogUtils.d(pUrl+sbArguments);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
             DialogUtil.dismissProgess();
         } else {
             addToQueue(Request.Method.GET, pUrl+sbArguments, null, pListener, 0, true);
@@ -203,7 +204,7 @@ public class NetService {
                                             if (response.has("exception") && !StringUtils.isEmpty(response.getString("exception")) && "已有记录".equals(response.getString("exception"))) {
                                                 Toast.makeText(AppContext.mContext, "已有记录", Toast.LENGTH_SHORT).show();
                                             } else {
-                                                Toast.makeText(AppContext.mContext, "网络出错", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AppContext.mContext, (R.string.network_error), Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                         pListener.onError(response.toString());

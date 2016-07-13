@@ -155,7 +155,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                         @Override
                         public void error() {
                             DialogUtil.dismissProgessDirectly();
-                            Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FindPositionActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -236,7 +236,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         GsonRequest<Object> request = new GsonRequest<>(NetApi.findPosition, Object.class, map, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FindPositionActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgessDirectly();
             }
 

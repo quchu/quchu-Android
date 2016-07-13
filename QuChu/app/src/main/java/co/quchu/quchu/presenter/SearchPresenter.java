@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.AreaBean;
 import co.quchu.quchu.model.RecommendModel;
@@ -149,7 +150,7 @@ public class SearchPresenter {
         }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -166,7 +167,7 @@ public class SearchPresenter {
         }.getType(), new ResponseListener<ArrayList<AreaBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -182,7 +183,7 @@ public class SearchPresenter {
         }.getType(), new ResponseListener<ArrayList<SearchSortBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -198,7 +199,7 @@ public class SearchPresenter {
         }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override

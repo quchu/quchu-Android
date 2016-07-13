@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
@@ -179,7 +180,7 @@ public class UserLoginPresenter {
         GsonRequest<UserInfoModel> request = new GsonRequest<>(NetApi.register, UserInfoModel.class, params, new ResponseListener<UserInfoModel>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override

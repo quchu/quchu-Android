@@ -122,6 +122,13 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
         nickname.setText(AppContext.user.getFullname());
         nickname.setSelection(user.getFullname().length());
+        nickname.setCursorVisible(false);
+        nickname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nickname.setCursorVisible(true);
+            }
+        });
         photoNumber.setText(AppContext.user.getUsername());
         accountSettingUserLocation.setText(AppContext.user.getLocation());
         if ("男".equals(user.getGender())) {
@@ -355,7 +362,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
                     @Override
                     public void onError() {
-                        Toast.makeText(AccountSettingActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AccountSettingActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         DialogUtil.dismissProgess();
                     }
                 });

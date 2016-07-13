@@ -160,6 +160,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbFavorites:
+
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
                         vpMyScene.setVisibility(View.VISIBLE);
@@ -214,6 +215,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 //                                }).start();
                         break;
                     case R.id.rbAll:
+
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
                         int edge = ScreenUtils.getScreenWidth(getActivity());
@@ -254,7 +256,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         view.setClickable(true);
 
-        DialogUtil.showProgess(getActivity(),R.string.loading_dialog_text);
+        DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
 
         getMyScene();
         return view;
@@ -435,25 +437,25 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         int index = -1;
 
-        switch (event.getFlag()){
+        switch (event.getFlag()) {
             case EventFlags.EVENT_SCENE_FAVORITE:
                 sid = (int) event.getContent()[0];
                 for (int j = 0; j < mAllSceneList.size(); j++) {
-                    if (mAllSceneList.get(j).getSceneId()==sid){
+                    if (mAllSceneList.get(j).getSceneId() == sid) {
                         index = j;
                     }
                 }
 
-                notifyAdapters(index,true);
+                notifyAdapters(index, true);
                 break;
             case EventFlags.EVENT_SCENE_CANCEL_FAVORITE:
                 sid = (int) event.getContent()[0];
                 for (int j = 0; j < mFavoriteSceneList.size(); j++) {
-                    if (mFavoriteSceneList.get(j).getSceneId()==sid){
+                    if (mFavoriteSceneList.get(j).getSceneId() == sid) {
                         index = j;
                     }
                 }
-                notifyAdapters(index,false);
+                notifyAdapters(index, false);
 
                 break;
 
@@ -464,7 +466,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 break;
 
 
-            case EventFlags.EVENT_USER_LOGIN_SUCCESS :
+            case EventFlags.EVENT_USER_LOGIN_SUCCESS:
             case EventFlags.EVENT_USER_LOGOUT:
                 mAllSceneList.clear();
                 mFavoriteSceneList.clear();
@@ -480,8 +482,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             return;
         }
 
-        if (add){
-            mFavoriteSceneList.add(0,mAllSceneList.get(index));
+        if (add) {
+            mFavoriteSceneList.add(0, mAllSceneList.get(index));
             mAllSceneList.remove(index);
         } else {
             mAllSceneList.add(mFavoriteSceneList.get(index));
@@ -489,16 +491,16 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         }
 
 
-        if (mAllSceneList.size()==0 && mFavoriteSceneList.size()>0){
+        if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0) {
             tvPageIndicatorLabel.setText("你已经收藏全部场景");
             tvPageIndicatorCurrent.setText("");
             TvPageIndicatorSize.setText("");
-        }else if(mFavoriteSceneList.size()==0 && mAllSceneList.size()>0){
+        } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0) {
             tvPageIndicatorLabel.setText("你还没有收藏的详情");
             tvPageIndicatorCurrent.setText("");
             TvPageIndicatorSize.setText("");
 
-        }else{
+        } else {
             tvPageIndicatorLabel.setText("of");
             if (vpMyScene.getChildCount()>0){
                 tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));

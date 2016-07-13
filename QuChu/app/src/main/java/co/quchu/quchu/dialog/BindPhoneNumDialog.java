@@ -236,7 +236,7 @@ public class BindPhoneNumDialog extends DialogFragment implements ViewPager.OnPa
         GsonRequest<String> request = new GsonRequest<>(format, new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                layout.setError("网络异常");
+                layout.setError(getString(R.string.network_error));
             }
 
             @Override
@@ -267,7 +267,7 @@ public class BindPhoneNumDialog extends DialogFragment implements ViewPager.OnPa
         UserLoginPresenter.getCaptcha(getActivity(), phoneNumber, "register", new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                inputLayout.setError("网络异常,请重试");
+                inputLayout.setError(getString(R.string.network_error));
             }
 
             @Override
@@ -302,7 +302,7 @@ public class BindPhoneNumDialog extends DialogFragment implements ViewPager.OnPa
         GsonRequest<String> request = new GsonRequest<>(NetApi.autoCodeIsCorrect, String.class, params, new ResponseListener<String>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                layout.setError("网络异常");
+                layout.setError(getString(R.string.network_error));
             }
 
             @Override

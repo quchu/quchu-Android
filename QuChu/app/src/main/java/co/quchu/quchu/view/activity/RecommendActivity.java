@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -95,8 +96,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     private ArticleFragment articleFragment;
     private MeFragment meFragment;
 
-
-    private Fragment firstShowFragment;
+    public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
 
     @Override
     public ArrayMap<String, Object> getUserBehaviorArguments() {
@@ -114,10 +114,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
 
-        if (null==AppContext.user || AppContext.user.isIsVisitors()){
+        if (null == AppContext.user || AppContext.user.isIsVisitors()) {
             tvTitle.setText("未知生物");
             tvRight.setText(R.string.login);
-        }else {
+        } else {
             tvTitle.setText(AppContext.user.getFullname());
             tvRight.setText(R.string.edit);
         }
@@ -126,14 +126,12 @@ public class RecommendActivity extends BaseBehaviorActivity {
         recommendFragment = new RecommendFragment();
         articleFragment = new ArticleFragment();
         meFragment = new MeFragment();
-        firstShowFragment = recommendFragment;
+
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, recommendFragment, "page_1")
-//
-//                .add(R.id.container, meFragment, "page_3")
-//                .hide(articleFragment)
-//                .hide(meFragment)
                 .commitAllowingStateLoss();
         initView();
 
@@ -144,6 +142,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
 
+
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
             @Override
             public void hasCityList(ArrayList<CityModel> pList) {
@@ -152,6 +151,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 checkIfCityChanged();
             }
         });
+
+        if (getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
+            rbBottomTab.check(R.id.rbMine);
+            if (!meFragment.isAdded()) {
+                getSupportFragmentManager().beginTransaction().add(R.id.container, meFragment, "page_3").commitAllowingStateLoss();
+            }
+            viewpagerSelected(2);
+
+        }
+
+
         rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -159,31 +169,29 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 switch (checkedId) {
 
                     case R.id.rbRecommend:
-                        transaction.show(recommendFragment).hide(firstShowFragment).commit();
-                        firstShowFragment = recommendFragment;
                         viewpagerSelected(0);
                         break;
                     case R.id.rbDiscovery:
-                        if (getSupportFragmentManager().findFragmentByTag("page_2") == null) {
-                            transaction.add(R.id.container, articleFragment, "page_2");
+                        if (!articleFragment.isAdded()) {
+                            transaction.add(R.id.container, articleFragment, "page_2").commitAllowingStateLoss();
                         }
-                        transaction.show(articleFragment).hide(firstShowFragment).commit();
-                        firstShowFragment = articleFragment;
                         viewpagerSelected(1);
                         break;
                     case R.id.rbMine:
-                        if (getSupportFragmentManager().findFragmentByTag("page_3") == null) {
-                            transaction.add(R.id.container, meFragment, "page_3");
+                        if (!meFragment.isAdded()) {
+                            transaction.add(R.id.container, meFragment, "page_3").commitAllowingStateLoss();
                         }
-                        transaction.show(meFragment).hide(firstShowFragment).commit();
-                        firstShowFragment = meFragment;
                         viewpagerSelected(2);
                         break;
                 }
             }
         });
 
-        accessPushMessage();
+        if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
+            accessPushMessage();
+        }
+
+
     }
 
 
@@ -198,7 +206,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         switch (bean.getType()) {
             case "01":
                 rbBottomTab.check(R.id.rbDiscovery);
-                ArticleDetailActivity.enterActivity(this, bean.getEventId(),bean.getTitle());
+                ArticleDetailActivity.enterActivity(this, bean.getEventId(), bean.getTitle());
                 break;
             case "03":
                 rbBottomTab.check(R.id.rbDiscovery);
@@ -444,13 +452,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 recommendTitleLocationIv.setText(SPUtils.getCityName());
                 break;
             case EventFlags.EVENT_USER_LOGIN_SUCCESS:
-                if (viewPagerIndex==2){
+                if (viewPagerIndex == 2) {
                     tvTitle.setText(AppContext.user.getFullname());
                     tvRight.setText(R.string.edit);
                 }
                 break;
             case EventFlags.EVENT_USER_LOGOUT:
-                if (viewPagerIndex==2){
+                if (viewPagerIndex == 2) {
                     tvTitle.setText("未知生物");
                     tvRight.setText(R.string.login);
                 }

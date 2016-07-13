@@ -182,7 +182,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
                         GsonRequest request = new GsonRequest<>(Request.Method.POST, NetApi.accoundMerger, params, UserInfoModel.class, new ResponseListener<UserInfoModel>() {
                             @Override
                             public void onErrorResponse(@Nullable VolleyError error) {
-                                Toast.makeText(BindActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(BindActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -224,7 +224,7 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
         GsonRequest<Object> request = new GsonRequest<>(isWecha ? NetApi.WechatBind : NetApi.WeiboBind, Object.class, params, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(BindActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BindActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override

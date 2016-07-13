@@ -116,7 +116,7 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
 
                         @Override
                         public void onErrorCall(String str) {
-                            Toast.makeText(getActivity(), "网络异常!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

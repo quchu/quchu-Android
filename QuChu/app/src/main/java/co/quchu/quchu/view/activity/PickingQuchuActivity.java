@@ -168,7 +168,7 @@ public class PickingQuchuActivity extends BaseActivity {
 
     private void doSearch(String keyWord) {
         if (!NetUtil.isNetworkConnected(this)) {
-            Toast.makeText(this, "网络异常", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -109,7 +109,7 @@ public class ModiffPasswordDialog extends DialogFragment implements View.OnClick
                 final GsonRequest<String> request = new GsonRequest<>(NetApi.midiff_password, String.class, params, new ResponseListener<String>() {
                     @Override
                     public void onErrorResponse(@Nullable VolleyError error) {
-                        inputLayoutNewPass.setError("网络异常,请重试");
+                        inputLayoutNewPass.setError(getString(R.string.network_error));
                     }
 
                     @Override

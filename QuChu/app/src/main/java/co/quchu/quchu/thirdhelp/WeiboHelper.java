@@ -75,7 +75,7 @@ public class WeiboHelper {
 
     public void weiboLogin(SsoHandler ssoHandler, final UserLoginListener listener, final boolean isLogin) {
         if (!NetUtil.isNetworkConnected(context)) {
-            Toast.makeText(context, "请检查网络连接", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             return;
         }
 

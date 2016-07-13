@@ -230,7 +230,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
             presenter.getFootprintDetail(id, new ResponseListener<PostCardItemModel>() {
                 @Override
                 public void onErrorResponse(@Nullable VolleyError error) {
-                    Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyFootprintDetailActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -359,7 +359,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                         @Override
                         public void onError(String error) {
                             v.setEnabled(true);
-                            Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyFootprintDetailActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else if (mEntitys != null) {
@@ -375,7 +375,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                         @Override
                         public void onError(String error) {
                             v.setEnabled(true);
-                            Toast.makeText(MyFootprintDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyFootprintDetailActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         }
                     });
 
