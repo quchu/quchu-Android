@@ -404,16 +404,25 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         int sid = (int) event.getContent()[0];
 
         int index = -1;
-        for (int j = 0; j < mAllSceneList.size(); j++) {
-            if (mAllSceneList.get(j).getSceneId()==sid){
-                index = j;
-            }
-        }
+
         switch (event.getFlag()){
             case EventFlags.EVENT_SCENE_FAVORITE:
+
+                for (int j = 0; j < mAllSceneList.size(); j++) {
+                    if (mAllSceneList.get(j).getSceneId()==sid){
+                        index = j;
+                    }
+                }
+
                 notifyAdapters(index,true);
                 break;
             case EventFlags.EVENT_SCENE_CANCEL_FAVORITE:
+
+                for (int j = 0; j < mFavoriteSceneList.size(); j++) {
+                    if (mFavoriteSceneList.get(j).getSceneId()==sid){
+                        index = j;
+                    }
+                }
                 notifyAdapters(index,false);
                 break;
         }
@@ -429,6 +438,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             mFavoriteSceneList.add(mAllSceneList.get(index));
             mAllSceneList.remove(index);
         }else{
+            System.out.println("scene "+index);
+            System.out.println("scene "+ mFavoriteSceneList.get(index).toString());
             mAllSceneList.add(mFavoriteSceneList.get(index));
             mFavoriteSceneList.remove(index);
         }

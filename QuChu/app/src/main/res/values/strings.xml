@@ -124,6 +124,7 @@
 
     <string name="preview">预览</string>
 
+    <string name="edit">编辑</string>
     <string name="permissions_tips_gallery">这个App请求访问你的相册</string>
 
     <string name="permissions_denied_tips">无法获取图片</string>

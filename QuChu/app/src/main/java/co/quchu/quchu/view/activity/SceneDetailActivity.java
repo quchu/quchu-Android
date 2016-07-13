@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Scene;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,18 +17,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.ArticleDetailModel;
-import co.quchu.quchu.model.PagerModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneDetailModel;
-import co.quchu.quchu.model.SceneModel;
-import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.adapter.ArticleDetailAdapter;
-import co.quchu.quchu.view.adapter.CommonItemClickListener;
 import co.quchu.quchu.view.adapter.SceneDetailAdapter;
 
 /**
@@ -46,6 +39,7 @@ public class SceneDetailActivity extends BaseActivity {
     @Bind(R.id.rv)
     RecyclerView rv;
     boolean isFavorite = false;
+    int sceneId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +47,7 @@ public class SceneDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_simple_recyclerview);
         ButterKnife.bind(this);
 
-        final int articleId = getIntent().getIntExtra(BUNDLE_KEY_SCENE_ID,-1);
+        sceneId = getIntent().getIntExtra(BUNDLE_KEY_SCENE_ID,-1);
         String name = getIntent().getStringExtra(BUNDLE_KEY_SCENE_NAME);
         isFavorite= getIntent().getBooleanExtra(BUNDLE_KEY_SCENE_IS_FAVORITE,false);
 
@@ -65,7 +59,7 @@ public class SceneDetailActivity extends BaseActivity {
         rv.setLayoutManager(mLayoutManager);
 
 
-        ScenePresenter.getSceneDetail(getApplicationContext(), articleId, SPUtils.getCityId(), 1, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), null, new CommonListener<SceneDetailModel>() {
+        ScenePresenter.getSceneDetail(getApplicationContext(), sceneId, SPUtils.getCityId(), 1, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), null, new CommonListener<SceneDetailModel>() {
                 @Override
                 public void successListener(SceneDetailModel response) {
                     getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
@@ -75,8 +69,9 @@ public class SceneDetailActivity extends BaseActivity {
                                 Toast.makeText(getApplicationContext(),R.string.process_running_please_wait,Toast.LENGTH_SHORT).show();
                                 return;
                             }
+                            System.out.println("scene "+isFavorite+"~"+ sceneId);
                             if (isFavorite){
-                                ScenePresenter.delFavoriteScene(getApplicationContext(), articleId, new CommonListener() {
+                                ScenePresenter.delFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
                                     @Override
                                     public void successListener(Object response) {
                                         mFavoriteRunning = false;
@@ -92,7 +87,7 @@ public class SceneDetailActivity extends BaseActivity {
                                     }
                                 });
                             }else{
-                                ScenePresenter.addFavoriteScene(getApplicationContext(), articleId, new CommonListener() {
+                                ScenePresenter.addFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
                                     @Override
                                     public void successListener(Object response) {
                                         mFavoriteRunning = false;

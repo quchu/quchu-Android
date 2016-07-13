@@ -25,6 +25,9 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -36,9 +39,11 @@ import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.model.MyGeneModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.widget.PolygonProgressView;
 
 public class MeFragment extends BaseFragment implements View.OnClickListener {
@@ -306,20 +311,19 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }, 100);
     }
 
-//    @Subscribe
-//    public void onEvenBug(QuchuEventModel model) {
-//        if (model.getFlag() == EventFlags.EVENT_GOTO_HOME_PAGE) {
-//            finish();
-//        }
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        EventBus.getDefault().unregister(this);
+//        super.onStop();
 //    }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-////        if (EventBus.getDefault().isRegistered(this)) {
-////            EventBus.getDefault().unregister(this);
-////        }
-//    }
 
     public void notReadMassage(int cound) {
         unReadMassage.setText(String.valueOf(cound));

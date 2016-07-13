@@ -1,5 +1,7 @@
 package co.quchu.quchu.model;
 
+import java.util.Arrays;
+
 /**
  * Created by Nico on 16/7/5.
  */
@@ -84,5 +86,20 @@ public class SceneModel {
 
     public void setWidth(String width) {
         this.width = width;
+    }
+
+    @Override
+    public String toString() {
+        return "SceneModel{" +
+                "height='" + height + '\'' +
+                ", rgb='" + rgb + '\'' +
+                ", sceneContent='" + sceneContent + '\'' +
+                ", sceneCover='" + sceneCover + '\'' +
+                ", sceneId=" + sceneId +
+                ", sceneName='" + sceneName + '\'' +
+                ", sceneTitle=" + Arrays.toString(sceneTitle) +
+                ", width='" + width + '\'' +
+                ", intro='" + intro + '\'' +
+                '}';
     }
 }

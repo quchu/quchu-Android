@@ -404,9 +404,25 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (event.getFlag() == EventFlags.EVENT_NEW_CITY_SELECTED) {
-            recommendTitleLocationIv.setText(SPUtils.getCityName());
+
+        switch (event.getFlag()) {
+            case EventFlags.EVENT_NEW_CITY_SELECTED:
+                recommendTitleLocationIv.setText(SPUtils.getCityName());
+                break;
+            case EventFlags.EVENT_USER_LOGIN_SUCCESS:
+                if (viewPagerIndex==2){
+                    tvTitle.setText(AppContext.user.getFullname());
+                    tvRight.setText(R.string.edit);
+                }
+                break;
+            case EventFlags.EVENT_USER_LOGOUT:
+                if (viewPagerIndex==2){
+                    tvTitle.setText("未知生物");
+                    tvRight.setText(R.string.login);
+                }
+                break;
         }
+
     }
 
     @Override
