@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
@@ -22,6 +23,7 @@ import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.ArticleWithBannerModel;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.EventFlags;
@@ -44,6 +46,10 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     ErrorView errorView;
     @Bind(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
+    @Bind(R.id.rlEmptyView)
+    View rlEmptyView;
+    @Bind(R.id.action_buttton)
+    View action_buttton;
 
 
 
@@ -55,6 +61,12 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         View view = inflater.inflate(R.layout.fragment_classify, container, false);
         ButterKnife.bind(this, view);
 
+        action_buttton.setVisibility(View.GONE);
+        if (NetUtil.isNetworkConnected(getActivity())){
+            rlEmptyView.setVisibility(View.GONE);
+        }else{
+            rlEmptyView.setVisibility(View.VISIBLE);
+        }
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
@@ -143,6 +155,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     public void onMessageEvent(QuchuEventModel event) {
         switch (event.getFlag()){
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
+                rlEmptyView.setVisibility(View.GONE);
                 getArticles();
                 break;
         }
@@ -150,6 +163,10 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        getArticles();
+        if (NetUtil.isNetworkConnected(getActivity())){
+            getArticles();
+        }else{
+            Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+        }
     }
 }

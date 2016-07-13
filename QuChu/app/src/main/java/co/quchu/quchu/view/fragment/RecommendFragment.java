@@ -10,13 +10,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
@@ -37,6 +37,7 @@ import co.quchu.quchu.model.PagerModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -74,6 +75,10 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     RadioGroup radioGroup;
     @Bind(R.id.rvGrid)
     RecyclerView rvGrid;
+    @Bind(R.id.rlEmptyView)
+    View rlEmptyView;
+    @Bind(R.id.action_buttton)
+    View action_buttton;
 
     public static final int ANIMATION_DURATION = 350;
 
@@ -94,6 +99,14 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
 
+
+        action_buttton.setVisibility(View.GONE);
+        if (NetUtil.isNetworkConnected(getActivity())){
+            rlEmptyView.setVisibility(View.GONE);
+        }else{
+            rlEmptyView.setVisibility(View.VISIBLE);
+        }
+
         rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin), 2));
         mMySceneAdapter = new MySceneAdapter(this, mFavoriteSceneList, this);
         vpMyScene.setClipToPadding(false);
@@ -101,6 +114,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         vpMyScene.setPadding(padding, 0, padding, 0);
         vpMyScene.setPageMargin(padding / 2);
         vpMyScene.setAdapter(mMySceneAdapter);
+
 
         mAllSceneGridAdapter = new AllSceneGridAdapter(mAllSceneList, new AllSceneGridAdapter.OnItemClickListener() {
             @Override
@@ -146,13 +160,13 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbFavorites:
-                        if (mFavoriteSceneList.size()==0){
-                            getMyScene();
-                        }
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
                         vpMyScene.setVisibility(View.VISIBLE);
 
+                        if (rvGrid.getChildCount()==0){
+                            rvGrid.setVisibility(View.GONE);
+                        }
                         for (int i = rvGrid.getChildCount() - 1; i >= 0; i--) {
                             if (rvGrid.getChildAt(i) == null) {
                                 return;
@@ -200,9 +214,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 //                                }).start();
                         break;
                     case R.id.rbAll:
-                        if (mAllSceneList.size()==0) {
-                            getData(false);
-                        }
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
                         int edge = ScreenUtils.getScreenWidth(getActivity());
@@ -220,7 +231,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                         rvGrid.animate().alpha(1).setDuration(ANIMATION_DURATION).withEndAction(new Runnable() {
                             @Override
                             public void run() {
-                                vpMyScene.setVisibility(View.INVISIBLE);
+                                vpMyScene.setVisibility(View.GONE);
                             }
                         }).start();
 //                        tvPageIndicator.animate()
@@ -293,7 +304,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
                 break;
             case "02"://切换到场景工坊页面
-                vpMyScene.setVisibility(View.INVISIBLE);
+                vpMyScene.setVisibility(View.GONE);
                 radioGroup.check(R.id.rbAll);
                 break;
             case "03":
@@ -447,6 +458,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 break;
 
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
+                rlEmptyView.setVisibility(View.GONE);
                 getMyScene();
                 getData(false);
                 break;
@@ -488,13 +500,22 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         }else{
             tvPageIndicatorLabel.setText("of");
-            tvPageIndicatorCurrent.setText(String.valueOf(index + 1));
-            TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+            if (vpMyScene.getChildCount()>0){
+                tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
+            }else{
+                if (null!=mFavoriteSceneList){
+                    tvPageIndicatorCurrent.setText(String.valueOf(1));
+                }else{
+                    tvPageIndicatorCurrent.setText(mFavoriteSceneList.size());
+                }
+            }
+            TvPageIndicatorSize.setText(String.valueOf(mFavoriteSceneList.size()));
+
+
         }
 
         mMySceneAdapter.notifyDataSetChanged();
         mAllSceneGridAdapter.notifyDataSetChanged();
-        vpMyScene.postInvalidate();
     }
 
 

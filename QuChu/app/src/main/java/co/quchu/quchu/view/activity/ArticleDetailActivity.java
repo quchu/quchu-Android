@@ -123,7 +123,8 @@ public class ArticleDetailActivity extends BaseActivity {
                     public void successListener(Object response) {
                         mFavoriteProgressRunning = false;
                         Toast.makeText(getApplicationContext(),R.string.add_to_favorite_article_success,Toast.LENGTH_SHORT).show();
-                        ivFavorite.setImageResource(R.mipmap.ic_favorite);
+                        ivFavorite.setImageResource(R.mipmap.ic_favorite_hl);
+                        mArticleDetailModel.getArticle().setFavorite(true);
                     }
 
                     @Override
@@ -138,7 +139,8 @@ public class ArticleDetailActivity extends BaseActivity {
                     public void successListener(Object response) {
                         mFavoriteProgressRunning = false;
                         Toast.makeText(getApplicationContext(),R.string.del_to_favorite_article_success,Toast.LENGTH_SHORT).show();
-                        ivFavorite.setImageResource(R.mipmap.ic_favorite_hl);
+                        ivFavorite.setImageResource(R.mipmap.ic_favorite);
+                        mArticleDetailModel.getArticle().setFavorite(false);
                     }
 
                     @Override

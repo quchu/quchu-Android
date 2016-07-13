@@ -67,9 +67,9 @@ public class AppContext extends Application {
                 String strAction = intent.getAction();
 
                 if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
-                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "screen off", "", System.currentTimeMillis());
+                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "screenOff", "", System.currentTimeMillis());
                 } else if (strAction.equals(Intent.ACTION_SCREEN_ON)) {
-                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "screen on", "", System.currentTimeMillis());
+                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "screenOn", "", System.currentTimeMillis());
                 }
             }
         };
@@ -129,6 +129,7 @@ public class AppContext extends Application {
         initWidths();
 
 
+        //TODO revert sensitive to 100
         if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=1){
             UserBehaviorPresentor.postBehaviors(getApplicationContext(), UserBehaviorPresentor.getBehaviors(getApplicationContext()), new CommonListener() {
                 @Override

@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import co.quchu.quchu.model.FootprintModel;
@@ -22,6 +23,7 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.DatabaseHelper;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -122,7 +124,7 @@ public class UserBehaviorPresentor {
     public static void postBehaviors(final Context context, List<UserBehaviorModel> data, final CommonListener pListener) {
 
 
-        JSONObject jsonObject;
+        JSONObject jsonObject = null;
         JSONObject jsonObjectAll = null;
         JSONArray jsonArray;
         try {
@@ -140,16 +142,17 @@ public class UserBehaviorPresentor {
                 }
                 jsonArray.put(jsonObjectChild);
             }
-            jsonObjectAll = new JSONObject();
             jsonObject.put("UserBehaviors",jsonArray);
             jsonObject.put("Device","android");
-            jsonObjectAll.put("UserBehaviors",jsonObject);
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        NetService.post(context, NetApi.postUserBehavior,jsonObjectAll, new IRequestListener() {
+
+
+
+        NetService.postRaw(context, NetApi.postUserBehavior,jsonObject, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 delBehaviors(context);
@@ -162,6 +165,29 @@ public class UserBehaviorPresentor {
                 return false;
             }
         });
+    }
+
+    private static String getBodyInfo(JSONObject mJsonRequest) {
+        String _Body = "";
+        if (null != mJsonRequest) {
+            Iterator<String> _Iterator = mJsonRequest.keys();
+            while (_Iterator.hasNext()) {
+                String key = _Iterator.next();
+                try {
+                    _Body += key + "=" + mJsonRequest.getString(key);
+                    if (_Iterator.hasNext())
+                        _Body += "&";
+                    LogUtils.json(_Body);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    System.gc();
+                }
+            }
+        }
+
+        // _Body = _Body.substring(0, _Body.length() - 1);
+        return _Body;
     }
 
 

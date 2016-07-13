@@ -28,9 +28,10 @@ public class HttpRequest extends JsonObjectRequest {
     private int mMethod;
     private String mUrl;
     private Context cont = AppContext.mContext;
+    private boolean mPostRaw;
 //    public static boolean isJson = true;
 
-    public HttpRequest(int method, String url, JSONObject jsonRequest,
+    public HttpRequest(int method,boolean postRaw, String url, JSONObject jsonRequest,
                        Listener<JSONObject> listener, ErrorListener errorListener) {
         super(method, url, jsonRequest, listener, errorListener);
         // LogUtils.E("HttpRequest" + method + "/////" + url + "mJsonRequest"
@@ -38,6 +39,7 @@ public class HttpRequest extends JsonObjectRequest {
         this.mMethod = method;
         this.mUrl = url;
         this.mJsonRequest = jsonRequest;
+        this.mPostRaw = postRaw;
     }
 
     @Override
@@ -76,23 +78,29 @@ public class HttpRequest extends JsonObjectRequest {
 
     @SuppressWarnings("unchecked")
     private String getBodyInfo() {
+
         String _Body = "";
-        if (null != mJsonRequest) {
-            Iterator<String> _Iterator = mJsonRequest.keys();
-            while (_Iterator.hasNext()) {
-                String key = _Iterator.next();
-                try {
-                    _Body += key + "=" + mJsonRequest.getString(key);
-                    if (_Iterator.hasNext())
-                        _Body += "&";
-                    LogUtils.json(_Body);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    System.gc();
+        if (mPostRaw){
+            _Body = mJsonRequest.toString();
+        }else{
+            if (null != mJsonRequest) {
+                Iterator<String> _Iterator = mJsonRequest.keys();
+                while (_Iterator.hasNext()) {
+                    String key = _Iterator.next();
+                    try {
+                        _Body += key + "=" + mJsonRequest.getString(key);
+                        if (_Iterator.hasNext())
+                            _Body += "&";
+                        LogUtils.json(_Body);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
+                        System.gc();
+                    }
                 }
             }
         }
+
 
         // _Body = _Body.substring(0, _Body.length() - 1);
         return _Body;

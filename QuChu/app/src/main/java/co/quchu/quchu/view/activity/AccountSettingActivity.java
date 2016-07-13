@@ -349,6 +349,8 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onSuccess(String photoUrl) {
                         refreshUserInfo();
+                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATE));
+
                     }
 
                     @Override

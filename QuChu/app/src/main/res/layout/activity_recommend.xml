@@ -6,7 +6,8 @@
 
     <include
         android:id="@+id/title"
-        layout="@layout/layout_mai_title" />
+        layout="@layout/layout_mai_title"
+        />
 
 
     <View

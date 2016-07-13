@@ -421,6 +421,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case EventFlags.EVENT_USER_LOGOUT:
 
                 break;
+            case EventFlags.EVENT_USER_INFO_UPDATE:
+                name.setText(AppContext.user.getFullname());
+                break;
         }
     }
 

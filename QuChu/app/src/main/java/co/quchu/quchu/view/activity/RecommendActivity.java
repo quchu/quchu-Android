@@ -335,7 +335,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
-            tvTitle.setText("");
+            tvTitle.setText(R.string.app_name);
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {

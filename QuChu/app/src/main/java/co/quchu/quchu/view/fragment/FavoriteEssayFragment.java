@@ -73,7 +73,7 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
     @Override
     public void itemClick(final RecyclerView.ViewHolder holder, final FavoriteEssayBean.ResultBean item, int type, int position) {
         if (type == R.id.swipe_delete_content) {
-            ArticleDetailActivity.enterActivity(getActivity(), String.valueOf(item.getArticleId()));
+            ArticleDetailActivity.enterActivity(getActivity(), String.valueOf(item.getArticleId()),String.valueOf(item.getArticleName()));
         } else {
             CommonDialog dialog = CommonDialog.newInstance("提示", "确定取消收藏吗?", "确定", "取消");
 
