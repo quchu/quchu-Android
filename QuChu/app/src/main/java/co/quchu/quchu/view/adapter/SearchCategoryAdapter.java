@@ -29,6 +29,8 @@ public class SearchCategoryAdapter extends SearchPopWinBaseAdapter {
         notifyDataSetChanged();
     }
 
+
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final SearchCategoryBean bean = datas.get(position);

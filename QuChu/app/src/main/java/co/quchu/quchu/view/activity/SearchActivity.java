@@ -261,11 +261,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
         switch (type) {
             case 0:
+                if (categoryParentList==null){
+                    SearchPresenter.getCategoryTag(this);
+                }
                 categoryRecyclerView.setVisibility(View.VISIBLE);
                 areaView.setVisibility(View.INVISIBLE);
                 sortRecyclerView.setVisibility(View.INVISIBLE);
-
-
                 break;
             case 1:
                 if (areaData == null) {
@@ -289,8 +290,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private List<SearchSortBean> sortList;
-//    private ArrayList<SearchCategoryBean> categoryBeanList;
-//    private ArrayList<SearchCategoryBean> categoryParentList;
+    private ArrayList<SearchCategoryBean> categoryBeanList;
+    private ArrayList<SearchCategoryBean> categoryParentList;
 
     private List<AreaBean> areaData;
 
@@ -308,16 +309,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     //获取大的分类
     public void initCategoryList(ArrayList<SearchCategoryBean> categoryParentList) {
-//        this.categoryParentList = categoryParentList;
-        resultAdapter.setCategory(true);
-        resultAdapter.setCategoryList(categoryParentList);
-        SearchPresenter.getTagByParentId(SearchActivity.this, categoryParentList.get(0).getTagId());
+        this.categoryParentList = categoryParentList;
+        if (resultAdapter.isCategory()) {
+            resultAdapter.setCategoryList(categoryParentList);
+//        SearchPresenter.getTagByParentId(SearchActivity.this, categoryParentList.get(0).getTagId());
+        } else {
+            filterCategoryAdapter.setDatas(categoryParentList, "全部分类", "");
+        }
 
     }
 
     //小的分类
     public void setCategoryList(ArrayList<SearchCategoryBean> categoryBeanList) {
-//        this.categoryBeanList = categoryBeanList;
+        this.categoryBeanList = categoryBeanList;
         filterCategoryAdapter.setDatas(categoryBeanList, categoryGroupAllString, categoryGroupAllId);
     }
 
@@ -435,7 +439,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         p.put("search_keyword", str);
         MobclickAgent.onEvent(this, "search_type", p);
 
-
         SearchPresenter.searchFromService(this, areaId, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, circleId, sortType, new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList, int maxPageNo) {
@@ -503,12 +506,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                             if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
                                 Toast.makeText(SearchActivity.this, getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT).show();
                             } else {
+                                if (resultAdapter.isCategory()) {
+                                    categoryCode = "";
+                                }
+                                //分类列表显示大的分类
+                                if (filterCategoryAdapter.getItemCount() == 0) {
+                                    filterCategoryAdapter.setDatas(categoryParentList, "全部分类", "");
+                                }
                                 seachStr(false);
                             }
                         }
                     } else {
                         Toast.makeText(SearchActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
-                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(firstFilterIcon.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(searchResultRv.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                 }
                 return false;

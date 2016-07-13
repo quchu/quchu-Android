@@ -44,8 +44,8 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SceneDetailActivity;
-import co.quchu.quchu.view.adapter.MySceneAdapter;
 import co.quchu.quchu.view.adapter.AllSceneGridAdapter;
+import co.quchu.quchu.view.adapter.MySceneAdapter;
 import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 
@@ -99,13 +99,13 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         vpMyScene.setClipToPadding(false);
         int padding = getResources().getDimensionPixelSize(R.dimen.recommend_card_padding);
         vpMyScene.setPadding(padding, 0, padding, 0);
-        vpMyScene.setPageMargin(padding/2);
+        vpMyScene.setPageMargin(padding / 2);
         vpMyScene.setAdapter(mMySceneAdapter);
 
         mAllSceneGridAdapter = new AllSceneGridAdapter(mAllSceneList, new AllSceneGridAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(),false);
+                SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(), false);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
                 }
@@ -146,6 +146,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbFavorites:
+                        if (mFavoriteSceneList.size()==0){
+                            getMyScene();
+                        }
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
                         vpMyScene.setVisibility(View.VISIBLE);
@@ -197,6 +200,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 //                                }).start();
                         break;
                     case R.id.rbAll:
+                        if (mAllSceneList.size()==0) {
+                            getData(false);
+                        }
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
                         int edge = ScreenUtils.getScreenWidth(getActivity());
@@ -240,14 +246,12 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         DialogUtil.showProgess(getActivity(),R.string.loading_dialog_text);
 
         getMyScene();
-        getData(false);
         return view;
     }
 
 
-
-    private void addFavoriteRunning(final int position){
-        if (mAddFavoriteRunning){
+    private void addFavoriteRunning(final int position) {
+        if (mAddFavoriteRunning) {
             return;
         }
         mAddFavoriteRunning = true;
@@ -256,7 +260,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         ScenePresenter.addFavoriteScene(getContext(), sid, new CommonListener() {
             @Override
             public void successListener(Object response) {
-                notifyAdapters(position,true);
+                notifyAdapters(position, true);
                 mAddFavoriteRunning = false;
                 //Toast.makeText(getActivity(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
             }
@@ -300,8 +304,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     }
 
 
-    public void getMyScene(){
-
+    public void getMyScene() {
         ScenePresenter.getMyScene(getContext(), SPUtils.getCityId(), 1, new CommonListener<PagerModel<SceneModel>>() {
             @Override
             public void successListener(PagerModel<SceneModel> response) {
@@ -368,7 +371,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         }
         MobclickAgent.onEvent(getActivity(), "detail_c");
 
-        SceneDetailActivity.enterActivity(getActivity(), mFavoriteSceneList.get(position).getSceneId(), mFavoriteSceneList.get(position).getSceneName(),true);
+        SceneDetailActivity.enterActivity(getActivity(), mFavoriteSceneList.get(position).getSceneId(), mFavoriteSceneList.get(position).getSceneName(), true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
         }
@@ -414,7 +417,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (null==event){
+        if (null == event) {
             return;
         }
         int sid;
@@ -440,6 +443,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                     }
                 }
                 notifyAdapters(index,false);
+
                 break;
 
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
@@ -460,14 +464,14 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
     private void notifyAdapters(int index, boolean add) {
 
-        if (index==-1){
+        if (index == -1) {
             return;
         }
 
         if (add){
             mFavoriteSceneList.add(0,mAllSceneList.get(index));
             mAllSceneList.remove(index);
-        }else{
+        } else {
             mAllSceneList.add(mFavoriteSceneList.get(index));
             mFavoriteSceneList.remove(index);
         }

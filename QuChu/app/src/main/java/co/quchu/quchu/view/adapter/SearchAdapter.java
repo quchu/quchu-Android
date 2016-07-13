@@ -48,6 +48,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
+    public boolean isCategory() {
+        return isCategory;
+    }
+
     @Override
     public int getItemViewType(int position) {
         return isCategory ? ITEM_TYPE_CATEGORY : ITEM_TYPE_RESULT;
