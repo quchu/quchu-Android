@@ -1,11 +1,15 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,12 +17,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,6 +37,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -118,11 +126,25 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         mAllSceneGridAdapter = new AllSceneGridAdapter(mAllSceneList, new AllSceneGridAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-                SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(), false);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                }
+            public void onItemClick(View v,int position) {
+
+
+
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    Intent transitionIntent = new Intent(getActivity(), SceneDetailActivity.class);
+//                    SimpleDraweeView placeImage = (SimpleDraweeView) v.findViewById(R.id.sdv);
+//                    TextView tvTitle = (TextView) v.findViewById(R.id.tvTitle);
+//
+//
+//                    Pair<View, String> imagePair = Pair.create((View) placeImage, "tImage");
+//                    Pair<View, String> textPair = Pair.create((View) tvTitle, "tNameHolder");
+//
+//                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imagePair, textPair);
+//                    ActivityCompat.startActivity(getActivity(), transitionIntent, options.toBundle());
+//                    ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+//                }else{
+                    SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(), false);
+//                }
             }
 
             @Override
@@ -259,6 +281,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
 
         getMyScene();
+        getData(false);
         return view;
     }
 

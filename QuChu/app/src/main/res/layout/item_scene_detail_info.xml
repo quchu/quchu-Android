@@ -19,6 +19,7 @@
         fresco:failureImage="@mipmap/ic_image_empty"
         fresco:failureImageScaleType="center"
         fresco:placeholderImage="@mipmap/ic_image_empty"
+        android:transitionName="tImage"
         fresco:placeholderImageScaleType="center" />
 
     <RelativeLayout
@@ -32,6 +33,7 @@
             style="@style/TextView.H1"
             android:layout_centerHorizontal="true"
             android:text="@string/empty_string"
+            android:transitionName="tNameHolder"
             android:textStyle="bold" />
 
 

@@ -44,7 +44,7 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
     private int mFinalAnimatedIndex = -1;
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
 
         if (position > mFinalAnimatedIndex) {
@@ -70,7 +70,7 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
             @Override
             public void onClick(View v) {
                 if (null != mOnItemClickListener) {
-                    mOnItemClickListener.onItemClick(position);
+                    mOnItemClickListener.onItemClick(holder.itemView,position);
                 }
             }
         });
@@ -117,7 +117,7 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(View v,int position);
         void onItemFavoriteClick(int position);
     }
 
