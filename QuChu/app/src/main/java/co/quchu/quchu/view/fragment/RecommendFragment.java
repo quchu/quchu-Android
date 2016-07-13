@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.base.GeTuiReceiver;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PagerModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -242,6 +243,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         view.setClickable(true);
 
+        DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+
         getMyScene();
         return view;
     }
@@ -259,12 +262,12 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             public void successListener(Object response) {
                 notifyAdapters(position, true);
                 mAddFavoriteRunning = false;
-                Toast.makeText(getActivity(), R.string.add_to_favorite_success, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
                 mAddFavoriteRunning = false;
             }
         });
@@ -305,6 +308,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         ScenePresenter.getMyScene(getContext(), SPUtils.getCityId(), 1, new CommonListener<PagerModel<SceneModel>>() {
             @Override
             public void successListener(PagerModel<SceneModel> response) {
+                DialogUtil.dismissProgessDirectly();
+                errorView.hideView();
+
                 if (response != null && response.getResult() != null) {
                     mFavoriteSceneList.clear();
                     mFavoriteSceneList.addAll(response.getResult());
@@ -312,10 +318,19 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                     tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
                     TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
                 }
+
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
+                DialogUtil.dismissProgessDirectly();
+                errorView.showViewDefault(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogUtil.showProgess(getActivity(), "加载中");
+                        getMyScene();
+                    }
+                });
             }
         });
     }
@@ -405,22 +420,44 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         if (null == event) {
             return;
         }
-        if (event.getContent() == null || event.getContent().length == 0)
-            return;
-        int sid = (int) event.getContent()[0];
+        int sid;
 
         int index = -1;
-        for (int j = 0; j < mAllSceneList.size(); j++) {
-            if (mAllSceneList.get(j).getSceneId() == sid) {
-                index = j;
-            }
-        }
+
         switch (event.getFlag()) {
             case EventFlags.EVENT_SCENE_FAVORITE:
+                sid = (int) event.getContent()[0];
+                for (int j = 0; j < mAllSceneList.size(); j++) {
+                    if (mAllSceneList.get(j).getSceneId() == sid) {
+                        index = j;
+                    }
+                }
+
                 notifyAdapters(index, true);
                 break;
             case EventFlags.EVENT_SCENE_CANCEL_FAVORITE:
+                sid = (int) event.getContent()[0];
+                for (int j = 0; j < mFavoriteSceneList.size(); j++) {
+                    if (mFavoriteSceneList.get(j).getSceneId() == sid) {
+                        index = j;
+                    }
+                }
                 notifyAdapters(index, false);
+
+                break;
+
+            case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
+                getMyScene();
+                getData(false);
+                break;
+
+
+            case EventFlags.EVENT_USER_LOGIN_SUCCESS:
+            case EventFlags.EVENT_USER_LOGOUT:
+                mAllSceneList.clear();
+                mFavoriteSceneList.clear();
+                getMyScene();
+                getData(false);
                 break;
         }
     }
@@ -432,18 +469,32 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         }
 
         if (add) {
-            mFavoriteSceneList.add(mAllSceneList.get(index));
+            mFavoriteSceneList.add(0, mAllSceneList.get(index));
             mAllSceneList.remove(index);
         } else {
             mAllSceneList.add(mFavoriteSceneList.get(index));
             mFavoriteSceneList.remove(index);
         }
 
+
+        if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0) {
+            tvPageIndicatorLabel.setText("你已经收藏全部场景");
+            tvPageIndicatorCurrent.setText("");
+            TvPageIndicatorSize.setText("");
+        } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0) {
+            tvPageIndicatorLabel.setText("你还没有收藏的详情");
+            tvPageIndicatorCurrent.setText("");
+            TvPageIndicatorSize.setText("");
+
+        } else {
+            tvPageIndicatorLabel.setText("of");
+            tvPageIndicatorCurrent.setText(String.valueOf(index + 1));
+            TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+        }
+
         mMySceneAdapter.notifyDataSetChanged();
         mAllSceneGridAdapter.notifyDataSetChanged();
-
-        tvPageIndicatorCurrent.setText(String.valueOf(index + 1));
-        TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+        vpMyScene.postInvalidate();
     }
 
 
@@ -467,4 +518,5 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     public ViewPager getVpMyScene() {
         return vpMyScene;
     }
+
 }

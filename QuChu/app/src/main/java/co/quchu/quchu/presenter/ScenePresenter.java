@@ -85,14 +85,14 @@ public class ScenePresenter {
         });
     }
 
-    public static void delFavoriteScene(Context context, int sceneId, final CommonListener listener){
+    public static void delFavoriteScene(Context context, final int sceneId, final CommonListener listener){
         HashMap<String,String> params = new HashMap<>();
         params.put("sceneId",String.valueOf(sceneId));
         NetService.get(context, NetApi.delFavoriteScene, params,new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 listener.successListener(response);
-                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_SCENE_CANCEL_FAVORITE));
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_SCENE_CANCEL_FAVORITE,sceneId));
             }
 
             @Override

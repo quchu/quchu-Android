@@ -111,6 +111,7 @@
         android:layout_below="@id/rgDisplayMode"
         android:visibility="gone"/>
 
+
     <co.quchu.quchu.widget.ErrorView
         android:id="@+id/errorView"
         android:layout_width="match_parent"

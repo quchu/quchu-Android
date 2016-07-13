@@ -12,14 +12,19 @@ import android.view.ViewGroup;
 import com.android.volley.VolleyError;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.ArticleWithBannerModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.ArticleDetailActivity;
 import co.quchu.quchu.view.adapter.ArticleAdapter;
@@ -49,6 +54,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_classify, container, false);
         ButterKnife.bind(this, view);
+
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
@@ -64,12 +70,13 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
      * 获取分类信息
      */
     public void getArticles() {
-
+        DialogUtil.showProgess(getActivity(),R.string.loading_dialog_text);
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
             public void successListener(final ArticleWithBannerModel response) {
-                DialogUtil.dismissProgessDirectly();
+
                 recyclerView.setVisibility(View.VISIBLE);
+                DialogUtil.dismissProgessDirectly();
                 errorView.hideView();
                 refreshLayout.setRefreshing(false);
 
@@ -79,7 +86,8 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
                     @Override
                     public void onItemClick(View v, int position) {
                         String articleId = response.getArticleList().getResult().get(position).getArticleId();
-                        ArticleDetailActivity.enterActivity(getActivity(),articleId);
+                        String articleTitle = response.getArticleList().getResult().get(position).getArticleName();
+                        ArticleDetailActivity.enterActivity(getActivity(),articleId,articleTitle);
                     }
                 });
             }
@@ -118,6 +126,26 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     public void onPause() {
         MobclickAgent.onPageEnd("h_discovery");
         super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        switch (event.getFlag()){
+            case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
+                getArticles();
+                break;
+        }
     }
 
     @Override

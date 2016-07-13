@@ -62,59 +62,61 @@ public class NearbyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby);
+
         mStrFilterPattern = "";
-        getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_tags_filter);
-        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mFilterTags.size() > 0) {
-                    TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(mFilterTags);
-                    tagsFilterDialog.show(getSupportFragmentManager(), "");
-                    tagsFilterDialog.setPickingListener(new TagsFilterDialog.OnFinishPickingListener() {
-                        @Override
-                        public void onFinishPicking(List<TagsModel> selection) {
-
-                            mRecommendPlaceIds = "";
-                            mStrFilterPattern = "";
-                            int selectionLenth = 0;
-                            mSelection.clear();
-
-                            for (int i = 0; i < selection.size(); i++) {
-                                if (selection.get(i).isPraise()){
-                                    mSelection.add(selection.get(i));
-                                    mStrFilterPattern += selection.get(i).getTagId();
-                                    mStrFilterPattern += "|";
-                                    selectionLenth ++;
-                                }
-                            }
-                            if (mStrFilterPattern.indexOf("|")!=-1){
-                                mStrFilterPattern = mStrFilterPattern.substring(0, mStrFilterPattern.length() - 1);
-                            }else if(selectionLenth==mData.size()){
-                                mStrFilterPattern = "";
-                            }
-                            mNearbyFilterSelectionAdapter.notifyDataSetChanged();
-
-                            DialogUtil.showProgess(NearbyActivity.this, R.string.loading_dialog_text);
-                            NearbyPresenter.getNearbyData(getApplicationContext(), mRecommendPlaceIds, mStrFilterPattern, 0, mPlaceId, SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
-                                @Override
-                                public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
-                                    mData.clear();
-                                    if (mMaxPageNo == -1) {
-                                        mMaxPageNo = pMaxPageNo;
-                                    }
-                                    if (null!=model){
-                                        mData.addAll(model);
-                                    }
-                                    mAdapter.notifyDataSetChanged();
-                                    DialogUtil.dismissProgess();
-                                }
-                            });
-                        }
-                    });
-                }
-
-            }
-        });
+        getEnhancedToolbar().getTitleTv().setText(R.string.guess_what_you_like);
+//        getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_tags_filter);
+//        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mFilterTags.size() > 0) {
+//                    TagsFilterDialog tagsFilterDialog = TagsFilterDialog.newInstance(mFilterTags);
+//                    tagsFilterDialog.show(getSupportFragmentManager(), "");
+//                    tagsFilterDialog.setPickingListener(new TagsFilterDialog.OnFinishPickingListener() {
+//                        @Override
+//                        public void onFinishPicking(List<TagsModel> selection) {
+//
+//                            mRecommendPlaceIds = "";
+//                            mStrFilterPattern = "";
+//                            int selectionLenth = 0;
+//                            mSelection.clear();
+//
+//                            for (int i = 0; i < selection.size(); i++) {
+//                                if (selection.get(i).isPraise()){
+//                                    mSelection.add(selection.get(i));
+//                                    mStrFilterPattern += selection.get(i).getTagId();
+//                                    mStrFilterPattern += "|";
+//                                    selectionLenth ++;
+//                                }
+//                            }
+//                            if (mStrFilterPattern.indexOf("|")!=-1){
+//                                mStrFilterPattern = mStrFilterPattern.substring(0, mStrFilterPattern.length() - 1);
+//                            }else if(selectionLenth==mData.size()){
+//                                mStrFilterPattern = "";
+//                            }
+//                            mNearbyFilterSelectionAdapter.notifyDataSetChanged();
+//
+//                            DialogUtil.showProgess(NearbyActivity.this, R.string.loading_dialog_text);
+//                            NearbyPresenter.getNearbyData(getApplicationContext(), mRecommendPlaceIds, mStrFilterPattern, 0, mPlaceId, SPUtils.getCityId(), SPUtils.getLatitude(), SPUtils.getLongitude(), mCurrentPageNo, new NearbyPresenter.getNearbyDataListener() {
+//                                @Override
+//                                public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
+//                                    mData.clear();
+//                                    if (mMaxPageNo == -1) {
+//                                        mMaxPageNo = pMaxPageNo;
+//                                    }
+//                                    if (null!=model){
+//                                        mData.addAll(model);
+//                                    }
+//                                    mAdapter.notifyDataSetChanged();
+//                                    DialogUtil.dismissProgess();
+//                                }
+//                            });
+//                        }
+//                    });
+//                }
+//
+//            }
+//        });
         mPlaceId = getIntent().getIntExtra(BUNDLE_KEY_PID, -1);
         mRecommendPlaceIds = getIntent().getStringExtra(BUNDLE_KEY_RECOMMEND_PIDS);
         if (null!=getIntent().getSerializableExtra(BUNDLE_KEY_DATA)){
@@ -123,6 +125,7 @@ public class NearbyActivity extends BaseActivity {
 
 
         ButterKnife.bind(this);
+        rvSelection.setBackgroundColor(getResources().getColor(R.color.standard_color_white));
         mAdapter = new NearbyAdapter(mData, new NearbyAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {

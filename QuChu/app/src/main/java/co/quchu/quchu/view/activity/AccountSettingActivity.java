@@ -17,6 +17,7 @@ import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -42,6 +43,7 @@ import co.quchu.quchu.gallery.FrescoImageLoader;
 import co.quchu.quchu.gallery.FunctionConfig;
 import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoInfo;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -50,6 +52,7 @@ import co.quchu.quchu.presenter.AccountSettingPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -77,6 +80,10 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     RelativeLayout modiffPass;
     @Bind(R.id.saveUserInfo)
     TextView mSaveUserInfo;
+    @Bind(R.id.vDividerUserName)
+    View vDividerUserName;
+    @Bind(R.id.rlUserName)
+    View rlUserName;
 
 
     private boolean mProfileModified = false;
@@ -93,6 +100,14 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         rightTv.setText("退出登录");
         rightTv.setOnClickListener(this);
         userInfoBinding();
+
+        if (null==AppContext.user || AppContext.user.isIsVisitors()){
+            vDividerUserName.setVisibility(View.GONE);
+            rlUserName.setVisibility(View.GONE);
+        }else{
+            vDividerUserName.setVisibility(View.VISIBLE);
+            rlUserName.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -107,6 +122,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
         nickname.setText(AppContext.user.getFullname());
         nickname.setSelection(user.getFullname().length());
+        nickname.clearFocus();
         photoNumber.setText(AppContext.user.getUsername());
         accountSettingUserLocation.setText(AppContext.user.getLocation());
         if ("男".equals(user.getGender())) {
@@ -196,6 +212,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                                 @Override
                                 public void isUnique(JSONObject msg) {
                                     confirmDialog.dismiss();
+                                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
                                     finish();
                                 }
 

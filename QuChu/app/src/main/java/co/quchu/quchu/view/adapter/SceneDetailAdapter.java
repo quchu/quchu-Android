@@ -123,6 +123,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             ((RecommendedViewHolder) holder).tvCircleName.setText(null != objScene.getPlaceInfo().getAreaCircleName() ? objScene.getPlaceInfo().getAreaCircleName() : "");
             ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.getPlaceInfo().gdLatitude), Double.valueOf(objScene.getPlaceInfo().gdLongitude)));
+            ((RecommendedViewHolder) holder).tvPrice.setText("¥"+objScene.getPlaceInfo().getPrice()+"元");
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,6 +164,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             ((PlaceViewHolder) holder).tvCircleName.setText(null!=objScene.getAreaCircleName()?objScene.getAreaCircleName():"");
             ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(objScene.gdLatitude),Double.valueOf(objScene.gdLongitude)));
+
+            ((PlaceViewHolder) holder).tvPrice.setText("¥"+objScene.getPrice()+"元");
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -255,6 +258,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvCircleName;
         @Bind(R.id.tvDistance)
         TextView tvDistance;
+        @Bind(R.id.tvPrice)
+        TextView tvPrice;
 
         public RecommendedViewHolder(View itemView) {
             super(itemView);
@@ -297,6 +302,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvCircleName;
         @Bind(R.id.tvDistance)
         TextView tvDistance;
+        @Bind(R.id.tvPrice)
+        TextView tvPrice;
 
         public PlaceViewHolder(View itemView) {
             super(itemView);

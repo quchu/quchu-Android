@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
@@ -160,5 +161,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             return null;
         }
     }
+
 
 }

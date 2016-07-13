@@ -114,6 +114,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
 
+        if (null == AppContext.user || AppContext.user.isIsVisitors()) {
+            tvTitle.setText("未知生物");
+            tvRight.setText(R.string.login);
+        } else {
+            tvTitle.setText(AppContext.user.getFullname());
+            tvRight.setText(R.string.edit);
+        }
 
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
@@ -184,6 +191,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             accessPushMessage();
         }
 
+
     }
 
 
@@ -198,12 +206,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
         switch (bean.getType()) {
             case "01":
                 rbBottomTab.check(R.id.rbDiscovery);
-                ArticleDetailActivity.enterActivity(this, bean.getEventId());
+                ArticleDetailActivity.enterActivity(this, bean.getEventId(), bean.getTitle());
                 break;
             case "03":
                 rbBottomTab.check(R.id.rbDiscovery);
                 break;
         }
+
 
     }
 
@@ -437,9 +446,25 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (event.getFlag() == EventFlags.EVENT_NEW_CITY_SELECTED) {
-            recommendTitleLocationIv.setText(SPUtils.getCityName());
+
+        switch (event.getFlag()) {
+            case EventFlags.EVENT_NEW_CITY_SELECTED:
+                recommendTitleLocationIv.setText(SPUtils.getCityName());
+                break;
+            case EventFlags.EVENT_USER_LOGIN_SUCCESS:
+                if (viewPagerIndex == 2) {
+                    tvTitle.setText(AppContext.user.getFullname());
+                    tvRight.setText(R.string.edit);
+                }
+                break;
+            case EventFlags.EVENT_USER_LOGOUT:
+                if (viewPagerIndex == 2) {
+                    tvTitle.setText("未知生物");
+                    tvRight.setText(R.string.login);
+                }
+                break;
         }
+
     }
 
     @Override
