@@ -2,35 +2,27 @@ package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
-import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
@@ -163,7 +155,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
     @Override
     public void loginSuccess(int type, String token, String appId) {
-        startActivity(new Intent(getActivity(), RecommendActivity.class));
+        startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN,true));
         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
     }
 

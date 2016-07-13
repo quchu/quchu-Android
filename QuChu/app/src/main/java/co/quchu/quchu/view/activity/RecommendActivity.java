@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -95,8 +96,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     private ArticleFragment articleFragment;
     private MeFragment meFragment;
 
-
-    private Fragment firstShowFragment;
+    public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
 
     @Override
     public ArrayMap<String, Object> getUserBehaviorArguments() {
@@ -119,14 +119,12 @@ public class RecommendActivity extends BaseBehaviorActivity {
         recommendFragment = new RecommendFragment();
         articleFragment = new ArticleFragment();
         meFragment = new MeFragment();
-        firstShowFragment = recommendFragment;
+
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, recommendFragment, "page_1")
-//
-//                .add(R.id.container, meFragment, "page_3")
-//                .hide(articleFragment)
-//                .hide(meFragment)
                 .commitAllowingStateLoss();
         initView();
 
@@ -137,6 +135,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
 
+
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
             @Override
             public void hasCityList(ArrayList<CityModel> pList) {
@@ -145,6 +144,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 checkIfCityChanged();
             }
         });
+
+        if (getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
+            rbBottomTab.check(R.id.rbMine);
+            if (!meFragment.isAdded()) {
+                getSupportFragmentManager().beginTransaction().add(R.id.container, meFragment, "page_3").commitAllowingStateLoss();
+            }
+            viewpagerSelected(2);
+
+        }
+
+
         rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -152,30 +162,28 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 switch (checkedId) {
 
                     case R.id.rbRecommend:
-                        transaction.show(recommendFragment).hide(firstShowFragment).commit();
-                        firstShowFragment = recommendFragment;
                         viewpagerSelected(0);
                         break;
                     case R.id.rbDiscovery:
-                        if (getSupportFragmentManager().findFragmentByTag("page_2") == null) {
-                            transaction.add(R.id.container, articleFragment, "page_2");
+                        if (!articleFragment.isAdded()) {
+                            transaction.add(R.id.container, articleFragment, "page_2").commitAllowingStateLoss();
                         }
-                        transaction.show(articleFragment).hide(firstShowFragment).commit();
-                        firstShowFragment = articleFragment;
                         viewpagerSelected(1);
                         break;
                     case R.id.rbMine:
-                        if (getSupportFragmentManager().findFragmentByTag("page_3") == null) {
-                            transaction.add(R.id.container, meFragment, "page_3");
+                        if (!meFragment.isAdded()) {
+                            transaction.add(R.id.container, meFragment, "page_3").commitAllowingStateLoss();
                         }
-                        transaction.show(meFragment).hide(firstShowFragment).commit();
-                        firstShowFragment = meFragment;
                         viewpagerSelected(2);
                         break;
                 }
             }
         });
-        accessPushMessage();
+
+        if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
+            accessPushMessage();
+        }
+
     }
 
 
@@ -359,7 +367,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             } else {
                 tvTitle.setText("未知生物");
             }
-            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+//            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
             vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
                 @Override

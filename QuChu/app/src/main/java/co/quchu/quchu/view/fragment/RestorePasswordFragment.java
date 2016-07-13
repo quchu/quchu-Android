@@ -119,7 +119,7 @@ public class RestorePasswordFragment extends Fragment {
                                     Toast.makeText(getActivity(),R.string.promote_password_update_success,Toast.LENGTH_SHORT).show();
                                     SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
                                     MobclickAgent.onProfileSignIn("loginphone_c", AppContext.user.getUserId() + "");
-                                    getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
+                                    getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN,true));
                                     getActivity().finish();
                                     mRequestRunning = false;
                                 }

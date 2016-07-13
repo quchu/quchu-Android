@@ -145,7 +145,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbFavorites:
-                        if (mFavoriteSceneList.size()==0){
+                        if (mFavoriteSceneList.size() == 0) {
                             getMyScene();
                         }
                         vpMyScene.clearAnimation();
@@ -199,7 +199,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 //                                }).start();
                         break;
                     case R.id.rbAll:
-                        if (mAllSceneList.size()==0) {
+                        if (mAllSceneList.size() == 0) {
                             getData(false);
                         }
                         vpMyScene.clearAnimation();
@@ -405,6 +405,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         if (null == event) {
             return;
         }
+        if (event.getContent() == null || event.getContent().length == 0)
+            return;
         int sid = (int) event.getContent()[0];
 
         int index = -1;

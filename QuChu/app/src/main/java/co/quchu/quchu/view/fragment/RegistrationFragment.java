@@ -16,8 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -156,7 +154,7 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
 
                                 Toast.makeText(getActivity(),R.string.promote_account_create_success,Toast.LENGTH_SHORT).show();
                                 SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
-                                getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
+                                getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN,true));
                                 getActivity().finish();
                                 mRequestRunning = false;
                             }
