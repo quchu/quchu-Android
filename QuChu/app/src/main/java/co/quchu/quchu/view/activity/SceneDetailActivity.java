@@ -151,11 +151,8 @@ public class SceneDetailActivity extends BaseActivity {
             return;
         }
         switch (event.getFlag()){
-            case EventFlags.EVENT_SCENE_FAVORITE:
-
-                break;
-            case EventFlags.EVENT_SCENE_CANCEL_FAVORITE:
-
+            case EventFlags.EVENT_GOTO_HOME_PAGE:
+                finish();
                 break;
         }
     }

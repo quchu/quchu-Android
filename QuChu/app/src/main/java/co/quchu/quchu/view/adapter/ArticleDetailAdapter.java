@@ -26,24 +26,49 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private Context mContext;
     private List<SimplePlaceModel> mDataSet;
+    private SimpleArticleModel mSimpleArticleModel;
 
     private CommonItemClickListener mListener;
 
-    public ArticleDetailAdapter(Context mContext, List<SimplePlaceModel> mDataSet,CommonItemClickListener listener) {
+    public static final int TYPE_BANNER = 0x001;
+    public static final int TYPE_NORMAL = 0x002;
+
+
+    public ArticleDetailAdapter(Context mContext, List<SimplePlaceModel> mDataSet, SimpleArticleModel mSimpleArticleModel,CommonItemClickListener listener) {
         this.mContext = mContext;
         this.mDataSet = mDataSet;
+        this.mSimpleArticleModel = mSimpleArticleModel;
         this.mListener = listener;
 
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return TYPE_BANNER;
+        } else {
+            return TYPE_NORMAL;
+        }
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
+        if (viewType == TYPE_BANNER) {
+            return new BannerViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_banner, parent, false));
+        } else {
+            return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (position==0){
+            ((BannerViewHolder) holder).tvDescription.setText(mSimpleArticleModel.getArticleComtent());
+            ((BannerViewHolder) holder).tvTitle.setText(mSimpleArticleModel.getArticleName());
+            ((BannerViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mSimpleArticleModel.getImageUrl()));
+        }else{
+
+            position = position-1;
             ((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position).getContent());
             ((ArticleViewHolder) holder).tvTitle.setText(mDataSet.get(position).getName());
             ((ArticleViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getCover()));
@@ -56,6 +81,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     }
                 }
             });
+        }
     }
 
 
@@ -63,10 +89,23 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return null != mDataSet ? mDataSet.size() : 0;
+        return null != mDataSet ? mDataSet.size() + 1 : 0;
     }
 
+    public class BannerViewHolder extends RecyclerView.ViewHolder {
 
+        @Bind(R.id.sdvCover)
+        SimpleDraweeView itemClassifyImageSdv;
+        @Bind(R.id.tvTitle)
+        TextView tvTitle;
+        @Bind(R.id.tvDescription)
+        TextView tvDescription;
+
+        public BannerViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder {
 

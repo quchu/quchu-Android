@@ -16,7 +16,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
-import co.quchu.quchu.widget.EmptyView;
 
 
 /**
@@ -162,19 +161,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             return null;
         }
     }
-    private EmptyView emptyView;
-    public EmptyView getEmptyView(){
-        return null == emptyView ? initEmptyView() : emptyView;
-    }
 
-    private EmptyView initEmptyView() {
-        if (null != findViewById(R.id.rlEmptyView)) {
-            emptyView = new EmptyView();
-            emptyView.init(findViewById(R.id.rlEmptyView));
-            return emptyView;
-        } else {
-            return null;
-        }
-    }
 
 }

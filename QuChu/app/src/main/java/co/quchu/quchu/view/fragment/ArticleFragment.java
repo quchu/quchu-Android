@@ -54,6 +54,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_classify, container, false);
         ButterKnife.bind(this, view);
+
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
@@ -69,12 +70,13 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
      * 获取分类信息
      */
     public void getArticles() {
-
+        DialogUtil.showProgess(getActivity(),R.string.loading_dialog_text);
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
             public void successListener(final ArticleWithBannerModel response) {
-                DialogUtil.dismissProgessDirectly();
+
                 recyclerView.setVisibility(View.VISIBLE);
+                DialogUtil.dismissProgessDirectly();
                 errorView.hideView();
                 refreshLayout.setRefreshing(false);
 
@@ -84,7 +86,8 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
                     @Override
                     public void onItemClick(View v, int position) {
                         String articleId = response.getArticleList().getResult().get(position).getArticleId();
-                        ArticleDetailActivity.enterActivity(getActivity(),articleId);
+                        String articleTitle = response.getArticleList().getResult().get(position).getArticleName();
+                        ArticleDetailActivity.enterActivity(getActivity(),articleId,articleTitle);
                     }
                 });
             }

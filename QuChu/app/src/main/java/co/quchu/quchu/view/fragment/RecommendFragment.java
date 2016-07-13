@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.base.GeTuiReceiver;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.PagerModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -45,7 +46,6 @@ import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SceneDetailActivity;
 import co.quchu.quchu.view.adapter.MySceneAdapter;
 import co.quchu.quchu.view.adapter.AllSceneGridAdapter;
-import co.quchu.quchu.widget.EmptyView;
 import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 
@@ -56,7 +56,7 @@ import co.quchu.quchu.widget.SpacesItemDecoration;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment extends BaseFragment implements MySceneAdapter.CardClickListener, ViewPager.PageTransformer,EmptyView.OnRetryListener {
+public class RecommendFragment extends BaseFragment implements MySceneAdapter.CardClickListener, ViewPager.PageTransformer {
 
     @Bind(R.id.viewpager)
     ViewPager vpMyScene;
@@ -93,7 +93,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
-        initEmptyView(view);
 
         rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin), 2));
         mMySceneAdapter = new MySceneAdapter(this, mFavoriteSceneList, this);
@@ -238,6 +237,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         view.setClickable(true);
 
+        DialogUtil.showProgess(getActivity(),R.string.loading_dialog_text);
+
         getMyScene();
         getData(false);
         return view;
@@ -257,12 +258,12 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             public void successListener(Object response) {
                 notifyAdapters(position,true);
                 mAddFavoriteRunning = false;
-                Toast.makeText(getActivity(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
                 mAddFavoriteRunning = false;
             }
         });
@@ -301,26 +302,32 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
     public void getMyScene(){
 
-        getEmptyView().showLoading();
         ScenePresenter.getMyScene(getContext(), SPUtils.getCityId(), 1, new CommonListener<PagerModel<SceneModel>>() {
             @Override
             public void successListener(PagerModel<SceneModel> response) {
+                DialogUtil.dismissProgessDirectly();
+                errorView.hideView();
+
                 if (response != null && response.getResult() != null) {
                     mFavoriteSceneList.clear();
                     mFavoriteSceneList.addAll(response.getResult());
                     mMySceneAdapter.notifyDataSetChanged();
                     tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
                     TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
-                    getEmptyView().hide();
-                }else{
-                    getEmptyView().noData(RecommendFragment.this);
                 }
 
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                getEmptyView().showRetry(RecommendFragment.this);
+                DialogUtil.dismissProgessDirectly();
+                errorView.showViewDefault(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogUtil.showProgess(getActivity(), "加载中");
+                        getMyScene();
+                    }
+                });
             }
         });
     }
@@ -439,6 +446,15 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 getMyScene();
                 getData(false);
                 break;
+
+
+            case EventFlags.EVENT_USER_LOGIN_SUCCESS :
+            case EventFlags.EVENT_USER_LOGOUT:
+                mAllSceneList.clear();
+                mFavoriteSceneList.clear();
+                getMyScene();
+                getData(false);
+                break;
         }
     }
 
@@ -456,8 +472,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             mFavoriteSceneList.remove(index);
         }
 
-        mMySceneAdapter.notifyDataSetChanged();
-        mAllSceneGridAdapter.notifyDataSetChanged();
 
         if (mAllSceneList.size()==0 && mFavoriteSceneList.size()>0){
             tvPageIndicatorLabel.setText("你已经收藏全部场景");
@@ -474,6 +488,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
         }
 
+        mMySceneAdapter.notifyDataSetChanged();
+        mAllSceneGridAdapter.notifyDataSetChanged();
+        vpMyScene.postInvalidate();
     }
 
 
@@ -498,8 +515,4 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         return vpMyScene;
     }
 
-    @Override
-    public void onRetry() {
-        getMyScene();
-    }
 }

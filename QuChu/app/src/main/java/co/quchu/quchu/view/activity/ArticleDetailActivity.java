@@ -18,17 +18,23 @@ import com.android.volley.VolleyError;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.ArticleDetailModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.ArticleDetailAdapter;
 import co.quchu.quchu.view.adapter.CommonItemClickListener;
@@ -36,19 +42,13 @@ import co.quchu.quchu.view.adapter.CommonItemClickListener;
 /**
  * Created by Nico on 16/7/8.
  */
-public class ArticleDetailActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
+public class ArticleDetailActivity extends BaseActivity {
 
     private static final String BUNDLE_KEY_ARTICLE_ID = "BUNDLE_KEY_ARTICLE_ID";
+    private static final String BUNDLE_KEY_ARTICLE_TITLE = "BUNDLE_KEY_ARTICLE_TITLE";
+
     @Bind(R.id.rv)
     RecyclerView rv;
-    @Bind(R.id.sdvCover)
-    SimpleDraweeView itemClassifyImageSdv;
-    @Bind(R.id.tvTitle)
-    TextView tvTitle;
-    @Bind(R.id.tvDescription)
-    TextView tvDescription;
-    @Bind(R.id.appbar)
-    AppBarLayout appbar;
     @Bind(R.id.ivFavorite)
     ImageView ivFavorite;
     @Bind(R.id.ivShare)
@@ -60,38 +60,46 @@ public class ArticleDetailActivity extends BaseActivity implements AppBarLayout.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_detail);
         ButterKnife.bind(this);
+        getEnhancedToolbar();
 
 
         String articleId = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_ID);
+        String articleTitle = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_TITLE);
+        getEnhancedToolbar().getTitleTv().setText(articleTitle);
 
-        getEnhancedToolbar().getLeftIv().setImageResource(R.mipmap.ic_forward);
-        getEnhancedToolbar().getLeftIv().setRotation(180);
-        getEnhancedToolbar().getTitleTv().setAlpha(0f);
+
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
-        ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), 1, articleId, new CommonListener<ArticleDetailModel>() {
+        getData(articleId);
+    }
+
+    private void getData(String id) {
+        DialogUtil.showProgess(this,R.string.loading_dialog_text);
+
+        ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), 1, id, new CommonListener<ArticleDetailModel>() {
             @Override
             public void successListener(final ArticleDetailModel response) {
+                DialogUtil.dismissProgessDirectly();
+
                 mArticleDetailModel = response;
-                rv.setAdapter(new ArticleDetailAdapter(getApplicationContext(), mArticleDetailModel.getPlaceList().getResult(),new CommonItemClickListener() {
+                rv.setAdapter(new ArticleDetailAdapter(getApplicationContext(), response.getPlaceList().getResult(), response.getArticle(), new CommonItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
                         Intent intent = new Intent(ArticleDetailActivity.this, QuchuDetailsActivity.class);
-                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mArticleDetailModel.getPlaceList().getResult().get(position).getPlaceId());
+                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, response.getPlaceList().getResult().get(position).getPlaceId());
                         startActivity(intent);
                     }
                 }));
 
                 SimpleArticleModel mSimpleArticleModel = mArticleDetailModel.getArticle();
-                tvDescription.setText(mSimpleArticleModel.getArticleComtent());
-                tvTitle.setText(mSimpleArticleModel.getArticleName());
-                itemClassifyImageSdv.setImageURI(Uri.parse(mSimpleArticleModel.getImageUrl()));
+
 
                 ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_favorite_hl:R.mipmap.ic_favorite);
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
+                DialogUtil.dismissProgessDirectly();
 
             }
         });
@@ -164,23 +172,34 @@ public class ArticleDetailActivity extends BaseActivity implements AppBarLayout.
         }
     }
 
-
-        @Override
-    protected void onResume() {
-        appbar.addOnOffsetChangedListener(this);
-        super.onResume();
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void onPause() {
-        appbar.removeOnOffsetChangedListener(this);
-        super.onPause();
-
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
-    public static void enterActivity(Activity from, String articleId) {
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        if (null==event){
+            return;
+        }
+        switch (event.getFlag()){
+            case EventFlags.EVENT_GOTO_HOME_PAGE:
+                finish();
+                break;
+        }
+    }
+
+    public static void enterActivity(Activity from, String articleId,String articleTitle) {
         Intent intent = new Intent(from, ArticleDetailActivity.class);
         intent.putExtra(BUNDLE_KEY_ARTICLE_ID, articleId);
+        intent.putExtra(BUNDLE_KEY_ARTICLE_TITLE, articleTitle);
         from.startActivity(intent);
     }
 
@@ -189,16 +208,4 @@ public class ArticleDetailActivity extends BaseActivity implements AppBarLayout.
         return TRANSITION_TYPE_LEFT;
     }
 
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        if (appbar.getTotalScrollRange()==0 || verticalOffset==0){
-            return;
-        }
-        float alpha = Math.abs(Float.valueOf(verticalOffset))/appbar.getTotalScrollRange();
-        getEnhancedToolbar().getTitleTv().setAlpha(alpha);
-        int color = (int) (255-(alpha*255));
-        getEnhancedToolbar().getLeftIv().setColorFilter(Color.argb(255,color,color,color), PorterDuff.Mode.MULTIPLY);
-
-
-    }
 }

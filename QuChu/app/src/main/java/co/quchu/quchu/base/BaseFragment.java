@@ -7,7 +7,6 @@ import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.widget.EmptyView;
 
 /**
  * Created by admin on 2016/3/2.
@@ -32,19 +31,5 @@ public class BaseFragment extends Fragment {
         MobclickAgent.onPause(getContext());
     }
 
-    private EmptyView emptyView;
-    public EmptyView getEmptyView(){
-        return emptyView;
-    }
 
-    public EmptyView initEmptyView(View v) {
-
-        if (null!=v &&null != v.findViewById(R.id.rlEmptyView)) {
-            emptyView = new EmptyView();
-            emptyView.init(v.findViewById(R.id.rlEmptyView));
-            return emptyView;
-        } else {
-            return null;
-        }
-    }
 }
