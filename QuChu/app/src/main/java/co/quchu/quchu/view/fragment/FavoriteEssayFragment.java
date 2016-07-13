@@ -10,14 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.model.FavoriteEssayBean;
+import co.quchu.quchu.presenter.ArticlePresenter;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.FavoritePresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.activity.ArticleDetailActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.FavoriteEssayAdapter;
 
@@ -41,6 +47,7 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_refresh_recyclerview, container, false);
+
         ButterKnife.bind(this, view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -64,8 +71,33 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
     }
 
     @Override
-    public void itemClick(RecyclerView.ViewHolder holder, FavoriteEssayBean.ResultBean item, int type, int position) {
+    public void itemClick(final RecyclerView.ViewHolder holder, final FavoriteEssayBean.ResultBean item, int type, int position) {
+        if (type == R.id.swipe_delete_content) {
+            ArticleDetailActivity.enterActivity(getActivity(), String.valueOf(item.getArticleId()));
+        } else {
+            CommonDialog dialog = CommonDialog.newInstance("提示", "确定取消收藏吗?", "确定", "取消");
 
+            dialog.setListener(new CommonDialog.OnActionListener() {
+                @Override
+                public boolean dialogClick(int clickId) {
+                    if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
+                        ArticlePresenter.delFavoriteArticle(getContext(), item.getArticleId(), new CommonListener() {
+                            @Override
+                            public void successListener(Object response) {
+                                adapter.removeItem(holder, item);
+                            }
+
+                            @Override
+                            public void errorListener(VolleyError error, String exception, String msg) {
+                                Toast.makeText(getContext(), "网络异常", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    return true;
+                }
+            });
+            dialog.show(getChildFragmentManager(), null);
+        }
     }
 
     @Override

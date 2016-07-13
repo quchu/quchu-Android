@@ -36,7 +36,6 @@ public class FavoriteQuchuAdapter extends AdapterBase<FavoriteBean.ResultBean, F
 
     public FavoriteQuchuAdapter() {
         animationed = SPUtils.getBooleanFromSPMap(AppContext.mContext, AppKey.SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU, false);
-
     }
 
     @Override
@@ -66,14 +65,14 @@ public class FavoriteQuchuAdapter extends AdapterBase<FavoriteBean.ResultBean, F
         holder.tag.setTags(bean.getTagsString());
         holder.address.setText(bean.getAddress());
         holder.address.setSelected(true);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (itemClickListener != null) {
-                    itemClickListener.itemClick(holder, bean, v.getId(), position);
-                }
-            }
-        });
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (itemClickListener != null) {
+//                    itemClickListener.itemClick(holder, bean, v.getId(), position);
+//                }
+//            }
+//        });
         if (itemClickListener != null) {
 
             View.OnClickListener onClickListener = new View.OnClickListener() {

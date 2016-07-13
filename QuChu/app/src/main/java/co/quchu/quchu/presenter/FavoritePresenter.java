@@ -130,4 +130,32 @@ public class FavoritePresenter {
         request.start(context);
     }
 
+    /**
+     * 取消收藏
+     */
+    public void deleteFavoriteEssay(int cityId, final int pageNo, final PageLoadListener<FavoriteEssayBean> view) {
+        Map<String, String> params = new HashMap<>();
+        params.put("cityId", String.valueOf(cityId));
+        params.put("pagesNo", String.valueOf(pageNo));
+
+
+        GsonRequest<FavoriteEssayBean> request = new GsonRequest<>(NetApi.getFavoriteEssay, FavoriteEssayBean.class, params, new ResponseListener<FavoriteEssayBean>() {
+            @Override
+            public void onErrorResponse(@Nullable VolleyError error) {
+                view.netError(pageNo, null);
+            }
+
+            @Override
+            public void onResponse(FavoriteEssayBean response, boolean result, String errorCode, @Nullable String msg) {
+                if (response == null) {
+                    view.nullData();
+                } else if (pageNo == 1) {
+                    view.initData(response);
+                } else {
+                    view.moreData(response);
+                }
+            }
+        });
+        request.start(context);
+    }
 }
