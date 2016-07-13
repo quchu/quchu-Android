@@ -143,7 +143,7 @@ public class WeiboHelper {
         WebpageObject mediaObject = new WebpageObject();
         mediaObject.identify = Utility.generateGUID();
         mediaObject.title = shareTitle;
-        mediaObject.description = "一千个人，就有一千个趣处";
+        mediaObject.description = "趣处 - 一千个人，就有一千个趣处";
 
         Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);
         // 设置 Bitmap 类型的图片到视频对象里  设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -101,10 +102,10 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         rightTv.setOnClickListener(this);
         userInfoBinding();
 
-        if (null==AppContext.user || AppContext.user.isIsVisitors()){
+        if (null == AppContext.user || AppContext.user.isIsVisitors()) {
             vDividerUserName.setVisibility(View.GONE);
             rlUserName.setVisibility(View.GONE);
-        }else{
+        } else {
             vDividerUserName.setVisibility(View.VISIBLE);
             rlUserName.setVisibility(View.VISIBLE);
         }
@@ -162,8 +163,8 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
         userGenderChanged = !AppContext.user.getGender().equals(gender);
 
-
-        if (mProfileModified || userNameChanged || userGenderChanged || !accountSettingUserLocation.getText().toString().equals(AppContext.user.getLocation())) {
+        String location = accountSettingUserLocation.getText().toString();
+        if (mProfileModified || userNameChanged || userGenderChanged || (!TextUtils.isEmpty(location) && !location.equals(AppContext.user.getLocation()))) {
             CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
 
             dialog.setListener(new CommonDialog.OnActionListener() {

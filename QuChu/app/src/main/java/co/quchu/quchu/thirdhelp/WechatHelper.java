@@ -181,7 +181,7 @@ public class WechatHelper {
         msg = new WXMediaMessage(webpage);
 
         msg.title = title;
-        msg.description = "一千个人，就有一千个趣处";
+        msg.description = "趣处 - 一千个人，就有一千个趣处";
 
         msg.thumbData = bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
                 R.mipmap.ic_launcher), true);
