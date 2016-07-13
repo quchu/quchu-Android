@@ -66,6 +66,7 @@ public class ArticleDetailActivity extends BaseActivity implements AppBarLayout.
 
         getEnhancedToolbar().getLeftIv().setImageResource(R.mipmap.ic_forward);
         getEnhancedToolbar().getLeftIv().setRotation(180);
+        getEnhancedToolbar().getTitleTv().setAlpha(0f);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
         ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), 1, articleId, new CommonListener<ArticleDetailModel>() {

@@ -440,7 +440,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         }
 
         if (add){
-            mFavoriteSceneList.add(mAllSceneList.get(index));
+            mFavoriteSceneList.add(0,mAllSceneList.get(index));
             mAllSceneList.remove(index);
         }else{
             mAllSceneList.add(mFavoriteSceneList.get(index));
@@ -450,8 +450,20 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         mMySceneAdapter.notifyDataSetChanged();
         mAllSceneGridAdapter.notifyDataSetChanged();
 
-        tvPageIndicatorCurrent.setText(String.valueOf(index + 1));
-        TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+        if (mAllSceneList.size()==0 && mFavoriteSceneList.size()>0){
+            tvPageIndicatorLabel.setText("你已经添加了所有场景");
+            tvPageIndicatorCurrent.setText("");
+            TvPageIndicatorSize.setText("");
+        }else if(mFavoriteSceneList.size()==0 && mAllSceneList.size()>0){
+            tvPageIndicatorLabel.setText("你还没有收藏的详情");
+            tvPageIndicatorCurrent.setText("");
+            TvPageIndicatorSize.setText("");
+        }else{
+            tvPageIndicatorLabel.setText("of");
+            tvPageIndicatorCurrent.setText(String.valueOf(index + 1));
+            TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+        }
+
     }
 
 

@@ -1,10 +1,13 @@
 package co.quchu.quchu.view.activity;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,13 +15,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.facebook.common.logging.FLog;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.image.QualityInfo;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -118,7 +130,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 //        ImageView imageView = toolbar.getRightIv();
 //        imageView.setImageResource(R.mipmap.ic_tools);
 //        imageView.setOnClickListener(this);
+        userHead = AppContext.user.getPhoto();
 
+        headImage.animate().alpha(0).start();
         initListener();
 
         getData();
@@ -127,8 +141,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private void getData(){
 
-        userHead = AppContext.user.getPhoto();
-        ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+
         presenter.getUnreadMassageCound(new CommonListener<Integer>() {
             @Override
             public void successListener(Integer response) {
@@ -296,6 +309,54 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
                 polygonProgressView.initial(genes.size(), values, labels, bm);
                 polygonProgressView.animateProgress();
+
+                final long before = System.currentTimeMillis();
+                Uri uri =Uri.parse(AppContext.user.getPhoto());
+                ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
+                    @Override
+                    public void onFinalImageSet(String id,@Nullable ImageInfo imageInfo,@Nullable Animatable anim) {
+                        if (imageInfo == null) {
+                            return;
+                        }
+
+                        int delay;
+                        if (System.currentTimeMillis()-before >400){
+                            delay = 0;
+                        }else{
+                            delay = (int) (400 - (System.currentTimeMillis()-before));
+                        }
+                        headImage.setScaleX(0);
+                        headImage.setScaleY(0);
+                        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(headImage,"scaleX",1);
+                        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(headImage,"scaleY",1);
+                        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(headImage,"alpha",0,1);
+                        AnimatorSet scaleAnimatorSet = new AnimatorSet();
+                        scaleAnimatorSet.playTogether(scaleXAnimator,scaleYAnimator,alphaAnimator);
+                        scaleAnimatorSet.setDuration(800);
+                        scaleAnimatorSet.setStartDelay(delay);
+                        scaleAnimatorSet.setInterpolator(new OvershootInterpolator(1.2f));
+                        scaleAnimatorSet.start();
+                    }
+
+                    @Override
+                    public void onIntermediateImageSet(String id, @Nullable ImageInfo imageInfo) {}
+
+                    @Override
+                    public void onFailure(String id, Throwable throwable) {}
+                };
+
+
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setControllerListener(controllerListener)
+                        .setUri(uri)
+                        .build();
+                headImage.setController(controller);
+                //ImageUtils.loadWithAppropriateSize(headImage, uri);
+
+
+
+
+
                 ValueAnimator va = ValueAnimator.ofFloat(0, 1);
                 va.setInterpolator(new AccelerateDecelerateInterpolator());
                 va.setDuration(800);
@@ -334,6 +395,14 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         switch (event.getFlag()){
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
                 getData();
+                break;
+            case EventFlags.EVENT_USER_LOGIN_SUCCESS:
+
+                userHead = AppContext.user.getPhoto();
+                ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+                break;
+            case EventFlags.EVENT_USER_LOGOUT:
+
                 break;
         }
     }
