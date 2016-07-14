@@ -27,6 +27,7 @@ import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.SceneDetailAdapter;
+import co.quchu.quchu.widget.ErrorView;
 
 /**
  * Created by Nico on 16/7/11.
@@ -42,8 +43,12 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+    @Bind(R.id.errorView)
+    ErrorView errorView;
+
     boolean isFavorite = false;
     int sceneId;
+    private SceneDetailAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,15 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
+        if (!NetUtil.isNetworkConnected(getApplicationContext()) && mAdapter==null){
+            errorView.showViewDefault(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
+                    getData(true);
+                }
+            });
+        }
         getData(true);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -123,7 +137,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                     }
                 });
 
-                rv.setAdapter(new SceneDetailAdapter(getApplicationContext(), response, new SceneDetailAdapter.OnSceneItemClickListener() {
+                mAdapter = new SceneDetailAdapter(getApplicationContext(), response, new SceneDetailAdapter.OnSceneItemClickListener() {
                     @Override
                     public void onArticleClick() {
 
@@ -135,7 +149,9 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, pid);
                         startActivity(intent);
                     }
-                }));
+                });
+                rv.setAdapter(mAdapter);
+                errorView.hideView();
             }
 
             @Override
@@ -143,6 +159,13 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                 if (firstLoad){
                     DialogUtil.dismissProgessDirectly();
                 }
+                errorView.showViewDefault(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
+                        getData(false);
+                    }
+                });
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });

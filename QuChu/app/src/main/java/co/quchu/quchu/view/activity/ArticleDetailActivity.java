@@ -33,6 +33,8 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.ArticleDetailAdapter;
 import co.quchu.quchu.view.adapter.CommonItemClickListener;
+import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
+import co.quchu.quchu.widget.ErrorView;
 
 /**
  * Created by Nico on 16/7/8.
@@ -50,6 +52,9 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
     ImageView ivShare;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @Bind(R.id.errorView)
+    ErrorView errorView;
 
     ArticleDetailModel mArticleDetailModel;
     String articleId;
@@ -71,6 +76,21 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
         getData(articleId,true);
+        if (!NetUtil.isNetworkConnected(getApplicationContext()) && mArticleDetailModel==null){
+            errorView.showViewDefault(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogUtil.showProgess(ArticleDetailActivity.this, "加载中");
+                    getData(articleId,true);
+                }
+            });
+        }
+        rv.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int current_page) {
+                getData(articleId,false);
+            }
+        });
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -96,9 +116,9 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
                     }
                 }));
 
-                SimpleArticleModel mSimpleArticleModel = mArticleDetailModel.getArticle();
                 ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_favorite_hl:R.mipmap.ic_favorite);
                 mSwipeRefreshLayout.setRefreshing(false);
+                errorView.hideView();
             }
 
             @Override
@@ -106,7 +126,15 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
                 if (firstLoad){
                     DialogUtil.dismissProgessDirectly();
                 }
+                errorView.showViewDefault(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogUtil.showProgess(ArticleDetailActivity.this, "加载中");
+                        getData(articleId,false);
+                    }
+                });
                 mSwipeRefreshLayout.setRefreshing(false);
+
             }
         });
 

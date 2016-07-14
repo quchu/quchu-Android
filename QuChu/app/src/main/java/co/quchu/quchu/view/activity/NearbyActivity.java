@@ -207,6 +207,9 @@ public class NearbyActivity extends BaseActivity {
 
                 if (mMaxPageNo == -1) {
                     mMaxPageNo = pMaxPageNo;
+                    if (mMaxPageNo>2){
+                        mMaxPageNo = 2;
+                    }
                 }
                 if (null!=model){
                     mData.addAll(model);

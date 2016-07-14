@@ -25,7 +25,6 @@ public class NetUtil {
 
 		final android.net.NetworkInfo mobile = connMgr
 				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-		System.out.println("getMyScene "+wifi.isConnected()+"-"+mobile.isConnected());
 		return wifi.isConnected() || mobile.isConnected();
 	}
 	/**

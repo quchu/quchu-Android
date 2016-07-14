@@ -46,10 +46,6 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     ErrorView errorView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.rlEmptyView)
-    View rlEmptyView;
-    @Bind(R.id.action_buttton)
-    View action_buttton;
 
 
 
@@ -61,12 +57,6 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         View view = inflater.inflate(R.layout.fragment_classify, container, false);
         ButterKnife.bind(this, view);
 
-        action_buttton.setVisibility(View.GONE);
-        if (NetUtil.isNetworkConnected(getActivity())){
-            rlEmptyView.setVisibility(View.GONE);
-        }else{
-            rlEmptyView.setVisibility(View.VISIBLE);
-        }
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
@@ -173,7 +163,6 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     public void onMessageEvent(QuchuEventModel event) {
         switch (event.getFlag()){
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
-                rlEmptyView.setVisibility(View.GONE);
                 getArticles(false);
                 break;
         }

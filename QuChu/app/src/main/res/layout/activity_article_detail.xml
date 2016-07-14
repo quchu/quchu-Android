@@ -54,4 +54,10 @@
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
+
+    <co.quchu.quchu.widget.ErrorView
+        android:id="@+id/errorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 </RelativeLayout>

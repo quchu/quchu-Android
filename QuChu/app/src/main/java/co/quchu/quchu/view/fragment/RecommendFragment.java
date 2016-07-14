@@ -84,8 +84,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     RadioGroup radioGroup;
     @Bind(R.id.rvGrid)
     RecyclerView rvGrid;
-    @Bind(R.id.rlEmptyView)
-    View rlEmptyView;
 
     public static final int ANIMATION_DURATION = 350;
 
@@ -505,7 +503,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 break;
 
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
-                rlEmptyView.setVisibility(View.GONE);
                 getMyScene();
                 getData(false);
                 break;
