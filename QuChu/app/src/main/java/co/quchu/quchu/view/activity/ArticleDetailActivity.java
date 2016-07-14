@@ -78,7 +78,7 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
         getData(articleId,true);
         if (!NetUtil.isNetworkConnected(getApplicationContext()) && mArticleDetailModel==null){
             errorView.showViewDefault(new View.OnClickListener() {
-a                @Override
+                @Override
                 public void onClick(View v) {
                     DialogUtil.showProgess(ArticleDetailActivity.this, "加载中");
                     getData(articleId,true);
@@ -116,21 +116,11 @@ a                @Override
                     }
                 }));
 
-<<<<<<< HEAD
                 ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_favorite_hl:R.mipmap.ic_favorite);
                 mSwipeRefreshLayout.setRefreshing(false);
                 errorView.hideView();
-=======
                 SimpleArticleModel mSimpleArticleModel = mArticleDetailModel.getArticle();
-//<<<<<<< HEAD
 
-
-//                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite() ? R.mipmap.ic_favorite_hl : R.mipmap.ic_favorite);
-//=======
-                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_favorite_hl:R.mipmap.ic_favorite);
-                mSwipeRefreshLayout.setRefreshing(false);
-//>>>>>>> origin/develop
->>>>>>> origin/develop
             }
 
             @Override
