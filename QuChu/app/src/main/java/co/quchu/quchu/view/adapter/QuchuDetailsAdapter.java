@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -33,7 +32,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.BottomListDialog;
 import co.quchu.quchu.model.CommentModel;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedUsersModel;
@@ -41,7 +39,6 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import co.quchu.quchu.widget.RoundProgressView;
-import co.quchu.quchu.widget.SimpleIndicatorView;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 import co.quchu.quchu.widget.TagCloudView;
 
@@ -223,34 +220,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return;
         }
         if (holder instanceof IntroImageViewHolder) {
-
-            if (null != mData.getImglist()&&mData.getImglist().size()>0) {
-                List<ImageModel> imageSet = new ArrayList<>();
-                for (int i = 0; i < mData.getImglist().size() && i<=3; i++) {
-                    imageSet.add(mData.getImglist().get(i).convert2ImageModel());
-                }
-                ((IntroImageViewHolder) holder).vpGallery.setAdapter(new GalleryAdapter(imageSet));
-                ((IntroImageViewHolder) holder).siv.setIndicators(imageSet.size());
-                ((IntroImageViewHolder) holder).siv.setVisibility(View.VISIBLE);
-                ((IntroImageViewHolder) holder).vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                    }
-
-                    @Override
-                    public void onPageSelected(int position) {
-                        ((IntroImageViewHolder) holder).siv.setCurrentIndex(position);
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
-
-                    }
-                });
-            }else{
-                ((IntroImageViewHolder) holder).siv.setVisibility(View.GONE);
-            }
 
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName().trim() : "");
 
@@ -630,13 +599,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Bind(R.id.detail_store_name_tv)
         TextView detail_store_name_tv;
 
-        @Bind(R.id.vpGallery)
-        ViewPager vpGallery;
-
-        @Bind(R.id.siv)
-        SimpleIndicatorView siv;
-        
-        
         @Bind(R.id.recommend_tag1)
         TextView tag1;
         @Bind(R.id.recommend_tag2)

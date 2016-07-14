@@ -4,53 +4,30 @@
     android:layout_height="wrap_content"
     android:background="@color/standard_color_white"
 
+    android:paddingLeft="@dimen/base_margin"
+    android:paddingRight="@dimen/base_margin"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rlBanner"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height">
-
-        <co.quchu.quchu.widget.WrapContentViewPager
-            android:id="@+id/vpGallery"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <co.quchu.quchu.widget.SimpleIndicatorView
-            android:id="@+id/siv"
-            android:layout_width="60dp"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/rlBanner"
-    android:paddingLeft="@dimen/base_margin"
-    android:paddingRight="@dimen/base_margin"
-    >
-
     <TextView
-
         android:id="@+id/detail_store_name_tv"
         style="@style/TextView.H1"
+        android:textSize="@dimen/standard_text_size_h0"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="@dimen/half_margin"
         android:text="@string/empty_string"
-        android:textSize="@dimen/standard_text_size_h0"
 
         />
+
 
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/detail_store_name_tv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/half_margin"
+        android:layout_alignParentLeft="true"
         android:orientation="horizontal">
 
         <TextView
@@ -98,6 +75,5 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
 
 </RelativeLayout>
