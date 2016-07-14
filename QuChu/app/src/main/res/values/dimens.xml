@@ -8,6 +8,8 @@
     <dimen name="standard_text_size_h2">14sp</dimen>
     <dimen name="standard_text_size_h3">13sp</dimen>
     <dimen name="standard_text_size_h4">12sp</dimen>
+    <dimen name="standard_text_size_h5">10sp</dimen>
+    <dimen name="standard_text_size_h6">8sp</dimen>
     <dimen name="toolbar_item_size">48dp</dimen>
     <dimen name="toolbar_container_horizontal_padding">8dp</dimen>
     <dimen name="text_size_16">16sp</dimen>

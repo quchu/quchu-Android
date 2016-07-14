@@ -169,6 +169,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
             getArticles();
         }else{
             Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+            refreshLayout.setRefreshing(false);
         }
     }
 }

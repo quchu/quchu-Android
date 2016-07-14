@@ -34,6 +34,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static final int TYPE_RECOMMENDED = 0x002;
     public static final int TYPE_ARTICLE = 0x003;
     public static final int TYPE_PLACE_LIST = 0x004;
+    public static final int TYPE_EMPTY = 0x005;
 
 
     public SceneDetailAdapter(Context mContext, SceneDetailModel sceneDetailModel, OnSceneItemClickListener listener) {
@@ -50,7 +51,11 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (position > 0 && position <= getRecommendedListSize()) {
             return TYPE_RECOMMENDED;
         } else if (position > getRecommendedListSize() && position <= getRecommendedListSize() + 1) {
-            return TYPE_ARTICLE;
+            if (null==mData.getArticleModel()){
+                return TYPE_EMPTY;
+            }else{
+                return TYPE_RECOMMENDED;
+            }
         } else {
             return TYPE_PLACE_LIST;
         }
@@ -123,7 +128,11 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             ((RecommendedViewHolder) holder).tvCircleName.setText(null != objScene.getPlaceInfo().getAreaCircleName() ? objScene.getPlaceInfo().getAreaCircleName() : "");
             ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.getPlaceInfo().gdLatitude), Double.valueOf(objScene.getPlaceInfo().gdLongitude)));
-            ((RecommendedViewHolder) holder).tvPrice.setText("¥"+objScene.getPlaceInfo().getPrice()+"元");
+            if (!StringUtils.isEmpty(objScene.getPlaceInfo().getPrice())){
+                ((RecommendedViewHolder) holder).tvPrice.setText("¥"+objScene.getPlaceInfo().getPrice()+"元｜");
+            }else{
+                ((RecommendedViewHolder) holder).tvPrice.setText("¥- 元｜");
+            }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

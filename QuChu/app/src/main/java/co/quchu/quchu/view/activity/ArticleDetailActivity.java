@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,6 +26,7 @@ import co.quchu.quchu.model.ArticleDetailModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.net.NetApi;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.EventFlags;
@@ -35,7 +37,7 @@ import co.quchu.quchu.view.adapter.CommonItemClickListener;
 /**
  * Created by Nico on 16/7/8.
  */
-public class ArticleDetailActivity extends BaseActivity {
+public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String BUNDLE_KEY_ARTICLE_ID = "BUNDLE_KEY_ARTICLE_ID";
     private static final String BUNDLE_KEY_ARTICLE_TITLE = "BUNDLE_KEY_ARTICLE_TITLE";
@@ -46,7 +48,12 @@ public class ArticleDetailActivity extends BaseActivity {
     ImageView ivFavorite;
     @Bind(R.id.ivShare)
     ImageView ivShare;
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     ArticleDetailModel mArticleDetailModel;
+    String articleId;
+    String articleTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +63,15 @@ public class ArticleDetailActivity extends BaseActivity {
         getEnhancedToolbar();
 
 
-        String articleId = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_ID);
-        String articleTitle = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_TITLE);
+        articleId = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_ID);
+        articleTitle = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_TITLE);
         getEnhancedToolbar().getTitleTv().setText(articleTitle);
 
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
         getData(articleId);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void getData(String id) {
@@ -85,17 +93,23 @@ public class ArticleDetailActivity extends BaseActivity {
                 }));
 
                 SimpleArticleModel mSimpleArticleModel = mArticleDetailModel.getArticle();
+//<<<<<<< HEAD
 
 
-                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite() ? R.mipmap.ic_favorite_hl : R.mipmap.ic_favorite);
+//                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite() ? R.mipmap.ic_favorite_hl : R.mipmap.ic_favorite);
+//=======
+                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_favorite_hl:R.mipmap.ic_favorite);
+                mSwipeRefreshLayout.setRefreshing(false);
+//>>>>>>> origin/develop
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
                 DialogUtil.dismissProgessDirectly();
-
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+
     }
 
     boolean mFavoriteProgressRunning = false;
@@ -205,4 +219,13 @@ public class ArticleDetailActivity extends BaseActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
+    @Override
+    public void onRefresh() {
+        if (NetUtil.isNetworkConnected(getApplicationContext())){
+            getData(articleId);
+        }else{
+            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
 }
