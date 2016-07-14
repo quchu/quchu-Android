@@ -2,7 +2,6 @@ package co.quchu.quchu.net;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -10,24 +9,21 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import co.quchu.quchu.analysis.GatherSendDataModel;
+import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.SearchActivity;
-import co.quchu.quchu.view.activity.UserLoginActivity;
 
 /**
  * NetService
@@ -39,8 +35,7 @@ import co.quchu.quchu.view.activity.UserLoginActivity;
 
 public class NetService {
 
-    public static RequestQueue mRequestQueue = Volley
-            .newRequestQueue(AppContext.mContext, new OkHttpStack(new OkHttpClient()));
+    public static RequestQueue mRequestQueue = GsonRequest.queue;
 
     public static void addRequest(Request request, Object tag) {
         if (tag != null) {
@@ -49,56 +44,57 @@ public class NetService {
         mRequestQueue.add(request);
     }
 
-    public static void cancelAll(Object tag) {
-        mRequestQueue.cancelAll(tag);
-    }
 
     public static void post(Context cont, String pUrl, JSONObject params,
                             IRequestListener pListener) {
+        LogUtils.d(pUrl);
+        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+            //     NetErrorDialog.showProgess(cont);
+//            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+            DialogUtil.dismissProgess();
+            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
+        } else {
+
+            addToQueue(Request.Method.POST, pUrl, params, pListener, 0,false);
+          /*  if (params != null)
+                LogUtils.json("userData==" + params.toString());*/
+        }
+    }
+
+    public static void postRaw(Context cont, String pUrl, JSONObject params,
+                            IRequestListener pListener) {
+        LogUtils.d(pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //     NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
             DialogUtil.dismissProgess();
             Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
-            NetErrorActionUtil.UpdateRecommendData();
         } else {
-            try {
-                if (AppContext.gatherList != null && AppContext.gatherList.size() > 0) {
-                    if (params == null)
-                        params = new JSONObject();
-                    GatherSendDataModel model = new GatherSendDataModel(AppContext.gatherList);
-                    params.put("userBehavior", new Gson().toJson(model));
-                    //    LogUtils.json("userBehavior" + (new Gson().toJson(model)));
-                    AppContext.gatherList = new ArrayList<>();
-                    model = null;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            addToQueue(Request.Method.POST, pUrl, params, pListener, 0);
+
+            addToQueue(Request.Method.POST, pUrl, params, pListener, 0,true);
           /*  if (params != null)
                 LogUtils.json("userData==" + params.toString());*/
         }
     }
 
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
+        LogUtils.d(pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //  NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
-            NetErrorActionUtil.UpdateRecommendData();
+            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
             DialogUtil.dismissProgess();
         } else {
-            addToQueue(Request.Method.GET, pUrl, null, pListener, 0);
+            addToQueue(Request.Method.GET, pUrl, null, pListener, 0, true);
         }
     }
 
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
+        LogUtils.d(pUrl);
         if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
             //    NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
-            NetErrorActionUtil.UpdateRecommendData();
+            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
             DialogUtil.dismissProgess();
         } else {
 //            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
@@ -107,18 +103,41 @@ public class NetService {
 //                    .progress(true, 0).autoDismiss(false)
 //                    .contentGravity(GravityEnum.CENTER)
 //                    .show();
-            addToQueue(Request.Method.GET, pUrl, params, pListener, 0);
+            addToQueue(Request.Method.GET, pUrl, params, pListener, 0, true);
         }
 //        new HashMap<String, String>();
     }
 
+    public static void get(Context cont, String pUrl, HashMap<String,String> params, IRequestListener pListener) {
+        StringBuilder sbArguments = new StringBuilder();
+        if (null != params) {
+            for (String key:params.keySet()) {
+                if (sbArguments.length()==0){
+                    sbArguments.append("?");
+                }else{
+                    sbArguments.append("&");
+                }
+                sbArguments.append(key);
+                sbArguments.append("=");
+                sbArguments.append(params.get(key));
+            }
+        }
+        LogUtils.d(pUrl+sbArguments);
+        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
+            DialogUtil.dismissProgess();
+        } else {
+            addToQueue(Request.Method.GET, pUrl+sbArguments, null, pListener, 0, true);
+        }
+    }
+
 
     private static void addToQueue(int pMethod, String pUrl, JSONObject params,
-                                   final IRequestListener pListener, int tag) {
+                                   final IRequestListener pListener, int tag, boolean b) {
         if (params == null) {
             params = new JSONObject();
         }
-        HttpRequest req = new HttpRequest(pMethod, pUrl, params,
+        HttpRequest req = new HttpRequest(pMethod,b, pUrl, params,
                 newResponseListener(tag, pListener), newErrorListener(tag,
                 pListener));
         req.setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
@@ -136,7 +155,7 @@ public class NetService {
                 boolean result = false;
 
                 if (response.toString().length() > 4000) {
-                    LogUtils.jsonLong("NetService==",response.toString());
+                    LogUtils.jsonLong("NetService==", response.toString());
                 } else {
                     LogUtils.json("NetService==" + response.toString());
                 }
@@ -168,13 +187,13 @@ public class NetService {
                                         pListener.onSuccess(response);
                                     } else if (response.has("msg") && response.has("exception") && "1077".equals(response.getString("msg"))) {
                                         ActManager.getAppManager().finishActivitiesAndKeepLastOne();
-                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
+                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), LoginActivity.class));
                                         ActManager.getAppManager().finishLastOne();
                                         SPUtils.clearUserinfo(AppContext.mContext);
 
                                         AppContext.user = null;
                                     } else if (response.has("msg") && response.has("exception") && "1080".equals(response.getString("msg"))) {
-                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), UserLoginActivity.class));
+                                        ActManager.getAppManager().currentActivity().startActivity(new Intent(ActManager.getAppManager().currentActivity(), LoginActivity.class));
                                     } else {
                                         if (response.has("data") && !StringUtils.isEmpty(response.getString("data")) && !"null".equals(response.getString("data"))) {
                                             Toast.makeText(AppContext.mContext, response.getJSONObject("data").getString("error"), Toast.LENGTH_SHORT).show();
@@ -185,8 +204,7 @@ public class NetService {
                                             if (response.has("exception") && !StringUtils.isEmpty(response.getString("exception")) && "已有记录".equals(response.getString("exception"))) {
                                                 Toast.makeText(AppContext.mContext, "已有记录", Toast.LENGTH_SHORT).show();
                                             } else {
-
-                                                Toast.makeText(AppContext.mContext, "网络出错", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AppContext.mContext, (R.string.network_error), Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                         pListener.onError(response.toString());

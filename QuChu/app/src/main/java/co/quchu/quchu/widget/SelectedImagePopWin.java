@@ -10,14 +10,14 @@ import android.widget.PopupWindow;
 
 import java.util.List;
 
-import co.quchu.galleryfinal.BuildConfig;
-import co.quchu.galleryfinal.CoreConfig;
-import co.quchu.galleryfinal.FunctionConfig;
-import co.quchu.galleryfinal.GalleryFinal;
-import co.quchu.galleryfinal.model.PhotoInfo;
+import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.photoselected.FrescoImageLoader;
+import co.quchu.quchu.gallery.CoreConfig;
+import co.quchu.quchu.gallery.FrescoImageLoader;
+import co.quchu.quchu.gallery.FunctionConfig;
+import co.quchu.quchu.gallery.GalleryFinal;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 
 /**
  * Created by linqipeng on 2016/3/15 16:12
@@ -26,10 +26,11 @@ import co.quchu.quchu.photoselected.FrescoImageLoader;
  */
 public class SelectedImagePopWin extends PopupWindow {
     private List<PhotoInfo> photo;
+    private int maxSize;
 
-
-    public SelectedImagePopWin(Context mContext, View parent, List<PhotoInfo> photo, final GalleryFinal.OnHanlderResultCallback listener) {
+    public SelectedImagePopWin(Context mContext, final View parent, List<PhotoInfo> photo, int maxSize, final GalleryFinal.OnHanlderResultCallback listener) {
         this.photo = photo;
+        this.maxSize = maxSize;
         View view = View
                 .inflate(mContext, R.layout.item_popupwindows, null);
 
@@ -51,13 +52,13 @@ public class SelectedImagePopWin extends PopupWindow {
         initGralley();
         bt1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                GalleryFinal.openCamera(1, functionConfig, listener);
+                GalleryFinal.openCamera(parent.getContext(), 1, functionConfig, listener);
                 dismiss();
             }
         });
         bt2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                GalleryFinal.openGalleryMuti(1, functionConfig, listener);
+                GalleryFinal.openGalleryMuti(parent.getContext(), 1, functionConfig, listener);
                 dismiss();
             }
         });
@@ -69,12 +70,11 @@ public class SelectedImagePopWin extends PopupWindow {
 
     }
 
-
     private FunctionConfig functionConfig;
 
     private void initGralley() {
         FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
-        functionConfigBuilder.setMutiSelectMaxSize(photo == null ? 8 : 9 - photo.size());
+        functionConfigBuilder.setMutiSelectMaxSize(maxSize);
         functionConfigBuilder.setEnableEdit(false);
         functionConfigBuilder.setEnableCrop(true);
         functionConfigBuilder.setEnablePreview(true);
@@ -84,7 +84,7 @@ public class SelectedImagePopWin extends PopupWindow {
         functionConfigBuilder.setRotateReplaceSource(true);
         functionConfigBuilder.setSelected(photo);//添加过滤集合
         functionConfig = functionConfigBuilder.build();
-        CoreConfig coreConfig = new CoreConfig.Builder(AppContext.mContext, new FrescoImageLoader(AppContext.mContext), null)
+        CoreConfig coreConfig = new CoreConfig.Builder(AppContext.mContext, new FrescoImageLoader(AppContext.mContext))
                 .setDebug(BuildConfig.DEBUG)
                 .setFunctionConfig(functionConfig)
                 .setPauseOnScrollListener(null)

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    fresco:cardCornerRadius="@dimen/rounded_radius"
+    fresco:cardElevation="0dp"
+    fresco:cardPreventCornerOverlap="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical">
+
+
+            <com.facebook.drawee.view.SimpleDraweeView
+
+                android:id="@+id/sdv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/half_margin"
+                android:layout_marginRight="@dimen/half_margin"
+                android:layout_weight="0.4"
+                fresco:actualImageScaleType="centerInside"
+                fresco:failureImage="@mipmap/ic_image_empty"
+                fresco:failureImageScaleType="center"
+                fresco:placeholderImage="@mipmap/ic_image_empty"
+                fresco:placeholderImageScaleType="center"
+                android:transitionName="tImage"
+
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/standard_color_h1_dark"
+                    android:transitionName="tNameHolder"
+                    android:textSize="@dimen/standard_text_size_h2" />
+
+                <TextView
+                    android:id="@+id/tvDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:layout_marginLeft="@dimen/half_margin"
+                    android:layout_marginRight="@dimen/half_margin"
+                    android:paddingTop="@dimen/quarter_margin"
+                    android:textColor="@color/standard_color_h2_dark"
+                    android:textSize="@dimen/standard_text_size_h4" />
+
+
+                <View
+                    android:layout_marginLeft="@dimen/base_margin"
+                    android:layout_marginRight="@dimen/base_margin"
+                    style="@style/HorizontalDivider"
+                    android:layout_marginTop="2dp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/half_margin"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/quarter_margin">
+
+
+                    <TextView
+                        android:id="@+id/recommend_tag1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_lineframe_black_thin"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="@dimen/half_margin"
+                        android:paddingRight="@dimen/half_margin"
+                        android:paddingTop="2dp"
+                        android:text="标签1"
+                        android:textColor="@color/standard_color_h3_dark"
+                        android:textSize="@dimen/standard_text_size_h5" />
+
+                    <TextView
+                        android:id="@+id/recommend_tag2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/half_margin"
+                        android:background="@drawable/shape_lineframe_black_thin"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="@dimen/half_margin"
+                        android:paddingRight="@dimen/half_margin"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/standard_color_h3_dark"
+                        android:textSize="@dimen/standard_text_size_h5"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/recommend_tag3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/half_margin"
+                        android:background="@drawable/shape_lineframe_black_thin"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="@dimen/half_margin"
+                        android:paddingRight="@dimen/half_margin"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/standard_color_h3_dark"
+                        android:textSize="@dimen/standard_text_size_h5"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/ivAddToFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_add_favorite"
+            android:padding="@dimen/base_margin"
+            />
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

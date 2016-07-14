@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="co.quchu.quchu.view.activity.MyFootprintDetailActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@android:color/black">
+
+        <ImageView
+            android:id="@+id/fooopDetailActionBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/base_margin"
+            android:rotation="180"
+            android:src="@mipmap/ic_forward" />
+    </FrameLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="?actionBarSize"
+        android:clickable="true"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="true" />
+
+
+    <RelativeLayout
+        android:id="@+id/container_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/shape_gradient_footprint"
+        android:clickable="true"
+        android:padding="@dimen/half_margin">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/headImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            app:roundAsCircle="true"
+            fresco:placeholderImage="@mipmap/head_place_hold" />
+
+        <TextView
+            android:id="@+id/detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="@dimen/half_margin"
+            android:layout_toRightOf="@id/headImage"
+            android:textColor="@color/standard_color_white"
+            tools:text="哈哈哈哈哈哈哈" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/standard_color_h1_dark" />
+
+    <LinearLayout
+        android:id="@+id/actionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/standard_color_h1_dark"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/supportContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/support"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_heart" />
+
+            <TextView
+                android:id="@+id/supportCount"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                tools:text="88" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/appBackground" />
+
+
+        <ImageView
+            android:id="@+id/share"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/half_margin"
+            android:paddingTop="@dimen/half_margin"
+            android:src="@mipmap/ic_share" />
+
+        <FrameLayout
+            android:id="@+id/edit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/appBackground" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_write_white" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

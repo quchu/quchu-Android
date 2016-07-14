@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<co.quchu.quchu.widget.LineRelative xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/half_margin"
+    android:paddingRight="@dimen/half_margin">
+
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/double_margin"
+        android:singleLine="true"
+        android:textColor="@color/standard_color_h3_dark"
+        tools:text="03-12-2016" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/half_margin"
+        android:drawableLeft="@mipmap/ic_loca"
+        android:singleLine="true"
+        android:textColor="@color/standard_color_yellow"
+        tools:text="厦门是fasdfadsssssssssfsdfs" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardViewNone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        app:cardCornerRadius="@dimen/half_margin">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/simpleDraweeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            fresco:placeholderImage="@mipmap/ic_image_empty"
+            fresco:roundedCornerRadius="8dp"
+            fresco:viewAspectRatio="1.5" />
+    </android.support.v7.widget.CardView>
+    <!--fresco:overlayImage="@color/translucent_dark"-->
+
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/cardViewNone"
+        android:layout_alignTop="@id/headView"
+        android:layout_below="@id/cardViewNone"
+        android:layout_marginTop="@dimen/half_margin"
+        android:textColor="@color/standard_color_h3_dark"
+        android:textSize="@dimen/word_size_time"
+        tools:text="hahah" />
+
+    <TextView
+        android:id="@+id/commemt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/cardViewNone"
+        android:layout_below="@id/desc"
+        android:drawableLeft="@drawable/ic_ratingbar_heart"
+        android:gravity="center_vertical"
+        android:textColor="@color/standard_color_red"
+        android:textSize="@dimen/word_size_time"
+        tools:text="2次" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/shape_round_full"
+        tools:ignore="ContentDescription" />
+</co.quchu.quchu.widget.LineRelative>

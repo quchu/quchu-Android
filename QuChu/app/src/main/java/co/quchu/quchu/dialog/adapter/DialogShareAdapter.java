@@ -19,19 +19,17 @@ import co.quchu.quchu.R;
  */
 public class DialogShareAdapter extends BaseAdapter {
     private Context mContext;
-    private int[] imageLIst = {R.mipmap.ic_share_wechat, R.mipmap.ic_share_wechat_friends, R.mipmap.ic_share_qq,
-            R.mipmap.ic_share_qzone, R.mipmap.ic_share_weibo};
+
+    private int[] imageLIst = {R.mipmap.ic_share_wechat, R.mipmap.ic_share_circle, R.mipmap.ic_share_tencent, R.mipmap.ic_share_weibo, R.mipmap.ic_share_copy_to_clipboard};
+
     private String[] textArray = {
-            "微信好友", "朋友圈",
+            "微信好友",
+            "朋友圈",
             "QQ好友",
-            "QQ空间",
-            "新浪微博"};
+            "新浪微博",
+            "复制链接"};
 
-    /*,
-    , R.mipmap.ic_share_douban, R.mipmap.ic_share_photo_album
 
-                "豆瓣",
-                "手机相册"*/
     public DialogShareAdapter(Context context) {
         this.mContext = context;
 

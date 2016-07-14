@@ -47,6 +47,15 @@ public class MyGeneModel {
         private String en;
         private double weight;
         private String zh;
+        private String mark;
+
+        public String getMark() {
+            return mark;
+        }
+
+        public void setMark(String mark) {
+            this.mark = mark;
+        }
 
         public void setEn(String en) {
             this.en = en;

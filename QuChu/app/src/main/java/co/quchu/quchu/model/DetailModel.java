@@ -1,5 +1,6 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * User: Chenhs
  * Date: 2015-12-13
  */
-public class DetailModel {
+public class DetailModel implements Serializable{
 
     /**
      * activityInfo : 本次活动主要针对领基础的绘画爱好者,来之前一定要先预约哦
@@ -41,69 +42,109 @@ public class DetailModel {
      * width : 675
      */
 
+    private String areaCircleName;
     private String activityInfo;
     private String activityInfoHtml;
-    private String address;
+    private String address = "";
     private String autor;
     private String autorPhoto;
-    private String businessHours;
+    private String businessHours = "";
     private String cover;
     private String latitude;
     private String longitude;
     private String name;
     private String net;
     private String price;
-    private String restDay;
+    private String restDay = "";
     private String rgb;
     private String tel;
-    private String traffic;
+    private String traffic = "";
     public String gdLatitude= "";
     public String gdLongitude= "";
     private boolean isActivity;
     private boolean isf;
     private boolean isout;
+    private boolean isMap = true;
     private int width;
     private int pid;
     private int autorId;
     private int height;
     private float suggest;
     private int myCardId;                   //明信片ID -1为未创建明信片
-    /**
-     * key : 美食
-     * value : 79
-     */
     private List<GenesEntity> genes;
-    /**
-     * zh : 现金
-     */
     private List<IconsEntity> icons;
-    /**
-     * cid : 15
-     * cindex : 0
-     * height : 451
-     * imgpath : http://7xo7et.com1.z0.glb.clouddn.com/5@1?imageMogr2/format/webp
-     * width : 675
-     */
     private List<ImglistEntity> imglist;
-    /**
-     * zh : 闽菜
-     */
     private List<TagsEntity> tags;
+    private List<NearPlace> recommendPlaces;
+    private List<CommentModel> reviewList;
+    private int cardCount;
 
+    public String getAreaCircleName() {
+        return areaCircleName;
+    }
+
+    public void setAreaCircleName(String areaCircleName) {
+        this.areaCircleName = areaCircleName;
+    }
+
+    public int getCardCount() {
+        return cardCount;
+    }
+
+    public void setCardCount(int cardCount) {
+        this.cardCount = cardCount;
+    }
 
     public List<NearPlace> getNearPlace() {
-        return nearPlace;
+        return recommendPlaces;
     }
 
     public void setNearPlace(List<NearPlace> nearPlace) {
-        this.nearPlace = nearPlace;
+        this.recommendPlaces = nearPlace;
     }
 
-    private List<NearPlace>nearPlace;
 
 
+    public NearbyMapModel convert2NearbyMapItem(){
+        NearbyMapModel model = new NearbyMapModel();
+        model.setAddress(this.getAddress());
+        model.setCover(this.getCover());
+        model.setName(this.getName());
+        //model.setDescribe(this.get);
+        model.setGdLatitude(this.gdLatitude);
+        model.setGdLongitude(this.gdLongitude);
+        model.setLatitude(this.getLatitude());
+        model.setLongitude(this.getLongitude());
+        model.setHeight(this.getHeight());
+        model.setWidth(this.getWidth());
+        model.setPid(this.getPid());
+
+        List<TagsModel> tagModel = new ArrayList<>();
+        if (null==this.getTags()){
+            model.setTags(tagModel);
+        }else{
+            for (int i = 0; i < this.getTags().size(); i++) {
+                TagsModel tag = new TagsModel();
+                tag.setZh(getTags().get(i).getZh());
+                tag.setTagId(getTags().get(i).getId());
+                tagModel.add(tag);
+            }
+            model.setTags(tagModel);
+        }
+        return model;
+    }
+
+
+    public boolean isMap() {
+        return isMap;
+    }
+
+    public void setMap(boolean map) {
+        isMap = map;
+    }
 
     public void copyFrom(DetailModel objTarget){
+
         setActivityInfo(objTarget.getActivityInfo());
         setActivityInfo(objTarget.getActivityInfo());
         setActivityInfoHtml(objTarget.getActivityInfoHtml());
@@ -130,6 +171,8 @@ public class DetailModel {
         setHeight(objTarget.getHeight());
         setSuggest(objTarget.getSuggest());
         setMyCardId(objTarget.getMyCardId());
+        setMap(objTarget.isMap());
+
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;
 
@@ -138,41 +181,69 @@ public class DetailModel {
         }else{
             genes.clear();
         }
-        genes.addAll(objTarget.getGenes());
+        if (objTarget.getGenes() != null) {
+            genes.addAll(objTarget.getGenes());
+        }
 
         if (null==icons){
             icons = new ArrayList<>();
         }else{
             icons.clear();
         }
-        icons.addAll(objTarget.getIcons());
+
+        if (objTarget.getIcons() != null) {
+            icons.addAll(objTarget.getIcons());
+        }
 
         if (null==imglist){
             imglist = new ArrayList<>();
         }else{
             imglist.clear();
         }
-        imglist.addAll(objTarget.getImglist());
+
+        if (objTarget.getImglist() != null) {
+            imglist.addAll(objTarget.getImglist());
+        }
 
         if (null==tags){
             tags = new ArrayList<>();
         }else{
             tags.clear();
         }
-        tags.addAll(objTarget.getTags());
-
-
-        if (null==nearPlace){
-            nearPlace = new ArrayList<>();
-        }else{
-            nearPlace.clear();
+        if (objTarget.getTags() != null) {
+            tags.addAll(objTarget.getTags());
         }
-        nearPlace.addAll(objTarget.getNearPlace());
+
+
+        if (null==recommendPlaces){
+            recommendPlaces = new ArrayList<>();
+        }else{
+            recommendPlaces.clear();
+        }
+
+        if (objTarget.getNearPlace() != null) {
+            recommendPlaces.addAll(objTarget.getNearPlace());
+        }
+
+        if (null==reviewList){
+            reviewList = new ArrayList<>();
+        }
+        if (objTarget.getReviewList()!=null){
+            reviewList.addAll(objTarget.getReviewList());
+        }
+
+        cardCount = objTarget.getCardCount();
 
 
     }
 
+    public List<CommentModel> getReviewList() {
+        return reviewList;
+    }
 
+    public void setReviewList(List<CommentModel> reviewList) {
+        this.reviewList = reviewList;
+    }
 
     public void setActivityInfo(String activityInfo) {
         this.activityInfo = activityInfo;
@@ -398,7 +469,7 @@ public class DetailModel {
         return tags;
     }
 
-    public static class GenesEntity {
+    public static class GenesEntity implements Serializable{
         private String key;
         private String value;
 
@@ -419,7 +490,8 @@ public class DetailModel {
         }
     }
 
-    public static class IconsEntity {
+    public static class IconsEntity implements Serializable {
+        private int id;
         private String zh;
 
         public void setZh(String zh) {
@@ -429,14 +501,41 @@ public class DetailModel {
         public String getZh() {
             return zh;
         }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
     }
 
-    public static class ImglistEntity {
+    public static class ImglistEntity implements Serializable {
         private int cid;
         private int cindex;
         private int height;
         private String imgpath;
         private int width;
+        private String words;
+
+
+        public ImageModel convert2ImageModel(){
+            ImageModel imageModel = new ImageModel();
+            imageModel.setPath(imgpath);
+            imageModel.setImgId(cid);
+            imageModel.setHeight(height);
+            imageModel.setWidth(width);
+            return imageModel;
+        }
+
+        public String getWords() {
+            return words;
+        }
+
+        public void setWords(String words) {
+            this.words = words;
+        }
 
         public void setCid(int cid) {
             this.cid = cid;
@@ -479,7 +578,7 @@ public class DetailModel {
         }
     }
 
-    public static class TagsEntity {
+    public static class TagsEntity  implements Serializable{
         private String zh;
 
         public void setZh(String zh) {
@@ -489,27 +588,72 @@ public class DetailModel {
         public String getZh() {
             return zh;
         }
+
+        public int id;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
     }
 
-    public static class NearPlace{
-        private List<Places> places;
+    public static class NearPlace implements Serializable{
+        private int pid;
+        private String cover;
+        private String name;
+        private String address;
+        private boolean isActivity;
+        private List<TagsModel> tags;
 
-        public String getTag() {
-            return tag;
+        public int getPlaceId() {
+            return pid;
         }
 
-        public void setTag(String tag) {
-            this.tag = tag;
+        public void setPlaceId(int placeId) {
+            this.pid = placeId;
         }
 
-        private String tag;
-
-        public List<Places> getPlaces() {
-            return places;
+        public String getCover() {
+            return cover;
         }
 
-        public void setPlaces(List<Places> places) {
-            this.places = places;
+        public void setCover(String cover) {
+            this.cover = cover;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public boolean isActivity() {
+            return isActivity;
+        }
+
+        public void setActivity(boolean activity) {
+            isActivity = activity;
+        }
+
+        public List<TagsModel> getTags() {
+            return tags;
+        }
+
+        public void setTags(List<TagsModel> tags) {
+            this.tags = tags;
         }
     }
 

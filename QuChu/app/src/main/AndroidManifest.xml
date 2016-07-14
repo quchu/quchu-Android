@@ -3,7 +3,6 @@
     package="co.quchu.quchu">
 
     <!-- 腾讯 所需权限 -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -39,15 +38,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-        android:theme="@style/AppTheme.NoActionBar">
-
-        <!-- android:name="co.quchu.quchu.view.activity.PlanetActivity" -->
-
+        android:theme="@style/AppTheme">
         <activity
             android:name=".view.activity.SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,145 +50,79 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.PlanetActivity"
-            android:label="@string/titlebar_word_planet"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.GeneActivity"
-            android:label="@string/titlebar_word_gene"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.GeneIntroduceActivity"
-            android:label="@string/titlebar_word_gene_introduce"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.FriendsCircleIntroduceActivity"
-            android:label="@string/titlebar_word_friends_introduce"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.DiscoverActivity"
-            android:label="@string/titlebar_word_discover"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.QuFriendsActivity"
             android:label="@string/titlebar_word_qu_friends"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.FlickrActivity"
-            android:label="@string/titlebar_word_flickr"
+            android:name=".view.activity.FootPrintActivity"
+            android:label="@string/foot_print"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.AddFootprintActivity"
+            android:label="@string/add_foot_print"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.activity.FeedbackActivity"
             android:label="@string/titlebar_word_feedback"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.PostCardActivity"
-            android:label="@string/titlebar_word_postcard"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.AddPostCardActivity"
-            android:label="@string/titlebar_word_add_postcard"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".view.activity.FavoriteActivity"
-            android:label="@string/titlebar_word_favorite"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.PalceMyPostCardActivity"
-            android:label="@string/titlebar_word_place_my_postcard"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.FavoritePlaceActivity"
-            android:label="@string/ic_detail_share"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.WebViewActivity"
             android:label="@string/webview_redirecting"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.PlacePostCardActivity"
-            android:label="@string/titlebar_word_place_postcard"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.MessageCenterActivity"
             android:label="@string/titlebar_word_message_center"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.PostCardDetailActivity"
-            android:label="@string/titlebar_word_my_postcard"
+            android:name=".view.activity.PickingQuchuActivity"
+            android:label="@string/picking_quchu"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.AboutUsActivity"
+            android:name=".view.activity.StatementActivity"
             android:label="@string/titlebar_word_about_us"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.AccountSettingActivity"
             android:label="@string/titlebar_word_account_setting"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <!-- 趣处详情 -->
+
+        <activity
+            android:name=".view.activity.ShareQuchuActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.QuchuDetailsActivity"
             android:label="@string/titlebar_word_place_detail"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.UserPostCardActivity"
-            android:label="@string/titlebar_word_user_postcard"
+            android:name=".view.activity.NearbyActivity"
+            android:label="@string/nearby_quchu_all"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.UserCenterActivity"
             android:label="@string/titlebar_word_user_center"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.PostCardFromImageActivity"
-            android:label="@string/titlebar_word_pcfromimage"
             android:screenOrientation="portrait" />
         <!-- 关注的 -->
         <activity
             android:name=".view.activity.FollowingActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar_top" />
+            android:screenOrientation="portrait" />
         <!-- 我的趣推荐 -->
         <activity
             android:name=".view.activity.RecommendActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar_top" />
-        <!-- 下拉菜单 -->
-        <activity
-            android:name=".view.activity.MenusActivity"
             android:screenOrientation="portrait" />
+
         <!-- 搜索 -->
         <activity
             android:name=".view.activity.SearchActivity"
-            android:screenOrientation="portrait" />
-        <!-- 账户设置 -->
-        <!-- 趣处小图浏览界面 -->
-        <activity
-            android:name=".view.activity.PostCardImageActivity"
-            android:screenOrientation="portrait" />
-        <!-- 趣处小图浏览界面 -->
-        <!-- 趣处 预定 -->
-        <activity
-            android:name=".view.activity.ReserveActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.PlaceMapActivity"
+            android:label="@string/nearby_quchu"
             android:screenOrientation="portrait" />
 
-        <!-- 用户登录 -->
-        <activity
-            android:name=".view.activity.UserLoginActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".photoselected.PreviewImageActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".photoselected.PreviewAlbumImage"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -206,7 +135,7 @@
         android:value="5655121fe0f55a5ee8008dd5" />
         debug
         -->
-        <meta-dataa
+        <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
 
@@ -246,7 +175,7 @@
         <!-- 高德地图 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="8d635450932036faf3681a8960d884fa" />
+            android:value="${AMAP_DEBUG_KEY}" />
         <!--
         正式版的key"8d635450932036faf3681a8960d884fa"
         />
@@ -263,15 +192,66 @@
         <service android:name="com.amap.api.location.APSService" />
 
         <activity
-            android:name=".view.activity.PostcarDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.ClassifyDetailActivity"
+            android:label="@string/discover_quchu"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.FindPositionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".view.activity.QuchuListSpecifyTagActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.BindActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.MyFootprintActivity"
+            android:label="我的脚印" />
+        <activity
+            android:name=".view.activity.SceneDetailActivity"
+            android:label="场景详情" />
+        <activity
+            android:name=".view.activity.MyFootprintDetailActivity"
+            android:label="@string/title_activity_my_footprint_detail"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.WhatIsActivity" />
+        <activity
+            android:name=".view.activity.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".gallery.PhotoSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gallery.PhotoEditActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.FavoriteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ArticleDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.FindPositionListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.SharePreviewActivity"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name="co.quchu.quchu.base.GeTuiReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".base.NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

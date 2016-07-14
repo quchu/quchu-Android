@@ -3,57 +3,65 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.presenter.UserCenterPresenter;
-import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.pull2zoomview.PullToZoomScrollViewEx;
+import co.quchu.quchu.view.fragment.FootprintListFragment;
 
 /**
  * UserCenterActivity
- * User: Chenhs
+ * User: 个人主页
  * Date: 2016-02-23
  */
 public class UserCenterActivity extends BaseActivity implements View.OnClickListener {
-    TextView userCenterFollowingTv;
-    TextView userCenterFollowedTv;
-    TextView userCenterPnumTv;
-    TextView userCenterFavoritenumTv;
-    SimpleDraweeView ivZoom;
-    SimpleDraweeView userCenterUserIconSdv;
-    TextView userCenterUserNicknameTv;
-    TextView userCenterDescTv;
-    TextView userCenterFoucsableTv;
-    private PullToZoomScrollViewEx scrollView;
+
+    @Bind(R.id.headImage)
+    SimpleDraweeView headImage;
+    @Bind(R.id.desc)
+    TextView name;
+    @Bind(R.id.alias)
+    TextView alias;
+    @Bind(R.id.editOrLoginTV)
+    TextView followAction;
+    @Bind(R.id.follow)
+    TextView follow;
+    @Bind(R.id.friend)
+    TextView friend;
+    @Bind(R.id.locationAndGender)
+    TextView locationAndGender;
     private int userId = 0;
+    public static final String REQUEST_KEY_USER_ID = "USERID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_center);
-        initTitleBar();
-        ((TextView) findViewById(R.id.title_content_tv)).setText(getTitle());
-        loadViewForCode();
-        userId = getIntent().getIntExtra("USERID", 0);
-        scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
-        initView();
-        DisplayMetrics localDisplayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
-        int mScreenHeight = localDisplayMetrics.heightPixels;
-        int mScreenWidth = localDisplayMetrics.widthPixels;
-        LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth, (int) ((0.618F * mScreenHeight) - getResources().getDimension(R.dimen.title_bar_heigh)));
-        scrollView.setHeaderLayoutParams(localObject);
+        ButterKnife.bind(this);
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        toolbar.getTitleTv().setText(getTitle());
+        userId = getIntent().getIntExtra(REQUEST_KEY_USER_ID, 0);
+        followAction.setOnClickListener(this);
+        follow.setOnClickListener(this);
+        friend.setOnClickListener(this);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, FootprintListFragment.newInstance(userId)).commit();
+
+        if (userId == AppContext.user.getUserId()) {
+            followAction.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     @Override
@@ -61,16 +69,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         return TRANSITION_TYPE_LEFT;
     }
 
-    private void initView() {
-        ivZoom = (SimpleDraweeView) scrollView.getZoomView().findViewById(R.id.iv_zoom);
-        userCenterUserIconSdv = (SimpleDraweeView) scrollView.getHeaderView().findViewById(R.id.user_center_user_icon_sdv);
-        userCenterFoucsableTv = (TextView) scrollView.getHeaderView().findViewById(R.id.user_center_foucsable_tv);
-        userCenterUserNicknameTv = (TextView) scrollView.getHeaderView().findViewById(R.id.user_center_nickname_tv);
-        userCenterDescTv = (TextView) scrollView.getHeaderView().findViewById(R.id.user_center_desc_tv);
-        userCenterFollowingTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_following_tv);
-        userCenterFollowedTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_followed_tv);
-        userCenterPnumTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_pnum_tv);
-        userCenterFavoritenumTv = (TextView) scrollView.getRootView().findViewById(R.id.user_center_favoritenum_tv);
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initData();
     }
 
@@ -80,106 +82,72 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         UserCenterPresenter.getUserCenterInfo(this, userId, new UserCenterPresenter.UserCenterInfoCallBack() {
             @Override
             public void onSuccess(UserCenterInfo userCenterInfo) {
-                userInfo = userCenterInfo;
-                userInfo.userId = userId;
-                if (userInfo != null)
-                    bindView();
+                if (userCenterInfo != null) {
+                    userInfo = userCenterInfo;
+
+                    headImage.setImageURI(Uri.parse(userInfo.getPhoto()));
+                    name.setText(userCenterInfo.getName());
+                    followAction.setText(userCenterInfo.isIsFollow() ? "取消关注" : "关注");
+                    alias.setText(userCenterInfo.getMark());
+
+                    follow.setText("关注" + userCenterInfo.getHostNum());
+                    friend.setText("趣粉" + userCenterInfo.getFollowNum());
+
+                    locationAndGender.setText(userInfo.getGender() + "," + userCenterInfo.getLocation());
+                } else {
+                    Toast.makeText(UserCenterActivity.this, "并无该用户", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onError() {
-                //   Toast.makeText(UserCenterActivity.this, "数据获取异常请稍后重试！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserCenterActivity.this, "数据获取异常请稍后重试！", Toast.LENGTH_SHORT).show();
                 //     UserCenterActivity.this.finish();
             }
         });
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.user_center_favorite_ll:
-                startActivity(new Intent(UserCenterActivity.this, FavoritePlaceActivity.class).putExtra("userId", userInfo.userId));
-                break;
-            case R.id.user_center_postcard_ll:
-                startActivity(new Intent(UserCenterActivity.this, UserPostCardActivity.class).putExtra("userId", userInfo.userId));
-                break;
-            case R.id.user_center_following_tv:
-                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class).putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWING));
-                break;
-            case R.id.user_center_followed_tv:
-                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class).putExtra("UserId", userInfo.userId).putExtra("FollowType", FollowingActivity.TAFOLLOWERS));
-
-                break;
-            case R.id.user_center_foucsable_tv:
+            case R.id.editOrLoginTV:
                 followSomebody();
                 break;
-
-        }
-        super.onClick(v);
-    }
-
-    private void bindView() {
-       /* if (!StringUtils.isEmpty(userInfo.getBackImg()))
-            ivZoom.setImageURI(Uri.parse(userInfo.getBackImg()));*/
-
-        userCenterUserIconSdv.setImageURI(Uri.parse(userInfo.getPhoto()));
-        updateIsFollow();
-        userCenterPnumTv.setText(userInfo.getCardNum() + "");
-        userCenterFavoritenumTv.setText(userInfo.getFovPlaceNum() + "");
-        userCenterUserNicknameTv.setText(userInfo.getName() + "");
-        if (null != userInfo.getLocation() && StringUtils.isEmpty(userInfo.getLocation().toString())) {
-            userCenterDescTv.setText(String.format(getResources().getString(R.string.usercenter_desc_text, userInfo.getGender(), userInfo.getLocation())));
-        } else {
-            userCenterDescTv.setText(userInfo.getGender());
-        }
-        userCenterFollowedTv.setText(String.format(getResources().getString(R.string.usercenter_follow_text), userInfo.getFollowNum()));
-        userCenterFollowingTv.setText(String.format(getResources().getString(R.string.usercenter_host_text), userInfo.getHostNum()));
-        scrollView.getRootView().findViewById(R.id.user_center_postcard_ll).setOnClickListener(this);
-        scrollView.getRootView().findViewById(R.id.user_center_favorite_ll).setOnClickListener(this);
-        userCenterFollowingTv.setOnClickListener(this);
-        userCenterFollowedTv.setOnClickListener(this);
-        userCenterFoucsableTv.setOnClickListener(this);
-
-    }
-
-    private void loadViewForCode() {
-        PullToZoomScrollViewEx scrollView = (PullToZoomScrollViewEx) findViewById(R.id.scroll_view);
-        View headView = LayoutInflater.from(this).inflate(R.layout.usercenter_head_view, null, false);
-        View zoomView = LayoutInflater.from(this).inflate(R.layout.usercenter_zoom_view, null, false);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.usercenter_content_view, null, false);
-        scrollView.setHeaderView(headView);
-        scrollView.setZoomView(zoomView);
-        scrollView.setScrollContentView(contentView);
-    }
-
-    private void updateIsFollow() {
-        if (userInfo.isIsFollow()) {
-            userCenterFoucsableTv.setText(getResources().getString(R.string.usercenter_foucsed_text));
-            userCenterFoucsableTv.setTextColor(getResources().getColor(R.color.black));
-            userCenterFoucsableTv.setBackground(getResources().getDrawable(R.drawable.shape_usercenter_foucsed));
-
-        } else {
-            userCenterFoucsableTv.setText(getResources().getString(R.string.usercenter_foucs_text));
-            userCenterFoucsableTv.setTextColor(getResources().getColor(R.color.gene_textcolor_yellow));
-            userCenterFoucsableTv.setBackground(getResources().getDrawable(R.drawable.shape_usercenter_unfoucs));
+            case R.id.friend:
+                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class)
+                        .putExtra("UserId", userId).putExtra("FollowType", FollowingActivity.TAFOLLOWERS));
+                break;
+            case R.id.follow:
+                startActivity(new Intent(UserCenterActivity.this, FollowingActivity.class)
+                        .putExtra("UserId", userId).putExtra("FollowType", FollowingActivity.TAFOLLOWING));
+                break;
         }
     }
+
 
     private void followSomebody() {
         if (AppContext.user.isIsVisitors()) {
             VisitorLoginDialogFg fg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFOCUS);
-            fg.show(getFragmentManager(), "QFocus");
+            fg.show(getSupportFragmentManager(), "QFocus");
         } else {
-            UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userInfo.userId, new UserCenterPresenter.UserCenterInfoCallBack() {
+            UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userId, new UserCenterPresenter.UserCenterInfoCallBack() {
                 @Override
-                public void onSuccess(UserCenterInfo userCenterInfo) {
-                    userInfo.setIsFollow(!userInfo.isIsFollow());
-                    updateIsFollow();
+                public void onSuccess(UserCenterInfo userC) {
+                    if (userInfo.isIsFollow()) {
+                        userInfo.setIsFollow(false);
+                        userInfo.setFollowNum(userInfo.getFollowNum() - 1);
+                    } else {
+                        userInfo.setIsFollow(true);
+                        userInfo.setFollowNum(userInfo.getFollowNum() + 1);
+                    }
+                    friend.setText("趣粉" + userInfo.getFollowNum());
+                    followAction.setText(userInfo.isIsFollow() ? "取消关注" : "关注");
                 }
 
                 @Override
                 public void onError() {
-
+                    Toast.makeText(UserCenterActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 }
             });
         }

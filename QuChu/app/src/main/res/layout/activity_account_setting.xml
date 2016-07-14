@@ -1,289 +1,280 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:background="@color/appBackground"
     android:fitsSystemWindows="true">
 
+
     <include
-        android:id="@+id/account_setting_title_bar"
-        layout="@layout/title_bar" />
+        android:id="@+id/appbar"
+        layout="@layout/cp_enhanced_toolbar" />
+
 
     <RelativeLayout
+        android:id="@+id/headContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/account_setting_title_bar"
-        android:background="@drawable/shape_activity_bg">
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/base_margin"
-            card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="8dp"
-            card_view:cardPreventCornerOverlap="false">
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="always"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/base_margin"
-                    android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appbar"
+        android:background="@android:color/white"
+        android:paddingBottom="@dimen/base_margin">
 
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/headView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/double_margin"
+            fresco:actualImageScaleType="focusCrop"
+            fresco:placeholderImage="@mipmap/head_place_hold"
+            fresco:roundAsCircle="true" />
+        <!--card_view:roundingBorderWidth="3dp" -->
+        <!--card_view:roundingBorderColor="@android:color/black"-->
 
-                        <com.facebook.drawee.view.SimpleDraweeView
-                            android:id="@+id/account_setting_avatar_sdv"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_alignParentLeft="true"
-                            card_view:actualImageScaleType="focusCrop"
-                            card_view:roundAsCircle="true"
-                            card_view:roundingBorderColor="@color/black"
-                            card_view:roundingBorderWidth="3dp" />
-
-                        <TextView
-                            android:id="@+id/account_setting_avatar_editer_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_below="@id/account_setting_avatar_sdv"
-                            android:layout_marginTop="@dimen/quarter_margin"
-                            android:background="@color/black"
-                            android:paddingBottom="@dimen/tow_dp_margin"
-                            android:paddingLeft="@dimen/quarter_margin"
-                            android:paddingRight="@dimen/quarter_margin"
-                            android:paddingTop="@dimen/tow_dp_margin"
-                            android:text="编辑头像"
-                            android:textColor="@color/gene_textcolor_yellow"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_alignTop="@id/account_setting_avatar_sdv"
-                            android:layout_marginLeft="40dp"
-                            android:layout_toRightOf="@id/account_setting_avatar_sdv"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/account_setting_nickname_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:background="@null"
-                                android:ellipsize="end"
-                                android:hint="用户名"
-                                android:singleLine="true"
-                                android:textColor="@color/account_setting_text_hint_color"
-                                android:textColorHint="@color/account_setting_text_hint_color"
-                                android:textSize="@dimen/word_size_body" />
-
-                            <View style="@style/AccountBHl" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_alignBottom="@id/account_setting_avatar_editer_tv"
-                            android:layout_marginLeft="40dp"
-                            android:layout_toRightOf="@id/account_setting_avatar_sdv"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/account_setting_gender_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:hint="男"
-                                android:textColor="@color/account_setting_text_hint_color"
-                                android:textSize="@dimen/word_size_body" />
-
-                            <View style="@style/AccountBHl" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:src="@mipmap/ic_account_setting_right_arrow" />
-
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="注册账号"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/word_subhead_size" />
-
-                        <TextView
-                            android:id="@+id/account_setting_phone_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/account_setting_phone_marginleft"
-                            android:textColor="@color/account_setting_text_hint_color"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View style="@style/AccountBHl" />
-                    </RelativeLayout>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/half_margin"
-                        android:text="所在城市"
-                        android:textColor="@color/account_setting_text_hint_color"
-                        android:textSize="@dimen/word_subhead_size" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/account_setting_location_iv"
-                            android:layout_width="48dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:paddingBottom="@dimen/half_margin"
-                            android:paddingTop="@dimen/half_margin"
-                            android:scaleType="center"
-                            android:src="@mipmap/ic_account_setting_location_icon" />
-
-                        <TextView
-                            android:id="@+id/account_setting_user_location"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/half_margin"
-                            android:layout_marginTop="@dimen/half_margin"
-                            android:layout_toLeftOf="@id/account_setting_location_iv"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/word_size_body" />
-
-
-                        <View style="@style/AccountBHl" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/half_margin"
-                        android:text="修改密码"
-                        android:textColor="@color/account_setting_text_hint_color"
-                        android:textSize="@dimen/word_subhead_size" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp">
-
-                        <TextView
-                            android:id="@+id/account_setting_newpwd_hint"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginBottom="@dimen/half_margin"
-                            android:layout_marginTop="@dimen/half_margin"
-                            android:text="新　密　码"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_below="@id/account_setting_newpwd_hint" />
-
-                        <EditText
-                            android:id="@+id/account_setting_new_pwd_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/account_setting_phone_marginleft"
-                            android:background="@null"
-                            android:hint="请输入新密码"
-                            android:inputType="textPassword"
-                            android:textColor="@color/account_setting_text_hint_color"
-                            android:textColorHint="@color/account_setting_text_hint_color"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View style="@style/AccountBHl" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp">
-
-                        <TextView
-                            android:id="@+id/account_setting_realpwd_hint"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginBottom="@dimen/half_margin"
-                            android:layout_marginTop="@dimen/half_margin"
-                            android:text="确认新密码"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_below="@id/account_setting_realpwd_hint" />
-
-                        <EditText
-                            android:id="@+id/account_setting_new_pwd_again_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/account_setting_phone_marginleft"
-                            android:background="@null"
-                            android:hint="请再次输入新密码"
-                            android:inputType="textPassword"
-                            android:textColor="@color/account_setting_text_hint_color"
-                            android:textColorHint="@color/account_setting_text_hint_color"
-                            android:textSize="@dimen/word_size_body" />
-
-                        <View style="@style/AccountBHl" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/account_setting_save_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/base_margin"
-                        android:background="@color/gene_textcolor_yellow"
-                        android:gravity="center"
-                        android:paddingBottom="@dimen/half_margin"
-                        android:paddingTop="@dimen/half_margin"
-                        android:text="保存以上修改"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/word_subhead_size" />
-
-
-                </LinearLayout>
-
-            </ScrollView>
-
-        </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/editHeadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/headView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/base_margin"
+            android:background="@drawable/shape_edit_bg"
+            android:paddingBottom="@dimen/tow_dp_margin"
+            android:paddingLeft="@dimen/quarter_margin"
+            android:paddingRight="@dimen/quarter_margin"
+            android:paddingTop="@dimen/tow_dp_margin"
+            android:text="编辑头像"
+            android:textColor="@color/standard_color_h2_dark"
+            android:textSize="@dimen/word_size_body" />
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/saveUserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:text="保存以上修改" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/saveUserInfo"
+        android:layout_below="@id/headContainer"
+        android:background="@color/bg_pager">
+
+        <LinearLayout
+            android:id="@+id/container_as"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/base_margin"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin">
+
+            <RelativeLayout
+                android:id="@+id/rlUserName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="昵称" />
+
+
+                <EditText
+                    android:id="@+id/nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="right|center_vertical"
+                    android:maxLength="20"
+                    android:minWidth="50dp"
+                    android:singleLine="true"
+                    android:textColor="@color/standard_color_h3_dark"
+                    android:textColorHint="@color/account_setting_text_hint_color"
+                    android:textSize="@dimen/word_size_body"
+                    tools:hint="用户名" />
+
+            </RelativeLayout>
+
+            <View  android:id="@+id/vDividerUserName" style="@style/HorizontalLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="性别" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/man"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_male" />
+
+                    <RadioButton
+                        android:id="@+id/girl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_female" />
+                </RadioGroup>
+
+            </RelativeLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="账号" />
+
+
+                <ImageView
+                    android:id="@+id/loginTypeIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_phone" />
+
+                <TextView
+                    android:id="@+id/photoNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/half_margin"
+                    android:layout_toLeftOf="@id/loginTypeIcon"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:textColor="@color/account_setting_text_hint_color"
+                    android:textSize="@dimen/word_size_body"
+                    tools:text="4234123432" />
+
+
+            </RelativeLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="所在城市" />
+
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/half_margin"
+                    android:layout_marginTop="@dimen/half_margin"
+                    android:drawablePadding="@dimen/half_margin"
+                    android:drawableRight="@mipmap/ic_plane"
+                    android:ellipsize="end"
+                    android:gravity="right|center_vertical"
+                    android:singleLine="true"
+                    android:textSize="@dimen/word_size_body"
+                    tools:text="厦门" />
+
+            </LinearLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <RelativeLayout
+                android:id="@+id/bindAccound"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="绑定社交账号" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_go_right" />
+
+            </RelativeLayout>
+
+            <View style="@style/HorizontalLine" />
+
+            <RelativeLayout
+                android:id="@+id/modiffPass"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="修改密码" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_go_right" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
 </RelativeLayout>

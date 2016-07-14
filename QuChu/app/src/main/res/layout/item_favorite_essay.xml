@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<co.quchu.quchu.widget.SwipeDeleteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_delete_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="1dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@id/swipe_delete_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/simpleDraweeView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                fresco:placeholderImage="@mipmap/ic_image_empty"
+                fresco:viewAspectRatio="1.8" />
+
+            <!--fresco:overlayImage="@color/translucent_dark"-->
+            <TextView
+                android:id="@+id/favorite_essay_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/simpleDraweeView"
+                android:layout_marginBottom="@dimen/base_margin"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:textColor="@color/standard_color_white"
+                android:textSize="@dimen/word_subhead_size"
+                tools:text="哈哈哈发的身份" />
+
+            <View
+                style="@style/HorizontalLine"
+                android:layout_below="@id/simpleDraweeView" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@id/swipe_delete_action"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_delete"
+                tools:ignore="ContentDescription" />
+        </FrameLayout>
+    </LinearLayout>
+
+</co.quchu.quchu.widget.SwipeDeleteLayout>

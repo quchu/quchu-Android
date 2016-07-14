@@ -1,7 +1,6 @@
 package co.quchu.quchu.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -54,23 +53,27 @@ public class RecommentFragPresenter {
 
     public void initTabData(boolean isRefresh, String selectedTag) {
 
-
+        System.out.println("getTABDATA init tab data");
         if (!isRefresh) {
             DialogUtil.showProgess(context, R.string.loading_dialog_text);
         }
         model.getTabData(selectedTag, new CommonListener<RecommendModelNew>() {
             @Override
             public void successListener(RecommendModelNew response) {
+                System.out.printf("getTABDATA success");
                 DialogUtil.dismissProgessDirectly();
-                view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo());
-
+                if (response != null)
+                    view.initTabData(false, response.getResult(), response.getPageCount(), response.getPagesNo(), response.getRowCount());
+                else
+                    view.initTabData(true, null, 0, 0, 0);
 
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
+                System.out.printf("getTABDATA error listener");
                 DialogUtil.dismissProgessDirectly();
-                view.initTabData(true, null, 0, 0);
+                view.initTabData(true, null, 0, 0, 0);
             }
         });
     }
@@ -81,7 +84,10 @@ public class RecommentFragPresenter {
         model.loadMore(type, pageNumber, new CommonListener<RecommendModelNew>() {
             @Override
             public void successListener(RecommendModelNew response) {
-                view.loadMore(false, response.getResult(), response.getPageCount(), response.getPagesNo());
+                if (response != null)
+                    view.loadMore(false, response.getResult(), response.getPageCount(), response.getPagesNo());
+                else
+                    view.loadMore(true, null, 0, 0);
             }
 
             @Override

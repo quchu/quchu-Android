@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true">
-        <shape>
-            <corners android:radius="2dp"/>
-            <stroke
-                android:width="0.5dp"
-                android:color="@color/text_color_white" />
-        </shape>
-    </item>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_pressed="false">
-        <shape>
-            <corners android:radius="2dp"/>
-            <stroke
-                android:width="0.5dp"
-                android:color="@color/text_color_white" />
-        </shape>
-    </item>
 
-</selector>
+    <corners android:radius="2dp" />
+    <stroke
+        android:width="0.5dp"
+        android:color="@color/standard_color_white" />
+    <solid android:color="@android:color/transparent" />
+    <padding
+        android:bottom="@dimen/tow_dp_margin"
+        android:left="@dimen/half_margin"
+        android:right="@dimen/half_margin"
+        android:top="@dimen/tow_dp_margin" />
+</shape>

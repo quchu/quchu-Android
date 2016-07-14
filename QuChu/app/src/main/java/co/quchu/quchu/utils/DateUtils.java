@@ -3,9 +3,10 @@ package co.quchu.quchu.utils;
 import android.content.Context;
 
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import co.quchu.quchu.R;
@@ -17,59 +18,34 @@ import co.quchu.quchu.R;
  * 日期工具类
  */
 public class DateUtils {
-    public static String Analysis_DATA_FORMAT = "yyyyMMDDHHmmss";
-
-    /**
-     * 将Date类型转换为日期字符串
-     *
-     * @param type 需要的日期格式
-     * @return 按照需求格式的日期字符串
-     */
-    public static String formatDate(String type) {
-        try {
-            Date date = getNowDate();
-            SimpleDateFormat df = new SimpleDateFormat(type);
-            return df.format(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static Date getNowDate() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(currentTime);
-        ParsePosition pos = new ParsePosition(8);
-        Date currentTime_2 = formatter.parse(dateString, pos);
-        return currentTime_2;
-    }
-/*时间戳转换成字符窜*/
+    public static String DATA_FORMAT_MM_DD_YYYY = "MM.dd.yyyy";
+    public static String DATA_FORMAT_YYYY_MM_DDHH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+    public static String DATA_FORMAT_HH_MM = "HH:mm";
 
 
-    public static String getDateToString(long time) {
+    public static String getDateToString(String format, long time) {
         Date d = new Date(time);
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat sf = new SimpleDateFormat(format, Locale.CHINESE);
+        sf.setTimeZone(TimeZone.getDefault());
         return sf.format(d);
     }
 
-    public static String getUTCTime() {
-        //  SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSzzz");
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)));
-        //    fmt.setTimeZone(TimeZone.getTimeZone(TimeZone.getTimeZone("UTC").getDisplayName(false, TimeZone.LONG)));
-        String utcTime = fmt.format(new Date());
- /*       LogUtils.json("utc Time=" + utcTime);
-        String str2 = utcTime.replaceAll("GMT", "");
-        LogUtils.json("last Time=" + str2);
-        LogUtils.json("currentTimeMillis Time=" + System.currentTimeMillis());*/
-        return utcTime;
+    public static String getCurrentTime(String format) {
+        Date d = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat(format, Locale.CHINESE);
+        return sf.format(d);
+    }
+
+    public static String getDateToString(String format, String time) {
+        Date d = new Date(getTimeStamp(time));
+        SimpleDateFormat sf = new SimpleDateFormat(format, Locale.SIMPLIFIED_CHINESE);
+        sf.setTimeZone(TimeZone.getDefault());
+        return sf.format(d);
     }
 
     public static long getTimeStamp(String timeStr) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date d = null;
+        SimpleDateFormat sdf = new SimpleDateFormat(DATA_FORMAT_YYYY_MM_DDHH_MM_SS, Locale.SIMPLIFIED_CHINESE);
+        Date d;
         long timeStamp = 0L;
         try {
             d = sdf.parse(timeStr);
@@ -81,27 +57,60 @@ public class DateUtils {
     }
 
     public static String getTimeRange(String timeStr, Context cont) {
-        int s = (int) (System.currentTimeMillis() - getTimeStamp(timeStr)) / 1000;
-        if (s < 60) {
+        long s = (System.currentTimeMillis() - getTimeStamp(timeStr));
+        if (s < 600000) {//十分钟以内
             return cont.getString(R.string.mypost_timer_now);
         }
-        if (s < 3600) {
-            int m = (int) (s / 60);
-            return m + cont.getString(R.string.mypost_timer_minutes);
+//        if (s < 3600) {
+//            int m = s / 60;
+//            return m + cont.getString(R.string.mypost_timer_minutes);
+//        }
+        s = getTimeStamp(timeStr);
+        if (s > getStartTime() && s - getStartTime() < 86400000) {//当天消息
+//            int h = s / 3600;
+            return getDateToString(DATA_FORMAT_HH_MM, timeStr);
         }
-        if (s < 86400) {
-            int h = (int) (s / 3600);
-            return h + cont.getString(R.string.mypost_timer_hours);
+        if (s < getStartTime() && getStartTime() - s < 86400000) {
+//            int d = s / 86400;
+            return "昨天";
         }
-        if (s < 86400 * 30) {
-            int d = (int) (s / 86400);
-            return d + cont.getString(R.string.mypost_timer_days);
+//        if (s < 86400 * 365) {
+//            int m = s / (86400 * 30);
+//            return m + cont.getString(R.string.mypost_timer_months);
+//        }
+//        int y = s / (86400 * 365);
+        return getDateToString(DATA_FORMAT_MM_DD_YYYY, timeStr);
+    }
+
+    /**
+     * 当日0点的时间
+     *
+     * @return
+     */
+    public static Long getStartTime() {
+        Calendar todayStart = Calendar.getInstance();
+        todayStart.set(Calendar.HOUR, 0);
+        todayStart.set(Calendar.MINUTE, 0);
+        todayStart.set(Calendar.SECOND, 0);
+        todayStart.set(Calendar.MILLISECOND, 0);
+        return todayStart.getTime().getTime();
+    }
+
+    public static int getHour(String time) {
+        try {
+            return Integer.parseInt(time.substring(11, 13));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
-        if (s < 86400 * 365) {
-            int m = (int) (s / (86400 * 30));
-            return m + cont.getString(R.string.mypost_timer_months);
+        return 0;
+    }
+
+    public static int getMin(String time) {
+        try {
+            return Integer.parseInt(time.substring(14, 16));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
-        int y = (int) (s / (86400 * 365));
-        return y + cont.getString(R.string.mypost_timer_years);
+        return 0;
     }
 }

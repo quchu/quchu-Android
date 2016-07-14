@@ -7,41 +7,43 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.sina.weibo.sdk.utils.LogUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.galleryfinal.GalleryFinal;
-import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.gallery.GalleryFinal;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.ImageUpload;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.view.adapter.FindPositionAdapter;
-import co.quchu.quchu.widget.MoreButtonView;
 import co.quchu.quchu.widget.SelectedImagePopWin;
 
 public class FindPositionActivity extends BaseActivity implements FindPositionAdapter.ItemClickListener {
 
-    @Bind(R.id.recommend_title_more_rl)
-    MoreButtonView recommendTitleMoreRl;
-    @Bind(R.id.name)
+    @Bind(R.id.desc)
     EditText name;
     @Bind(R.id.position)
     EditText position;
@@ -49,8 +51,6 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     EditText detail;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind(R.id.commit)
-    TextView commit;
     List<PhotoInfo> photoInfos;
     private FindPositionAdapter adapter;
     private PhotoInfo tackImage;
@@ -64,23 +64,23 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     private String descText;
     private String nameText;
     private int id;
+    private TextView rightTv;
+
+    private boolean dataChange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_position);
         ButterKnife.bind(this);
-        ImageView image = (ImageView) recommendTitleMoreRl.findViewById(R.id.widget_title_more_iv);
-        image.setImageResource(R.mipmap.ic_menus_title_more);
+        EnhancedToolbar toolbar = getEnhancedToolbar();
 
-        recommendTitleMoreRl.setMoreClick(new MoreButtonView.MoreClicklistener() {
-            @Override
-            public void moreClick() {
-                finish();
-            }
-        });
+        TextView titleTv = toolbar.getTitleTv();
+        titleTv.setText("添加新趣处");
+
+        rightTv = toolbar.getRightTv();
+        rightTv.setText("保存");
         init();
-
         restore();
     }
 
@@ -116,7 +116,7 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         position.setText("");
         photoInfos = new ArrayList<>();
         tackImage = new PhotoInfo();
-        tackImage.setPhotoPath("res:///" + R.mipmap.ic_add_photo_image);
+        tackImage.setPhotoPath("res:///" + R.mipmap.ic_take_photo);
         photoInfos.add(tackImage);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
@@ -126,18 +126,17 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
         adapter.setListener(this);
 
         recyclerView.setAdapter(adapter);
-        commit.setOnClickListener(new View.OnClickListener() {
+        rightTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nameText = FindPositionActivity.this.name.getText().toString().trim();
                 positionText = FindPositionActivity.this.position.getText().toString().trim();
                 descText = detail.getText().toString().trim();
-                if (TextUtils.isEmpty(nameText) || TextUtils.isEmpty(positionText)) {
-                    Toast.makeText(FindPositionActivity.this, "名称和地址不能为空", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(nameText)) {
+                    Toast.makeText(FindPositionActivity.this, "请填写趣处名称", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                List<String> im = new ArrayList<String>();
+                List<String> im = new ArrayList<>();
                 for (PhotoInfo item : photoInfos) {
                     if (item.getPhotoPath().contains("file://")) {
                         im.add(Uri.parse(item.getPhotoPath()).getPath());
@@ -150,14 +149,13 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                     new ImageUpload(FindPositionActivity.this, im, new ImageUpload.UploadResponseListener() {
                         @Override
                         public void finish(String result) {
-                            init();
                             sendToServer(nameText, positionText, descText, result);
                         }
 
                         @Override
                         public void error() {
                             DialogUtil.dismissProgessDirectly();
-                            Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FindPositionActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -166,32 +164,94 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                 }
             }
         });
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                LogUtil.e("", "文本长度" + s.length());
+                if (s.length() == 30) {
+                    Toast.makeText(FindPositionActivity.this, "名称长度已达到上限", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        position.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 40) {
+                    Toast.makeText(FindPositionActivity.this, "地址长度已达到上限", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        detail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 280) {
+                    Toast.makeText(FindPositionActivity.this, "详情长度已达到上限", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void sendToServer(String name, String position, String desc, String Images) {
-        String url;
-        if (id != -1) {
-            url = String.format(NetApi.findPosition, String.valueOf(id), name, position, desc, Images);
-        } else {
-            url = String.format(NetApi.findPosition, "", name, position, desc, Images);
-        }
 
 
-        GsonRequest<Object> request = new GsonRequest<>(Request.Method.POST, url, null, new ResponseListener<Object>() {
+        Map<String, String> map = new HashMap<>();
+        map.put("place.pimage", Images);
+        map.put("place.pId", id == 0 ? "" : String.valueOf(id));
+        map.put("place.pname", name);
+        map.put("place.paddress", position);
+        map.put("place.profile", desc);
+
+
+        GsonRequest<Object> request = new GsonRequest<>(NetApi.findPosition, Object.class, map, new ResponseListener<Object>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(FindPositionActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FindPositionActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgessDirectly();
             }
 
             @Override
             public void onResponse(Object response, boolean result, @Nullable String exception, @Nullable String msg) {
-                Toast.makeText(FindPositionActivity.this, "增加趣处成功", Toast.LENGTH_SHORT).show();
+                if (result) {
+                    Toast.makeText(FindPositionActivity.this, "增加趣处成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(FindPositionActivity.this, msg, Toast.LENGTH_SHORT).show();
+                }
                 DialogUtil.dismissProgessDirectly();
-                init();
             }
         });
-        request.start(this, null);
+        request.start(this);
     }
 
     @Override
@@ -202,17 +262,20 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
                 InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-            new SelectedImagePopWin(this, recyclerView, photoInfos, new GalleryFinal.OnHanlderResultCallback() {
+            new SelectedImagePopWin(this, recyclerView, photoInfos, 4, new GalleryFinal.OnHanlderResultCallback() {
                 @Override
                 public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                    if (photoInfos.size() + resultList.size() > 8 && photoInfos.size() > 0) {
-                        photoInfos.remove(0);
-                    }
+                    dataChange = true;
                     for (PhotoInfo info : resultList) {
                         String path = info.getPhotoPath();
-                        info.setPhotoPath("file://" + path);
+                        if (!path.startsWith("file://") && !path.startsWith("res:///") && !path.startsWith("http://"))
+                            info.setPhotoPath("file://" + path);
                     }
+                    photoInfos.clear();
                     photoInfos.addAll(resultList);
+                    if (photoInfos.size() < 4)
+                        photoInfos.add(0, tackImage);
+                    adapter.setImages(photoInfos);
                     adapter.notifyDataSetChanged();
                 }
 
@@ -223,11 +286,71 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
             });
         }
         if (isDelete) {
+            dataChange = true;
             photoInfos.remove(position);
-            if (photoInfos.size() < 8 && photoInfos.size() > 0 && !photoInfos.get(0).getPhotoPath().contains("res:///")) {
+            if (photoInfos.size() < 4 && photoInfos.size() > 0 && !photoInfos.get(0).getPhotoPath().contains("res:///")) {
                 photoInfos.add(0, tackImage);
             }
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        MobclickAgent.onPageStart("lookfornew");
+        super.onResume();
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                dataChange = true;
+            }
+        };
+
+        name.addTextChangedListener(textWatcher);
+        position.addTextChangedListener(textWatcher);
+        detail.addTextChangedListener(textWatcher);
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("lookfornew");
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+        GalleryFinal.setmCallback(null);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (dataChange) {
+            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "继续编辑", "不保存退出");
+            dialog.setListener(new CommonDialog.OnActionListener() {
+                @Override
+                public boolean dialogClick(int clickId) {
+                    if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
+                        finish();
+                    }
+                    return true;
+                }
+            });
+            dialog.show(getSupportFragmentManager(), "");
+        } else {
+            super.onBackPressed();
         }
     }
 }

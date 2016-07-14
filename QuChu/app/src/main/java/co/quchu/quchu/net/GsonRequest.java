@@ -10,8 +10,8 @@ import android.text.TextUtils;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -19,10 +19,8 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +29,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.activity.UserLoginActivity;
+import co.quchu.quchu.view.activity.LoginActivity;
 
 /**
  * Created by linqipeng on 2016/2/25.
@@ -43,12 +41,12 @@ public class GsonRequest<T> extends Request<T> {
     private Class<T> entity;
     private Type type;
     private String msg;
-    private String exception;
+    private String errorCode;
     private ResponseListener<T> listener;
     private Map<String, String> params;
     private String paramsJson;
     private boolean result;
-    private static RequestQueue queue;
+    public static RequestQueue queue;
     private Context context;
     private boolean showDialog;
 
@@ -59,14 +57,33 @@ public class GsonRequest<T> extends Request<T> {
     }
 
     public GsonRequest(String url, @NonNull Class<T> entity, ResponseListener<T> listener) {
-        super(Method.GET, url, listener);
+        super(Method.POST, url, listener);
         this.listener = listener;
         this.entity = entity;
     }
 
-    public GsonRequest(String url, @NonNull Type type, ResponseListener<T> listener) {
-        super(Method.GET, url, listener);
+    public GsonRequest(String url, ResponseListener<T> listener) {
+        super(Method.POST, url, listener);
         this.listener = listener;
+    }
+
+    public GsonRequest(String url, @NonNull Type type, ResponseListener<T> listener) {
+        super(Method.POST, url, listener);
+        this.listener = listener;
+        this.type = type;
+    }
+
+    public GsonRequest(String url, @NonNull Class<T> entity, Map<String, String> params, ResponseListener<T> listener) {
+        super(Method.POST, url, listener);
+        this.listener = listener;
+        this.params = params;
+        this.entity = entity;
+    }
+
+    public GsonRequest(String url, @NonNull Type type, Map<String, String> params, ResponseListener<T> listener) {
+        super(Method.POST, url, listener);
+        this.listener = listener;
+        this.params = params;
         this.type = type;
     }
 
@@ -106,41 +123,49 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected final Map<String, String> getParams() throws AuthFailureError {
+        if (params != null) {
+            StringBuilder encodedParams = new StringBuilder();
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                encodedParams.append(entry.getKey());
+                encodedParams.append('=');
+                encodedParams.append(entry.getValue());
+                encodedParams.append("\n");
+            }
+            LogUtils.e("请求参数" + encodedParams.toString());
+        }
+
         return params;
     }
 
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
-        T t = null;
+        T t;
         try {
             String json = new String(networkResponse.data, HttpHeaderParser.parseCharset(networkResponse.headers, "utf-8"));
 
             LogUtils.e("原始数据为" + json);
             JSONObject jsonObject = new JSONObject(json);
             result = jsonObject.getBoolean("result");
-            if (result) {
-                //结果正确
-                String data;
-                data = jsonObject.getString("data");
-                if (entity != null || type != null) {
-                    Gson gson = new Gson();
-                    t = gson.fromJson(data, entity != null ? entity : type);
-                } else {
-                    t = (T) data;
-                }
+
+            String data = jsonObject.getString("data");
+            if (entity != null || type != null) {
+                Gson gson = new Gson();
+                t = gson.fromJson(data, entity != null ? entity : type);
             } else {
-                msg = jsonObject.getString("msg");
-                exception = jsonObject.getString("exception");
-                LogUtils.e("网络返回Result为false:" + json);
+                t = (T) data;
+            }
+
+            msg = jsonObject.getString("msg");
+            if (jsonObject.has("errorCode")) {
+                errorCode = jsonObject.getString("errorCode");
             }
             return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
-        } catch (UnsupportedEncodingException | JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         LogUtils.e("网络异常");
         closeDialog();
-        return Response.error(new NetworkError());
-
+        return Response.error(new ParseError());
     }
 
     private void closeDialog() {
@@ -154,36 +179,34 @@ public class GsonRequest<T> extends Request<T> {
         }
     }
 
+
     @Override
     protected void deliverResponse(T t) {
         if (showDialog) {
             DialogUtil.dismissProgessDirectly();
         }
-        if (!result && !TextUtils.isEmpty(msg)) {
+        if (!TextUtils.isEmpty(msg)) {
             switch (msg) {
                 case "1077":
                     reLogin();
                     LogUtils.e("登录令牌错误");
-                    break;
+                    return;
                 case "1078":
                     reLogin();
                     LogUtils.e("空值异常");
-                    break;
+                    return;
                 case "1079":
                     reLogin();
                     LogUtils.e("登录令牌失效");
-                    break;
+                    return;
                 case "1080":
                     reLogin();
                     LogUtils.e("登录令牌失效,游客没有权限进行相关操作");
-                    break;
+                    return;
             }
-        } else if (t == null) {
-            // TODO: 2016/3/23  没有数据了
-            listener.onErrorResponse(new NetworkError());
-        } else {
-            listener.onResponse(t, result, exception, msg);
         }
+        if (listener != null)
+            listener.onResponse(t, result, errorCode, msg);
     }
 
     @Override
@@ -193,25 +216,33 @@ public class GsonRequest<T> extends Request<T> {
 
         if (!TextUtils.isEmpty(AppContext.token)) {
             headers.put("quchu-token", AppContext.token);
+//            headers.put("quchu-token", "c20d5d429dc966063da21f2a35da984cb1e6f025");
+            LogUtils.e("quchu-token:" + AppContext.token);
         }
+        headers.put("quchuVersion", AppContext.packageInfo.versionName);
         return headers;
     }
 
-    public void start(Context context, Object tag) {
+    public void start(Context context, @NonNull Object tag) {
         this.context = context;
         setTag(tag);
-        setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
+        setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
-        queue.start();
+    }
+
+    public void start(Context context) {
+        this.context = context;
+        setTag(context.getClass().getSimpleName());
+        setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
+        queue.add(this);
     }
 
     public void start(Context context, Object tag, boolean showDialog) {
         this.context = context;
         this.showDialog = showDialog;
         setTag(tag);
-        setRetryPolicy(new DefaultRetryPolicy(6 * 1000, 1, 1.0f));
+        setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));
         queue.add(this);
-        queue.start();
         if (showDialog)
             DialogUtil.showProgess(context, "加载中~~");
     }
@@ -245,7 +276,7 @@ public class GsonRequest<T> extends Request<T> {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Intent intent = new Intent(context, UserLoginActivity.class);
+                Intent intent = new Intent(context, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 SPUtils.clearUserinfo(context);
@@ -253,9 +284,12 @@ public class GsonRequest<T> extends Request<T> {
                 AppContext.token = null;
             }
         });
-        dialog.show();
+        try {
+            dialog.show();
 
-
+        } catch (IllegalStateException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 实心 -->
-    <solid android:color="@color/planet_progress_yellow" />
+    <solid android:color="@color/standard_color_h1_dark" />
     <!-- 渐变 -->
     <!--<gradient-->
     <!--android:startColor="#ff8c00"-->
@@ -14,8 +14,8 @@
     <!-- 圆角 -->
     <corners android:radius="90dp" />
     <padding
-        android:bottom="4dp"
-        android:left="8dp"
-        android:right="8dp"
-        android:top="4dp" />
+        android:bottom="8dp"
+        android:left="16dp"
+        android:right="16dp"
+        android:top="8dp" />
 </shape>

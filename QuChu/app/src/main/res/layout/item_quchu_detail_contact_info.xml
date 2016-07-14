@@ -1,67 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/standard_color_white"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/base_margin"
+    android:paddingRight="@dimen/base_margin">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/detail_store_address_ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/half_margin"
-        android:background="@mipmap/ic_card_shadow_bg"
-        android:orientation="vertical">
+        android:layout_height="@dimen/standard_h2_height"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/detail_store_address_ll"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/detail_store_address_tv"
+            style="@style/TextView.H2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/half_margin"
-            android:layout_marginRight="@dimen/half_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/ic_location"
+            android:drawablePadding="8dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:freezesText="true"
+            android:gravity="center_vertical"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true" />
 
-            <TextView
-                android:id="@+id/detail_store_address_tv"
-                style="@style/DetailTextStyle_sub"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:textColor="@color/text_color_white"
-                android:textSize="@dimen/word_size_body" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@mipmap/ic_detail_right_arrow" />
-        </LinearLayout>
-
-        <View style="@style/DetailHorizontalLine" />
-
-        <LinearLayout
-            android:id="@+id/detail_store_phone_ll"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/half_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/detail_store_phone_tv"
-                style="@style/DetailTextStyle_sub"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/half_margin"
-                android:layout_weight="1"
-                android:textColor="@color/text_color_white"
-                android:textSize="@dimen/word_size_body" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/half_margin"
-                android:src="@mipmap/ic_detail_right_arrow" />
-        </LinearLayout>
+            android:src="@mipmap/ic_go_right" />
 
     </LinearLayout>
+
+    <View style="@style/HorizontalLine"
+        android:id="@+id/vDividerPhone"
+        />
+
+    <LinearLayout
+
+        android:id="@+id/detail_store_phone_ll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/standard_h2_height"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/detail_store_phone_tv"
+            style="@style/TextView.H2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/ic_call"
+            android:drawablePadding="8dp" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_go_right" />
+    </LinearLayout>
+
+
+    <View style="@style/HorizontalLine"
+        android:id="@+id/vDividerOpeningTime"
+        />
+
+    <TextView
+        android:id="@+id/detail_store_business_hours_key_tv"
+        style="@style/TextView.H2"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_h2_height"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:gravity="center_vertical"
+        android:drawableLeft="@mipmap/ic_time"
+        android:drawablePadding="8dp" />
+
+
+    <View style="@style/HorizontalLine" />
+
+
+    <TextView
+        android:gravity="center_vertical"
+        android:id="@+id/detail_avg_price_tv"
+        style="@style/TextView.H2"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_h2_height"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:drawableLeft="@mipmap/ic_rmb_symbol"
+        android:drawablePadding="8dp"/>
+
+    <View style="@style/HorizontalLine" />
+
+
+</LinearLayout>

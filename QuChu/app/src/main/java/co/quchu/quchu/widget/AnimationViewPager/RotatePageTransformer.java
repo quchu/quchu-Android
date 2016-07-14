@@ -4,7 +4,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 /**
- * ZoomOutPageTransformer
  * User: Chenhs
  * Date: 2015-12-08
  *  viewpager 切换动画

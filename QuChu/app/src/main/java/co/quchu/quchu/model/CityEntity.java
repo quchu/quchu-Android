@@ -3,7 +3,6 @@ package co.quchu.quchu.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by linqipeng on 2016/3/11 11:22

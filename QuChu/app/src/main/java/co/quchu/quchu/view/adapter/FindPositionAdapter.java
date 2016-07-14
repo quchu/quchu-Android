@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,8 +12,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import co.quchu.galleryfinal.model.PhotoInfo;
 import co.quchu.quchu.R;
+import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.utils.ImageUtils;
 
 /**
@@ -34,12 +35,14 @@ public class FindPositionAdapter extends RecyclerView.Adapter<FindPositionAdapte
 
     @Override
     public ViewHold onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = View.inflate(parent.getContext(), R.layout.item_find_position_image, null);
+//        View view = View.inflate(parent.getContext(), R.layout.item_find_position_image, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_find_position_image, parent, false);
+
         return new ViewHold(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHold holder, final int position) {
+    public void onBindViewHolder(final ViewHold holder, int position) {
         final PhotoInfo info = images.get(position);
         ImageUtils.ShowImage(info.getPhotoPath(), holder.simpleDraweeView);
         if (info.getPhotoPath().contains("res:///")) {
@@ -53,14 +56,14 @@ public class FindPositionAdapter extends RecyclerView.Adapter<FindPositionAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.itemClick(false, position, info);
+                listener.itemClick(false, holder.getAdapterPosition(), info);
             }
         });
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.itemClick(true, position, info);
+                listener.itemClick(true, holder.getAdapterPosition(), info);
             }
         });
     }

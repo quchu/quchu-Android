@@ -1,54 +1,85 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
+
+import com.facebook.cache.common.CacheKey;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.facebook.imagepipeline.request.Postprocessor;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.analysis.GatherCollectModel;
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.ShareDialogFg;
-import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
-import co.quchu.quchu.view.adapter.ClassifyDecoration;
-import co.quchu.quchu.view.adapter.RecommendAdapterLite;
-
-public class ClassifyDetailActivity extends BaseActivity implements RecommendAdapterLite.CardClickListener {
+import co.quchu.quchu.utils.ImageUtils;
+import co.quchu.quchu.view.adapter.DiscoverDetailPagerAdapter;
 
 
-    @Bind(R.id.title_content_tv)
-    TextView titleContentTv;
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
-    public ArrayList<RecommendModel> dCardList;
+public class ClassifyDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     public static final String PARAMETER_TITLE = "title";
+    @Bind(R.id.vpContent)
+    ViewPager vpContent;
+    @Bind(R.id.ivBackground)
+    ImageView ivBackground;
+    ArrayList<RecommendModel> mData = new ArrayList<>();
+    DiscoverDetailPagerAdapter mAdapter;
+
+
+    private int currentIndex = -1;
+    private int currentBGIndex = -1;
+    Bitmap mSourceBitmap;
+    private int index;
+    private final int MESSAGE_FLAG_DELAY_TRIGGER = 0x0001;
+    private final int MESSAGE_FLAG_BLUR_RENDERING_FINISH = 0x0002;
+    public static final String MESSAGE_KEY_BITMAP = "MESSAGE_KEY_BITMAP";
+    private boolean mFragmentStoped;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classify_detail);
         ButterKnife.bind(this);
-        initTitleBar();
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new ClassifyDecoration(this));
-        adapter = new RecommendAdapterLite(this, this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
-        titleContentTv.setText(getIntent().getExtras().getString(PARAMETER_TITLE));
-        changeDataSetFromServer();
+
+        getEnhancedToolbar();
+
+        mAdapter = new DiscoverDetailPagerAdapter(mData, this, new DiscoverDetailPagerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                MobclickAgent.onEvent(ClassifyDetailActivity.this, "detail_subject_c");
+                Intent intent = new Intent(ClassifyDetailActivity.this, QuchuDetailsActivity.class);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_SUBJECT);
+                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid());
+                startActivity(intent);
+            }
+        });
+        vpContent.setOnPageChangeListener(this);
+        vpContent.setAdapter(mAdapter);
+        vpContent.setClipToPadding(false);
+        vpContent.setPadding(80, 40, 80, 40);
+        vpContent.setPageMargin(40);
+        getDataSetFromServer();
     }
 
     @Override
@@ -56,16 +87,16 @@ public class ClassifyDetailActivity extends BaseActivity implements RecommendAda
         return TRANSITION_TYPE_LEFT;
     }
 
-    private RecommendAdapterLite adapter;
 
-
-    public void changeDataSetFromServer() {
+    public void getDataSetFromServer() {
         RecommendPresenter.getRecommendList(this, false, new RecommendPresenter.GetRecommendListener() {
             @Override
             public void onSuccess(ArrayList<RecommendModel> arrayList, int pageCount, int pageNum) {
-                dCardList = arrayList;
-                adapter.changeDataSet(dCardList);
-                recyclerView.smoothScrollToPosition(0);
+                mData.clear();
+                mData.addAll(arrayList);
+                mAdapter.notifyDataSetChanged();
+                index = currentIndex = 0;
+                mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
             }
 
             @Override
@@ -77,51 +108,130 @@ public class ClassifyDetailActivity extends BaseActivity implements RecommendAda
 
     }
 
-
     @Override
-    public void onCardLick(View view, int position) {
-
-        switch (view.getId()) {
-            case R.id.root_cv:
-                AppContext.selectedPlace = dCardList.get(position);
-                Intent intent = new Intent(this, QuchuDetailsActivity.class);
-                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, dCardList.get(position).getPid());
-                intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_POSITION, position);
-                this.startActivity(intent);
-                break;
-            case R.id.item_recommend_card_collect_rl:
-                setFavorite(position);
-                break;
-            case R.id.item_recommend_card_interest_rl:
-                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dCardList.get(position).getPid(), dCardList.get(position).getName(), true);
-                shareDialogFg.show(this.getFragmentManager(), "share_place");
-                break;
-        }
+    public void onStop() {
+        mFragmentStoped = true;
+        super.onStop();
     }
 
-    private void setFavorite(final int position) {
-        if (AppContext.user.isIsVisitors()) {
-            VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
-            vDialog.show(this.getFragmentManager(), "visitor");
-        } else {
-            InterestingDetailPresenter.setDetailFavorite(this, dCardList.get(position).getPid(), dCardList.get(position).isIsf(), new InterestingDetailPresenter.DetailDataListener() {
-                @Override
-                public void onSuccessCall(String str) {
-                    dCardList.get(position).setIsf(!dCardList.get(position).isIsf());
-                    adapter.notifyDataSetChanged();
-                    if (dCardList.get(position).isIsf()) {
-                        Toast.makeText(ClassifyDetailActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
-                        AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, dCardList.get(position).getPid()));
-                    } else {
-                        Toast.makeText(ClassifyDetailActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onResume() {
+        super.onResume();
+        mFragmentStoped = false;
+    }
+
+    private Handler mBlurEffectAnimationHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (mFragmentStoped) {
+                return;
+            }
+            switch (msg.what) {
+                case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
+                    mSourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
+                    if (null != mSourceBitmap && !mSourceBitmap.isRecycled()) {
+                        executeSwitchAnimation(ImageUtils.doBlur(mSourceBitmap, ivBackground.getWidth() / 4, ivBackground.getHeight() / 4));
+                    }
+                    currentBGIndex = currentIndex;
+                    break;
+
+                case MESSAGE_FLAG_DELAY_TRIGGER:
+                    if (-1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
+                        String strUri = mData.get(currentIndex).getCover();
+                        if (!TextUtils.isEmpty(strUri)) {
+                            Uri imageUri = Uri.parse(strUri);
+                            if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)) {
+                                ImageRequest request = ImageRequestBuilder
+                                        .newBuilderWithSource(imageUri)
+                                        .setImageType(ImageRequest.ImageType.SMALL)
+                                        .setPostprocessor(new Postprocessor() {
+                                            @Override
+                                            public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
+                                                if (null != sourceBitmap) {
+                                                    Message msg = new Message();
+                                                    msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putParcelable(MESSAGE_KEY_BITMAP, sourceBitmap);
+                                                    msg.setData(bundle);
+                                                    mBlurEffectAnimationHandler.sendMessage(msg);
+                                                }
+                                                return null;
+                                            }
+
+                                            @Override
+                                            public String getName() {
+                                                return null;
+                                            }
+
+                                            @Override
+                                            public CacheKey getPostprocessorCacheKey() {
+                                                return null;
+                                            }
+                                        })
+                                        .build();
+                                Fresco.getImagePipeline().fetchImageFromBitmapCache(request, this);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+    };
+
+    /**
+     * 执行切换动画
+     */
+    private void executeSwitchAnimation(Bitmap bm) {
+        if (null == bm || bm.isRecycled()) {
+            return;
+        }
+
+        final Bitmap finalBm = bm;
+
+        ivBackground.animate().alpha(.1f).setDuration(400).setInterpolator(new AccelerateInterpolator()).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                if (ivBackground.getDrawable() instanceof ColorDrawable) {
+                    ivBackground.setImageBitmap(null);
+                } else {
+                    if (!(ivBackground.getDrawable() instanceof ColorDrawable) && null != ivBackground.getDrawable() && null != ((BitmapDrawable) ivBackground.getDrawable()).getBitmap()) {
+                        ((BitmapDrawable) ivBackground.getDrawable()).getBitmap().recycle();
+                        ivBackground.setImageBitmap(null);
+                        System.gc();
                     }
                 }
+                ivBackground.setImageBitmap(finalBm);
+                ivBackground.animate().alpha(1).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+            }
+        }).start();
 
-                @Override
-                public void onErrorCall(String str) {
+    }
 
-                }
-            });
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        MobclickAgent.onEvent(this, "discovery_c");
+        currentIndex = position;
+        index = position;
+        mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        ButterKnife.unbind(this);
+        if (null != vpContent) {
+            vpContent.removeOnPageChangeListener(this);
         }
+        super.onDestroy();
     }
 }

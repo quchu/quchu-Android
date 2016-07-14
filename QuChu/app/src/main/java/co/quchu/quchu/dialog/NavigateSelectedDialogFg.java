@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.utils.AppUtil;
 
 /**
  * LocationSelectedDialogFg
@@ -26,12 +27,14 @@ import co.quchu.quchu.model.CityModel;
  */
 public class NavigateSelectedDialogFg extends DialogFragment {
 
-    @Bind(R.id.navigate_gd_tv)
-    TextView navigateGdTv;
-    @Bind(R.id.navigate_bd_tv)
-    TextView navigateBdTv;
-    @Bind(R.id.navigate_tx_tv)
-    TextView navigateTxTv;
+
+    @Bind(R.id.tvAMInstalled)
+    TextView tvAMInstalled;
+    @Bind(R.id.tvBDInstalled)
+    TextView tvBDInstalled;
+    @Bind(R.id.tvTCInstalled)
+    TextView tvTCInstalled;
+
     private ArrayList<CityModel> cityList;
     NavigateClickListener listener;
 
@@ -64,6 +67,15 @@ public class NavigateSelectedDialogFg extends DialogFragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_navigate_selected, null);
         ButterKnife.bind(this, view);
         builder.setView(view);
+        if (!AppUtil.isAppInstall(getActivity(),"com.autonavi.minimap")){
+            tvAMInstalled.setVisibility(View.GONE);
+        }
+        if(!AppUtil.isAppInstall(getActivity(),"com.tencent.map")){
+            tvTCInstalled.setVisibility(View.GONE);
+        }
+        if(!AppUtil.isAppInstall(getActivity(),"com.baidu.BaiduMap")){
+            tvBDInstalled.setVisibility(View.GONE);
+        }
         return builder.create();
     }
 

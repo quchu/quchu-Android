@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
 
-    <WebView
-        android:id="@+id/webView"
-        android:layout_below="@+id/title_bar"
+    <include layout="@layout/cp_enhanced_toolbar" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:id="@+id/refreshLayout"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbar">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <co.quchu.quchu.widget.ErrorView
         android:id="@+id/errorView"
-        android:layout_below="@id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/appbar"
         android:visibility="gone" />
 </RelativeLayout>

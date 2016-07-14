@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="104dp"
     android:layout_marginLeft="@dimen/base_margin"
@@ -13,82 +14,47 @@
         android:layout_height="56dp"
         android:layout_centerVertical="true"
         card_view:actualImageScaleType="centerCrop"
-        card_view:roundAsCircle="true"
-        card_view:roundingBorderWidth="90dp" />
-
-    <RelativeLayout
-        android:id="@+id/item_message_from_rl"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/item_message_from"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:visibility="gone"
-            card_view:actualImageScaleType="centerCrop" />
-
-        <TextView
-            android:id="@+id/item_message_follow_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:textSize="@dimen/word_size_body" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/item_message_from_avator"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:layout_toLeftOf="@id/item_message_from_rl"
-        android:layout_toRightOf="@id/item_message_from_avator"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/item_message_user_name_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="用户名"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/word_subhead_size" />
-
-        <TextView
-            android:id="@+id/item_message_add_time_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="32分钟前"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/word_size_time" />
-    </LinearLayout>
+        card_view:roundAsCircle="true" />
 
 
     <TextView
-        android:id="@+id/item_message_des_tv"
+        android:id="@+id/item_message_user_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/item_message_from_avator"
-        android:layout_marginBottom="@dimen/quarter_margin"
         android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_marginTop="@dimen/base_margin"
         android:layout_toRightOf="@id/item_message_from_avator"
-        android:text="内容"
-        android:textColor="@color/text_color_white"
-        android:textSize="@dimen/word_size_body" />
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/standard_color_h3_dark"
+        android:textSize="@dimen/word_subhead_size"
+        tools:text="用户名" />
+
+    <TextView
+        android:id="@+id/item_message_add_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_message_user_name_tv"
+        android:layout_below="@id/item_message_user_name_tv"
+        android:layout_marginTop="@dimen/half_margin"
+        android:text="32分钟前"
+        android:textColor="@color/standard_color_h3_dark"
+        android:textSize="@dimen/word_size_time" />
+
+    <TextView
+        android:id="@+id/item_message_follow_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape_message_follow_full_bg"
+        android:textSize="@dimen/word_size_body"
+        tools:text="关注" />
+
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/tow_dp_margin"
-        android:layout_marginRight="@dimen/tow_dp_margin"
-        android:background="@color/lineBackground_gray" />
+        android:layout_marginTop="@dimen/base_margin"
+        style="@style/HorizontalLine"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

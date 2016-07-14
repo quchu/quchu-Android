@@ -2,46 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/detail_subtitle_bg"
     android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/title_bar"
-        layout="@layout/title_bar" />
+    <include layout="@layout/cp_enhanced_toolbar" />
 
-    <RelativeLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar">
+        android:id="@+id/refreshLayout"
+        android:layout_below="@+id/appbar"
+        android:background="@android:color/white">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/messages_srl"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/messages_rv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_activity_bg"
-                android:overScrollMode="always" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <FrameLayout
-            android:id="@+id/message_empty_view_fl"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/messages_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
-
-            <include layout="@layout/empty_view" />
-        </FrameLayout>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/half_margin"
-        android:layout_below="@id/title_bar"
-        android:background="@drawable/shape_shadow_toptobottom" />
+            android:overScrollMode="always" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </RelativeLayout>

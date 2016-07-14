@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/translucent_dark_deep"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_dismiss_dialog"
+        android:padding="@dimen/base_margin"
+        android:layout_margin="@dimen/base_margin"
+        />
+
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvTags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="5"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:layout_marginRight="@dimen/dialog_margin"
+        tools:listitem="@layout/item_tags_filter"
+        />
+
+    <ImageView
+        android:id="@+id/ivFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_confirm"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dialog_margin"
+        />
+</RelativeLayout>

@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,51 +25,27 @@ import co.quchu.quchu.view.activity.UserCenterActivity;
  * User: Chenhs
  * Date: 2015-11-09
  */
-public class FriendsAdatper extends RecyclerView.Adapter<FriendsAdatper.FriendsViewHolder> {
+public class FriendsAdatper extends AdapterBase<FollowUserModel, FriendsAdatper.FriendsViewHolder> {
 
     private Context mContext;
     private FriendsItemClickListener clickListener;
     private boolean isInnerClick = true;
-    private ArrayList<FollowUserModel> userList;
+
 
     public FriendsAdatper(Context mContext) {
         this.mContext = mContext;
     }
 
-    public FriendsAdatper(Context mContext, FriendsItemClickListener clickListener) {
-        this.mContext = mContext;
-        this.clickListener = clickListener;
-    }
-
-    public FriendsAdatper(Context mContext, FriendsItemClickListener clickListener, ArrayList<FollowUserModel> userList) {
-        this.mContext = mContext;
-        this.clickListener = clickListener;
-        this.userList = userList;
-    }
-    public FriendsAdatper(Context mContext, ArrayList<FollowUserModel> userList) {
-        this.mContext = mContext;
-        this.userList = userList;
-    }
-
     @Override
-    public FriendsAdatper.FriendsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        FriendsViewHolder friendsViewHolder = new FriendsViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_friends, parent, false), clickListener);
-        return friendsViewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(FriendsViewHolder holder, int position) {
-        FollowUserModel model = userList.get(position);
+    public void onBindView(FriendsViewHolder holder, int position) {
+        FollowUserModel model = data.get(position);
         holder.itemFirendsIconSdv.setImageURI(Uri.parse(model.getPhoto()));
         holder.itemFriendsNameTv.setText(model.getName());
     }
 
     @Override
-    public int getItemCount() {
-        if (userList == null)
-            return 0;
-        else
-            return userList.size();
+    public FriendsViewHolder onCreateView(ViewGroup parent, int viewType) {
+        return new FriendsViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_friends, parent, false), clickListener);
     }
 
     class FriendsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -96,7 +70,7 @@ public class FriendsAdatper extends RecyclerView.Adapter<FriendsAdatper.FriendsV
             if (KeyboardUtils.isFastDoubleClick())
                 return;
             if (isInnerClick) {
-                mContext.startActivity(new Intent(mContext, UserCenterActivity.class).putExtra("USERID", userList.get(getPosition()).getUserId()));
+                mContext.startActivity(new Intent(mContext, UserCenterActivity.class).putExtra("USERID", data.get(getPosition()).getUserId()));
             } else {
                 if (clickListener != null)
                     clickListener.itemClick(v, getAdapterPosition());

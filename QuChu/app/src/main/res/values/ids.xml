@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="id" name="scrollview"/>
+    <item name="scrollview" type="id" />
+    <item name="toolbar_tv_left" type="id" />
+    <item name="toolbar_tv_right" type="id" />
+    <item name="toolbar_iv_left" type="id" />
+    <item name="toolbar_iv_right" type="id" />
+    <item name="toolbar_tv_title" type="id" />
+    <item name="toolbar_v_custom" type="id" />
+
+    <item name="swipe_delete_content" type="id" />
+    <item name="swipe_delete_action" type="id" />
 </resources>

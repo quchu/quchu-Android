@@ -2,16 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/itemMask_black">
+    android:background="@color/itemMask_black"
+    android:padding="@dimen/base_margin">
 
     <LinearLayout
         android:id="@+id/ll_popup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/base_margin"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/detail_marginright"
+        android:layout_marginBottom="70dp"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
 
@@ -19,32 +20,33 @@
             android:id="@+id/item_popupwindows_camera"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@mipmap/ic_card_shadow_full_bg"
+            android:background="@null"
             android:text="拍照"
-            android:textColor="@color/gene_textcolor_yellow"
+            android:textColor="@color/standard_color_h2_dark"
             android:textSize="@dimen/word_size_body" />
+
+        <View style="@style/HorizontalLine" />
 
         <Button
             android:id="@+id/item_popupwindows_Photo"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@mipmap/ic_card_shadow_full_bg"
-            android:text="从相册中选取"
-            android:textColor="@color/gene_textcolor_yellow"
+            android:background="@null"
+            android:text="相册"
+            android:textColor="@color/standard_color_h2_dark"
             android:textSize="@dimen/word_size_body" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="4dp" />
 
-        <Button
-            android:id="@+id/item_popupwindows_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@mipmap/ic_card_shadow_full_bg"
-            android:text="取消"
-            android:textColor="@color/gene_textcolor_yellow"
-            android:textSize="@dimen/word_size_body" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/item_popupwindows_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:text="取消"
+        android:textAllCaps="false"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="@dimen/word_size_body" />
 </RelativeLayout>

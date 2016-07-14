@@ -1,34 +1,33 @@
 package co.quchu.quchu.view.fragment;
 
-import android.animation.AnimatorListenerAdapter;
+import android.app.ActivityOptions;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
+import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.cache.common.CacheKey;
-import com.facebook.common.references.CloseableReference;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.facebook.imagepipeline.request.Postprocessor;
+import com.android.volley.VolleyError;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,26 +38,26 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.analysis.GatherCollectModel;
-import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.ShareDialogFg;
-import co.quchu.quchu.dialog.VisitorLoginDialogFg;
+import co.quchu.quchu.model.PagerModel;
+import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.model.TagsModel;
-import co.quchu.quchu.presenter.InterestingDetailPresenter;
-import co.quchu.quchu.presenter.RecommentFragPresenter;
+import co.quchu.quchu.model.SceneModel;
+import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.utils.ImageUtils;
-import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
-import co.quchu.quchu.view.adapter.RecommendAdapter;
+import co.quchu.quchu.view.activity.SceneDetailActivity;
+import co.quchu.quchu.view.adapter.AllSceneGridAdapter;
+import co.quchu.quchu.view.adapter.MySceneAdapter;
 import co.quchu.quchu.widget.ErrorView;
-import co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout;
-import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
+import co.quchu.quchu.widget.SpacesItemDecoration;
 
 
 /**
@@ -67,319 +66,371 @@ import co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager;
  * Date: 2015-12-07
  * 推荐
  */
-public class RecommendFragment extends BaseFragment implements RecommendAdapter.CardClickListener, IRecommendFragment, RecyclerViewPager.OnPageChangedListener {
-    @Bind(R.id.recyclerView)
-    RecyclerViewPager recyclerView;
-    @Bind(R.id.tabLayout)
-    TabLayout tabLayout;
-    @Bind(R.id.f_recommend_bimg_top)
-    ImageView fRecommendBimgTop;
-    @Bind(R.id.refreshLayout)
-    HorizontalSwipeRefLayout refreshLayout;
+public class RecommendFragment extends BaseFragment implements MySceneAdapter.CardClickListener, ViewPager.PageTransformer {
+
+    @Bind(R.id.viewpager)
+    ViewPager vpMyScene;
     @Bind(R.id.errorView)
     ErrorView errorView;
+    @Bind(R.id.tvPageIndicatorCurrent)
+    TextView tvPageIndicatorCurrent;
+    @Bind(R.id.tvPageIndicatorSize)
+    TextView TvPageIndicatorSize;
+    @Bind(R.id.tvPageIndicatorLabel)
+    TextView tvPageIndicatorLabel;
+    @Bind(R.id.llPageIndicator)
+    LinearLayout llPageIndicator;
+    @Bind(R.id.rgDisplayMode)
+    RadioGroup radioGroup;
+    @Bind(R.id.rvGrid)
+    RecyclerView rvGrid;
+    @Bind(R.id.rlEmptyView)
+    View rlEmptyView;
+    @Bind(R.id.action_buttton)
+    View action_buttton;
 
-    private boolean isLoading = false;
-    public List<RecommendModel> cardList = new ArrayList<>();
-    private RecommendAdapter adapter;
-    private RecommentFragPresenter presenter;
-    private int currentIndex = -1;
-    private int currentBGIndex = -1;
-    private final int MESSAGE_FLAG_DELAY_TRIGGER = 0x0001;
-    private final int MESSAGE_FLAG_BLUR_RENDERING_FINISH = 0x0002;
-    public static final String MESSAGE_KEY_BITMAP = "MESSAGE_KEY_BITMAP";
-    private boolean mFragmentStoped;
+    public static final int ANIMATION_DURATION = 350;
 
-    Bitmap mSourceBitmap;
-    private int index;
-    private Handler mBlurEffectAnimationHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (mFragmentStoped) {
-                return;
-            }
-            switch (msg.what) {
-                case MESSAGE_FLAG_BLUR_RENDERING_FINISH:
-                    mSourceBitmap = msg.getData().getParcelable(MESSAGE_KEY_BITMAP);
-                    if (null != mSourceBitmap && !mSourceBitmap.isRecycled()) {
-                        executeSwitchAnimation(ImageUtils.doBlur(mSourceBitmap, fRecommendBimgTop.getWidth() / 4, fRecommendBimgTop.getHeight() / 4));
-                    }
-                    currentBGIndex = currentIndex;
-                    break;
+    private List<SceneModel> mAllSceneList = new ArrayList<>();
+    private List<SceneModel> mFavoriteSceneList = new ArrayList<>();
+    private MySceneAdapter mMySceneAdapter;
+    private AllSceneGridAdapter mAllSceneGridAdapter;
 
-                case MESSAGE_FLAG_DELAY_TRIGGER:
-                    if (-1 != currentIndex && index == currentIndex && currentBGIndex != currentIndex) {
-                        String strUri = cardList.get(currentIndex).getCover();
-                        if (!TextUtils.isEmpty(strUri)) {
-                            Uri imageUri = Uri.parse(strUri);
-                            if (Fresco.getImagePipeline().isInBitmapMemoryCache(imageUri)) {
-                                ImageRequest request = ImageRequestBuilder
-                                        .newBuilderWithSource(imageUri)
-                                        .setImageType(ImageRequest.ImageType.SMALL)
-                                        .setPostprocessor(new Postprocessor() {
-                                            @Override
-                                            public CloseableReference<Bitmap> process(Bitmap sourceBitmap, PlatformBitmapFactory bitmapFactory) {
-                                                if (null != sourceBitmap) {
-                                                    Message msg = new Message();
-                                                    msg.what = MESSAGE_FLAG_BLUR_RENDERING_FINISH;
-                                                    Bundle bundle = new Bundle();
-                                                    bundle.putParcelable(MESSAGE_KEY_BITMAP, sourceBitmap);
-                                                    msg.setData(bundle);
-                                                    mBlurEffectAnimationHandler.sendMessage(msg);
-                                                }
-                                                return null;
-                                            }
+    private String from = QuchuDetailsActivity.FROM_TYPE_HOME;
 
-                                            @Override
-                                            public String getName() {
-                                                return null;
-                                            }
+    private boolean mAddFavoriteRunning = false;
+    private boolean mRefreshRunning = false;
 
-                                            @Override
-                                            public CacheKey getPostprocessorCacheKey() {
-                                                return null;
-                                            }
-                                        })
-                                        .build();
-                                Fresco.getImagePipeline().fetchImageFromBitmapCache(request, getActivity());
-                            }
-                        }
-                    }
-                    break;
-            }
-        }
-    };
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
+        final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
-        LinearLayoutManager layout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layout);
-        adapter = new RecommendAdapter(getActivity(), cardList, this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addOnScrollListener();
-        recyclerView.addOnPageChangedListener(this);
-        presenter = new RecommentFragPresenter(getContext(), this);
-        recyclerView.addOnLayoutChangeListener();
-        refreshLayout.setColorSchemeResources(R.color.planet_progress_yellow);
-        initData();
 
-        refreshLayout.setOnRefreshListener(new HorizontalSwipeRefLayout.OnRefreshListener() {
+
+        action_buttton.setVisibility(View.GONE);
+        if (NetUtil.isNetworkConnected(getActivity())){
+            rlEmptyView.setVisibility(View.GONE);
+        }else{
+            rlEmptyView.setVisibility(View.VISIBLE);
+        }
+
+        rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin), 2));
+        mMySceneAdapter = new MySceneAdapter(this, mFavoriteSceneList, this);
+        vpMyScene.setClipToPadding(false);
+        int padding = getResources().getDimensionPixelSize(R.dimen.recommend_card_padding);
+        vpMyScene.setPadding(padding, 0, padding, 0);
+        vpMyScene.setPageMargin(padding / 2);
+        vpMyScene.setAdapter(mMySceneAdapter);
+
+
+        mAllSceneGridAdapter = new AllSceneGridAdapter(mAllSceneList, new AllSceneGridAdapter.OnItemClickListener() {
             @Override
-            public void onRefresh() {
-                presenter.initTabData(true, selectedTag);
+            public void onItemClick(View v,int position) {
+
+
+
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    Intent transitionIntent = new Intent(getActivity(), SceneDetailActivity.class);
+//                    SimpleDraweeView placeImage = (SimpleDraweeView) v.findViewById(R.id.sdv);
+//                    TextView tvTitle = (TextView) v.findViewById(R.id.tvTitle);
+//
+//
+//                    Pair<View, String> imagePair = Pair.create((View) placeImage, "tImage");
+//                    Pair<View, String> textPair = Pair.create((View) tvTitle, "tNameHolder");
+//
+//                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imagePair, textPair);
+//                    ActivityCompat.startActivity(getActivity(), transitionIntent, options.toBundle());
+//                    ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+//                }else{
+                    SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(), false);
+//                }
+            }
+
+            @Override
+            public void onItemFavoriteClick(int position) {
+                addFavoriteRunning(position);
+            }
+        });
+        rvGrid.setAdapter(mAllSceneGridAdapter);
+        rvGrid.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "AGENCYFB.TTF");
+        TvPageIndicatorSize.setTypeface(face);
+        tvPageIndicatorLabel.setTypeface(face);
+        tvPageIndicatorCurrent.setTypeface(face);
+        vpMyScene.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mAllSceneList.size() > 0 && mFavoriteSceneList.size() > 0){
+                    tvPageIndicatorCurrent.setText(String.valueOf(position + 1));
+                    TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+                }else{
+                    tvPageIndicatorCurrent.setText("");
+                    tvPageIndicatorLabel.setText("");
+                    TvPageIndicatorSize.setText("");
+                }
+
+
+                if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0) {
+                    tvPageIndicatorLabel.setText("你已经收藏全部场景");
+                } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0) {
+                    tvPageIndicatorLabel.setText("你还没有收藏的详情");
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
 
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rbFavorites:
+
+                        vpMyScene.clearAnimation();
+                        rvGrid.clearAnimation();
+                        vpMyScene.setVisibility(View.VISIBLE);
+
+                        if (rvGrid.getChildCount()==0){
+                            rvGrid.setVisibility(View.GONE);
+                        }
+                        for (int i = rvGrid.getChildCount() - 1; i >= 0; i--) {
+                            if (rvGrid.getChildAt(i) == null) {
+                                return;
+                            }
+                            if (i == 0) {
+                                rvGrid.getChildAt(i).animate()
+                                        .translationY(150)
+                                        .setDuration(ANIMATION_DURATION)
+                                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                                        .setStartDelay((rvGrid.getChildCount() - i) * 30).withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        rvGrid.setVisibility(View.GONE);
+                                    }
+                                }).start();
+                            } else {
+                                rvGrid.getChildAt(i).animate()
+                                        .translationY(150)
+                                        .setDuration(ANIMATION_DURATION)
+                                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                                        .setStartDelay((rvGrid.getChildCount() - i) * 30).start();
+                            }
+
+                        }
+                        rvGrid.animate().alpha(0).setDuration(ANIMATION_DURATION).start();
+                        rvGrid.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                vpMyScene.animate().translationX(0).alpha(1).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(ANIMATION_DURATION).start();
+                            }
+                        }, rvGrid.getChildCount() * 30);
+
+                        llPageIndicator.setVisibility(View.VISIBLE);
+//                        tvPageIndicator.animate()
+//                                .withLayer()
+//                                .alpha(1)
+//                                .translationY(0)
+//                                .setInterpolator(new AccelerateDecelerateInterpolator())
+//                                .setDuration(ANIMATION_DURATION)
+//                                .withStartAction(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        tvPageIndicator.setVisibility(View.VISIBLE);
+//                                    }
+//                                }).start();
+                        break;
+                    case R.id.rbAll:
+
+                        vpMyScene.clearAnimation();
+                        rvGrid.clearAnimation();
+                        int edge = ScreenUtils.getScreenWidth(getActivity());
+                        vpMyScene.animate().translationX(edge).alpha(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(ANIMATION_DURATION).start();
+                        rvGrid.setVisibility(View.VISIBLE);
+                        rvGrid.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (int i = 0; i < rvGrid.getChildCount(); i++) {
+                                    rvGrid.getChildAt(i).setTranslationY(150);
+                                    rvGrid.getChildAt(i).animate().translationY(0).setDuration(ANIMATION_DURATION).setInterpolator(new AccelerateDecelerateInterpolator()).setStartDelay(i * 30).start();
+                                }
+                            }
+                        }, 10);
+                        rvGrid.animate().alpha(1).setDuration(ANIMATION_DURATION).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                vpMyScene.setVisibility(View.GONE);
+                            }
+                        }).start();
+//                        tvPageIndicator.animate()
+//                                .alpha(0)
+//                                .translationY(tvPageIndicator.getHeight())
+//                                .setInterpolator(new AccelerateDecelerateInterpolator())
+//                                .setDuration(ANIMATION_DURATION)
+//                                .withEndAction(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        tvPageIndicator.setVisibility(View.GONE);
+//                                    }
+//                                })
+//                                .start();
+                        llPageIndicator.setVisibility(View.GONE);
+                        break;
+                }
+            }
+        });
+
+        view.setClickable(true);
+
+        DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+
+        getMyScene();
+        getData(false);
         return view;
     }
 
-    public void initData() {
-        presenter.init();
 
+    private void addFavoriteRunning(final int position) {
+        if (!NetUtil.isNetworkConnected(getActivity())){
+            Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mAddFavoriteRunning) {
+            return;
+        }
+        mAddFavoriteRunning = true;
+
+        int sid = mAllSceneList.get(position).getSceneId();
+        ScenePresenter.addFavoriteScene(getContext(), sid, new CommonListener() {
+            @Override
+            public void successListener(Object response) {
+                notifyAdapters(position, true);
+                mAddFavoriteRunning = false;
+                //Toast.makeText(getActivity(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                //Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+                mAddFavoriteRunning = false;
+            }
+        });
     }
+
 
     @Override
-    public void OnPageChanged(int oldPosition, int newPosition) {
-        LogUtils.json("newPosition=" + newPosition + "//oldPosition=" + oldPosition + "//cardList.size() - 1===" + (cardList.size() - 1));
-        if (newPosition > oldPosition && cardList.size() > 9 && pageNums < pageCounts) {
-            if (newPosition == cardList.size() - 2 && !isLoading) {
-                isLoading = true;
-                presenter.loadMore(selectedTag, pageNums);
-            } else if (isLoading) {
-                DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
-            }
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        accessPushMessage();
+    }
+
+    public void accessPushMessage() {
+        Parcelable extra = getActivity().getIntent().getParcelableExtra(GeTuiReceiver.REQUEST_KEY_MODEL);
+        if (extra == null)
+            return;
+
+        PushMessageBean bean = (PushMessageBean) extra;
+//            说明： 类型：( 01 PGC新内容发布  02  新场景发布  03 事件营销 )
+//            eventId  : 根据类别，打开应用相应页面的ID  type: 01 为文章ID  02:场景ID  03：文章ID
+        switch (bean.getType()) {
+            case "01":
+
+                break;
+            case "02"://切换到场景工坊页面
+                vpMyScene.setVisibility(View.GONE);
+                radioGroup.check(R.id.rbAll);
+                break;
+            case "03":
+
+                break;
         }
-        currentIndex = newPosition;
-        index = newPosition;
-        mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
+
     }
 
 
-    private int pageCounts, pageNums;
-    private int hasChangePosition = 0;
+    public void getMyScene() {
+        ScenePresenter.getMyScene(getContext(), SPUtils.getCityId(), 1, new CommonListener<PagerModel<SceneModel>>() {
+            @Override
+            public void successListener(PagerModel<SceneModel> response) {
+                DialogUtil.dismissProgessDirectly();
+                errorView.hideView();
+
+                if (response != null && response.getResult() != null) {
+                    mFavoriteSceneList.clear();
+                    mFavoriteSceneList.addAll(response.getResult());
+                    mMySceneAdapter.notifyDataSetChanged();
+                    tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
+                    TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+                }
+
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                DialogUtil.dismissProgessDirectly();
+                errorView.showViewDefault(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogUtil.showProgess(getActivity(), "加载中");
+                        getMyScene();
+                    }
+                });
+            }
+        });
+    }
+
+    public void getData(final boolean loadMore) {
+        mRefreshRunning = true;
+
+        ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 1, new CommonListener<PagerModel<SceneModel>>() {
+
+            @Override
+            public void successListener(PagerModel<SceneModel> response) {
+                if (response != null && response.getResult() != null) {
+                    if (!loadMore) {
+                        mAllSceneList.clear();
+                    }
+                    mAllSceneList.addAll(response.getResult());
+                    mAllSceneGridAdapter.notifyDataSetChanged();
+
+                }
+                mRefreshRunning = false;
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                mRefreshRunning = false;
+            }
+        });
+    }
+
 
     @Override
     public void onCardLick(View view, int position) {
 
-        switch (view.getId()) {
-            case R.id.root_cv:
-                AppContext.selectedPlace = cardList.get(position);
-                hasChangePosition = position;
-                if (!KeyboardUtils.isFastDoubleClick()) {
-                    Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
-                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_POSITION, position);
-                    intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, cardList.get(position).getPid());
-                    startActivity(intent);
-                }
-                break;
-            case R.id.item_recommend_card_collect_iv:
-                //收藏
-                setFavorite(position);
-                break;
-            case R.id.item_recommend_card_interest_iv:
-                //分享
-                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(cardList.get(position).getPid(), cardList.get(position).getName(), true);
-                shareDialogFg.show(getActivity().getFragmentManager(), "share_place");
-                break;
-        }
-    }
-
-    private void setFavorite(final int position) {
-        if (AppContext.user.isIsVisitors()) {
-            VisitorLoginDialogFg vDialog = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFAVORITE);
-            vDialog.show(getActivity().getFragmentManager(), "visitor");
+        if (from.equals(QuchuDetailsActivity.FROM_TYPE_HOME)) {
+            MobclickAgent.onEvent(getContext(), "detail_home_c");
         } else {
-            InterestingDetailPresenter.setDetailFavorite(getActivity(), cardList.get(position).getPid(), cardList.get(position).isIsf(), new InterestingDetailPresenter.DetailDataListener() {
-                @Override
-                public void onSuccessCall(String str) {
-                    cardList.get(position).setIsf(!cardList.get(position).isIsf());
-                    adapter.notifyDataSetChanged();
-                    if (cardList.get(position).isIsf()) {
-                        Toast.makeText(getActivity(), "收藏成功!", Toast.LENGTH_SHORT).show();
-                        AppContext.gatherList.add(new GatherCollectModel(GatherCollectModel.collectPlace, cardList.get(position).getPid()));
-                    } else {
-                        Toast.makeText(getActivity(), "取消收藏!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onErrorCall(String str) {
-
-                }
-            });
+            MobclickAgent.onEvent(getContext(), "detail_tag_c");
         }
-    }
+        MobclickAgent.onEvent(getActivity(), "detail_c");
 
-    public void updateDateSet() {
-        if (null != cardList && cardList.size() > hasChangePosition) {
-            cardList.set(hasChangePosition, AppContext.selectedPlace);
-            if (adapter != null)
-                adapter.notifyDataSetChanged();
-        }
-    }
-
-
-    private List<TagsModel> tagList;
-
-    @Override
-    public void initTab(boolean isError, List<TagsModel> list) {
-
-        if (isError) {
-            errorView.showViewDefault(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    presenter.init();
-                }
-            });
-            tabLayout.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.GONE);
-            return;
-        }
-        tabLayout.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.VISIBLE);
-        errorView.himeView();
-
-        tagList = list;
-        if (tabLayout.getTabCount()>0){
-            tabLayout.removeAllTabs();
+        SceneDetailActivity.enterActivity(getActivity(), mFavoriteSceneList.get(position).getSceneId(), mFavoriteSceneList.get(position).getSceneName(), true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
         }
 
-        for (int i = 0; i < list.size(); i++) {
-            TextView textView = (TextView) View.inflate(getActivity(), R.layout.text_view, null);
-            textView.setText(list.get(i).getZh());
-            if (i == 0) {
-                textView.setTextSize(15);
-            } else {
-                textView.setTextSize(13);
-            }
-            tabLayout.addTab(tabLayout.newTab().setCustomView(textView));
-        }
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                TextView view = (TextView) tab.getCustomView();
-                if (view != null) {
-                    view.setTextSize(15);
-                }
-                selectedTag = tagList.get(tab.getPosition()).getEn();
-                LogUtils.json("selectedTag=" + selectedTag);
-                presenter.initTabData(false, selectedTag);
-                refreshLayout.setRefreshing(false);
-                mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 500L);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                TextView view = (TextView) tab.getCustomView();
-                if (view != null) {
-                    view.setTextSize(13);
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-        if (tagList.size() > 0) {
-            selectedTag = tagList.get(0).getEn();
-            presenter.initTabData(false, selectedTag);
-        }
-    }
-
-    private String selectedTag = "";
-
-    @Override
-    public void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
-        if (null==refreshLayout){
-            return;
-        }
-        refreshLayout.setRefreshing(false);
-        if (isError) {
-            errorView.showViewDefault(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    presenter.initTabData(false, selectedTag);
-                }
-            });
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            if (recyclerView.getVisibility() == View.GONE) {
-                errorView.himeView();
-                recyclerView.setVisibility(View.VISIBLE);
-            }
-            cardList.clear();
-            cardList.addAll(arrayList);
-            adapter.notifyDataSetChanged();
-            pageCounts = pageCount;
-            pageNums = ++pageNum;
-            if (cardList.size() > 0)
-                recyclerView.smoothScrollToPosition(0);
-
-            index = currentIndex = 0;
-            mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);
-        }
-    }
-
-    @Override
-    public void loadMore(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum) {
-        isLoading = false;
-        DialogUtil.dismissProgessDirectly();
-        if (isError) {
-            Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
-        } else {
-            pageCounts = pageCount;
-            pageNums = ++pageNum;
-            if (arrayList != null && arrayList.size() > 0) {
-                cardList.addAll(arrayList);
-                adapter.notifyDataSetChanged();
-            }
-        }
     }
 
 
@@ -390,57 +441,6 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
     }
 
 
-    /**
-     * 执行切换动画
-     */
-    private void executeSwitchAnimation(Bitmap bm) {
-        if (null == bm || bm.isRecycled()) {
-            return;
-        }
-
-        final Bitmap finalBm = bm;
-        fRecommendBimgTop.animate()
-                .alpha(.6f)
-                .alphaBy(1f)
-                .setDuration(800)
-                .setInterpolator(new DecelerateInterpolator())
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(android.animation.Animator animation) {
-                        fRecommendBimgTop.setAlpha(.9f);
-
-                        if (fRecommendBimgTop.getDrawable() instanceof  ColorDrawable){
-                            fRecommendBimgTop.setImageBitmap(null);
-                        }else{
-                            if (!(fRecommendBimgTop.getDrawable() instanceof ColorDrawable )&& null!=fRecommendBimgTop.getDrawable() && null!=((BitmapDrawable)fRecommendBimgTop.getDrawable()).getBitmap()){
-                                ((BitmapDrawable)fRecommendBimgTop.getDrawable()).getBitmap().recycle();
-                                fRecommendBimgTop.setImageBitmap(null);
-                                System.gc();
-                            }
-                        }
-
-
-                        fRecommendBimgTop.setImageBitmap(finalBm);
-                        if (null != fRecommendBimgTop)
-                            fRecommendBimgTop.animate()
-                                    .alpha(1f)
-                                    .alphaBy(.6f)
-                                    .setInterpolator(new AccelerateInterpolator())
-                                    .setDuration(800)
-                                    .setListener(new AnimatorListenerAdapter() {
-                                        @Override
-                                        public void onAnimationEnd(android.animation.Animator animation) {
-                                            if (null != fRecommendBimgTop)
-                                                fRecommendBimgTop.setAlpha(1f);
-                                        }
-                                    })
-                                    .start();
-                    }
-                }).start();
-
-
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -449,15 +449,20 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Override
     public void onStop() {
-        mFragmentStoped = true;
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
     @Override
     public void onResume() {
+        MobclickAgent.onPageStart("h_recommendtion");
         super.onResume();
-        mFragmentStoped = false;
+    }
+
+    @Override
+    public void onPause() {
+        MobclickAgent.onPageEnd("h_recommendtion");
+        super.onPause();
     }
 
     @Override
@@ -467,12 +472,124 @@ public class RecommendFragment extends BaseFragment implements RecommendAdapter.
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
+        if (null == event) {
+            return;
+        }
+        int sid;
 
-        if (event.getFlag() == EventFlags.EVENT_QUCHU_DETAIL_UPDATED) {
-            if ((Integer) event.getContent() == cardList.get(currentIndex).getPid()) {
-                cardList.get(currentIndex).isout = true;
-                adapter.notifyItemChanged(currentIndex);
-            }
+        int index = -1;
+
+        switch (event.getFlag()) {
+            case EventFlags.EVENT_SCENE_FAVORITE:
+                sid = (int) event.getContent()[0];
+                for (int j = 0; j < mAllSceneList.size(); j++) {
+                    if (mAllSceneList.get(j).getSceneId() == sid) {
+                        index = j;
+                    }
+                }
+
+                notifyAdapters(index, true);
+                break;
+            case EventFlags.EVENT_SCENE_CANCEL_FAVORITE:
+                sid = (int) event.getContent()[0];
+                for (int j = 0; j < mFavoriteSceneList.size(); j++) {
+                    if (mFavoriteSceneList.get(j).getSceneId() == sid) {
+                        index = j;
+                    }
+                }
+                notifyAdapters(index, false);
+
+                break;
+
+            case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
+                rlEmptyView.setVisibility(View.GONE);
+                getMyScene();
+                getData(false);
+                break;
+
+
+            case EventFlags.EVENT_USER_LOGIN_SUCCESS:
+            case EventFlags.EVENT_USER_LOGOUT:
+                mAllSceneList.clear();
+                mFavoriteSceneList.clear();
+                getMyScene();
+                getData(false);
+                break;
         }
     }
+
+    private void notifyAdapters(int index, boolean add) {
+
+        if (index == -1) {
+            return;
+        }
+
+        if (add) {
+            mFavoriteSceneList.add(0, mAllSceneList.get(index));
+            mAllSceneList.remove(index);
+        } else {
+            mAllSceneList.add(mFavoriteSceneList.get(index));
+            mFavoriteSceneList.remove(index);
+        }
+
+
+        if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0) {
+            tvPageIndicatorLabel.setText("你已经收藏全部场景");
+            tvPageIndicatorCurrent.setText("");
+            TvPageIndicatorSize.setText("");
+        } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0) {
+            tvPageIndicatorLabel.setText("你还没有收藏的详情");
+            tvPageIndicatorCurrent.setText("");
+            TvPageIndicatorSize.setText("");
+
+        } else {
+
+            if (mAllSceneList.size() > 0 && mFavoriteSceneList.size() > 0){
+
+                tvPageIndicatorLabel.setText("of");
+                if (vpMyScene.getChildCount()>0){
+                    tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
+                }else{
+                    if (null!=mFavoriteSceneList){
+                        tvPageIndicatorCurrent.setText(String.valueOf(1));
+                    }else{
+                        tvPageIndicatorCurrent.setText(mFavoriteSceneList.size());
+                    }
+                }
+                TvPageIndicatorSize.setText(String.valueOf(mFavoriteSceneList.size()));
+            }else{
+                tvPageIndicatorCurrent.setText("");
+                tvPageIndicatorLabel.setText("");
+            }
+
+
+
+        }
+
+        mMySceneAdapter.notifyDataSetChanged();
+        mAllSceneGridAdapter.notifyDataSetChanged();
+    }
+
+
+    public static float MIN_SCALE = .9f;
+
+    @Override
+    public void transformPage(View page, float position) {
+//        LogUtils.e("id: " + page + " position:" + position);
+        if (position <= 1) {
+            if (position < 0) {//滑出的页 0.0 ~ -1 *
+                float scaleFactor = (1 - MIN_SCALE) * (0 - position);
+                page.setScaleY(1 - scaleFactor);
+            } else {//滑进的页 1 ~ 0.0 *
+                float scaleFactor = (1 - MIN_SCALE) * (1 - position);
+                page.setScaleY(MIN_SCALE + scaleFactor);
+            }
+        }
+
+    }
+
+    public ViewPager getVpMyScene() {
+        return vpMyScene;
+    }
+
 }

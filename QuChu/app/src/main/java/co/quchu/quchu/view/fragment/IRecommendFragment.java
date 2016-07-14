@@ -21,7 +21,7 @@ public interface IRecommendFragment {
     /**
      * 初始化tab对应的数据
      */
-    void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum);
+    void initTabData(boolean isError, List<RecommendModel> arrayList, int pageCount, int pageNum, int rowCount);
 
     /**
      * 加载更多

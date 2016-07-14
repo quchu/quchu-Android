@@ -1,34 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/base_margin"
+    android:background="@color/standard_color_white"
+
+    android:paddingLeft="@dimen/base_margin"
+    android:paddingRight="@dimen/base_margin"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <!--   android:foreground="?attr/selectableItemBackground"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="@dimen/cardview_elevation"-->
-    <View
-        android:layout_width="0.1dp"
-        android:layout_height="@dimen/quarter_margin" />
+    <TextView
+        android:id="@+id/detail_store_name_tv"
+        style="@style/TextView.H1"
+        android:textSize="@dimen/standard_text_size_h0"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="@dimen/half_margin"
+        android:text="@string/empty_string"
+
+        />
+
+
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@mipmap/ic_card_shadow_full_image_bg">
+        android:layout_below="@+id/detail_store_name_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/item_card_image_sdv"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/recommend_tag1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:actualImageScaleType="focusCrop"
-            card_view:placeholderImageScaleType="focusCrop"
-            card_view:roundedCornerRadius="4dp" />
+            android:background="@drawable/shape_lineframe_black"
+            android:paddingBottom="4dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:paddingTop="4dp"
+            android:textColor="@color/standard_color_black"
+            android:textSize="@dimen/standard_text_size_h4"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/recommend_tag2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_toRightOf="@id/recommend_tag1"
+            android:background="@drawable/shape_lineframe_black"
+            android:paddingBottom="4dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:paddingTop="4dp"
+            android:textColor="@color/standard_color_black"
+            android:textSize="@dimen/standard_text_size_h4"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/recommend_tag3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_toRightOf="@id/recommend_tag2"
+            android:background="@drawable/shape_lineframe_black"
+            android:paddingBottom="4dp"
+            android:paddingLeft="@dimen/base_margin"
+            android:paddingRight="@dimen/base_margin"
+            android:paddingTop="4dp"
+            android:textColor="@color/standard_color_black"
+            android:textSize="@dimen/standard_text_size_h4"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
-    <View
-        android:layout_width="0.1dp"
-        android:layout_height="@dimen/quarter_margin" />
-</LinearLayout>
+
+</RelativeLayout>

@@ -2,11 +2,6 @@ package co.quchu.quchu.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.net.Uri;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -31,15 +26,6 @@ import co.quchu.quchu.blurdialogfragment.FastBlurHelper;
  */
 public class ImageUtils {
 
-    public static Bitmap setSaturation(Bitmap bmp, float fact) {
-        ColorMatrix cMatrix = new ColorMatrix();
-        cMatrix.setSaturation(fact);
-        Paint paint = new Paint();
-        paint.setColorFilter(new ColorMatrixColorFilter(cMatrix));
-        Canvas canvas = new Canvas(bmp);
-        canvas.drawBitmap(bmp, 0, 0, paint);
-        return bmp;
-    }
 
     public static Bitmap doBlur(Bitmap bitmap, int scaleToWith, int scaleToHeight) {
 //        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -63,38 +49,6 @@ public class ImageUtils {
             bmp.compress(Bitmap.CompressFormat.JPEG, types, baos);
         }
         return baos.toByteArray();
-    }
-
-    public static byte[] getBitmapBytes(Bitmap bitmap, boolean paramBoolean) {
-        Bitmap localBitmap = Bitmap.createBitmap(80, 80, Bitmap.Config.RGB_565);
-        Canvas localCanvas = new Canvas(localBitmap);
-        int i;
-        int j;
-        if (bitmap.getHeight() > bitmap.getWidth()) {
-            i = bitmap.getWidth();
-            j = bitmap.getWidth();
-        } else {
-            i = bitmap.getHeight();
-            j = bitmap.getHeight();
-        }
-        while (true) {
-            localCanvas.drawBitmap(bitmap, new Rect(0, 0, i, j), new Rect(0, 0, 80, 80), null);
-            if (paramBoolean)
-                bitmap.recycle();
-
-            ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
-            localBitmap.compress(Bitmap.CompressFormat.JPEG, 80, localByteArrayOutputStream);
-            localBitmap.recycle();
-            byte[] arrayOfByte = localByteArrayOutputStream.toByteArray();
-            try {
-                localByteArrayOutputStream.close();
-                return arrayOfByte;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            i = bitmap.getHeight();
-            j = bitmap.getHeight();
-        }
     }
 
     public static Bitmap getimage(String srcPath) {
@@ -146,8 +100,7 @@ public class ImageUtils {
         if (dirFile.exists()) {
             dirFile.delete();  //删除原图片
         }
-        File myCaptureFile = new File(fileName);
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dirFile));
         //100表示不进行压缩，70表示压缩率为30%
         bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
         bos.flush();
@@ -155,15 +108,12 @@ public class ImageUtils {
     }
 
     public static String saveImage2Sd(String starPath) {
-        String filePath = starPath;
+        String filePath = FileUtils.SDPATH + System.currentTimeMillis() + "userAvatar.jpg";
         Bitmap bitmaps = getimage(starPath);
         try {
-            saveFile(bitmaps, FileUtils.SDPATH + "userAvatar.jpg");
+            saveFile(bitmaps, filePath);
             bitmaps.recycle();
-            bitmaps = null;
-            filePath = FileUtils.SDPATH + "userAvatar.jpg";
         } catch (Exception e) {
-
             e.printStackTrace();
         }
 
@@ -172,13 +122,17 @@ public class ImageUtils {
 
     public static void ShowImage(String uri, final SimpleDraweeView view) {
 
-        if (null==uri){
+        if (null == uri) {
             return;
         }
+        int width;
+        int height;
 
+        width = view.getWidth();
+        height = view.getHeight();
         ImageRequest imageRequest = ImageRequestBuilder
                 .newBuilderWithSource(Uri.parse(uri))
-                .setResizeOptions(new ResizeOptions(150, 150))//图片目标大小
+                .setResizeOptions(new ResizeOptions(width == 0 ? 150 : width, height == 0 ? 150 : height))//图片目标大小
                 .build();
 
         DraweeController controller = Fresco.newDraweeControllerBuilder()

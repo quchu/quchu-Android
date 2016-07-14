@@ -1,13 +1,16 @@
 package co.quchu.quchu.utils;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.view.WindowManager;
+
+import java.util.List;
 
 import co.quchu.quchu.base.AppContext;
 
@@ -115,15 +118,27 @@ public class AppUtil {
 
     }
 
-    public static boolean isAppInstall(String pckName) {
-        PackageInfo packageInfo;
-        try {
-            packageInfo = AppContext.mContext.getPackageManager().getPackageInfo(
-                    pckName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            packageInfo = null;
-            e.printStackTrace();
+    public static boolean isAppInstall(Activity activity, String targetPackage) {
+        List<ApplicationInfo> packages;
+        PackageManager pm;
+
+        pm = activity.getPackageManager();
+        packages = pm.getInstalledApplications(0);
+        for (ApplicationInfo packageInfo : packages) {
+            if(packageInfo.packageName.equals(targetPackage))
+                return true;
         }
-        return packageInfo != null;
+        return false;
+    }
+
+    /**
+     * 打电话
+     * @param context
+     * @param phoneNumber
+     */
+    public static void makeCall(Context context,String phoneNumber){
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        context.startActivity(intent);
     }
 }
