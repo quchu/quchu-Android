@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -301,6 +302,10 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
 
     private void addFavoriteRunning(final int position) {
+        if (!NetUtil.isNetworkConnected(getActivity())){
+            Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (mAddFavoriteRunning) {
             return;
         }

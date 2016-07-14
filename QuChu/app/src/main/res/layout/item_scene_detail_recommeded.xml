@@ -139,7 +139,6 @@
             <TextView
                 android:id="@+id/tvDistance"
                 style="@style/TextView.H2"
-                android:drawableLeft="@mipmap/ic_loca"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" />
