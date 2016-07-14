@@ -72,6 +72,16 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
         refreshLayout.setOnRefreshListener(this);
 
+
+        if (!NetUtil.isNetworkConnected(getActivity()) && cAdapter==null){
+            errorView.showViewDefault(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogUtil.showProgess(getActivity(), "加载中");
+                    getArticles(true);
+                }
+            });
+        }
         getArticles(true);
 
 

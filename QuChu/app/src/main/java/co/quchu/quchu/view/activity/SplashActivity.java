@@ -125,10 +125,6 @@ public class SplashActivity extends BaseActivity {
 
     private void initLogic() {
 
-        if (!NetUtil.isNetworkConnected(getApplicationContext())){
-            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if (SPUtils.getForceUpdateIfNecessary(getApplicationContext())) {
             ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示", SPUtils.getForceUpdateReason(getApplicationContext()));

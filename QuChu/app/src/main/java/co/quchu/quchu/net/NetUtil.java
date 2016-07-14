@@ -25,8 +25,8 @@ public class NetUtil {
 
 		final android.net.NetworkInfo mobile = connMgr
 				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-		return wifi.isAvailable() || mobile.isAvailable();
+		System.out.println("getMyScene "+wifi.isConnected()+"-"+mobile.isConnected());
+		return wifi.isConnected() || mobile.isConnected();
 	}
 	/**
 	 * 获取当前网络类型
