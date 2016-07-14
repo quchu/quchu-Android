@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -111,7 +110,7 @@ public class ShareQuchuActivity extends BaseActivity {
                     }else{
                         url = "http://www.quchu.co/h5/place_tk/place_info_"+mQuchuId+".html";
                     }
-                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(url,"趣处");
+                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(url,mQuchuName,mQuchuCover);
                     shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
                 } catch (Exception ex) {
                     ex.printStackTrace();

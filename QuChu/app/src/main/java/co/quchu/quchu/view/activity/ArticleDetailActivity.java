@@ -67,7 +67,7 @@ public class ArticleDetailActivity extends BaseActivity {
     }
 
     private void getData(String id) {
-        DialogUtil.showProgess(this,R.string.loading_dialog_text);
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
 
         ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), 1, id, new CommonListener<ArticleDetailModel>() {
             @Override
@@ -87,7 +87,7 @@ public class ArticleDetailActivity extends BaseActivity {
                 SimpleArticleModel mSimpleArticleModel = mArticleDetailModel.getArticle();
 
 
-                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_favorite_hl:R.mipmap.ic_favorite);
+                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite() ? R.mipmap.ic_favorite_hl : R.mipmap.ic_favorite);
             }
 
             @Override
@@ -99,67 +99,69 @@ public class ArticleDetailActivity extends BaseActivity {
     }
 
     boolean mFavoriteProgressRunning = false;
-    private void setFavorite(){
-        if (null==mArticleDetailModel || null==mArticleDetailModel.getArticle()){
+
+    private void setFavorite() {
+        if (null == mArticleDetailModel || null == mArticleDetailModel.getArticle()) {
             return;
         }
 
-        if (mFavoriteProgressRunning){
-            Toast.makeText(getApplicationContext(),R.string.process_running_please_wait,Toast.LENGTH_SHORT).show();;
+        if (mFavoriteProgressRunning) {
+            Toast.makeText(getApplicationContext(), R.string.process_running_please_wait, Toast.LENGTH_SHORT).show();
+            ;
         }
         mFavoriteProgressRunning = true;
 
-            int aid = mArticleDetailModel.getArticle().getArticleId();
-            if (!mArticleDetailModel.getArticle().isFavorite()){
-                ArticlePresenter.addFavoriteArticle(getApplicationContext(), aid, new CommonListener() {
-                    @Override
-                    public void successListener(Object response) {
-                        mFavoriteProgressRunning = false;
-                        Toast.makeText(getApplicationContext(),R.string.add_to_favorite_article_success,Toast.LENGTH_SHORT).show();
-                        ivFavorite.setImageResource(R.mipmap.ic_favorite_hl);
-                        mArticleDetailModel.getArticle().setFavorite(true);
-                    }
+        int aid = mArticleDetailModel.getArticle().getArticleId();
+        if (!mArticleDetailModel.getArticle().isFavorite()) {
+            ArticlePresenter.addFavoriteArticle(getApplicationContext(), aid, new CommonListener() {
+                @Override
+                public void successListener(Object response) {
+                    mFavoriteProgressRunning = false;
+                    Toast.makeText(getApplicationContext(), R.string.add_to_favorite_article_success, Toast.LENGTH_SHORT).show();
+                    ivFavorite.setImageResource(R.mipmap.ic_favorite_hl);
+                    mArticleDetailModel.getArticle().setFavorite(true);
+                }
 
-                    @Override
-                    public void errorListener(VolleyError error, String exception, String msg) {
-                        Toast.makeText(getApplicationContext(),R.string.add_to_favorite_article_fail,Toast.LENGTH_SHORT).show();
-                        mFavoriteProgressRunning = false;
-                    }
-                });
-            }else{
-                ArticlePresenter.delFavoriteArticle(getApplicationContext(), aid, new CommonListener() {
-                    @Override
-                    public void successListener(Object response) {
-                        mFavoriteProgressRunning = false;
-                        Toast.makeText(getApplicationContext(),R.string.del_to_favorite_article_success,Toast.LENGTH_SHORT).show();
-                        ivFavorite.setImageResource(R.mipmap.ic_favorite);
-                        mArticleDetailModel.getArticle().setFavorite(false);
-                    }
+                @Override
+                public void errorListener(VolleyError error, String exception, String msg) {
+                    Toast.makeText(getApplicationContext(), R.string.add_to_favorite_article_fail, Toast.LENGTH_SHORT).show();
+                    mFavoriteProgressRunning = false;
+                }
+            });
+        } else {
+            ArticlePresenter.delFavoriteArticle(getApplicationContext(), aid, new CommonListener() {
+                @Override
+                public void successListener(Object response) {
+                    mFavoriteProgressRunning = false;
+                    Toast.makeText(getApplicationContext(), R.string.del_to_favorite_article_success, Toast.LENGTH_SHORT).show();
+                    ivFavorite.setImageResource(R.mipmap.ic_favorite);
+                    mArticleDetailModel.getArticle().setFavorite(false);
+                }
 
-                    @Override
-                    public void errorListener(VolleyError error, String exception, String msg) {
-                        Toast.makeText(getApplicationContext(),R.string.del_to_favorite_article_success,Toast.LENGTH_SHORT).show();
-                        mFavoriteProgressRunning = false;
-                    }
-                });
-            }
+                @Override
+                public void errorListener(VolleyError error, String exception, String msg) {
+                    Toast.makeText(getApplicationContext(), R.string.del_to_favorite_article_success, Toast.LENGTH_SHORT).show();
+                    mFavoriteProgressRunning = false;
+                }
+            });
+        }
 
 
     }
 
-    @OnClick({R.id.ivFavorite,R.id.ivShare})
+    @OnClick({R.id.ivFavorite, R.id.ivShare})
     public void detailClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ivFavorite:
                 setFavorite();
                 break;
             case R.id.ivShare:
 
-                if (null==mArticleDetailModel || null==mArticleDetailModel.getArticle()){
+                if (null == mArticleDetailModel || null == mArticleDetailModel.getArticle()) {
                     return;
                 }
                 String url = NetApi.shareArticleUrl + mArticleDetailModel.getArticle().getArticleId();
-                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(url,"趣处");
+                ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(url, mArticleDetailModel.getArticle().getArticleName(),mArticleDetailModel.getArticle().getImageUrl());
                 shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
 //                ShareDialogFg shareDialogFg = new ShareDialogFg();
 //                shareDialogFg.show(getSupportFragmentManager(),"share");
@@ -181,17 +183,17 @@ public class ArticleDetailActivity extends BaseActivity {
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (null==event){
+        if (null == event) {
             return;
         }
-        switch (event.getFlag()){
+        switch (event.getFlag()) {
             case EventFlags.EVENT_GOTO_HOME_PAGE:
                 finish();
                 break;
         }
     }
 
-    public static void enterActivity(Activity from, String articleId,String articleTitle) {
+    public static void enterActivity(Activity from, String articleId, String articleTitle) {
         Intent intent = new Intent(from, ArticleDetailActivity.class);
         intent.putExtra(BUNDLE_KEY_ARTICLE_ID, articleId);
         intent.putExtra(BUNDLE_KEY_ARTICLE_TITLE, articleTitle);

@@ -44,7 +44,7 @@ public class SharePreviewActivity extends BaseActivity {
         ButterKnife.bind(this);
         EnhancedToolbar toolbar = getEnhancedToolbar();
         toolbar.getTitleTv().setText("分享");
-        ImageModel coverModel = getIntent().getParcelableExtra(REQUEST_KEY_COVER);
+        final ImageModel coverModel = getIntent().getParcelableExtra(REQUEST_KEY_COVER);
         simpleDraweeView.setAspectRatio(coverModel.getWidth() / (float) coverModel.getHeight());
         simpleDraweeView.setImageURI(Uri.parse(coverModel.getPath()));
         headImage.setImageURI(Uri.parse(getIntent().getStringExtra(REQUEST_KEY_HEAD_IMAGE)));
@@ -54,7 +54,7 @@ public class SharePreviewActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(getIntent().getIntExtra(REQUEST_KEY_FOOTPRINT_ID, 0),
-                        getIntent().getStringExtra(REQUEST_KEY_PLACE_NAME), false, getIntent().getIntExtra(REQUEST_KEY_IMAGE_ID, 0));
+                        getIntent().getStringExtra(REQUEST_KEY_PLACE_NAME), false, getIntent().getIntExtra(REQUEST_KEY_IMAGE_ID, 0), coverModel.getPath());
                 shareDialogFg.show(getSupportFragmentManager(), "share_postcard");
             }
         });

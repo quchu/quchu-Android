@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -46,11 +47,11 @@ public class WebViewActivity extends BaseActivity {
     public boolean mFromDiscover = false;
 
 
-    public static void enterActivity(Activity from, String url, String title,boolean fromDiscover) {
+    public static void enterActivity(Activity from, String url, String title, boolean fromDiscover) {
         Intent intent = new Intent(from, WebViewActivity.class);
         intent.putExtra(BUNDLE_KEY_WEBVIEW_URL, url);
         intent.putExtra(BUNDLE_KEY_WEBVIEW_TITLE, title);
-        intent.putExtra(BUNDLE_KEY_WEBVIEW_FROM_DISCOVER,fromDiscover);
+        intent.putExtra(BUNDLE_KEY_WEBVIEW_FROM_DISCOVER, fromDiscover);
         from.startActivity(intent);
     }
 
@@ -83,13 +84,13 @@ public class WebViewActivity extends BaseActivity {
 
         final String url = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_URL);
         mPageTitle = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_TITLE);
-        mFromDiscover = getIntent().getBooleanExtra(BUNDLE_KEY_WEBVIEW_FROM_DISCOVER,false);
-        if (mFromDiscover){
+        mFromDiscover = getIntent().getBooleanExtra(BUNDLE_KEY_WEBVIEW_FROM_DISCOVER, false);
+        if (mFromDiscover) {
             getEnhancedToolbar().getRightTv().setText(R.string.share);
             getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(url,"趣处");
+                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(url, mPageTitle, Uri.EMPTY.toString());
                     shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
                 }
             });
@@ -137,7 +138,7 @@ public class WebViewActivity extends BaseActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-            if (null != url && url.startsWith("intent")|| url.startsWith("dianping")) {
+            if (null != url && url.startsWith("intent") || url.startsWith("dianping")) {
 //                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 //                if (intent.resolveActivity(getPackageManager())==null){
 //                    Toast.makeText(WebViewActivity.this,"你还没有安装大众点评",Toast.LENGTH_SHORT).show();
