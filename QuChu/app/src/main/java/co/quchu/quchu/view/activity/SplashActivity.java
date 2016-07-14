@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
@@ -193,6 +192,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void enterApp() {
+
+
         startActivity(new Intent(this, RecommendActivity.class));
 //        startActivity(new Intent(this, LoginActivity.class));
         SplashActivity.this.finish();

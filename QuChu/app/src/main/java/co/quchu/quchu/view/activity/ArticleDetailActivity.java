@@ -119,7 +119,6 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
                 ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_favorite_hl:R.mipmap.ic_favorite);
                 mSwipeRefreshLayout.setRefreshing(false);
                 errorView.hideView();
-                SimpleArticleModel mSimpleArticleModel = mArticleDetailModel.getArticle();
 
             }
 

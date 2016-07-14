@@ -18,11 +18,14 @@ package co.quchu.quchu.gallery;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +36,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.gallery.utils.ImageUtils;
@@ -201,7 +203,31 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         if (photo != null) {
             path = photo.getPhotoPath();
         }
-        ImageUtils.ShowImage(Uri.fromFile(new File(path)), mIvSourcePhoto, (int) AppContext.Width, (int) AppContext.Height);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mIvSourcePhoto.getLayoutParams();
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        if (options.outWidth > options.outHeight) {//宽图
+            params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+            params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        } else {
+            params.height = RelativeLayout.LayoutParams.MATCH_PARENT;
+            params.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        }
+        mIvSourcePhoto.setAspectRatio(options.outWidth / (float) options.outHeight);
+        mIvSourcePhoto.invalidate();
+
+        mIvSourcePhoto.setImageURI(Uri.fromFile(new File(path)));
+//        mIvSourcePhoto.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                mIvSourcePhoto.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+////                ImageUtils.ShowImage(Uri.fromFile(new File(finalPath)), mIvSourcePhoto,  mIvSourcePhoto.getWidth(), mIvSourcePhoto.getHeight());
+//            }
+//        });
+
     }
 
 
