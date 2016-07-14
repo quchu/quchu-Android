@@ -40,7 +40,7 @@
                     android:layout_centerInParent="true"
                     android:layout_marginTop="@dimen/base_margin"
                     android:visibility="visible"
-                    fresco:placeholderImage="@mipmap/head_place_hold"
+                    fresco:fadeDuration="0"
                     fresco:roundAsCircle="true" />
             </RelativeLayout>
 

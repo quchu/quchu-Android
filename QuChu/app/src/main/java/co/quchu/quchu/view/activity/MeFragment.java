@@ -129,7 +129,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 //        imageView.setOnClickListener(this);
         userHead = AppContext.user.getPhoto();
 
-        headImage.animate().alpha(0).start();
         initListener();
 
         getData();
@@ -333,6 +332,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                             return;
                         }
 
+
                         int delay;
                         if (System.currentTimeMillis()-before >400){
                             delay = 0;
@@ -343,9 +343,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                         headImage.setScaleY(0);
                         ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(headImage,"scaleX",1);
                         ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(headImage,"scaleY",1);
-                        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(headImage,"alpha",0,1);
+//                        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(headImage,"alpha",0,1);
                         AnimatorSet scaleAnimatorSet = new AnimatorSet();
-                        scaleAnimatorSet.playTogether(scaleXAnimator,scaleYAnimator,alphaAnimator);
+                        scaleAnimatorSet.playTogether(scaleXAnimator,scaleYAnimator);
                         scaleAnimatorSet.setDuration(800);
                         scaleAnimatorSet.setStartDelay(delay);
                         scaleAnimatorSet.setInterpolator(new OvershootInterpolator(1.2f));
@@ -363,6 +363,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 DraweeController controller = Fresco.newDraweeControllerBuilder()
                         .setControllerListener(controllerListener)
                         .setUri(uri)
+                        .setAutoPlayAnimations(false)
                         .build();
                 headImage.setController(controller);
                 //ImageUtils.loadWithAppropriateSize(headImage, uri);
