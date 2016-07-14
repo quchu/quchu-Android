@@ -76,18 +76,19 @@
             android:layout_marginTop="@dimen/half_margin"
             android:orientation="horizontal">
 
+
             <TextView
                 android:id="@+id/recommend_tag1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_lineframe_black_thin"
-                android:paddingBottom="4dp"
-                android:paddingLeft="@dimen/base_margin"
-                android:paddingRight="@dimen/base_margin"
-                android:paddingTop="4dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:paddingTop="2dp"
                 android:text="标签1"
-                android:textColor="@color/standard_color_h1_dark"
-                android:textSize="@dimen/standard_text_size_h3" />
+                android:textColor="@color/standard_color_h2_dark"
+                android:textSize="@dimen/standard_text_size_h4" />
 
             <TextView
                 android:id="@+id/recommend_tag2"
@@ -95,12 +96,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/half_margin"
                 android:background="@drawable/shape_lineframe_black_thin"
-                android:paddingBottom="4dp"
-                android:paddingLeft="@dimen/base_margin"
-                android:paddingRight="@dimen/base_margin"
-                android:paddingTop="4dp"
-                android:textColor="@color/standard_color_h1_dark"
-                android:textSize="@dimen/standard_text_size_h3"
+                android:paddingBottom="2dp"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:paddingTop="2dp"
+                android:textColor="@color/standard_color_h2_dark"
+                android:textSize="@dimen/standard_text_size_h4"
                 android:visibility="gone" />
 
             <TextView
@@ -109,12 +110,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/half_margin"
                 android:background="@drawable/shape_lineframe_black_thin"
-                android:paddingBottom="4dp"
-                android:paddingLeft="@dimen/base_margin"
-                android:paddingRight="@dimen/base_margin"
-                android:paddingTop="4dp"
-                android:textColor="@color/standard_color_h1_dark"
-                android:textSize="@dimen/standard_text_size_h3"
+                android:paddingBottom="2dp"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:paddingTop="2dp"
+                android:textColor="@color/standard_color_h2_dark"
+                android:textSize="@dimen/standard_text_size_h4"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -130,26 +131,32 @@
 
             <TextView
                 android:id="@+id/tvCircleName"
-                style="@style/TextView.H2"
+                style="@style/TextView.H3"
                 android:drawableLeft="@mipmap/ic_zuobiao"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/standard_text_size_h4"
+                />
 
 
             <TextView
                 android:id="@+id/tvDistance"
-                style="@style/TextView.H2"
+                style="@style/TextView.H3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/standard_text_size_h4"
+
+                />
 
 
             <TextView
                 android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextView.H2"
+                style="@style/TextView.H3"
                 android:layout_toLeftOf="@+id/tvDistance"
+                android:textSize="@dimen/standard_text_size_h4"
                 />
         </RelativeLayout>
 
