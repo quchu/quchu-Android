@@ -116,9 +116,9 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-            overridePendingTransition(-1,-1);
-        }
+//        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+//            overridePendingTransition(-1,-1);
+//        }
 
         setContentView(R.layout.activity_quchu_details);
         ButterKnife.bind(this);

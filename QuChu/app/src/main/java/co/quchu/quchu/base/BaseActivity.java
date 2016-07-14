@@ -16,6 +16,8 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import co.quchu.quchu.view.activity.RecommendActivity;
+import co.quchu.quchu.view.activity.SplashActivity;
 
 
 /**
@@ -41,6 +43,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ActManager.getAppManager().addActivity(this);
+        if (this instanceof SplashActivity){
+            super.onCreate(savedInstanceState);
+            return;
+        }
         switch (activitySetup()) {
             case TRANSITION_TYPE_NOTHING:
                 break;
@@ -88,24 +94,26 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && this instanceof QuchuDetailsActivity) {
+        if (this instanceof RecommendActivity){
             return;
-        }
-        switch (activitySetup()) {
-            case TRANSITION_TYPE_NOTHING:
-                break;
-//            case TRANSITION_TYPE_ALPHA:
-//                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
-//                break;
-            case TRANSITION_TYPE_LEFT:
-                overridePendingTransition(0, R.anim.out_push_letf_to_right);
-                break;
-//            case TRANSITION_TYPE_BOTTOM:
-//                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
-//                break;
-            case TRANSITION_TYPE_TOP:
-                overridePendingTransition(0, R.anim.out_top_to_bottom);
-                break;
+        }else{
+
+            switch (activitySetup()) {
+                case TRANSITION_TYPE_NOTHING:
+                    break;
+    //            case TRANSITION_TYPE_ALPHA:
+    //                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
+    //                break;
+                case TRANSITION_TYPE_LEFT:
+                    overridePendingTransition(0, R.anim.out_push_letf_to_right);
+                    break;
+    //            case TRANSITION_TYPE_BOTTOM:
+    //                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
+    //                break;
+                case TRANSITION_TYPE_TOP:
+                    overridePendingTransition(0, R.anim.out_top_to_bottom);
+                    break;
+            }
         }
     }
 
