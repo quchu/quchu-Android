@@ -46,6 +46,14 @@
         <item name="android:background">@color/standard_color_h3_dark</item>
     </style>
 
+
+    <!-- 横向分隔线 -->
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/horizontal_divider</item>
+        <item name="android:background">@color/colorDivider</item>
+    </style>
+
     <style name="DetailHorizontalLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginLeft">@dimen/half_margin</item>
@@ -156,4 +164,5 @@
         <item name="android:windowExitAnimation">@anim/popup_hidden</item>
     </style>
 
+    <dimen name="horizontal_divider">1px</dimen>
 </resources>

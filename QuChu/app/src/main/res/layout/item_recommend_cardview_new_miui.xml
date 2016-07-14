@@ -71,7 +71,7 @@
             <TextView
                 android:id="@+id/tvDescription"
                 android:layout_below="@id/desc"
-                android:layout_marginTop="@dimen/base_margin"
+                android:layout_marginTop="@dimen/half_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/base_margin"
@@ -84,6 +84,13 @@
                 android:maxLines="2"
                 />
 
+
+            <View
+                android:layout_below="@id/tvDescription"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                style="@style/HorizontalDivider"
+                />
 
             <LinearLayout
                 android:id="@+id/tags"

@@ -166,8 +166,22 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
             @Override
             public void onPageSelected(int position) {
-                tvPageIndicatorCurrent.setText(String.valueOf(position + 1));
-                TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+                if (mAllSceneList.size() > 0 && mFavoriteSceneList.size() > 0){
+                    tvPageIndicatorCurrent.setText(String.valueOf(position + 1));
+                    TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
+                }else{
+                    tvPageIndicatorCurrent.setText("");
+                    tvPageIndicatorLabel.setText("");
+                    TvPageIndicatorSize.setText("");
+                }
+
+
+                if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0) {
+                    tvPageIndicatorLabel.setText("你已经收藏全部场景");
+                } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0) {
+                    tvPageIndicatorLabel.setText("你还没有收藏的详情");
+                }
+
             }
 
             @Override
@@ -524,17 +538,25 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             TvPageIndicatorSize.setText("");
 
         } else {
-            tvPageIndicatorLabel.setText("of");
-            if (vpMyScene.getChildCount()>0){
-                tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
-            }else{
-                if (null!=mFavoriteSceneList){
-                    tvPageIndicatorCurrent.setText(String.valueOf(1));
+
+            if (mAllSceneList.size() > 0 && mFavoriteSceneList.size() > 0){
+
+                tvPageIndicatorLabel.setText("of");
+                if (vpMyScene.getChildCount()>0){
+                    tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
                 }else{
-                    tvPageIndicatorCurrent.setText(mFavoriteSceneList.size());
+                    if (null!=mFavoriteSceneList){
+                        tvPageIndicatorCurrent.setText(String.valueOf(1));
+                    }else{
+                        tvPageIndicatorCurrent.setText(mFavoriteSceneList.size());
+                    }
                 }
+                TvPageIndicatorSize.setText(String.valueOf(mFavoriteSceneList.size()));
+            }else{
+                tvPageIndicatorCurrent.setText("");
+                tvPageIndicatorLabel.setText("");
             }
-            TvPageIndicatorSize.setText(String.valueOf(mFavoriteSceneList.size()));
+
 
 
         }

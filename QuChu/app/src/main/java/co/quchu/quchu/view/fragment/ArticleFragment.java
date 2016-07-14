@@ -86,7 +86,9 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
             public void successListener(final ArticleWithBannerModel response) {
-
+                if (null == recyclerView) {
+                    return;
+                }
                 recyclerView.setVisibility(View.VISIBLE);
                 DialogUtil.dismissProgessDirectly();
                 errorView.hideView();

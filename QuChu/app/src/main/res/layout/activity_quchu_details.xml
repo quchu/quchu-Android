@@ -19,6 +19,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             android:background="#fff"
+            android:id="@+id/coordinatorLayout"
             app:contentScrim="@color/standard_color_white"
             app:expandedTitleMarginEnd="0dp"
             app:expandedTitleMarginStart="0dp"

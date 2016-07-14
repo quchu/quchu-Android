@@ -383,8 +383,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             if (mData.isIsActivity() && null != mData.getBusinessHours() && null != mData.getRestDay()) {
                 ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setText(mData.getBusinessHours());
+                ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setVisibility(View.VISIBLE);
+                ((ContactInfoViewHolder) holder).vDividerOpeningTime.setVisibility(View.VISIBLE);
             } else {
-                ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setText(mData.getBusinessHours());
+                ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setVisibility(View.GONE);
+                ((ContactInfoViewHolder) holder).vDividerOpeningTime.setVisibility(View.GONE);
             }
 
             if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
@@ -634,6 +637,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView detail_store_phone_tv;
         @Bind(R.id.detail_store_business_hours_key_tv)
         TextView detail_store_business_hours_key_tv;
+        @Bind(R.id.vDividerOpeningTime)
+        View vDividerOpeningTime;
         @Bind(R.id.vDividerPhone)
         View vDividerPhone;
 

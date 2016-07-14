@@ -74,7 +74,9 @@
     </LinearLayout>
 
 
-    <View style="@style/HorizontalLine" />
+    <View style="@style/HorizontalLine"
+        android:id="@+id/vDividerOpeningTime"
+        />
 
     <TextView
         android:id="@+id/detail_store_business_hours_key_tv"
