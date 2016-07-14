@@ -44,7 +44,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     RecyclerView recyclerView;
     @Bind(R.id.errorView)
     ErrorView errorView;
-    @Bind(R.id.refreshLayout)
+    @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.rlEmptyView)
     View rlEmptyView;
@@ -72,7 +72,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
         refreshLayout.setOnRefreshListener(this);
 
-        getArticles();
+        getArticles(true);
 
 
         return view;
@@ -81,16 +81,20 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     /**
      * 获取分类信息
      */
-    public void getArticles() {
-        DialogUtil.showProgess(getActivity(),R.string.loading_dialog_text);
+    public void getArticles(final boolean firstLoad) {
+        if (firstLoad){
+            DialogUtil.showProgess(getActivity(),R.string.loading_dialog_text);
+        }
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
             public void successListener(final ArticleWithBannerModel response) {
+                if (firstLoad){
+                    DialogUtil.dismissProgessDirectly();
+                }
                 if (null == recyclerView) {
                     return;
                 }
                 recyclerView.setVisibility(View.VISIBLE);
-                DialogUtil.dismissProgessDirectly();
                 errorView.hideView();
                 refreshLayout.setRefreshing(false);
 
@@ -108,13 +112,15 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
+                if (firstLoad){
+                    DialogUtil.dismissProgessDirectly();
+                }
                 recyclerView.setVisibility(View.GONE);
-                DialogUtil.dismissProgessDirectly();
                 errorView.showViewDefault(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         DialogUtil.showProgess(getActivity(), "加载中");
-                        getArticles();
+                        getArticles(false);
                     }
                 });
                 refreshLayout.setRefreshing(false);
@@ -158,7 +164,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         switch (event.getFlag()){
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
                 rlEmptyView.setVisibility(View.GONE);
-                getArticles();
+                getArticles(false);
                 break;
         }
     }
@@ -166,7 +172,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         if (NetUtil.isNetworkConnected(getActivity())){
-            getArticles();
+            getArticles(false);
         }else{
             Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
             refreshLayout.setRefreshing(false);

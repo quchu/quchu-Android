@@ -48,7 +48,7 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
     ImageView ivFavorite;
     @Bind(R.id.ivShare)
     ImageView ivShare;
-    @Bind(R.id.refreshLayout)
+    @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     ArticleDetailModel mArticleDetailModel;
@@ -70,17 +70,21 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
-        getData(articleId);
+        getData(articleId,true);
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    private void getData(String id) {
-        DialogUtil.showProgess(this,R.string.loading_dialog_text);
+    private void getData(String id, final boolean firstLoad) {
+        if (firstLoad){
+            DialogUtil.showProgess(this,R.string.loading_dialog_text);
+        }
 
         ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), 1, id, new CommonListener<ArticleDetailModel>() {
             @Override
             public void successListener(final ArticleDetailModel response) {
-                DialogUtil.dismissProgessDirectly();
+                if (firstLoad){
+                    DialogUtil.dismissProgessDirectly();
+                }
 
                 mArticleDetailModel = response;
                 rv.setAdapter(new ArticleDetailAdapter(getApplicationContext(), response.getPlaceList().getResult(), response.getArticle(), new CommonItemClickListener() {
@@ -99,7 +103,9 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                DialogUtil.dismissProgessDirectly();
+                if (firstLoad){
+                    DialogUtil.dismissProgessDirectly();
+                }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -214,7 +220,7 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
     @Override
     public void onRefresh() {
         if (NetUtil.isNetworkConnected(getApplicationContext())){
-            getData(articleId);
+            getData(articleId,false);
         }else{
             Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
             mSwipeRefreshLayout.setRefreshing(false);

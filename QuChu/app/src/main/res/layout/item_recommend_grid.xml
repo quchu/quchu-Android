@@ -62,7 +62,7 @@
                     android:layout_marginRight="@dimen/half_margin"
                     android:paddingTop="@dimen/quarter_margin"
                     android:textColor="@color/standard_color_h2_dark"
-                    android:textSize="@dimen/standard_text_size_h4" />
+                    android:textSize="@dimen/standard_text_size_h5" />
 
 
                 <View
