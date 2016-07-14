@@ -149,18 +149,18 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             }
         });
 
-        presenter.getGene(new CommonListener<MyGeneModel>() {
-            @Override
-            public void successListener(MyGeneModel response) {
-                genes = response.getGenes();
-                initGene();
-
-            }
-
-            @Override
-            public void errorListener(VolleyError error, String exception, String msg) {
-            }
-        });
+//        presenter.getGene(new CommonListener<MyGeneModel>() {
+//            @Override
+//            public void successListener(MyGeneModel response) {
+//                genes = response.getGenes();
+//                initGene();
+//
+//            }
+//
+//            @Override
+//            public void errorListener(VolleyError error, String exception, String msg) {
+//            }
+//        });
     }
 
     @Override

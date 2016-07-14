@@ -68,7 +68,7 @@ public class NetService {
             //     NetErrorDialog.showProgess(cont);
 //            NetErrorDialogUtil.showProgess(cont, "请检查网络");
             DialogUtil.dismissProgess();
-            Toast.makeText(cont, "请检查网络~~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
         } else {
 
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0,true);

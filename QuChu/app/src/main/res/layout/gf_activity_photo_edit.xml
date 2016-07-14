@@ -15,6 +15,7 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/iv_source_photo"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
@@ -125,8 +124,8 @@ public class SplashActivity extends BaseActivity {
 
     private void initLogic() {
 
-        if (!NetUtil.isNetworkConnected(getApplicationContext())){
-            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
+        if (!NetUtil.isNetworkConnected(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -197,6 +196,9 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void enterApp() {
+        if (!NetUtil.isNetworkConnected(this))
+            Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
+
         startActivity(new Intent(this, RecommendActivity.class));
 //        startActivity(new Intent(this, LoginActivity.class));
         SplashActivity.this.finish();

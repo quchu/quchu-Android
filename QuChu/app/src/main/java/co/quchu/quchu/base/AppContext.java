@@ -27,7 +27,6 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.List;
 
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.model.UserBehaviorModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserBehaviorPresentor;
@@ -118,7 +117,7 @@ public class AppContext extends Application {
         MobclickAgent.openActivityDurationTrack(false);
         ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
-                .setWebpSupportEnabled(true)
+//                .setWebpSupportEnabled(true)
                 .build();
         Fresco.initialize(getApplicationContext(), imagePipelineConfig);
         if (!StringUtils.isEmpty(SPUtils.getUserInfo(this))) {

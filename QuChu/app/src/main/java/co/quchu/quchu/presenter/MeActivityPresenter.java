@@ -2,14 +2,12 @@ package co.quchu.quchu.presenter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import co.quchu.quchu.R;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
@@ -32,7 +30,7 @@ public class MeActivityPresenter {
         GsonRequest<MyGeneModel> request = new GsonRequest<>(NetApi.getUserGene, MyGeneModel.class, new ResponseListener<MyGeneModel>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
