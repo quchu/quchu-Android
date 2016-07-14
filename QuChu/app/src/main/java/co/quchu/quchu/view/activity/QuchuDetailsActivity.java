@@ -62,29 +62,20 @@ import co.quchu.quchu.widget.SimpleIndicatorView;
  * Date: 2015-12-09
  * 趣处详情
  */
-public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBarLayout.OnOffsetChangedListener {
+public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
 
     @Bind(R.id.detail_recyclerview)
     RecyclerView mRecyclerView;
     @Bind(R.id.detail_bottom_group_ll)
     View detail_bottom_group_ll;
-    @Bind(R.id.appbar)
-    AppBarLayout appbar;
-
 
     @Bind(R.id.ivFavorite)
     ImageView ivFavorite;
     @Bind(R.id.tvFootprintCount)
     TextView tvFootprintCount;
 
-    @Bind(R.id.vpGallery)
-    ViewPager vpGallery;
 
-    @Bind(R.id.siv)
-    SimpleIndicatorView siv;
-
-    ImageView vFakeReturnButton;
 
     public static final String REQUEST_KEY_PID = "pid";
     public static final String REQUEST_KEY_FROM = "from";
@@ -124,9 +115,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
         ButterKnife.bind(this);
         from = getIntent().getStringExtra(REQUEST_KEY_FROM);
         getEnhancedToolbar().getTitleTv().setText("");
-        getEnhancedToolbar().getTitleTv().setAlpha(0f);
-        getEnhancedToolbar().getLeftIv().setImageResource(R.mipmap.ic_forward);
-        getEnhancedToolbar().getLeftIv().setRotation(180);
 
 
         if (null != savedInstanceState) {
@@ -251,33 +239,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
         getEnhancedToolbar().getTitleTv().setText(dModel.getName());
         if(null==mQuchuDetailAdapter){
             return;
-        }
-        if (null != dModel.getImglist()&&dModel.getImglist().size()>0) {
-            List<ImageModel> imageSet = new ArrayList<>();
-            for (int i = 0; i < dModel.getImglist().size() && i<=3; i++) {
-                imageSet.add(dModel.getImglist().get(i).convert2ImageModel());
-            }
-            vpGallery.setAdapter(new GalleryAdapter(imageSet));
-            siv.setIndicators(imageSet.size());
-            siv.setVisibility(View.VISIBLE);
-            vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    siv.setCurrentIndex(position);
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
-        }else{
-            siv.setVisibility(View.GONE);
         }
 
         mQuchuDetailAdapter.notifyDataSetChanged();
@@ -555,14 +516,12 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
     @Override
     protected void onResume() {
         MobclickAgent.onPageStart(from);
-        appbar.addOnOffsetChangedListener(this);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
         MobclickAgent.onPageEnd(from);
-        appbar.removeOnOffsetChangedListener(this);
         super.onPause();
 
     }
@@ -609,16 +568,4 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity implements AppBar
 
     }
 
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        if (appbar.getTotalScrollRange()==0 || verticalOffset==0){
-            return;
-        }
-        float alpha = Math.abs(Float.valueOf(verticalOffset))/appbar.getTotalScrollRange();
-        getEnhancedToolbar().getTitleTv().setAlpha(alpha);
-        int color = (int) (255-(alpha*255));
-        getEnhancedToolbar().getLeftIv().setColorFilter(Color.argb(255,color,color,color), PorterDuff.Mode.MULTIPLY);
-
-
-    }
 }

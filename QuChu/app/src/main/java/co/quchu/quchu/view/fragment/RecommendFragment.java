@@ -75,10 +75,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     RadioGroup radioGroup;
     @Bind(R.id.rvGrid)
     RecyclerView rvGrid;
-    @Bind(R.id.rlEmptyView)
-    View rlEmptyView;
-    @Bind(R.id.action_buttton)
-    View action_buttton;
 
     public static final int ANIMATION_DURATION = 350;
 
@@ -99,13 +95,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
         ButterKnife.bind(this, view);
 
-
-        action_buttton.setVisibility(View.GONE);
-        if (NetUtil.isNetworkConnected(getActivity())){
-            rlEmptyView.setVisibility(View.GONE);
-        }else{
-            rlEmptyView.setVisibility(View.VISIBLE);
-        }
 
         rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin), 2));
         mMySceneAdapter = new MySceneAdapter(this, mFavoriteSceneList, this);
@@ -284,6 +273,17 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         view.setClickable(true);
 
+
+        if (!NetUtil.isNetworkConnected(getActivity()) && mFavoriteSceneList.size()==0 && mAllSceneList.size()==0){
+            errorView.showViewDefault(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogUtil.showProgess(getActivity(), "加载中");
+                    getMyScene();
+                }
+            });
+        }
+
         DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
 
         getMyScene();
@@ -351,6 +351,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
 
     public void getMyScene() {
+
         ScenePresenter.getMyScene(getContext(), SPUtils.getCityId(), 1, new CommonListener<PagerModel<SceneModel>>() {
             @Override
             public void successListener(PagerModel<SceneModel> response) {
@@ -493,7 +494,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 break;
 
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
-                rlEmptyView.setVisibility(View.GONE);
                 getMyScene();
                 getData(false);
                 break;

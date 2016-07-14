@@ -149,18 +149,22 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             }
         });
 
-//        presenter.getGene(new CommonListener<MyGeneModel>() {
-//            @Override
-//            public void successListener(MyGeneModel response) {
-//                genes = response.getGenes();
-//                initGene();
-//
-//            }
-//
-//            @Override
-//            public void errorListener(VolleyError error, String exception, String msg) {
-//            }
-//        });
+
+    }
+
+    private void getGenes(){
+        presenter.getGene(new CommonListener<MyGeneModel>() {
+            @Override
+            public void successListener(MyGeneModel response) {
+                genes = response.getGenes();
+                initGene();
+
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+            }
+        });
     }
 
     @Override
@@ -274,28 +278,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-//        if (null != polygonProgressView && !hidden && null != genes && !mProgressViewAnimated) {
-//            polygonProgressView.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    initGene();
-//                    mProgressViewAnimated = true;
-//                }
-//            }, 800l);
-//        }
-        if (presenter != null && !hidden && genes == null)
-            presenter.getGene(new CommonListener<MyGeneModel>() {
-                @Override
-                public void successListener(MyGeneModel response) {
-                    genes = response.getGenes();
-                    initGene();
-
-                }
-
-                @Override
-                public void errorListener(VolleyError error, String exception, String msg) {
-                }
-            });
+        if (presenter != null && !hidden && genes == null){
+            getGenes();
+        }
     }
 
 
@@ -369,9 +354,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 //ImageUtils.loadWithAppropriateSize(headImage, uri);
 
 
-
-
-
                 ValueAnimator va = ValueAnimator.ofFloat(0, 1);
                 va.setInterpolator(new AccelerateDecelerateInterpolator());
                 va.setDuration(800);
@@ -410,6 +392,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         switch (event.getFlag()){
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
                 getData();
+                getGenes();
                 break;
             case EventFlags.EVENT_USER_LOGIN_SUCCESS:
 

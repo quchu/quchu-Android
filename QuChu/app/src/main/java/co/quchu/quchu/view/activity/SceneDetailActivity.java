@@ -18,6 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneDetailModel;
 import co.quchu.quchu.net.NetUtil;
@@ -26,6 +27,7 @@ import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.SceneDetailAdapter;
+import co.quchu.quchu.widget.ErrorView;
 
 /**
  * Created by Nico on 16/7/11.
@@ -38,11 +40,15 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
 
     @Bind(R.id.rv)
     RecyclerView rv;
-    @Bind(R.id.refreshLayout)
+    @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @Bind(R.id.errorView)
+    ErrorView errorView;
 
     boolean isFavorite = false;
     int sceneId;
+    private SceneDetailAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +66,31 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
-        getData();
+        if (!NetUtil.isNetworkConnected(getApplicationContext()) && mAdapter==null){
+            errorView.showViewDefault(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
+                    getData(true);
+                }
+            });
+        }
+        getData(true);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
     }
 
-    private void getData(){
+    private void getData(final boolean firstLoad){
+        if (firstLoad){
+            DialogUtil.showProgess(this,R.string.loading_dialog_text);
+        }
+
         ScenePresenter.getSceneDetail(getApplicationContext(), sceneId, SPUtils.getCityId(), 1, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), null, new CommonListener<SceneDetailModel>() {
             @Override
             public void successListener(SceneDetailModel response) {
+                if (firstLoad){
+                    DialogUtil.dismissProgessDirectly();
+                }
                 mSwipeRefreshLayout.setRefreshing(false);
 
                 getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
@@ -115,7 +137,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                     }
                 });
 
-                rv.setAdapter(new SceneDetailAdapter(getApplicationContext(), response, new SceneDetailAdapter.OnSceneItemClickListener() {
+                mAdapter = new SceneDetailAdapter(getApplicationContext(), response, new SceneDetailAdapter.OnSceneItemClickListener() {
                     @Override
                     public void onArticleClick() {
 
@@ -127,11 +149,23 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, pid);
                         startActivity(intent);
                     }
-                }));
+                });
+                rv.setAdapter(mAdapter);
+                errorView.hideView();
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
+                if (firstLoad){
+                    DialogUtil.dismissProgessDirectly();
+                }
+                errorView.showViewDefault(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
+                        getData(false);
+                    }
+                });
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -179,7 +213,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     public void onRefresh() {
         if (NetUtil.isNetworkConnected(getApplicationContext())){
-            getData();
+            getData(false);
         }else{
             Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
             mSwipeRefreshLayout.setRefreshing(false);

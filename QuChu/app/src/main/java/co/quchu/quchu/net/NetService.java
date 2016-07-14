@@ -48,55 +48,55 @@ public class NetService {
     public static void post(Context cont, String pUrl, JSONObject params,
                             IRequestListener pListener) {
         LogUtils.d(pUrl);
-        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            //     NetErrorDialog.showProgess(cont);
-//            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-            DialogUtil.dismissProgess();
-            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
-        } else {
+//        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+//            //     NetErrorDialog.showProgess(cont);
+////            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+//            DialogUtil.dismissProgess();
+//            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
+//        } else {
 
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0,false);
           /*  if (params != null)
                 LogUtils.json("userData==" + params.toString());*/
-        }
+//        }
     }
 
     public static void postRaw(Context cont, String pUrl, JSONObject params,
                             IRequestListener pListener) {
         LogUtils.d(pUrl);
-        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            //     NetErrorDialog.showProgess(cont);
-//            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-            DialogUtil.dismissProgess();
-            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
-        } else {
+//        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+//            //     NetErrorDialog.showProgess(cont);
+////            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+//            DialogUtil.dismissProgess();
+//            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
+//        } else {
 
             addToQueue(Request.Method.POST, pUrl, params, pListener, 0,true);
           /*  if (params != null)
                 LogUtils.json("userData==" + params.toString());*/
-        }
+//        }
     }
 
     public static void get(Context cont, String pUrl, IRequestListener pListener) {
         LogUtils.d(pUrl);
-        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            //  NetErrorDialog.showProgess(cont);
-//            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
-            DialogUtil.dismissProgess();
-        } else {
+//        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+//            //  NetErrorDialog.showProgess(cont);
+////            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+//            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
+//            DialogUtil.dismissProgess();
+//        } else {
             addToQueue(Request.Method.GET, pUrl, null, pListener, 0, true);
-        }
+//        }
     }
 
     public static void get(Context cont, String pUrl, JSONObject params, IRequestListener pListener) {
         LogUtils.d(pUrl);
-        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            //    NetErrorDialog.showProgess(cont);
-//            NetErrorDialogUtil.showProgess(cont, "请检查网络");
-            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
-            DialogUtil.dismissProgess();
-        } else {
+//        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+//            //    NetErrorDialog.showProgess(cont);
+////            NetErrorDialogUtil.showProgess(cont, "请检查网络");
+//            Toast.makeText(cont, (R.string.network_error), Toast.LENGTH_SHORT).show();
+//            DialogUtil.dismissProgess();
+//        } else {
 //            dialog=    new MaterialDialog.Builder(ActManager.getAppManager().currentActivity())
 //                    .theme(Theme.DARK)
 //                    .content("网络数据加载中...")
@@ -104,7 +104,7 @@ public class NetService {
 //                    .contentGravity(GravityEnum.CENTER)
 //                    .show();
             addToQueue(Request.Method.GET, pUrl, params, pListener, 0, true);
-        }
+//        }
 //        new HashMap<String, String>();
     }
 
@@ -123,12 +123,12 @@ public class NetService {
             }
         }
         LogUtils.d(pUrl+sbArguments);
-        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
-            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
-            DialogUtil.dismissProgess();
-        } else {
+//        if (!NetUtil.isNetworkConnected(AppContext.mContext)) {
+//            Toast.makeText(cont, R.string.network_error, Toast.LENGTH_SHORT).show();
+//            DialogUtil.dismissProgess();
+//        } else {
             addToQueue(Request.Method.GET, pUrl+sbArguments, null, pListener, 0, true);
-        }
+//        }
     }
 
 

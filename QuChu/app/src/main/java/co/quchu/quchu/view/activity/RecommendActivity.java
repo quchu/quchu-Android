@@ -403,7 +403,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     public void updateRecommend() {
         //recommendFragment.initData();
         //TODO refresh
-        articleFragment.getArticles();
+        articleFragment.getArticles(false);
     }
 
     @Override
