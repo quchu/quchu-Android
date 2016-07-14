@@ -95,14 +95,15 @@ public class ModiffPasswordDialog extends DialogFragment implements View.OnClick
             case R.id.commit:
                 String newPassword = newPassw.getText().toString().trim();
                 String originPassword = originPassw.getText().toString().trim();
-                if (originPassword.equals(newPassword)) {
-                    inputLayoutNewPass.setError("新旧密码不能相同");
-                    return;
-                }
                 if (newPassword.length() < 6 || newPassword.length() > 12) {
                     inputLayoutNewPass.setError("请输入6-12位新密码");
                     return;
                 }
+                if (originPassword.equals(newPassword)) {
+                    inputLayoutNewPass.setError("新旧密码不能相同");
+                    return;
+                }
+
                 HashMap<String, String> params = new HashMap<>();
                 params.put("oldPassword", MD5.hexdigest(originPassword));
                 params.put("newPassword", MD5.hexdigest(newPassword));
@@ -117,8 +118,8 @@ public class ModiffPasswordDialog extends DialogFragment implements View.OnClick
                         if (!result) {
                             inputLayoutNewPass.setError(msg);
                         } else {
-                            InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(inputLayoutNewPass.getWindowToken(),0);
+                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(inputLayoutNewPass.getWindowToken(), 0);
                             dismiss();
                             Toast.makeText(getActivity(), "密码修改成功", Toast.LENGTH_SHORT).show();
                         }

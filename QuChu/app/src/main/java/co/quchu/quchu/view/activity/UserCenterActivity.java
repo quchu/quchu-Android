@@ -39,6 +39,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     TextView follow;
     @Bind(R.id.friend)
     TextView friend;
+    @Bind(R.id.locationAndGender)
+    TextView locationAndGender;
     private int userId = 0;
     public static final String REQUEST_KEY_USER_ID = "USERID";
 
@@ -90,6 +92,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
                     follow.setText("关注" + userCenterInfo.getHostNum());
                     friend.setText("趣粉" + userCenterInfo.getFollowNum());
+
+                    locationAndGender.setText(userInfo.getGender() + "," + userCenterInfo.getLocation());
                 } else {
                     Toast.makeText(UserCenterActivity.this, "并无该用户", Toast.LENGTH_SHORT).show();
                 }

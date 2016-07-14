@@ -223,6 +223,9 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
 
     public void removeItem(RecyclerView.ViewHolder holder, DT item) {
         data.remove(item);
-        notifyItemRemoved(holder.getAdapterPosition());
+        if (getItemCount() > 2)
+            notifyItemRemoved(holder.getAdapterPosition());
+        else notifyDataSetChanged();
+
     }
 }

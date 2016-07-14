@@ -125,6 +125,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         initEdittext();
         initData();
         SearchPresenter.getCategoryTag(this);
+        searchInputEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchInputEt.setCursorVisible(true);
+            }
+        });
     }
 
 
@@ -261,7 +267,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
         switch (type) {
             case 0:
-                if (categoryParentList==null){
+                if (categoryParentList == null) {
                     SearchPresenter.getCategoryTag(this);
                 }
                 categoryRecyclerView.setVisibility(View.VISIBLE);
@@ -410,6 +416,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     searchInputEt.setText(((SearchCategoryBean) bean).getZh());
                     seachStr(false);
                     searchInputEt.setSelection(searchInputEt.getText().toString().trim().length());
+                    searchInputEt.setCursorVisible(false);
                 }
             }
         });

@@ -3,6 +3,7 @@ package co.quchu.quchu.view.adapter;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,13 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             final RecommendModel model = resultList.get(position);
             holder.tvName.setText(model.getName());
+            if (TextUtils.isEmpty(model.getPrice())) {
+                ((ResultHolder) holde).searchPrice.setVisibility(View.INVISIBLE);
+            } else {
+                holder.searchPrice.setVisibility(View.VISIBLE);
+                holder.searchPrice.setText(model.getPrice());
+            }
+
             List<String> strTags = new ArrayList<>();
             List<RecommendModel.TagsEntity> tags = model.getTags();
             if (null != tags && tags.size() > 0) {
@@ -145,6 +153,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView address;
         @Bind(R.id.distance)
         TextView distance;
+        @Bind(R.id.searchPrice)
+        TextView searchPrice;
 
         public ResultHolder(View itemView) {
             super(itemView);
