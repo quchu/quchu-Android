@@ -26,6 +26,7 @@
         <EditText
             android:id="@+id/phone_login_pnum_et"
             android:layout_width="match_parent"
+
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/half_margin"
@@ -37,6 +38,7 @@
             android:singleLine="true"
             android:textColor="@android:color/white"
             android:textColorHint="@color/user_login_text_hint_text_color"
+            android:textCursorDrawable="@drawable/shape_edit_text_cursor"
             android:textSize="@dimen/word_size_body" />
     </LinearLayout>
 
@@ -63,11 +65,13 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/half_margin"
+
             android:background="@null"
             android:hint="填写用户名"
             android:inputType="text"
             android:textColor="@android:color/white"
             android:textColorHint="@color/user_login_text_hint_text_color"
+            android:textCursorDrawable="@drawable/shape_edit_text_cursor"
             android:textSize="@dimen/word_size_body" />
     </LinearLayout>
 
@@ -93,6 +97,7 @@
             android:id="@+id/phone_login_password_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/half_margin"
             android:background="@null"
@@ -102,6 +107,7 @@
             android:singleLine="true"
             android:textColor="@android:color/white"
             android:textColorHint="@color/user_login_text_hint_text_color"
+            android:textCursorDrawable="@drawable/shape_edit_text_cursor"
             android:textSize="@dimen/word_size_body" />
     </LinearLayout>
 
@@ -135,12 +141,14 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/quarter_margin"
+
                 android:background="@null"
-                android:singleLine="true"
                 android:hint="填写验证码"
                 android:inputType="number"
+                android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/user_login_text_hint_text_color"
+                android:textCursorDrawable="@drawable/shape_edit_text_cursor"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>
 

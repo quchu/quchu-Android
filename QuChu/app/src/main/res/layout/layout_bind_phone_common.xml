@@ -43,7 +43,8 @@
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/editText"
-            android:layout_width="match_parent"
+            android:layout_width="match_parent"                     android:textCursorDrawable="@drawable/shape_edit_text_cursor"
+
             android:layout_height="wrap_content"
             android:hint="手机号"
             android:singleLine="true" />

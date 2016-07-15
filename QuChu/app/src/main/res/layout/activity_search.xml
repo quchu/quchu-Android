@@ -47,11 +47,13 @@
                 android:background="@null"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+
                 android:hint="搜索您感兴趣的吃、喝、玩、乐"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:textColor="@color/standard_color_h2_dark"
                 android:textColorHint="@color/user_login_text_hint_text_color"
+                android:textCursorDrawable="@drawable/shape_edit_text_cursor"
                 android:textSize="@dimen/word_size_body" />
         </LinearLayout>
 

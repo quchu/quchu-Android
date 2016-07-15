@@ -74,6 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+
             android:layout_marginBottom="@dimen/half_margin"
             android:layout_marginTop="@dimen/half_margin"
             android:layout_toLeftOf="@id/account_setting_location_rl"
@@ -82,6 +83,7 @@
             android:singleLine="true"
             android:textColor="@color/standard_color_h3_dark"
             android:textColorHint="@color/standard_color_h3_dark"
+            android:textCursorDrawable="@drawable/shape_edit_text_cursor"
             android:textSize="@dimen/word_size_body" />
 
 

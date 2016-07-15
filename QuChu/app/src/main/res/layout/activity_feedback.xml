@@ -35,7 +35,8 @@
                 <EditText
                     android:id="@+id/feedback_editer_bet"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="wrap_content"                    android:textCursorDrawable="@drawable/shape_edit_text_cursor"
+
                     android:background="@null"
                     android:gravity="top|left"
                     android:hint="请填写您在使用趣处过程中产生的任何疑问、反馈或建议"

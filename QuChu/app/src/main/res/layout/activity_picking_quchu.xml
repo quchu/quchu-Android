@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include
-        layout="@layout/cp_enhanced_toolbar"
-        />
+    <include layout="@layout/cp_enhanced_toolbar" />
 
     <EditText
-        android:textCursorDrawable = "@null"
-        android:cursorVisible="true"
-        android:layout_below="@+id/appbar"
         android:id="@+id/etSearchField"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_below="@+id/appbar"
         android:background="@color/standard_color_yellow"
-        android:textColor="@android:color/black"
-        android:maxLines="1"
-        android:singleLine="true"
+
+        android:cursorVisible="true"
         android:gravity="center_vertical"
         android:hint="@string/hint_picking_quchu"
-        android:textColorHint="@color/translucent_dark"
+        android:maxLines="1"
         android:paddingLeft="@dimen/base_margin"
         android:paddingRight="@dimen/base_margin"
-        android:layout_width="match_parent"
-        android:layout_height="56dp" />
+        android:singleLine="true"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/translucent_dark"
+        android:textCursorDrawable="@null" />
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/etSearchField"
         android:paddingLeft="@dimen/base_margin"
         android:paddingRight="@dimen/base_margin"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rvContent"
-        tools:listitem="@layout/item_picking_quchu"
-        />
+        tools:listitem="@layout/item_picking_quchu" />
+
     <TextView
         android:id="@+id/tvNoData"
         android:layout_width="match_parent"
@@ -40,6 +41,5 @@
         android:layout_below="@+id/etSearchField"
         android:gravity="center"
         android:text="@string/no_data"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 </RelativeLayout>

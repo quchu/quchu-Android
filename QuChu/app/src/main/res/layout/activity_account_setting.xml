@@ -97,6 +97,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:background="@null"
+                    android:textCursorDrawable="@drawable/shape_edit_text_cursor"
                     android:ellipsize="end"
                     android:gravity="right|center_vertical"
                     android:maxLength="20"
