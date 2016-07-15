@@ -85,12 +85,12 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
                 }
             });
         }
-        rv.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
-            @Override
-            public void onLoadMore(int current_page) {
-                getData(articleId,false);
-            }
-        });
+//        rv.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
+//            @Override
+//            public void onLoadMore(int current_page) {
+//                getData(articleId,false);
+//            }
+//        });
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 

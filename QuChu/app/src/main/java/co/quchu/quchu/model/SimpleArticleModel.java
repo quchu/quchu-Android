@@ -12,6 +12,16 @@ public class SimpleArticleModel {
     private String imageUrl;
     private boolean isFavorite;
 
+
+    public void copyFrom(SimpleArticleModel simpleArticleModel){
+        this.setArticleName(simpleArticleModel.getArticleName());
+        this.setArticleId(simpleArticleModel.getArticleId());
+        this.setImageId(simpleArticleModel.getImageId());
+        this.setArticleComtent(simpleArticleModel.getArticleComtent());
+        this.setImageUrl(simpleArticleModel.getImageUrl());
+        this.setFavorite(simpleArticleModel.isFavorite);
+    }
+
     public int getArticleId() {
         return articleId;
     }

@@ -14,19 +14,27 @@ import com.android.volley.VolleyError;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SceneDetailModel;
+import co.quchu.quchu.model.SceneHeaderModel;
+import co.quchu.quchu.model.SceneInfoModel;
+import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.SceneDetailAdapter;
+import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.ErrorView;
 
 /**
@@ -46,8 +54,17 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
     @Bind(R.id.errorView)
     ErrorView errorView;
 
-    boolean isFavorite = false;
-    int sceneId;
+    private boolean isFavorite = false;
+    private int sceneId;
+    private int mMaxPageNo = -1;
+    private int mPageNo = 1;
+    private int[] placeIds;
+
+    private List<DetailModel> mSceneList = new ArrayList<>();
+    private List<SceneHeaderModel> mRecommendedList = new ArrayList<>();
+
+    private SimpleArticleModel mArticleModel;
+    private SceneInfoModel mSceneInfo;
     private SceneDetailAdapter mAdapter;
 
     @Override
@@ -56,117 +73,165 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
         setContentView(R.layout.activity_simple_recyclerview);
         ButterKnife.bind(this);
 
-        sceneId = getIntent().getIntExtra(BUNDLE_KEY_SCENE_ID,-1);
+        sceneId = getIntent().getIntExtra(BUNDLE_KEY_SCENE_ID, -1);
         String name = getIntent().getStringExtra(BUNDLE_KEY_SCENE_NAME);
-        isFavorite= getIntent().getBooleanExtra(BUNDLE_KEY_SCENE_IS_FAVORITE,false);
+        isFavorite = getIntent().getBooleanExtra(BUNDLE_KEY_SCENE_IS_FAVORITE, false);
 
 
         getEnhancedToolbar().getTitleTv().setText(name);
-        getEnhancedToolbar().getRightTv().setText(isFavorite?"取消收藏":"收藏");
+        getEnhancedToolbar().getRightTv().setText(isFavorite ? "取消收藏" : "收藏");
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
-        if (!NetUtil.isNetworkConnected(getApplicationContext()) && mAdapter==null){
+        if (!NetUtil.isNetworkConnected(getApplicationContext()) && mAdapter == null) {
             errorView.showViewDefault(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
-                    getData(true);
+                    getData(true, false);
                 }
             });
         }
-        getData(true);
+        getData(true, false);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        rv.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int current_page) {
+                getData(false, true);
+            }
+        });
+
+
+        errorView.hideView();
+        getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeFavorite();
+            }
+        });
 
     }
 
-    private void getData(final boolean firstLoad){
+    private void changeFavorite() {
+        if (!NetUtil.isNetworkConnected(SceneDetailActivity.this)) {
+            Toast.makeText(SceneDetailActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mFavoriteRunning) {
+            Toast.makeText(getApplicationContext(), R.string.process_running_please_wait, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (isFavorite) {
+            ScenePresenter.delFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
+                @Override
+                public void successListener(Object response) {
+                    mFavoriteRunning = false;
+                    isFavorite = false;
+                    getEnhancedToolbar().getRightTv().setText("收藏");
+                    Toast.makeText(getApplicationContext(), R.string.del_to_favorite_success, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void errorListener(VolleyError error, String exception, String msg) {
+                    mFavoriteRunning = false;
+                    Toast.makeText(getApplicationContext(), R.string.del_to_favorite_fail, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            ScenePresenter.addFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
+                @Override
+                public void successListener(Object response) {
+                    mFavoriteRunning = false;
+                    isFavorite = true;
+                    getEnhancedToolbar().getRightTv().setText("取消收藏");
+                    Toast.makeText(getApplicationContext(), R.string.add_to_favorite_success, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void errorListener(VolleyError error, String exception, String msg) {
+                    mFavoriteRunning = false;
+                    Toast.makeText(getApplicationContext(), R.string.add_to_favorite_fail, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+
+    private void getData(final boolean firstLoad, final boolean loadMore) {
         if (firstLoad){
-            DialogUtil.showProgess(this,R.string.loading_dialog_text);
+
+            mSceneList.clear();
+            mRecommendedList.clear();
+            mMaxPageNo = -1;
+            mPageNo=1;
         }
 
-        ScenePresenter.getSceneDetail(getApplicationContext(), sceneId, SPUtils.getCityId(), 1, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), null, new CommonListener<SceneDetailModel>() {
+        if (mMaxPageNo != -1 &&mPageNo >= mMaxPageNo && loadMore) {
+            Toast.makeText(getApplicationContext(), "max page no reached", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (loadMore){
+            mPageNo+=1;
+        }
+
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
+
+        ScenePresenter.getSceneDetail(getApplicationContext(), sceneId, SPUtils.getCityId(), mPageNo, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), placeIds, new CommonListener<SceneDetailModel>() {
             @Override
             public void successListener(SceneDetailModel response) {
-                if (firstLoad){
-                    DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgessDirectly();
+
+                if (mMaxPageNo == -1) {
+                    mMaxPageNo = response.getPlaceList().getPageCount();
+                    mRecommendedList.addAll(response.getBestList());
+                    placeIds = response.getPlaceIds();
+
+                }
+                mSceneList.addAll(response.getPlaceList().getResult());
+
+                if (firstLoad) {
+
+                    mArticleModel = response.getArticleModel();
+                    mSceneInfo = response.getSceneInfo();
+                    mAdapter = new SceneDetailAdapter(getApplicationContext(), mSceneList, mRecommendedList, mArticleModel, mSceneInfo, new SceneDetailAdapter.OnSceneItemClickListener() {
+                        @Override
+                        public void onArticleClick() {
+
+                        }
+
+                        @Override
+                        public void onPlaceClick(int pid) {
+                            Intent intent = new Intent(SceneDetailActivity.this, QuchuDetailsActivity.class);
+                            intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, pid);
+                            startActivity(intent);
+                        }
+                    });
+                    rv.setAdapter(mAdapter);
+                } else {
+                    mAdapter.notifyDataSetChanged();
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
 
-                getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mFavoriteRunning){
-                            Toast.makeText(getApplicationContext(),R.string.process_running_please_wait,Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        System.out.println("scene "+isFavorite+"~"+ sceneId);
-                        if (isFavorite){
-                            ScenePresenter.delFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
-                                @Override
-                                public void successListener(Object response) {
-                                    mFavoriteRunning = false;
-                                    isFavorite = false;
-                                    getEnhancedToolbar().getRightTv().setText("收藏");
-                                    Toast.makeText(getApplicationContext(),R.string.del_to_favorite_success,Toast.LENGTH_SHORT).show();
-                                }
 
-                                @Override
-                                public void errorListener(VolleyError error, String exception, String msg) {
-                                    mFavoriteRunning = false;
-                                    Toast.makeText(getApplicationContext(),R.string.del_to_favorite_fail,Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }else{
-                            ScenePresenter.addFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
-                                @Override
-                                public void successListener(Object response) {
-                                    mFavoriteRunning = false;
-                                    isFavorite = true;
-                                    getEnhancedToolbar().getRightTv().setText("取消收藏");
-                                    Toast.makeText(getApplicationContext(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void errorListener(VolleyError error, String exception, String msg) {
-                                    mFavoriteRunning = false;
-                                    Toast.makeText(getApplicationContext(),R.string.add_to_favorite_fail,Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }
-                });
-
-                mAdapter = new SceneDetailAdapter(getApplicationContext(), response, new SceneDetailAdapter.OnSceneItemClickListener() {
-                    @Override
-                    public void onArticleClick() {
-
-                    }
-
-                    @Override
-                    public void onPlaceClick(int pid) {
-                        Intent intent = new Intent(SceneDetailActivity.this, QuchuDetailsActivity.class);
-                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, pid);
-                        startActivity(intent);
-                    }
-                });
-                rv.setAdapter(mAdapter);
-                errorView.hideView();
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                if (firstLoad){
-                    DialogUtil.dismissProgessDirectly();
+                DialogUtil.dismissProgessDirectly();
+                if (!loadMore){
+                    errorView.showViewDefault(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
+                            getData(true, false);
+                        }
+                    });
                 }
-                errorView.showViewDefault(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DialogUtil.showProgess(SceneDetailActivity.this, "加载中");
-                        getData(false);
-                    }
-                });
-                mSwipeRefreshLayout.setRefreshing(false);
+                if (mSwipeRefreshLayout.isRefreshing()){
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
     }
@@ -187,21 +252,21 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (null==event){
+        if (null == event) {
             return;
         }
-        switch (event.getFlag()){
+        switch (event.getFlag()) {
             case EventFlags.EVENT_GOTO_HOME_PAGE:
                 finish();
                 break;
         }
     }
 
-    public static void enterActivity(Activity from, int sceneId,String sceneName,boolean favorite) {
+    public static void enterActivity(Activity from, int sceneId, String sceneName, boolean favorite) {
         Intent intent = new Intent(from, SceneDetailActivity.class);
         intent.putExtra(BUNDLE_KEY_SCENE_ID, sceneId);
-        intent.putExtra(BUNDLE_KEY_SCENE_NAME,sceneName);
-        intent.putExtra(BUNDLE_KEY_SCENE_IS_FAVORITE,favorite);
+        intent.putExtra(BUNDLE_KEY_SCENE_NAME, sceneName);
+        intent.putExtra(BUNDLE_KEY_SCENE_IS_FAVORITE, favorite);
         from.startActivity(intent);
     }
 
@@ -212,10 +277,10 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
 
     @Override
     public void onRefresh() {
-        if (NetUtil.isNetworkConnected(getApplicationContext())){
-            getData(false);
-        }else{
-            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
+        if (NetUtil.isNetworkConnected(getApplicationContext())) {
+            getData(true, false);
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
             mSwipeRefreshLayout.setRefreshing(false);
         }
     }

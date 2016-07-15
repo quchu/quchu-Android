@@ -105,20 +105,23 @@ public class ScenePresenter {
 
     public static void getSceneDetail(Context context,int sceneId, int cityId,int pageNo,String lat,String lon,int []placeIds, final CommonListener<SceneDetailModel> listener) {
 
-        HashMap<String,String> params = new HashMap<>();
-        params.put("cityId",String.valueOf(cityId));
-        params.put("pageNo",String.valueOf(pageNo));
-        params.put("latitude",String.valueOf(lat));
-        params.put("longitude",String.valueOf(lon));
-        params.put("sceneId",String.valueOf(sceneId));
+        StringBuffer urlGenerator = new StringBuffer(NetApi.getSceneDetail);
 
-        if (null!=placeIds){
+        urlGenerator
+                .append("?cityId=").append(cityId)
+                .append("&pagesNo=").append(pageNo)
+                .append("&latitude=").append(lat)
+                .append("&longitude=").append(lon)
+                .append("&sceneId=").append(sceneId);
+
+
+        if (null!=placeIds && pageNo>1){
             for (int i = 0; i < placeIds.length; i++) {
-                params.put("placeIds",String.valueOf(placeIds[i]));
+                urlGenerator.append("&placeIds=").append(placeIds[i]);
             }
         }
 
-        NetService.get(context, NetApi.getSceneDetail, params,new IRequestListener() {
+        NetService.get(context, urlGenerator.toString(),new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
 

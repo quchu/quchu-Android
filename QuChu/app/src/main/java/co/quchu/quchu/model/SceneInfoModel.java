@@ -4,15 +4,30 @@ package co.quchu.quchu.model;
  * Created by Nico on 16/7/11.
  */
 public class SceneInfoModel {
-    private String height;
-    private String intro;
-    private String rgb;
-    private String sceneContent;
-    private String sceneCover;
-    private String sceneName;
+    private String height = "";
+    private String intro = "";
+    private String rgb = "";
+    private String sceneContent = "";
+    private String sceneCover = "";
+    private String sceneName = "";
     private String[] sceneTitle;
-    private String width;
+    private String width = "";
     private int sceneId;
+
+
+    public void copyFrom(SceneInfoModel sceneInfoModel){
+        this.height = sceneInfoModel.getHeight();
+        this.intro = sceneInfoModel.getIntro();
+        this.intro = sceneInfoModel.getIntro();
+        this.rgb = sceneInfoModel.getRgb();
+        this.sceneContent = sceneInfoModel.getSceneContent();
+        this.sceneCover = sceneInfoModel.getSceneCover();
+        this.sceneName = sceneInfoModel.getSceneName();
+        this.sceneTitle = sceneInfoModel.getSceneTitle();
+        this.width = sceneInfoModel.getWidth();
+        this.sceneId = sceneInfoModel.getSceneId();
+
+    }
 
     public String getHeight() {
         return height;

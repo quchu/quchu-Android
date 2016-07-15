@@ -11,12 +11,15 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.model.SceneDetailModel;
 import co.quchu.quchu.model.SceneHeaderModel;
+import co.quchu.quchu.model.SceneInfoModel;
+import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -26,7 +29,6 @@ import co.quchu.quchu.utils.StringUtils;
 public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private SceneDetailModel mData;
 
     private OnSceneItemClickListener mListener;
 
@@ -36,11 +38,19 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static final int TYPE_PLACE_LIST = 0x004;
     public static final int TYPE_EMPTY = 0x005;
 
+    private List<DetailModel> mData;
+    private List<SceneHeaderModel> mBestPlace;
+    private SimpleArticleModel mArticleModel;
+    private SceneInfoModel mSceneInfoModel;
 
-    public SceneDetailAdapter(Context mContext, SceneDetailModel sceneDetailModel, OnSceneItemClickListener listener) {
+
+    public SceneDetailAdapter(Context mContext, List<DetailModel> pData, List<SceneHeaderModel> pDataBanner, SimpleArticleModel articleModel, SceneInfoModel sceneInfo, OnSceneItemClickListener listener) {
         this.mContext = mContext;
-        this.mData = sceneDetailModel;
+        this.mData = pData;
+        this.mBestPlace = pDataBanner;
         this.mListener = listener;
+        this.mSceneInfoModel = sceneInfo;
+        this.mArticleModel = articleModel;
 
     }
 
@@ -51,9 +61,9 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (position > 0 && position <= getRecommendedListSize()) {
             return TYPE_RECOMMENDED;
         } else if (position > getRecommendedListSize() && position <= getRecommendedListSize() + 1) {
-            if (null==mData.getArticleModel()){
+            if (null == mArticleModel) {
                 return TYPE_EMPTY;
-            }else{
+            } else {
                 return TYPE_RECOMMENDED;
             }
         } else {
@@ -84,34 +94,39 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return;
         }
         if (holder instanceof InfoViewHolder) {
+            if (null != mSceneInfoModel) {
 
-            ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mData.getSceneInfo().getSceneCover()));
-            ((InfoViewHolder) holder).desc.setText(mData.getSceneInfo().getSceneName());
-            String[] tags = mData.getSceneInfo().getSceneTitle();
-            ((InfoViewHolder) holder).recommendTag1.setVisibility(View.GONE);
-            ((InfoViewHolder) holder).recommendTag2.setVisibility(View.GONE);
-            ((InfoViewHolder) holder).recommendTag3.setVisibility(View.GONE);
-            for (int i = 0; i < tags.length; i++) {
-                switch (i) {
-                    case 0:
-                        ((InfoViewHolder) holder).recommendTag1.setVisibility(View.VISIBLE);
-                        ((InfoViewHolder) holder).recommendTag1.setText(tags[i]);
-                        break;
-                    case 1:
-                        ((InfoViewHolder) holder).recommendTag2.setVisibility(View.VISIBLE);
-                        ((InfoViewHolder) holder).recommendTag2.setText(tags[i]);
-                        break;
-                    case 2:
-                        ((InfoViewHolder) holder).recommendTag3.setVisibility(View.VISIBLE);
-                        ((InfoViewHolder) holder).recommendTag3.setText(tags[i]);
-                        break;
+                ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mSceneInfoModel.getSceneCover()));
+                ((InfoViewHolder) holder).desc.setText(mSceneInfoModel.getSceneName());
+                String[] tags = mSceneInfoModel.getSceneTitle();
+                ((InfoViewHolder) holder).recommendTag1.setVisibility(View.GONE);
+                ((InfoViewHolder) holder).recommendTag2.setVisibility(View.GONE);
+                ((InfoViewHolder) holder).recommendTag3.setVisibility(View.GONE);
+                if (null!=tags){
+                    for (int i = 0; i < tags.length; i++) {
+                        switch (i) {
+                            case 0:
+                                ((InfoViewHolder) holder).recommendTag1.setVisibility(View.VISIBLE);
+                                ((InfoViewHolder) holder).recommendTag1.setText(tags[i]);
+                                break;
+                            case 1:
+                                ((InfoViewHolder) holder).recommendTag2.setVisibility(View.VISIBLE);
+                                ((InfoViewHolder) holder).recommendTag2.setText(tags[i]);
+                                break;
+                            case 2:
+                                ((InfoViewHolder) holder).recommendTag3.setVisibility(View.VISIBLE);
+                                ((InfoViewHolder) holder).recommendTag3.setText(tags[i]);
+                                break;
+                        }
+                    }
                 }
+
             }
 
 
         } else if (holder instanceof RecommendedViewHolder) {
 
-            final SceneHeaderModel objScene = mData.getBestList().get(position-1);
+            final SceneHeaderModel objScene = mBestPlace.get(position - 1);
             ((RecommendedViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getPlaceInfo().getCover()));
             ((RecommendedViewHolder) holder).tvTitle.setText(objScene.getPlaceInfo().getName());
             ((RecommendedViewHolder) holder).tvHeader.setText(objScene.getTitle());
@@ -120,24 +135,24 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((RecommendedViewHolder) holder).recommendTag2.setVisibility(View.GONE);
             ((RecommendedViewHolder) holder).recommendTag3.setVisibility(View.GONE);
             for (int i = 0; i < objScene.getPlaceInfo().getTags().size(); i++) {
-                if (((RecommendedViewHolder) holder).tags.getChildAt(i)!=null){
+                if (((RecommendedViewHolder) holder).tags.getChildAt(i) != null) {
                     ((RecommendedViewHolder) holder).tags.getChildAt(i).setVisibility(View.VISIBLE);
-                    ((TextView)((RecommendedViewHolder) holder).tags.getChildAt(i)).setText(objScene.getPlaceInfo().getTags().get(i).getZh());
+                    ((TextView) ((RecommendedViewHolder) holder).tags.getChildAt(i)).setText(objScene.getPlaceInfo().getTags().get(i).getZh());
                 }
 
             }
             ((RecommendedViewHolder) holder).tvCircleName.setText(null != objScene.getPlaceInfo().getAreaCircleName() ? objScene.getPlaceInfo().getAreaCircleName() : "");
             ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.getPlaceInfo().gdLatitude), Double.valueOf(objScene.getPlaceInfo().gdLongitude)));
-            if (!StringUtils.isEmpty(objScene.getPlaceInfo().getPrice())){
-                ((RecommendedViewHolder) holder).tvPrice.setText("¥"+objScene.getPlaceInfo().getPrice()+"元｜");
-            }else{
+            if (!StringUtils.isEmpty(objScene.getPlaceInfo().getPrice())) {
+                ((RecommendedViewHolder) holder).tvPrice.setText("¥" + objScene.getPlaceInfo().getPrice() + "元｜");
+            } else {
                 ((RecommendedViewHolder) holder).tvPrice.setText("¥- 元｜");
             }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (null!=mListener) {
+                    if (null != mListener) {
                         mListener.onPlaceClick(objScene.getPlaceInfo().getPid());
                     }
                 }
@@ -146,18 +161,15 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         } else if (holder instanceof ArticleViewHolder) {
 
-            if (null!=mData.getArticleModel()){
-                ((ArticleViewHolder) holder).sdvCover.setImageURI(Uri.parse(mData.getArticleModel().getImageUrl()));
-                ((ArticleViewHolder) holder).tvTitle.setText(mData.getArticleModel().getArticleName());
-                ((ArticleViewHolder) holder).tvDescription.setText(mData.getArticleModel().getArticleComtent());
-                holder.itemView.setVisibility(View.VISIBLE);
-            }else{
-                holder.itemView.setVisibility(View.GONE);
+            if (null != mArticleModel) {
+                ((ArticleViewHolder) holder).sdvCover.setImageURI(Uri.parse(mArticleModel.getImageUrl()));
+                ((ArticleViewHolder) holder).tvTitle.setText(mArticleModel.getArticleName());
+                ((ArticleViewHolder) holder).tvDescription.setText(mArticleModel.getArticleComtent());
             }
 
         } else if (holder instanceof PlaceViewHolder) {
 
-            final DetailModel objScene = mData.getPlaceList().getResult().get(position-2-getRecommendedListSize());
+            final DetailModel objScene = mData.get(position - 2 - getRecommendedListSize());
             ((PlaceViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getCover()));
             ((PlaceViewHolder) holder).tvTitle.setText(objScene.getName());
             ((PlaceViewHolder) holder).tvHeader.setVisibility(View.GONE);
@@ -166,20 +178,20 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((PlaceViewHolder) holder).recommendTag2.setVisibility(View.GONE);
             ((PlaceViewHolder) holder).recommendTag3.setVisibility(View.GONE);
             for (int i = 0; i < objScene.getTags().size(); i++) {
-                if (null!=((PlaceViewHolder) holder).tags.getChildAt(i)){
+                if (null != ((PlaceViewHolder) holder).tags.getChildAt(i)) {
                     ((PlaceViewHolder) holder).tags.getChildAt(i).setVisibility(View.VISIBLE);
-                    ((TextView)((PlaceViewHolder) holder).tags.getChildAt(i)).setText(objScene.getTags().get(i).getZh());
+                    ((TextView) ((PlaceViewHolder) holder).tags.getChildAt(i)).setText(objScene.getTags().get(i).getZh());
                 }
             }
-            ((PlaceViewHolder) holder).tvCircleName.setText(null!=objScene.getAreaCircleName()?objScene.getAreaCircleName():"");
-            ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(),SPUtils.getLongitude(),Double.valueOf(objScene.gdLatitude),Double.valueOf(objScene.gdLongitude)));
+            ((PlaceViewHolder) holder).tvCircleName.setText(null != objScene.getAreaCircleName() ? objScene.getAreaCircleName() : "");
+            ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.gdLatitude), Double.valueOf(objScene.gdLongitude)));
 
-            ((PlaceViewHolder) holder).tvPrice.setText("¥"+objScene.getPrice()+"元");
+            ((PlaceViewHolder) holder).tvPrice.setText("¥" + objScene.getPrice() + "元");
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (null!=mListener) {
+                    if (null != mListener) {
                         mListener.onPlaceClick(objScene.getPid());
                     }
                 }
@@ -189,25 +201,26 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-    public interface OnSceneItemClickListener{
+    public interface OnSceneItemClickListener {
         void onArticleClick();
+
         void onPlaceClick(int pid);
     }
 
     private int getRecommendedListSize() {
         int recommended = 0;
 
-        if (null != mData && null != mData.getBestList()) {
+        if (null != mData && null != mBestPlace) {
 
-            recommended += mData.getBestList().size();
+            recommended += mBestPlace.size();
         }
         return recommended;
     }
 
     private int getPlaceListSize() {
         int placeList = 0;
-        if (null != mData && null != mData.getPlaceList() && null != mData.getPlaceList().getResult()) {
-            placeList += mData.getPlaceList().getResultCount();
+        if (null != mData && null != mData && null != mData) {
+            placeList += mData.size();
         }
         return placeList;
     }
@@ -286,7 +299,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public ArticleViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

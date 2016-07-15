@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.model.SimplePlaceModel;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 
 /**
  * Created by Nico on 16/7/8.
@@ -54,7 +55,11 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_BANNER) {
-            return new BannerViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_banner, parent, false));
+            if (null!=mSimpleArticleModel){
+                return new BannerViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_banner, parent, false));
+            }else{
+                return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_quchu_detail_blank, parent, false));
+            }
         } else {
             return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
         }
@@ -62,11 +67,11 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position==0){
+        if ( holder instanceof BannerViewHolder){
             ((BannerViewHolder) holder).tvDescription.setText(mSimpleArticleModel.getArticleComtent());
             ((BannerViewHolder) holder).tvTitle.setText(mSimpleArticleModel.getArticleName());
             ((BannerViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mSimpleArticleModel.getImageUrl()));
-        }else{
+        }else if(holder instanceof ArticleViewHolder){
 
             position = position-1;
             ((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position).getContent());
