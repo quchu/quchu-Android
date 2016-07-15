@@ -141,34 +141,15 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         tvPageIndicatorCurrent.setTypeface(face);
         vpMyScene.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
-                if (mAllSceneList.size() > 0 && mFavoriteSceneList.size() > 0){
-                    tvPageIndicatorCurrent.setText(String.valueOf(position + 1));
-                    TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
-                }else{
-                    tvPageIndicatorCurrent.setText("");
-                    tvPageIndicatorLabel.setText("");
-                    TvPageIndicatorSize.setText("");
-                }
-
-
-                if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0) {
-                    tvPageIndicatorLabel.setText("你已经收藏全部场景");
-                } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0) {
-                    tvPageIndicatorLabel.setText("你还没有收藏的详情");
-                }
-
+                resetIndicators();
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) {}
         });
 
 
@@ -362,9 +343,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                     mFavoriteSceneList.clear();
                     mFavoriteSceneList.addAll(response.getResult());
                     mMySceneAdapter.notifyDataSetChanged();
-                    tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
-                    TvPageIndicatorSize.setText(String.valueOf(mMySceneAdapter.getCount()));
                 }
+                resetIndicators();
 
             }
 
@@ -395,6 +375,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                     }
                     mAllSceneList.addAll(response.getResult());
                     mAllSceneGridAdapter.notifyDataSetChanged();
+                    resetIndicators();
 
                 }
                 mRefreshRunning = false;
@@ -524,6 +505,15 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         }
 
 
+
+        mMySceneAdapter.notifyDataSetChanged();
+        mAllSceneGridAdapter.notifyDataSetChanged();
+        resetIndicators();
+    }
+
+    private void resetIndicators() {
+
+        System.out.println("resetIndicators "+ mAllSceneList.size()+"|"+mFavoriteSceneList.size());
         if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0) {
             tvPageIndicatorLabel.setText("你已经收藏全部场景");
             tvPageIndicatorCurrent.setText("");
@@ -551,14 +541,12 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             }else{
                 tvPageIndicatorCurrent.setText("");
                 tvPageIndicatorLabel.setText("");
+                TvPageIndicatorSize.setText("");
             }
 
 
 
         }
-
-        mMySceneAdapter.notifyDataSetChanged();
-        mAllSceneGridAdapter.notifyDataSetChanged();
     }
 
 

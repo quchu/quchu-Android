@@ -15,6 +15,7 @@
         android:layout_marginRight="@dimen/base_margin"
         android:gravity="center_vertical"
         android:paddingBottom="@dimen/half_margin"
+        android:visibility="gone"
         android:paddingTop="@dimen/base_margin">
 
         <LinearLayout

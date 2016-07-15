@@ -7,15 +7,7 @@
     android:background="@color/standard_color_white"
     >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvAdditionalInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:paddingTop="@dimen/half_margin"
-        android:paddingBottom="@dimen/half_margin"
-        android:layout_marginTop="@dimen/half_margin"/>
+
     <TextView
         android:text="@string/quchu_detail"
         android:visibility="gone"

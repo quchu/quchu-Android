@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.BottomListDialog;
 import co.quchu.quchu.model.CommentModel;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedUsersModel;
@@ -39,6 +42,7 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import co.quchu.quchu.widget.RoundProgressView;
+import co.quchu.quchu.widget.SimpleIndicatorView;
 import co.quchu.quchu.widget.SpacesItemDecoration;
 import co.quchu.quchu.widget.TagCloudView;
 
@@ -221,6 +225,34 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         if (holder instanceof IntroImageViewHolder) {
 
+            if (null != mData.getImglist()&&mData.getImglist().size()>0) {
+                List<ImageModel> imageSet = new ArrayList<>();
+                for (int i = 0; i < mData.getImglist().size(); i++) {
+                    imageSet.add(mData.getImglist().get(i).convert2ImageModel());
+                }
+                ((IntroImageViewHolder) holder).vpGallery.setAdapter(new GalleryAdapter(imageSet));
+                ((IntroImageViewHolder) holder).siv.setIndicators(imageSet.size());
+                ((IntroImageViewHolder) holder).siv.setVisibility(View.VISIBLE);
+                ((IntroImageViewHolder) holder).vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        ((IntroImageViewHolder) holder).siv.setCurrentIndex(position);
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
+            }else{
+                ((IntroImageViewHolder) holder).siv.setVisibility(View.GONE);
+            }
+
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName().trim() : "");
 
 
@@ -274,58 +306,43 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((IntroImageViewHolder) holder).tag2.setVisibility(View.GONE);
                 ((IntroImageViewHolder) holder).tag3.setVisibility(View.GONE);
             }
-        } else if (holder instanceof ActionViewHolder) {
 
-            ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
 
-            if (null != mVisitedUsers) {
-                if (mVisitedUsers.getUserOutCount() == 0) {
-                    ((ActionViewHolder) holder).tvVisitorCount.setText(R.string.no_visitor);
-                } else {
-                    ((ActionViewHolder) holder).tvVisitorCount.setText(StringUtils.getColorSpan(((ActionViewHolder) holder).llVisitedUsers.getContext(), R.color.standard_color_red, "有", String.valueOf(mVisitedUsers.getUserOutCount()), "人去过这里"));
+            if (!mData.isIsActivity() && null != mData.getIcons() && mData.getIcons().size()>0) {
+                ((IntroImageViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
+                ((IntroImageViewHolder) holder).rvInfoGrid.setLayoutManager(new LinearLayoutManager(mAnchorActivity,LinearLayoutManager.HORIZONTAL,false));
+                ((IntroImageViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
+
+                if (null == ((IntroImageViewHolder) holder).rvInfoGrid.getTag() || !((boolean) ((IntroImageViewHolder) holder).rvInfoGrid.getTag())) {
+
+                    ((IntroImageViewHolder) holder).rvInfoGrid.setTag(true);
                 }
-                LinearLayout.LayoutParams lpVisitedUsersAvatar;
-                //ic_care_friends_avatar
-
-                ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
-                for (int i = 0; i < 9; i++) {
-                    if (mVisitedUsers.getResult().size() > i) {
-                        SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
-                        sdv.setImageURI(Uri.parse(mVisitedUsers.getResult().get(i).getUserPhoneUrl()));
-                        RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
-                        roundingParams.setRoundAsCircle(true);
-                        sdv.getHierarchy().setRoundingParams(roundingParams);
-                        sdv.getHierarchy().setPlaceholderImage(R.mipmap.head_place_hold);
-                        sdv.getHierarchy().setFailureImage(ContextCompat.getDrawable(mAnchorActivity, R.mipmap.head_place_hold));
-                        if (i > 0) {
-                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
-                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
-                        } else {
-                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
-                            lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
-                        }
-                        //跳转用户中心
-
-//                        final int finalI = i;
-//                        sdv.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                Intent intent = new Intent(v.getContext(), UserCenterActivity.class);
-//                                intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, mVisitedUsers.getResult().get(finalI).getUserId());
-//                                v.getContext().startActivity(intent);
-//                            }
-//                        });
-
-
-                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
-                        sdv.requestLayout();
-                    }
-//                    else if (mVisitedUsers.getResult().size() > 0) {
-//                    } else {
+            } else {
+                ((IntroImageViewHolder) holder).rvInfoGrid.setVisibility(View.GONE);
+            }
+        } else if (holder instanceof ActionViewHolder) {
+//
+//            ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
+//
+//            if (null != mVisitedUsers) {
+//                if (mVisitedUsers.getUserOutCount() == 0) {
+//                    ((ActionViewHolder) holder).tvVisitorCount.setText(R.string.no_visitor);
+//                } else {
+//                    ((ActionViewHolder) holder).tvVisitorCount.setText(StringUtils.getColorSpan(((ActionViewHolder) holder).llVisitedUsers.getContext(), R.color.standard_color_red, "有", String.valueOf(mVisitedUsers.getUserOutCount()), "人去过这里"));
+//                }
+//                LinearLayout.LayoutParams lpVisitedUsersAvatar;
+//                //ic_care_friends_avatar
+//
+//                ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
+//                for (int i = 0; i < 9; i++) {
+//                    if (mVisitedUsers.getResult().size() > i) {
 //                        SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
-//                        Random random = new Random();
-//                        int randomNumber = random.nextInt(3);
-//                        sdv.setImageResource(RANDOM_AVATAR[randomNumber]);
+//                        sdv.setImageURI(Uri.parse(mVisitedUsers.getResult().get(i).getUserPhoneUrl()));
+//                        RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
+//                        roundingParams.setRoundAsCircle(true);
+//                        sdv.getHierarchy().setRoundingParams(roundingParams);
+//                        sdv.getHierarchy().setPlaceholderImage(R.mipmap.head_place_hold);
+//                        sdv.getHierarchy().setFailureImage(ContextCompat.getDrawable(mAnchorActivity, R.mipmap.head_place_hold));
 //                        if (i > 0) {
 //                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
 //                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
@@ -333,14 +350,43 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
 //                            lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
 //                        }
+//                        //跳转用户中心
+//
+////                        final int finalI = i;
+////                        sdv.setOnClickListener(new View.OnClickListener() {
+////                            @Override
+////                            public void onClick(View v) {
+////                                Intent intent = new Intent(v.getContext(), UserCenterActivity.class);
+////                                intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, mVisitedUsers.getResult().get(finalI).getUserId());
+////                                v.getContext().startActivity(intent);
+////                            }
+////                        });
+//
+//
 //                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
 //                        sdv.requestLayout();
 //                    }
-
-                }
-                ((ActionViewHolder) holder).llVisitedUsers.invalidate();
-                ((ActionViewHolder) holder).llVisitedUsers.requestLayout();
-            }
+////                    else if (mVisitedUsers.getResult().size() > 0) {
+////                    } else {
+////                        SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
+////                        Random random = new Random();
+////                        int randomNumber = random.nextInt(3);
+////                        sdv.setImageResource(RANDOM_AVATAR[randomNumber]);
+////                        if (i > 0) {
+////                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
+////                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
+////                        } else {
+////                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
+////                            lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
+////                        }
+////                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
+////                        sdv.requestLayout();
+////                    }
+//
+//                }
+//                ((ActionViewHolder) holder).llVisitedUsers.invalidate();
+//                ((ActionViewHolder) holder).llVisitedUsers.requestLayout();
+//            }
 
 
         } else if (holder instanceof ContactInfoViewHolder) {
@@ -356,13 +402,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(mOnItemClickListener);
             if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setVisibility(View.VISIBLE);
-                StringTokenizer token = new StringTokenizer(mData.getTel(), " ");
-                StringBuffer phoneHtml = new StringBuffer();
-                while (token.hasMoreTokens()) {
-                    String phoneNum = token.nextToken();
-                    phoneHtml.append("<font color=#" + Integer.toHexString(((ContactInfoViewHolder) holder).detail_store_address_tv.getResources().getColor(R.color.standard_color_h2_dark) & 0x00ffffff) + "><a href='tel:").append(phoneNum).append("'>").append(phoneNum).append("</a> </font>  ");
-                }
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.append(Html.fromHtml(phoneHtml.toString()));
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText(mData.getTel());
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -413,20 +453,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                }
 //            }
         } else if (holder instanceof AdditionalInfoViewHolder) {
-
-            if (!mData.isIsActivity() && null != mData.getIcons()) {
-                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
-                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setLayoutManager(new NestedGridLayoutManager(((AdditionalInfoViewHolder) holder).rvInfoGrid.getContext(), 4));
-                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
-
-                if (null == ((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag() || !((boolean) ((AdditionalInfoViewHolder) holder).rvInfoGrid.getTag())) {
-                    ((AdditionalInfoViewHolder) holder).rvInfoGrid.addItemDecoration(new SpacesItemDecoration(mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.half_margin), 4));
-                    ((AdditionalInfoViewHolder) holder).rvInfoGrid.setTag(true);
-                }
-            } else {
-                ((AdditionalInfoViewHolder) holder).rvInfoGrid.setVisibility(View.GONE);
-            }
-
 
         } else if (holder instanceof OpeningInfoViewHolder) {
 
@@ -599,6 +625,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Bind(R.id.detail_store_name_tv)
         TextView detail_store_name_tv;
 
+        @Bind(R.id.vpGallery)
+        ViewPager vpGallery;
+
+        @Bind(R.id.siv)
+        SimpleIndicatorView siv;
+
+
+        @Bind(R.id.rvAdditionalInfo)
+        RecyclerView rvInfoGrid;
+
         @Bind(R.id.recommend_tag1)
         TextView tag1;
         @Bind(R.id.recommend_tag2)
@@ -674,9 +710,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static class AdditionalInfoViewHolder extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.rvAdditionalInfo)
-        RecyclerView rvInfoGrid;
+//
+//        @Bind(R.id.rvAdditionalInfo)
+//        RecyclerView rvInfoGrid;
 
         AdditionalInfoViewHolder(View view) {
             super(view);

@@ -61,7 +61,8 @@
             android:id="@+id/tvReviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="9996" />
+            android:drawableLeft="@mipmap/ic_eyes"
+            />
 
         <TextView
             android:id="@+id/tvFavorite"
@@ -69,7 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/tvReviews"
-            android:text="9996" />
+            android:drawableLeft="@mipmap/ic_zang"
+            />
     </RelativeLayout>
 
     <com.facebook.drawee.view.SimpleDraweeView

@@ -59,6 +59,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
     private int mMaxPageNo = -1;
     private int mPageNo = 1;
     private int[] placeIds;
+    private EndlessRecyclerOnScrollListener mLoadingListener;
 
     private List<DetailModel> mSceneList = new ArrayList<>();
     private List<SceneHeaderModel> mRecommendedList = new ArrayList<>();
@@ -95,12 +96,14 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
         getData(true, false);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        rv.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
+
+        mLoadingListener = new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
             @Override
             public void onLoadMore(int current_page) {
                 getData(false, true);
             }
-        });
+        };
+        rv.addOnScrollListener(mLoadingListener);
 
 
         errorView.hideView();
@@ -213,6 +216,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                     mAdapter.notifyDataSetChanged();
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
+                mLoadingListener.loadingComplete();
 
 
             }
@@ -232,6 +236,8 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                 if (mSwipeRefreshLayout.isRefreshing()){
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
+                mLoadingListener.loadingComplete();
+
             }
         });
     }

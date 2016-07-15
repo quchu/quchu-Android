@@ -56,14 +56,12 @@ public class BottomListDialog extends Dialog {
         for (int i = 0; i < mItems.length; i++) {
             final String strItem = mItems[i];
             TextView textView = new TextView(getContext());
-            int margin = (int) getContext().getResources().getDimension(R.dimen.base_margin);
-            lp.setMargins(0, 0, 0, margin);
             textView.setLayoutParams(lp);
             textView.setText(strItem);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             textView.setGravity(Gravity.CENTER);
-            textView.setTextColor(getContext().getResources().getColor(R.color.standard_color_white));
-            textView.setBackgroundColor(getContext().getResources().getColor(R.color.standard_color_h1_dark));
+            textView.setTextColor(getContext().getResources().getColor(R.color.standard_color_h1_dark));
+            textView.setBackgroundColor(getContext().getResources().getColor(R.color.standard_color_white));
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
