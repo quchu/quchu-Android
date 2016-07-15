@@ -239,27 +239,28 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 if (inList) {
                     //城市列表中有但不是当前位置
                     confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "检测到你在" + currentLocation + "，是否切换？");
-                }
-                final boolean finalInList = inList;
-                final int finalCityIdInList = cityIdInList;
-                final String finalCurrentLocation = currentLocation;
-                confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
-                    @Override
-                    public void onClick(int index) {
-                        if (ConfirmDialogFg.INDEX_OK == index) {
-                            if (finalInList) {
-                                SPUtils.setCityId(finalCityIdInList);
-                                SPUtils.setCityName(finalCurrentLocation);
-                                updateRecommend();
-                                recommendTitleLocationIv.setText(SPUtils.getCityName());
-                            } else {
-                                findViewById(R.id.recommend_title_location_rl).performClick();
-                            }
+                    final boolean finalInList = inList;
+                    final int finalCityIdInList = cityIdInList;
+                    final String finalCurrentLocation = currentLocation;
+                    confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+                        @Override
+                        public void onClick(int index) {
+                            if (ConfirmDialogFg.INDEX_OK == index) {
+                                if (finalInList) {
+                                    SPUtils.setCityId(finalCityIdInList);
+                                    SPUtils.setCityName(finalCurrentLocation);
+                                    updateRecommend();
+                                    recommendTitleLocationIv.setText(SPUtils.getCityName());
+                                } else {
+                                    findViewById(R.id.recommend_title_location_rl).performClick();
+                                }
 
+                            }
                         }
-                    }
-                });
-                confirmDialogFg.show(getSupportFragmentManager(), "~");
+                    });
+                    confirmDialogFg.show(getSupportFragmentManager(), "~");
+                }
+
             }
         }
     }
