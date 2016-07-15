@@ -31,6 +31,11 @@ public class FriendsAdatper extends AdapterBase<FollowUserModel, FriendsAdatper.
     private FriendsItemClickListener clickListener;
     private boolean isInnerClick = true;
 
+    private boolean isFollowMe;
+
+    public void setFollowMe(boolean followMe) {
+        isFollowMe = followMe;
+    }
 
     public FriendsAdatper(Context mContext) {
         this.mContext = mContext;
@@ -86,4 +91,8 @@ public class FriendsAdatper extends AdapterBase<FollowUserModel, FriendsAdatper.
         void itemClick(View view, int position);
     }
 
+    @Override
+    protected String getNullDataHint() {
+        return !isFollowMe?"你还没有粉丝":"你还有没有关注好友哦";
+    }
 }

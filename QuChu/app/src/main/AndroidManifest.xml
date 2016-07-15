@@ -86,7 +86,7 @@
             android:name=".view.activity.AccountSettingActivity"
             android:label="@string/titlebar_word_account_setting"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <!-- 趣处详情 -->
 
         <activity

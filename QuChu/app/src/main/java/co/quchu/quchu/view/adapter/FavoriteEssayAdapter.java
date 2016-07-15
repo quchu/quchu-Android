@@ -104,6 +104,6 @@ public class FavoriteEssayAdapter extends AdapterBase<FavoriteEssayBean.ResultBe
 
     @Override
     protected String getNullDataHint() {
-        return "你还没有添加场景";
+        return "你还没有收藏场景";
     }
 }

@@ -453,6 +453,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
         super.onResume();
         MobclickAgent.onPageStart("edit");
+
     }
 
 

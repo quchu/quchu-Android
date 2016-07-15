@@ -3,6 +3,7 @@ package co.quchu.quchu.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -54,6 +55,7 @@ public class ModiffPasswordDialog extends DialogFragment implements View.OnClick
         ButterKnife.bind(this, view);
         builder.setView(view);
 
+
         commit.setOnClickListener(this);
         newPassw.addTextChangedListener(new TextWatcher() {
             @Override
@@ -76,10 +78,30 @@ public class ModiffPasswordDialog extends DialogFragment implements View.OnClick
                 }
             }
         });
-
-        return builder.create();
+        AlertDialog dialog = builder.create();
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                InputMethodManager inputmanger = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputmanger.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), InputMethodManager.RESULT_HIDDEN);
+                inputmanger.hideSoftInputFromInputMethod(commit.getApplicationWindowToken(), 0);
+            }
+        });
+        return dialog;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        InputMethodManager inputmanger = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputmanger.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), InputMethodManager.RESULT_HIDDEN);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 
     @Override
     public void onDestroyView() {

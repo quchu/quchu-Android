@@ -57,6 +57,8 @@ public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoa
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mIsSubscribe = getArguments().getBoolean(BUNDLE_KEY_IS_SUBSCRIBE, true);
+        mAdapter.setFollowMe(mIsSubscribe);
+
         presenter = new FollowPresenter(getContext(), this);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
