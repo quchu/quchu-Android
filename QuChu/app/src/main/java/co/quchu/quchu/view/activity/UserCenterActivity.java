@@ -94,7 +94,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                     friend.setText("趣粉" + userCenterInfo.getFollowNum());
 
                     gender.setImageURI(Uri.parse("res:///" + (userCenterInfo.getGender().equals("男") ? R.mipmap.ic_male : R.mipmap.ic_female)));
-
                 } else {
                     Toast.makeText(UserCenterActivity.this, "并无该用户", Toast.LENGTH_SHORT).show();
                 }
