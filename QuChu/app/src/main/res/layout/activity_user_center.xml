@@ -37,7 +37,21 @@
                     android:layout_height="100dp"
                     android:layout_marginLeft="@dimen/base_margin"
                     fresco:placeholderImage="@mipmap/head_place_hold"
-                    fresco:roundAsCircle="true" />
+                    fresco:roundAsCircle="true"
+                    fresco:roundingBorderColor="@color/colorBorder"
+                    fresco:roundingBorderWidth="2dp" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/gender"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignBottom="@id/headImage"
+                    android:layout_alignRight="@id/headImage"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginRight="7dp"
+                    fresco:roundAsCircle="true"
+                    fresco:roundingBorderColor="@color/colorBorder"
+                    fresco:roundingBorderWidth="2dp" />
 
                 <TextView
                     android:id="@+id/desc"
@@ -69,15 +83,6 @@
                     android:textColor="@color/standard_color_h3_dark"
                     tools:text="好奇猫" />
 
-                <TextView
-                    android:id="@+id/locationAndGender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/alias"
-                    android:layout_below="@id/alias"
-                    tools:text="男,厦门"
-                    android:layout_marginTop="@dimen/base_margin"
-                    android:textColor="@color/standard_color_h2_dark" />
 
                 <TextView
                     android:id="@+id/editOrLoginTV"
