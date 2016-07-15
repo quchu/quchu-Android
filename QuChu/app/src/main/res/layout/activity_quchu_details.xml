@@ -47,7 +47,7 @@
                     android:layout_weight="1"
                     android:padding="@dimen/base_margin"
                     android:background="@color/appBackground_dark"
-                    android:src="@mipmap/ic_feet" />
+                    android:src="@mipmap/ic_jiaoying_lt" />
 
                 <TextView
                     android:id="@+id/tvFootprintCount"
