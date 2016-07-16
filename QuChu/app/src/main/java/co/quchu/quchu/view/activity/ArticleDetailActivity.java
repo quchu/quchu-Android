@@ -15,6 +15,9 @@ import com.android.volley.VolleyError;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,8 +26,10 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.ArticleDetailModel;
+import co.quchu.quchu.model.ArticleWithBannerModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SimpleArticleModel;
+import co.quchu.quchu.model.SimplePlaceModel;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.ArticlePresenter;
@@ -60,6 +65,13 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
     String articleId;
     String articleTitle;
 
+    private int mMaxPageNo = -1;
+    private int mPageNo = 1;
+    private EndlessRecyclerOnScrollListener mListener;
+    public boolean mLoadMoreRunning = false;
+    private ArticleDetailAdapter mAdapter;
+    private List<SimplePlaceModel> mSimplePlaceModels = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,13 +97,47 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
                 }
             });
         }
-//        rv.addOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
-//            @Override
-//            public void onLoadMore(int current_page) {
-//                getData(articleId,false);
-//            }
-//        });
+
+        mListener = new EndlessRecyclerOnScrollListener((LinearLayoutManager) rv.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int current_page) {
+                loadMore(articleId);
+            }
+        };
+        rv.addOnScrollListener(mListener);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void loadMore(String id) {
+
+        if (mLoadMoreRunning) {
+            Toast.makeText(ArticleDetailActivity.this, R.string.process_running_please_wait, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mPageNo += 1;
+        if (mMaxPageNo != -1 && mMaxPageNo <= mPageNo) {
+            Toast.makeText(ArticleDetailActivity.this, R.string.no_more_data, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        DialogUtil.showProgess(ArticleDetailActivity.this, R.string.loading_dialog_text);
+
+        ArticlePresenter.getArticleById(getApplicationContext(), SPUtils.getCityId(), mPageNo, id, new CommonListener<ArticleDetailModel>() {
+            @Override
+            public void successListener(ArticleDetailModel response) {
+                mSimplePlaceModels.addAll(response.getPlaceList().getResult());
+                mAdapter.notifyDataSetChanged();
+                DialogUtil.dismissProgessDirectly();
+                mListener.loadingComplete();
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                DialogUtil.dismissProgessDirectly();
+                mListener.loadingComplete();
+            }
+        });
+
+
     }
 
     private void getData(String id, final boolean firstLoad) {
@@ -105,16 +151,19 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
                 if (firstLoad){
                     DialogUtil.dismissProgessDirectly();
                 }
-
+                mMaxPageNo = response.getPlaceList().getPageCount();
                 mArticleDetailModel = response;
-                rv.setAdapter(new ArticleDetailAdapter(getApplicationContext(), response.getPlaceList().getResult(), response.getArticle(), new CommonItemClickListener() {
+                mSimplePlaceModels.clear();
+                mSimplePlaceModels.addAll(response.getPlaceList().getResult());
+                mAdapter = new ArticleDetailAdapter(getApplicationContext(), mSimplePlaceModels, response.getArticle(), new CommonItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
                         Intent intent = new Intent(ArticleDetailActivity.this, QuchuDetailsActivity.class);
                         intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, response.getPlaceList().getResult().get(position).getPlaceId());
                         startActivity(intent);
                     }
-                }));
+                });
+                rv.setAdapter(mAdapter);
 
                 ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_favorite_hl:R.mipmap.ic_favorite);
                 mSwipeRefreshLayout.setRefreshing(false);

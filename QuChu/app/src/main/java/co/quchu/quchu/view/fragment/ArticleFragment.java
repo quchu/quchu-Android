@@ -16,11 +16,16 @@ import com.umeng.analytics.MobclickAgent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.ArticleBannerModel;
+import co.quchu.quchu.model.ArticleModel;
 import co.quchu.quchu.model.ArticleWithBannerModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
@@ -31,6 +36,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.ArticleDetailActivity;
 import co.quchu.quchu.view.adapter.ArticleAdapter;
 import co.quchu.quchu.view.adapter.CommonItemClickListener;
+import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.ErrorView;
 
 /**
@@ -47,9 +53,15 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout refreshLayout;
 
+    private List<ArticleModel> articleModels = new ArrayList<>();
+    private List<ArticleBannerModel> articleBanner = new ArrayList<>();
+    private ArticleAdapter mAdapter;
+    private int mMaxPageNo = -1;
+    private int mPageNo = 1;
+    private EndlessRecyclerOnScrollListener mListenr;
+    public boolean mLoadMoreRunning = false;
 
 
-    private ArticleAdapter cAdapter;
 
     @Nullable
     @Override
@@ -57,13 +69,21 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         View view = inflater.inflate(R.layout.fragment_classify, container, false);
         ButterKnife.bind(this, view);
 
+        mAdapter = new ArticleAdapter(getActivity(), articleModels, articleBanner);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
         refreshLayout.setOnRefreshListener(this);
+        mListenr = new EndlessRecyclerOnScrollListener(recyclerView.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int current_page) {
+                LoadMore();
+            }
+        };
+        recyclerView.addOnScrollListener(mListenr);
 
 
-        if (!NetUtil.isNetworkConnected(getActivity()) && cAdapter==null){
+        if (!NetUtil.isNetworkConnected(getActivity()) && mAdapter == null) {
             errorView.showViewDefault(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,41 +98,79 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         return view;
     }
 
+
+
+    public void LoadMore() {
+        if (mLoadMoreRunning) {
+            Toast.makeText(getActivity(), R.string.process_running_please_wait, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mPageNo += 1;
+        if (mMaxPageNo != -1 && mMaxPageNo <= mPageNo) {
+            Toast.makeText(getActivity(), R.string.no_more_data, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
+
+        ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), mMaxPageNo, new CommonListener<ArticleWithBannerModel>() {
+            @Override
+            public void successListener(ArticleWithBannerModel response) {
+                articleModels.addAll(response.getArticleList().getResult());
+                mAdapter.notifyDataSetChanged();
+                DialogUtil.dismissProgessDirectly();
+                mListenr.loadingComplete();
+            }
+
+            @Override
+            public void errorListener(VolleyError error, String exception, String msg) {
+                DialogUtil.dismissProgessDirectly();
+                mListenr.loadingComplete();
+            }
+        });
+
+    }
+
+
     /**
      * 获取分类信息
      */
     public void getArticles(final boolean firstLoad) {
-        if (firstLoad){
-            DialogUtil.showProgess(getActivity(),R.string.loading_dialog_text);
+        if (firstLoad) {
+            DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
         }
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
             public void successListener(final ArticleWithBannerModel response) {
-                if (firstLoad){
+                if (firstLoad) {
                     DialogUtil.dismissProgessDirectly();
                 }
                 if (null == recyclerView) {
                     return;
                 }
+                mMaxPageNo = response.getArticleList().getPageCount();
                 recyclerView.setVisibility(View.VISIBLE);
                 errorView.hideView();
                 refreshLayout.setRefreshing(false);
 
-                cAdapter = new ArticleAdapter(getActivity(), response.getArticleList().getResult(),response.getArticleTitleList());
-                recyclerView.setAdapter(cAdapter);
-                cAdapter.setOnItemClickListener(new CommonItemClickListener() {
+                articleModels.clear();
+                articleModels.addAll(response.getArticleList().getResult());
+
+                articleBanner.clear();
+                articleBanner.addAll(response.getArticleTitleList());
+                recyclerView.setAdapter(mAdapter);
+                mAdapter.setOnItemClickListener(new CommonItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
                         String articleId = response.getArticleList().getResult().get(position).getArticleId();
                         String articleTitle = response.getArticleList().getResult().get(position).getArticleName();
-                        ArticleDetailActivity.enterActivity(getActivity(),articleId,articleTitle);
+                        ArticleDetailActivity.enterActivity(getActivity(), articleId, articleTitle);
                     }
                 });
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
-                if (firstLoad){
+                if (firstLoad) {
                     DialogUtil.dismissProgessDirectly();
                 }
                 recyclerView.setVisibility(View.GONE);
@@ -159,9 +217,10 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        switch (event.getFlag()){
+        switch (event.getFlag()) {
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
                 getArticles(false);
                 break;
@@ -170,10 +229,10 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        if (NetUtil.isNetworkConnected(getActivity())){
+        if (NetUtil.isNetworkConnected(getActivity())) {
             getArticles(false);
-        }else{
-            Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
             refreshLayout.setRefreshing(false);
         }
     }

@@ -1,5 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.ActivityOptions;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,8 +43,12 @@ import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
+import co.quchu.quchu.utils.AnimatorPath;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.PathEvaluator;
+import co.quchu.quchu.utils.PathPoint;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.ScaleAnimation;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SceneDetailActivity;
@@ -75,6 +82,14 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     RadioGroup radioGroup;
     @Bind(R.id.rvGrid)
     RecyclerView rvGrid;
+    @Bind(R.id.ivIndicator)
+    View ivIndicator;
+    @Bind(R.id.rbFavorites)
+    RadioButton rbFavorites;
+    @Bind(R.id.rlNodata)
+    View rlNodata;
+    int currentIndex = 0;
+
 
     public static final int ANIMATION_DURATION = 350;
 
@@ -87,7 +102,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
     private boolean mAddFavoriteRunning = false;
     private boolean mRefreshRunning = false;
+    private int mScreenWidth = -1;
 
+    
 
     @Nullable
     @Override
@@ -96,6 +113,10 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         ButterKnife.bind(this, view);
 
 
+        mScreenWidth =  ScreenUtils.getScreenWidth(getActivity());
+        ScaleAnimation dia = new ScaleAnimation();
+        dia.setRemoveDuration(300);
+        rvGrid.setItemAnimator(dia);
         rvGrid.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin), 2));
         mMySceneAdapter = new MySceneAdapter(this, mFavoriteSceneList, this);
         vpMyScene.setClipToPadding(false);
@@ -129,8 +150,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             }
 
             @Override
-            public void onItemFavoriteClick(int position) {
-                addFavoriteRunning(position);
+            public void onItemFavoriteClick(View v,int position) {
+                addFavorite(v,position);
             }
         });
         rvGrid.setAdapter(mAllSceneGridAdapter);
@@ -159,6 +180,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 switch (checkedId) {
                     case R.id.rbFavorites:
 
+                        currentIndex= 0;
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
                         vpMyScene.setVisibility(View.VISIBLE);
@@ -211,9 +233,11 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 //                                        tvPageIndicator.setVisibility(View.VISIBLE);
 //                                    }
 //                                }).start();
+                        resetIndicators();
+
                         break;
                     case R.id.rbAll:
-
+                        currentIndex= 1;
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
                         int edge = ScreenUtils.getScreenWidth(getActivity());
@@ -247,6 +271,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 //                                })
 //                                .start();
                         llPageIndicator.setVisibility(View.GONE);
+                        resetIndicators();
                         break;
                 }
             }
@@ -273,7 +298,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     }
 
 
-    private void addFavoriteRunning(final int position) {
+    private void addFavorite(final View v, final int position) {
         if (!NetUtil.isNetworkConnected(getActivity())){
             Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
             return;
@@ -287,6 +312,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         ScenePresenter.addFavoriteScene(getContext(), sid, new CommonListener() {
             @Override
             public void successListener(Object response) {
+                int margin = getResources().getDimensionPixelSize(R.dimen.base_margin);
+                playAnimation(v.getX()+margin,v.getY()+margin);
                 notifyAdapters(position, true);
                 mAddFavoriteRunning = false;
                 //Toast.makeText(getActivity(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
@@ -505,51 +532,85 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         }
 
 
+        if (add){
+            mAllSceneGridAdapter.notifyItemRemoved(index);
+            mAllSceneGridAdapter.notifyItemRangeChanged(index, mAllSceneGridAdapter.getItemCount());
+        }
 
         mMySceneAdapter.notifyDataSetChanged();
-        mAllSceneGridAdapter.notifyDataSetChanged();
         resetIndicators();
+    }
+    private static final AccelerateDecelerateInterpolator sDecelerateInterpolator = new AccelerateDecelerateInterpolator();
+
+    public void playAnimation(final float x, final float y){
+        AnimatorPath path = new AnimatorPath();
+        path.moveTo(x, y);
+
+        int cx0 = (int) x>=(mScreenWidth/2)?((int)(mScreenWidth*.8f)):((int)(mScreenWidth*.2f));//random.nextBoolean()? 400:-400;
+        int finalX = (int) (rbFavorites.getX()+rbFavorites.getWidth() - ivIndicator.getWidth());
+        path.curveTo(cx0, 0, finalX, -ivIndicator.getHeight(), finalX, rbFavorites.getY());
+
+        ivIndicator.setScaleX(1);
+        ivIndicator.setScaleY(1);
+        // Set up the animation
+        final ObjectAnimator anim = ObjectAnimator.ofObject(this, "floating",
+                new PathEvaluator(), path.getPoints().toArray());
+
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(ivIndicator,"scaleX",1,.3f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(ivIndicator,"scaleY",1,.3f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(ivIndicator,"alpha",1,0f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        animatorSet.setInterpolator(sDecelerateInterpolator);
+        animatorSet.setDuration(1000);
+        animatorSet.playTogether(anim,scaleX,scaleY,alpha);
+        animatorSet.start();
+    }
+
+
+    public void setFloating(PathPoint newLoc) {
+        System.out.println("newLoc"+newLoc.mX +"|"+newLoc.mY);
+        ivIndicator.setTranslationX(newLoc.mX);
+        ivIndicator.setTranslationY(newLoc.mY);
     }
 
     private void resetIndicators() {
-
-        System.out.println("resetIndicators "+ mAllSceneList.size()+"|"+mFavoriteSceneList.size());
-        if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0) {
-            tvPageIndicatorLabel.setText("你已经收藏了全部场景");
-            tvPageIndicatorCurrent.setText("");
-            TvPageIndicatorSize.setText("");
-        } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0) {
-            tvPageIndicatorLabel.setText("你还没有收藏场景");
-            tvPageIndicatorCurrent.setText("");
-            TvPageIndicatorSize.setText("");
-
-        } else {
-
-            if (mAllSceneList.size() > 0 && mFavoriteSceneList.size() > 0){
-
-                tvPageIndicatorLabel.setText("of");
-                if (vpMyScene.getChildCount()>0){
-                    tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
-                }else{
-                    if (null!=mFavoriteSceneList){
-                        tvPageIndicatorCurrent.setText(String.valueOf(1));
-                    }else{
-                        tvPageIndicatorCurrent.setText(mFavoriteSceneList.size());
-                    }
-                }
-                TvPageIndicatorSize.setText(String.valueOf(mFavoriteSceneList.size()));
-            }else{
-                tvPageIndicatorCurrent.setText("");
-                tvPageIndicatorLabel.setText("");
-                TvPageIndicatorSize.setText("");
-            }
-
-
+        rlNodata.setVisibility(View.GONE);
+        if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0 && currentIndex==1) {
+            rlNodata.setVisibility(View.VISIBLE);
+        } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0 && currentIndex==0) {
+            rlNodata.setVisibility(View.VISIBLE);
 
         }
+
+
+        if (mFavoriteSceneList.size() > 0){
+
+            tvPageIndicatorLabel.setText("of");
+            if (vpMyScene.getChildCount()>0){
+                tvPageIndicatorCurrent.setText(String.valueOf(vpMyScene.getCurrentItem() + 1));
+            }else{
+                if (null!=mFavoriteSceneList){
+                    tvPageIndicatorCurrent.setText(String.valueOf(1));
+                }else{
+                    tvPageIndicatorCurrent.setText(mFavoriteSceneList.size());
+                }
+            }
+            TvPageIndicatorSize.setText(String.valueOf(mFavoriteSceneList.size()));
+        }else{
+            tvPageIndicatorCurrent.setText("");
+            tvPageIndicatorLabel.setText("");
+            TvPageIndicatorSize.setText("");
+        }
+
+
+
+
     }
 
 
+    
     public static float MIN_SCALE = .9f;
 
     @Override

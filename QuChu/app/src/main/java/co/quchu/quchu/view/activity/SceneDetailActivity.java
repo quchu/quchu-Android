@@ -171,7 +171,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
         }
 
         if (mMaxPageNo != -1 &&mPageNo >= mMaxPageNo && loadMore) {
-            Toast.makeText(getApplicationContext(), "max page no reached", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.no_more_data, Toast.LENGTH_SHORT).show();
             return;
         }
 

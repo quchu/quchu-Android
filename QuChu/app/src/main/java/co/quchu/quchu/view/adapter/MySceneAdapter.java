@@ -34,6 +34,7 @@ public class MySceneAdapter extends PagerAdapter {
     private CardClickListener listener;
     private RecommendFragment fragment;
 
+
     public MySceneAdapter(RecommendFragment fragment, List<SceneModel> arrayList, CardClickListener listener) {
         this.mContext = fragment.getActivity();
         this.fragment = fragment;

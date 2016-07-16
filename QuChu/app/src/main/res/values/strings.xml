@@ -197,5 +197,6 @@
     <string name="del_to_favorite_article_success">删除文章成功</string>
     <string name="del_to_favorite_article_fail">删除文章失败</string>
     <string name="process_running_please_wait">操作正在执行，请稍后</string>
+    <string name="no_more_data">没有更多数据了</string>
 
 </resources>

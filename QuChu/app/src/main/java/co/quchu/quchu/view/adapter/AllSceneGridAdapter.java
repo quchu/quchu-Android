@@ -81,7 +81,7 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
             @Override
             public void onClick(View v) {
                 if (null!=mOnItemClickListener){
-                    mOnItemClickListener.onItemFavoriteClick(position);
+                    mOnItemClickListener.onItemFavoriteClick(holder.itemView,position);
                 }
             }
         });
@@ -113,12 +113,14 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
                 }
             }
         }
+        holder.itemView.setPivotX(0);
+        holder.itemView.setPivotY(0);
 
     }
 
     public interface OnItemClickListener {
         void onItemClick(View v,int position);
-        void onItemFavoriteClick(int position);
+        void onItemFavoriteClick(View v,int position);
     }
 
     @Override
