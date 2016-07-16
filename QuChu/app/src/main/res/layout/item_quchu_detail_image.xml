@@ -58,12 +58,12 @@
                 android:id="@+id/recommend_tag1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_lineframe_black"
+                android:background="@drawable/shape_lineframe_black_thin"
                 android:paddingBottom="4dp"
                 android:paddingLeft="@dimen/base_margin"
                 android:paddingRight="@dimen/base_margin"
                 android:paddingTop="4dp"
-                android:textColor="@color/standard_color_black"
+                android:textColor="@color/standard_color_h2_dark"
                 android:textSize="@dimen/standard_text_size_h4"
                 android:visibility="gone" />
 
@@ -73,12 +73,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/half_margin"
                 android:layout_toRightOf="@id/recommend_tag1"
-                android:background="@drawable/shape_lineframe_black"
+                android:background="@drawable/shape_lineframe_black_thin"
                 android:paddingBottom="4dp"
                 android:paddingLeft="@dimen/base_margin"
                 android:paddingRight="@dimen/base_margin"
                 android:paddingTop="4dp"
-                android:textColor="@color/standard_color_black"
+                android:textColor="@color/standard_color_h2_dark"
                 android:textSize="@dimen/standard_text_size_h4"
                 android:visibility="gone" />
 
@@ -88,12 +88,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/half_margin"
                 android:layout_toRightOf="@id/recommend_tag2"
-                android:background="@drawable/shape_lineframe_black"
+                android:background="@drawable/shape_lineframe_black_thin"
                 android:paddingBottom="4dp"
                 android:paddingLeft="@dimen/base_margin"
                 android:paddingRight="@dimen/base_margin"
                 android:paddingTop="4dp"
-                android:textColor="@color/standard_color_black"
+                android:textColor="@color/standard_color_h2_dark"
                 android:textSize="@dimen/standard_text_size_h4"
                 android:visibility="gone" />
 
@@ -103,7 +103,7 @@
             android:layout_below="@id/rlTags"
             android:layout_width="match_parent"
             android:layout_height="@dimen/quchu_detail_addtionalinfo_icon_size"
-            android:layout_marginTop="@dimen/half_margin"
+            android:layout_marginTop="@dimen/base_margin"
             android:layout_marginBottom="@dimen/half_margin"
             android:orientation="vertical"
             android:gravity="center"

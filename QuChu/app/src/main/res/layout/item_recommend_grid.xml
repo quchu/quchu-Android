@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
-    fresco:cardCornerRadius="@dimen/rounded_radius"
-    fresco:cardElevation="0dp"
-    fresco:cardPreventCornerOverlap="false">
+    android:background="@drawable/shape_card_background_ltgray"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -137,4 +136,4 @@
     </RelativeLayout>
 
 
-</android.support.v7.widget.CardView>
+</LinearLayout>

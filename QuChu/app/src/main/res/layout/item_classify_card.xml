@@ -13,7 +13,6 @@
         android:id="@+id/sdvCover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         fresco:failureImage="@mipmap/ic_image_empty"
         fresco:failureImageScaleType="center"
         fresco:placeholderImage="@mipmap/ic_image_empty"
@@ -47,32 +46,7 @@
         style="@style/TextView.H2"
         />
 
-    <RelativeLayout
-        android:id="@+id/rl"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvDescription">
 
-        <TextView
-            android:id="@+id/tvReviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/ic_eyes"
-            />
-
-        <TextView
-            android:id="@+id/tvFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_toRightOf="@id/tvReviews"
-            android:drawableLeft="@mipmap/ic_zang"
-            />
-    </RelativeLayout>
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdvAvatar"
@@ -82,8 +56,40 @@
         fresco:roundAsCircle="true"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_below="@+id/tvDescription"
-        android:layout_marginTop="@dimen/quarter_margin"
+        android:layout_marginTop="@dimen/half_margin"
         android:layout_marginBottom="@dimen/half_margin"
         android:src="@mipmap/ic_image_empty" />
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/base_margin"
+        android:layout_alignBottom="@+id/sdvAvatar"
+        android:layout_alignParentRight="true">
+
+        <TextView
+            android:layout_marginTop="@dimen/half_margin"
+            android:id="@+id/tvReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/ic_eyes"
+            />
+
+        <TextView
+            android:layout_marginTop="@dimen/half_margin"
+            android:id="@+id/tvFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/tvReviews"
+            android:drawableLeft="@mipmap/ic_zang"
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@id/sdvAvatar"
+        style="@style/HorizontalDivider"
+        />
 </RelativeLayout>
 

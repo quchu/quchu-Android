@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/base_margin"
     android:layout_marginRight="@dimen/base_margin"
     android:layout_marginTop="@dimen/dialog_margin"
+    android:background="@drawable/shape_card_background_ltgray"
     android:clickable="false"
-    android:fitsSystemWindows="true"
-    card_view:cardBackgroundColor="@color/standard_color_white"
-    card_view:cardCornerRadius="@dimen/rounded_radius"
-    card_view:cardElevation="0dp"
-    card_view:cardPreventCornerOverlap="false">
+    android:fitsSystemWindows="true">
 
 
     <LinearLayout
@@ -29,28 +26,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_launcher"
-               card_view:actualImageScaleType="centerCrop"
-               card_view:failureImage="@mipmap/ic_image_empty"
-               card_view:failureImageScaleType="center"
-               card_view:placeholderImage="@mipmap/ic_image_empty"
-               card_view:placeholderImageScaleType="center"
+                card_view:actualImageScaleType="centerCrop"
+                card_view:failureImage="@mipmap/ic_image_empty"
+                card_view:failureImageScaleType="center"
+                card_view:placeholderImage="@mipmap/ic_image_empty"
+                card_view:placeholderImageScaleType="center"
 
-               card_view:roundBottomLeft="false"
-               card_view:roundBottomRight="false"
-               card_view:roundTopLeft="true"
-               card_view:roundTopRight="true"
-               card_view:roundedCornerRadius="@dimen/rounded_radius"
-               card_view:viewAspectRatio="1.7" />
+                card_view:roundBottomLeft="false"
+                card_view:roundBottomRight="false"
+                card_view:roundTopLeft="true"
+                card_view:roundTopRight="true"
+                card_view:roundedCornerRadius="@dimen/rounded_radius"
+                card_view:viewAspectRatio="1.7" />
 
             <TextView
                 android:id="@+id/tvHeader"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/sdvCover"
                 android:layout_marginTop="@dimen/double_margin"
-                android:background="@color/standard_color_white"
+                android:background="@color/translucent_dark"
+                android:gravity="center"
+                android:paddingBottom="@dimen/quarter_margin"
                 android:paddingLeft="@dimen/half_margin"
                 android:paddingRight="@dimen/half_margin"
-                android:textColor="@color/standard_color_black" />
+                android:paddingTop="@dimen/quarter_margin"
+                android:textColor="@color/standard_color_white" />
 
 
         </RelativeLayout>
@@ -132,11 +133,10 @@
             <TextView
                 android:id="@+id/tvCircleName"
                 style="@style/TextView.H3"
-                android:drawableLeft="@mipmap/ic_zuobiao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/standard_text_size_h4"
-                />
+                android:drawableLeft="@mipmap/ic_zuobiao"
+                android:textSize="@dimen/standard_text_size_h4" />
 
 
             <TextView
@@ -152,13 +152,12 @@
 
             <TextView
                 android:id="@+id/tvPrice"
+                style="@style/TextView.H3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextView.H3"
                 android:layout_toLeftOf="@+id/tvDistance"
-                android:textSize="@dimen/standard_text_size_h4"
-                />
+                android:textSize="@dimen/standard_text_size_h4" />
         </RelativeLayout>
 
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</LinearLayout>
