@@ -56,6 +56,7 @@ public class TagCloudView extends ViewGroup {
     private static final boolean DEFAULT_SHOW_RIGHT_IMAGE = false;
     private static final boolean DEFAULT_SHOW_END_TEXT = true;
     private static final boolean DEFAULT_CAN_TAG_CLICK = true;
+    private int mItemVerticalMargin = -1;
 
     public TagCloudView(Context context) {
         this(context, null);
@@ -240,6 +241,10 @@ public class TagCloudView extends ViewGroup {
         return super.generateLayoutParams(attrs);
     }
 
+    public void setItemBackgound(int resId){
+        mItemVerticalMargin = resId;
+    }
+
     public void setTags(List<String> tagList) {
         this.tags = tagList;
         this.removeAllViews();
@@ -250,6 +255,7 @@ public class TagCloudView extends ViewGroup {
                     tagView.setBackgroundResource(mBackground);
                     tagView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mTagSize);
                     tagView.setTextColor(mTagColor);
+
                 }
                 LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                 tagView.setLayoutParams(layoutParams);

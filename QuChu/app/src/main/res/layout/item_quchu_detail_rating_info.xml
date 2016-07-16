@@ -2,75 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:background="@color/standard_color_white"
     android:orientation="vertical"
     android:paddingTop="@dimen/half_margin">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/base_margin"
-        android:background="@color/bg_pager" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/base_margin"
-        android:orientation="horizontal">
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        android:orientation="vertical">
 
-
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/rpvItemLeft"
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
-
-            <TextView
-                android:id="@+id/tvRatingLeft"
-                style="@style/TextView.H3"
-                android:layout_marginTop="@dimen/quarter_margin" />
-        </LinearLayout>
-
+            android:text="评论"
+            style="@style/TextView.H2"
+            />
 
         <LinearLayout
+            android:layout_marginTop="@dimen/half_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/rpvItemMiddle"
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
+            android:orientation="horizontal"
+            >
+            <RatingBar
+                android:id="@+id/rbRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:max="5"
+                android:stepSize="0.5"
+                android:rating="3"
+                android:isIndicator="true"
+                style="@style/CustomProgressBar"/>
 
             <TextView
-                android:id="@+id/tvRatingMiddle"
-                style="@style/TextView.H3"
-                android:layout_marginTop="@dimen/quarter_margin" />
+                android:id="@+id/tvRatingCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextView.H5"
+                />
         </LinearLayout>
 
-        <LinearLayout
+        <co.quchu.quchu.widget.TagCloudView
+            android:id="@+id/tcvTags"
+            card_view:tcvBackground="@drawable/shape_lineframe_black_thin"
+            card_view:tcvTextSize="4dp"
+            card_view:tcvBorder = "8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            card_view:tcvCanTagClick="false"
+            card_view:tcvTextColor="@color/standard_color_h3_dark"
 
-            <co.quchu.quchu.widget.RoundProgressView
-                android:id="@+id/rpvItemRight"
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
-
-            <TextView
-                android:id="@+id/tvRatingRight"
-                style="@style/TextView.H3"
-                android:layout_marginTop="@dimen/quarter_margin" />
-        </LinearLayout>
+            />
     </LinearLayout>
 </LinearLayout>

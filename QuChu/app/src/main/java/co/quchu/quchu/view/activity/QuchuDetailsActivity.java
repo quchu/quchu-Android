@@ -196,6 +196,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
             public void successListener(VisitedInfoModel response) {
                 if (null != response) {
                     mVisitedInfoModel = response;
+                    mQuchuDetailAdapter.updateRatingInfo(mVisitedInfoModel);
                 }
             }
 

@@ -186,7 +186,11 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((PlaceViewHolder) holder).tvCircleName.setText(null != objScene.getAreaCircleName() ? objScene.getAreaCircleName() : "");
             ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.gdLatitude), Double.valueOf(objScene.gdLongitude)));
 
-            ((PlaceViewHolder) holder).tvPrice.setText("¥" + objScene.getPrice() + "元");
+            if (!StringUtils.isEmpty(objScene.getPrice())) {
+                ((PlaceViewHolder) holder).tvPrice.setText("¥" + objScene.getPrice() + "元｜");
+            } else {
+                ((PlaceViewHolder) holder).tvPrice.setText("¥- 元｜");
+            }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -6,27 +6,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,13 +34,12 @@ import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
+import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
-import co.quchu.quchu.widget.RoundProgressView;
 import co.quchu.quchu.widget.SimpleIndicatorView;
-import co.quchu.quchu.widget.SpacesItemDecoration;
 import co.quchu.quchu.widget.TagCloudView;
 
 /**
@@ -77,6 +73,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private VisitedUsersModel mVisitedUsers;
     private int mVisitedUsersAvatarSize = -1;
     private int mVisitedUsersAvatarMargin;
+    private VisitedInfoModel mVisitedInfoModel;
     private SimpleQuchuDetailAnalysisModel mAnalysisModel;
 
 
@@ -130,6 +127,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyDataSetChanged();
     }
 
+    public void updateRatingInfo(VisitedInfoModel pVisitedInfoModel){
+        mVisitedInfoModel = pVisitedInfoModel;
+        notifyDataSetChanged();
+    }
 
     public void updateVisitorAnalysis(SimpleQuchuDetailAnalysisModel response) {
         mAnalysisModel = response;
@@ -179,8 +180,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                return new SimpleInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_info, parent, false));
             case LAYOUT_TYPE_CONTACT_INFO:
                 return new ContactInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_contact_info, parent, false));
-//            case LAYOUT_TYPE_RATING_INFO:
-//                return new RatingInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
+            case LAYOUT_TYPE_RATING_INFO:
+                return new RatingInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
             case LAYOUT_TYPE_ADDITIONAL_INFO:
                 if (null == mData || mData.isIsActivity()) {
                     return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
@@ -225,7 +226,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         if (holder instanceof IntroImageViewHolder) {
 
-            if (null != mData.getImglist()&&mData.getImglist().size()>0) {
+            if (null != mData.getImglist() && mData.getImglist().size() > 0) {
                 List<ImageModel> imageSet = new ArrayList<>();
                 for (int i = 0; i < mData.getImglist().size(); i++) {
                     imageSet.add(mData.getImglist().get(i).convert2ImageModel());
@@ -249,7 +250,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     }
                 });
-            }else{
+            } else {
                 ((IntroImageViewHolder) holder).siv.setVisibility(View.GONE);
             }
 
@@ -308,9 +309,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
 
-            if (!mData.isIsActivity() && null != mData.getIcons() && mData.getIcons().size()>0) {
+            if (!mData.isIsActivity() && null != mData.getIcons() && mData.getIcons().size() > 0) {
                 ((IntroImageViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
-                ((IntroImageViewHolder) holder).rvInfoGrid.setLayoutManager(new LinearLayoutManager(mAnchorActivity,LinearLayoutManager.HORIZONTAL,false));
+                ((IntroImageViewHolder) holder).rvInfoGrid.setLayoutManager(new LinearLayoutManager(mAnchorActivity, LinearLayoutManager.HORIZONTAL, false));
                 ((IntroImageViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
 
                 if (null == ((IntroImageViewHolder) holder).rvInfoGrid.getTag() || !((boolean) ((IntroImageViewHolder) holder).rvInfoGrid.getTag())) {
@@ -439,19 +440,21 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
         } else if (holder instanceof RatingInfoViewHolder) {
-//            if (null != mAnalysisModel && null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size() > 0) {
-//                try {
-//
-//                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((int) (mAnalysisModel.getResult().get(0).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
-//                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((int) (mAnalysisModel.getResult().get(1).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
-//                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((int) (mAnalysisModel.getResult().get(2).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
-//                    ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
-//                    ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
-//                    ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
-//                } catch (IndexOutOfBoundsException ex) {
-//                    //ex.printStackTrace();
-//                }
-//            }
+            if (null != mVisitedInfoModel ) {
+                ((RatingInfoViewHolder) holder).rbRating.setProgress(mVisitedInfoModel.getScore());
+            }
+            if (null!=mAnalysisModel){
+                ((RatingInfoViewHolder) holder).tvRatingCount.setText(mAnalysisModel.getUserOutCount()+"人评价");
+
+                List<String> tags=  new ArrayList<>();
+                if (null!=mAnalysisModel.getResult()){
+                    for (int i = 0; i < mAnalysisModel.getResult().size() ; i++) {
+                        TagsModel objTag = mAnalysisModel.getResult().get(i);
+                        tags.add(objTag.getZh() +" "+objTag.getCount());
+                    }
+                    ((RatingInfoViewHolder) holder).tagCloudView.setTags(tags);
+                }
+            }
         } else if (holder instanceof AdditionalInfoViewHolder) {
 
         } else if (holder instanceof OpeningInfoViewHolder) {
@@ -486,15 +489,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
 //            }
 
-        } else if (holder instanceof CommentViewHolder){
-            if (null!=mData.getReviewList()){
+        } else if (holder instanceof CommentViewHolder) {
+            if (null != mData.getReviewList()) {
 
                 int commentIndex = position - BLOCK_INDEX;
                 if (null != mData.getImglist()) {
                     commentIndex -= mData.getImglist().size();
                 }
                 commentIndex -= 1;
-                if (null == mData.getReviewList().get(commentIndex) || null == mData.getReviewList().get(commentIndex )) {
+                if (null == mData.getReviewList().get(commentIndex) || null == mData.getReviewList().get(commentIndex)) {
                     return;
                 }
                 CommentModel commentModel = mData.getReviewList().get(commentIndex);
@@ -506,7 +509,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
             }
-        }else if (holder instanceof NearbyViewHolder) {
+        } else if (holder instanceof NearbyViewHolder) {
             if (null != mData.getNearPlace()) {
                 int imgIndex = position - BLOCK_INDEX;
                 if (null != mData.getImglist()) {
@@ -688,20 +691,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static class RatingInfoViewHolder extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.rpvItemLeft)
-        RoundProgressView rpvItemLeft;
-        @Bind(R.id.rpvItemMiddle)
-        RoundProgressView rpvItemMiddle;
-        @Bind(R.id.rpvItemRight)
-        RoundProgressView rpvItemRight;
-
-        @Bind(R.id.tvRatingLeft)
-        TextView tvRatingLeft;
-        @Bind(R.id.tvRatingRight)
-        TextView tvRatingRight;
-        @Bind(R.id.tvRatingMiddle)
-        TextView tvRatingMiddle;
+        @Bind(R.id.rbRating)
+        RatingBar rbRating;
+        @Bind(R.id.tvRatingCount)
+        TextView tvRatingCount;
+        @Bind(R.id.tcvTags)
+        TagCloudView tagCloudView;
 
         RatingInfoViewHolder(View view) {
             super(view);
