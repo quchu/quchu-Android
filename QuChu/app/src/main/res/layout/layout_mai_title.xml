@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/recommend_title_location_tv"
-            android:src="@mipmap/ic_down_menu" />
+            android:src="@mipmap/ic_down" />
     </RelativeLayout>
 
 
