@@ -32,7 +32,7 @@
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         style="@style/TextView.H1"
-        android:text="title" />
+         />
 
     <TextView
         android:id="@+id/tvDescription"
@@ -42,7 +42,6 @@
         android:layout_below="@+id/tvTitle"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
-        android:text="description"
         style="@style/TextView.H2"
         />
 
