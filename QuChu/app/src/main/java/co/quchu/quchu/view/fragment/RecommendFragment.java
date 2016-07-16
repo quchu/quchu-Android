@@ -515,11 +515,11 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         System.out.println("resetIndicators "+ mAllSceneList.size()+"|"+mFavoriteSceneList.size());
         if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0) {
-            tvPageIndicatorLabel.setText("你已经收藏全部场景");
+            tvPageIndicatorLabel.setText("你已经收藏了全部场景");
             tvPageIndicatorCurrent.setText("");
             TvPageIndicatorSize.setText("");
         } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0) {
-            tvPageIndicatorLabel.setText("你还没有收藏的详情");
+            tvPageIndicatorLabel.setText("你还没有收藏场景");
             tvPageIndicatorCurrent.setText("");
             TvPageIndicatorSize.setText("");
 
