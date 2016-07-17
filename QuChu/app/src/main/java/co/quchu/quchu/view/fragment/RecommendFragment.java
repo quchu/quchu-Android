@@ -196,6 +196,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 switch (checkedId) {
                     case R.id.rbFavorites:
 
+                        mNewFavoriteScenes = 0;
+                        tvAddedScene.setVisibility(View.INVISIBLE);
+                        
                         currentIndex= 0;
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
@@ -254,8 +257,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                         break;
                     case R.id.rbAll:
 
-                        mNewFavoriteScenes = 0;
-                        tvAddedScene.setVisibility(View.GONE);
                         currentIndex= 1;
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();

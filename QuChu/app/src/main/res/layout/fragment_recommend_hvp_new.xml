@@ -163,7 +163,7 @@
         android:background="@mipmap/ic_di"
         style="@style/TextView.H5"
         android:gravity="center"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:textColor="@color/standard_color_black"
         />
 
