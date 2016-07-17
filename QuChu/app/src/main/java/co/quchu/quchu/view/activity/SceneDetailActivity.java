@@ -9,6 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.android.volley.VolleyError;
 
 import org.greenrobot.eventbus.EventBus;
@@ -20,6 +24,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
@@ -31,6 +36,7 @@ import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
+import co.quchu.quchu.utils.AppKey;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.SceneDetailAdapter;
@@ -67,13 +73,15 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
     private SimpleArticleModel mArticleModel;
     private SceneInfoModel mSceneInfo;
     private SceneDetailAdapter mAdapter;
+    private AMapLocationClient mLocationClient;
+    private AMapLocationClientOption mLocationOption;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_recyclerview);
         ButterKnife.bind(this);
-
         sceneId = getIntent().getIntExtra(BUNDLE_KEY_SCENE_ID, -1);
         String name = getIntent().getStringExtra(BUNDLE_KEY_SCENE_NAME);
         isFavorite = getIntent().getBooleanExtra(BUNDLE_KEY_SCENE_IS_FAVORITE, false);
@@ -93,7 +101,6 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                 }
             });
         }
-        getData(true, false);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
 
@@ -114,7 +121,44 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
             }
         });
 
+
+        getData();
+
     }
+
+    public void getData() {
+
+        mLocationClient = new AMapLocationClient(getApplicationContext());
+        mLocationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        SPUtils.setLatitude(aMapLocation.getLatitude());
+                        SPUtils.setLongitude(aMapLocation.getLongitude());
+                        SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_CITY, aMapLocation.getCity());
+                        SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_PROVINCE, aMapLocation.getProvince());
+                    }
+                }
+                getData(true, false);
+                mLocationClient.stopLocation();
+                mLocationClient.unRegisterLocationListener(this);
+                mLocationClient.onDestroy();
+                mLocationClient = null;
+            }
+        });
+
+        mLocationOption = new AMapLocationClientOption();
+        mLocationOption.setHttpTimeOut(3000);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationOption.setNeedAddress(true);
+        mLocationOption.setOnceLocation(true);
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.startLocation();
+
+    }
+
 
     private void changeFavorite() {
         if (!NetUtil.isNetworkConnected(SceneDetailActivity.this)) {
@@ -162,21 +206,21 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
 
 
     private void getData(final boolean firstLoad, final boolean loadMore) {
-        if (firstLoad){
+        if (firstLoad) {
 
             mSceneList.clear();
             mRecommendedList.clear();
             mMaxPageNo = -1;
-            mPageNo=1;
+            mPageNo = 1;
         }
 
-        if (mMaxPageNo != -1 &&mPageNo >= mMaxPageNo && loadMore) {
+        if (mMaxPageNo != -1 && mPageNo >= mMaxPageNo && loadMore) {
             Toast.makeText(getApplicationContext(), R.string.no_more_data, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (loadMore){
-            mPageNo+=1;
+        if (loadMore) {
+            mPageNo += 1;
         }
 
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
@@ -224,7 +268,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
                 DialogUtil.dismissProgessDirectly();
-                if (!loadMore){
+                if (!loadMore) {
                     errorView.showViewDefault(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -233,7 +277,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                         }
                     });
                 }
-                if (mSwipeRefreshLayout.isRefreshing()){
+                if (mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 mLoadingListener.loadingComplete();

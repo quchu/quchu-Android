@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.fragment;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.ActivityOptions;
@@ -14,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -89,6 +91,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     RadioButton rbFavorites;
     @Bind(R.id.rlNodata)
     View rlNodata;
+    @Bind(R.id.tvAddedScene)
+    TextView tvAddedScene;
+
     int currentIndex = 0;
 
 
@@ -105,6 +110,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     private boolean mRefreshRunning = false;
     private int mScreenWidth = -1;
 
+    private int mNewFavoriteScenes = 0;
     
 
     @Nullable
@@ -125,7 +131,16 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         vpMyScene.setPadding(padding, 0, padding, 0);
         vpMyScene.setPageMargin(padding / 2);
         vpMyScene.setAdapter(mMySceneAdapter);
+        rbFavorites.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
 
+                tvAddedScene.setTranslationX(rbFavorites.getWidth()-tvAddedScene.getWidth());
+                tvAddedScene.setTranslationY(tvAddedScene.getHeight());
+                rbFavorites.getViewTreeObserver().removeOnPreDrawListener(this);
+                return false;
+            }
+        });
 
         mAllSceneGridAdapter = new AllSceneGridAdapter(mAllSceneList, new AllSceneGridAdapter.OnItemClickListener() {
             @Override
@@ -238,6 +253,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
                         break;
                     case R.id.rbAll:
+
+                        mNewFavoriteScenes = 0;
+                        tvAddedScene.setVisibility(View.GONE);
                         currentIndex= 1;
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
@@ -541,6 +559,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         mMySceneAdapter.notifyDataSetChanged();
         resetIndicators();
+
+
     }
     private static final AccelerateDecelerateInterpolator sDecelerateInterpolator = new AccelerateDecelerateInterpolator();
 
@@ -568,11 +588,33 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         animatorSet.setDuration(1000);
         animatorSet.playTogether(anim,scaleX,scaleY,alpha);
         animatorSet.start();
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mNewFavoriteScenes +=1;
+                tvAddedScene.setVisibility(View.VISIBLE);
+                tvAddedScene.setText(String.valueOf(mNewFavoriteScenes));
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
     }
 
 
     public void setFloating(PathPoint newLoc) {
-        System.out.println("newLoc"+newLoc.mX +"|"+newLoc.mY);
         ivIndicator.setTranslationX(newLoc.mX);
         ivIndicator.setTranslationY(newLoc.mY);
     }

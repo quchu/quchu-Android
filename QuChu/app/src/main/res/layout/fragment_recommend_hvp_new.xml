@@ -156,4 +156,15 @@
         android:src="@mipmap/ic_add_favorite"
         />
 
+    <TextView
+        android:id="@+id/tvAddedScene"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_di"
+        style="@style/TextView.H5"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@color/standard_color_black"
+        />
+
 </RelativeLayout>
