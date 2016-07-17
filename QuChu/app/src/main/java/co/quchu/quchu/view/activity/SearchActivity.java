@@ -115,6 +115,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private SearchCategoryAdapter filterCategoryAdapter;
     private SearchSortAdapter filterSortAdapter;
 
+    private boolean filterUserInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +130,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onClick(View v) {
                 searchInputEt.setCursorVisible(true);
+                filterUserInput = true;
             }
         });
     }
@@ -414,7 +416,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     searchFilterTV1.setText(categoryGroupAllString);
                     SearchPresenter.getTagByParentId(SearchActivity.this, ((SearchCategoryBean) bean).getTagId());
                     searchInputEt.setText(((SearchCategoryBean) bean).getZh());
+                    filterUserInput=false;
                     seachStr(false);
+
                     searchInputEt.setSelection(searchInputEt.getText().toString().trim().length());
                     searchInputEt.setCursorVisible(false);
                 }
@@ -427,8 +431,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
 
     private void seachStr(final boolean loadMore) {
-
-        String str = searchInputEt.getText().toString().trim();
+        String str = "";
+        if (filterUserInput)
+            str = searchInputEt.getText().toString().trim();
 
         if (mIsLoading) return;
 
