@@ -54,7 +54,14 @@ public class ModiffPasswordDialog extends DialogFragment implements View.OnClick
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_modiff_password, null);
         ButterKnife.bind(this, view);
         builder.setView(view);
+        commit.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager inputmanger = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputmanger.showSoftInput(originPassw, InputMethodManager.SHOW_FORCED);
 
+            }
+        }, 300);
 
         commit.setOnClickListener(this);
         newPassw.addTextChangedListener(new TextWatcher() {

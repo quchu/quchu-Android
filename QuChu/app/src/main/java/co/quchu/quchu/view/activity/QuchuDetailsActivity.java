@@ -1,14 +1,8 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.util.ArrayMap;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,7 +17,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -36,7 +29,6 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.QuchuDetailsMoreDialog;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.NearbyItemModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
@@ -47,13 +39,12 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.NearbyPresenter;
+import co.quchu.quchu.utils.AudioUtils;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.adapter.GalleryAdapter;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
-import co.quchu.quchu.widget.SimpleIndicatorView;
 
 
 /**
@@ -401,6 +392,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                 dModel.setIsout(true);
                 getVisitors();
                 getRatingInfo();
+                AudioUtils.playAudio(QuchuDetailsActivity.this,R.raw.audio23);
             }
 
             @Override
@@ -526,6 +518,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                 }
                 if (dModel.isIsf()) {
                     Toast.makeText(QuchuDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+                    AudioUtils.playAudio(QuchuDetailsActivity.this,R.raw.audio11);
                 } else {
                     Toast.makeText(QuchuDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }

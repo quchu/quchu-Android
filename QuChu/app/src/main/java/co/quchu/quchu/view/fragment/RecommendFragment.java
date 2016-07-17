@@ -44,6 +44,7 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.AnimatorPath;
+import co.quchu.quchu.utils.AudioUtils;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.PathEvaluator;
 import co.quchu.quchu.utils.PathPoint;
@@ -317,6 +318,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 notifyAdapters(position, true);
                 mAddFavoriteRunning = false;
                 //Toast.makeText(getActivity(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
+                AudioUtils.playAudio(getActivity(),R.raw.audio28);
             }
 
             @Override
