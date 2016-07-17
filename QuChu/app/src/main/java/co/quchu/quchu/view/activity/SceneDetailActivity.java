@@ -128,35 +128,13 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
 
     public void getData() {
 
-        mLocationClient = new AMapLocationClient(getApplicationContext());
-        mLocationClient.setLocationListener(new AMapLocationListener() {
+       AppContext.initLocation();
+        rv.postDelayed(new Runnable() {
             @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        SPUtils.setLatitude(aMapLocation.getLatitude());
-                        SPUtils.setLongitude(aMapLocation.getLongitude());
-                        SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_CITY, aMapLocation.getCity());
-                        SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_PROVINCE, aMapLocation.getProvince());
-                    }
-                }
+            public void run() {
                 getData(true, false);
-                mLocationClient.stopLocation();
-                mLocationClient.unRegisterLocationListener(this);
-                mLocationClient.onDestroy();
-                mLocationClient = null;
             }
-        });
-
-        mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setHttpTimeOut(3000);
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        mLocationOption.setNeedAddress(true);
-        mLocationOption.setOnceLocation(true);
-        mLocationClient.setLocationOption(mLocationOption);
-        mLocationClient.startLocation();
-
+        },3000);
     }
 
 
@@ -328,7 +306,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     public void onRefresh() {
         if (NetUtil.isNetworkConnected(getApplicationContext())) {
-            getData(true, false);
+            getData();
         } else {
             Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
             mSwipeRefreshLayout.setRefreshing(false);
