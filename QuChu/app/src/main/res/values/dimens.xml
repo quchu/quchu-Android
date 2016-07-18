@@ -16,6 +16,8 @@
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_10">10sp</dimen>
 
+    <dimen name="recommend_page_indicator_text_size">20sp</dimen>
+
     <dimen name="quchu_detail_addtionalinfo_icon_size">20dp</dimen>
     <dimen name="visited_users_avatar_size">24dp</dimen>
     <dimen name="comment_users_avatar_size">36dp</dimen>

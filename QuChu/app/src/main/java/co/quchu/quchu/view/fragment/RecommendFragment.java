@@ -610,7 +610,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             public void onAnimationEnd(Animator animation) {
 
                 mNewFavoriteScenes +=1;
-                if (currentIndex!=1){
+                if (currentIndex==1){
                     tvAddedScene.setVisibility(View.VISIBLE);
                 }
                 tvAddedScene.setText(String.valueOf(mNewFavoriteScenes));

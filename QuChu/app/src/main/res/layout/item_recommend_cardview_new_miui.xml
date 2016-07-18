@@ -55,7 +55,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1.5">
 
 
             <TextView
@@ -78,9 +78,10 @@
                 android:paddingRight="@dimen/half_margin"
                 android:gravity="center"
                 style="@style/TextView.H2"
-                android:textSize="@dimen/standard_text_size_h4"
-
+                android:textColor="@color/standard_color_h3_dark"
+                android:textSize="@dimen/standard_text_size_h3"
                 android:maxLines="2"
+                android:lineSpacingExtra="4sp"
                 />
 
 
@@ -107,8 +108,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_lineframe_black_thin"
                     android:paddingBottom="2dp"
-                    android:paddingLeft="@dimen/half_margin"
-                    android:paddingRight="@dimen/half_margin"
+                    android:paddingLeft="@dimen/base_margin"
+                    android:paddingRight="@dimen/base_margin"
                     android:paddingTop="2dp"
                     android:text="标签1"
                     android:textColor="@color/standard_color_h3_dark"
@@ -121,8 +122,8 @@
                     android:layout_marginLeft="@dimen/half_margin"
                     android:background="@drawable/shape_lineframe_black_thin"
                     android:paddingBottom="2dp"
-                    android:paddingLeft="@dimen/half_margin"
-                    android:paddingRight="@dimen/half_margin"
+                    android:paddingLeft="@dimen/base_margin"
+                    android:paddingRight="@dimen/base_margin"
                     android:paddingTop="2dp"
                     android:textColor="@color/standard_color_h3_dark"
                     android:textSize="@dimen/standard_text_size_h4"
@@ -135,8 +136,8 @@
                     android:layout_marginLeft="@dimen/half_margin"
                     android:background="@drawable/shape_lineframe_black_thin"
                     android:paddingBottom="2dp"
-                    android:paddingLeft="@dimen/half_margin"
-                    android:paddingRight="@dimen/half_margin"
+                    android:paddingLeft="@dimen/base_margin"
+                    android:paddingRight="@dimen/base_margin"
                     android:paddingTop="2dp"
                     android:textColor="@color/standard_color_h3_dark"
                     android:textSize="@dimen/standard_text_size_h4"

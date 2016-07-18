@@ -56,7 +56,7 @@
                 android:paddingRight="@dimen/base_margin"
                 android:paddingTop="4dp"
                 android:text="标签1"
-                android:textColor="@color/standard_color_h1_dark"
+                android:textColor="@color/standard_color_h3_dark"
                 android:textSize="@dimen/standard_text_size_h3" />
 
             <TextView
@@ -69,7 +69,7 @@
                 android:paddingLeft="@dimen/base_margin"
                 android:paddingRight="@dimen/base_margin"
                 android:paddingTop="4dp"
-                android:textColor="@color/standard_color_h1_dark"
+                android:textColor="@color/standard_color_h3_dark"
                 android:textSize="@dimen/standard_text_size_h3"
                 android:visibility="gone" />
 
@@ -83,7 +83,7 @@
                 android:paddingLeft="@dimen/base_margin"
                 android:paddingRight="@dimen/base_margin"
                 android:paddingTop="4dp"
-                android:textColor="@color/standard_color_h1_dark"
+                android:textColor="@color/standard_color_h3_dark"
                 android:textSize="@dimen/standard_text_size_h3"
                 android:visibility="gone" />
 
@@ -99,6 +99,8 @@
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
             android:layout_marginTop="@dimen/base_margin"
+            android:lineSpacingExtra="4sp"
+            android:textColor="@color/standard_color_h3_dark"
             android:gravity="center" />
     </RelativeLayout>
 </LinearLayout>

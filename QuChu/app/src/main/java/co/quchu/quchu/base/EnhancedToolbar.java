@@ -2,6 +2,7 @@ package co.quchu.quchu.base;
 
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
@@ -110,7 +111,12 @@ public class EnhancedToolbar extends Toolbar {
     }
 
     public TextView getTitleTv() {
-        return null == findViewById(R.id.toolbar_tv_title) ? addTitleTv() : (TextView) findViewById(getActionViewId(TYPE_TITLE_TV));
+
+        TextView v = null == findViewById(R.id.toolbar_tv_title) ? addTitleTv() : (TextView) findViewById(getActionViewId(TYPE_TITLE_TV));
+        if (null!=v){
+            v.setTypeface(null, Typeface.BOLD);
+        }
+        return v;
     }
 
 
