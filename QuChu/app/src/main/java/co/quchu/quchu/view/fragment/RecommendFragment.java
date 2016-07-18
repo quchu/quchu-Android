@@ -93,6 +93,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     View rlNodata;
     @Bind(R.id.tvAddedScene)
     TextView tvAddedScene;
+    @Bind(R.id.tvEmptyView)
+    TextView tvEmptyView;
 
     int currentIndex = 0;
 
@@ -597,8 +599,11 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
             @Override
             public void onAnimationEnd(Animator animation) {
+
                 mNewFavoriteScenes +=1;
-                tvAddedScene.setVisibility(View.VISIBLE);
+                if (currentIndex!=1){
+                    tvAddedScene.setVisibility(View.VISIBLE);
+                }
                 tvAddedScene.setText(String.valueOf(mNewFavoriteScenes));
             }
 
@@ -623,8 +628,10 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     private void resetIndicators() {
         rlNodata.setVisibility(View.GONE);
         if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0 && currentIndex==1) {
+            tvEmptyView.setText("你已经收藏了全部场景");
             rlNodata.setVisibility(View.VISIBLE);
         } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0 && currentIndex==0) {
+            tvEmptyView.setText("你还没有收藏场景");
             rlNodata.setVisibility(View.VISIBLE);
 
         }

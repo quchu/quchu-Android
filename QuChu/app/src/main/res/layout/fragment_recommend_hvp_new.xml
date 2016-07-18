@@ -137,6 +137,7 @@
                 android:src="@mipmap/ic_scene_placeholder"
                 />
             <TextView
+                android:id="@+id/tvEmptyView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

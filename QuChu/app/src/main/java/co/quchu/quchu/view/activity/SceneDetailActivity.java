@@ -76,6 +76,10 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
 
+    private boolean mFavoriteRunning = false;
+    private boolean mActivityStop = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,8 +131,8 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
     }
 
     public void getData() {
-
-       AppContext.initLocation();
+        DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        AppContext.initLocation();
         rv.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -201,6 +205,9 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
             mPageNo += 1;
         }
 
+        if (mActivityStop){
+            return;
+        }
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
 
         ScenePresenter.getSceneDetail(getApplicationContext(), sceneId, SPUtils.getCityId(), mPageNo, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()), placeIds, new CommonListener<SceneDetailModel>() {
@@ -264,17 +271,17 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
         });
     }
 
-    private boolean mFavoriteRunning = false;
-
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        mActivityStop = false;
     }
 
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
+        mActivityStop = true;
         super.onStop();
     }
 

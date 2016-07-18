@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class RatingQuchuDialog extends DialogFragment {
     @Bind(R.id.tvTips)
     TextView tvTips;
     @Bind(R.id.prbRating)
-    ProperRatingBar prbRating;
+    RatingBar prbRating;
     @Bind(R.id.tvTagsLabel)
     TextView tvTagsLabel;
     @Bind(R.id.rvTags)
@@ -123,7 +124,7 @@ public class RatingQuchuDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onFinishPicking(mDataset, prbRating.getRating());
+                    mListener.onFinishPicking(mDataset, (int) prbRating.getRating());
                 }
                 dismiss();
             }
