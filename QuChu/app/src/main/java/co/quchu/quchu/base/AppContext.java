@@ -47,6 +47,7 @@ public class AppContext extends Application {
     public static boolean dCardListNeedUpdate = false;
 
     public static String token = "";
+    public static long mLastLocatingTimeStamp = -1;
 
 
     private RefWatcher refWatcher;
@@ -179,6 +180,7 @@ public class AppContext extends Application {
             @Override
             public void onLocationChanged(AMapLocation amapLocation) {
                 super.onLocationChanged(amapLocation);
+                mLastLocatingTimeStamp = System.currentTimeMillis();
             }
         };
         //设置定位回调监听

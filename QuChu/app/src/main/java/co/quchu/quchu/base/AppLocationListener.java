@@ -51,6 +51,7 @@ public class AppLocationListener implements AMapLocationListener {
                 SPUtils.putValueToSPMap(AppContext.mContext, AppKey.LOCATION_PROVINCE, amapLocation.getProvince());
                 EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOCATION_UPDATED));
 
+
                 //Toast.makeText(AppContext.mContext,"location Success, " + amapLocation.getCity() + " " + amapLocation.getProvince(),Toast.LENGTH_LONG).show();
                 AppContext.stopLocation();
 

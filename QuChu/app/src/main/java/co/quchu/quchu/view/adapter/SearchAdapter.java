@@ -83,10 +83,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             final RecommendModel model = resultList.get(position);
             holder.tvName.setText(model.getName());
             if (TextUtils.isEmpty(model.getPrice())) {
-                ((ResultHolder) holde).searchPrice.setVisibility(View.INVISIBLE);
+                holder.searchPrice.setText("¥- 元｜");
             } else {
-                holder.searchPrice.setVisibility(View.VISIBLE);
-                holder.searchPrice.setText(model.getPrice());
+                holder.searchPrice.setText("¥" + model.getPrice() + "元｜");
             }
 
             List<String> strTags = new ArrayList<>();

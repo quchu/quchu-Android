@@ -132,13 +132,18 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
 
     public void getData() {
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
-        AppContext.initLocation();
+        int delay = 0;
+        if (Math.abs(AppContext.mLastLocatingTimeStamp - System.currentTimeMillis())>=(60000*5)){
+            AppContext.initLocation();
+            delay += 3000;
+        }
+
         rv.postDelayed(new Runnable() {
             @Override
             public void run() {
                 getData(true, false);
             }
-        },3000);
+        },delay);
     }
 
 

@@ -57,8 +57,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:layout_marginLeft="@dimen/half_margin"
-                    android:layout_marginRight="@dimen/half_margin"
+                    android:layout_marginLeft="@dimen/base_margin"
+                    android:layout_marginRight="@dimen/base_margin"
                     android:paddingTop="@dimen/quarter_margin"
                     android:textColor="@color/standard_color_h2_dark"
                     android:textSize="@dimen/standard_text_size_h5" />

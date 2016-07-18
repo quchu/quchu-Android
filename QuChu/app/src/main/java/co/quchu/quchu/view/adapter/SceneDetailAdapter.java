@@ -98,7 +98,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mSceneInfoModel.getSceneCover()));
                 ((InfoViewHolder) holder).desc.setText(mSceneInfoModel.getSceneName());
-                ((InfoViewHolder) holder).tvDescription.setText(mSceneInfoModel.getIntro());
+                ((InfoViewHolder) holder).tvDescription.setText(mSceneInfoModel.getSceneContent());
                 String[] tags = mSceneInfoModel.getSceneTitle();
                 ((InfoViewHolder) holder).recommendTag1.setVisibility(View.GONE);
                 ((InfoViewHolder) holder).recommendTag2.setVisibility(View.GONE);
