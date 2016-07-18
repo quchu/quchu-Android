@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/half_margin"
         android:textStyle="bold"
+        android:visibility="gone"
         android:layout_below="@+id/sdvCover"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"

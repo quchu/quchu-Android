@@ -29,6 +29,7 @@
         android:layout_marginRight="@dimen/base_margin"
         android:layout_marginTop="@dimen/half_margin"
         android:text="title"
+        android:visibility="gone"
         android:textStyle="bold" />
 
     <TextView
@@ -40,6 +41,7 @@
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         android:layout_marginTop="@dimen/quarter_margin"
+        android:lineSpacingExtra="4sp"
         android:paddingBottom="@dimen/base_margin"
         android:text="description" />
 </LinearLayout>
