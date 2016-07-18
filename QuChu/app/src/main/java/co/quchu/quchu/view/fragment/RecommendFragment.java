@@ -113,7 +113,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     private int mScreenWidth = -1;
 
     private int mNewFavoriteScenes = 0;
-    
+    private boolean mItemClickable =  true;
 
     @Nullable
     @Override
@@ -148,6 +148,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             @Override
             public void onItemClick(View v,int position) {
 
+                if (!mItemClickable){
+                    return;
+                }
 
 
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -169,6 +172,10 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
             @Override
             public void onItemFavoriteClick(View v,int position) {
+
+                if (!mItemClickable){
+                    return;
+                }
                 addFavorite(v,position);
             }
         });
@@ -329,6 +336,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             return;
         }
         mAddFavoriteRunning = true;
+        mItemClickable = false;
 
         int sid = mAllSceneList.get(position).getSceneId();
         ScenePresenter.addFavoriteScene(getContext(), sid, new CommonListener() {
@@ -346,6 +354,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             public void errorListener(VolleyError error, String exception, String msg) {
                 //Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
                 mAddFavoriteRunning = false;
+                mItemClickable = true;
             }
         });
     }
@@ -605,11 +614,12 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                     tvAddedScene.setVisibility(View.VISIBLE);
                 }
                 tvAddedScene.setText(String.valueOf(mNewFavoriteScenes));
+                mItemClickable = true;
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-
+                mItemClickable = true;
             }
 
             @Override
