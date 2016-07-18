@@ -176,4 +176,11 @@
         <item name="android:minHeight">20dip</item>
         <item name="android:maxHeight">20dip</item>
     </style>
+
+
+    <style name="CustomProgressBarLarge" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@mipmap/ic_fenshu_big</item>
+        <item name="android:minHeight">35dip</item>
+        <item name="android:maxHeight">35dip</item>
+    </style>
 </resources>

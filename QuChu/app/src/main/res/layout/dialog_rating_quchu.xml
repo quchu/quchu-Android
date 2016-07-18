@@ -37,7 +37,7 @@
         android:max="5"
         android:stepSize="0.5"
         android:rating="3"
-        style="@style/CustomProgressBar"
+        style="@style/CustomProgressBarLarge"
         android:id="@+id/prbRating"
         android:layout_above="@+id/tvTagsLabel"
         android:layout_centerHorizontal="true"/>
