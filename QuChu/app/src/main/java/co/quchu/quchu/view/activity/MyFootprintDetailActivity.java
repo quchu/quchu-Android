@@ -317,6 +317,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                     item.isP = false;
                     item.supportCount--;
                 } else {
+                    AudioUtils.playAudio(MyFootprintDetailActivity.this,R.raw.audio6);
                     item.isP = true;
                     item.supportCount++;
                 }
@@ -372,7 +373,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                         public void onSuccess(PostCardModel modeffl) {
                             setSupportCount(entity.cardId);
                             v.setEnabled(true);
-                            AudioUtils.playAudio(MyFootprintDetailActivity.this,R.raw.audio6);
+
 
                         }
 
