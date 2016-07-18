@@ -89,6 +89,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     View ivIndicator;
     @Bind(R.id.rbFavorites)
     RadioButton rbFavorites;
+    @Bind(R.id.rbAll)
+    RadioButton rbAllScenes;
     @Bind(R.id.rlNodata)
     View rlNodata;
     @Bind(R.id.tvAddedScene)
@@ -205,6 +207,9 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 switch (checkedId) {
                     case R.id.rbFavorites:
 
+                        rbAllScenes.setTypeface(null,Typeface.BOLD);
+                        rbFavorites.setTypeface(null,Typeface.NORMAL);
+
                         mNewFavoriteScenes = 0;
                         tvAddedScene.setVisibility(View.INVISIBLE);
                         
@@ -266,6 +271,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                         break;
                     case R.id.rbAll:
 
+                        rbAllScenes.setTypeface(null,Typeface.NORMAL);
+                        rbFavorites.setTypeface(null,Typeface.BOLD);
                         currentIndex= 1;
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();

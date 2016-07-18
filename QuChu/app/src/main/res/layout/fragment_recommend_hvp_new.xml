@@ -30,6 +30,7 @@
             android:checked="true"
             android:gravity="center"
             android:text="常用场景"
+            android:textStyle="bold"
             android:textColor="@color/color_selector_recommend_b_n_ltg" />
 
         <RadioButton

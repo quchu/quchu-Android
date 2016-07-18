@@ -14,7 +14,7 @@
         style="@style/TextView.H3"
         android:gravity="center"
         android:visibility="gone"
-        android:text="@string/promote_no_visitor"
+        android:text="@string/no_footprint"
         />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFootPrint"
