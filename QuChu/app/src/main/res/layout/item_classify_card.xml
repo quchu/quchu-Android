@@ -93,7 +93,7 @@
         style="@style/TextView.H2"
         android:layout_toRightOf="@id/sdvAvatar"
         android:layout_marginLeft="@dimen/quarter_margin"
-        android:layout_alignTop="@+id/sdvAvatar"
+        android:layout_alignBottom="@+id/sdvAvatar"
         />
 </RelativeLayout>
 
