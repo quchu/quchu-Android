@@ -26,6 +26,7 @@
 
 
     <string name="app_exit_text">再按一次退出程序</string>
+    <string name="about_us">关于我们</string>
     <string name="about_us_text">没人想要把时间浪费在千篇一律的内容上\n
         就像没人想要活得单调而雷同\n
         你的偏爱\n
@@ -186,10 +187,10 @@
     <string name="qu_recommend">趣推荐</string>
     <string name="qu_discover">趣发现</string>
     <string name="mine">我的</string>
-    <string name="add_to_favorite_success">添加场景成功</string>
-    <string name="add_to_favorite_fail">添加场景失败</string>
-    <string name="del_to_favorite_success">删除场景成功</string>
-    <string name="del_to_favorite_fail">删除场景失败</string>
+    <string name="add_to_favorite_success">设为常用成功</string>
+    <string name="add_to_favorite_fail">设为常用失败</string>
+    <string name="del_to_favorite_success">移除常用成功</string>
+    <string name="del_to_favorite_fail">移除常用失败</string>
 
 
     <string name="add_to_favorite_article_success">添加文章成功</string>

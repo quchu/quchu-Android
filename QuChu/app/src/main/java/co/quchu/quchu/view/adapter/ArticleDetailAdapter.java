@@ -33,6 +33,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public static final int TYPE_BANNER = 0x001;
     public static final int TYPE_NORMAL = 0x002;
+    public static final int TYPE_PAGE_END = 0x003;
 
 
     public ArticleDetailAdapter(Context mContext, List<SimplePlaceModel> mDataSet, SimpleArticleModel mSimpleArticleModel,CommonItemClickListener listener) {
@@ -43,12 +44,22 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     }
 
+
+    private boolean mShowingNoData = false;
+
+    public void showPageEnd(boolean bl){
+        mShowingNoData = bl;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return TYPE_BANNER;
-        } else {
+        }else if(position>0 && position<(mDataSet.size()+1)){
             return TYPE_NORMAL;
+        }else{
+            return TYPE_PAGE_END;
         }
     }
 
@@ -60,8 +71,10 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             }else{
                 return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_quchu_detail_blank, parent, false));
             }
-        } else {
+        } else if(viewType == TYPE_NORMAL) {
             return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
+        } else {
+            return new PageEndViewHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_page_end, parent, false));
         }
     }
 
@@ -94,7 +107,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return null != mDataSet ? mDataSet.size() + 1 : 0;
+        return mDataSet == null ? 0 : mDataSet.size()+1+(mShowingNoData?1:0);
     }
 
     public class BannerViewHolder extends RecyclerView.ViewHolder {

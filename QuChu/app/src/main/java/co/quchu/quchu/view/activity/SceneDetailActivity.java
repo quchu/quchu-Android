@@ -92,7 +92,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
 
 
         getEnhancedToolbar().getTitleTv().setText(name);
-        getEnhancedToolbar().getRightTv().setText(isFavorite ? "取消收藏" : "收藏");
+        getEnhancedToolbar().getRightTv().setText(isFavorite ? "移除" : "设为常用");
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
@@ -162,7 +162,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                 public void successListener(Object response) {
                     mFavoriteRunning = false;
                     isFavorite = false;
-                    getEnhancedToolbar().getRightTv().setText("收藏");
+                    getEnhancedToolbar().getRightTv().setText("设为常用");
                     Toast.makeText(getApplicationContext(), R.string.del_to_favorite_success, Toast.LENGTH_SHORT).show();
                 }
 
@@ -178,7 +178,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                 public void successListener(Object response) {
                     mFavoriteRunning = false;
                     isFavorite = true;
-                    getEnhancedToolbar().getRightTv().setText("取消收藏");
+                    getEnhancedToolbar().getRightTv().setText("移除");
                     Toast.makeText(getApplicationContext(), R.string.add_to_favorite_success, Toast.LENGTH_SHORT).show();
                 }
 

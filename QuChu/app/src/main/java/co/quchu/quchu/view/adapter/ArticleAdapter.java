@@ -33,42 +33,50 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private Context mContext;
     private List<ArticleModel> mDataSet;
-    private List<ImageModel> mBanner = new ArrayList<>();
+    private List<ArticleBannerModel> mBanner;
 
     private CommonItemClickListener mListener;
 
     public static final int TYPE_BANNER = 0x001;
     public static final int TYPE_NORMAL = 0x002;
+    public static final int TYPE_PAGE_END = 0x003;
 
     public ArticleAdapter(Context context, List<ArticleModel> arrayList,List<ArticleBannerModel> articleBannerModels) {
         this.mContext = context;
         this.mDataSet = arrayList;
-        if (null!=articleBannerModels){
-            mBanner.clear();
-            for (int i = 0; i < articleBannerModels.size(); i++) {
-                ImageModel imageModel = new ImageModel();
-                imageModel.setPath(articleBannerModels.get(i).getImageUrl());
-                mBanner.add(imageModel);
-            }
-        }
+        this.mBanner = articleBannerModels;
+    }
 
+    private boolean mShowingNoData = false;
+
+    public void showPageEnd(boolean bl){
+        mShowingNoData = bl;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position==0){
             return TYPE_BANNER;
-        }else{
+        }else if(position>0 && position<(mDataSet.size()+1)){
             return TYPE_NORMAL;
+        }else{
+            return TYPE_PAGE_END;
         }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_BANNER){
-            return new BannerHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_banner, parent, false));
-        }else {
+            if (null==mDataSet&&mDataSet.size()==0){
+                return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_quchu_detail_blank, parent, false));
+            }else{
+                return new BannerHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_banner, parent, false));
+            }
+        }else if(viewType == TYPE_NORMAL) {
             return new ArticleHolder(LayoutInflater.from(mContext).inflate(R.layout.item_classify_card, parent, false));
+        }else {
+            return new PageEndViewHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_page_end, parent, false));
         }
     }
 
@@ -79,7 +87,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        if (position>0){
+        if (holder instanceof ArticleHolder){
             position-=1;
             ((ArticleHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getImageUrl() + ""));
             ((ArticleHolder) holder).tvTitle.setText(mDataSet.get(position).getArticleName());
@@ -88,10 +96,21 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((ArticleHolder) holder).tvFavorite.setText(mDataSet.get(position).getFavoriteCount());
             ((ArticleHolder) holder).sdvAvatar.setImageURI(Uri.parse(mDataSet.get(position).getUserUrl()));
             ((ArticleHolder) holder).tvUserName.setText(mDataSet.get(position).getUserName());
-        }else {
+        }else if(holder instanceof BannerHolder) {
             if (mBanner.size()>0){
+
+                List<ImageModel> mDataImageModel = new ArrayList<>();
+                if (null!=mBanner){
+                    mDataImageModel.clear();
+                    for (int i = 0; i < mBanner.size(); i++) {
+                        ImageModel imageModel = new ImageModel();
+                        imageModel.setPath(mBanner.get(i).getImageUrl());
+                        mDataImageModel.add(imageModel);
+                    }
+                }
+
                 ((BannerHolder) holder).siv.setIndicators(mBanner.size());
-                ((BannerHolder) holder).viewPager.setAdapter(new GalleryAdapter(mBanner));
+                ((BannerHolder) holder).viewPager.setAdapter(new GalleryAdapter(mDataImageModel));
                 ((BannerHolder) holder).viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
@@ -115,7 +134,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mDataSet == null ? 0 : mDataSet.size()+1;
+        return mDataSet == null ? 0 : mDataSet.size()+1+(mShowingNoData?1:0);
 
     }
 

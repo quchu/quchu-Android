@@ -58,7 +58,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
     private ArticleAdapter mAdapter;
     private int mMaxPageNo = -1;
     private int mPageNo = 1;
-    private EndlessRecyclerOnScrollListener mListenr;
+    private EndlessRecyclerOnScrollListener mListener;
     public boolean mLoadMoreRunning = false;
 
 
@@ -74,13 +74,13 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
         refreshLayout.setOnRefreshListener(this);
-        mListenr = new EndlessRecyclerOnScrollListener(recyclerView.getLayoutManager()) {
+        mListener = new EndlessRecyclerOnScrollListener(recyclerView.getLayoutManager()) {
             @Override
             public void onLoadMore(int current_page) {
-                LoadMore();
+                loadMore();
             }
         };
-        recyclerView.addOnScrollListener(mListenr);
+        recyclerView.addOnScrollListener(mListener);
 
 
         if (!NetUtil.isNetworkConnected(getActivity()) && mAdapter == null) {
@@ -100,14 +100,14 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
 
 
-    public void LoadMore() {
+    public void loadMore() {
         if (mLoadMoreRunning) {
             Toast.makeText(getActivity(), R.string.process_running_please_wait, Toast.LENGTH_SHORT).show();
             return;
         }
         mPageNo += 1;
         if (mMaxPageNo != -1 && mMaxPageNo <= mPageNo) {
-            Toast.makeText(getActivity(), R.string.no_more_data, Toast.LENGTH_SHORT).show();
+            mAdapter.showPageEnd(true);
             return;
         }
         DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
@@ -118,13 +118,13 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
                 articleModels.addAll(response.getArticleList().getResult());
                 mAdapter.notifyDataSetChanged();
                 DialogUtil.dismissProgessDirectly();
-                mListenr.loadingComplete();
+                mListener.loadingComplete();
             }
 
             @Override
             public void errorListener(VolleyError error, String exception, String msg) {
                 DialogUtil.dismissProgessDirectly();
-                mListenr.loadingComplete();
+                mListener.loadingComplete();
             }
         });
 
@@ -141,6 +141,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
             public void successListener(final ArticleWithBannerModel response) {
+                mAdapter.showPageEnd(false);
                 if (firstLoad) {
                     DialogUtil.dismissProgessDirectly();
                 }
@@ -148,6 +149,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
                     return;
                 }
                 mMaxPageNo = response.getArticleList().getPageCount();
+                mPageNo = 1;
                 recyclerView.setVisibility(View.VISIBLE);
                 errorView.hideView();
                 refreshLayout.setRefreshing(false);

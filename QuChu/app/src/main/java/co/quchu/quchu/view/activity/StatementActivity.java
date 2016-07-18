@@ -47,7 +47,7 @@ public class StatementActivity extends BaseActivity {
         //toolbar.getTitleTv().setText(getIntent().getStringExtra(REQUEST_KEY_TITLE));
         textView.setText(getIntent().getStringExtra(REQUEST_KEY_CONTENT));
         getEnhancedToolbar().getRightTv().setText(" ");
-        getEnhancedToolbar().getTitleTv().setText("");
+        getEnhancedToolbar().getTitleTv().setText(R.string.about_us);
         getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
