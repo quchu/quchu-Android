@@ -37,12 +37,22 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public static final int TYPE_ARTICLE = 0x003;
     public static final int TYPE_PLACE_LIST = 0x004;
     public static final int TYPE_EMPTY = 0x005;
+    public static final int TYPE_PAGE_END = 0x006;
+
 
     private List<DetailModel> mData;
     private List<SceneHeaderModel> mBestPlace;
     private SimpleArticleModel mArticleModel;
     private SceneInfoModel mSceneInfoModel;
 
+
+
+    private boolean mShowingNoData = false;
+
+    public void showPageEnd(boolean bl){
+        mShowingNoData = bl;
+        notifyDataSetChanged();
+    }
 
     public SceneDetailAdapter(Context mContext, List<DetailModel> pData, List<SceneHeaderModel> pDataBanner, SimpleArticleModel articleModel, SceneInfoModel sceneInfo, OnSceneItemClickListener listener) {
         this.mContext = mContext;
@@ -66,8 +76,10 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 return TYPE_RECOMMENDED;
             }
-        } else {
+        } else if (position> getRecommendedListSize()+1 && position< getRecommendedListSize()+2){
             return TYPE_PLACE_LIST;
+        } else{
+            return TYPE_PAGE_END;
         }
     }
 
@@ -83,6 +95,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
             case TYPE_PLACE_LIST:
                 return new PlaceViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_scene_detail_recommeded, parent, false));
+            case TYPE_PAGE_END:
+                return new PageEndViewHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_page_end, parent, false));
             default:
                 return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_quchu_detail_blank, parent, false));
         }
@@ -236,7 +250,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         int article = 1;
         int placeSize = getPlaceListSize();
 
-        return getRecommendedListSize() + intro + article + placeSize;
+        return getRecommendedListSize() + intro + article + placeSize +(mShowingNoData?1:0);
     }
 
     public class InfoViewHolder extends RecyclerView.ViewHolder {

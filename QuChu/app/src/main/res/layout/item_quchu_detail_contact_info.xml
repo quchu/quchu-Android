@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:drawableLeft="@mipmap/ic_location"
+            android:drawableLeft="@mipmap/ic_zuobiao"
             android:drawablePadding="8dp"
             android:ellipsize="marquee"
             android:focusable="true"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:drawableLeft="@mipmap/ic_call"
+            android:drawableLeft="@mipmap/ic_dianhua"
             android:drawablePadding="8dp" />
 
 
@@ -86,7 +86,7 @@
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_marginRight="@dimen/half_margin"
         android:gravity="center_vertical"
-        android:drawableLeft="@mipmap/ic_time"
+        android:drawableLeft="@mipmap/ic_shijian"
         android:drawablePadding="8dp" />
 
 
@@ -101,7 +101,7 @@
         android:layout_height="@dimen/standard_h2_height"
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_marginRight="@dimen/half_margin"
-        android:drawableLeft="@mipmap/ic_rmb_symbol"
+        android:drawableLeft="@mipmap/ic_money"
         android:drawablePadding="8dp"/>
 
     <View style="@style/HorizontalLine" />

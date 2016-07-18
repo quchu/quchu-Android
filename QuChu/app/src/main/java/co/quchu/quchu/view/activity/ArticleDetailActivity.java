@@ -116,7 +116,7 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
         }
         mPageNo += 1;
         if (mMaxPageNo != -1 && mMaxPageNo <= mPageNo) {
-            Toast.makeText(ArticleDetailActivity.this, R.string.no_more_data, Toast.LENGTH_SHORT).show();
+            mAdapter.showPageEnd(true);
             return;
         }
         DialogUtil.showProgess(ArticleDetailActivity.this, R.string.loading_dialog_text);
@@ -150,6 +150,9 @@ public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshL
             public void successListener(final ArticleDetailModel response) {
                 if (firstLoad){
                     DialogUtil.dismissProgessDirectly();
+                }
+                if (null!=mAdapter){
+                    mAdapter.showPageEnd(false);
                 }
                 mMaxPageNo = response.getPlaceList().getPageCount();
                 mArticleDetailModel = response;

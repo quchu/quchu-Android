@@ -70,6 +70,15 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         ButterKnife.bind(this, view);
 
         mAdapter = new ArticleAdapter(getActivity(), articleModels, articleBanner);
+        mAdapter.setOnItemClickListener(new CommonItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                String articleId = articleModels.get(position).getArticleId();
+                String articleTitle = articleModels.get(position).getArticleName();
+                ArticleDetailActivity.enterActivity(getActivity(), articleId, articleTitle);
+            }
+        });
+
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
@@ -141,7 +150,9 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         ArticlePresenter.getArticles(getActivity(), SPUtils.getCityId(), 1, new CommonListener<ArticleWithBannerModel>() {
             @Override
             public void successListener(final ArticleWithBannerModel response) {
-                mAdapter.showPageEnd(false);
+                if (null!=mAdapter){
+                    mAdapter.showPageEnd(false);
+                }
                 if (firstLoad) {
                     DialogUtil.dismissProgessDirectly();
                 }
@@ -160,14 +171,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
                 articleBanner.clear();
                 articleBanner.addAll(response.getArticleTitleList());
                 recyclerView.setAdapter(mAdapter);
-                mAdapter.setOnItemClickListener(new CommonItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        String articleId = response.getArticleList().getResult().get(position).getArticleId();
-                        String articleTitle = response.getArticleList().getResult().get(position).getArticleName();
-                        ArticleDetailActivity.enterActivity(getActivity(), articleId, articleTitle);
-                    }
-                });
+
             }
 
             @Override

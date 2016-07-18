@@ -202,7 +202,7 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
         }
 
         if (mMaxPageNo != -1 && mPageNo >= mMaxPageNo && loadMore) {
-            Toast.makeText(getApplicationContext(), R.string.no_more_data, Toast.LENGTH_SHORT).show();
+            mAdapter.showPageEnd(true);
             return;
         }
 
@@ -225,6 +225,9 @@ public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLay
                     mRecommendedList.addAll(response.getBestList());
                     placeIds = response.getPlaceIds();
 
+                }
+                if (null!=mAdapter && !loadMore){
+                    mAdapter.showPageEnd(false);
                 }
                 mSceneList.addAll(response.getPlaceList().getResult());
 
