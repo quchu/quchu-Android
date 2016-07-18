@@ -39,7 +39,6 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.NearbyPresenter;
-import co.quchu.quchu.utils.AudioUtils;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -392,7 +391,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                 dModel.setIsout(true);
                 getVisitors();
                 getRatingInfo();
-                AudioUtils.playAudio(QuchuDetailsActivity.this,R.raw.audio23);
             }
 
             @Override
@@ -518,7 +516,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                 }
                 if (dModel.isIsf()) {
                     Toast.makeText(QuchuDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
-                    AudioUtils.playAudio(QuchuDetailsActivity.this,R.raw.audio11);
                 } else {
                     Toast.makeText(QuchuDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
                 }

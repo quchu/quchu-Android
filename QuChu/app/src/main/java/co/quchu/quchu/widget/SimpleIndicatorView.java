@@ -39,6 +39,8 @@ public class SimpleIndicatorView extends View {
         mPaintIndicators.setColor(Color.parseColor("#eaeaea"));
         mPaintIndicators.setStyle(Paint.Style.FILL);
         mPaintIndicators.setAntiAlias(true);
+        mPaintIndicatorsHighLight = new Paint(mPaintIndicators);
+        mPaintIndicatorsHighLight.setColor(Color.parseColor("#ffd102"));
     }
 
     int mIndicators = 4;
@@ -48,6 +50,7 @@ public class SimpleIndicatorView extends View {
 
 
     Paint mPaintIndicators;
+    Paint mPaintIndicatorsHighLight;
     public void setIndicators(int indicators){
         mIndicators = indicators;
     }
@@ -107,10 +110,14 @@ public class SimpleIndicatorView extends View {
                 if (singleIndicator){
                     System.out.println(i);
                     if (i==2){
-                        canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicators);
+                        canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicatorsHighLight);
                     }
                 }else{
-                    canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicators);
+                    if (index==mSelectIndex){
+                        canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicatorsHighLight);
+                    }else{
+                        canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicators);
+                    }
                 }
 
 

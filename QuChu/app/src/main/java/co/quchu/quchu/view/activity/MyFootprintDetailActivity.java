@@ -47,7 +47,6 @@ import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.presenter.MyFootprintPresenter;
 import co.quchu.quchu.presenter.PostCardPresenter;
-import co.quchu.quchu.utils.AudioUtils;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.fragment.FootprintDetailFragment;
@@ -317,7 +316,6 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                     item.isP = false;
                     item.supportCount--;
                 } else {
-                    AudioUtils.playAudio(MyFootprintDetailActivity.this,R.raw.audio6);
                     item.isP = true;
                     item.supportCount++;
                 }
@@ -348,7 +346,6 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                                 supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
                                 support.setImageResource(R.mipmap.ic_heart);
                             } else {
-                                AudioUtils.playAudio(MyFootprintDetailActivity.this,R.raw.audio6);
                                 model.setIsp(true);
                                 LogUtils.e("点赞成功");
                                 model.setPraiseNum(model.getPraiseNum() + 1);

@@ -6,6 +6,5 @@
     android:background="@color/standard_color_white"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/base_margin"
     android:paddingTop="@dimen/half_margin"
     android:text="@string/guess_what_you_like" />

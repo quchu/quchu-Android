@@ -530,7 +530,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         strTags.add(tags.get(i).getZh());
                     }
                 }
-                ((NearbyViewHolder) holder).cardView.setBackgroundColor(Color.RED);
 
                 ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
 //                ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex - 1).getAddress());

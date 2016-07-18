@@ -4,7 +4,9 @@
     android:id="@+id/item_classify_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/standard_color_white"
+    android:layout_marginLeft="@dimen/base_margin"
+    android:layout_marginRight="@dimen/base_margin"
+    android:background="@drawable/shape_card_background_ltgray"
     android:orientation="vertical">
 
 
@@ -17,6 +19,11 @@
         fresco:placeholderImage="@mipmap/ic_image_empty"
         fresco:placeholderImageScaleType="center"
         fresco:actualImageScaleType="centerCrop"
+        fresco:roundBottomLeft="false"
+        fresco:roundBottomRight="false"
+        fresco:roundTopLeft="true"
+        fresco:roundTopRight="true"
+        fresco:roundedCornerRadius="@dimen/rounded_radius"
         android:src="@mipmap/ic_launcher"
         fresco:viewAspectRatio="1.7" />
 
