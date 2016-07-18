@@ -236,9 +236,10 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         int id = v.getId();
         if (id == R.id.fab_crop) {
             resultAction();
-        } else if (id == R.id.iv_back) {
-            finish();
         }
+//        else if (id == R.id.iv_back) {
+//            finish();
+//        }
     }
 
     private void resultAction() {

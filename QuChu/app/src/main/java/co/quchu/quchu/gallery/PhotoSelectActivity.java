@@ -218,9 +218,10 @@ public class PhotoSelectActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.iv_back) {
-            finish();
-        } else if (id == R.id.toolbar_tv_right) {
+//        if (id == R.id.iv_back) {
+//            finish();
+//        } else
+        if (id == R.id.toolbar_tv_right) {
             if (mSelectPhotoMap.size() > 0) {
                 ArrayList<PhotoInfo> photoList = new ArrayList<>(mSelectPhotoMap.values());
                 if (!mFunctionConfig.isEditPhoto()) {

@@ -753,8 +753,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.item_card_image_sdv)
-        SimpleDraweeView item_card_image_sdv;
+//        @Bind(R.id.item_card_image_sdv)
+//        SimpleDraweeView item_card_image_sdv;
 
         ImageViewHolder(View view) {
             super(view);
