@@ -76,7 +76,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 return TYPE_RECOMMENDED;
             }
-        } else if (position> getRecommendedListSize()+1 && position< getRecommendedListSize()+2){
+        } else if (position> getRecommendedListSize()+1 && position< getRecommendedListSize()+getPlaceListSize()+2){
             return TYPE_PLACE_LIST;
         } else{
             return TYPE_PAGE_END;
