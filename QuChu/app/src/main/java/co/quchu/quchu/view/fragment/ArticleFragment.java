@@ -38,6 +38,7 @@ import co.quchu.quchu.view.adapter.ArticleAdapter;
 import co.quchu.quchu.view.adapter.CommonItemClickListener;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.ErrorView;
+import co.quchu.quchu.widget.SpacesItemDecoration;
 
 /**
  * ArticleFragment
@@ -81,7 +82,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.addItemDecoration(new ClassifyDecoration(getActivity()));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(20));
         refreshLayout.setOnRefreshListener(this);
         mListener = new EndlessRecyclerOnScrollListener(recyclerView.getLayoutManager()) {
             @Override

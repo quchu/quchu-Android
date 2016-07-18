@@ -68,7 +68,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_BANNER){
-            if (null==mDataSet&&mDataSet.size()==0){
+            if (null==mBanner||mBanner.size()==0){
                 return new QuchuDetailsAdapter.BlankViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_quchu_detail_blank, parent, false));
             }else{
                 return new BannerHolder(LayoutInflater.from(mContext).inflate(R.layout.cp_banner, parent, false));
