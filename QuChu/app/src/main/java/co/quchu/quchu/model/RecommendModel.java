@@ -50,6 +50,24 @@ public class RecommendModel implements Parcelable {
     public boolean isout;  //是否去过
     private String price;
     private String areaCircleName;
+    private double gdLatitude;
+    private double gdLongitude;
+
+    public double getGdLatitude() {
+        return gdLatitude;
+    }
+
+    public void setGdLatitude(double gdLatitude) {
+        this.gdLatitude = gdLatitude;
+    }
+
+    public double getGdLongitude() {
+        return gdLongitude;
+    }
+
+    public void setGdLongitude(double gdLongitude) {
+        this.gdLongitude = gdLongitude;
+    }
 
     public String getAreaCircleName() {
         return areaCircleName;

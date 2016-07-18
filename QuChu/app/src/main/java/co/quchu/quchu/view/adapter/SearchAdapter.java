@@ -102,7 +102,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holder.distance.setVisibility(View.INVISIBLE);
             } else {
                 holder.distance.setVisibility(View.VISIBLE);
-                String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
+                String distance = StringUtils.getDistance(model.getGdLatitude(), model.getGdLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
                 holder.distance.setText(distance);
             }
 

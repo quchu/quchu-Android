@@ -101,7 +101,7 @@
             android:layout_marginTop="@dimen/base_margin"
             android:lineSpacingExtra="4sp"
             android:textColor="@color/standard_color_h3_dark"
-            android:gravity="center" />
+            android:gravity="left" />
     </RelativeLayout>
 </LinearLayout>
 
