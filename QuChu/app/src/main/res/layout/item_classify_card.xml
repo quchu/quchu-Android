@@ -86,9 +86,14 @@
             />
     </RelativeLayout>
 
-    <View
-        android:layout_below="@id/sdvAvatar"
-        style="@style/HorizontalDivider"
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextView.H2"
+        android:layout_toRightOf="@id/sdvAvatar"
+        android:layout_marginLeft="@dimen/quarter_margin"
+        android:layout_alignTop="@+id/sdvAvatar"
         />
 </RelativeLayout>
 

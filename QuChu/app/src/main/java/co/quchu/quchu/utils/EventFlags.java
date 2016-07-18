@@ -34,4 +34,8 @@ public class EventFlags {
     public static final int EVENT_DEVICE_NETWORK_AVAILABLE = 0x600001;
     public static final int EVENT_DEVICE_NETWORK_UNAVAILABLE = 0x600002;
 
+
+
+    public static final int EVENT_LOCATION_CHANGED = 0x700001;
+
 }

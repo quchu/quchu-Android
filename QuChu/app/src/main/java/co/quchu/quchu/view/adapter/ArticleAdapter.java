@@ -87,6 +87,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((ArticleHolder) holder).tvReviews.setText(mDataSet.get(position).getReadCount());
             ((ArticleHolder) holder).tvFavorite.setText(mDataSet.get(position).getFavoriteCount());
             ((ArticleHolder) holder).sdvAvatar.setImageURI(Uri.parse(mDataSet.get(position).getUserUrl()));
+            ((ArticleHolder) holder).tvUserName.setText(mDataSet.get(position).getUserName());
         }else {
             if (mBanner.size()>0){
                 ((BannerHolder) holder).siv.setIndicators(mBanner.size());
@@ -146,6 +147,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView tvFavorite;
         @Bind(R.id.sdvAvatar)
         SimpleDraweeView sdvAvatar;
+        @Bind(R.id.tvUserName)
+        TextView tvUserName;
 
 
 
