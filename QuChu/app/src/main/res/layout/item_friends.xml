@@ -27,7 +27,19 @@
         fresco:roundTopRight="true"
         fresco:roundedCornerRadius="180dp" />
 
-
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/gender"
+        android:layout_width="20dp"
+        android:visibility="gone"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@id/item_firends_icon_sdv"
+        android:layout_alignRight="@id/item_firends_icon_sdv"
+        android:layout_marginBottom="7dp"
+        android:layout_marginRight="7dp"
+        fresco:backgroundImage="@color/standard_color_white"
+        fresco:roundAsCircle="true"
+        fresco:roundingBorderColor="@color/colorBorder"
+        fresco:roundingBorderWidth="2dp" />
     <!--   <TextView
            android:id="@+id/item_firends_address_tv"
            android:layout_width="wrap_content"

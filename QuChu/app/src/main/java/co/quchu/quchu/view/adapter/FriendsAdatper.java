@@ -27,6 +27,7 @@ import co.quchu.quchu.view.activity.UserCenterActivity;
  */
 public class FriendsAdatper extends AdapterBase<FollowUserModel, FriendsAdatper.FriendsViewHolder> {
 
+
     private Context mContext;
     private FriendsItemClickListener clickListener;
     private boolean isInnerClick = true;
@@ -46,6 +47,7 @@ public class FriendsAdatper extends AdapterBase<FollowUserModel, FriendsAdatper.
         FollowUserModel model = data.get(position);
         holder.itemFirendsIconSdv.setImageURI(Uri.parse(model.getPhoto()));
         holder.itemFriendsNameTv.setText(model.getName());
+//        holder.gender.setImageURI(Uri.parse("res:///" + (model.getGender().equals("男") ? R.mipmap.ic_male : R.mipmap.ic_female)));
     }
 
     @Override
@@ -61,6 +63,10 @@ public class FriendsAdatper extends AdapterBase<FollowUserModel, FriendsAdatper.
 
         @Bind(R.id.item_friends_root_rl)
         RelativeLayout itemFriendsRootRl;
+
+//        @Bind(R.id.gender)
+//        SimpleDraweeView gender;
+
         private FriendsItemClickListener clickListener;
 
         public FriendsViewHolder(View itemView, FriendsItemClickListener clickListener) {
@@ -93,6 +99,6 @@ public class FriendsAdatper extends AdapterBase<FollowUserModel, FriendsAdatper.
 
     @Override
     protected String getNullDataHint() {
-        return !isFollowMe?"你还没有粉丝":"你还有没有关注好友哦";
+        return !isFollowMe ? "你还没有粉丝" : "你还有没有关注好友哦";
     }
 }

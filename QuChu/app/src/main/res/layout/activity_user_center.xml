@@ -46,9 +46,10 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignBottom="@id/headImage"
-                    android:layout_alignRight="@id/headImage" fresco:backgroundImage="@color/standard_color_white"
+                    android:layout_alignRight="@id/headImage"
                     android:layout_marginBottom="7dp"
                     android:layout_marginRight="7dp"
+                    fresco:backgroundImage="@color/standard_color_white"
                     fresco:roundAsCircle="true"
                     fresco:roundingBorderColor="@color/colorBorder"
                     fresco:roundingBorderWidth="2dp" />

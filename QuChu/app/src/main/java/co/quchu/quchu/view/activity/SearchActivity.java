@@ -502,6 +502,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 DialogUtil.dismissProgess();
                 Toast.makeText(SearchActivity.this, "没有搜索到内容!", Toast.LENGTH_SHORT).show();
                 mIsLoading = false;
+                resultAdapter.notifyDataSetChanged();
             }
         });
     }

@@ -45,6 +45,8 @@ public class QuFriendsActivity extends BaseActivity {
     SimpleDraweeView headImage;
     @Bind(R.id.whatIs)
     TextView whatIs;
+    @Bind(R.id.gender)
+    SimpleDraweeView gender;
 
 
     @Override
@@ -64,6 +66,7 @@ public class QuFriendsActivity extends BaseActivity {
         bundleFlr.putBoolean(FriendsFollowerFg.BUNDLE_KEY_IS_SUBSCRIBE, false);
 
         headImage.setImageURI(Uri.parse(AppContext.user.getPhoto()));
+        gender.setImageURI(Uri.parse("res:///" + (AppContext.user.getGender().equals("男") ? R.mipmap.ic_male : R.mipmap.ic_female)));
 
         FriendsFollowerFg fragment1 = new FriendsFollowerFg();
         fragment1.setArguments(bundleSub);
