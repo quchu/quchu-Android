@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/rlBanner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height">
+        android:layout_height="wrap_content">
 
         <co.quchu.quchu.widget.WrapContentViewPager
             android:id="@+id/vpGallery"

@@ -138,7 +138,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             @Override
             public boolean onPreDraw() {
 
-                tvAddedScene.setTranslationX(rbFavorites.getWidth()-tvAddedScene.getWidth());
+                tvAddedScene.setTranslationX(rbFavorites.getX()+rbFavorites.getWidth()-(tvAddedScene.getWidth()*2));
                 tvAddedScene.setTranslationY(tvAddedScene.getHeight());
                 rbFavorites.getViewTreeObserver().removeOnPreDrawListener(this);
                 return false;
@@ -586,8 +586,8 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         path.moveTo(x, y);
 
         int cx0 = (int) x>=(mScreenWidth/2)?((int)(mScreenWidth*.8f)):((int)(mScreenWidth*.2f));//random.nextBoolean()? 400:-400;
-        int finalX = (int) (rbFavorites.getX()+rbFavorites.getWidth() - ivIndicator.getWidth());
-        path.curveTo(cx0, 0, finalX, -ivIndicator.getHeight(), finalX, rbFavorites.getY());
+        int finalX = (int) (rbFavorites.getX()+rbFavorites.getWidth() - ivIndicator.getWidth() - tvAddedScene.getWidth());
+        path.curveTo(cx0, 0, finalX, -ivIndicator.getHeight(), finalX, rbFavorites.getY()+tvAddedScene.getHeight());
 
         ivIndicator.setScaleX(1);
         ivIndicator.setScaleY(1);
@@ -597,12 +597,13 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(ivIndicator,"scaleX",1,.3f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(ivIndicator,"scaleY",1,.3f);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(ivIndicator,"alpha",1,0f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(ivIndicator,"alpha",1,.1f);
 
         AnimatorSet animatorSet = new AnimatorSet();
 
         animatorSet.setInterpolator(sDecelerateInterpolator);
-        animatorSet.setDuration(1000);
+        animatorSet.setDuration(800);
+        animatorSet.setStartDelay(600);
         animatorSet.playTogether(anim,scaleX,scaleY,alpha);
         animatorSet.start();
         animatorSet.addListener(new Animator.AnimatorListener() {

@@ -236,9 +236,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((IntroImageViewHolder) holder).siv.setVisibility(View.VISIBLE);
                 ((IntroImageViewHolder) holder).vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                    }
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
                     @Override
                     public void onPageSelected(int position) {
@@ -246,9 +244,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
 
                     @Override
-                    public void onPageScrollStateChanged(int state) {
-
-                    }
+                    public void onPageScrollStateChanged(int state) {}
                 });
             } else {
                 ((IntroImageViewHolder) holder).siv.setVisibility(View.GONE);

@@ -22,7 +22,6 @@ public class PathEvaluator implements TypeEvaluator<PathPoint> {
     @Override
     public PathPoint evaluate(float t, PathPoint startValue, PathPoint endValue) {
         float x, y;
-        System.out.println(String.valueOf(t));
         if (endValue.mOperation == PathPoint.CURVE) {
             float oneMinusT = 1 - t;
             x = oneMinusT * oneMinusT * oneMinusT * startValue.mX +
