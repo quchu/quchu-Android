@@ -195,7 +195,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                     if (!entity.isP) {                            //当前登录用户是否已经点赞
                         support.setImageResource(R.mipmap.ic_fenshu_big_w);
                     } else {
-                        support.setImageResource(R.mipmap.ic_fenshu_big);
+                        support.setImageResource(R.drawable.ic_fenshu_big);
                     }
 
                     if (entity.PlcaeId == 0) {
@@ -271,7 +271,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
         if (!model.isIsp()) {                            //当前登录用户是否已经点赞
             support.setImageResource(R.mipmap.ic_fenshu_big_w);
         } else {
-            support.setImageResource(R.mipmap.ic_fenshu_big);
+            support.setImageResource(R.drawable.ic_fenshu_big);
         }
 
 
@@ -325,7 +325,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
         if (!currentEntity.isP) {                            //当前登录用户是否已经点赞
             support.setImageResource(R.mipmap.ic_fenshu_big_w);
         } else {
-            support.setImageResource(R.mipmap.ic_fenshu_big);
+            support.setImageResource(R.drawable.ic_fenshu_big);
         }
         supportCount.setText(String.valueOf(currentEntity.supportCount));//点赞数目
     }
@@ -350,7 +350,7 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                                 LogUtils.e("点赞成功");
                                 model.setPraiseNum(model.getPraiseNum() + 1);
                                 supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
-                                support.setImageResource(R.mipmap.ic_fenshu_big);
+                                support.setImageResource(R.drawable.ic_fenshu_big);
                             }
 
                             v.setEnabled(true);
