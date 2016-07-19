@@ -193,9 +193,9 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                         edit.setVisibility(View.VISIBLE);
                     }
                     if (!entity.isP) {                            //当前登录用户是否已经点赞
-                        support.setImageResource(R.mipmap.ic_heart);
+                        support.setImageResource(R.mipmap.ic_fenshu_big_w);
                     } else {
-                        support.setImageResource(R.mipmap.ic_heart_yellow);
+                        support.setImageResource(R.mipmap.ic_fenshu_big);
                     }
 
                     if (entity.PlcaeId == 0) {
@@ -269,9 +269,9 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
         }
 
         if (!model.isIsp()) {                            //当前登录用户是否已经点赞
-            support.setImageResource(R.mipmap.ic_heart);
+            support.setImageResource(R.mipmap.ic_fenshu_big_w);
         } else {
-            support.setImageResource(R.mipmap.ic_heart_yellow);
+            support.setImageResource(R.mipmap.ic_fenshu_big);
         }
 
 
@@ -323,9 +323,9 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
         }
         FootprintModel.Entity currentEntity = mEntitys.get(viewPager.getCurrentItem());
         if (!currentEntity.isP) {                            //当前登录用户是否已经点赞
-            support.setImageResource(R.mipmap.ic_heart);
+            support.setImageResource(R.mipmap.ic_fenshu_big_w);
         } else {
-            support.setImageResource(R.mipmap.ic_heart_yellow);
+            support.setImageResource(R.mipmap.ic_fenshu_big);
         }
         supportCount.setText(String.valueOf(currentEntity.supportCount));//点赞数目
     }
@@ -344,13 +344,13 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                                 model.setIsp(false);
                                 model.setPraiseNum(model.getPraiseNum() - 1);
                                 supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
-                                support.setImageResource(R.mipmap.ic_heart);
+                                support.setImageResource(R.mipmap.ic_fenshu_big_w);
                             } else {
                                 model.setIsp(true);
                                 LogUtils.e("点赞成功");
                                 model.setPraiseNum(model.getPraiseNum() + 1);
                                 supportCount.setText(String.valueOf(model.getPraiseNum()));//点赞数目
-                                support.setImageResource(R.mipmap.ic_heart_yellow);
+                                support.setImageResource(R.mipmap.ic_fenshu_big);
                             }
 
                             v.setEnabled(true);

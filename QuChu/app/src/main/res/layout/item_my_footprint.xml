@@ -67,9 +67,9 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/cardViewNone"
         android:layout_below="@id/desc"
-        android:drawableLeft="@drawable/ic_ratingbar_heart"
+        android:drawableLeft="@mipmap/ic_fenshu_big"
         android:gravity="center_vertical"
-        android:textColor="@color/standard_color_red"
+        android:textColor="@color/standard_color_yellow"
         android:textSize="@dimen/word_size_time"
         tools:text="2次" />
 
