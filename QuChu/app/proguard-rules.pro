@@ -30,6 +30,10 @@
     <init>(java.lang.Throwable);
 }
 
+-keepclassmembers class ** {
+    public void setFloating*(**);
+}
+
 ## -----------------------------------------
 ################## leakcanary混淆  ########
 ## -----------------------------------------

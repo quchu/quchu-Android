@@ -71,13 +71,13 @@
             android:id="@+id/ivFrom"
             android:layout_width="@dimen/comment_from_avatar_size"
             android:layout_height="@dimen/comment_from_avatar_size"
-            android:layout_marginRight="@dimen/half_margin"
             android:layout_toLeftOf="@+id/tvFrom"
             />
         <TextView
             android:id="@+id/tvFrom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/half_margin"
             android:layout_alignParentRight="true"
             style="@style/TextView.H3"
             />
