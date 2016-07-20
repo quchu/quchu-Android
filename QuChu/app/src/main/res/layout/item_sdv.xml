@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.drawee.view.SimpleDraweeView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sdv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    card_view:placeholderImage="@mipmap/ic_image_empty"
+    card_view:failureImage="@mipmap/ic_image_empty"
+    card_view:failureImageScaleType="center"
+    card_view:actualImageScaleType="centerCrop"
+    card_view:placeholderImageScaleType="center"/>

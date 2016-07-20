@@ -18,9 +18,15 @@ public class NetUtil {
 	 * @return
 	 */
 	public static boolean isNetworkConnected(Context mContext) {
-		ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo ni = cm.getActiveNetworkInfo();
-		return ni != null && ni.isConnectedOrConnecting();
+		final ConnectivityManager connMgr = (ConnectivityManager) mContext
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		final android.net.NetworkInfo wifi = connMgr
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		final android.net.NetworkInfo mobile = connMgr
+				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+		return wifi.isAvailable() || mobile.isAvailable();
 	}
 	/**
 	 * 获取当前网络类型

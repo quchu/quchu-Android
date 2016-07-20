@@ -116,6 +116,7 @@
         <!-- 搜索 -->
         <activity
             android:name=".view.activity.SearchActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.PlaceMapActivity"
@@ -199,9 +200,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".view.activity.MeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".view.activity.QuchuListSpecifyTagActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -210,6 +208,9 @@
         <activity
             android:name=".view.activity.MyFootprintActivity"
             android:label="我的脚印" />
+        <activity
+            android:name=".view.activity.SceneDetailActivity"
+            android:label="场景详情" />
         <activity
             android:name=".view.activity.MyFootprintDetailActivity"
             android:label="@string/title_activity_my_footprint_detail"
@@ -222,9 +223,6 @@
             android:name=".gallery.PhotoSelectActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".gallery.PhotoPreviewActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".gallery.PhotoEditActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
@@ -232,11 +230,28 @@
             android:name=".view.activity.FavoriteActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".view.activity.ArticleDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.activity.FindPositionListActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.SharePreviewActivity"
             android:screenOrientation="portrait" />
+
+        <receiver
+            android:name="co.quchu.quchu.base.GeTuiReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".base.NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

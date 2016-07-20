@@ -4,15 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,12 +33,16 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
+import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
+import co.quchu.quchu.dialog.MenuSettingDialogFg;
+import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
@@ -44,10 +50,8 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.fragment.ClassifyFragment;
+import co.quchu.quchu.view.fragment.ArticleFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
-import co.quchu.quchu.widget.RecommendTitleGroup;
 
 /**
  * RecommendActivity
@@ -55,54 +59,47 @@ import co.quchu.quchu.widget.RecommendTitleGroup;
  * Date: 2015-12-07
  * 趣处分类、推荐
  */
-public class RecommendActivity extends BaseBehaviorActivity implements View.OnClickListener {
+public class RecommendActivity extends BaseBehaviorActivity {
     @Bind(R.id.recommend_title_location_tv)
     TextView recommendTitleLocationIv;
 
     @Bind(R.id.recommend_title_more_iv)
     ImageView recommendTitleMoreRl;
-    @Bind(R.id.recommend_title_center_rtg)
-    RecommendTitleGroup recommendTitleCenterRtg;
-    @Bind(R.id.search_bar)
-    RelativeLayout rlSearchBar;
-    @Bind(R.id.search_input_et)
-    TextView tvSearch;
+
+    @Bind(R.id.recommend_title_location_rl)
+    View vLeft;
+
     @Bind(R.id.container)
     FrameLayout flContainer;
     @Bind(R.id.ivArrow)
     ImageView ivArrow;
 
-    @Bind(R.id.ivGuideStep1Top)
-    View vGST1;
-    @Bind(R.id.ivGuideStep1Content)
-    View vGSC1;
-    @Bind(R.id.ivGuideStep1Bottom)
-    View vGSB1;
-    @Bind(R.id.ivGuideStep2Top)
-    View vGST2;
-    @Bind(R.id.ivGuideStep2Content)
-    View vGSC2;
-    @Bind(R.id.ivGuideStep2Bottom)
-    View vGSB2;
-    @Bind(R.id.vCover2Left)
-    View vGSC2L;
-    @Bind(R.id.vCover2Right)
-    View vGSC2R;
+    @Bind(R.id.rgTab)
+    RadioGroup rbBottomTab;
+    @Bind(R.id.title)
+    View vTitle;
 
-    @Bind(R.id.vEventReceiver)
-    View vReceiver;
+    @Bind(R.id.tvTitle)
+    TextView tvTitle;
 
+    @Bind(R.id.ivDivider)
+    View vDivider;
+    @Bind(R.id.ivLeft)
+    View ivLeft;
+    @Bind(R.id.tvRight)
+    TextView tvRight;
 
     public long firstTime = 0;
     private ArrayList<CityModel> list = new ArrayList<>();
     public int viewPagerIndex = 0;
     private RecommendFragment recommendFragment;
-    private ClassifyFragment classifyFragment;
+    private ArticleFragment articleFragment;
+    private MeFragment meFragment;
 
-    private int mClickTimes = 0;
+    public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
 
     @Override
-    public ArrayMap<String, String> getUserBehaviorArguments() {
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
         return null;
     }
 
@@ -116,66 +113,35 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
-        if (!SPUtils.getShowRecommendGuide()){
 
-            vGST1.setVisibility(View.VISIBLE);
-            vGSC1.setVisibility(View.VISIBLE);
-            vGSB1.setVisibility(View.VISIBLE);
-
-            vReceiver.setVisibility(View.VISIBLE);
-            vReceiver.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (mClickTimes==0){
-                        vGST1.setVisibility(View.GONE);
-                        vGSC1.setVisibility(View.GONE);
-                        vGSB1.setVisibility(View.GONE);
-                        vGST2.setVisibility(View.VISIBLE);
-                        vGSC2.setVisibility(View.VISIBLE);
-                        vGSB2.setVisibility(View.VISIBLE);
-                        vGSC2L.setVisibility(View.VISIBLE);
-                        vGSC2R.setVisibility(View.VISIBLE);
-
-                        float halfContentSize = (flContainer.getHeight()/2) - (getResources().getDimensionPixelSize(R.dimen.dialog_margin));
-                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) vGSB2.getLayoutParams();
-                        lp.height = (int) halfContentSize;
-
-
-                        vGSB2.requestLayout();
-                        vGSB2.invalidate();
-
-                    }else if(mClickTimes>=1){
-                        vGST2.setVisibility(View.GONE);
-                        vGSC2.setVisibility(View.GONE);
-                        vGSB2.setVisibility(View.GONE);
-                        vGSC2L.setVisibility(View.GONE);
-                        vGSC2R.setVisibility(View.GONE);
-                        vReceiver.setVisibility(View.GONE);
-                        vReceiver.setOnClickListener(null);
-                    }
-                    mClickTimes += 1;
-                }
-            });
+        if (null == AppContext.user || AppContext.user.isIsVisitors()) {
+            tvTitle.setText("未知生物");
+            tvRight.setText(R.string.login);
+        } else {
+            tvTitle.setText(AppContext.user.getFullname());
+            tvRight.setText(R.string.edit);
         }
-
 
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
-        classifyFragment = new ClassifyFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, recommendFragment, null).add(R.id.container, classifyFragment, null).hide(classifyFragment).commit();
+        articleFragment = new ArticleFragment();
+        meFragment = new MeFragment();
+
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, recommendFragment, "page_1")
+                .commitAllowingStateLoss();
         initView();
-        recommendTitleMoreRl.setOnClickListener(this);
+
+
         UmengUpdateAgent.setUpdateListener(null);
         UmengUpdateAgent.update(AppContext.mContext);
         UmengUpdateAgent.setUpdateCheckConfig(true);
-        tvSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
-            }
-        });
+
         VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
+
 
         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
             @Override
@@ -186,30 +152,92 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
             }
         });
 
+        if (getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
+            rbBottomTab.check(R.id.rbMine);
+            if (!meFragment.isAdded()) {
+                getSupportFragmentManager().beginTransaction().add(R.id.container, meFragment, "page_3").commitAllowingStateLoss();
+            }
+            viewpagerSelected(2);
+
+        }
+
+
+        rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                switch (checkedId) {
+
+                    case R.id.rbRecommend:
+                        viewpagerSelected(0);
+                        break;
+                    case R.id.rbDiscovery:
+                        if (!articleFragment.isAdded()) {
+                            transaction.add(R.id.container, articleFragment, "page_2").commitAllowingStateLoss();
+                        }
+                        viewpagerSelected(1);
+                        break;
+                    case R.id.rbMine:
+                        if (!meFragment.isAdded()) {
+                            transaction.add(R.id.container, meFragment, "page_3").commitAllowingStateLoss();
+                        }
+                        viewpagerSelected(2);
+                        break;
+                }
+            }
+        });
+
+        if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
+            accessPushMessage();
+        }
+
+
     }
 
-    private void checkIfCityChanged(){
-        if (null!=list && null!= AppLocationListener.currentCity){
+
+    public void accessPushMessage() {
+        Parcelable extra = getIntent().getParcelableExtra(GeTuiReceiver.REQUEST_KEY_MODEL);
+        if (extra == null)
+            return;
+
+        PushMessageBean bean = (PushMessageBean) extra;
+//            说明： 类型：( 01 PGC新内容发布  02  新场景发布  03 事件营销 )
+//            eventId  : 根据类别，打开应用相应页面的ID  type: 01 为文章ID  02:场景ID  03：文章ID
+        switch (bean.getType()) {
+            case "01":
+                rbBottomTab.check(R.id.rbDiscovery);
+                ArticleDetailActivity.enterActivity(this, bean.getEventId(), bean.getTitle());
+                break;
+            case "03":
+                rbBottomTab.check(R.id.rbDiscovery);
+                break;
+        }
+
+
+    }
+
+    private void checkIfCityChanged() {
+        if (null != list && null != AppLocationListener.currentCity) {
             String currentLocation = AppLocationListener.currentCity;
             int cityIdInList = -1;
-            if (currentLocation.endsWith("市")){
-                currentLocation = currentLocation.substring(0,currentLocation.length()-1);
+            if (currentLocation.endsWith("市")) {
+                currentLocation = currentLocation.substring(0, currentLocation.length() - 1);
             }
             boolean inList = false;
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getCvalue().equals(currentLocation)){
+                if (list.get(i).getCvalue().equals(currentLocation)) {
                     inList = true;
                     cityIdInList = list.get(i).getCid();
                 }
             }
-            if (!currentLocation.equals(SPUtils.getCityName())){
+            if (!currentLocation.equals(SPUtils.getCityName())) {
                 ConfirmDialogFg confirmDialogFg = null;
-                if (!inList){
+                if (!inList) {
                     //城市列表中没有当前位置
-                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","你当前所在的城市尚未占领，是否要切换城市");
-                }else if(inList){
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "你当前所在的城市尚未占领，是否要切换城市");
+                } else if (inList) {
                     //城市列表中有但不是当前位置
-                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市","检测到你在"+currentLocation+"，是否切换？");
+                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "检测到你在" + currentLocation + "，是否切换？");
                 }
                 final boolean finalInList = inList;
                 final int finalCityIdInList = cityIdInList;
@@ -217,20 +245,20 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                 confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
                     @Override
                     public void onClick(int index) {
-                        if (ConfirmDialogFg.INDEX_OK == index){
-                            if (finalInList){
+                        if (ConfirmDialogFg.INDEX_OK == index) {
+                            if (finalInList) {
                                 SPUtils.setCityId(finalCityIdInList);
                                 SPUtils.setCityName(finalCurrentLocation);
                                 updateRecommend();
                                 recommendTitleLocationIv.setText(SPUtils.getCityName());
-                            }else{
+                            } else {
                                 findViewById(R.id.recommend_title_location_rl).performClick();
                             }
 
                         }
                     }
                 });
-                confirmDialogFg.show(getSupportFragmentManager(),"~");
+                confirmDialogFg.show(getSupportFragmentManager(), "~");
             }
         }
     }
@@ -240,11 +268,31 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         return TRANSITION_TYPE_LEFT;
     }
 
-    @OnClick({R.id.recommend_title_location_rl})
+    @OnClick({R.id.recommend_title_location_rl, R.id.tvRight, R.id.ivLeft, R.id.recommend_title_more_iv})
     public void titleClick(View view) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         switch (view.getId()) {
+
+
+            case R.id.recommend_title_more_iv:
+                startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
+                break;
+
+            case R.id.ivLeft:
+                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "~");
+                break;
+
+            case R.id.tvRight:
+                UserInfoModel user = AppContext.user;
+                if (user.isIsVisitors()) {
+                    //游客
+                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
+                    dialogFg.show(getSupportFragmentManager(), "");
+                } else {
+                    startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
+                }
+                break;
             case R.id.recommend_title_location_rl:
                 MobclickAgent.onEvent(this, "location_c");
 
@@ -271,17 +319,6 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.recommend_title_more_iv:
-                MobclickAgent.onEvent(this, "Profile_c");
-                Intent intent = new Intent(this, MeActivity.class);
-
-                startActivity(intent);
-                break;
-        }
-    }
 
     private void showCityDialog() {
         ivArrow.animate().rotation(180).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
@@ -297,23 +334,7 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
     }
 
     private void initView() {
-
-        recommendTitleCenterRtg.setViewsClickable(true);
-        recommendTitleCenterRtg.setInitSelected(false);
         viewpagerSelected(0);
-
-        recommendTitleCenterRtg.setSelectedListener(new RecommendTitleGroup.RecoSelectedistener() {
-            @Override
-            public void onViewsClick(int flag) {
-                if (flag == 0) {
-                    LogUtils.json("selected == right");
-                    viewpagerSelected(1);
-                } else {
-                    viewpagerSelected(0);
-                }
-            }
-        });
-
     }
 
 
@@ -322,37 +343,55 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
-            tvSearch.animate()
-                    .translationY(-rlSearchBar.getHeight())
-                    .alpha(0)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
-            flContainer.animate()
-                    .translationY(0)
-                    .scaleY(1)
-                    .scaleX(1)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
+            tvTitle.setText(R.string.app_name);
+            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+            transaction.hide(articleFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
+            vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
+                @Override
+                public void run() {
+                    vTitle.setVisibility(View.VISIBLE);
+                }
+            }).start();
+            vDivider.setVisibility(View.VISIBLE);
 
+            vLeft.setVisibility(View.VISIBLE);
+            recommendTitleMoreRl.setVisibility(View.VISIBLE);
+            ivLeft.setVisibility(View.GONE);
+            tvRight.setVisibility(View.GONE);
+
+        } else if (index == 1) {
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction.hide(classifyFragment).show(recommendFragment).commit();
-        } else {
-            tvSearch.animate()
-                    .translationY(0)
-                    .alpha(1)
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
-            flContainer.animate().translationY(rlSearchBar.getHeight()/2)
-                    .scaleY(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
-                    .scaleX(((float)flContainer.getHeight()-rlSearchBar.getHeight())/flContainer.getHeight())
-                    .setDuration(300)
-                    .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .start();
+            transaction.hide(recommendFragment).hide(meFragment).show(articleFragment).commitAllowingStateLoss();
+            vTitle.animate().translationY(-vTitle.getHeight()).setDuration(300).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    vTitle.setVisibility(View.GONE);
+                }
+            }).start();
+            vDivider.setVisibility(View.GONE);
+
+        } else if (index == 2) {
+            if (null != AppContext.user && !AppContext.user.isIsVisitors()) {
+                tvTitle.setText(AppContext.user.getFullname());
+            } else {
+                tvTitle.setText("未知生物");
+            }
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction .hide(recommendFragment).show(classifyFragment).commit();
+            transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
+            vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
+                @Override
+                public void run() {
+                    vTitle.setVisibility(View.VISIBLE);
+                }
+            }).start();
+
+            vDivider.setVisibility(View.VISIBLE);
+            vLeft.setVisibility(View.GONE);
+            recommendTitleMoreRl.setVisibility(View.GONE);
+
+            ivLeft.setVisibility(View.VISIBLE);
+            tvRight.setVisibility(View.VISIBLE);
+
         }
         viewPagerIndex = index;
     }
@@ -362,8 +401,9 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
      * 城市切换后调用
      */
     public void updateRecommend() {
-        recommendFragment.initData();
-        classifyFragment.getRootTagsData();
+        //recommendFragment.initData();
+        //TODO refresh
+        articleFragment.getArticles();
     }
 
     @Override
@@ -398,35 +438,33 @@ public class RecommendActivity extends BaseBehaviorActivity implements View.OnCl
                 case 0x00:
                     netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 2000);
                     break;
-                case 0x02:
-                    resumeUpdateData();
-                    break;
             }
         }
     };
     private int resumeUpdateDataTimes = 0;
 
-    private void resumeUpdateData() {
-        if (AppContext.dCardListNeedUpdate) {
-            if (viewPagerIndex == 0) {
-                recommendFragment.updateDateSet();
-            }
-            AppContext.dCardListNeedUpdate = false;
-            resumeUpdateDataTimes = 0;
-        } else {
-            if (resumeUpdateDataTimes <= 3) {
-                resumeUpdateDataTimes++;
-                netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
-            }
-        }
-    }
-
 
     @Subscribe
     public void onMessageEvent(QuchuEventModel event) {
-        if (event.getFlag() == EventFlags.EVENT_NEW_CITY_SELECTED) {
-            recommendTitleLocationIv.setText(SPUtils.getCityName());
+
+        switch (event.getFlag()) {
+            case EventFlags.EVENT_NEW_CITY_SELECTED:
+                recommendTitleLocationIv.setText(SPUtils.getCityName());
+                break;
+            case EventFlags.EVENT_USER_LOGIN_SUCCESS:
+                if (viewPagerIndex == 2) {
+                    tvTitle.setText(AppContext.user.getFullname());
+                    tvRight.setText(R.string.edit);
+                }
+                break;
+            case EventFlags.EVENT_USER_LOGOUT:
+                if (viewPagerIndex == 2) {
+                    tvTitle.setText("未知生物");
+                    tvRight.setText(R.string.login);
+                }
+                break;
         }
+
     }
 
     @Override

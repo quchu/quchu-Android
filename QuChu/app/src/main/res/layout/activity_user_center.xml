@@ -28,6 +28,7 @@
                 android:background="@color/standard_color_white"
                 android:fitsSystemWindows="true"
                 android:paddingTop="?actionBarSize"
+                app:contentScrim="@color/standard_color_white"
                 app:layout_collapseMode="parallax">
 
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -60,6 +61,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/me_user_tag"
                     android:gravity="center"
+                    android:minWidth="@dimen/double_margin"
                     android:paddingBottom="4dp"
                     android:paddingLeft="@dimen/half_margin"
                     android:paddingRight="@dimen/half_margin"
@@ -67,6 +69,15 @@
                     android:textColor="@color/standard_color_h3_dark"
                     tools:text="好奇猫" />
 
+                <TextView
+                    android:id="@+id/locationAndGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/alias"
+                    android:layout_below="@id/alias"
+                    tools:text="男,厦门"
+                    android:layout_marginTop="@dimen/base_margin"
+                    android:textColor="@color/standard_color_h2_dark" />
 
                 <TextView
                     android:id="@+id/editOrLoginTV"
@@ -126,6 +137,7 @@
                 android:id="@+id/enhancedToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="@color/standard_color_white"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
 

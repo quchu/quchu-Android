@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:TagCloudView="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/quarter_margin"
+    android:layout_marginLeft="@dimen/half_margin"
+    android:layout_marginRight="@dimen/half_margin"
+    android:layout_marginTop="@dimen/quarter_margin"
+    card_view:cardCornerRadius="@dimen/half_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/base_margin">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/simpleDraweeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            fresco:overlayImage="@color/translucent_dark"
+            fresco:placeholderImage="@mipmap/ic_image_empty"
+            fresco:roundBottomLeft="false"
+            fresco:roundBottomRight="false"
+            fresco:roundTopLeft="true"
+            fresco:roundTopRight="true"
+            fresco:roundedCornerRadius="8dp"
+            fresco:viewAspectRatio="2.5" />
+
+        <TextView
+            android:id="@+id/search_result_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/simpleDraweeView"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginTop="@dimen/base_margin"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/standard_color_h2_dark"
+            android:textSize="@dimen/word_subhead_size"
+            tools:text="标题" />
+
+        <TextView
+            android:id="@+id/searchPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/half_margin"
+            android:drawableLeft="@mipmap/ic_rmb_symbol"
+            android:layout_alignTop="@id/search_result_name"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/standard_color_h3_dark"
+            tools:text="1000" />
+
+
+        <co.quchu.quchu.widget.TagCloudView
+            android:id="@+id/tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_result_name"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            TagCloudView:tcvBackground="@drawable/tag_background_dark"
+            TagCloudView:tcvCanTagClick="false"
+            TagCloudView:tcvItemBorderHorizontal="10dp"
+            TagCloudView:tcvRightResId="@null"
+            TagCloudView:tcvSingleLine="true"
+            TagCloudView:tcvTextColor="@color/standard_color_h3_dark" />
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tag"
+            android:layout_marginRight="@dimen/half_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            android:drawableLeft="@mipmap/ic_loca"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/standard_color_h3_dark"
+            tools:text="10km" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tag"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            android:layout_toLeftOf="@id/distance"
+            android:drawableLeft="@mipmap/ic_zuobiao"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/standard_color_h3_dark"
+            tools:text="厦门观音山.dfd" />
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

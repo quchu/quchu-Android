@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import co.quchu.quchu.model.FootprintModel;
@@ -22,6 +23,8 @@ import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.utils.DatabaseHelper;
+import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by Nico on 16/6/2.
@@ -60,7 +63,7 @@ public class UserBehaviorPresentor {
         Cursor c = DatabaseHelper
                 .getInstance(context)
                 .getReadableDatabase()
-                .query(DatabaseHelper.TABLE_NAME_USER_BEHAVIOR,new String[]{"id","pageId","behavior","arguments","timestamp"},null,null,null,null,"timestamp desc");
+                .query(DatabaseHelper.TABLE_NAME_USER_BEHAVIOR,new String[]{"id","pageId","behavior","arguments","timestamp"},null,null,null,null,"timestamp asc");
 
 
         while (c.moveToNext()){
@@ -118,31 +121,75 @@ public class UserBehaviorPresentor {
     }
 
 
-    public static void postBehaviors(final Context context, List<UserBehaviorModel> data) {
+    public static void postBehaviors(final Context context, List<UserBehaviorModel> data, final CommonListener pListener) {
 
 
         JSONObject jsonObject = null;
+        JSONObject jsonObjectAll = null;
         JSONArray jsonArray;
         try {
             jsonObject = new JSONObject();
-            jsonArray = new JSONArray(new Gson().toJson(data));
+            jsonArray = new JSONArray();
+            for (int i = 0; i < data.size(); i++) {
+                JSONObject jsonObjectChild = new JSONObject();
+                jsonObjectChild.put("pageId",data.get(i).pageId);
+                jsonObjectChild.put("timestamp",data.get(i).timestamp);
+                if (!StringUtils.isEmpty(data.get(i).userBehavior)){
+                    jsonObjectChild.put("userBehavior",data.get(i).userBehavior);
+                }
+                if (!StringUtils.isEmpty(data.get(i).arguments)){
+                    jsonObjectChild.put("arguments",new JSONObject(data.get(i).arguments));
+                }
+                jsonArray.put(jsonObjectChild);
+            }
             jsonObject.put("UserBehaviors",jsonArray);
+            jsonObject.put("Device","android");
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        NetService.post(context, NetApi.postUserBehavior,jsonObject, new IRequestListener() {
+
+
+
+        NetService.postRaw(context, NetApi.postUserBehavior,jsonObject, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 delBehaviors(context);
+                pListener.successListener(null);
             }
 
             @Override
             public boolean onError(String error) {
+                pListener.errorListener(null,null,null);
                 return false;
             }
         });
     }
+
+    private static String getBodyInfo(JSONObject mJsonRequest) {
+        String _Body = "";
+        if (null != mJsonRequest) {
+            Iterator<String> _Iterator = mJsonRequest.keys();
+            while (_Iterator.hasNext()) {
+                String key = _Iterator.next();
+                try {
+                    _Body += key + "=" + mJsonRequest.getString(key);
+                    if (_Iterator.hasNext())
+                        _Body += "&";
+                    LogUtils.json(_Body);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    System.gc();
+                }
+            }
+        }
+
+        // _Body = _Body.substring(0, _Body.length() - 1);
+        return _Body;
+    }
+
 
 
 }

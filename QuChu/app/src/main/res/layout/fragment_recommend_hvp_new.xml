@@ -6,38 +6,118 @@
     android:fitsSystemWindows="true">
 
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout"
+
+    <View
+        android:id="@+id/vDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#dbdbdb" />
+    <RadioGroup
+        android:layout_below="@+id/vDivider"
+        android:id="@+id/rgDisplayMode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:tabIndicatorColor="@color/standard_color_h1_dark" />
+        android:background="@color/standard_color_white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:checked="true"
+            android:textColor="@color/color_selector_recommend_b_n_ltg"
+            android:text="我的场景" />
+
+        <RadioButton
+            android:id="@+id/rbAll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_item_size"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textColor="@color/color_selector_recommend_b_n_ltg"
+            android:gravity="center"
+            android:text="场景工坊"
+
+            />
+
+    </RadioGroup>
 
 
-    <co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout
-        android:id="@+id/refreshLayout"
+    <LinearLayout
+        android:id="@+id/llPageIndicator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tabLayout">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tvPageIndicatorCurrent"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:textColor="@color/standard_color_h1_dark"
+            android:textSize="@dimen/standard_text_size_h1"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/tvPageIndicatorLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/quarter_margin"
+            android:paddingRight="@dimen/quarter_margin"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="@dimen/standard_text_size_h3"
+            android:text="of" />
+
+        <TextView
+            android:id="@+id/tvPageIndicatorSize"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:textColor="@color/standard_color_h1_dark"
+            android:textSize="@dimen/standard_text_size_h1"
+            android:text="0" />
+    </LinearLayout>
 
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
+            android:layout_below="@id/rgDisplayMode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/llPageIndicator"
+            android:layout_marginTop="@dimen/double_margin"
+            android:clickable="true"
             android:clipToPadding="false"
             android:onClick="onViewPagerClick"
-            android:clickable="true"
             android:overScrollMode="always"
             app:singlePageFling="true"
             app:triggerOffset="0.1" />
-    </co.quchu.quchu.widget.RefreshLayout.HorizontalSwipeRefLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvGrid"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llPageIndicator"
+        android:layout_below="@id/rgDisplayMode"
+        android:visibility="gone"/>
+
 
     <co.quchu.quchu.widget.ErrorView
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tabLayout"
+        android:layout_below="@id/rgDisplayMode"
         android:visibility="gone" />
+
 
 </RelativeLayout>

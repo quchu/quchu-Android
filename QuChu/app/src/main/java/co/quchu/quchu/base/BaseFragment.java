@@ -1,9 +1,12 @@
 package co.quchu.quchu.base;
 
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
+
+import co.quchu.quchu.R;
 
 /**
  * Created by admin on 2016/3/2.
@@ -27,4 +30,6 @@ public class BaseFragment extends Fragment {
         super.onPause();
         MobclickAgent.onPause(getContext());
     }
+
+
 }

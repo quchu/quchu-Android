@@ -2,6 +2,7 @@ package co.quchu.quchu.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +14,6 @@ import com.sina.weibo.sdk.utils.LogUtil;
 import java.lang.reflect.Field;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.StringUtils;
 
 /**
  * Created by no21 on 2016/5/20.
@@ -23,6 +23,7 @@ import co.quchu.quchu.utils.StringUtils;
 public class SwipeDeleteLayout extends HorizontalScrollView {
 
     private View mActionView;
+    private int contentMargin;
 
     public SwipeDeleteLayout(Context context) {
         this(context, null);
@@ -34,6 +35,12 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
 
     public SwipeDeleteLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SwipeDeleteLayout);
+
+        contentMargin = array.getDimensionPixelSize(R.styleable.SwipeDeleteLayout_content_margin, 0);
+        array.recycle();
+
         setOverScrollMode(OVER_SCROLL_NEVER);
         setSmoothScrollingEnabled(false);
         try {
@@ -105,7 +112,7 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
         int actionWidthSpec = MeasureSpec.makeMeasureSpec(actionWidth, MeasureSpec.EXACTLY);
 
 
-        int contentWidth = getResources().getDisplayMetrics().widthPixels - StringUtils.dip2px(getContext(), 16);
+        int contentWidth = getResources().getDisplayMetrics().widthPixels - contentMargin;
         int ContentWidth = MeasureSpec.makeMeasureSpec(contentWidth, MeasureSpec.EXACTLY);
 
         itemView.measure(MeasureSpec.makeMeasureSpec(contentWidth + actionWidth, MeasureSpec.AT_MOST), heightMeasureSpec);

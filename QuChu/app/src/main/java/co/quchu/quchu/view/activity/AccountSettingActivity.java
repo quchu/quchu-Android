@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -42,6 +44,7 @@ import co.quchu.quchu.gallery.FrescoImageLoader;
 import co.quchu.quchu.gallery.FunctionConfig;
 import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoInfo;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -50,6 +53,7 @@ import co.quchu.quchu.presenter.AccountSettingPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.utils.AppKey;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ImageUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -77,6 +81,10 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
     RelativeLayout modiffPass;
     @Bind(R.id.saveUserInfo)
     TextView mSaveUserInfo;
+    @Bind(R.id.vDividerUserName)
+    View vDividerUserName;
+    @Bind(R.id.rlUserName)
+    View rlUserName;
 
 
     private boolean mProfileModified = false;
@@ -93,6 +101,14 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         rightTv.setText("退出登录");
         rightTv.setOnClickListener(this);
         userInfoBinding();
+
+        if (null == AppContext.user || AppContext.user.isIsVisitors()) {
+            vDividerUserName.setVisibility(View.GONE);
+            rlUserName.setVisibility(View.GONE);
+        } else {
+            vDividerUserName.setVisibility(View.VISIBLE);
+            rlUserName.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -107,6 +123,13 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         accountSettingAvatarSdv.setImageURI(Uri.parse(AppContext.user.getPhoto()));
         nickname.setText(AppContext.user.getFullname());
         nickname.setSelection(user.getFullname().length());
+        nickname.setCursorVisible(false);
+        nickname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nickname.setCursorVisible(true);
+            }
+        });
         photoNumber.setText(AppContext.user.getUsername());
         accountSettingUserLocation.setText(AppContext.user.getLocation());
         if ("男".equals(user.getGender())) {
@@ -140,8 +163,8 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
         userGenderChanged = !AppContext.user.getGender().equals(gender);
 
-
-        if (mProfileModified || userNameChanged || userGenderChanged || !accountSettingUserLocation.getText().toString().equals(AppContext.user.getLocation())) {
+        String location = accountSettingUserLocation.getText().toString();
+        if (mProfileModified || userNameChanged || userGenderChanged || (!TextUtils.isEmpty(location) && !location.equals(AppContext.user.getLocation()))) {
             CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
 
             dialog.setListener(new CommonDialog.OnActionListener() {
@@ -196,6 +219,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                                 @Override
                                 public void isUnique(JSONObject msg) {
                                     confirmDialog.dismiss();
+                                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
                                     finish();
                                 }
 
@@ -231,7 +255,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         public void selectedAblum() {
             initGralley();
             int REQUEST_CODE_GALLERY = 0x01;
-            GalleryFinal.openGallerySingle(AccountSettingActivity.this,REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
+            GalleryFinal.openGallerySingle(AccountSettingActivity.this, REQUEST_CODE_GALLERY, functionConfig, mOnHanlderResultCallback);
         }
 
         @Override
@@ -291,6 +315,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
         super.onDestroy();
         ButterKnife.unbind(this);
 //        GalleryFinal.cleanCacheFile();
+        GalleryFinal.setmCallback(null);
     }
 
 
@@ -302,7 +327,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
             Toast.makeText(this, "昵称必须为1-10位字符", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (StringUtils.containsEmoji(newUserNickName)){
+        if (StringUtils.containsEmoji(newUserNickName)) {
             Toast.makeText(this, "昵称不能使用表情", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -332,11 +357,13 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onSuccess(String photoUrl) {
                         refreshUserInfo();
+                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATE));
+
                     }
 
                     @Override
                     public void onError() {
-                        Toast.makeText(AccountSettingActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AccountSettingActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         DialogUtil.dismissProgess();
                     }
                 });
@@ -364,6 +391,7 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
 
 
     public void updateAvatar(String avatarUrl) {
+        mProfileModified = true;
 
         if (!avatarUrl.startsWith("http")) {
             newUserPhoto = ImageUtils.saveImage2Sd(avatarUrl);

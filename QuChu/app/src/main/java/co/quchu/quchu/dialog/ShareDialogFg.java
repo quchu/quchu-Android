@@ -4,16 +4,27 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.image.CloseableStaticBitmap;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.tencent.tauth.Tencent;
 
 import java.util.Locale;
@@ -30,6 +41,7 @@ import co.quchu.quchu.thirdhelp.QQHelper;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
 import co.quchu.quchu.utils.KeyboardUtils;
+import co.quchu.quchu.utils.LogUtils;
 
 /**
  * ShareDialogFg
@@ -45,43 +57,60 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
     private static final String ISSHARE_PLACE = "isshare_place";
     private static final String SHARE_URL = "SHARE_URL";
     private static final String SHARE_IMAGE_ID = "imageId";
+    private static final String SHARE_IMAGE_PATH = "imagePath";
     private static final int CUSTOM_SHIT = 0x0000001;
+
     @Bind(R.id.dialog_share_gv)
     GridView dialogShareGv;
     @Bind(R.id.actionClose)
     ImageView actionClose;
-    private Bundle args;
     private int imageId;
+    private String path;
 
 
-//    public static ShareDialogFg newInstance(int shareId, String titles, boolean isPlace) {
-//        ShareDialogFg fragment = new ShareDialogFg();
-//        Bundle args = new Bundle();
-//        args.putInt(SHAREID, shareId);
-//        args.putString(SHRETITLE, titles);
-//        args.putBoolean(ISSHARE_PLACE, isPlace);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
-    public static ShareDialogFg newInstance(int shareId, String titles, boolean isPlace, @Nullable int imageId) {
+    public static ShareDialogFg newInstance(int shareId, String titles, boolean isPlace, @Nullable int imageId, @Nullable String imagePath) {
         ShareDialogFg fragment = new ShareDialogFg();
         Bundle args = new Bundle();
         args.putInt(SHAREID, shareId);
         args.putInt(SHARE_IMAGE_ID, imageId);
-        args.putString(SHRETITLE, titles);
+        if (!isPlace) {
+            args.putString(SHRETITLE, "送你一张美图，我想约你去" + titles);
+        } else {
+            args.putString(SHRETITLE, titles);
+        }
+
         args.putBoolean(ISSHARE_PLACE, isPlace);
+        args.putString(SHARE_IMAGE_PATH, imagePath);
         fragment.setArguments(args);
+
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse(imagePath))
+                .build();
+        //图片目标大小
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        imagePipeline.prefetchToBitmapCache(imageRequest, null);
+
         return fragment;
     }
 
-    public static ShareDialogFg newInstance(String shareUrl, String title) {
+    public static ShareDialogFg newInstance(String shareUrl, String title,String imagePath) {
         ShareDialogFg fragment = new ShareDialogFg();
         Bundle args = new Bundle();
         args.putInt(SHAREID, CUSTOM_SHIT);
         args.putString(SHRETITLE, title);
         args.putString(SHARE_URL, shareUrl);
+        args.putString(SHARE_IMAGE_PATH, imagePath);
+
         fragment.setArguments(args);
+
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse(imagePath))
+                .build();
+        //图片目标大小
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        imagePipeline.prefetchToBitmapCache(imageRequest, null);
+
+
         return fragment;
     }
 
@@ -93,28 +122,19 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
 
     String shareUrl = "";
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
 
-        args = getArguments();
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+
+        Bundle args = getArguments();
         shareId = args.getInt(SHAREID);
         shareTitle = args.getString(SHRETITLE);
         isPlace = args.getBoolean(ISSHARE_PLACE);
         shareUrl = args.getString(SHARE_URL);
         imageId = args.getInt(SHARE_IMAGE_ID);
-        mTencent = Tencent.createInstance("1104964977", AppContext.mContext);
 
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_share_view, null);
         ButterKnife.bind(this, view);
         Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
@@ -145,31 +165,52 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         ButterKnife.unbind(this);
     }
 
+    private Bitmap shareBitmap;
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         if (!NetUtil.isNetworkConnected(getContext())) {
-            Toast.makeText(getContext(), "请保证网络连接", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             return;
         }
-        switch (position) {
-            case 0:
-                WechatHelper.shareFriends(getActivity(), shareUrlFinal, shareTitle, true);
-                break;
-            case 1:
-                WechatHelper.shareFriends(getActivity(), shareUrlFinal, shareTitle, false);
-                break;
-            case 2:
-                QQHelper.share2QQ(getActivity(), mTencent, shareUrlFinal, shareTitle);
-                break;
-            case 3:
-                WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrlFinal, shareTitle);
-                break;
-            case 4:
-                copyToClipBoard(shareTitle, shareUrlFinal);
-                break;
+
+        path = getArguments().getString(SHARE_IMAGE_PATH);
+        if (TextUtils.isEmpty(path)) {
+            share(position);
+        } else {
+            ImageRequest imageRequest = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse(path))
+                    .build();
+            //图片目标大小
+            ImagePipeline imagePipeline = Fresco.getImagePipeline();
+
+            DataSource<CloseableReference<CloseableImage>> dataSource =
+                    imagePipeline.fetchDecodedImage(imageRequest, null);
+            try {
+                CloseableReference<CloseableImage> imageReference = dataSource.getResult();
+                if (imageReference != null) {
+                    try {
+                        // Do something with the image, but do not keep the reference to it!
+                        // The image may get recycled as soon as the reference gets closed below.
+                        // If you need to keep a reference to the image, read the following sections.
+                        CloseableStaticBitmap image = (CloseableStaticBitmap) imageReference.get();
+                        shareBitmap = image.getUnderlyingBitmap();
+                        shareBitmap = Bitmap.createScaledBitmap(shareBitmap, 150, 150, false);
+                        LogUtils.e(image.getClass().getName());
+                    } finally {
+                        CloseableReference.closeSafely(imageReference);
+                    }
+                } else {
+                    // cache miss
+                    LogUtils.e("bitmap is null");
+
+                }
+            } finally {
+                dataSource.close();
+                share(position);
+            }
         }
 
         if (!isPlace) {//数据收集
@@ -179,6 +220,28 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
         }
         ShareDialogFg.this.dismiss();
     }
+
+    private void share(int position) {
+        switch (position) {
+            case 0:
+                WechatHelper.shareFriends(getActivity(), shareUrlFinal, shareTitle, true, shareBitmap);
+                break;
+            case 1:
+                WechatHelper.shareFriends(getActivity(), shareUrlFinal, shareTitle, false, shareBitmap);
+                break;
+            case 2:
+                mTencent = Tencent.createInstance("1104964977", AppContext.mContext);
+                QQHelper.share2QQ(getActivity(), mTencent, shareUrlFinal, shareTitle, path);
+                break;
+            case 3:
+                WeiboHelper.getInstance(getActivity()).share2Weibo(getActivity(), shareUrlFinal, shareTitle, shareBitmap);
+                break;
+            case 4:
+                copyToClipBoard(shareTitle, shareUrlFinal);
+                break;
+        }
+    }
+
 
     @Override
     public void onClick(View v) {

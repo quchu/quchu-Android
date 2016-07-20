@@ -42,6 +42,7 @@ public class DetailModel implements Serializable{
      * width : 675
      */
 
+    private String areaCircleName;
     private String activityInfo;
     private String activityInfoHtml;
     private String address = "";
@@ -63,6 +64,7 @@ public class DetailModel implements Serializable{
     private boolean isActivity;
     private boolean isf;
     private boolean isout;
+    private boolean isMap = true;
     private int width;
     private int pid;
     private int autorId;
@@ -74,7 +76,16 @@ public class DetailModel implements Serializable{
     private List<ImglistEntity> imglist;
     private List<TagsEntity> tags;
     private List<NearPlace> recommendPlaces;
+    private List<CommentModel> reviewList;
     private int cardCount;
+
+    public String getAreaCircleName() {
+        return areaCircleName;
+    }
+
+    public void setAreaCircleName(String areaCircleName) {
+        this.areaCircleName = areaCircleName;
+    }
 
     public int getCardCount() {
         return cardCount;
@@ -96,7 +107,6 @@ public class DetailModel implements Serializable{
 
     public NearbyMapModel convert2NearbyMapItem(){
         NearbyMapModel model = new NearbyMapModel();
-        System.out.println("convert "+ this.getAddress());
         model.setAddress(this.getAddress());
         model.setCover(this.getCover());
         model.setName(this.getName());
@@ -124,6 +134,14 @@ public class DetailModel implements Serializable{
         return model;
     }
 
+
+    public boolean isMap() {
+        return isMap;
+    }
+
+    public void setMap(boolean map) {
+        isMap = map;
+    }
 
     public void copyFrom(DetailModel objTarget){
 
@@ -153,6 +171,8 @@ public class DetailModel implements Serializable{
         setHeight(objTarget.getHeight());
         setSuggest(objTarget.getSuggest());
         setMyCardId(objTarget.getMyCardId());
+        setMap(objTarget.isMap());
+
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;
 
@@ -161,29 +181,38 @@ public class DetailModel implements Serializable{
         }else{
             genes.clear();
         }
-        genes.addAll(objTarget.getGenes());
+        if (objTarget.getGenes() != null) {
+            genes.addAll(objTarget.getGenes());
+        }
 
         if (null==icons){
             icons = new ArrayList<>();
         }else{
             icons.clear();
         }
-        icons.addAll(objTarget.getIcons());
+
+        if (objTarget.getIcons() != null) {
+            icons.addAll(objTarget.getIcons());
+        }
 
         if (null==imglist){
             imglist = new ArrayList<>();
         }else{
             imglist.clear();
         }
-        imglist.addAll(objTarget.getImglist());
 
+        if (objTarget.getImglist() != null) {
+            imglist.addAll(objTarget.getImglist());
+        }
 
         if (null==tags){
             tags = new ArrayList<>();
         }else{
             tags.clear();
         }
-        tags.addAll(objTarget.getTags());
+        if (objTarget.getTags() != null) {
+            tags.addAll(objTarget.getTags());
+        }
 
 
         if (null==recommendPlaces){
@@ -191,14 +220,30 @@ public class DetailModel implements Serializable{
         }else{
             recommendPlaces.clear();
         }
-        recommendPlaces.addAll(objTarget.getNearPlace());
+
+        if (objTarget.getNearPlace() != null) {
+            recommendPlaces.addAll(objTarget.getNearPlace());
+        }
+
+        if (null==reviewList){
+            reviewList = new ArrayList<>();
+        }
+        if (objTarget.getReviewList()!=null){
+            reviewList.addAll(objTarget.getReviewList());
+        }
 
         cardCount = objTarget.getCardCount();
 
 
     }
 
+    public List<CommentModel> getReviewList() {
+        return reviewList;
+    }
 
+    public void setReviewList(List<CommentModel> reviewList) {
+        this.reviewList = reviewList;
+    }
 
     public void setActivityInfo(String activityInfo) {
         this.activityInfo = activityInfo;

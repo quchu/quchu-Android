@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
@@ -26,6 +28,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.SPUtils;
@@ -62,11 +65,10 @@ public class SplashActivity extends BaseActivity {
     }
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         View decorView = getWindow().getDecorView();
@@ -84,7 +86,6 @@ public class SplashActivity extends BaseActivity {
 
         mTvVersion.setText(getVersionName());
         mIvAppIcon.setImageResource(R.mipmap.ic_user_loginview_logo);
-
 
 
 //        final AnimatorSet animatorSetText = new AnimatorSet();
@@ -123,6 +124,12 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void initLogic() {
+
+        if (!NetUtil.isNetworkConnected(getApplicationContext())){
+            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (SPUtils.getForceUpdateIfNecessary(getApplicationContext())) {
             ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示", SPUtils.getForceUpdateReason(getApplicationContext()));
             confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {

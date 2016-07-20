@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,6 +25,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.utils.StringUtils;
 
 /**
@@ -33,19 +35,23 @@ public class WebViewActivity extends BaseActivity {
 
     @Bind(R.id.webView)
     WebView mWebView;
-
-    public static final String BUNDLE_KEY_WEBVIEW_URL = "BUNDLE_KEY_WEB_URL";
-    public static final String BUNDLE_KEY_WEBVIEW_TITLE = "BUNDLE_KEY_WEBVIEW_TITLE";
     @Bind(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
+
+    public static final String BUNDLE_KEY_WEBVIEW_FROM_DISCOVER = "BUNDLE_KEY_WEBVIEW_FROM_DISCOVER";
+    public static final String BUNDLE_KEY_WEBVIEW_URL = "BUNDLE_KEY_WEB_URL";
+    public static final String BUNDLE_KEY_WEBVIEW_TITLE = "BUNDLE_KEY_WEBVIEW_TITLE";
+
     private String mPageTitle;
     public static final String TAG = "WebViewActivity";
+    public boolean mFromDiscover = false;
 
 
-    public static void enterActivity(Activity from, String url, String title) {
+    public static void enterActivity(Activity from, String url, String title, boolean fromDiscover) {
         Intent intent = new Intent(from, WebViewActivity.class);
         intent.putExtra(BUNDLE_KEY_WEBVIEW_URL, url);
         intent.putExtra(BUNDLE_KEY_WEBVIEW_TITLE, title);
+        intent.putExtra(BUNDLE_KEY_WEBVIEW_FROM_DISCOVER, fromDiscover);
         from.startActivity(intent);
     }
 
@@ -76,8 +82,19 @@ public class WebViewActivity extends BaseActivity {
         mWebView.setWebViewClient(webViewClient);
         //mWebView.getSettings().setUserAgentString("Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3");
 
-        String url = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_URL);
+        final String url = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_URL);
         mPageTitle = getIntent().getStringExtra(BUNDLE_KEY_WEBVIEW_TITLE);
+        mFromDiscover = getIntent().getBooleanExtra(BUNDLE_KEY_WEBVIEW_FROM_DISCOVER, false);
+        if (mFromDiscover) {
+            getEnhancedToolbar().getRightTv().setText(R.string.share);
+            getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(url, mPageTitle, Uri.EMPTY.toString());
+                    shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
+                }
+            });
+        }
         getEnhancedToolbar().getTitleTv().setText(!StringUtils.isEmpty(mPageTitle) ? mPageTitle : "");
 
         if (!StringUtils.isEmpty(url) && URLUtil.isValidUrl(url)) {
@@ -121,7 +138,7 @@ public class WebViewActivity extends BaseActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-            if (null != url && url.startsWith("intent")|| url.startsWith("dianping")) {
+            if (null != url && url.startsWith("intent") || url.startsWith("dianping")) {
 //                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 //                if (intent.resolveActivity(getPackageManager())==null){
 //                    Toast.makeText(WebViewActivity.this,"你还没有安装大众点评",Toast.LENGTH_SHORT).show();

@@ -37,7 +37,9 @@ public class ActManager {
      */
     public Activity currentActivity() {
         Activity activity = null;
-
+        if (activityStack == null) {
+            return null;
+        }
         if (activityStack.size() > 0) {
             activity = activityStack.getLast();
         }

@@ -16,6 +16,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,10 +58,10 @@ public class FootPrintActivity extends BaseBehaviorActivity {
 
 
     @Override
-    public ArrayMap<String, String> getUserBehaviorArguments() {
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
 
-        ArrayMap<String,String> data = new ArrayMap<>();
-        data.put("pid",String.valueOf(getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID,-1)));
+        ArrayMap<String,Object> data = new ArrayMap<>();
+        data.put("pid",getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID,-1));
         return data;
     }
 

@@ -9,11 +9,11 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
-import co.quchu.quchu.view.activity.IMeActivity;
 
 /**
  * Created by no21 on 2016/4/8.
@@ -21,31 +21,29 @@ import co.quchu.quchu.view.activity.IMeActivity;
  * desc :
  */
 public class MeActivityPresenter {
-    private IMeActivity view;
 
     private Context context;
 
-    public MeActivityPresenter(IMeActivity view, Context context) {
-        this.view = view;
+    public MeActivityPresenter( Context context) {
         this.context = context;
     }
 
-    public void getGene() {
+    public void getGene(final CommonListener<MyGeneModel> listener) {
         GsonRequest<MyGeneModel> request = new GsonRequest<>(NetApi.getUserGene, MyGeneModel.class, new ResponseListener<MyGeneModel>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(MyGeneModel response, boolean result, @Nullable String exception, @Nullable String msg) {
-                view.initGene(response);
+                listener.successListener(response);
             }
         });
         request.start(context);
     }
 
-    public void getUnreadMassageCound() {
+    public void getUnreadMassageCound(final CommonListener<Integer> listener) {
         GsonRequest<String> request = new GsonRequest<>(NetApi.notReadMassage, new ResponseListener<String>() {
 
             @Override
@@ -59,7 +57,7 @@ public class MeActivityPresenter {
 
                     int count = jsonObject.getInt("msgCount");
                     if (count > 0) {
-                        view.notReadMassage(count);
+                        listener.successListener(count);
                     }
 
                 } catch (JSONException e) {

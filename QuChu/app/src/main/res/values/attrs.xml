@@ -2,30 +2,30 @@
 <resources>
 
     <!--<declare-styleable name="RoundProgressBar">-->
-        <!--<attr name="roundColor" format="color" />-->
-        <!--<attr name="roundProgressColor" format="color" />-->
-        <!--<attr name="roundProgressBackground" format="color" />-->
-        <!--<attr name="roundWidth" format="dimension" />-->
-        <!--<attr name="textColor" format="color" />-->
-        <!--<attr name="textSize" format="dimension" />-->
-        <!--<attr name="max" format="integer" />-->
-        <!--<attr name="textIsDisplayable" format="boolean" />-->
-        <!--<attr name="style">-->
-            <!--<enum name="STROKE" value="0" />-->
-            <!--<enum name="FILL" value="1" />-->
-        <!--</attr>-->
-        <!--<attr name="textStyle">-->
-            <!--<enum name="None" value="0x00" />-->
-            <!--<enum name="Num" value="0x01" />-->
-            <!--<enum name="Word" value="0x02" />-->
-            <!--<enum name="NumWord" value="0x03" />-->
-        <!--</attr>-->
-        <!--<attr name="progress" format="integer" />-->
-        <!--<attr name="roundProgressText" format="string" />-->
-        <!--<attr name="progressStyle">-->
-            <!--<enum name="Animation" value="0x00" />-->
-            <!--<enum name="Default" value="0x01" />-->
-        <!--</attr>-->
+    <!--<attr name="roundColor" format="color" />-->
+    <!--<attr name="roundProgressColor" format="color" />-->
+    <!--<attr name="roundProgressBackground" format="color" />-->
+    <!--<attr name="roundWidth" format="dimension" />-->
+    <!--<attr name="textColor" format="color" />-->
+    <!--<attr name="textSize" format="dimension" />-->
+    <!--<attr name="max" format="integer" />-->
+    <!--<attr name="textIsDisplayable" format="boolean" />-->
+    <!--<attr name="style">-->
+    <!--<enum name="STROKE" value="0" />-->
+    <!--<enum name="FILL" value="1" />-->
+    <!--</attr>-->
+    <!--<attr name="textStyle">-->
+    <!--<enum name="None" value="0x00" />-->
+    <!--<enum name="Num" value="0x01" />-->
+    <!--<enum name="Word" value="0x02" />-->
+    <!--<enum name="NumWord" value="0x03" />-->
+    <!--</attr>-->
+    <!--<attr name="progress" format="integer" />-->
+    <!--<attr name="roundProgressText" format="string" />-->
+    <!--<attr name="progressStyle">-->
+    <!--<enum name="Animation" value="0x00" />-->
+    <!--<enum name="Default" value="0x01" />-->
+    <!--</attr>-->
     <!--</declare-styleable>-->
 
     <declare-styleable name="AnimationRatingBar">
@@ -117,65 +117,65 @@
         </attr>
         <attr name="android:text" />
     </declare-styleable>
-<!--   动画 布局 start-->
+    <!--   动画 布局 start-->
     <declare-styleable name="AVLoadingIndicatorView">
         <attr name="indicator">
-            <flag name="BallPulse" value="0"/>
-            <flag name="BallGridPulse" value="1"/>
-            <flag name="BallClipRotate" value="2"/>
-            <flag name="BallClipRotatePulse" value="3"/>
-            <flag name="SquareSpin" value="4"/>
-            <flag name="BallClipRotateMultiple" value="5"/>
-            <flag name="BallPulseRise" value="6"/>
-            <flag name="BallRotate" value="7"/>
-            <flag name="CubeTransition" value="8"/>
-            <flag name="BallZigZag" value="9"/>
-            <flag name="BallZigZagDeflect" value="10"/>
-            <flag name="BallTrianglePath" value="11"/>
-            <flag name="BallScale" value="12"/>
-            <flag name="LineScale" value="13"/>
-            <flag name="LineScaleParty" value="14"/>
-            <flag name="BallScaleMultiple" value="15"/>
-            <flag name="BallPulseSync" value="16"/>
-            <flag name="BallBeat" value="17"/>
-            <flag name="LineScalePulseOut" value="18"/>
-            <flag name="LineScalePulseOutRapid" value="19"/>
-            <flag name="BallScaleRipple" value="20"/>
-            <flag name="BallScaleRippleMultiple" value="21"/>
-            <flag name="BallSpinFadeLoader" value="22"/>
-            <flag name="LineSpinFadeLoader" value="23"/>
-            <flag name="TriangleSkewSpin" value="24"/>
-            <flag name="Pacman" value="25"/>
-            <flag name="BallGridBeat" value="26"/>
-            <flag name="SemiCircleSpin" value="27"/>
+            <flag name="BallPulse" value="0" />
+            <flag name="BallGridPulse" value="1" />
+            <flag name="BallClipRotate" value="2" />
+            <flag name="BallClipRotatePulse" value="3" />
+            <flag name="SquareSpin" value="4" />
+            <flag name="BallClipRotateMultiple" value="5" />
+            <flag name="BallPulseRise" value="6" />
+            <flag name="BallRotate" value="7" />
+            <flag name="CubeTransition" value="8" />
+            <flag name="BallZigZag" value="9" />
+            <flag name="BallZigZagDeflect" value="10" />
+            <flag name="BallTrianglePath" value="11" />
+            <flag name="BallScale" value="12" />
+            <flag name="LineScale" value="13" />
+            <flag name="LineScaleParty" value="14" />
+            <flag name="BallScaleMultiple" value="15" />
+            <flag name="BallPulseSync" value="16" />
+            <flag name="BallBeat" value="17" />
+            <flag name="LineScalePulseOut" value="18" />
+            <flag name="LineScalePulseOutRapid" value="19" />
+            <flag name="BallScaleRipple" value="20" />
+            <flag name="BallScaleRippleMultiple" value="21" />
+            <flag name="BallSpinFadeLoader" value="22" />
+            <flag name="LineSpinFadeLoader" value="23" />
+            <flag name="TriangleSkewSpin" value="24" />
+            <flag name="Pacman" value="25" />
+            <flag name="BallGridBeat" value="26" />
+            <flag name="SemiCircleSpin" value="27" />
         </attr>
-        <attr name="indicator_color" format="color"/>
+        <attr name="indicator_color" format="color" />
     </declare-styleable>
     <!--   动画 布局 end-->
     <declare-styleable name="TagCloudView">
-        <attr name="tcvBackground" format="reference"/>
-        <attr name="tcvTextColor" format="color"/>
-        <attr name="tcvBorder" format="dimension"/>
-        <attr name="tcvTextSize" format="dimension"/>
-        <attr name="tcvBorderItem" format="dimension"/>
-        <attr name="tcvItemBorderVertical" format="dimension"/>
-        <attr name="tcvItemBorderHorizontal" format="dimension"/>
+        <attr name="tcvBackground" format="reference" />
+        <attr name="tcvTextColor" format="color" />
+        <attr name="tcvBorder" format="dimension" />
+        <attr name="tcvTextSize" format="dimension" />
+        <attr name="tcvBorderItem" format="dimension" />
+        <attr name="tcvItemBorderVertical" format="dimension" />
+        <attr name="tcvItemBorderHorizontal" format="dimension" />
 
-        <attr name="tcvSingleLine" format="boolean"/>
-        <attr name="tcvShowEndText" format="boolean"/>
-        <attr name="tcvShowRightImg" format="boolean"/>
-        <attr name="tcvEndText" format="string"/>
-        <attr name="tcvRightResId" format="reference"/>
-        <attr name="tcvCanTagClick" format="boolean"/>
+        <attr name="tcvSingleLine" format="boolean" />
+        <attr name="tcvShowEndText" format="boolean" />
+        <attr name="tcvShowRightImg" format="boolean" />
+        <attr name="tcvEndText" format="string" />
+        <attr name="tcvRightResId" format="reference" />
+        <attr name="tcvCanTagClick" format="boolean" />
 
-        <attr name="tcvTagResId" format="reference"/>
+        <attr name="tcvTagResId" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="GFFloatingActionButton">
-        <attr name="fabColorPressed" format="color"/>
-        <attr name="fabColorNormal" format="color"/>
-        <attr name="fabIcon" format="reference"/>
-        <attr name="fabTitle" format="string"/>
+        <attr name="fabColorPressed" format="color" />
+        <attr name="fabColorNormal" format="color" />
+        <attr name="fabIcon" format="reference" />
+        <attr name="fabTitle" format="string" />
     </declare-styleable>
 
     <declare-styleable name="HorizontalListView">
@@ -185,10 +185,15 @@
         <attr name="android:fadingEdgeLength" />
     </declare-styleable>
 
-        <declare-styleable name="PullToZoomView">
-            <attr name="headerView" format="reference" />
-            <attr name="contentView" format="reference" />
-            <attr name="zoomView" format="reference" />
-            <attr name="isHeaderParallax" format="boolean" />
-        </declare-styleable>
+    <declare-styleable name="PullToZoomView">
+        <attr name="headerView" format="reference" />
+        <attr name="contentView" format="reference" />
+        <attr name="zoomView" format="reference" />
+        <attr name="isHeaderParallax" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SwipeDeleteLayout">
+        <attr name="content_margin" format="dimension" />
+    </declare-styleable>
+
 </resources>

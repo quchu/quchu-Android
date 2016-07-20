@@ -120,7 +120,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                                 GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
                                     @Override
                                     public void onErrorResponse(@Nullable VolleyError error) {
-                                        Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AddFootprintActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                                     }
 
                                     @Override
@@ -152,6 +152,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        GalleryFinal.setmCallback(null);
     }
 
 
@@ -235,7 +236,7 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                             @Override
                             public void error() {
                                 DialogUtil.dismissProgessDirectly();
-                                Toast.makeText(AddFootprintActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddFootprintActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:id="@+id/root_cv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,20 +31,22 @@
                 android:id="@+id/photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                card_view:actualImageScaleType="centerCrop"
-                card_view:roundBottomLeft="false"
-                card_view:roundBottomRight="false"
-                card_view:roundTopLeft="true"
-                card_view:roundTopRight="true"
-                card_view:roundedCornerRadius="@dimen/rounded_radius" />
+                android:layout_marginLeft="@dimen/half_margin"
+                android:layout_marginRight="@dimen/half_margin"
+
+                fresco:failureImage="@mipmap/ic_image_empty"
+                fresco:failureImageScaleType="center"
+                fresco:placeholderImage="@mipmap/ic_image_empty"
+                fresco:placeholderImageScaleType="center"
+                card_view:actualImageScaleType="centerInside" />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/activity"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                card_view:actualImageScaleType="centerCrop"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                card_view:actualImageScaleType="centerCrop"
                 card_view:roundBottomLeft="false"
                 card_view:roundBottomRight="false"
                 card_view:roundTopLeft="true"
@@ -57,26 +60,45 @@
             android:layout_weight="1">
 
 
-            <RatingBar
-                android:id="@+id/rbRating"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_below="@+id/detail_avg_price_tv"
+            <TextView
+                android:id="@+id/desc"
+                style="@style/TextView.H1"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/base_margin"
-                android:isIndicator="true"
-                android:numStars="5"
-                android:progressDrawable="@drawable/custom_ratingbar_selector"
-                android:rating="3.5"
-                android:stepSize=".5" />
+                android:textStyle="bold"
+                android:text="@string/empty_string" />
 
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_below="@id/desc"
+                android:layout_marginTop="@dimen/half_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:gravity="center"
+                style="@style/TextView.H2"
+                android:textSize="@dimen/standard_text_size_h4"
+
+                android:maxLines="2"
+                />
+
+
+            <View
+                android:layout_below="@id/tvDescription"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                style="@style/HorizontalDivider"
+                android:layout_marginTop="@dimen/half_margin"
+                />
 
             <LinearLayout
                 android:id="@+id/tags"
+                android:layout_below="@id/tvDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rbRating"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/base_margin"
                 android:orientation="horizontal">
@@ -85,27 +107,27 @@
                     android:id="@+id/recommend_tag1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_tag_bg"
-                    android:paddingBottom="4dp"
-                    android:paddingLeft="@dimen/base_margin"
-                    android:paddingRight="@dimen/base_margin"
-                    android:paddingTop="4dp"
+                    android:background="@drawable/shape_lineframe_black_thin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="@dimen/half_margin"
+                    android:paddingRight="@dimen/half_margin"
+                    android:paddingTop="2dp"
                     android:text="标签1"
-                    android:textColor="@color/tagTextColor"
-                    android:textSize="@dimen/standard_text_size_h2" />
+                    android:textColor="@color/standard_color_h3_dark"
+                    android:textSize="@dimen/standard_text_size_h5" />
 
                 <TextView
                     android:id="@+id/recommend_tag2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/half_margin"
-                    android:background="@drawable/shape_tag_bg"
-                    android:paddingBottom="4dp"
-                    android:paddingLeft="@dimen/base_margin"
-                    android:paddingRight="@dimen/base_margin"
-                    android:paddingTop="4dp"
-                    android:textColor="@color/tagTextColor"
-                    android:textSize="@dimen/standard_text_size_h2"
+                    android:background="@drawable/shape_lineframe_black_thin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="@dimen/half_margin"
+                    android:paddingRight="@dimen/half_margin"
+                    android:paddingTop="2dp"
+                    android:textColor="@color/standard_color_h3_dark"
+                    android:textSize="@dimen/standard_text_size_h5"
                     android:visibility="gone" />
 
                 <TextView
@@ -113,54 +135,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/half_margin"
-                    android:background="@drawable/shape_tag_bg"
-                    android:paddingBottom="4dp"
-                    android:paddingLeft="@dimen/base_margin"
-                    android:paddingRight="@dimen/base_margin"
-                    android:paddingTop="4dp"
-                    android:textColor="@color/tagTextColor"
-                    android:textSize="@dimen/standard_text_size_h2"
+                    android:background="@drawable/shape_lineframe_black_thin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="@dimen/half_margin"
+                    android:paddingRight="@dimen/half_margin"
+                    android:paddingTop="2dp"
+                    android:textColor="@color/standard_color_h3_dark"
+                    android:textSize="@dimen/standard_text_size_h5"
                     android:visibility="gone" />
+
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_below="@id/tags"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
-                android:layout_marginTop="@dimen/base_margin"
-                android:background="@color/standard_color_h3_dark" />
 
-            <TextView
-                android:id="@+id/desc"
-                style="@style/TextView.H1"
-                android:layout_below="@id/divider"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/base_margin"
-                android:text="@string/empty_string" />
-
-
-            <TextView
-                android:id="@+id/distance"
-                style="@style/TextView.H2"
-                android:layout_below="@id/desc"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/quarter_margin"
-                android:drawableLeft="@mipmap/ic_label_location_tiny"
-                android:gravity="center"
-                android:text="距您当前位置0km" />
-
-            <TextView
-                android:id="@+id/item_recommend_card_address_tv"
-                style="@style/TextView.H2"
-                android:layout_below="@+id/distance"
-                android:layout_centerHorizontal="true"
-                android:drawableLeft="@mipmap/ic_label_money"
-                android:gravity="center"
-                android:text="人均消费" />
         </RelativeLayout>
     </LinearLayout>
 

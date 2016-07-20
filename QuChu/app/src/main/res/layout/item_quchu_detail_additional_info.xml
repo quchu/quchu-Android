@@ -18,6 +18,7 @@
         android:layout_marginTop="@dimen/half_margin"/>
     <TextView
         android:text="@string/quchu_detail"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/TextView.H1"

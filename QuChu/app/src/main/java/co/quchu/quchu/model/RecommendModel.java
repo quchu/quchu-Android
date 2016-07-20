@@ -1,5 +1,9 @@
 package co.quchu.quchu.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +11,7 @@ import java.util.List;
  * User: Chenhs
  * Date: 2015-12-08
  */
-public class RecommendModel {
+public class RecommendModel implements Parcelable {
 
     /**
      * address : 仙岳路8号桥头堡文创园内
@@ -45,6 +49,15 @@ public class RecommendModel {
     private int width;
     public boolean isout;  //是否去过
     private String price;
+    private String areaCircleName;
+
+    public String getAreaCircleName() {
+        return areaCircleName;
+    }
+
+    public void setAreaCircleName(String areaCircleName) {
+        this.areaCircleName = areaCircleName;
+    }
 
     public String getPrice() {
         return price;
@@ -158,7 +171,7 @@ public class RecommendModel {
         double v = 0;
 
 
-        if (null==latitude){
+        if (null == latitude) {
             return v;
         }
         try {
@@ -243,4 +256,69 @@ public class RecommendModel {
             return zh;
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.address);
+        dest.writeString(this.cover);
+        dest.writeString(this.describe);
+        dest.writeString(this.distance);
+        dest.writeInt(this.height);
+        dest.writeByte(this.isActivity ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isf ? (byte) 1 : (byte) 0);
+        dest.writeString(this.latitude);
+        dest.writeString(this.longitude);
+        dest.writeString(this.name);
+        dest.writeInt(this.pid);
+        dest.writeString(this.rgb);
+        dest.writeFloat(this.suggest);
+        dest.writeInt(this.width);
+        dest.writeByte(this.isout ? (byte) 1 : (byte) 0);
+        dest.writeString(this.price);
+        dest.writeList(this.genes);
+        dest.writeList(this.tags);
+    }
+
+    public RecommendModel() {
+    }
+
+    protected RecommendModel(Parcel in) {
+        this.address = in.readString();
+        this.cover = in.readString();
+        this.describe = in.readString();
+        this.distance = in.readString();
+        this.height = in.readInt();
+        this.isActivity = in.readByte() != 0;
+        this.isf = in.readByte() != 0;
+        this.latitude = in.readString();
+        this.longitude = in.readString();
+        this.name = in.readString();
+        this.pid = in.readInt();
+        this.rgb = in.readString();
+        this.suggest = in.readFloat();
+        this.width = in.readInt();
+        this.isout = in.readByte() != 0;
+        this.price = in.readString();
+        this.genes = new ArrayList<GenesEntity>();
+        in.readList(this.genes, GenesEntity.class.getClassLoader());
+        this.tags = new ArrayList<TagsEntity>();
+        in.readList(this.tags, TagsEntity.class.getClassLoader());
+    }
+
+    public static final Creator<RecommendModel> CREATOR = new Creator<RecommendModel>() {
+        @Override
+        public RecommendModel createFromParcel(Parcel source) {
+            return new RecommendModel(source);
+        }
+
+        @Override
+        public RecommendModel[] newArray(int size) {
+            return new RecommendModel[size];
+        }
+    };
 }

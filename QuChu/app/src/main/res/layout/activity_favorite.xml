@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,16 +8,28 @@
 
     <include layout="@layout/cp_enhanced_toolbar" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refreshLayout"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_below="@id/appbar"
+        android:background="@color/standard_color_white"
+        app:tabIndicatorColor="@color/standard_color_h1_dark"
+        app:tabIndicatorHeight="2dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/standard_color_h1_dark"
+        app:tabTextColor="@color/standard_color_h3_dark" />
+
+    <View
+        style="@style/VerticalLine"
+        android:layout_height="@dimen/item_height"
+        android:layout_below="@id/appbar"
+        android:layout_centerHorizontal="true" />
+
+    <co.quchu.quchu.widget.NoScrollViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appbar">
+        android:layout_below="@id/tabLayout" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

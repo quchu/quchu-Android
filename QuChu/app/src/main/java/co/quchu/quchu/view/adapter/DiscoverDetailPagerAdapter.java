@@ -62,7 +62,7 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
         } else {
             holder.item_place_event_tv.setVisibility(View.GONE);
         }
-        holder.itemRecommendCardAddressTv.setText(model.getAddress());
+//        holder.itemRecommendCardAddressTv.setText(model.getAddress());
 //        holder.itemRecommendCardPrb.setRating((int) ((model.getSuggest() + 0.5f) >= 5 ? 5 : (model.getSuggest())));
         holder.item_recommend_card_name_tv.setText(model.getName());
         if (model.isout) {
@@ -100,13 +100,13 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
                 }
             }
         }
-        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
-            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
-        } else {
-
-            String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
-            holder.item_recommend_card_distance_tv.setText("距您" + distance);
-        }
+//        if (0 == SPUtils.getLatitude() && 0 == SPUtils.getLongitude()) {
+//            holder.item_recommend_card_distance_tv.setVisibility(View.GONE);
+//        } else {
+//
+//            String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
+//            holder.item_recommend_card_distance_tv.setText("距您" + distance);
+//        }
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,8 +123,8 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
         SimpleDraweeView itemRecommendCardPhotoSdv;
 //        @Bind(R.id.ProperRatingBar)
 //        ProperRatingBar itemRecommendCardPrb;
-        @Bind(R.id.item_recommend_card_address_tv)
-        TextView itemRecommendCardAddressTv;
+//        @Bind(R.id.item_recommend_card_address_tv)
+//        TextView itemRecommendCardAddressTv;
         @Bind(R.id.activity)
         TextView item_place_event_tv;
         @Bind(R.id.desc)
@@ -137,8 +137,8 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
         TextView tag3;
         @Bind(R.id.root_cv)
         CardView rootCv;
-        @Bind(R.id.distance)
-        TextView item_recommend_card_distance_tv;
+//        @Bind(R.id.distance)
+//        TextView item_recommend_card_distance_tv;
 
         public ViewHolder(View itemView) {
             ButterKnife.bind(this, itemView);

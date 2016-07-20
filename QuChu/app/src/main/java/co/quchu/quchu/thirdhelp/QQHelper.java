@@ -18,15 +18,15 @@ import java.util.ArrayList;
  * Date: 2015-12-25
  */
 public class QQHelper {
-    public static void share2QQ(final Activity mContext, Tencent mTencent, String shareUrl, String shareTitle) {
+    public static void share2QQ(final Activity mContext, Tencent mTencent, String shareUrl, String shareTitle,String imagePath) {
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         params.putString(QQShare.SHARE_TO_QQ_TITLE, shareTitle);
-        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "←点我\n  (*^O^*)");
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "趣处 - 一千个人，就有一千个趣处");
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareUrl);
 /*        if (StringUtils.isEmpty(imageUrl)) {*/
 
-            params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://7vzrp0.com5.z0.glb.clouddn.com/ic_quchu_logo.png");
+            params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, imagePath);
       /*  } else {
             params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, imageUrl);
         }*/
@@ -56,7 +56,7 @@ public class QQHelper {
         Bundle params = new Bundle();
         params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
         params.putString(QzoneShare.SHARE_TO_QQ_TITLE, shareTitle);//必填
-        params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "←点我\n" + "(*^O^*)");//选填
+        params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "一千个人，就有一千个趣处");//选填
         params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, shareUrl);//必填
         params.putString(QzoneShare.SHARE_TO_QQ_APP_NAME, "趣处");//必填
         ArrayList<String> imageList = new ArrayList<>();

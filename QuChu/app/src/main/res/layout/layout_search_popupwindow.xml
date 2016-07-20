@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/search_pop_indicator"
+        android:layout_width="@dimen/half_margin"
+        android:layout_height="@dimen/half_margin"
+        android:src="@mipmap/ic_trigon" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/standard_color_white">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <co.quchu.quchu.widget.AreaView
+            android:id="@+id/areaView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/area_area"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="@dimen/base_margin" />
+
+            <View style="@style/VerticalLine" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/area_row"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="@dimen/base_margin" />
+
+        </co.quchu.quchu.widget.AreaView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_pop_sort_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

@@ -76,7 +76,7 @@
     <string name="confirm_delete">确认删除？</string>
     <string name="caution_action_cannot_revert">该操作无法撤销，请注意</string>
     <string name="hint_max_text_length">剩余140字</string>
-    <string name="network_error">网络异常，请检查网络</string>
+    <string name="network_error">无网络</string>
     <string name="click_to_retry">点击重试</string>
 
     <string name="passFilter">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
@@ -124,6 +124,7 @@
 
     <string name="preview">预览</string>
 
+    <string name="edit">编辑</string>
     <string name="permissions_tips_gallery">这个App请求访问你的相册</string>
 
     <string name="permissions_denied_tips">无法获取图片</string>
@@ -177,7 +178,24 @@
     <string name="login_via_this_number">使用此手机号码登录</string>
     <string name="forget_password">忘记密码</string>
     <string name="no_data">搜索无结果</string>
+
+    <string name="string_no_data">暂无数据</string>
+
     <string name="promote_no_network_naughty">报告！你已失联，接受不到讯号！</string>
     <string name="promote_no_visitor">还没有人去过</string>
+    <string name="qu_recommend">趣推荐</string>
+    <string name="qu_discover">趣发现</string>
+    <string name="mine">我的</string>
+    <string name="add_to_favorite_success">添加场景成功</string>
+    <string name="add_to_favorite_fail">添加场景失败</string>
+    <string name="del_to_favorite_success">删除场景成功</string>
+    <string name="del_to_favorite_fail">删除场景失败</string>
+
+
+    <string name="add_to_favorite_article_success">添加文章成功</string>
+    <string name="add_to_favorite_article_fail">添加文章失败</string>
+    <string name="del_to_favorite_article_success">删除文章成功</string>
+    <string name="del_to_favorite_article_fail">删除文章失败</string>
+    <string name="process_running_please_wait">操作正在执行，请稍后</string>
 
 </resources>

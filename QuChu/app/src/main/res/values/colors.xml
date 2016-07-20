@@ -6,6 +6,9 @@
     <color name="colorAccent">@color/standard_color_red</color>                     //应用次主题色
     <color name="colorBackground">#efefef</color>                                   //通用背景颜色
 
+    <color name="colorDivider">#e3e3e3</color>                                      //分割线颜色
+    <color name="colorBorder">#dbdbdb</color>                                       //描边
+
     <color name="translucent_white">#7fffffff</color>                               //白色半透明
     <color name="translucent_dark">#7f000000</color>                                //黑色半透明
     <color name="translucent_dark_deep">#cf000000</color>                           //黑色半透明深

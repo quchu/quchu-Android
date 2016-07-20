@@ -165,7 +165,7 @@ public class WechatHelper {
     }
 
     public static void shareFriends(Activity mActivity, String shareUrl, String title,
-                                    boolean isShare4Friends) {
+                                    boolean isShare4Friends, Bitmap bitmap) {
         IWXAPI api = WXAPIFactory.createWXAPI(mActivity, WECHAT_APP_ID,
                 false);
         api.registerApp(WECHAT_APP_ID);
@@ -175,17 +175,19 @@ public class WechatHelper {
         }
 
         WXMediaMessage msg;
-
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = shareUrl;
         msg = new WXMediaMessage(webpage);
 
-        //  msg.description = "←点我\n &#040;&#042;&#094;O&#094;&#042;&#041;";
         msg.title = title;
-        msg.description = "←点我\n (*^O^*)";
+        msg.description = "趣处 - 一千个人，就有一千个趣处";
+        if (bitmap != null && !bitmap.isRecycled()) {
 
-        msg.thumbData = bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
-                R.mipmap.ic_launcher), true);
+            msg.thumbData = bmpToByteArray(bitmap, false);
+        } else {
+            msg.thumbData = bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
+                    R.mipmap.ic_launcher), true);
+        }
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
@@ -205,7 +207,7 @@ public class WechatHelper {
 
     public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
+        bmp.compress(Bitmap.CompressFormat.PNG, 60, output);
         if (needRecycle) {
             bmp.recycle();
         }
@@ -216,7 +218,7 @@ public class WechatHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        LogUtils.e("压缩后的大小:" + result.length);
         return result;
     }
 

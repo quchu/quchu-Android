@@ -1,8 +1,9 @@
 package co.quchu.quchu.view.adapter;
 
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,102 +18,161 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.RecommendModel;
-import co.quchu.quchu.utils.FlyMeUtils;
+import co.quchu.quchu.model.SearchCategoryBean;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.TagCloudView;
 
 /**
- * RecommendAdapter
  * User: Chenhs
  * Date: 2015-12-08
  * 趣处推荐 适配器 adapter
  */
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.RecommendHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-    private AppCompatActivity mContext;
-    private boolean isFlyme = false;
-    private ArrayList<RecommendModel> arrayList;
-    private RecommendHolder holder;
-    RecommendModel model;
+    private ArrayList<RecommendModel> resultList;
+    private ArrayList<SearchCategoryBean> categoryList;
 
-    public SearchAdapter(AppCompatActivity mContext) {
-        this.mContext = mContext;
-        isFlyme = FlyMeUtils.isFlyme();
+    public static final int ITEM_TYPE_CATEGORY = -1;
+    public static final int ITEM_TYPE_RESULT = -2;
 
+
+    private boolean isCategory = true;
+
+    public void setCategory(boolean category) {
+        isCategory = category;
+    }
+
+    public void setCategoryList(ArrayList<SearchCategoryBean> categoryList) {
+        this.categoryList = categoryList;
+        notifyDataSetChanged();
+    }
+
+    public boolean isCategory() {
+        return isCategory;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return isCategory ? ITEM_TYPE_CATEGORY : ITEM_TYPE_RESULT;
     }
 
     public void changeDataSet(ArrayList<RecommendModel> arrayList) {
-        this.arrayList = arrayList;
+        this.resultList = arrayList;
         notifyDataSetChanged();
     }
 
     @Override
-    public RecommendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        holder = new RecommendHolder(LayoutInflater.from(mContext).inflate(R.layout.item_nearby_quchu, parent, false));
-        return holder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == ITEM_TYPE_RESULT) {
+            return new ResultHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_result, parent, false));
+        }
+        return new CategoryViewHold(View.inflate(parent.getContext(), R.layout.item_search_category, null));
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
     @Override
-    public void onBindViewHolder(RecommendHolder holder, final int position) {
-        this.holder = holder;
-        model = arrayList.get(position);
-        holder.tvName.setText(model.getName());
-        List<String> strTags = new ArrayList<>();
-        List<RecommendModel.TagsEntity> tags = model.getTags();
-        if (null!=tags && tags.size()>0){
-            for (int i = 0; i < tags.size(); i++) {
-                strTags.add(tags.get(i).getZh());
+    public void onBindViewHolder(final RecyclerView.ViewHolder holde, int position) {
+        if (getItemViewType(position) == ITEM_TYPE_RESULT) {
+            ResultHolder holder = (ResultHolder) holde;
+
+            final RecommendModel model = resultList.get(position);
+            holder.tvName.setText(model.getName());
+            if (TextUtils.isEmpty(model.getPrice())) {
+                ((ResultHolder) holde).searchPrice.setVisibility(View.INVISIBLE);
+            } else {
+                holder.searchPrice.setVisibility(View.VISIBLE);
+                holder.searchPrice.setText(model.getPrice());
             }
-        }
-        holder.tcvTag.setTags(strTags);
-        //holder.tvAddress.setText(model.getAddress());
-        holder.sdvImage.setImageURI(Uri.parse(model.getCover()));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null!=mListener){
-                    mListener.onClick(position);
+
+            List<String> strTags = new ArrayList<>();
+            List<RecommendModel.TagsEntity> tags = model.getTags();
+            if (null != tags && tags.size() > 0) {
+                for (int i = 0; i < tags.size(); i++) {
+                    strTags.add(tags.get(i).getZh());
                 }
             }
-        });
+            holder.tcvTag.setTags(strTags);
+            holder.address.setText(model.getAreaCircleName());
 
+            if (0 == SPUtils.getLatitude() || 0 == SPUtils.getLongitude()) {
+                holder.distance.setVisibility(View.INVISIBLE);
+            } else {
+                holder.distance.setVisibility(View.VISIBLE);
+                String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
+                holder.distance.setText(distance);
+            }
+
+            holder.sdvImage.setImageURI(Uri.parse(model.getCover()));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        mListener.onClick(holde.getAdapterPosition(), model, ITEM_TYPE_RESULT);
+                    }
+                }
+            });
+        } else {
+            CategoryViewHold holder = (CategoryViewHold) holde;
+            final SearchCategoryBean bean = categoryList.get(position);
+            ((CategoryViewHold) holde).searchItemCategoryName.setText(bean.getZh());
+            holder.simpleDraweeView.setImageURI(Uri.parse(bean.getIconUrl()));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onClick(holde.getAdapterPosition(), bean, ITEM_TYPE_CATEGORY);
+                }
+            });
+        }
     }
 
     private OnItemClickListener mListener;
 
-    public interface OnItemClickListener{
-        void onClick(int position);
+    public interface OnItemClickListener {
+        void onClick(int position, Parcelable bean, int itemYype);
     }
 
 
     @Override
     public int getItemCount() {
-        if (arrayList == null)
-            return 0;
-        else
-            return arrayList.size();
+        return isCategory ? categoryList == null ? 0 : categoryList.size() : resultList == null ? 0 : resultList.size();
     }
 
-    class RecommendHolder extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.desc)
+    class ResultHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.search_result_name)
         TextView tvName;
         @Bind(R.id.tag)
         TagCloudView tcvTag;
-//        @Bind(R.id.address)
-//        TextView tvAddress;
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView sdvImage;
+        @Bind(R.id.address)
+        TextView address;
+        @Bind(R.id.distance)
+        TextView distance;
+        @Bind(R.id.searchPrice)
+        TextView searchPrice;
 
-        public RecommendHolder(View itemView) {
+        public ResultHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-
-
     }
+
+    class CategoryViewHold extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.simpleDraweeView)
+        SimpleDraweeView simpleDraweeView;
+        @Bind(R.id.search_item_categoryName)
+        TextView searchItemCategoryName;
+
+        public CategoryViewHold(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
 }

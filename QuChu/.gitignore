@@ -31,3 +31,4 @@ proguard/
 .navigation/
 *.iml
 /captures/
+.idea/

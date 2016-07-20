@@ -62,7 +62,7 @@ public class FeedbackActivity extends BaseActivity {
 
                         @Override
                         public boolean onError(String error) {
-                            Toast.makeText(FeedbackActivity.this, "网络连接异常，请稍后重试！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FeedbackActivity.this,getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                             return false;
                         }
                     });

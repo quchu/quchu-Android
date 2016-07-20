@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/search_pop_item_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/half_margin">
+
+        <ImageView
+            android:id="@+id/search_pop_item_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/half_margin"
+            android:src="@mipmap/ic_checked" />
+
+        <TextView
+            android:id="@+id/search_pop_item_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/standard_color_h2_dark"
+            android:layout_gravity="center_vertical"
+            android:singleLine="true"
+            android:text="哈哈美国加拿大"
+            tools:text="hahahhahahahah" />
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

@@ -18,20 +18,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            android:background="#fff"
+            android:id="@+id/coordinatorLayout"
+            app:contentScrim="@color/standard_color_white"
             app:expandedTitleMarginEnd="0dp"
             app:expandedTitleMarginStart="0dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/sdvHead"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                app:overlayImage="@drawable/bg_quchu_details_toolbar_gradient"
-                app:layout_collapseMode="parallax"/>
+                app:layout_collapseMode="parallax"
+                >
+                <co.quchu.quchu.widget.WrapContentViewPager
+                    android:id="@+id/vpGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
 
+                <co.quchu.quchu.widget.SimpleIndicatorView
+                    android:id="@+id/siv"
+                    android:layout_width="60dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    />
+            </RelativeLayout>
 
             <co.quchu.quchu.base.EnhancedToolbar
                 android:id="@+id/enhancedToolbar"
@@ -39,6 +54,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
+
 
 
         </android.support.design.widget.CollapsingToolbarLayout>

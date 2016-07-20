@@ -3,7 +3,9 @@
     android:shape="rectangle">
     <gradient
         android:endColor="@color/standard_color_yellow"
-        android:startColor="@color/standard_color_yellow"></gradient>
+        android:startColor="@color/standard_color_yellow"/>
     <!-- 圆角 -->
     <corners android:radius="4dp" />
+    <solid android:color="@color/standard_color_yellow"/>
+
 </shape>

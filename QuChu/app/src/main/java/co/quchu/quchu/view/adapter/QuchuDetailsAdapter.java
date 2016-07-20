@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.generic.RoundingParams;
@@ -30,6 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.BottomListDialog;
+import co.quchu.quchu.model.CommentModel;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
@@ -59,7 +60,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     protected static final int LAYOUT_TYPE_NEARBY = 0x0011;
     protected static final int LAYOUT_TYPE_BLANK = 0x0012;
     protected static final int LAYOUT_TYPE_LABEL = 0x0013;
+    protected static final int LAYOUT_TYPE_COMMENT = 0x0014;
     protected static final int LAYOUT_TYPE_LOAD_MORE = 0x1001;
+
 
     private LayoutInflater mLayoutInflater;
     private Activity mAnchorActivity;
@@ -141,13 +144,18 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
+        int imgSize = null != mData.getImglist() ? mData.getImglist().size() : 0;
+        int nearbySize = null != mData.getNearPlace() ? mData.getNearPlace().size() : 0;
+        int commentsSize = null != mData.getReviewList() ? mData.getReviewList().size() : 0;
         if (position <= (BLOCK_INDEX + 1)) {
             return null != mData && mData.isIsActivity() ? VIEW_TYPES_PARTY[position] : VIEW_TYPES[position];
-        } else if (position >= (BLOCK_INDEX + 1) && position < (mData.getImglist().size() + (BLOCK_INDEX + 1))) {
+        } else if (position >= (BLOCK_INDEX + 1) && position < (imgSize + (BLOCK_INDEX + 1))) {
             return LAYOUT_TYPE_IMAGE;
-        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 1)) && position < (mData.getImglist().size() + (BLOCK_INDEX + 2))) {
+        } else if (position >= (imgSize + (BLOCK_INDEX + 1)) && position < (imgSize + commentsSize + (BLOCK_INDEX + 1))) {
+            return LAYOUT_TYPE_COMMENT;
+        } else if (position >= (imgSize + commentsSize + (BLOCK_INDEX + 1)) && position < (imgSize + commentsSize + (BLOCK_INDEX + 2))) {
             return LAYOUT_TYPE_LABEL;
-        } else if (position >= (mData.getImglist().size() + (BLOCK_INDEX + 2)) && position < (mData.getImglist().size() + BLOCK_INDEX + 2 + mData.getNearPlace().size())) {
+        } else if (position >= (imgSize + commentsSize + (BLOCK_INDEX + 2)) && position < (imgSize + commentsSize + BLOCK_INDEX + 2 + nearbySize)) {
             return LAYOUT_TYPE_NEARBY;
         } else {
             return LAYOUT_TYPE_LOAD_MORE;
@@ -167,16 +175,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                return new SimpleInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_info, parent, false));
             case LAYOUT_TYPE_CONTACT_INFO:
                 return new ContactInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_contact_info, parent, false));
-            case LAYOUT_TYPE_RATING_INFO:
-                return new RatingInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
+//            case LAYOUT_TYPE_RATING_INFO:
+//                return new RatingInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
             case LAYOUT_TYPE_ADDITIONAL_INFO:
                 if (null == mData || mData.isIsActivity()) {
                     return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
                 } else {
                     return new AdditionalInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
                 }
-            case LAYOUT_TYPE_OPENING_INFO:
-                return new OpeningInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_opening_info, parent, false));
+//            case LAYOUT_TYPE_OPENING_INFO:
+//                return new OpeningInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_opening_info, parent, false));
             case LAYOUT_TYPE_PARTY_STARTER_INFO:
                 if (null != mData && mData.isIsActivity()) {
                     return new StarterInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_party_starter_info, parent, false));
@@ -189,12 +197,14 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 } else {
                     return new BlankViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
                 }
-            case LAYOUT_TYPE_IMAGE:
-                return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
+//            case LAYOUT_TYPE_IMAGE:
+//                return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
             case LAYOUT_TYPE_LABEL:
                 return new LabelViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
             case LAYOUT_TYPE_NEARBY:
                 return new NearbyViewHolder(mLayoutInflater.inflate(R.layout.item_nearby_quchu_detail, parent, false));
+            case LAYOUT_TYPE_COMMENT:
+                return new CommentViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_comment, parent, false));
             case LAYOUT_TYPE_LOAD_MORE:
                 return new LoadMoreViewHolder(mLayoutInflater.inflate(R.layout.cp_loadmore_horizontal, parent, false));
             default:
@@ -213,16 +223,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             ((IntroImageViewHolder) holder).detail_store_name_tv.setText(null != mData.getName() ? mData.getName().trim() : "");
 
-            ((IntroImageViewHolder) holder).rbRating.setRating(mData.getSuggest());
-            ((IntroImageViewHolder) holder).rbRating.setIsIndicator(true);
-
-            if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.
-                        setText(StringUtils.getColorSpan(((IntroImageViewHolder) holder).detail_avg_price_tv.getContext(), R.color.standard_color_red, "人均消费", "¥" + mData.getPrice(), ""));
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
-            } else {
-                ((IntroImageViewHolder) holder).detail_avg_price_tv.setVisibility(View.GONE);
-            }
 
             //TODO For some reason ,TagCloudView can cause laggy in this activity ,Consider using recyclerview for instead
             if (null != mData.getTags() && mData.getTags().size() > 0) {
@@ -346,22 +346,22 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (holder instanceof ContactInfoViewHolder) {
             mEnableLoadMore = true;
             if (null == mData.getTraffic() || StringUtils.isEmpty(mData.getTraffic())) {
-                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址：" + mData.getAddress());
+                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(mData.getAddress());
                 ((ContactInfoViewHolder) holder).detail_store_address_tv.setSelected(true);
             } else if (!StringUtils.isEmpty(mData.getTraffic())) {
-                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址：" + String.format(mAnchorActivity.getResources().getString(R.string.detail_address_hint_text), mData.getAddress(), mData.getTraffic()));
+                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(String.format(mAnchorActivity.getResources().getString(R.string.detail_address_hint_text), mData.getAddress(), mData.getTraffic()));
             } else {
-                ((ContactInfoViewHolder) holder).detail_store_address_tv.setText("地址:-");
+                ((ContactInfoViewHolder) holder).detail_store_address_tv.setVisibility(View.GONE);
             }
             ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(mOnItemClickListener);
             if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setVisibility(View.VISIBLE);
                 StringTokenizer token = new StringTokenizer(mData.getTel(), " ");
                 StringBuffer phoneHtml = new StringBuffer();
                 while (token.hasMoreTokens()) {
                     String phoneNum = token.nextToken();
                     phoneHtml.append("<font color=#" + Integer.toHexString(((ContactInfoViewHolder) holder).detail_store_address_tv.getResources().getColor(R.color.standard_color_h2_dark) & 0x00ffffff) + "><a href='tel:").append(phoneNum).append("'>").append(phoneNum).append("</a> </font>  ");
                 }
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：");
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.append(Html.fromHtml(phoneHtml.toString()));
                 ((ContactInfoViewHolder) holder).detail_store_phone_tv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -370,23 +370,48 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         b.show();
                     }
                 });
+                ((ContactInfoViewHolder) holder).detail_store_phone_ll.setVisibility(View.VISIBLE);
+                ((ContactInfoViewHolder) holder).vDividerPhone.setVisibility(View.VISIBLE);
             } else {
-                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：-");
-            }
-        } else if (holder instanceof RatingInfoViewHolder) {
-            if (null != mAnalysisModel && null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size() > 0) {
-                try {
+//                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：-");
+                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setVisibility(View.GONE);
+                ((ContactInfoViewHolder) holder).detail_store_phone_ll.setVisibility(View.GONE);
+                ((ContactInfoViewHolder) holder).vDividerPhone.setVisibility(View.GONE);
 
-                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((int) (mAnalysisModel.getResult().get(0).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
-                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((int) (mAnalysisModel.getResult().get(1).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
-                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((int) (mAnalysisModel.getResult().get(2).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
-                    ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
-                    ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
-                    ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
-                } catch (IndexOutOfBoundsException ex) {
-                    //ex.printStackTrace();
-                }
+
             }
+
+            if (mData.isIsActivity() && null != mData.getBusinessHours() && null != mData.getRestDay()) {
+                ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setText(mData.getBusinessHours());
+                ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setVisibility(View.VISIBLE);
+                ((ContactInfoViewHolder) holder).vDividerOpeningTime.setVisibility(View.VISIBLE);
+            } else {
+                ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setVisibility(View.GONE);
+                ((ContactInfoViewHolder) holder).vDividerOpeningTime.setVisibility(View.GONE);
+            }
+
+            if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(mData.getPrice())) {
+                ((ContactInfoViewHolder) holder).detail_avg_price_tv.setText(mData.getPrice() + "元/人");
+                //((ContactInfoViewHolder) holder).detail_avg_price_tv.setText(StringUtils.getColorSpan(((ContactInfoViewHolder) holder).detail_avg_price_tv.getContext(), R.color.standard_color_red, "人均消费", "¥" + mData.getPrice(), ""));
+                ((ContactInfoViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
+            } else {
+                ((ContactInfoViewHolder) holder).detail_avg_price_tv.setVisibility(View.GONE);
+            }
+
+        } else if (holder instanceof RatingInfoViewHolder) {
+//            if (null != mAnalysisModel && null != mAnalysisModel.getResult() && mAnalysisModel.getResult().size() > 0) {
+//                try {
+//
+//                    ((RatingInfoViewHolder) holder).rpvItemLeft.setProgress((int) (mAnalysisModel.getResult().get(0).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
+//                    ((RatingInfoViewHolder) holder).rpvItemMiddle.setProgress((int) (mAnalysisModel.getResult().get(1).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
+//                    ((RatingInfoViewHolder) holder).rpvItemRight.setProgress((int) (mAnalysisModel.getResult().get(2).getCount() * 1.0f / mAnalysisModel.getUserOutCount() * 100));
+//                    ((RatingInfoViewHolder) holder).tvRatingLeft.setText(mAnalysisModel.getResult().get(0).getZh());
+//                    ((RatingInfoViewHolder) holder).tvRatingMiddle.setText(mAnalysisModel.getResult().get(1).getZh());
+//                    ((RatingInfoViewHolder) holder).tvRatingRight.setText(mAnalysisModel.getResult().get(2).getZh());
+//                } catch (IndexOutOfBoundsException ex) {
+//                    //ex.printStackTrace();
+//                }
+//            }
         } else if (holder instanceof AdditionalInfoViewHolder) {
 
             if (!mData.isIsActivity() && null != mData.getIcons()) {
@@ -404,11 +429,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         } else if (holder instanceof OpeningInfoViewHolder) {
-            if (mData.isIsActivity() && null != mData.getBusinessHours() && null != mData.getRestDay()) {
-                ((OpeningInfoViewHolder) holder).detail_store_business_hours_key_tv.setText("报名时间：" + mData.getBusinessHours() + " " + mData.getRestDay());
-            } else {
-                ((OpeningInfoViewHolder) holder).detail_store_business_hours_key_tv.setText("营业时间：" + mData.getBusinessHours() + " " + mData.getRestDay());
-            }
+
         } else if (holder instanceof StarterInfoViewHolder) {
 
             ((StarterInfoViewHolder) holder).detail_activity_initiator_ll.setVisibility(mData.isIsActivity() ? View.VISIBLE : View.GONE);
@@ -422,28 +443,51 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((PartyInfoViewHolder) holder).detail_activity_info_ll.setVisibility(mData.isIsActivity() ? View.VISIBLE : View.GONE);
             ((PartyInfoViewHolder) holder).detail_activity_info_tv.setText(mData.isIsActivity() && null != mData.getActivityInfo() ? mData.getActivityInfo() : "");
         } else if (holder instanceof ImageViewHolder) {
-            int imgIndex = position - BLOCK_INDEX;
-            if (null != mData.getImglist() && mData.getImglist().size() > imgIndex) {
+//            int imgIndex = position - BLOCK_INDEX;
+//            if (null != mData.getImglist() && mData.getImglist().size() > imgIndex) {
+//
+//                if (null != mData.getImglist().get(imgIndex).getImgpath()) {
+//                    String strUri = mData.getImglist().get(imgIndex).getImgpath();
+//                    ((ImageViewHolder) holder).item_card_image_sdv.setImageURI(Uri.parse(strUri));
+//
+//                    if (0 == mData.getImglist().get(imgIndex).getWidth() || 0 == mData.getImglist().get(imgIndex).getHeight()) {
+//                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
+//                    } else {
+//                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio((float) mData.getImglist().get(imgIndex).getWidth() / (float) mData.getImglist().get(imgIndex).getHeight());
+//                    }
+//                }
+//            } else {
+//                ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
+//            }
 
-                if (null != mData.getImglist().get(imgIndex).getImgpath()) {
-                    String strUri = mData.getImglist().get(imgIndex).getImgpath();
-                    ((ImageViewHolder) holder).item_card_image_sdv.setImageURI(Uri.parse(strUri));
+        } else if (holder instanceof CommentViewHolder){
+            if (null!=mData.getReviewList()){
 
-                    if (0 == mData.getImglist().get(imgIndex).getWidth() || 0 == mData.getImglist().get(imgIndex).getHeight()) {
-                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
-                    } else {
-                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio((float) mData.getImglist().get(imgIndex).getWidth() / (float) mData.getImglist().get(imgIndex).getHeight());
-                    }
+                int commentIndex = position - BLOCK_INDEX;
+                if (null != mData.getImglist()) {
+                    commentIndex -= mData.getImglist().size();
                 }
-            } else {
-                ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
-            }
+                commentIndex -= 1;
+                if (null == mData.getReviewList().get(commentIndex) || null == mData.getReviewList().get(commentIndex )) {
+                    return;
+                }
+                CommentModel commentModel = mData.getReviewList().get(commentIndex);
+                ((CommentViewHolder) holder).tvUsername.setText(commentModel.getUserName());
+                ((CommentViewHolder) holder).tvDate.setText(commentModel.getCreateDate());
+                ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
+                ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
+                ((CommentViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(commentModel.getUserPhoneUrl()));
 
-        } else if (holder instanceof NearbyViewHolder) {
+
+            }
+        }else if (holder instanceof NearbyViewHolder) {
             if (null != mData.getNearPlace()) {
                 int imgIndex = position - BLOCK_INDEX;
                 if (null != mData.getImglist()) {
                     imgIndex -= mData.getImglist().size();
+                }
+                if (null != mData.getReviewList()) {
+                    imgIndex -= mData.getReviewList().size();
                 }
                 imgIndex -= 1;
                 if (null == mData.getNearPlace().get(imgIndex - 1) || null == mData.getNearPlace().get(imgIndex - 1)) {
@@ -525,6 +569,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (null != mData && null != mData.getNearPlace()) {
             basicCount += mData.getNearPlace().size();
         }
+        if (null != mData && null != mData.getReviewList()) {
+            basicCount += mData.getReviewList().size();
+        }
         basicCount += 2;
         return basicCount;
     }
@@ -551,10 +598,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class IntroImageViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.detail_store_name_tv)
         TextView detail_store_name_tv;
-        @Bind(R.id.rbRating)
-        RatingBar rbRating;
-        @Bind(R.id.detail_avg_price_tv)
-        TextView detail_avg_price_tv;
 
         @Bind(R.id.recommend_tag1)
         TextView tag1;
@@ -562,6 +605,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView tag2;
         @Bind(R.id.recommend_tag3)
         TextView tag3;
+
 
         IntroImageViewHolder(View view) {
             super(view);
@@ -591,6 +635,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LinearLayout detail_store_phone_ll;
         @Bind(R.id.detail_store_phone_tv)
         TextView detail_store_phone_tv;
+        @Bind(R.id.detail_store_business_hours_key_tv)
+        TextView detail_store_business_hours_key_tv;
+        @Bind(R.id.vDividerOpeningTime)
+        View vDividerOpeningTime;
+        @Bind(R.id.vDividerPhone)
+        View vDividerPhone;
+
+        @Bind(R.id.detail_avg_price_tv)
+        TextView detail_avg_price_tv;
 
         ContactInfoViewHolder(View view) {
             super(view);
@@ -632,9 +685,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static class OpeningInfoViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.detail_store_business_hours_key_tv)
-        TextView detail_store_business_hours_key_tv;
-
         OpeningInfoViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -682,6 +732,29 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
+    public static class CommentViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.sdvAvatar)
+        SimpleDraweeView sdvAvatar;
+        @Bind(R.id.tvUsername)
+        TextView tvUsername;
+        @Bind(R.id.tvDate)
+        TextView tvDate;
+        @Bind(R.id.rlUserInfo)
+        RelativeLayout rlUserInfo;
+        @Bind(R.id.tvUserComment)
+        TextView tvUserComment;
+        @Bind(R.id.ivFrom)
+        SimpleDraweeView ivFrom;
+        @Bind(R.id.tvFrom)
+        TextView tvFrom;
+
+        CommentViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+
     public static class BlankViewHolder extends RecyclerView.ViewHolder {
         BlankViewHolder(View view) {
             super(view);
@@ -714,12 +787,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         @Override
-        public AdditionalInfoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_additional_info, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(AdditionalInfoAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
 
             int id = mIconSet.get(position).getId();
             switch (id) {
