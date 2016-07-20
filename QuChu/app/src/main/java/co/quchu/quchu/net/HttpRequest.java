@@ -50,7 +50,7 @@ public class HttpRequest extends JsonObjectRequest {
         if (!StringUtils.isEmpty(SPUtils.getUserToken(AppContext.mContext))) {
             headers.put("quchu-token", SPUtils.getUserToken(AppContext.mContext));
         }
-        headers.put("quchuVersion", AppContext.packageInfo.versionName);
+        headers.put("quchuVersion","Android_V" + AppContext.packageInfo.versionName);
       /*  headers.put("quchu-token",SPUtils.getUserToken(AppContext.mContext) );
         LogUtils.json("getHeaders == user=="+SPUtils.getUserToken(AppContext.mContext) );*/
         return headers;
