@@ -51,9 +51,11 @@
         android:id="@+id/tvUserComment"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
+        android:paddingTop="@dimen/half_margin"
+        android:paddingBottom="@dimen/half_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextView.H2"
+        style="@style/TextView.H3"
         />
 
     <RelativeLayout

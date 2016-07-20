@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="@dimen/base_margin"
-            android:rotation="180"
             android:src="@mipmap/ic_forward" />
     </FrameLayout>
 
