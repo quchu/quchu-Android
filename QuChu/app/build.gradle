@@ -74,45 +74,45 @@ android {
         quchu_official {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_official"] //官网包渠道名
         }
-//        quchu_wandoujia {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wandoujia"]
-//        }
-//        quchu_360 {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_360"]
-//        }
-//        quchu_baidu {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_baidu"]
-//        }
-//        quchu_uc {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_uc"]
-//        }
-//        quchu_anzhi {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_anzhi"]
-//        }
-//        quchu_xiaomi {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_xiaomi"]
-//        }
-//        quchu_huawei {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_huawei"]
-//        }
-//        quchu_flyme {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_flyme"]
-//        }
-//        quchu_yingyongbao {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_yingyongbao"]
-//        }
-//        quchu_wo {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wo"]
-//        }
-//        quchu_lephone {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_lephone"]
-//        }
-//        quchu_umeng {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_umeng"]
-//        }
-//        quchu_weibo {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_weibo"]
-//        }
+        quchu_wandoujia {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wandoujia"]
+        }
+        quchu_360 {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_360"]
+        }
+        quchu_baidu {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_baidu"]
+        }
+        quchu_uc {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_uc"]
+        }
+        quchu_anzhi {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_anzhi"]
+        }
+        quchu_xiaomi {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_xiaomi"]
+        }
+        quchu_huawei {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_huawei"]
+        }
+        quchu_flyme {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_flyme"]
+        }
+        quchu_yingyongbao {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_yingyongbao"]
+        }
+        quchu_wo {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_wo"]
+        }
+        quchu_lephone {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_lephone"]
+        }
+        quchu_umeng {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_umeng"]
+        }
+        quchu_weibo {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_weibo"]
+        }
     }
 
 //    useLibrary 'org.apache.http.legacy'
