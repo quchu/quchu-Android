@@ -71,6 +71,7 @@
             android:id="@+id/ivFrom"
             android:layout_width="@dimen/comment_from_avatar_size"
             android:layout_height="@dimen/comment_from_avatar_size"
+            android:layout_marginRight="@dimen/half_margin"
             android:layout_toLeftOf="@+id/tvFrom"
             />
         <TextView
