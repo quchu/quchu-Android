@@ -2,6 +2,8 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -67,8 +69,8 @@ public class ShareQuchuActivity extends BaseActivity {
         getEnhancedToolbar().getRightTv().setText(R.string.share_mode_normal);
         getEnhancedToolbar().getRightTv().setTextColor(getResources().getColor(R.color.standard_color_white));
         getEnhancedToolbar().getTitleTv().setText("");
-        getEnhancedToolbar().getLeftIv().setImageResource(R.mipmap.ic_forward);
-        getEnhancedToolbar().getLeftIv().setRotation(180);
+
+        getEnhancedToolbar().getLeftIv().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
         getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
             @Override

@@ -498,10 +498,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 CommentModel commentModel = mData.getReviewList().get(commentIndex);
                 ((CommentViewHolder) holder).tvUsername.setText(commentModel.getUserName());
-                ((CommentViewHolder) holder).tvDate.setText(commentModel.getCreateDate());
+                if (null!=commentModel.getCreateDate()){
+                    ((CommentViewHolder) holder).tvDate.setText(commentModel.getCreateDate().substring(0,10));
+                }else{
+                    ((CommentViewHolder) holder).tvDate.setText("-");
+                }
                 ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
                 ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
                 ((CommentViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(commentModel.getUserPhoneUrl()));
+                ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
 
 
             }

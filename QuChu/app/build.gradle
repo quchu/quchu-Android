@@ -9,8 +9,8 @@ android {
         applicationId "co.quchu.quchu"
         targetSdkVersion 22
         minSdkVersion 16
-        versionCode 1053
-        versionName "1.4.0.13"
+        versionCode 1054
+        versionName "1.4.0.16"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
 

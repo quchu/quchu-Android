@@ -51,7 +51,7 @@
             card_view:tcvBackground="@drawable/shape_lineframe_black_thin"
             card_view:tcvTextSize="4dp"
             card_view:tcvBorder = "8dp"
-            android:layout_marginLeft="-12dp"
+            android:layout_marginLeft="-10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             card_view:tcvCanTagClick="false"

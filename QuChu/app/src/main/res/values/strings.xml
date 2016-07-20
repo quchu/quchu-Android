@@ -154,14 +154,14 @@
     <string name="promote_duplicate_username">该手机号已经被注册</string>
     <string name="promote_username_not_existed">该手机号未被使用</string>
     <string name="click_to_load_more">点击加载更多</string>
-    <string name="quchu_detail_share_text">我发现了一个好地方\n\n敢和我一起去吗 ?</string>
+    <string name="quchu_detail_share_text">你愿意和我一起去么？</string>
     <string name="share_mode_joking">调侃模式</string>
     <string name="share_mode_normal">认真模式</string>
     <string name="cancel">取消</string>
     <string name="promote_verify_fail">验证失败，请输入正确的验证码</string>
     <string name="quchu_detail">趣处详情</string>
     <string name="guess_what_you_like">猜你喜欢</string>
-    <string name="guess_where_is_it">这是个超赞的趣处，你愿意和我一起去么？</string>
+    <string name="guess_where_is_it">这是个超赞的趣处</string>
     <string name="registration_step_1">注册（1/2）</string>
     <string name="registration_step_2">注册（2/2）</string>
     <string name="forget_pwd_step_1">找回密码（1/2）</string>

@@ -2,6 +2,8 @@ package co.quchu.quchu.view.activity;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -286,6 +288,9 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
         share.setOnClickListener(this);
         headImage.setOnClickListener(this);
         fooopDetailActionBack.setOnClickListener(this);
+        fooopDetailActionBack.setImageResource(R.mipmap.ic_back);
+        fooopDetailActionBack.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             float x;
             float y;

@@ -7,7 +7,7 @@
     fresco:failureImage="@mipmap/ic_image_empty"
     fresco:failureImageScaleType="focusCrop"
     fresco:placeholderImage="@mipmap/ic_image_empty"
-    fresco:placeholderImageScaleType="focusCrop"
+    fresco:placeholderImageScaleType="centerInside"
     fresco:roundingBorderWidth="1px"
     fresco:roundingBorderColor="@color/colorBackground"
     fresco:roundedCornerRadius="@dimen/rounded_radius"
