@@ -18,7 +18,8 @@ android {
                 GETUI_APP_ID    : "CeEw7RJzkY9zsL39zvArq3",
                 GETUI_APP_KEY   : "ArD8yYRKxs5EZB2X9aVmR3",
                 GETUI_APP_SECRET: "56VjMk0sR390uEBISPXxv2",
-                PACKAGE_NAME    : applicationId
+                PACKAGE_NAME    : applicationId,
+                ZHUGEIO_APP_KEY : "ed26b1ea7c044929bc067eb0cca4426d"
         ]
 
         ndk {//个推配置 如果 project 中包含其他 so 库且只支持某几种 cpu 架构，那么应该根据其他 so 库支持的 cpu 架构来配置
@@ -137,6 +138,8 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportVersion()}"
     compile "com.android.support:support-v4:${supportVersion()}"
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.zhuge.analysis:zhugeio:latest.integration'
+
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.2.jar')
     compile files('libs/open_sdk_r5509.jar')

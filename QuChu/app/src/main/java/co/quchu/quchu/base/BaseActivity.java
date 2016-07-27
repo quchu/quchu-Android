@@ -11,7 +11,9 @@ import android.widget.RelativeLayout;
 
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
+import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.utils.LogUtils;
@@ -76,6 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ZhugeSDK.getInstance().flush(getApplicationContext());
         RefWatcher refWatcher = AppContext.getRefWatcher(getApplicationContext());
         refWatcher.watch(this);
         ActManager.getAppManager().finishActivity(this);
@@ -129,6 +132,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+
+        if(BuildConfig.API_SERVER!=0){
+            ZhugeSDK.getInstance().openDebug();
+        }
+
+        ZhugeSDK.getInstance().init(getApplicationContext());
         LogUtils.e("base activity onResume  " + getClass().getSimpleName());
 
     }
