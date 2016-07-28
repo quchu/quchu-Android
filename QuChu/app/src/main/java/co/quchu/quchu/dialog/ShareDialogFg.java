@@ -197,7 +197,7 @@ public class ShareDialogFg extends DialogFragment implements AdapterView.OnItemC
                         // If you need to keep a reference to the image, read the following sections.
                         CloseableStaticBitmap image = (CloseableStaticBitmap) imageReference.get();
                         shareBitmap = image.getUnderlyingBitmap();
-                        shareBitmap = Bitmap.createScaledBitmap(shareBitmap, 150, 150, false);
+                        shareBitmap = Bitmap.createScaledBitmap(shareBitmap, 120, 120, false);
                         LogUtils.e(image.getClass().getName());
                     } finally {
                         CloseableReference.closeSafely(imageReference);

@@ -182,11 +182,13 @@ public class WechatHelper {
         msg.title = title;
         msg.description = "趣处 - 一千个人，就有一千个趣处";
         if (bitmap != null && !bitmap.isRecycled()) {
-
-            msg.thumbData = bmpToByteArray(bitmap, false);
+            msg.thumbData = bmpToByteArray(bitmap, true);
         } else {
-            msg.thumbData = bmpToByteArray(BitmapFactory.decodeResource(mActivity.getResources(),
-                    R.mipmap.ic_launcher), true);
+            Bitmap bm = BitmapFactory.decodeResource(mActivity.getResources(), R.mipmap.ic_launcher);
+            if (bm.getWidth()>120 || bm.getHeight() >120){
+                bm = Bitmap.createScaledBitmap(bm,120,120,false);
+            }
+            msg.thumbData = bmpToByteArray(bm, true);
         }
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
