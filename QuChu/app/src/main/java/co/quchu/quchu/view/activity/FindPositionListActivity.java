@@ -29,6 +29,10 @@ import co.quchu.quchu.view.adapter.FindAdapter;
  */
 public class FindPositionListActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, PageLoadListener<FindBean>, AdapterBase.OnItemClickListener<FindBean.ResultEntity>, SwipeRefreshLayout.OnRefreshListener {
 
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_spot_new_playground);
+    }
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.findPosition)

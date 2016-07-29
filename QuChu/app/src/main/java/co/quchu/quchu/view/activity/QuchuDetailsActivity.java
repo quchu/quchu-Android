@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -54,6 +54,11 @@ import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
  */
 public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_quchu_details);
+    }
 
     @Bind(R.id.detail_recyclerview)
     RecyclerView mRecyclerView;
@@ -147,7 +152,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     @Override
     public int getUserBehaviorPageId() {
-        return 111;
+        return 104;
     }
 
     private void getVisitorsAnlysis() {
@@ -343,7 +348,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                             }
                             pids = pids.substring(0, pids.length() - 1);
                         }
-                        MobclickAgent.onEvent(QuchuDetailsActivity.this, "allrecommendation_c");
                         intent.putExtra(NearbyActivity.BUNDLE_KEY_DATA, (Serializable) model);
                         intent.putExtra(NearbyActivity.BUNDLE_KEY_PID, dModel.getPid());
                         intent.putExtra(NearbyActivity.BUNDLE_KEY_RECOMMEND_PIDS, pids);
@@ -422,10 +426,8 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                         public void onPreOrderClick() {
                             if (NetUtil.isNetworkConnected(getApplicationContext())) {
                                 if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
-                                    MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
                                     WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName(),false);
                                 } else {
-                                    MobclickAgent.onEvent(QuchuDetailsActivity.this, "reserve_c");
                                     WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName(),false);
                                 }
                             } else {
@@ -482,7 +484,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                         Toast.makeText(QuchuDetailsActivity.this, "此趣处暂无导航信息!", Toast.LENGTH_SHORT).show();
                     }else {
                         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_MAP));
-                        MobclickAgent.onEvent(this, "map_c");
 
                         Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
                         mapIntent.putExtra("pid",dModel.getPid());
@@ -540,18 +541,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     }
 
 
-    @Override
-    protected void onResume() {
-        MobclickAgent.onPageStart(from);
-        super.onResume();
-    }
 
-    @Override
-    protected void onPause() {
-        MobclickAgent.onPageEnd(from);
-        super.onPause();
-
-    }
 
     @Override
     public void onStart() {

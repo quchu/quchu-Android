@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -46,7 +48,23 @@ import co.quchu.quchu.widget.ErrorView;
 /**
  * Created by Nico on 16/7/11.
  */
-public class SceneDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRefreshLayout.OnRefreshListener {
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 103;
+    }
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_scene_detail);
+    }
 
     private static final String BUNDLE_KEY_SCENE_ID = "BUNDLE_KEY_SCENE_ID";
     private static final String BUNDLE_KEY_SCENE_NAME = "BUNDLE_KEY_SCENE_NAME";

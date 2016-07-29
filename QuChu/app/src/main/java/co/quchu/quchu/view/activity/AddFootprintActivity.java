@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -28,6 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -48,7 +50,23 @@ import co.quchu.quchu.widget.SelectedImagePopWin;
 /**
  * Created by Nico on 16/4/12.
  */
-public class AddFootprintActivity extends BaseActivity implements FindPositionAdapter.ItemClickListener {
+public class AddFootprintActivity extends BaseBehaviorActivity implements FindPositionAdapter.ItemClickListener {
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 106;
+    }
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_add_footprint);
+    }
     @Bind(R.id.etContent)
     EditText etContent;
     @Bind(R.id.recyclerView)
@@ -312,18 +330,6 @@ public class AddFootprintActivity extends BaseActivity implements FindPositionAd
                 DialogUtil.dismissProgessDirectly();
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        MobclickAgent.onPageStart("uploadpic");
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        MobclickAgent.onPageEnd("uploadpic");
-        super.onPause();
     }
 
     @Override

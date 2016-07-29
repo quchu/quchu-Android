@@ -28,6 +28,12 @@ import co.quchu.quchu.widget.SpacesItemDecoration;
  */
 public class QuchuListSpecifyTagActivity extends BaseActivity {
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_specify_tags);
+    }
+
     private int mTagId = 0;
     private String mTagName;
     public static String BUNDLE_KEY_TAG_ID = "BUNDLE_KEY_TAG_ID";

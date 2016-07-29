@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.json.JSONObject;
 
@@ -39,6 +39,12 @@ import co.quchu.quchu.utils.StringUtils;
  * Date: 2015-11-10
  */
 public class SplashActivity extends BaseActivity {
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_landing);
+    }
 
     private long viewDuration = 2 * 1000;
     private long visitorStartTime = 0L;
@@ -181,14 +187,12 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        MobclickAgent.onPageStart("SplashActivity");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("SplashActivity");
     }
 
     public void enterApp() {

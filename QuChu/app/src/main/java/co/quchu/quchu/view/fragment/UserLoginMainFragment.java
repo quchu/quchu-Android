@@ -17,7 +17,7 @@
 //import com.nineoldandroids.animation.Animator;
 //import com.nineoldandroids.animation.AnimatorSet;
 //import com.nineoldandroids.animation.ObjectAnimator;
-//import com.umeng.analytics.MobclickAgent;
+//
 //
 //import butterknife.Bind;
 //import butterknife.ButterKnife;

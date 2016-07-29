@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,6 +39,11 @@ import co.quchu.quchu.view.adapter.FavoriteQuchuAdapter;
 public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.OnLoadmoreListener,
         SwipeRefreshLayout.OnRefreshListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean>, PageLoadListener<FavoriteBean> {
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_f_favorite_quchu);
+    }
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -78,7 +83,6 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
 
     @Override
     public void itemClick(final RecyclerView.ViewHolder holder, final FavoriteBean.ResultBean item, int type, int position) {
-        MobclickAgent.onEvent(getContext(), "detail_profile_c");
         this.holder = holder;
         this.item = item;
         switch (type) {

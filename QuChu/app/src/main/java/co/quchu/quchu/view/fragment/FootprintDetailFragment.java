@@ -20,6 +20,12 @@ import co.quchu.quchu.model.ImageModel;
 public class FootprintDetailFragment extends BaseFragment {
 
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_f_foot_print);
+    }
+
     @Bind(R.id.draweeViewMain)
     SimpleDraweeView draweeViewMain;
 

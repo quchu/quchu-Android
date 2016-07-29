@@ -17,7 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.umeng.analytics.MobclickAgent;
+
 import com.umeng.update.UmengUpdateAgent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,6 +60,13 @@ import co.quchu.quchu.view.fragment.RecommendFragment;
  * 趣处分类、推荐
  */
 public class RecommendActivity extends BaseBehaviorActivity {
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_home);
+    }
+
     @Bind(R.id.recommend_title_location_tv)
     TextView recommendTitleLocationIv;
 
@@ -296,7 +303,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 }
                 break;
             case R.id.recommend_title_location_rl:
-                MobclickAgent.onEvent(this, "location_c");
 
                 if (NetUtil.isNetworkConnected(getApplicationContext())) {
                     if (list != null) {

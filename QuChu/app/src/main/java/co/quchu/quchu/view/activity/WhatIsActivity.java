@@ -7,6 +7,12 @@ import co.quchu.quchu.base.BaseActivity;
 
 public class WhatIsActivity extends BaseActivity {
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_qu_friends_description);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

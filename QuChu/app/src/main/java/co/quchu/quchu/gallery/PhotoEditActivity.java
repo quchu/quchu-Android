@@ -127,6 +127,11 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         return TRANSITION_TYPE_LEFT;
     }
 
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_crop_image_activity);
+    }
+
 
     private void findViews() {
         getEnhancedToolbar();

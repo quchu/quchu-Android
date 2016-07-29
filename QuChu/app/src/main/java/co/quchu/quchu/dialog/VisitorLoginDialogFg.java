@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.TextView;
 
+
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;

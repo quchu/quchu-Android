@@ -21,7 +21,7 @@ import com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.Postprocessor;
-import com.umeng.analytics.MobclickAgent;
+
 
 import java.util.ArrayList;
 
@@ -36,6 +36,11 @@ import co.quchu.quchu.view.adapter.DiscoverDetailPagerAdapter;
 
 
 public class ClassifyDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_article_detail_);
+    }
 
     public static final String PARAMETER_TITLE = "title";
     @Bind(R.id.vpContent)
@@ -67,7 +72,6 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
         mAdapter = new DiscoverDetailPagerAdapter(mData, this, new DiscoverDetailPagerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                MobclickAgent.onEvent(ClassifyDetailActivity.this, "detail_subject_c");
                 Intent intent = new Intent(ClassifyDetailActivity.this, QuchuDetailsActivity.class);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_SUBJECT);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid());
@@ -215,7 +219,6 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
 
     @Override
     public void onPageSelected(int position) {
-        MobclickAgent.onEvent(this, "discovery_c");
         currentIndex = position;
         index = position;
         mBlurEffectAnimationHandler.sendEmptyMessageDelayed(MESSAGE_FLAG_DELAY_TRIGGER, 300L);

@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -30,8 +32,23 @@ import co.quchu.quchu.view.fragment.RegistrationFragment;
 import co.quchu.quchu.view.fragment.RestorePasswordFragment;
 import co.quchu.quchu.widget.RitalinLayout;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseBehaviorActivity {
 
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 129;
+    }
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_login);
+    }
 
     @Bind(R.id.flContent)
     RitalinLayout flContent;

@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.UserCenterInfo;
@@ -26,6 +28,14 @@ import co.quchu.quchu.view.fragment.FootprintListFragment;
  * Date: 2016-02-23
  */
 public class UserCenterActivity extends BaseActivity implements View.OnClickListener {
+
+
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_user_center);
+    }
 
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;

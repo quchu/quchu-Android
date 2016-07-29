@@ -22,6 +22,10 @@ import co.quchu.quchu.dialog.ShareDialogFg;
  */
 public class ShareQuchuActivity extends BaseActivity {
 
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_share_quchu);
+    }
 
     @Bind(R.id.ivQuchuCover)
     SimpleDraweeView ivQuchuCover;

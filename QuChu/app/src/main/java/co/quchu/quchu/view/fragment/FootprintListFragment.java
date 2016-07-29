@@ -40,6 +40,12 @@ import co.quchu.quchu.view.adapter.MyFootprintAdapter;
  */
 public class FootprintListFragment extends BaseFragment implements AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<PostCardItemModel>, PageLoadListener<PostCardModel>, SwipeRefreshLayout.OnRefreshListener {
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_f_foot_print_list);
+    }
+
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
 

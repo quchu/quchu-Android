@@ -10,12 +10,20 @@ import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
+import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.utils.LogUtils;
 
 
 public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler {
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_wx_shit);
+    }
+
     private WechatHelper weChatHelper;
     private OnWxShareListenter onWxShareListenter;
 //    public static SpreadMapActivity sma;

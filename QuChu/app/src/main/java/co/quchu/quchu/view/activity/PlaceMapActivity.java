@@ -32,7 +32,7 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.android.volley.VolleyError;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -69,6 +69,14 @@ import co.quchu.quchu.view.adapter.AMapNearbyVPAdapter;
  */
 public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnClickListener, LocationSource, AMap.OnMapLoadedListener,
         AMapLocationListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter {
+
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_navigation);
+    }
+
     private OnLocationChangedListener mListener;
     private AMap aMap;
     private AMapLocationClient mlocationClient;
@@ -96,7 +104,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
     @Override
     public int getUserBehaviorPageId() {
-        return 113;
+        return 110;
     }
 
 
@@ -149,7 +157,6 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
             @Override
             public void onPageSelected(final int position) {
-                MobclickAgent.onEvent(PlaceMapActivity.this, "maplist_c");
                 if (mDataSet.get(position).getGdLatitude()==null||mDataSet.get(position).getGdLongitude()==null){
                     return;
                 }
@@ -423,7 +430,6 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
      */
     @Override
     protected void onResume() {
-        MobclickAgent.onPageStart("map");
         super.onResume();
         mapView.onResume();
     }
@@ -433,7 +439,6 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
      */
     @Override
     protected void onPause() {
-        MobclickAgent.onPageEnd("map");
         super.onPause();
         mapView.onPause();
         deactivate();

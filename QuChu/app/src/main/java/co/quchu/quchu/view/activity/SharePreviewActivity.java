@@ -17,6 +17,12 @@ import co.quchu.quchu.model.ImageModel;
 
 public class SharePreviewActivity extends BaseActivity {
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_share);
+    }
+
     @Bind(R.id.simpleDraweeView)
     SimpleDraweeView simpleDraweeView;
     @Bind(R.id.commemt)

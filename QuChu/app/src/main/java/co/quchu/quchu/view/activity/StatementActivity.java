@@ -1,10 +1,11 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.TextView;
 
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
@@ -23,8 +25,23 @@ import co.quchu.quchu.presenter.VersionInfoPresenter;
  * User: 通用文字说明
  * Date: 2016-01-12
  */
-public class StatementActivity extends BaseActivity {
+public class StatementActivity extends BaseBehaviorActivity {
 
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 128;
+    }
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_about_us);
+    }
 
     @Bind(R.id.textView)
     TextView textView;
@@ -101,17 +118,6 @@ public class StatementActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("AboutUsActivity");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("AboutUsActivity");
-    }
 
     @Override
     protected void onDestroy() {

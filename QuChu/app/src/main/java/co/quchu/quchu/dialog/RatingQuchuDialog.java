@@ -14,6 +14,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -145,15 +146,11 @@ public class RatingQuchuDialog extends DialogFragment {
 
     @Override
     public void onResume() {
-        MobclickAgent.onPageStart("evaluate");
-        MobclickAgent.onResume(prbRating.getContext());
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        MobclickAgent.onPageEnd("evaluate");
-        MobclickAgent.onPause(prbRating.getContext());
         super.onPause();
     }
 

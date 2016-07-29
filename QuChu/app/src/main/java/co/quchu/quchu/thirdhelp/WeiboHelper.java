@@ -19,7 +19,7 @@ import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.utils.LogUtil;
 import com.sina.weibo.sdk.utils.Utility;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.json.JSONObject;
 
@@ -118,7 +118,6 @@ public class WeiboHelper {
             @Override
             public void onSuccess(JSONObject response) {
                 UserInfoHelper.saveUserInfo(response);
-                MobclickAgent.onProfileSignIn("loginweibo_c", AppContext.user.getUserId() + "");
                 SPUtils.putLoginType(SPUtils.LOGIN_TYPE_WEIBO);
                 listener.loginSuccess(3, token, uid);
                 LogUtils.e("微博注册成功");

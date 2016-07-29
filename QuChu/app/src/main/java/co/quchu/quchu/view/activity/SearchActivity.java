@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.umeng.analytics.MobclickAgent;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.AreaBean;
 import co.quchu.quchu.model.RecommendModel;
@@ -56,7 +58,23 @@ import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
  * User: Chenhs
  * Date: 2015-12-04
  */
-public class SearchActivity extends BaseActivity implements View.OnClickListener {
+public class SearchActivity extends BaseBehaviorActivity implements View.OnClickListener {
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 114;
+    }
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_search);
+    }
     @Bind(R.id.search_input_et)
     EditText searchInputEt;
     @Bind(R.id.search_button_rl)
@@ -136,17 +154,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
 
-    @Override
-    protected void onResume() {
-        MobclickAgent.onPageStart("search");
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        MobclickAgent.onPageEnd("search");
-        super.onPause();
-    }
 
     private ImageView searchPopIndicator;
 
@@ -451,7 +458,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         //统计搜索关键字
         Map<String, String> p = new HashMap<>();
         p.put("search_keyword", str);
-        MobclickAgent.onEvent(this, "search_type", p);
 
         SearchPresenter.searchFromService(this, areaId, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, circleId, sortType, new SearchPresenter.SearchResultListener() {
             @Override

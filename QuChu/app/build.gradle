@@ -10,7 +10,7 @@ android {
         targetSdkVersion 22
         minSdkVersion 16
         versionCode 1055
-        versionName "1.4.0.17"
+        versionName "1.4.0.20"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
 
@@ -54,19 +54,19 @@ android {
             // 移除无用的resource文件
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [AMAP_DEBUG_KEY: "8d635450932036faf3681a8960d884fa"]
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "8d635450932036faf3681a8960d884fa",UMENG_APP_KEY:"56abaf9be0f55a4757000e39"]
         }
         debug {
             buildConfigField "int", "API_SERVER", "2"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
-            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872",UMENG_APP_KEY:"5655121fe0f55a5ee8008dd5"]
         }
 
         uat {
             buildConfigField "int", "API_SERVER", "1"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
 //            manifestPlaceholders = [AMAP_DEBUG_KEY: "e069ed759bd31de835a577ffd733f14f"]
-            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872"]
+            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872",UMENG_APP_KEY:"5655121fe0f55a5ee8008dd5"]
 //            applicationIdSuffix ".uat"
         }
 

@@ -6,12 +6,17 @@ import android.view.View;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
+
 import co.quchu.quchu.R;
 
 /**
  * Created by admin on 2016/3/2.
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
+
+    protected abstract String getPageNameCN();
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -22,13 +27,13 @@ public class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onResume(getContext());
+        MobclickAgent.onPageStart(getPageNameCN());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPause(getContext());
+        MobclickAgent.onPageEnd(getPageNameCN());
     }
 
 

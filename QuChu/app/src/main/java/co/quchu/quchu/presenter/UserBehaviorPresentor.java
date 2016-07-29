@@ -68,8 +68,6 @@ public class UserBehaviorPresentor {
 
         while (c.moveToNext()){
             UserBehaviorModel ubm = new UserBehaviorModel();
-//
-//            ubm.id = c.getInt(0);
             ubm.pageId = c.getInt(1);
             ubm.userBehavior = c.getString(2);
             ubm.arguments = c.getString(3);
@@ -167,28 +165,7 @@ public class UserBehaviorPresentor {
         });
     }
 
-    private static String getBodyInfo(JSONObject mJsonRequest) {
-        String _Body = "";
-        if (null != mJsonRequest) {
-            Iterator<String> _Iterator = mJsonRequest.keys();
-            while (_Iterator.hasNext()) {
-                String key = _Iterator.next();
-                try {
-                    _Body += key + "=" + mJsonRequest.getString(key);
-                    if (_Iterator.hasNext())
-                        _Body += "&";
-                    LogUtils.json(_Body);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    System.gc();
-                }
-            }
-        }
 
-        // _Body = _Body.substring(0, _Body.length() - 1);
-        return _Body;
-    }
 
 
 

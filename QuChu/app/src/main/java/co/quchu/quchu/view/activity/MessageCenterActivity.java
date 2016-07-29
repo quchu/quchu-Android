@@ -2,18 +2,20 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.umeng.analytics.MobclickAgent;
+
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.MessageModel;
@@ -27,7 +29,23 @@ import co.quchu.quchu.view.adapter.MessageCenterAdapter;
  * User: Chenhs
  * Date: 2016-01-11
  */
-public class MessageCenterActivity extends BaseActivity implements PageLoadListener<MessageModel>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<MessageModel.ResultBean>, SwipeRefreshLayout.OnRefreshListener {
+public class MessageCenterActivity extends BaseBehaviorActivity implements PageLoadListener<MessageModel>, AdapterBase.OnLoadmoreListener, AdapterBase.OnItemClickListener<MessageModel.ResultBean>, SwipeRefreshLayout.OnRefreshListener {
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 124;
+    }
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_message_center);
+    }
+
     @Bind(R.id.messages_rv)
     RecyclerView messagesRv;
     @Bind(R.id.refreshLayout)
@@ -57,18 +75,6 @@ public class MessageCenterActivity extends BaseActivity implements PageLoadListe
     }
 
 
-    @Override
-    protected void onResume() {
-        MobclickAgent.onPageStart("messages");
-
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        MobclickAgent.onPageEnd("messages");
-        super.onPause();
-    }
 
 
     @Override

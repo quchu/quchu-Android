@@ -28,7 +28,7 @@ import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
-import com.umeng.analytics.MobclickAgent;
+
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -56,6 +56,13 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.widget.PolygonProgressView;
 
 public class MeFragment extends BaseFragment implements View.OnClickListener {
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_f_mine);
+    }
+
 
     @Bind(R.id.headImage)
     SimpleDraweeView headImage;
@@ -170,8 +177,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart("profile");
-
 
         if (AppContext.user.isIsVisitors()) {
             //游客
@@ -193,7 +198,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("profile");
     }
 
     private void initListener() {

@@ -9,7 +9,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,6 +39,14 @@ import co.quchu.quchu.widget.SpacesItemDecoration;
  */
 public class FootPrintActivity extends BaseBehaviorActivity {
 
+
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_footprint);
+    }
+
     @Bind(R.id.rvFootPrint)
     RecyclerView rvFootPrint;
     @Bind(R.id.tvAddFootprint)
@@ -67,7 +75,7 @@ public class FootPrintActivity extends BaseBehaviorActivity {
 
     @Override
     public int getUserBehaviorPageId() {
-        return 112;
+        return 105;
     }
 
     @Override
@@ -192,13 +200,11 @@ public class FootPrintActivity extends BaseBehaviorActivity {
 
     @Override
     protected void onResume() {
-        MobclickAgent.onPageStart("pic");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        MobclickAgent.onPageEnd("pic");
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

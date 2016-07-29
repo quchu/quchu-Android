@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -32,6 +33,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
 import co.quchu.quchu.dialog.CommonDialog;
@@ -64,7 +66,12 @@ import co.quchu.quchu.utils.StringUtils;
  * User: Chenhs
  * Date: 2015-12-04
  */
-public class AccountSettingActivity extends BaseActivity implements View.OnClickListener {
+public class AccountSettingActivity extends BaseBehaviorActivity implements View.OnClickListener {
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_account_setting);
+    }
     @Bind(R.id.headView)
     SimpleDraweeView accountSettingAvatarSdv;
     @Bind(R.id.nickname)
@@ -109,6 +116,16 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
             vDividerUserName.setVisibility(View.VISIBLE);
             rlUserName.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 120;
     }
 
 
@@ -440,20 +457,6 @@ public class AccountSettingActivity extends BaseActivity implements View.OnClick
                 Toast.makeText(AccountSettingActivity.this, "图片上传失败!", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("edit");
-    }
-
-    @Override
-    protected void onResume() {
-
-        super.onResume();
-        MobclickAgent.onPageStart("edit");
-
     }
 
 

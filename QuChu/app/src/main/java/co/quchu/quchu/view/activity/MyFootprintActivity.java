@@ -2,22 +2,40 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.umeng.analytics.MobclickAgent;
+
 
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.view.fragment.FootprintListFragment;
 
 /**
  * 我的脚印,如果没有穿id参数 默认显示自己的
  */
-public class MyFootprintActivity extends BaseActivity {
+public class MyFootprintActivity extends BaseBehaviorActivity {
+
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 121;
+    }
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_my_footprint);
+    }
 
 
     public static final String REQUEST_KEY_USER_ID = "userId";
@@ -64,18 +82,6 @@ public class MyFootprintActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void onResume() {
-        MobclickAgent.onPageStart("my pic");
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-
-        MobclickAgent.onPageEnd("my pic");
-        super.onPause();
-    }
 
     @Override
     protected void onDestroy() {

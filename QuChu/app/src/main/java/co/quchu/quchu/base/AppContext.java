@@ -24,6 +24,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
+
 import java.util.List;
 
 import co.quchu.quchu.model.RecommendModel;
@@ -129,7 +130,7 @@ public class AppContext extends Application {
         initWidths();
 
 
-        if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=100){
+        if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=200){
             UserBehaviorPresentor.postBehaviors(getApplicationContext(), UserBehaviorPresentor.getBehaviors(getApplicationContext()), new CommonListener() {
                 @Override
                 public void successListener(Object response) {

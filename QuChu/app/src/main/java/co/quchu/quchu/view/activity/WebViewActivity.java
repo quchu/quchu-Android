@@ -33,6 +33,12 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class WebViewActivity extends BaseActivity {
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_inner_browser);
+    }
+
     @Bind(R.id.webView)
     WebView mWebView;
     @Bind(R.id.refreshLayout)

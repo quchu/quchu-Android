@@ -24,7 +24,7 @@
 //import android.widget.Toast;
 //
 //import com.sina.weibo.sdk.utils.MD5;
-//import com.umeng.analytics.MobclickAgent;
+//
 //
 //import org.json.JSONObject;
 //

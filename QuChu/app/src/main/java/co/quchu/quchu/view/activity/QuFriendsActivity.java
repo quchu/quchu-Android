@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,6 +37,13 @@ import co.quchu.quchu.widget.AnimationViewPager.RotatePageTransformer;
  * 趣星人
  */
 public class QuFriendsActivity extends BaseActivity {
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_qu_friends);
+    }
+
     @Bind(R.id.recyclerView)
     ViewPager quFriendsVp;
     @Bind(R.id.tabLayout)
@@ -142,7 +149,6 @@ public class QuFriendsActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        MobclickAgent.onPageStart("social");
         super.onResume();
     }
 
@@ -160,7 +166,6 @@ public class QuFriendsActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        MobclickAgent.onPageEnd("social");
         super.onPause();
     }
 }

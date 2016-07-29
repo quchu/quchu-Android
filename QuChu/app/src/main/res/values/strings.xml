@@ -201,4 +201,47 @@
     <string name="no_more_data">没有更多数据了</string>
     <string name="no_footprint">还没有人摁过脚印</string>
 
+    <string name="pname_crop_image_activity">图片裁剪</string>
+    <string name="pname_select_photo">选择图片</string>
+    <string name="pname_spot_new_playground">发现新趣处*</string>
+    <string name="pname_search">搜索</string>
+    <string name="pname_account_setting">账号设置</string>
+    <string name="pname_add_footprint">添加脚印</string>
+    <string name="pname_article_detail">发现详情</string>
+    <string name="pname_bind">绑定账号</string>
+    <string name="pname_article_detail_">发现详情*</string>
+    <string name="pname_favorite">收藏</string>
+    <string name="pname_feedback">快速反馈</string>
+    <string name="pname_add_quchu">添加趣处</string>
+    <string name="pname_relationship">趣友圈</string>
+    <string name="pname_footprint">脚印</string>
+    <string name="pname_login">登录</string>
+    <string name="pname_message_center">消息中心</string>
+    <string name="pname_my_footprint">我的脚印</string>
+    <string name="pname_footprint_detail">脚印详情</string>
+    <string name="pname_guess_what_u_like">猜你喜欢</string>
+    <string name="pname_picking_quchu">选择趣处</string>
+    <string name="pname_navigation">导航</string>
+    <string name="pname_quchu_details">趣处详情</string>
+    <string name="pname_specify_tags">相关趣处（标签）</string>
+    <string name="pname_qu_friends">趣友圈*</string>
+    <string name="pname_home">首页</string>
+    <string name="pname_scene_detail">场景详情</string>
+    <string name="pname_share_quchu">分享趣处</string>
+    <string name="pname_share">分享</string>
+    <string name="pname_landing">落地页</string>
+    <string name="pname_about_us">关于我们</string>
+    <string name="pname_user_center">用户中心</string>
+    <string name="pname_inner_browser">应用内浏览器</string>
+    <string name="pname_qu_friends_description">什么是趣友圈</string>
+    <string name="pname_wx_shit">微信分享*</string>
+    <string name="pname_f_mine">我的</string>
+    <string name="pname_f_recommendation">推荐</string>
+    <string name="pname_f_qufaxian">趣发现</string>
+    <string name="pname_f_favorite_articles">收藏文章</string>
+    <string name="pname_f_favorite_quchu">收藏趣处</string>
+    <string name="pname_f_foot_print">脚印详情</string>
+    <string name="pname_f_foot_print_list">脚印列表</string>
+    <string name="pname_f_subscribe">关注**</string>
+
 </resources>

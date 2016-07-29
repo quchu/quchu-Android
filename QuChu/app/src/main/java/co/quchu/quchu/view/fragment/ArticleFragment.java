@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,6 +47,13 @@ import co.quchu.quchu.widget.SpacesItemDecoration;
  * 分类
  */
 public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_f_qufaxian);
+    }
+
     @Bind(R.id.fragment_firends_rv)
     RecyclerView recyclerView;
     @Bind(R.id.errorView)
@@ -201,17 +208,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         ButterKnife.unbind(this);
     }
 
-    @Override
-    public void onResume() {
-        MobclickAgent.onPageStart("h_discovery");
-        super.onResume();
-    }
 
-    @Override
-    public void onPause() {
-        MobclickAgent.onPageEnd("h_discovery");
-        super.onPause();
-    }
 
     @Override
     public void onStart() {

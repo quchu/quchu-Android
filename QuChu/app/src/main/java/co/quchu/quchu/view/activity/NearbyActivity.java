@@ -2,12 +2,13 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.android.volley.VolleyError;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.TagsFilterDialog;
 import co.quchu.quchu.model.NearbyItemModel;
@@ -35,8 +37,24 @@ import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 /**
  * Created by Nico on 16/4/11.
  */
-public class NearbyActivity extends BaseActivity {
+public class NearbyActivity extends BaseBehaviorActivity {
 
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 112;
+    }
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_guess_what_u_like);
+    }
 
     @Bind(R.id.detail_recyclerview)
     RecyclerView detailRecyclerview;
@@ -226,17 +244,7 @@ public class NearbyActivity extends BaseActivity {
         return TRANSITION_TYPE_TOP;
     }
 
-    @Override
-    protected void onResume() {
-        MobclickAgent.onPageStart("all_recommendtion");
-        super.onResume();
-    }
 
-    @Override
-    protected void onPause() {
-        MobclickAgent.onPageEnd("all_recommendtion");
-        super.onPause();
-    }
 
 
     @Override

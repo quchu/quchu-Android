@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.sina.weibo.sdk.utils.LogUtil;
-import com.umeng.analytics.MobclickAgent;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +43,11 @@ import co.quchu.quchu.widget.SelectedImagePopWin;
 
 public class FindPositionActivity extends BaseActivity implements FindPositionAdapter.ItemClickListener {
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_add_quchu);
+    }
     @Bind(R.id.desc)
     EditText name;
     @Bind(R.id.position)
@@ -297,7 +302,6 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
 
     @Override
     protected void onResume() {
-        MobclickAgent.onPageStart("lookfornew");
         super.onResume();
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -323,7 +327,6 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
 
     @Override
     protected void onPause() {
-        MobclickAgent.onPageEnd("lookfornew");
         super.onPause();
     }
 

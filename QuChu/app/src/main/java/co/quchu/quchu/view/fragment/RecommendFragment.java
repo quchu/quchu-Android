@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,6 +67,11 @@ import co.quchu.quchu.widget.SpacesItemDecoration;
  * 推荐
  */
 public class RecommendFragment extends BaseFragment implements MySceneAdapter.CardClickListener, ViewPager.PageTransformer {
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_f_recommendation);
+    }
 
     @Bind(R.id.viewpager)
     ViewPager vpMyScene;
@@ -456,13 +461,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     @Override
     public void onCardLick(View view, int position) {
 
-        if (from.equals(QuchuDetailsActivity.FROM_TYPE_HOME)) {
-            MobclickAgent.onEvent(getContext(), "detail_home_c");
-        } else {
-            MobclickAgent.onEvent(getContext(), "detail_tag_c");
-        }
-        MobclickAgent.onEvent(getActivity(), "detail_c");
-
         SceneDetailActivity.enterActivity(getActivity(), mFavoriteSceneList.get(position).getSceneId(), mFavoriteSceneList.get(position).getSceneName(), true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
@@ -490,17 +488,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         super.onStop();
     }
 
-    @Override
-    public void onResume() {
-        MobclickAgent.onPageStart("h_recommendtion");
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        MobclickAgent.onPageEnd("h_recommendtion");
-        super.onPause();
-    }
 
     @Override
     public void onDestroy() {

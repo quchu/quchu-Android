@@ -4,19 +4,35 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.ArrayMap;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.view.fragment.FavoriteEssayFragment;
 import co.quchu.quchu.view.fragment.FavoriteQuchuFragment;
 import co.quchu.quchu.widget.NoScrollViewPager;
 
-public class FavoriteActivity extends BaseActivity {
+public class FavoriteActivity extends BaseBehaviorActivity {
 
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 122;
+    }
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_favorite);
+    }
 
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;

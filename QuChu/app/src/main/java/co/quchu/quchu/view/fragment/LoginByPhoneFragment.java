@@ -20,7 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -213,7 +213,6 @@ public class LoginByPhoneFragment extends Fragment implements TextWatcher, View.
                     @Override
                     public void loginSuccess(int type, String token, String appId) {
                         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
-                        MobclickAgent.onProfileSignIn("loginphone_c", AppContext.user.getUserId() + "");
                         getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN,true));
                         getActivity().finish();
                         errorView.hideView();

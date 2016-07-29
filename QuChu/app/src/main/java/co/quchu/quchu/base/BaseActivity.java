@@ -1,6 +1,7 @@
 package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.squareup.leakcanary.RefWatcher;
+
 import com.umeng.analytics.MobclickAgent;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -123,6 +125,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd(getPageNameCN());
         MobclickAgent.onPause(this);
         LogUtils.e("base activity onPause  " + getClass().getSimpleName());
 
@@ -131,6 +134,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart(getPageNameCN());
         MobclickAgent.onResume(this);
 
         if(BuildConfig.API_SERVER!=0){
@@ -141,6 +145,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         LogUtils.e("base activity onResume  " + getClass().getSimpleName());
 
     }
+
+    protected abstract String getPageNameCN();
 
     @Override
     protected void onStart() {

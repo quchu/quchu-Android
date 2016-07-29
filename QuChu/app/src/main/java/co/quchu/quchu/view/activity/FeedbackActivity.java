@@ -2,13 +2,14 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.umeng.analytics.MobclickAgent;
+
 
 import org.json.JSONObject;
 
@@ -16,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
@@ -29,7 +31,24 @@ import co.quchu.quchu.utils.StringUtils;
  * Date: 2015-12-04
  * 快速反馈
  */
-public class FeedbackActivity extends BaseActivity {
+public class FeedbackActivity extends BaseBehaviorActivity {
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 127;
+    }
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_feedback);
+    }
+
     @Bind(R.id.feedback_hint_tv)
     TextView feedbackHintTv;
     @Bind(R.id.feedback_editer_bet)
@@ -81,8 +100,6 @@ public class FeedbackActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("FeedbackActivity");
-
     }
 
     @Override
@@ -99,6 +116,5 @@ public class FeedbackActivity extends BaseActivity {
                 keyboard.showSoftInput(feedbackEditerBet, 0);
             }
         }, 200);
-        MobclickAgent.onPageStart("FeedbackActivity");
     }
 }

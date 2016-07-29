@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -11,7 +12,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
-import com.umeng.analytics.MobclickAgent;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.BindPhoneNumDialog;
 import co.quchu.quchu.dialog.CommonDialog;
@@ -35,7 +37,24 @@ import co.quchu.quchu.thirdhelp.WeiboHelper;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 
-public class BindActivity extends BaseActivity implements UserLoginListener, View.OnClickListener {
+public class BindActivity extends BaseBehaviorActivity implements UserLoginListener, View.OnClickListener {
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_bind);
+    }
+
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 125;
+    }
+
 
     @Bind(R.id.bind_sina)
     Button bindSina;
@@ -313,14 +332,12 @@ public class BindActivity extends BaseActivity implements UserLoginListener, Vie
 
     @Override
     protected void onResume() {
-        MobclickAgent.onPageStart("connectsocial");
         initListener();
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        MobclickAgent.onPageEnd("connectsocial");
         super.onPause();
     }
 }

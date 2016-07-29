@@ -29,6 +29,13 @@ import co.quchu.quchu.view.adapter.FriendsAdatper;
  * Date: 2015-11-09
  */
 public class FriendsFollowerFg extends BaseFragment implements AdapterBase.OnLoadmoreListener, PageLoadListener<List<FollowUserModel>> {
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_f_subscribe);
+    }
+
     View view;
     @Bind(R.id.fragment_firends_rv)
     RecyclerView fragmentFirendsRv;

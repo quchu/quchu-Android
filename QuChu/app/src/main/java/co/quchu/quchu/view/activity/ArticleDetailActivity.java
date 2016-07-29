@@ -3,6 +3,7 @@ package co.quchu.quchu.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.ArticleDetailModel;
@@ -44,7 +46,23 @@ import co.quchu.quchu.widget.ErrorView;
 /**
  * Created by Nico on 16/7/8.
  */
-public class ArticleDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ArticleDetailActivity extends BaseBehaviorActivity implements SwipeRefreshLayout.OnRefreshListener {
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_article_detail);
+    }
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 118;
+    }
+
 
     private static final String BUNDLE_KEY_ARTICLE_ID = "BUNDLE_KEY_ARTICLE_ID";
     private static final String BUNDLE_KEY_ARTICLE_TITLE = "BUNDLE_KEY_ARTICLE_TITLE";

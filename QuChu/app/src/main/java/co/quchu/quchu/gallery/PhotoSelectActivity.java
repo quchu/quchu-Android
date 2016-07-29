@@ -50,6 +50,10 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 public class PhotoSelectActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_select_photo);
+    }
     private final int HANLDER_TAKE_PHOTO_EVENT = 1000;
     private final int HANDLER_REFRESH_LIST_EVENT = 1002;
     EnhancedToolbar toolbar;

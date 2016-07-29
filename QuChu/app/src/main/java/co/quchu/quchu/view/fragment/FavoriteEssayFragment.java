@@ -35,6 +35,12 @@ import co.quchu.quchu.view.adapter.FavoriteEssayAdapter;
 public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.OnLoadmoreListener,
         AdapterBase.OnItemClickListener<FavoriteEssayBean.ResultBean>, PageLoadListener<FavoriteEssayBean>, SwipeRefreshLayout.OnRefreshListener {
 
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_f_favorite_articles);
+    }
+
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     @Bind(R.id.refreshLayout)

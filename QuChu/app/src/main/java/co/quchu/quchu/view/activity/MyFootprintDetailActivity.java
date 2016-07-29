@@ -55,6 +55,11 @@ import co.quchu.quchu.view.fragment.FootprintDetailFragment;
 
 public class MyFootprintDetailActivity extends BaseBehaviorActivity implements View.OnClickListener {
 
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_footprint_detail);
+    }
+
 
     @Bind(R.id.container)
     ViewPager viewPager;

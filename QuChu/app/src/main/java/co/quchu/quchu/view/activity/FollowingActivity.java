@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.FollowUserModel;
 import co.quchu.quchu.presenter.FollowPresenter;
@@ -26,7 +28,24 @@ import co.quchu.quchu.view.adapter.FriendsAdatper;
  * Date: 2016-03-01
  * TA关注的  /我关注的
  */
-public class FollowingActivity extends BaseActivity implements AdapterBase.OnLoadmoreListener, PageLoadListener<List<FollowUserModel>>, SwipeRefreshLayout.OnRefreshListener {
+public class FollowingActivity extends BaseBehaviorActivity implements AdapterBase.OnLoadmoreListener, PageLoadListener<List<FollowUserModel>>, SwipeRefreshLayout.OnRefreshListener {
+
+    @Override
+    public ArrayMap<String, Object> getUserBehaviorArguments() {
+        return null;
+    }
+
+    @Override
+    public int getUserBehaviorPageId() {
+        return 123;
+    }
+
+
+    @Override
+    protected String getPageNameCN() {
+        return getString(R.string.pname_relationship);
+    }
+
     public static final int TAFOLLOWING = 0x01;//TA关注的
     public static final int TAFOLLOWERS = 0x02;//关注TA的
     @Bind(R.id.follow_rv)
