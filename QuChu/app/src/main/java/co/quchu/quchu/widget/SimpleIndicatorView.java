@@ -108,7 +108,6 @@ public class SimpleIndicatorView extends View {
                 }
 
                 if (singleIndicator){
-                    System.out.println(i);
                     if (i==2){
                         canvas.drawCircle(x,getHeight()/2,radius*zoomLevel,mPaintIndicatorsHighLight);
                     }

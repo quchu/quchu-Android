@@ -53,7 +53,6 @@ public class RecommentFragPresenter {
 
     public void initTabData(boolean isRefresh, String selectedTag) {
 
-        System.out.println("getTABDATA init tab data");
         if (!isRefresh) {
             DialogUtil.showProgess(context, R.string.loading_dialog_text);
         }
