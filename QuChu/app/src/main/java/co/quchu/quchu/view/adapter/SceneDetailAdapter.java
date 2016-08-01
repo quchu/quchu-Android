@@ -2,7 +2,9 @@ package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,7 +159,13 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             }
             ((RecommendedViewHolder) holder).tvCircleName.setText(null != objScene.getPlaceInfo().getAreaCircleName() ? objScene.getPlaceInfo().getAreaCircleName() : "");
-            ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.getPlaceInfo().gdLatitude), Double.valueOf(objScene.getPlaceInfo().gdLongitude)));
+
+            if (TextUtils.isEmpty(objScene.getPlaceInfo().gdLatitude)||TextUtils.isEmpty(objScene.getPlaceInfo().gdLongitude)){
+                ((RecommendedViewHolder) holder).tvDistance.setVisibility(View.GONE);
+            }else{
+                ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.getPlaceInfo().gdLatitude), Double.valueOf(objScene.getPlaceInfo().gdLongitude)));
+                ((RecommendedViewHolder) holder).tvDistance.setVisibility(View.VISIBLE);
+            }
             if (!StringUtils.isEmpty(objScene.getPlaceInfo().getPrice())) {
                 ((RecommendedViewHolder) holder).tvPrice.setText("¥" + objScene.getPlaceInfo().getPrice() + "元｜");
             } else {

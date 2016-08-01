@@ -125,8 +125,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(getPageNameCN());
-        MobclickAgent.onPause(this);
+        if (null!=getPageNameCN()){
+            MobclickAgent.onPageEnd(getPageNameCN());
+            MobclickAgent.onPause(this);
+        }
         LogUtils.e("base activity onPause  " + getClass().getSimpleName());
 
     }
@@ -134,14 +136,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart(getPageNameCN());
-        MobclickAgent.onResume(this);
-
-        if(BuildConfig.API_SERVER!=0){
-            ZhugeSDK.getInstance().openDebug();
+        if (null!=getPageNameCN()){
+            MobclickAgent.onPageStart(getPageNameCN());
+            MobclickAgent.onResume(this);
         }
-
-        ZhugeSDK.getInstance().init(getApplicationContext());
         LogUtils.e("base activity onResume  " + getClass().getSimpleName());
 
     }

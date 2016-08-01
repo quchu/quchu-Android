@@ -64,7 +64,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     @Override
     protected String getPageNameCN() {
-        return getString(R.string.pname_home);
+        return null;
     }
 
     @Bind(R.id.recommend_title_location_tv)

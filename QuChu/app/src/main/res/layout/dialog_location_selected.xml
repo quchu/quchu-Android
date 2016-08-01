@@ -19,19 +19,21 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dialog_location_rv"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivClose"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
+        android:layout_above="@+id/tv_bottom_tips"
         android:overScrollMode="always"
-        android:scrollbars="none" />
+        android:scrollbars="vertical" />
 
     <TextView
         android:id="@+id/tv_bottom_tips"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/toolbar_item_size"
         android:gravity="center"
-        android:layout_below="@+id/dialog_location_rv"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/more_cities_coming_soon"
         android:textColor="@android:color/white"

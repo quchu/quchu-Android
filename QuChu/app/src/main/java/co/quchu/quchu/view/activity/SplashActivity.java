@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 
 import org.json.JSONObject;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
@@ -43,7 +45,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected String getPageNameCN() {
-        return getString(R.string.pname_landing);
+        return null;
     }
 
     private long viewDuration = 2 * 1000;
@@ -74,6 +76,12 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        if(BuildConfig.API_SERVER!=0){
+            ZhugeSDK.getInstance().openDebug();
+        }
+
+        ZhugeSDK.getInstance().init(getApplicationContext());
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         View decorView = getWindow().getDecorView();
