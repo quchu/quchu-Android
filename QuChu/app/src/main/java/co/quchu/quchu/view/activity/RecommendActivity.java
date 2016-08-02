@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,10 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.VolleyError;
 import com.umeng.update.UmengUpdateAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
@@ -42,8 +46,11 @@ import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.model.UpdateInfoModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -470,9 +477,46 @@ public class RecommendActivity extends BaseBehaviorActivity {
                     tvRight.setText(R.string.login);
                 }
                 break;
+            case EventFlags.EVENT_APPLICATION_CHECK_UPDATE:
+
+                if (!checkUpdateRunning){
+                    checkUpdateRunning = true;
+                    VersionInfoPresenter.checkUpdate(getApplicationContext(),new CommonListener<UpdateInfoModel>() {
+                        @Override
+                        public void successListener(UpdateInfoModel response) {
+                            checkUpdateRunning = false;
+                            if (BuildConfig.VERSION_CODE < response.getVersionCode()){
+                                ConfirmDialogFg updateDialog = ConfirmDialogFg.newInstance("有新版本更新", "检测到有新版本，是否下载更新？");
+                                updateDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
+                                    @Override
+                                    public void onClick(int index) {
+                                        if (ConfirmDialogFg.INDEX_OK == index) {
+                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(SPUtils.getForceUpdateUrl(getApplicationContext())));
+                                            startActivity(browserIntent);
+                                        }
+                                    }
+                                });
+                                updateDialog.show(getSupportFragmentManager(), "~");
+                            }
+
+                        }
+
+                        @Override
+                        public void errorListener(VolleyError error, String exception, String msg) {
+                            Toast.makeText(getApplicationContext(),R.string.no_update_available,Toast.LENGTH_LONG).show();
+                            checkUpdateRunning = false;
+                        }
+
+                    });
+                }
+
+                break;
         }
 
     }
+
+
+    boolean checkUpdateRunning = false;
 
     @Override
     protected void onStart() {

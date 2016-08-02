@@ -9,6 +9,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.ImageView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -16,6 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.activity.FeedbackActivity;
 import co.quchu.quchu.view.activity.MeFragment;
 import co.quchu.quchu.view.activity.StatementActivity;
@@ -76,11 +80,9 @@ public class MenuSettingDialogFg extends DialogFragment implements View.OnClickL
                 getActivity().startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 MenuSettingDialogFg.this.dismiss();
                 break;
-//            case R.id.dialog_menu_setting_update_tv:
-//                if (getActivity() instanceof MeFragment)
-//                    ((MeFragment) getActivity()).checkUpdate();
-//                MenuSettingDialogFg.this.dismiss();
-//                break;
+            case R.id.dialog_menu_setting_update_tv:
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_APPLICATION_CHECK_UPDATE));
+                break;
         }
 
     }
