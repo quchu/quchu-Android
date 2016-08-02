@@ -207,7 +207,12 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
             }
             ((PlaceViewHolder) holder).tvCircleName.setText(null != objScene.getAreaCircleName() ? objScene.getAreaCircleName() : "");
-            ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.gdLatitude), Double.valueOf(objScene.gdLongitude)));
+            if (TextUtils.isEmpty(objScene.gdLatitude)||TextUtils.isEmpty(objScene.gdLongitude)){
+                ((PlaceViewHolder) holder).tvDistance.setVisibility(View.GONE);
+            }else{
+                ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.gdLatitude), Double.valueOf(objScene.gdLongitude)));
+                ((PlaceViewHolder) holder).tvDistance.setVisibility(View.VISIBLE);
+            }
 
             if (!StringUtils.isEmpty(objScene.getPrice())) {
                 ((PlaceViewHolder) holder).tvPrice.setText("¥" + objScene.getPrice() + "元｜");

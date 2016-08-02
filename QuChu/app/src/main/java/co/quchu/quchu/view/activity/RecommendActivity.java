@@ -483,7 +483,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
                     checkUpdateRunning = true;
                     VersionInfoPresenter.checkUpdate(getApplicationContext(),new CommonListener<UpdateInfoModel>() {
                         @Override
-                        public void successListener(UpdateInfoModel response) {
+                        public void successListener(final UpdateInfoModel response) {
                             checkUpdateRunning = false;
                             if (BuildConfig.VERSION_CODE < response.getVersionCode()){
                                 ConfirmDialogFg updateDialog = ConfirmDialogFg.newInstance("有新版本更新", "检测到有新版本，是否下载更新？");
@@ -491,19 +491,21 @@ public class RecommendActivity extends BaseBehaviorActivity {
                                     @Override
                                     public void onClick(int index) {
                                         if (ConfirmDialogFg.INDEX_OK == index) {
-                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(SPUtils.getForceUpdateUrl(getApplicationContext())));
+                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDownUrl()));
                                             startActivity(browserIntent);
                                         }
                                     }
                                 });
                                 updateDialog.show(getSupportFragmentManager(), "~");
+                            }else{
+                                Toast.makeText(getApplicationContext(),R.string.no_update_available,Toast.LENGTH_LONG).show();
                             }
 
                         }
 
                         @Override
                         public void errorListener(VolleyError error, String exception, String msg) {
-                            Toast.makeText(getApplicationContext(),R.string.no_update_available,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_LONG).show();
                             checkUpdateRunning = false;
                         }
 
