@@ -119,7 +119,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             CategoryViewHold holder = (CategoryViewHold) holde;
             final SearchCategoryBean bean = categoryList.get(position);
             ((CategoryViewHold) holde).searchItemCategoryName.setText(bean.getZh());
-            holder.simpleDraweeView.setImageURI(Uri.parse(bean.getIconUrl()));
+            if(!TextUtils.isEmpty(bean.getIconUrl())){
+                holder.simpleDraweeView.setImageURI(Uri.parse(bean.getIconUrl()));
+            }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

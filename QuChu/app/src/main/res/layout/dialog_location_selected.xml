@@ -19,14 +19,17 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dialog_location_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/ivClose"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         android:layout_above="@+id/tv_bottom_tips"
-        android:overScrollMode="always"
-        android:scrollbars="vertical" />
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="@drawable/gray_scrollbar"
+        android:scrollbarSize="2dp"
+         />
 
     <TextView
         android:id="@+id/tv_bottom_tips"

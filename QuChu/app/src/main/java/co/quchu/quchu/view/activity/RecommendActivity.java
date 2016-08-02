@@ -243,8 +243,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
                     //城市列表中没有当前位置
 //                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "你当前所在的城市尚未占领，是否要切换城市");
 //                } else
-                if (inList) {
-                    //城市列表中有但不是当前位置
+                if (inList) {                    //城市列表中有但不是当前位置
                     confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "检测到你在" + currentLocation + "，是否切换？");
                     final boolean finalInList = inList;
                     final int finalCityIdInList = cityIdInList;
