@@ -114,6 +114,9 @@ android {
         quchu_weibo {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_weibo"]
         }
+        quchu_vivo {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "quchu_vivo"]
+        }
     }
 
 //    useLibrary 'org.apache.http.legacy'

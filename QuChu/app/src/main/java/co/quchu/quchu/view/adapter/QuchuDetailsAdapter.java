@@ -39,6 +39,7 @@ import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
+import co.quchu.quchu.widget.ExpandableTextView;
 import co.quchu.quchu.widget.SimpleIndicatorView;
 import co.quchu.quchu.widget.TagCloudView;
 
@@ -504,7 +505,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     ((CommentViewHolder) holder).tvDate.setText("-");
                 }
                 ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
-                ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
+                ((CommentViewHolder) holder).tvUserComment.setContent(commentModel.getContent());
                 ((CommentViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(commentModel.getUserPhoneUrl()));
                 ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
 
@@ -773,7 +774,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Bind(R.id.rlUserInfo)
         RelativeLayout rlUserInfo;
         @Bind(R.id.tvUserComment)
-        TextView tvUserComment;
+        ExpandableTextView tvUserComment;
         @Bind(R.id.ivFrom)
         SimpleDraweeView ivFrom;
         @Bind(R.id.tvFrom)

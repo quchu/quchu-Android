@@ -47,7 +47,7 @@
     </RelativeLayout>
 
 
-    <TextView
+    <co.quchu.quchu.widget.ExpandableTextView
         android:id="@+id/tvUserComment"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
