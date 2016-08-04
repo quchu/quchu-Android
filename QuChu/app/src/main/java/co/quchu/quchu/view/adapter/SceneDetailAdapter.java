@@ -24,6 +24,7 @@ import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.widget.CornerLabelTextView;
 
 /**
  * Created by Nico on 16/7/8.
@@ -146,8 +147,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             final SceneHeaderModel objScene = mBestPlace.get(position - 1);
             ((RecommendedViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getPlaceInfo().getCover()));
             ((RecommendedViewHolder) holder).tvTitle.setText(objScene.getPlaceInfo().getName());
-            ((RecommendedViewHolder) holder).tvHeader.setText(objScene.getTitle());
-
+            ((RecommendedViewHolder) holder).cornerLabelTextView.setText(objScene.getTitle());
+            ((RecommendedViewHolder) holder).tvHeader.setVisibility(View.GONE);
             ((RecommendedViewHolder) holder).recommendTag1.setVisibility(View.GONE);
             ((RecommendedViewHolder) holder).recommendTag2.setVisibility(View.GONE);
             ((RecommendedViewHolder) holder).recommendTag3.setVisibility(View.GONE);
@@ -197,6 +198,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((PlaceViewHolder) holder).tvTitle.setText(objScene.getName());
             ((PlaceViewHolder) holder).tvHeader.setVisibility(View.GONE);
 
+            ((PlaceViewHolder) holder).cornerLabelTextView.setVisibility(View.GONE);
             ((PlaceViewHolder) holder).recommendTag1.setVisibility(View.GONE);
             ((PlaceViewHolder) holder).recommendTag2.setVisibility(View.GONE);
             ((PlaceViewHolder) holder).recommendTag3.setVisibility(View.GONE);
@@ -296,10 +298,11 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Bind(R.id.sdvCover)
         SimpleDraweeView sdvCover;
-        @Bind(R.id.tvHeader)
-        TextView tvHeader;
         @Bind(R.id.tvTitle)
         TextView tvTitle;
+
+        @Bind(R.id.tvHeader)
+        TextView tvHeader;
         @Bind(R.id.recommend_tag1)
         TextView recommendTag1;
         @Bind(R.id.recommend_tag2)
@@ -314,6 +317,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvDistance;
         @Bind(R.id.tvPrice)
         TextView tvPrice;
+        @Bind(R.id.clt)
+        CornerLabelTextView cornerLabelTextView;
 
         public RecommendedViewHolder(View itemView) {
             super(itemView);
@@ -358,6 +363,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvDistance;
         @Bind(R.id.tvPrice)
         TextView tvPrice;
+        @Bind(R.id.clt)
+        CornerLabelTextView cornerLabelTextView;
 
         public PlaceViewHolder(View itemView) {
             super(itemView);

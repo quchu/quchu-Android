@@ -39,6 +39,12 @@
                 card_view:roundedCornerRadius="@dimen/rounded_radius"
                 card_view:viewAspectRatio="1.7" />
 
+            <co.quchu.quchu.widget.CornerLabelTextView
+                android:id="@+id/clt"
+                android:textSize="12sp"
+                android:layout_width="90dp"
+                android:layout_height="90dp" />
+
             <TextView
                 android:id="@+id/tvHeader"
                 android:layout_width="match_parent"
