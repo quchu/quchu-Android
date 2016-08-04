@@ -11,8 +11,6 @@
         android:id="@+id/detail_store_address_ll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/standard_h2_height"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -50,8 +48,6 @@
         android:id="@+id/detail_store_phone_ll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/standard_h2_height"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
 
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -83,8 +79,6 @@
         style="@style/TextView.H2"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/standard_h2_height"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
         android:gravity="center_vertical"
         android:drawableLeft="@mipmap/ic_shijian"
         android:drawablePadding="8dp" />
@@ -99,8 +93,6 @@
         style="@style/TextView.H2"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/standard_h2_height"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
         android:drawableLeft="@mipmap/ic_money"
         android:drawablePadding="8dp"/>
 

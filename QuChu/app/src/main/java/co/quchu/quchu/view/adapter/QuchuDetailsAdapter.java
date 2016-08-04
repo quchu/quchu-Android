@@ -39,7 +39,6 @@ import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
-import co.quchu.quchu.widget.ExpandableTextView;
 import co.quchu.quchu.widget.SimpleIndicatorView;
 import co.quchu.quchu.widget.TagCloudView;
 
@@ -505,7 +504,38 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     ((CommentViewHolder) holder).tvDate.setText("-");
                 }
                 ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
-                ((CommentViewHolder) holder).tvUserComment.setContent(commentModel.getContent());
+
+                final boolean collapsed = mData.getReviewList().get(commentIndex).isCollapsed();
+
+                System.out.println("collapsed "+ commentIndex+"|"+ collapsed );
+                ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
+
+                if (collapsed){
+                    ((CommentViewHolder) holder).tvCollapse.setText("展开");
+                    ((CommentViewHolder) holder).tvUserComment.setMaxLines(3);
+                }else{
+                    ((CommentViewHolder) holder).tvCollapse.setText("收起");
+                    ((CommentViewHolder) holder).tvUserComment.setMaxLines(Integer.MAX_VALUE);
+                }
+                final int finalCommentIndex = commentIndex;
+                ((CommentViewHolder) holder).tvUserComment.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (((CommentViewHolder) holder).tvUserComment.getLineCount()>3){
+                            ((CommentViewHolder) holder).tvCollapse.setVisibility(View.VISIBLE);
+                        }else{
+                            ((CommentViewHolder) holder).tvCollapse.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+                ((CommentViewHolder) holder).tvCollapse.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mData.getReviewList().get(finalCommentIndex).setCollapsed(!collapsed);
+                        notifyDataSetChanged();
+                    }
+                });
                 ((CommentViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(commentModel.getUserPhoneUrl()));
                 ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
 
@@ -774,7 +804,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Bind(R.id.rlUserInfo)
         RelativeLayout rlUserInfo;
         @Bind(R.id.tvUserComment)
-        ExpandableTextView tvUserComment;
+        TextView tvUserComment;
+        @Bind(R.id.tvCollapse)
+        TextView tvCollapse;
         @Bind(R.id.ivFrom)
         SimpleDraweeView ivFrom;
         @Bind(R.id.tvFrom)

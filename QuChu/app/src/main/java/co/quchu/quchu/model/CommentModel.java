@@ -14,6 +14,16 @@ public class CommentModel implements Serializable{
     private String sourceContent;
     private String sourceUrl;
 
+    private boolean collapsed = true;
+
+    public boolean isCollapsed() {
+        return collapsed;
+    }
+
+    public void setCollapsed(boolean collapsed) {
+        this.collapsed = collapsed;
+    }
+
     public String getCreateDate() {
         return createDate;
     }
