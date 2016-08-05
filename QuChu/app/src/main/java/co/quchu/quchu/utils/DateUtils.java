@@ -19,6 +19,9 @@ import co.quchu.quchu.R;
  */
 public class DateUtils {
     public static String DATA_FORMAT_MM_DD_YYYY = "MM.dd.yyyy";
+    public static String DATA_FORMAT_MM_DD_YYYY_CLEAR = "yyyy - MM - dd";
+
+
     public static String DATA_FORMAT_YYYY_MM_DDHH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     public static String DATA_FORMAT_HH_MM = "HH:mm";
 

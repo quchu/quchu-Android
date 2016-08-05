@@ -145,7 +145,9 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (holder instanceof RecommendedViewHolder) {
 
             final SceneHeaderModel objScene = mBestPlace.get(position - 1);
-            ((RecommendedViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getPlaceInfo().getCover()));
+            if (null!=objScene.getPlaceInfo() && null!=objScene.getPlaceInfo().getCover()){
+                ((RecommendedViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getPlaceInfo().getCover()));
+            }
             ((RecommendedViewHolder) holder).tvTitle.setText(objScene.getPlaceInfo().getName());
             ((RecommendedViewHolder) holder).cornerLabelTextView.setText(objScene.getTitle());
             ((RecommendedViewHolder) holder).tvHeader.setVisibility(View.GONE);
