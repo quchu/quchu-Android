@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -49,7 +50,10 @@ public abstract class SearchPopWinBaseAdapter extends RecyclerView.Adapter<Searc
         @Bind(R.id.search_pop_item_tv)
         TextView searchPopItemTv;
         @Bind(R.id.search_pop_item_content)
-        LinearLayout searchPopItemContent;
+        RelativeLayout searchPopItemContent;
+
+        @Bind(R.id.vDivider)
+        View vDivider;
 
         public ViewHolder(View itemView) {
             super(itemView);

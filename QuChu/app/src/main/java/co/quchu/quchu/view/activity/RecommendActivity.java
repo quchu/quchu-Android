@@ -39,10 +39,10 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
-import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -141,7 +141,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
         articleFragment = new ArticleFragment();
         meFragment = new MeFragment();
 
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
 
 
         getSupportFragmentManager().beginTransaction()
@@ -251,27 +250,37 @@ public class RecommendActivity extends BaseBehaviorActivity {
 //                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "你当前所在的城市尚未占领，是否要切换城市");
 //                } else
                 if (inList) {                    //城市列表中有但不是当前位置
-                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "检测到你在" + currentLocation + "，是否切换？");
+
                     final boolean finalInList = inList;
                     final int finalCityIdInList = cityIdInList;
                     final String finalCurrentLocation = currentLocation;
-                    confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
-                        @Override
-                        public void onClick(int index) {
-                            if (ConfirmDialogFg.INDEX_OK == index) {
-                                if (finalInList) {
-                                    SPUtils.setCityId(finalCityIdInList);
-                                    SPUtils.setCityName(finalCurrentLocation);
-                                    updateRecommend();
-                                    recommendTitleLocationIv.setText(SPUtils.getCityName());
-                                } else {
-                                    findViewById(R.id.recommend_title_location_rl).performClick();
-                                }
 
+                    final CommonDialog commonDialog = CommonDialog.newInstance("切换城市", "检测到你在" + currentLocation + "，是否切换？", "确定", "取消");
+                    commonDialog.setListener(new CommonDialog.OnActionListener() {
+                        @Override
+                        public boolean dialogClick(int id) {
+                            switch (id) {
+                                case CommonDialog.CLICK_ID_ACTIVE:
+                                    if (finalInList) {
+                                        SPUtils.setCityId(finalCityIdInList);
+                                        SPUtils.setCityName(finalCurrentLocation);
+                                        updateRecommend();
+                                        recommendTitleLocationIv.setText(SPUtils.getCityName());
+                                    } else {
+                                        findViewById(R.id.recommend_title_location_rl).performClick();
+                                    }
+
+                                    break;
+                                case CommonDialog.CLICK_ID_PASSIVE:
+                                    commonDialog.dismiss();
+                                    break;
                             }
+                            return true;
                         }
                     });
-                    confirmDialogFg.show(getSupportFragmentManager(), "~");
+                    commonDialog.setCancelable(false);
+                    commonDialog.show(getSupportFragmentManager(), "");
+
                 }
 
             }
@@ -302,8 +311,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 UserInfoModel user = AppContext.user;
                 if (user.isIsVisitors()) {
                     //游客
-                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
-                    dialogFg.show(getSupportFragmentManager(), "");
+                    showLoginDialog();
                 } else {
                     startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
                 }

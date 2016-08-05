@@ -88,23 +88,27 @@ public class VisitorLoginDialogFg extends DialogFragment {
         ButterKnife.bind(this, view);
 
         builder.setView(view);
-        switch (viewModel) {
-            case QACCOUNTSETTING:
-                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入账户设置")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
-                break;
-            case QMESSAGECENTER:
-                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入消息中心")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
-                break;
-            case QBEEN:
-                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "明信片操作")));
-                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
-                break;
-            default:
-                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行该操作")));
-                break;
-        }
+
+        dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入")));
+        StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
+
+//        switch (viewModel) {
+//            case QACCOUNTSETTING:
+//                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入账户设置")));
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
+//                break;
+//            case QMESSAGECENTER:
+//                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进入消息中心")));
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
+//                break;
+//            case QBEEN:
+//                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "明信片操作")));
+//                StringUtils.alterTextColor(dialogLocationTv, 2, 6, R.color.standard_color_yellow);
+//                break;
+//            default:
+//                dialogLocationTv.setText(String.format(getResources().getString(R.string.visitor_login_prompt_text, "进行该操作")));
+//                break;
+//        }
         return builder.create();
     }
 

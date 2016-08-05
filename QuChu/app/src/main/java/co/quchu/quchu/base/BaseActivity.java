@@ -17,8 +17,10 @@ import com.zhuge.analysis.stat.ZhugeSDK;
 
 import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
@@ -183,5 +185,28 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+
+
+    public void showLoginDialog(){
+
+        final CommonDialog commonDialog = CommonDialog.newInstance("登录提醒", "前往该操作前需要进行登录\r\n是否现在前往", "立即前往", "容我三思");
+        commonDialog.setListener(new CommonDialog.OnActionListener() {
+            @Override
+            public boolean dialogClick(int id) {
+                switch (id) {
+                    case CommonDialog.CLICK_ID_ACTIVE:
+                        startActivity(new Intent(BaseActivity.this, LoginActivity.class));
+                        break;
+                    case CommonDialog.CLICK_ID_PASSIVE:
+                        commonDialog.dismiss();
+                        break;
+                }
+                return true;
+            }
+        });
+        commonDialog.setCancelable(false);
+        commonDialog.show(getSupportFragmentManager(), "");
+
+    }
 
 }

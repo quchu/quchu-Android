@@ -5,10 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <View
+        style="@style/HorizontalLine"
+        />
+
     <ImageView
         android:id="@+id/search_pop_indicator"
         android:layout_width="@dimen/half_margin"
         android:layout_height="@dimen/half_margin"
+        android:visibility="gone"
         android:src="@mipmap/ic_trigon" />
 
     <FrameLayout
@@ -28,7 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
-            <View style="@style/VerticalLine" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvChildsTags"
@@ -52,7 +56,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
 
-            <View style="@style/VerticalLine" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/area_row"

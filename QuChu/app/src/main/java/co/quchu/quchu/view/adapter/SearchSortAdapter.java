@@ -18,6 +18,7 @@ public class SearchSortAdapter extends SearchPopWinBaseAdapter {
 
     List<SearchSortBean> datas;
 
+
     public void setDatas(List<SearchSortBean> datas) {
         this.datas = datas;
         notifyDataSetChanged();

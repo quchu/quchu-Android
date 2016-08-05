@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -102,7 +103,9 @@ public class AreaView extends LinearLayout {
                 }
             });
 
+            areaAdapter.displayDivider(false);
             area.setAdapter(areaAdapter);
+
             row.setAdapter(rowAdapter);
         }
     }
@@ -113,6 +116,15 @@ public class AreaView extends LinearLayout {
         private List<AreaBean.CircleListBean> rowBean;
         private OnItemClickListener itemClickListener;
         private boolean isArea = true;
+
+
+        boolean displayDivider = true;
+
+
+        public void displayDivider(boolean toggle){
+            displayDivider = toggle;
+            notifyDataSetChanged();
+        }
 
 
         private int selectedPosition = 0;
@@ -158,14 +170,29 @@ public class AreaView extends LinearLayout {
             }
 
 
-            if (selectedPosition == position) {
-                holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_yellow));
-                holder.searchPopItemIv.setVisibility(VISIBLE);
-            } else {
-                holder.searchPopItemContent.setBackground(null);
-                holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_h2_dark));
-                holder.searchPopItemIv.setVisibility(GONE);
+            holder.vDivider.setVisibility(displayDivider ?View.VISIBLE:View.GONE);
+
+
+            if (displayDivider){
+                if (selectedPosition == position) {
+                    holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_yellow));
+                    holder.searchPopItemIv.setVisibility(VISIBLE);
+                } else {
+                    holder.searchPopItemContent.setBackground(null);
+                    holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_h2_dark));
+                    holder.searchPopItemIv.setVisibility(GONE);
+                }
+
+            }else{
+                holder.searchPopItemIv.setVisibility(View.GONE);
+                if (selectedPosition == position) {
+                    holder.searchPopItemContent.setBackgroundColor(holder.searchPopItemContent.getContext().getResources().getColor(R.color.colorBackground));
+                }else{
+                    holder.searchPopItemContent.setBackgroundColor(holder.searchPopItemContent.getContext().getResources().getColor(R.color.standard_color_white));
+                }
             }
+
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -186,7 +213,9 @@ public class AreaView extends LinearLayout {
             @Bind(R.id.search_pop_item_tv)
             TextView searchPopItemTv;
             @Bind(R.id.search_pop_item_content)
-            LinearLayout searchPopItemContent;
+            RelativeLayout searchPopItemContent;
+            @Bind(R.id.vDivider)
+            View vDivider;
 
             public ViewHolder(View itemView) {
                 super(itemView);

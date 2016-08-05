@@ -222,6 +222,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 });
 //类别
                 filterCategoryAdapter = new SearchCategoryAdapter();
+                filterCategoryAdapter.displayDivider(false);
                 childTagsAdapter = new SearchChildCategoryAdapter();
 
                 categoryRecyclerView.setAdapter(filterCategoryAdapter);
@@ -238,7 +239,6 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 childTagsAdapter.setItemClickListener(new SearchPopWinBaseAdapter.OnItemClickListener<DetailModel.TagsEntity>() {
                     @Override
                     public void itemClick(int position, DetailModel.TagsEntity item) {
-                        System.out.println("position "+position);
 
                         if (position==0){
                             popupWindow.dismiss();

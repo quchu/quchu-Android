@@ -1,6 +1,5 @@
 package co.quchu.quchu.view.adapter;
 
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
@@ -24,19 +23,44 @@ public class SearchCategoryAdapter extends SearchPopWinBaseAdapter {
     }
 
 
+    boolean displayDivider = true;
+
+
+    public void displayDivider(boolean toggle){
+        displayDivider = toggle;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final SearchCategoryBean bean = datas.get(position);
         holder.searchPopItemTv.setText(bean.getZh());
-        if (selectedPosition == position) {
-            holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_yellow));
-            holder.searchPopItemIv.setVisibility(View.VISIBLE);
-        } else {
-            holder.searchPopItemContent.setBackground(null);
-            holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_h2_dark));
+
+        if (displayDivider){
+
+            if (selectedPosition == position) {
+                holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_yellow));
+                holder.searchPopItemIv.setVisibility(View.VISIBLE);
+            } else {
+                holder.searchPopItemContent.setBackground(null);
+                holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_h2_dark));
+                holder.searchPopItemIv.setVisibility(View.GONE);
+            }
+
+        }else{
             holder.searchPopItemIv.setVisibility(View.GONE);
+            if (selectedPosition == position) {
+                holder.searchPopItemContent.setBackgroundColor(holder.searchPopItemContent.getContext().getResources().getColor(R.color.colorBackground));
+            }else{
+                holder.searchPopItemContent.setBackgroundColor(holder.searchPopItemContent.getContext().getResources().getColor(R.color.standard_color_white));
+            }
         }
+
+
+
+
+        holder.vDivider.setVisibility(displayDivider ?View.VISIBLE:View.GONE);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

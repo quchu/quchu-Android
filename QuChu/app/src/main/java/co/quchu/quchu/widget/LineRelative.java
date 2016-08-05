@@ -31,7 +31,7 @@ public class LineRelative extends RelativeLayout {
         super(context, attrs, defStyleAttr);
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(StringUtils.dip2px(getContext(), 2));
+        paint.setStrokeWidth(StringUtils.dip2px(getContext(), 0.5f));
         paint.setColor(ContextCompat.getColor(getContext(), R.color.standard_color_h3_dark));
         setWillNotDraw(false);
     }

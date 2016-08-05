@@ -43,9 +43,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
-import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -224,8 +224,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.footPrint://脚印
                 if (user.isIsVisitors()) {
                     //游客
-                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
-                    dialogFg.show(getActivity().getSupportFragmentManager(), "");
+                    ((BaseActivity)getActivity()).showLoginDialog();
                 } else {
                     intent = new Intent(getActivity(), MyFootprintActivity.class);
                     intent.putExtra(MyFootprintActivity.REQUEST_KEY_USER_ID, AppContext.user.getUserId());
@@ -242,9 +241,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.friend://趣友圈
                 if (user.isIsVisitors()) {
-                    //游客
-                    VisitorLoginDialogFg dialogFg = VisitorLoginDialogFg.newInstance(0);
-                    dialogFg.show(getActivity().getSupportFragmentManager(), "");
+                    ((BaseActivity)getActivity()).showLoginDialog();
                 } else {
                     intent = new Intent(getActivity(), QuFriendsActivity.class);
 //                    Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this, headImage, QuFriendsActivity.KEY_TRANSITION_ANIMATION).toBundle();

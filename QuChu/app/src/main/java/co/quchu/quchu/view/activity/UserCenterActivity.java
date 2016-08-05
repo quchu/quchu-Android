@@ -17,7 +17,6 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.VisitorLoginDialogFg;
 import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.view.fragment.FootprintListFragment;
@@ -138,8 +137,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private void followSomebody() {
         if (AppContext.user.isIsVisitors()) {
-            VisitorLoginDialogFg fg = VisitorLoginDialogFg.newInstance(VisitorLoginDialogFg.QFOCUS);
-            fg.show(getSupportFragmentManager(), "QFocus");
+            showLoginDialog();
+
         } else {
             UserCenterPresenter.followSbd(this, userInfo.isIsFollow(), userId, new UserCenterPresenter.UserCenterInfoCallBack() {
                 @Override

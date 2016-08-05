@@ -437,7 +437,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
                         @Override
                         public void onShareClick() {
-                            startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel.getCover(), dModel.getName(), dModel.getAddress(), dModel.getPid()));
+                            startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
                         }
                     });
                     quchuDetailsMoreDialog.show();

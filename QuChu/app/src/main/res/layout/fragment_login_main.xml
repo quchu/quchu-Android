@@ -14,17 +14,18 @@
         android:textStyle="bold"
         android:textColor="@color/standard_color_h1_dark"
         android:text="你好,趣星人!"
-        android:textSize="40sp"
+        android:textSize="30sp"
         />
 
     <LinearLayout
-        android:layout_below="@+id/hellWord"
         android:id="@+id/thirdLoginContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_above="@+id/tvLoginViaPhone"
         android:layout_marginTop="60dp"
+        android:layout_marginBottom="@dimen/base_margin"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -36,8 +37,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/login_social_icon_size"
+                android:layout_height="@dimen/login_social_icon_size"
                 android:textColor="@color/standard_color_h2_dark"
                 android:src="@mipmap/ic_weibo" />
 
@@ -58,8 +59,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/login_social_icon_size"
+                android:layout_height="@dimen/login_social_icon_size"
                 android:src="@mipmap/ic_wexin" />
 
             <TextView
@@ -73,38 +74,36 @@
 
     <TextView
         android:id="@+id/tvLoginViaPhone"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_item_size"
-        android:layout_below="@id/thirdLoginContainer"
+        android:layout_width="250dp"
+        android:layout_height="@dimen/login_button_height"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:layout_marginTop="30dp"
         android:gravity="center"
-        android:background="@drawable/shape_lineframe_black_fill"
+        android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
         android:textColor="@android:color/white"
         android:textSize="@dimen/standard_text_size_h3"
+        android:layout_above="@+id/tvCreateAccountViaPhone"
         android:text="@string/login_via_phone"/>
 
     <TextView
         android:id="@+id/tvCreateAccountViaPhone"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_item_size"
-        android:layout_below="@id/tvLoginViaPhone"
+        android:layout_width="250dp"
+        android:layout_height="@dimen/login_button_height"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/shape_lineframe_black_fill"
-        android:textColor="@android:color/white"
+        android:background="@drawable/bg_rectangle_wireframe_yellow"
+        android:textColor="@color/standard_color_yellow"
         android:gravity="center"
+        android:layout_marginBottom="@dimen/base_margin"
         android:textSize="@dimen/standard_text_size_h3"
+        android:layout_above="@+id/tvForgottenPassword"
         android:text="@string/create_account_via_phone" />
 
     <TextView
         android:id="@+id/tvForgottenPassword"
         android:textColor="@color/standard_color_h3_dark"
-        android:layout_below="@id/tvCreateAccountViaPhone"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/base_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
