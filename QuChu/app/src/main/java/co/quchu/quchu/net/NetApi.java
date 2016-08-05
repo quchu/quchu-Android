@@ -162,4 +162,5 @@ public interface NetApi {
     String shareArticleUrl = HOST + "/searchSpecial/getSearchSpecialListByArticleId?articleId=";
 
     String checkUpdate = HOST + "/public/getQuchuVersion";
+    String getGoupTags = HOST + "/public/getTagGroupList";
 }

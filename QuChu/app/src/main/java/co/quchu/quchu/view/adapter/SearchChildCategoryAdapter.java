@@ -7,6 +7,7 @@ import android.view.View;
 import java.util.List;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SearchCategoryBean;
 
 /**
@@ -14,11 +15,11 @@ import co.quchu.quchu.model.SearchCategoryBean;
  * email:437943145@qq.com
  * desc :
  */
-public class SearchCategoryAdapter extends SearchPopWinBaseAdapter {
+public class SearchChildCategoryAdapter extends SearchPopWinBaseAdapter {
 
-    List<SearchCategoryBean> datas;
+    List<DetailModel.TagsEntity> datas;
 
-    public void setDatas(List<SearchCategoryBean> datas) {
+    public void setDatas(List<DetailModel.TagsEntity> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }
@@ -27,7 +28,7 @@ public class SearchCategoryAdapter extends SearchPopWinBaseAdapter {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final SearchCategoryBean bean = datas.get(position);
+        final DetailModel.TagsEntity bean = datas.get(position);
         holder.searchPopItemTv.setText(bean.getZh());
         if (selectedPosition == position) {
             holder.searchPopItemContent.setBackgroundColor(Color.BLACK);

@@ -3,6 +3,8 @@ package co.quchu.quchu.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 /**
  * Created by no21 on 2016/6/29.
  * email:437943145@qq.com
@@ -22,6 +24,23 @@ public class SearchCategoryBean implements Parcelable {
     private String en;
     private String code;
     private String imageUrl;
+    List<DetailModel.TagsEntity> datas;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public List<DetailModel.TagsEntity> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<DetailModel.TagsEntity> datas) {
+        this.datas = datas;
+    }
 
     public int getTagId() {
         return tagId;

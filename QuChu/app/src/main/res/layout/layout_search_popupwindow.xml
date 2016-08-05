@@ -16,11 +16,25 @@
         android:layout_height="match_parent"
         android:background="@color/standard_color_white">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <LinearLayout
+            android:id="@+id/llCategories"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvTags"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvChildsTags"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
         <co.quchu.quchu.widget.AreaView
             android:id="@+id/areaView"

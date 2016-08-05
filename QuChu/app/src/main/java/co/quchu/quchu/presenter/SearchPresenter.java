@@ -194,21 +194,39 @@ public class SearchPresenter {
         request.start(context);
     }
 
-    public static void getTagByParentId(final SearchActivity context, int tagId) {
-        GsonRequest<ArrayList<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getTagByParentId + "?tagId=" + tagId, new TypeToken<ArrayList<SearchCategoryBean>>() {
-        }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
+
+    public static void getGroupTags(final SearchActivity context) {
+        GsonRequest<List<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getGoupTags, new TypeToken<List<SearchCategoryBean>>() {
+        }.getType(), new ResponseListener<List<SearchCategoryBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
                 Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onResponse(ArrayList<SearchCategoryBean> response, boolean result, String errorCode, @Nullable String msg) {
-                context.setCategoryList(response);
+            public void onResponse(List<SearchCategoryBean> response, boolean result, String errorCode, @Nullable String msg) {
+                context.initGroupList(response);
+
             }
         });
         request.start(context);
     }
+
+//    public static void getTagByParentId(final SearchActivity context, int tagId) {
+//        GsonRequest<ArrayList<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getTagByParentId + "?tagId=" + tagId, new TypeToken<ArrayList<SearchCategoryBean>>() {
+//        }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
+//            @Override
+//            public void onErrorResponse(@Nullable VolleyError error) {
+//                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onResponse(ArrayList<SearchCategoryBean> response, boolean result, String errorCode, @Nullable String msg) {
+//                context.setCategoryList(response);
+//            }
+//        });
+//        request.start(context);
+//    }
 
     public static void getSearchTags(Context context, final SearchTagsListener listener) {
 
