@@ -308,7 +308,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (!mData.isIsActivity() && null != mData.getIcons() && mData.getIcons().size() > 0) {
                 ((IntroImageViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
                 ((IntroImageViewHolder) holder).rvInfoGrid.setLayoutManager(new LinearLayoutManager(mAnchorActivity, LinearLayoutManager.HORIZONTAL, false));
-                ((IntroImageViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
+                //((IntroImageViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
 
                 if (null == ((IntroImageViewHolder) holder).rvInfoGrid.getTag() || !((boolean) ((IntroImageViewHolder) holder).rvInfoGrid.getTag())) {
 

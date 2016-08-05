@@ -387,10 +387,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
             vTitle.animate().translationY(-vTitle.getHeight()).setDuration(300).withEndAction(new Runnable() {
                 @Override
                 public void run() {
-                    vTitle.setVisibility(View.GONE);
+                    vTitle.setVisibility(View.VISIBLE);
+                    ivLeft.setVisibility(View.GONE);
+                    tvRight.setVisibility(View.GONE);
+                    vLeft.setVisibility(View.GONE);
+                    recommendTitleMoreRl.setVisibility(View.GONE);
+                    tvTitle.setText("趣发现");
+                    vDivider.setVisibility(View.VISIBLE);
+
                 }
             }).start();
-            vDivider.setVisibility(View.GONE);
+
 
         } else if (index == 2) {
             if (null != AppContext.user && !AppContext.user.isIsVisitors()) {

@@ -5,7 +5,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:background="@color/standard_color_white"
     android:orientation="vertical"
-    android:paddingTop="@dimen/half_margin">
+    android:paddingTop="@dimen/double_margin">
 
 
     <LinearLayout

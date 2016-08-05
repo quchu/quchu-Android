@@ -36,6 +36,7 @@
 
     <View
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="@dimen/base_margin"
         android:layout_marginTop="@dimen/base_margin"
         android:background="@color/bg_pager" />

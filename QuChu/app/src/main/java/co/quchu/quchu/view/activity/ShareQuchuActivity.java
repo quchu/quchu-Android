@@ -96,7 +96,7 @@ public class ShareQuchuActivity extends BaseActivity {
             public void onClick(View v) {
                 try {
                     String url;
-                    url = "http://www.quchu.co/h5/place/place_info_"+mDetailModel.getPid()+".html";
+                    url = "http://quchu.co/h5/place/place_info_"+mDetailModel.getPid()+".html";
                     ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(url,mDetailModel.getName(),mDetailModel.getCover());
                     shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
                 } catch (Exception ex) {

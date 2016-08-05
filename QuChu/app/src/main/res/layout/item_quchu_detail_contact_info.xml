@@ -22,6 +22,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:drawableLeft="@mipmap/ic_zuobiao"
+            android:textSize="@dimen/standard_text_size_h4"
             android:drawablePadding="8dp"
             android:ellipsize="marquee"
             android:focusable="true"
@@ -59,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:textSize="@dimen/standard_text_size_h4"
             android:drawableLeft="@mipmap/ic_dianhua"
             android:drawablePadding="8dp" />
 
@@ -80,6 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/standard_h2_height"
         android:gravity="center_vertical"
+        android:textSize="@dimen/standard_text_size_h4"
         android:drawableLeft="@mipmap/ic_shijian"
         android:drawablePadding="8dp" />
 
@@ -92,11 +95,11 @@
         android:id="@+id/detail_avg_price_tv"
         style="@style/TextView.H2"
         android:layout_width="wrap_content"
+        android:textSize="@dimen/standard_text_size_h4"
         android:layout_height="@dimen/standard_h2_height"
         android:drawableLeft="@mipmap/ic_money"
         android:drawablePadding="8dp"/>
 
-    <View style="@style/HorizontalLine" />
 
 
 </LinearLayout>

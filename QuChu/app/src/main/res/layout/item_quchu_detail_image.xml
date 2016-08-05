@@ -37,7 +37,7 @@
             android:id="@+id/detail_store_name_tv"
             style="@style/TextView.H1"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="@dimen/half_margin"
+            android:layout_marginTop="@dimen/base_margin"
             android:text="@string/empty_string"
             android:textSize="@dimen/standard_text_size_h0"
 
