@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
@@ -35,7 +34,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.AreaBean;
@@ -230,17 +228,26 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 filterCategoryAdapter.setItemClickListener(new SearchPopWinBaseAdapter.OnItemClickListener<SearchCategoryBean>() {
                     @Override
                     public void itemClick(int position, SearchCategoryBean item) {
+
+                        categoryCode = String.valueOf(item.getTagId());
                         searchFilterTV1.setText(item.getZh());
-                        childTagsAdapter.setDatas(item.getDatas());
+                        childTagsAdapter.setData(item.getDatas());
                     }
                 });
 
                 childTagsAdapter.setItemClickListener(new SearchPopWinBaseAdapter.OnItemClickListener<DetailModel.TagsEntity>() {
                     @Override
                     public void itemClick(int position, DetailModel.TagsEntity item) {
-                        categoryCode = String.valueOf(item.getId());
-                        popupWindow.dismiss();
-                        seachStr(false);
+                        System.out.println("position "+position);
+
+                        if (position==0){
+                            popupWindow.dismiss();
+                            seachStr(false);
+                        }else{
+                            categoryCode = String.valueOf(item.getTagId());
+                            popupWindow.dismiss();
+                            seachStr(false);
+                        }
                     }
                 });
 
@@ -370,6 +377,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 finish();
             case R.id.searchFilterLL1:
                 if (currentShowingPopupType == SHOWING_POPUP_TYPE_CATEGORY) {
+                    seachStr(false);
                     popupWindow.dismiss();
                 } else {
                     currentShowingPopupType = SHOWING_POPUP_TYPE_CATEGORY;
@@ -578,5 +586,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     public void initGroupList(List<SearchCategoryBean> response) {
         this.categoryParentList = response;
         filterCategoryAdapter.setDatas(response);
+        if (response.size()>0){
+            childTagsAdapter.setData(response.get(0).getDatas());
+        }
     }
 }

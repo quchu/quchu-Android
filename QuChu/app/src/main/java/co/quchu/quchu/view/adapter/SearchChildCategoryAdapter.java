@@ -1,14 +1,13 @@
 package co.quchu.quchu.view.adapter;
 
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.model.SearchCategoryBean;
 
 /**
  * Created by no21 on 2016/7/1.
@@ -17,10 +16,17 @@ import co.quchu.quchu.model.SearchCategoryBean;
  */
 public class SearchChildCategoryAdapter extends SearchPopWinBaseAdapter {
 
-    List<DetailModel.TagsEntity> datas;
+    List<DetailModel.TagsEntity> data = new ArrayList<>();
 
-    public void setDatas(List<DetailModel.TagsEntity> datas) {
-        this.datas = datas;
+    public void setData(List<DetailModel.TagsEntity> data) {
+
+        this.data.clear();
+        DetailModel.TagsEntity all = new DetailModel.TagsEntity();
+        all.setId(0);
+        all.setZh("全部");
+        this.data.add(0,all);
+        this.data.addAll(data);
+
         notifyDataSetChanged();
     }
 
@@ -28,11 +34,10 @@ public class SearchChildCategoryAdapter extends SearchPopWinBaseAdapter {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final DetailModel.TagsEntity bean = datas.get(position);
+        final DetailModel.TagsEntity bean = data.get(position);
         holder.searchPopItemTv.setText(bean.getZh());
         if (selectedPosition == position) {
-            holder.searchPopItemContent.setBackgroundColor(Color.BLACK);
-            holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_white));
+            holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_yellow));
             holder.searchPopItemIv.setVisibility(View.VISIBLE);
         } else {
             holder.searchPopItemContent.setBackground(null);
@@ -55,6 +60,6 @@ public class SearchChildCategoryAdapter extends SearchPopWinBaseAdapter {
 
     @Override
     public int getItemCount() {
-        return datas == null ? 0 : datas.size();
+        return data == null ? 0 : data.size();
     }
 }

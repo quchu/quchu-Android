@@ -28,6 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
+            <View style="@style/VerticalLine" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvChildsTags"
                 android:layout_width="match_parent"
@@ -48,8 +50,7 @@
                 android:id="@+id/area_area"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="@dimen/base_margin" />
+                android:layout_weight="1"/>
 
             <View style="@style/VerticalLine" />
 
@@ -57,8 +58,7 @@
                 android:id="@+id/area_row"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="@dimen/base_margin" />
+                android:layout_weight="1" />
 
         </co.quchu.quchu.widget.AreaView>
 

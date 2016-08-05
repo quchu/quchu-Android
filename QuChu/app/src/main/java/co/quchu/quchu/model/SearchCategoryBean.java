@@ -24,7 +24,7 @@ public class SearchCategoryBean implements Parcelable {
     private String en;
     private String code;
     private String imageUrl;
-    List<DetailModel.TagsEntity> datas;
+    List<DetailModel.TagsEntity> childTag;
 
     public String getImageUrl() {
         return imageUrl;
@@ -35,11 +35,11 @@ public class SearchCategoryBean implements Parcelable {
     }
 
     public List<DetailModel.TagsEntity> getDatas() {
-        return datas;
+        return childTag;
     }
 
     public void setDatas(List<DetailModel.TagsEntity> datas) {
-        this.datas = datas;
+        this.childTag = datas;
     }
 
     public int getTagId() {

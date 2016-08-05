@@ -598,6 +598,16 @@ public class DetailModel implements Serializable{
         public void setId(int id) {
             this.id = id;
         }
+
+        private int tagId;
+
+        public int getTagId() {
+            return tagId;
+        }
+
+        public void setTagId(int tagId) {
+            this.tagId = tagId;
+        }
     }
 
     public static class NearPlace implements Serializable{

@@ -30,8 +30,7 @@ public class SearchCategoryAdapter extends SearchPopWinBaseAdapter {
         final SearchCategoryBean bean = datas.get(position);
         holder.searchPopItemTv.setText(bean.getZh());
         if (selectedPosition == position) {
-            holder.searchPopItemContent.setBackgroundColor(Color.BLACK);
-            holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_white));
+            holder.searchPopItemTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.standard_color_yellow));
             holder.searchPopItemIv.setVisibility(View.VISIBLE);
         } else {
             holder.searchPopItemContent.setBackground(null);

@@ -196,7 +196,7 @@ public class SearchPresenter {
 
 
     public static void getGroupTags(final SearchActivity context) {
-        GsonRequest<List<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getGoupTags, new TypeToken<List<SearchCategoryBean>>() {
+        GsonRequest<List<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getGroupTags, new TypeToken<List<SearchCategoryBean>>() {
         }.getType(), new ResponseListener<List<SearchCategoryBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {

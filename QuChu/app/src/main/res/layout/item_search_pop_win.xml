@@ -29,8 +29,7 @@
             android:textColor="@color/standard_color_h2_dark"
             android:layout_gravity="center_vertical"
             android:singleLine="true"
-            android:text="哈哈美国加拿大"
-            tools:text="hahahhahahahah" />
+            tools:text="String" />
     </LinearLayout>
 
     <View
