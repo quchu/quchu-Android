@@ -70,7 +70,6 @@ public class ShareQuchuActivity extends BaseActivity {
         tvPlaceLocation.setText(mDetailModel.getAddress());
 
         tvPlaceName.setText(R.string.guess_where_is_it);
-        tvPlaceName.setTextColor(getResources().getColor(R.color.standard_color_white));
 
         tvPhone.setText(mDetailModel.getTel());
         tvMoney.setText(mDetailModel.getPrice()+"元/人");

@@ -77,17 +77,19 @@
 
 
     <ImageView
+        android:layout_marginLeft="-1dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/shape_round_full"
+        android:src="@mipmap/ic_timeline_circle"
         tools:ignore="ContentDescription" />
 
 
     <ImageView
+        android:layout_marginLeft="-1dp"
         android:layout_alignTop="@id/desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/shape_round_full"
+        android:src="@mipmap/ic_timeline_circle_active"
         tools:ignore="ContentDescription" />
 
 </co.quchu.quchu.widget.LineRelative>

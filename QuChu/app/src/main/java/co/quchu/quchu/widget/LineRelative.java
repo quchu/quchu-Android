@@ -40,6 +40,6 @@ public class LineRelative extends RelativeLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int positionX = StringUtils.dip2px(getContext(), 16);
-        canvas.drawLine(positionX, 0, positionX, getHeight(), paint);
+        canvas.drawLine(positionX, 0, positionX, getHeight()-(positionX*1.5f), paint);
     }
 }

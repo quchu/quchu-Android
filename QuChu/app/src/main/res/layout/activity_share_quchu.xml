@@ -17,6 +17,13 @@
         android:layout_marginLeft="@dimen/base_margin"
         />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:src="@mipmap/ic_timeline_circle_active"
+        />
+
     <LinearLayout
         android:layout_marginLeft="@dimen/double_margin"
         android:layout_width="match_parent"
