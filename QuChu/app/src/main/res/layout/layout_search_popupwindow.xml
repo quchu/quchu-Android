@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <View
         style="@style/HorizontalLine"
         />
@@ -18,26 +17,27 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/standard_color_white">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/llCategories"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone"
             >
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvTags"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/standard_color_white"
                 android:layout_weight="1" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvChildsTags"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/standard_color_white"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -53,14 +53,16 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/area_area"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/standard_color_white"
                 android:layout_weight="1"/>
 
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/area_row"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/standard_color_white"
                 android:layout_weight="1" />
 
         </co.quchu.quchu.widget.AreaView>
@@ -68,7 +70,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/search_pop_sort_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/standard_color_white"
             android:visibility="gone" />
     </FrameLayout>
 </LinearLayout>

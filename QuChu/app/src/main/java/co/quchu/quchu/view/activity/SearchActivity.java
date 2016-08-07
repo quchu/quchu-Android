@@ -200,9 +200,15 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 searchPopIndicator = (ImageView) popWinView.findViewById(R.id.search_pop_indicator);
 
 
+                popWinView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        seachStr(false);
+                        popupWindow.dismiss();
+                    }
+                });
 
-                areaView.setLayoutParams(new FrameLayout.LayoutParams((int) AppContext.Width, (int) AppContext.Height));
-                sortRecyclerView.setLayoutParams(new FrameLayout.LayoutParams((int) AppContext.Width, (int) AppContext.Height));
+
 
                 categoryRecyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
                 categoryRecyclerViewChild.setLayoutManager(new LinearLayoutManager(SearchActivity.this));

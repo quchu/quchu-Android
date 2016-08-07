@@ -254,56 +254,23 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
             //TODO For some reason ,TagCloudView can cause laggy in this activity ,Consider using recyclerview for instead
-            if (null != mData.getTags() && mData.getTags().size() > 0) {
-                for (int i = 0; i < mData.getTags().size(); i++) {
-                    switch (i) {
-                        case 0:
-                            ((IntroImageViewHolder) holder).tag1.setText(mData.getTags().get(i).getZh());
-                            ((IntroImageViewHolder) holder).tag1.setVisibility(View.VISIBLE);
-                            ((IntroImageViewHolder) holder).tag1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getTags().get(0).getId());
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, mData.getTags().get(0).getZh());
-                                    mAnchorActivity.startActivity(intent);
-                                }
-                            });
-                            break;
-                        case 1:
-                            ((IntroImageViewHolder) holder).tag2.setText(mData.getTags().get(i).getZh());
-                            ((IntroImageViewHolder) holder).tag2.setVisibility(View.VISIBLE);
-                            ((IntroImageViewHolder) holder).tag2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getTags().get(1).getId());
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, mData.getTags().get(1).getZh());
-                                    mAnchorActivity.startActivity(intent);
-                                }
-                            });
-                            break;
-                        case 2:
-                            ((IntroImageViewHolder) holder).tag3.setText(mData.getTags().get(i).getZh());
-                            ((IntroImageViewHolder) holder).tag3.setVisibility(View.VISIBLE);
-                            ((IntroImageViewHolder) holder).tag3.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getTags().get(2).getId());
-                                    intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, mData.getTags().get(2).getZh());
-                                    mAnchorActivity.startActivity(intent);
-                                }
-                            });
-                            break;
-                    }
-                }
-            } else {
-                ((IntroImageViewHolder) holder).tag1.setVisibility(View.GONE);
-                ((IntroImageViewHolder) holder).tag2.setVisibility(View.GONE);
-                ((IntroImageViewHolder) holder).tag3.setVisibility(View.GONE);
-            }
 
+            List<String> tags=  new ArrayList<>();
+            if (null!=mData.getTags()){
+                for (int i = 0; i < mData.getTags().size() ; i++) {
+                    tags.add(mData.getTags().get(i).getZh());
+                }
+                ((IntroImageViewHolder) holder).tags.setTags(tags);
+                ((IntroImageViewHolder) holder).tags.setOnTagClickListener(new TagCloudView.OnTagClickListener() {
+                    @Override
+                    public void onTagClick(int position) {
+                        Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
+                        intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getTags().get(position).getId());
+                        intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME, mData.getTags().get(position).getZh());
+                        mAnchorActivity.startActivity(intent);
+                    }
+                });
+            }
 
             if (!mData.isIsActivity() && null != mData.getIcons() && mData.getIcons().size() > 0) {
                 ((IntroImageViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
@@ -669,12 +636,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Bind(R.id.rvAdditionalInfo)
         RecyclerView rvInfoGrid;
 
-        @Bind(R.id.recommend_tag1)
-        TextView tag1;
-        @Bind(R.id.recommend_tag2)
-        TextView tag2;
-        @Bind(R.id.recommend_tag3)
-        TextView tag3;
+        @Bind(R.id.tcvTags)
+        TagCloudView tags;
 
 
         IntroImageViewHolder(View view) {

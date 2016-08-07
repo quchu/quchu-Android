@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/half_margin"
             style="@style/TextView.H2"
+            tools:text="UserName"
             />
 
         <TextView
@@ -42,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextView.H3"
+            tools:text="Date"
             />
 
     </RelativeLayout>
@@ -57,6 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/TextView.H3"
+        tools:text="Comment"
         />
     <TextView
         android:id="@+id/tvCollapse"
@@ -65,7 +69,10 @@
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         android:visibility="gone"
+        android:layout_gravity="right"
         style="@style/TextView.H2"
+        tools:text="Comment"
+        tools:visibility="visible"
         />
 
     <RelativeLayout

@@ -56,7 +56,6 @@
             android:layout_height="wrap_content"
             card_view:tcvCanTagClick="false"
             card_view:tcvTextColor="@color/standard_color_h3_dark"
-
             />
     </LinearLayout>
 </LinearLayout>
