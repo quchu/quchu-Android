@@ -93,7 +93,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         }
         final int finalPosition = position;
-        ((ArticleViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null!=mListener){
