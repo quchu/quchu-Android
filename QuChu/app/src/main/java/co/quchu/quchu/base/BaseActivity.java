@@ -48,6 +48,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         ActManager.getAppManager().addActivity(this);
         if (this instanceof SplashActivity){
             super.onCreate(savedInstanceState);
@@ -70,6 +73,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 break;
         }
         super.onCreate(savedInstanceState);
+
+        ZhugeSDK.getInstance().disablePhoneNumber();
+        ZhugeSDK.getInstance().disableAccounts();
+        ZhugeSDK.getInstance().disableAppList();
+        ZhugeSDK.getInstance().init(getApplicationContext());
         LogUtils.e("base activity onCreate  " + getClass().getSimpleName());
 
     }
@@ -209,4 +217,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
+
+    protected void UMEvent(String strEventName){
+        MobclickAgent.onEvent(getApplicationContext(),strEventName);
+    }
 }

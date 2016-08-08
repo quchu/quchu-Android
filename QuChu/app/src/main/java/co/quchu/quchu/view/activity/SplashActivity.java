@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
+import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -80,8 +82,6 @@ public class SplashActivity extends BaseActivity {
         if(BuildConfig.API_SERVER!=0){
             ZhugeSDK.getInstance().openDebug();
         }
-
-        ZhugeSDK.getInstance().init(getApplicationContext());
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         View decorView = getWindow().getDecorView();
@@ -158,11 +158,15 @@ public class SplashActivity extends BaseActivity {
             mAnimationEnd = true;
             if (AppContext.user != null) {
                 new EnterAppTask().execute(viewDuration);
+
+                AppUtil.resignUser(getApplicationContext());
+
             } else {
                 visitorStartTime = System.currentTimeMillis() / 1000;
                 UserLoginPresenter.visitorRegiest(this, new UserLoginPresenter.UserNameUniqueListener() {
                     @Override
                     public void isUnique(JSONObject msg) {
+
 
                         RecommendPresenter.getCityList(SplashActivity.this, new RecommendPresenter.CityListListener() {
                             @Override

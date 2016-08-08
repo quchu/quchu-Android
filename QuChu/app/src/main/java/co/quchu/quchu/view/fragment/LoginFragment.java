@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,11 +22,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
+import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
@@ -111,6 +114,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                         .commitAllowingStateLoss();
                 getFragmentManager().executePendingTransactions();
                 ((BaseActivity)getActivity()).getEnhancedToolbar().show();
+                MobclickAgent.onEvent(getActivity(),"pop_login_c");
                 break;
             case R.id.tvCreateAccountViaPhone:
                 getFragmentTransactor()
@@ -119,6 +123,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                         .commitAllowingStateLoss();
                 getFragmentManager().executePendingTransactions();
                 ((BaseActivity)getActivity()).getEnhancedToolbar().show();
+                MobclickAgent.onEvent(getActivity(),"pop_registerphone_c");
                 break;
             case R.id.llAuthorizationViaMm:
 
@@ -127,6 +132,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                 } else {
                     Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
                 }
+                MobclickAgent.onEvent(getActivity(),"pop_loginwechat_c");
+
+
                 break;
             case R.id.llAuthorizationViaWeibo:
 
@@ -135,9 +143,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
                 } else {
                     Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
                 }
+                MobclickAgent.onEvent(getActivity(),"pop_loginweibo_c");
+
                 break;
         }
     }
+
 
 
     @Override
@@ -155,6 +166,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
 
     @Override
     public void loginSuccess(int type, String token, String appId) {
+        AppUtil.resignUser(getActivity());
         startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN,true));
         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
     }

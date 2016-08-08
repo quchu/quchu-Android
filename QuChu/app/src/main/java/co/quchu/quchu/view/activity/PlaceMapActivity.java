@@ -157,6 +157,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
             @Override
             public void onPageSelected(final int position) {
+                UMEvent("maplist_c");
                 if (mDataSet.get(position).getGdLatitude()==null||mDataSet.get(position).getGdLongitude()==null){
                     return;
                 }

@@ -218,10 +218,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.quchu://收藏
+                UMEvent("collection_c");
                 intent = new Intent(getActivity(), FavoriteActivity.class);
                 startActivity(intent);
                 break;
             case R.id.footPrint://脚印
+                UMEvent("footprint_c");
                 if (user.isIsVisitors()) {
                     //游客
                     ((BaseActivity)getActivity()).showLoginDialog();
@@ -240,6 +242,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.friend://趣友圈
+                UMEvent("community_c");
                 if (user.isIsVisitors()) {
                     ((BaseActivity)getActivity()).showLoginDialog();
                 } else {
@@ -249,6 +252,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.massage://消息中心
+                UMEvent("message_c");
                 intent = new Intent(getActivity(), MessageCenterActivity.class);
                 startActivity(intent);
                 unReadMassage.setVisibility(View.INVISIBLE);

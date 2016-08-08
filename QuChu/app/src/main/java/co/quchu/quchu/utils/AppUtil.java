@@ -10,6 +10,11 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
 
+import com.zhuge.analysis.stat.ZhugeSDK;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import co.quchu.quchu.base.AppContext;
@@ -140,5 +145,34 @@ public class AppUtil {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         context.startActivity(intent);
+    }
+
+
+    public static void resignUser(Context context){
+
+        String userid = String.valueOf(AppContext.user.getUserId());
+        JSONObject personObject = new JSONObject();
+
+        try {
+            personObject.put("avatar", AppContext.user.getPhoto());
+            personObject.put("gender", AppContext.user.getGender());
+            personObject.put("location", AppContext.user.getLocation());
+            if (AppContext.user.isIsVisitors()){
+                personObject.put("name", "G-"+AppContext.user.getFullname());
+            }else{
+                personObject.put("name", AppContext.user.getFullname());
+            }
+
+            if(AppContext.user.isIsweibo()){
+                personObject.put("weibo", AppContext.user.getFullname());
+            }else if(AppContext.user.isIsweixin()){
+                personObject.put("weixin", AppContext.user.getFullname());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        ZhugeSDK.getInstance().identify(context,userid, personObject);
     }
 }

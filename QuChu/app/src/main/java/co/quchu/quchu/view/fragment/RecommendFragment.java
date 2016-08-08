@@ -182,6 +182,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 if (!mItemClickable){
                     return;
                 }
+                UMEvent("f_setcommon_c");
                 addFavorite(v,position);
             }
         });
@@ -198,6 +199,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             @Override
             public void onPageSelected(int position) {
                 resetIndicators();
+                UMEvent("scene_c");
             }
 
             @Override
@@ -211,6 +213,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 switch (checkedId) {
                     case R.id.rbFavorites:
 
+                        UMEvent("c_scene_c");
                         rbAllScenes.setTypeface(null,Typeface.BOLD);
                         rbFavorites.setTypeface(null,Typeface.NORMAL);
 
@@ -274,7 +277,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
                         break;
                     case R.id.rbAll:
-
+                        UMEvent("f_scene_c");
                         rbAllScenes.setTypeface(null,Typeface.NORMAL);
                         rbFavorites.setTypeface(null,Typeface.BOLD);
                         currentIndex= 1;

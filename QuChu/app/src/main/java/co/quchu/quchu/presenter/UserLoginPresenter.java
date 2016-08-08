@@ -24,6 +24,7 @@ import co.quchu.quchu.net.NetService;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
+import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -180,6 +181,7 @@ public class UserLoginPresenter {
         GsonRequest<UserInfoModel> request = new GsonRequest<>(NetApi.register, UserInfoModel.class, params, new ResponseListener<UserInfoModel>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
+                AppUtil.resignUser(context);
                 Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
@@ -206,10 +208,12 @@ public class UserLoginPresenter {
      * @param password 密码
      * @param listener 回调
      */
-    public static void userLogin(Context context, String phoneNo, String password, final UserLoginListener listener) {
+    public static void userLogin(final Context context, String phoneNo, String password, final UserLoginListener listener) {
         NetService.post(context, String.format(NetApi.Mlogin, phoneNo, MD5.hexdigest(password), StringUtils.getMyUUID()), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
+                AppUtil.resignUser(context);
+
                 UserInfoHelper.saveUserInfo(response);
                 listener.loginSuccess(1, null, null);
             }
@@ -294,6 +298,8 @@ public class UserLoginPresenter {
         NetService.post(context, String.format(NetApi.visitorRegiester, StringUtils.getMyUUID()), null, new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
+                AppUtil.resignUser(context);
+
                 LogUtils.json("visitorRegiest=" + response.toString());
                 UserInfoHelper.saveUserInfo(response);
                 AppContext.user = new Gson().fromJson(SPUtils.getUserInfo(context), UserInfoModel.class);

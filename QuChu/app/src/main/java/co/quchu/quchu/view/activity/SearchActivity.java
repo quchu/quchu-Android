@@ -442,6 +442,26 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, ((RecommendModel) bean).getPid());
                     startActivity(intent);
                 } else {
+                    switch (position){
+                        case 0:
+                            UMEvent("food_c");
+                            break;
+                        case 1:
+                            UMEvent("hotel_c");
+                            break;
+                        case 2:
+                            UMEvent("entertainment_c");
+                            break;
+                        case 3:
+                            UMEvent("relaxation_c");
+                            break;
+                        case 4:
+                            UMEvent("shopping_c");
+                            break;
+                        case 5:
+                            UMEvent("event_c");
+                            break;
+                    }
                     categoryCode = String.valueOf(((SearchCategoryBean) bean).getTagId());
                     categoryGroupAllString = "全部" + ((SearchCategoryBean) bean).getZh();
                     categoryGroupAllId = ((SearchCategoryBean) bean).getCode();

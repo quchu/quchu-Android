@@ -37,6 +37,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.CommonDialog;
@@ -189,6 +190,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
                             transaction.add(R.id.container, articleFragment, "page_2").commitAllowingStateLoss();
                         }
                         viewpagerSelected(1);
+                        UMEvent("discovery_c");
                         break;
                     case R.id.rbMine:
                         if (!meFragment.isAdded()) {
@@ -300,6 +302,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
 
             case R.id.recommend_title_more_iv:
+                UMEvent("search_c");
                 startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
                 break;
 
@@ -311,13 +314,15 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 UserInfoModel user = AppContext.user;
                 if (user.isIsVisitors()) {
                     //游客
-                    showLoginDialog();
+                    startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
                 } else {
+                    UMEvent("profile_c");
                     startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
                 }
                 break;
             case R.id.recommend_title_location_rl:
 
+                UMEvent("location_c");
                 if (NetUtil.isNetworkConnected(getApplicationContext())) {
                     if (list != null) {
                         showCityDialog();

@@ -179,9 +179,16 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                 mAdapter = new ArticleDetailAdapter(getApplicationContext(), mSimplePlaceModels, response.getArticle(), new CommonItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        Intent intent = new Intent(ArticleDetailActivity.this, QuchuDetailsActivity.class);
-                        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, response.getPlaceList().getResult().get(position).getPlaceId());
-                        startActivity(intent);
+                        if (position==0){
+                            UMEvent("banner_c");
+                        }else{
+
+                            UMEvent("detail_theme_c");
+                            Intent intent = new Intent(ArticleDetailActivity.this, QuchuDetailsActivity.class);
+                            intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, response.getPlaceList().getResult().get(position-1).getPlaceId());
+                            startActivity(intent);
+                        }
+
                     }
                 });
                 rv.setAdapter(mAdapter);

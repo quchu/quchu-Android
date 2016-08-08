@@ -419,11 +419,13 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                     quchuDetailsMoreDialog.setOnButtonClickListener(new QuchuDetailsMoreDialog.OnButtonClickListener() {
                         @Override
                         public void onReturnClick() {
+                            UMEvent("back_c");
                             EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
                         }
 
                         @Override
                         public void onPreOrderClick() {
+                            UMEvent("reserve_c");
                             if (NetUtil.isNetworkConnected(getApplicationContext())) {
                                 if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
                                     WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName(),false);
@@ -437,6 +439,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
                         @Override
                         public void onShareClick() {
+                            UMEvent("share_c");
                             startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
                         }
                     });
@@ -444,6 +447,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                     break;
 
                 case R.id.ivShare:
+                    UMEvent("comment_c");
                     RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
                     tagsFilterDialog.show(getSupportFragmentManager(), "");
                     tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
@@ -464,6 +468,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                     break;
                 case R.id.ivFavorite:
                     //收藏
+                    UMEvent("like_c");
                     setFavorite();
                     break;
 //                case R.id.ivShare:
@@ -485,6 +490,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                     }else {
                         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_MAP));
 
+                        UMEvent("map_c");
                         Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
                         mapIntent.putExtra("pid",dModel.getPid());
                         mapIntent.putExtra("lat", dModel.getLatitude());

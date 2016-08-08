@@ -175,6 +175,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
             return;
         }
         if (isFavorite) {
+            UMEvent("d_setcommon_c");
             ScenePresenter.delFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
                 @Override
                 public void successListener(Object response) {

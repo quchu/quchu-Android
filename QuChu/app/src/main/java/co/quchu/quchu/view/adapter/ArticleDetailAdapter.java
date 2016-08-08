@@ -90,16 +90,17 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position).getContent());
             ((ArticleViewHolder) holder).tvTitle.setText(mDataSet.get(position).getName());
             ((ArticleViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getCover()));
-            final int finalPosition = position;
-            ((ArticleViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (null!=mListener){
-                        mListener.onItemClick(v, finalPosition);
-                    }
-                }
-            });
+
         }
+        final int finalPosition = position;
+        ((ArticleViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null!=mListener){
+                    mListener.onItemClick(v, finalPosition);
+                }
+            }
+        });
     }
 
 

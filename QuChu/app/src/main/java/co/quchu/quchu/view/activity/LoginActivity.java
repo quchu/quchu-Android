@@ -1,35 +1,23 @@
 package co.quchu.quchu.view.activity;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONObject;
-
-import java.util.Timer;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.view.fragment.LoginByPhoneFragment;
 import co.quchu.quchu.view.fragment.LoginFragment;
-import co.quchu.quchu.view.fragment.PhoneValidationFragment;
-import co.quchu.quchu.view.fragment.RegistrationFragment;
-import co.quchu.quchu.view.fragment.RestorePasswordFragment;
 import co.quchu.quchu.widget.RitalinLayout;
 
 public class LoginActivity extends BaseBehaviorActivity {
@@ -86,7 +74,7 @@ public class LoginActivity extends BaseBehaviorActivity {
         getEnhancedToolbar().hide();
 
         loginFragment = new LoginFragment();
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.flContent,loginFragment,LoginFragment.TAG).commit();
         getFragmentManager().executePendingTransactions();
 
