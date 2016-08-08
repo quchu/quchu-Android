@@ -258,7 +258,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             List<String> tags=  new ArrayList<>();
             if (null!=mData.getTags()){
                 for (int i = 0; i < mData.getTags().size() ; i++) {
-                    tags.add(mData.getTags().get(i).getZh());
+                    tags.add(" "+mData.getTags().get(i).getZh()+" ");
                 }
                 ((IntroImageViewHolder) holder).tags.setTags(tags);
                 ((IntroImageViewHolder) holder).tags.setOnTagClickListener(new TagCloudView.OnTagClickListener() {
@@ -273,7 +273,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
             if (!mData.isIsActivity() && null != mData.getIcons() && mData.getIcons().size() > 0) {
-                ((IntroImageViewHolder) holder).rvInfoGrid.setVisibility(View.VISIBLE);
+                ((IntroImageViewHolder) holder).rvInfoGrid.setVisibility(View.GONE);
                 ((IntroImageViewHolder) holder).rvInfoGrid.setLayoutManager(new LinearLayoutManager(mAnchorActivity, LinearLayoutManager.HORIZONTAL, false));
                 //((IntroImageViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
 
@@ -413,7 +413,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (null!=mAnalysisModel.getResult()){
                     for (int i = 0; i < mAnalysisModel.getResult().size() ; i++) {
                         TagsModel objTag = mAnalysisModel.getResult().get(i);
-                        tags.add(objTag.getZh() +" "+objTag.getCount());
+                        tags.add(" "+objTag.getZh() +" "+objTag.getCount() + " ");
                     }
                     ((RatingInfoViewHolder) holder).tagCloudView.setTags(tags);
                 }

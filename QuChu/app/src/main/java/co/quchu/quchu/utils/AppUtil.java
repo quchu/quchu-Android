@@ -150,6 +150,9 @@ public class AppUtil {
 
     public static void resignUser(Context context){
 
+        if (null==AppContext.user){
+            return;
+        }
         String userid = String.valueOf(AppContext.user.getUserId());
         JSONObject personObject = new JSONObject();
 

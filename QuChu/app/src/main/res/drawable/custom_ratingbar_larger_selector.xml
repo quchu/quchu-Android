@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@android:id/background"
-        android:drawable="@drawable/ic_fenshu_big_gray" />
+        android:drawable="@mipmap/ic_xing1" />
     <item android:id="@android:id/progress"
-        android:drawable="@drawable/ic_fenshu_big" />
+        android:drawable="@mipmap/ic_xing2" />
 </layer-list>

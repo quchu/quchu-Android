@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/detail_store_address_ll"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/standard_h2_height"
+        android:layout_height="@dimen/quchu_detail_contact_info_height"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -48,7 +48,7 @@
 
         android:id="@+id/detail_store_phone_ll"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/standard_h2_height"
+        android:layout_height="@dimen/quchu_detail_contact_info_height"
 
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -80,7 +80,7 @@
         android:id="@+id/detail_store_business_hours_key_tv"
         style="@style/TextView.H2"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/standard_h2_height"
+        android:layout_height="@dimen/quchu_detail_contact_info_height"
         android:gravity="center_vertical"
         android:textSize="@dimen/standard_text_size_h4"
         android:drawableLeft="@mipmap/ic_shijian"
@@ -96,7 +96,7 @@
         style="@style/TextView.H2"
         android:layout_width="wrap_content"
         android:textSize="@dimen/standard_text_size_h4"
-        android:layout_height="@dimen/standard_h2_height"
+        android:layout_height="@dimen/quchu_detail_contact_info_height"
         android:drawableLeft="@mipmap/ic_money"
         android:drawablePadding="8dp"/>
 
