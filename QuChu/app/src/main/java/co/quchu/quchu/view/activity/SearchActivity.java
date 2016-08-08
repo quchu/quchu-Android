@@ -132,6 +132,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     private AreaView areaView;
 
     private String categoryCode = "", areaId = "", circleId = "", sortType = "";
+    private String categoryName = "";
+    private String circleName = "";
     private RecyclerView sortRecyclerView;
     private SearchCategoryAdapter filterCategoryAdapter;
     private SearchSortAdapter filterSortAdapter;
@@ -220,7 +222,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     public void areaSelected(AreaBean areaBean, AreaBean.CircleListBean circleListBean) {
                         areaId = areaBean.getAreaId();
                         circleId = circleListBean.getCircleId();
-
+                        circleName = circleListBean.getCircleName();
                         popupWindow.dismiss();
                         searchFilterTV2.setText(TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaName() : circleListBean.getCircleName());
                         seachStr(false);
@@ -237,6 +239,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     public void itemClick(int position, SearchCategoryBean item) {
 
                         categoryCode = String.valueOf(item.getTagId());
+                        categoryName = String.valueOf(item.getZh());
                         searchFilterTV1.setText(item.getZh());
                         childTagsAdapter.setData(item.getDatas());
                     }
@@ -251,6 +254,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                             seachStr(false);
                         }else{
                             categoryCode = String.valueOf(item.getTagId());
+                            categoryName = String.valueOf(item.getZh());
                             popupWindow.dismiss();
                             seachStr(false);
                         }
@@ -463,6 +467,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                             break;
                     }
                     categoryCode = String.valueOf(((SearchCategoryBean) bean).getTagId());
+                    categoryName = String.valueOf(((SearchCategoryBean)bean).getZh());
                     categoryGroupAllString = "全部" + ((SearchCategoryBean) bean).getZh();
                     categoryGroupAllId = ((SearchCategoryBean) bean).getCode();
                     searchFilterTV1.setText(categoryGroupAllString);
@@ -483,6 +488,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
 
     private void seachStr(final boolean loadMore) {
+
+
         String str = "";
         if (filterUserInput)
             str = searchInputEt.getText().toString().trim();
@@ -504,6 +511,12 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         Map<String, String> p = new HashMap<>();
         p.put("search_keyword", str);
 
+
+        ArrayMap<String,Object> params = new ArrayMap<>();
+        params.put("商圈名称",circleName);
+        params.put("输入文本",str);
+        params.put("分类名称",categoryName);
+        ZGEvent(params,"搜索条件");
         SearchPresenter.searchFromService(this, areaId, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, circleId, sortType, new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList, int maxPageNo) {

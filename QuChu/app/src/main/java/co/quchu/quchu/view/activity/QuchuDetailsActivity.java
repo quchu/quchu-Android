@@ -420,12 +420,14 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                         @Override
                         public void onReturnClick() {
                             UMEvent("back_c");
+                            ZGEvent("趣处名称",dModel.getName(),"返回首页");
                             EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
                         }
 
                         @Override
                         public void onPreOrderClick() {
                             UMEvent("reserve_c");
+                            ZGEvent("趣处名称",dModel.getName(),"预定按钮");
                             if (NetUtil.isNetworkConnected(getApplicationContext())) {
                                 if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
                                     WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName(),false);
@@ -448,12 +450,14 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
                 case R.id.ivShare:
                     UMEvent("comment_c");
+                    ZGEvent("趣处名称",dModel.getName(),"进入评价");
                     RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
                     tagsFilterDialog.show(getSupportFragmentManager(), "");
                     tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
                         @Override
                         public void onFinishPicking(List<TagsModel> selection, int score) {
                             if (null != selection) {
+                                ZGEvent("趣处名称",dModel.getName(),"提交评价");
                                 ratingQuchu(selection, score);
                             }
                         }
@@ -469,6 +473,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                 case R.id.ivFavorite:
                     //收藏
                     UMEvent("like_c");
+                    ZGEvent("趣处名称",dModel.getName(),"收藏趣处");
                     setFavorite();
                     break;
 //                case R.id.ivShare:

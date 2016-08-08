@@ -181,6 +181,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                     public void onItemClick(View v, int position) {
                         if (position==0){
                             UMEvent("banner_c");
+                            ZGEvent("文章名称",articleTitle,"进入banner文章");
                         }else{
 
                             UMEvent("detail_theme_c");
@@ -273,6 +274,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
     public void detailClick(View v) {
         switch (v.getId()) {
             case R.id.ivFavorite:
+                ZGEvent("文章名称",articleTitle,"点赞主题文章");
                 setFavorite();
                 break;
             case R.id.ivShare:

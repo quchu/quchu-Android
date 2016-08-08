@@ -105,6 +105,8 @@ public class FootPrintActivity extends BaseBehaviorActivity {
         mQuchuId = getIntent().getIntExtra(BUNDLE_KEY_QUCHU_ID, -1);
         mQuchuName = getIntent().getStringExtra(BUNDLE_KEY_QUCHU_NAME);
 
+        ZGEvent("趣处名称",mQuchuName,"进入趣处脚印列表");
+
         mAdapter = new FootPrintAdapter(mData, new FootPrintAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

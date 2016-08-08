@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,9 @@ import com.squareup.leakcanary.RefWatcher;
 
 import com.umeng.analytics.MobclickAgent;
 import com.zhuge.analysis.stat.ZhugeSDK;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
@@ -50,9 +54,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 
-
         ActManager.getAppManager().addActivity(this);
-        if (this instanceof SplashActivity){
+        if (this instanceof SplashActivity) {
             super.onCreate(savedInstanceState);
             return;
         }
@@ -109,22 +112,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        if (this instanceof RecommendActivity){
+        if (this instanceof RecommendActivity) {
             return;
-        }else{
+        } else {
 
             switch (activitySetup()) {
                 case TRANSITION_TYPE_NOTHING:
                     break;
-    //            case TRANSITION_TYPE_ALPHA:
-    //                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
-    //                break;
+                //            case TRANSITION_TYPE_ALPHA:
+                //                overridePendingTransition(R.anim.in_alpha, R.anim.out_alpha);
+                //                break;
                 case TRANSITION_TYPE_LEFT:
                     overridePendingTransition(0, R.anim.out_push_letf_to_right);
                     break;
-    //            case TRANSITION_TYPE_BOTTOM:
-    //                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
-    //                break;
+                //            case TRANSITION_TYPE_BOTTOM:
+                //                overridePendingTransition(R.anim.in_top_to_bottom, R.anim.out_bottom_to_top);
+                //                break;
                 case TRANSITION_TYPE_TOP:
                     overridePendingTransition(0, R.anim.out_top_to_bottom);
                     break;
@@ -135,7 +138,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (null!=getPageNameCN()){
+        if (null != getPageNameCN()) {
             MobclickAgent.onPageEnd(getPageNameCN());
             MobclickAgent.onPause(this);
         }
@@ -146,7 +149,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (null!=getPageNameCN()){
+        if (null != getPageNameCN()) {
             MobclickAgent.onPageStart(getPageNameCN());
             MobclickAgent.onResume(this);
         }
@@ -194,8 +197,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-
-    public void showLoginDialog(){
+    public void showLoginDialog() {
 
         final CommonDialog commonDialog = CommonDialog.newInstance("登录提醒", "前往该操作前需要进行登录\r\n是否现在前往", "立即前往", "容我三思");
         commonDialog.setListener(new CommonDialog.OnActionListener() {
@@ -218,7 +220,35 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    protected void UMEvent(String strEventName){
-        MobclickAgent.onEvent(getApplicationContext(),strEventName);
+    protected void UMEvent(String strEventName) {
+        MobclickAgent.onEvent(getApplicationContext(), strEventName);
+    }
+
+    protected void ZGEvent(String key,Object value,String eventName) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(key, value);
+            jsonObject.put("时间", System.currentTimeMillis());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ZhugeSDK.getInstance().track(getApplicationContext(), eventName, jsonObject);
+    }
+
+    protected void ZGEvent(ArrayMap<String, Object> params,String eventName) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            for (String key : params.keySet()) {
+                jsonObject.put(key, params.get(key));
+            }
+            jsonObject.put("时间", System.currentTimeMillis());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ZhugeSDK.getInstance().track(getApplicationContext(), eventName, jsonObject);
     }
 }

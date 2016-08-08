@@ -483,6 +483,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         switch (event.getFlag()) {
             case EventFlags.EVENT_NEW_CITY_SELECTED:
+                ArrayMap<String,Object> arrayMap = new ArrayMap<>();
+                arrayMap.put("城市名称",SPUtils.getCityName());
+                ZGEvent(arrayMap,"选择城市");
                 recommendTitleLocationIv.setText(SPUtils.getCityName());
                 break;
             case EventFlags.EVENT_USER_LOGIN_SUCCESS:

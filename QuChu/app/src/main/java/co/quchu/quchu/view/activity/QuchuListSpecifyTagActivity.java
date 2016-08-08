@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -36,8 +37,10 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
 
     private int mTagId = 0;
     private String mTagName;
+    private String mQuchuName;
     public static String BUNDLE_KEY_TAG_ID = "BUNDLE_KEY_TAG_ID";
     public static String BUNDLE_KEY_TAG_NAME = "BUNDLE_KEY_TAG_NAME";
+    public static String BUNDLE_KEY_TAG_QUCHU_NAME = "BUNDLE_KEY_TAG_QUCHU_NAME";
     @Bind(R.id.rv)
     RecyclerView mRecyclerView;
     NearbyAdapter mAdapter;
@@ -55,6 +58,11 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
         ButterKnife.bind(this);
         mTagId = getIntent().getIntExtra(BUNDLE_KEY_TAG_ID, -1);
         mTagName = getIntent().getStringExtra(BUNDLE_KEY_TAG_NAME);
+        mQuchuName = getIntent().getStringExtra(BUNDLE_KEY_TAG_QUCHU_NAME);
+        ArrayMap<String,Object> params = new ArrayMap<>();
+        params.put("趣处名称",mQuchuName);
+        params.put("标签名称",mTagName);
+        ZGEvent(params,"点击标签查询");
         getEnhancedToolbar().getTitleTv().setText(mTagName);
 
         mAdapter = new NearbyAdapter(mData, new NearbyAdapter.OnItemClickListener() {

@@ -134,6 +134,8 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
         }
         initData();
 
+        ZGEvent("趣处名称",placeTitle,"进入地图");
+
         //getEnhancedToolbar().getTitleTv().setText(R.string.nearby_quchu);
 
         mAdapter = new AMapNearbyVPAdapter(mDataSet, new AMapNearbyVPAdapter.OnMapItemClickListener() {

@@ -175,4 +175,5 @@ public class AppUtil {
 
         ZhugeSDK.getInstance().identify(context,userid, personObject);
     }
+
 }
