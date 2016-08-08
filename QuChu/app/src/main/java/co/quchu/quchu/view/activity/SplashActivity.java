@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -176,6 +177,10 @@ public class SplashActivity extends BaseActivity {
                     @Override
                     public void isUnique(JSONObject msg) {
 
+                        ArrayMap<String,Object> params = new ArrayMap<>();
+                        params.put("用户名",AppContext.user.getFullname());
+                        params.put("登陆方式","游客模式");
+                        ZGEvent(params,"用户登陆");
 
                         RecommendPresenter.getCityList(SplashActivity.this, new RecommendPresenter.CityListListener() {
                             @Override

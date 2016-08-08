@@ -57,7 +57,7 @@ android {
             manifestPlaceholders = [AMAP_DEBUG_KEY: "8d635450932036faf3681a8960d884fa",UMENG_APP_KEY:"56abaf9be0f55a4757000e39"]
         }
         debug {
-            buildConfigField "int", "API_SERVER", "2"
+            buildConfigField "int", "API_SERVER", "1"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
             manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872",UMENG_APP_KEY:"5655121fe0f55a5ee8008dd5"]
         }

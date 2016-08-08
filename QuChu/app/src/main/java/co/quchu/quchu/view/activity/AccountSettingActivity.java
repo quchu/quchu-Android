@@ -236,6 +236,13 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                                 UserLoginPresenter.visitorRegiest(AccountSettingActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
                                     @Override
                                     public void isUnique(JSONObject msg) {
+
+
+                                        ArrayMap<String,Object> params = new ArrayMap<>();
+                                        params.put("用户名",AppContext.user.getFullname());
+                                        params.put("登陆方式","游客模式");
+                                        ZGEvent(params,"用户登陆");
+
                                         commonDialog.dismiss();
                                         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
                                         finish();

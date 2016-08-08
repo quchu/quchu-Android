@@ -42,7 +42,7 @@ public class LoginActivity extends BaseBehaviorActivity {
     RitalinLayout flContent;
 
     LoginFragment loginFragment;
-    FragmentManager fragmentManager;
+    android.app.FragmentManager fragmentManager;
     public SsoHandler handler;
     public long mRequestVerifyCode = -1;
 
@@ -74,7 +74,7 @@ public class LoginActivity extends BaseBehaviorActivity {
         getEnhancedToolbar().hide();
 
         loginFragment = new LoginFragment();
-        fragmentManager = getSupportFragmentManager();
+        fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().add(R.id.flContent,loginFragment,LoginFragment.TAG).commit();
         getFragmentManager().executePendingTransactions();
 
