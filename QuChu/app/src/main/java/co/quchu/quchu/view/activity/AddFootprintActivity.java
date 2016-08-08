@@ -87,10 +87,12 @@ public class AddFootprintActivity extends BaseBehaviorActivity implements FindPo
     public static final String REQUEST_KEY_NAME = "name";
     public static final String REQUEST_KEY_ENTITY = "entity";
     public static final String REQUEST_KEY_IS_EDIT = "edit";
+    public static final String REQUEST_KEY_FROM_PAGE_NAME = "";
     public static final String REQUEST_KEY_ALLOW_PICKING_STORE = "REQUEST_KEY_ALLOW_PICKING_STORE";
 
     private int cId = -1;
     private int pId;
+    private String fromPageName;
     private String pName;
     private PostCardItemModel mData;
     private int REQUEST_PICKING_QUCHU = 0x0001;
@@ -113,6 +115,15 @@ public class AddFootprintActivity extends BaseBehaviorActivity implements FindPo
         pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
         pName = getIntent().getStringExtra(REQUEST_KEY_NAME);
         mAllowPicking = getIntent().getBooleanExtra(REQUEST_KEY_ALLOW_PICKING_STORE, false);
+        fromPageName = getIntent().getStringExtra(REQUEST_KEY_FROM_PAGE_NAME);
+
+
+        ArrayMap<String,Object> params = new ArrayMap<>();
+        params.put("趣处名称",pName);
+        params.put("入口名称",fromPageName);
+        ZGEvent(params,"添加脚印");
+
+        //ZGEvent("文章名称",dModel.getName(),"趣处分享");
 
         //数据是重新封装过的,如果部分属性丢失请返回前面页面添加
         mData = getIntent().getParcelableExtra(REQUEST_KEY_ENTITY);

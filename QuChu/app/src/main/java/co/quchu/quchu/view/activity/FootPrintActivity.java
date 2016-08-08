@@ -139,6 +139,7 @@ public class FootPrintActivity extends BaseBehaviorActivity {
                     Intent intent = new Intent(FootPrintActivity.this, AddFootprintActivity.class);
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mQuchuId);
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mQuchuName);
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_FROM_PAGE_NAME, getPageNameCN());
                     startActivity(intent);
                 }
             }

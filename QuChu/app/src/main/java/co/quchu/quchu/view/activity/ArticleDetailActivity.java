@@ -279,6 +279,8 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                 break;
             case R.id.ivShare:
 
+                ZGEvent("文章名称",articleTitle,"分享");
+
                 if (null == mArticleDetailModel || null == mArticleDetailModel.getArticle()) {
                     return;
                 }

@@ -102,6 +102,12 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     @Bind(R.id.tvEmptyView)
     TextView tvEmptyView;
 
+    @Bind(R.id.vIndicatorLeft)
+    View vIndicatorLeft;
+    @Bind(R.id.vIndicatorRight)
+    View vIndicatorRight;
+
+
     int currentIndex = 0;
 
 
@@ -213,6 +219,10 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                 switch (checkedId) {
                     case R.id.rbFavorites:
 
+
+                        vIndicatorLeft.setVisibility(View.VISIBLE);
+                        vIndicatorRight.setVisibility(View.INVISIBLE);
+
                         UMEvent("c_scene_c");
                         rbAllScenes.setTypeface(null,Typeface.BOLD);
                         rbFavorites.setTypeface(null,Typeface.NORMAL);
@@ -277,6 +287,10 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
                         break;
                     case R.id.rbAll:
+
+
+                        vIndicatorLeft.setVisibility(View.INVISIBLE);
+                        vIndicatorRight.setVisibility(View.VISIBLE);
                         UMEvent("f_scene_c");
                         rbAllScenes.setTypeface(null,Typeface.NORMAL);
                         rbFavorites.setTypeface(null,Typeface.BOLD);

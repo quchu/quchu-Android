@@ -138,6 +138,7 @@ public class PickingQuchuActivity extends BaseActivity {
                             intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, item.getId());
                             intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, item.getName());
                             intent.putExtra(AddFootprintActivity.REQUEST_KEY_ALLOW_PICKING_STORE, true);
+                            intent.putExtra(AddFootprintActivity.REQUEST_KEY_FROM_PAGE_NAME, getPageNameCN());
                             startActivity(intent);
                             finish();
                         } else {

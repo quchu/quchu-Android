@@ -450,6 +450,8 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_IS_EDIT, true);
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, model.getPlcaeName());
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
+                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_FROM_PAGE_NAME, getPageNameCN());
+
                     startActivity(intent);
                 }
                 if (!EventBus.getDefault().isRegistered(this))

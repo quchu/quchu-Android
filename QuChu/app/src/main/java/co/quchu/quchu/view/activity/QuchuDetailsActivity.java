@@ -442,6 +442,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                         @Override
                         public void onShareClick() {
                             UMEvent("share_c");
+                            ZGEvent("文章名称",dModel.getName(),"趣处分享");
                             startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
                         }
                     });

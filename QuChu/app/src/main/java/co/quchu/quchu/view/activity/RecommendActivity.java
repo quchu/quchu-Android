@@ -371,12 +371,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             tvTitle.setText(R.string.app_name);
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
-            vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
-                @Override
-                public void run() {
-                    vTitle.setVisibility(View.VISIBLE);
-                }
-            }).start();
+
             vDivider.setVisibility(View.VISIBLE);
 
             vLeft.setVisibility(View.VISIBLE);
@@ -387,19 +382,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
         } else if (index == 1) {
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(recommendFragment).hide(meFragment).show(articleFragment).commitAllowingStateLoss();
-            vTitle.animate().translationY(-vTitle.getHeight()).setDuration(300).withEndAction(new Runnable() {
-                @Override
-                public void run() {
-                    vTitle.setVisibility(View.VISIBLE);
-                    ivLeft.setVisibility(View.GONE);
-                    tvRight.setVisibility(View.GONE);
-                    vLeft.setVisibility(View.GONE);
-                    recommendTitleMoreRl.setVisibility(View.GONE);
-                    tvTitle.setText("趣发现");
-                    vDivider.setVisibility(View.VISIBLE);
-
-                }
-            }).start();
+            vTitle.setVisibility(View.VISIBLE);
+            ivLeft.setVisibility(View.GONE);
+            tvRight.setVisibility(View.GONE);
+            vLeft.setVisibility(View.GONE);
+            recommendTitleMoreRl.setVisibility(View.GONE);
+            tvTitle.setText("趣发现");
+            vDivider.setVisibility(View.VISIBLE);
 
 
         } else if (index == 2) {
@@ -410,12 +399,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             }
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
-            vTitle.animate().translationY(0).setDuration(300).withStartAction(new Runnable() {
-                @Override
-                public void run() {
-                    vTitle.setVisibility(View.VISIBLE);
-                }
-            }).start();
+
 
             vDivider.setVisibility(View.VISIBLE);
             vLeft.setVisibility(View.GONE);
