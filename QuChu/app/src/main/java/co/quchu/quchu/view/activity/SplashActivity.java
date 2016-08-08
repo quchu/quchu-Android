@@ -27,7 +27,7 @@ import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.ConfirmDialogFg;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.NetUtil;
@@ -140,19 +140,28 @@ public class SplashActivity extends BaseActivity {
 
 
         if (SPUtils.getForceUpdateIfNecessary(getApplicationContext())) {
-            ConfirmDialogFg confirmDialogFg = ConfirmDialogFg.newInstance("提示", SPUtils.getForceUpdateReason(getApplicationContext()));
-            confirmDialogFg.setActionListener(new ConfirmDialogFg.OnActionListener() {
+
+
+            final CommonDialog commonDialog = CommonDialog.newInstance("提示", SPUtils.getForceUpdateReason(getApplicationContext()), "立即前往", "容我三思");
+            commonDialog.setListener(new CommonDialog.OnActionListener() {
                 @Override
-                public void onClick(int index) {
-                    switch (index) {
-                        case ConfirmDialogFg.INDEX_OK:
+                public boolean dialogClick(int id) {
+                    switch (id) {
+                        case CommonDialog.CLICK_ID_ACTIVE:
                             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(SPUtils.getForceUpdateUrl(getApplicationContext())));
                             startActivity(browserIntent);
                             break;
+                        case CommonDialog.CLICK_ID_PASSIVE:
+                            commonDialog.dismiss();
+                            break;
                     }
+                    return true;
                 }
             });
-            confirmDialogFg.show(getSupportFragmentManager(), "~");
+            commonDialog.setCancelable(false);
+            commonDialog.show(getSupportFragmentManager(), "");
+
+
         } else {
 
             mAnimationEnd = true;

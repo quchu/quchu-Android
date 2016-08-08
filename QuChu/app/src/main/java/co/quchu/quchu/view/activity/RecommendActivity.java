@@ -41,7 +41,6 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.CommonDialog;
-import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.model.CityModel;
@@ -246,7 +245,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 }
             }
             if (!currentLocation.equals(SPUtils.getCityName())) {
-                ConfirmDialogFg confirmDialogFg = null;
 //                if (!inList) {
                     //城市列表中没有当前位置
 //                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "你当前所在的城市尚未占领，是否要切换城市");
@@ -509,17 +507,27 @@ public class RecommendActivity extends BaseBehaviorActivity {
                         public void successListener(final UpdateInfoModel response) {
                             checkUpdateRunning = false;
                             if (BuildConfig.VERSION_CODE < response.getVersionCode()){
-                                ConfirmDialogFg updateDialog = ConfirmDialogFg.newInstance("有新版本更新", "检测到有新版本，是否下载更新？");
-                                updateDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
+
+                                final CommonDialog commonDialog = CommonDialog.newInstance("有新版本更新", "检测到有新版本，是否下载更新？", "立即前往", "容我三思");
+                                commonDialog.setListener(new CommonDialog.OnActionListener() {
                                     @Override
-                                    public void onClick(int index) {
-                                        if (ConfirmDialogFg.INDEX_OK == index) {
-                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDownUrl()));
-                                            startActivity(browserIntent);
+                                    public boolean dialogClick(int id) {
+                                        switch (id) {
+                                            case CommonDialog.CLICK_ID_ACTIVE:
+                                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDownUrl()));
+                                                startActivity(browserIntent);
+                                                break;
+                                            case CommonDialog.CLICK_ID_PASSIVE:
+                                                commonDialog.dismiss();
+                                                break;
                                         }
+                                        return true;
                                     }
                                 });
-                                updateDialog.show(getSupportFragmentManager(), "~");
+                                commonDialog.setCancelable(false);
+                                commonDialog.show(getSupportFragmentManager(), "");
+
+
                             }else{
                                 Toast.makeText(getApplicationContext(),R.string.no_update_available,Toast.LENGTH_LONG).show();
                             }

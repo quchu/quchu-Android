@@ -37,7 +37,6 @@ import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
 import co.quchu.quchu.dialog.CommonDialog;
-import co.quchu.quchu.dialog.ConfirmDialogFg;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ModiffPasswordDialog;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
@@ -223,32 +222,39 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                 dialog.show(getSupportFragmentManager(), "");
                 break;
             case R.id.toolbar_tv_right:
-                final ConfirmDialogFg confirmDialog = ConfirmDialogFg.newInstance("确认退出?", "退出后将以游客模式登录");
-                confirmDialog.setActionListener(new ConfirmDialogFg.OnActionListener() {
+
+                final CommonDialog commonDialog = CommonDialog.newInstance("确认退出", "退出后将以游客模式登录", "是", "否");
+                commonDialog.setListener(new CommonDialog.OnActionListener() {
                     @Override
-                    public void onClick(int index) {
-                        if (index == ConfirmDialogFg.INDEX_OK) {
-                            SPUtils.clearUserinfo(AppContext.mContext);
-                            AppContext.user = null;
-                            SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);
+                    public boolean dialogClick(int id) {
+                        switch (id) {
+                            case CommonDialog.CLICK_ID_ACTIVE:
+                                SPUtils.clearUserinfo(AppContext.mContext);
+                                AppContext.user = null;
+                                SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);
 
-                            UserLoginPresenter.visitorRegiest(AccountSettingActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
-                                @Override
-                                public void isUnique(JSONObject msg) {
-                                    confirmDialog.dismiss();
-                                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
-                                    finish();
-                                }
+                                UserLoginPresenter.visitorRegiest(AccountSettingActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
+                                    @Override
+                                    public void isUnique(JSONObject msg) {
+                                        commonDialog.dismiss();
+                                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
+                                        finish();
+                                    }
 
-                                @Override
-                                public void notUnique(String msg) {
+                                    @Override
+                                    public void notUnique(String msg) {
 
-                                }
-                            });
+                                    }
+                                });
+                                break;
+                            case CommonDialog.CLICK_ID_PASSIVE:
+                                commonDialog.dismiss();
+                                break;
                         }
+                        return true;
                     }
                 });
-                confirmDialog.show(getSupportFragmentManager(), "confirm");
+
                 break;
             case R.id.location:
                 accountSettingUserLocation.setText("定位中...");
