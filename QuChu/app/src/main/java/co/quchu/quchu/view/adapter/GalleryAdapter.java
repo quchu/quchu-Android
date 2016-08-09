@@ -24,14 +24,20 @@ import java.util.List;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.ImageModel;
+import co.quchu.quchu.view.activity.PhotoViewActivity;
 
 /**
  * Created by Nico on 16/4/7.
  */
 public class GalleryAdapter extends PagerAdapter {
 
-    List<ImageModel> mData;
+    private List<ImageModel> mData;
+    private OnGalleryItemClickListener mListener;
 
+
+    public void setListener(OnGalleryItemClickListener mListener) {
+        this.mListener = mListener;
+    }
 
     public GalleryAdapter(List<ImageModel> pData) {
         this.mData = pData;
@@ -43,7 +49,7 @@ public class GalleryAdapter extends PagerAdapter {
     }
 
     @Override
-    public View instantiateItem(ViewGroup container, int position) {
+    public View instantiateItem(ViewGroup container, final int position) {
         final View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_sdv, container, false);
         container.addView(view);
 
@@ -95,6 +101,14 @@ public class GalleryAdapter extends PagerAdapter {
         ((SimpleDraweeView) view).setAspectRatio(1.5f);
 
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null!=mListener){
+                    mListener.onClick(position);
+                }
+            }
+        });
 
         return view;
     }
@@ -109,6 +123,11 @@ public class GalleryAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+
+    public interface OnGalleryItemClickListener{
+        void onClick(int position);
     }
 
 }

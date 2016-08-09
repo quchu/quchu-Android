@@ -249,6 +249,9 @@
         <activity
             android:name=".view.activity.SharePreviewActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.PhotoViewActivity"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name="co.quchu.quchu.base.GeTuiReceiver"

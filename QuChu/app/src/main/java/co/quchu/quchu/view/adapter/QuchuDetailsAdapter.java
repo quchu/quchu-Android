@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
@@ -37,6 +36,7 @@ import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import co.quchu.quchu.widget.SimpleIndicatorView;
@@ -227,11 +227,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof IntroImageViewHolder) {
 
             if (null != mData.getImglist() && mData.getImglist().size() > 0) {
-                List<ImageModel> imageSet = new ArrayList<>();
+                final List<ImageModel> imageSet = new ArrayList<>();
                 for (int i = 0; i < mData.getImglist().size(); i++) {
                     imageSet.add(mData.getImglist().get(i).convert2ImageModel());
                 }
-                ((IntroImageViewHolder) holder).vpGallery.setAdapter(new GalleryAdapter(imageSet));
+                GalleryAdapter adapter = new GalleryAdapter(imageSet);
+                ((IntroImageViewHolder) holder).vpGallery.setAdapter(adapter);
                 ((IntroImageViewHolder) holder).siv.setIndicators(imageSet.size());
                 ((IntroImageViewHolder) holder).siv.setVisibility(View.VISIBLE);
                 ((IntroImageViewHolder) holder).vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -246,6 +247,14 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void onPageScrollStateChanged(int state) {}
                 });
+                adapter.setListener(new GalleryAdapter.OnGalleryItemClickListener() {
+                    @Override
+                    public void onClick(int position) {
+                        PhotoViewActivity.enterActivity(mAnchorActivity,position,imageSet);
+                    }
+                });
+
+
             } else {
                 ((IntroImageViewHolder) holder).siv.setVisibility(View.GONE);
             }
