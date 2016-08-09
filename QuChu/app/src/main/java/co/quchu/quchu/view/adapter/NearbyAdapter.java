@@ -42,7 +42,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         holder.name.setText(mData.get(position).getName());
         holder.simpleDraweeView.setImageURI(Uri.parse(mData.get(position).getCover()));
         List<String> tags = new ArrayList<>();
-        for (int i = 0; i < mData.get(position).getTags().size(); i++) {
+        for (int i = 0; i < Math.min(mData.get(position).getTags().size(),3); i++) {
             tags.add(mData.get(position).getTags().get(i).getZh());
         }
         holder.tag.setTags(tags);

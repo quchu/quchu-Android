@@ -22,7 +22,7 @@ import co.quchu.quchu.model.ArticleBannerModel;
 import co.quchu.quchu.model.ArticleModel;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.widget.SimpleIndicatorView;
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * ArticleAdapter
@@ -109,21 +109,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
                 }
 
-                ((BannerHolder) holder).siv.setIndicators(mBanner.size());
                 ((BannerHolder) holder).viewPager.setAdapter(new GalleryAdapter(mDataImageModel));
-                ((BannerHolder) holder).viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-                    @Override
-                    public void onPageSelected(int position) {
-                        ((BannerHolder) holder).siv.setCurrentIndex(position);
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {}
-                });
-
+                ((BannerHolder) holder).siv.setViewPager(((BannerHolder) holder).viewPager);
                 holder.itemView.setVisibility(View.VISIBLE);
             }else{
                 holder.itemView.setVisibility(View.GONE);
@@ -143,7 +130,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @Bind(R.id.vpGallery)
         ViewPager viewPager;
         @Bind(R.id.siv)
-        SimpleIndicatorView siv;
+        CircleIndicator siv;
 
 
         public BannerHolder(View itemView) {

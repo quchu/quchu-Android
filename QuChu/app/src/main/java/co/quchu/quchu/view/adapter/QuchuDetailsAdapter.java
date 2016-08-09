@@ -39,8 +39,8 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
-import co.quchu.quchu.widget.SimpleIndicatorView;
 import co.quchu.quchu.widget.TagCloudView;
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Created by admin on 2016/3/7.
@@ -233,20 +233,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
                 GalleryAdapter adapter = new GalleryAdapter(imageSet);
                 ((IntroImageViewHolder) holder).vpGallery.setAdapter(adapter);
-                ((IntroImageViewHolder) holder).siv.setIndicators(imageSet.size());
                 ((IntroImageViewHolder) holder).siv.setVisibility(View.VISIBLE);
-                ((IntroImageViewHolder) holder).vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+                ((IntroImageViewHolder) holder).siv.setViewPager(((IntroImageViewHolder) holder).vpGallery);
 
-                    @Override
-                    public void onPageSelected(int position) {
-                        ((IntroImageViewHolder) holder).siv.setCurrentIndex(position);
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {}
-                });
                 adapter.setListener(new GalleryAdapter.OnGalleryItemClickListener() {
                     @Override
                     public void onClick(int position) {
@@ -423,6 +412,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     for (int i = 0; i < mAnalysisModel.getResult().size() ; i++) {
                         TagsModel objTag = mAnalysisModel.getResult().get(i);
                         tags.add(" "+objTag.getZh() +" "+objTag.getCount() + " ");
+                        if (objTag.getCount()>20){
+                            ((RatingInfoViewHolder) holder).tagCloudView.setItemBackgound(R.drawable.shape_lineframe_yellow_fill);
+                        }
                     }
                     ((RatingInfoViewHolder) holder).tagCloudView.setTags(tags);
                 }
@@ -534,7 +526,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 List<String> strTags = new ArrayList<>();
                 List<TagsModel> tags = mData.getNearPlace().get(imgIndex - 1).getTags();
                 if (null != tags && tags.size() > 0) {
-                    for (int i = 0; i < tags.size(); i++) {
+                    for (int i = 0; i < Math.min(tags.size(),3); i++) {
                         strTags.add(tags.get(i).getZh());
                     }
                 }
@@ -639,7 +631,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ViewPager vpGallery;
 
         @Bind(R.id.siv)
-        SimpleIndicatorView siv;
+        CircleIndicator siv;
 
 
         @Bind(R.id.rvAdditionalInfo)

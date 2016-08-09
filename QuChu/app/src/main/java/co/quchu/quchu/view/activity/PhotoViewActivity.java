@@ -118,6 +118,7 @@ public class PhotoViewActivity extends BaseActivity {
                 }
             });
             photoDraweeView.setController(controller.build());
+            photoDraweeView.setScale(0);
 
             try {
                 viewGroup.addView(photoDraweeView, ViewGroup.LayoutParams.MATCH_PARENT,

@@ -18,12 +18,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <co.quchu.quchu.widget.SimpleIndicatorView
+        <me.relex.circleindicator.CircleIndicator
             android:id="@+id/siv"
-            android:layout_width="80dp"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignBottom="@id/vpGallery"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
