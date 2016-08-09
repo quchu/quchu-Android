@@ -3,6 +3,7 @@ package co.quchu.quchu.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.zhuge.analysis.stat.ZhugeSDK;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,6 +141,18 @@ public class FootprintListFragment extends BaseFragment implements AdapterBase.O
                 if (item.getPlaceId() == 0) {
                     return;
                 }
+
+
+                ArrayMap<String,Object> params = new ArrayMap<>();
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("趣处名称", item.getPlaceName());
+                    jsonObject.put("入口名称",getPageNameCN());
+                    jsonObject.put("时间", System.currentTimeMillis());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ZhugeSDK.getInstance().track(getActivity(), "进入趣处详情页", jsonObject);
                 intent = new Intent(getContext(), QuchuDetailsActivity.class);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_SUBJECT);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPlaceId());

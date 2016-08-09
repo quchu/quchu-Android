@@ -454,6 +454,14 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
             @Override
             public void onClick(int position, Parcelable bean, int itemYype) {
                 if (itemYype == SearchAdapter.ITEM_TYPE_RESULT) {
+
+
+                    ArrayMap<String,Object> params = new ArrayMap<>();
+                    params.put("趣处名称",((RecommendModel) bean).getName());
+                    params.put("入口名称",getPageNameCN());
+                    ZGEvent(params,"进入趣处详情页");
+
+
                     Intent intent = new Intent(SearchActivity.this, QuchuDetailsActivity.class);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, ((RecommendModel) bean).getPid());
                     startActivity(intent);
@@ -603,8 +611,6 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                                 //分类列表显示大的分类
                                 if (filterCategoryAdapter.getItemCount() == 0) {
                                     filterCategoryAdapter.setDatas(categoryParentList);
-                                    System.out.println("---!"+categoryRecyclerView.getLayoutParams().height);
-
                                 }
                                 seachStr(false);
                             }

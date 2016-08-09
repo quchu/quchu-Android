@@ -261,6 +261,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                         return true;
                     }
                 });
+                commonDialog.show(getSupportFragmentManager(),"~");
 
                 break;
             case R.id.location:

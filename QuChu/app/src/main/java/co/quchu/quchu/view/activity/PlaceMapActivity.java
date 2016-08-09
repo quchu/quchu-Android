@@ -141,6 +141,13 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
         mAdapter = new AMapNearbyVPAdapter(mDataSet, new AMapNearbyVPAdapter.OnMapItemClickListener() {
             @Override
             public void onItemClick(int position) {
+
+
+                ArrayMap<String,Object> params = new ArrayMap<>();
+                params.put("趣处名称",mDataSet.get(position).getName());
+                params.put("入口名称",getPageNameCN());
+                ZGEvent(params,"进入趣处详情页");
+
                 Intent intent = new Intent(PlaceMapActivity.this,QuchuDetailsActivity.class);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM,QuchuDetailsActivity.FROM_TYPE_MAP);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID,mDataSet.get(position).getPid());

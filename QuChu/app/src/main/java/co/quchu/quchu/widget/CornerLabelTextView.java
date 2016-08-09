@@ -60,7 +60,7 @@ public class CornerLabelTextView extends TextView {
         canvas.rotate(-45,getWidth()/2,getWidth()/2);
         float textStartY = (getWidth()/2)-textHeight;
 
-        canvas.drawRect(-40,textStartY-textHeight-12,getWidth()+40,textStartY+6,paintBG);
+        canvas.drawRect(-40,textStartY-textHeight-16,getWidth()+40,textStartY+8,paintBG);
         canvas.drawText(getText(),0,getText().length(),(getWidth()/2)-(textWidth/2)-4,textStartY-8,paint);
 
     }

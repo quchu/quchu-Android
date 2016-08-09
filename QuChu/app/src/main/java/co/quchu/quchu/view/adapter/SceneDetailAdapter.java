@@ -179,7 +179,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
-                        mListener.onPlaceClick(objScene.getPlaceInfo().getPid());
+                        mListener.onPlaceClick(objScene.getPlaceInfo().getPid(),objScene.getPlaceInfo().getName());
                     }
                 }
             });
@@ -228,7 +228,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
-                        mListener.onPlaceClick(objScene.getPid());
+                        mListener.onPlaceClick(objScene.getPid(),objScene.getName());
                     }
                 }
             });
@@ -240,7 +240,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public interface OnSceneItemClickListener {
         void onArticleClick();
 
-        void onPlaceClick(int pid);
+        void onPlaceClick(int pid,String placeName);
     }
 
     private int getRecommendedListSize() {

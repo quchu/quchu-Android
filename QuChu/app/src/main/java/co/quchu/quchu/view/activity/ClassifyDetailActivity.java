@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.animation.AccelerateInterpolator;
@@ -72,6 +73,11 @@ public class ClassifyDetailActivity extends BaseActivity implements ViewPager.On
         mAdapter = new DiscoverDetailPagerAdapter(mData, this, new DiscoverDetailPagerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+
+                ArrayMap<String,Object> params = new ArrayMap<>();
+                params.put("趣处名称",mData.get(position).getName());
+                params.put("入口名称","趣发现详情");
+                ZGEvent(params,"进入趣处详情页");
                 Intent intent = new Intent(ClassifyDetailActivity.this, QuchuDetailsActivity.class);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_SUBJECT);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, mData.get(position).getPid());

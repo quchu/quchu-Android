@@ -192,9 +192,9 @@ public class AreaView extends LinearLayout {
             }else{
                 holder.searchPopItemIv.setVisibility(View.GONE);
                 if (selectedPosition == position) {
-                    holder.searchPopItemContent.setBackgroundColor(holder.searchPopItemContent.getContext().getResources().getColor(R.color.colorBackground));
-                }else{
                     holder.searchPopItemContent.setBackgroundColor(holder.searchPopItemContent.getContext().getResources().getColor(R.color.standard_color_white));
+                }else{
+                    holder.searchPopItemContent.setBackgroundColor(holder.searchPopItemContent.getContext().getResources().getColor(R.color.colorBackground));
                 }
             }
 

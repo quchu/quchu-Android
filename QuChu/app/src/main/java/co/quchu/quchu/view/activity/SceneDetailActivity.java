@@ -268,7 +268,15 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
                         }
 
                         @Override
-                        public void onPlaceClick(int pid) {
+                        public void onPlaceClick(int pid,String pName) {
+
+
+                            ArrayMap<String,Object> params = new ArrayMap<>();
+                            params.put("趣处名称",pName);
+                            params.put("入口名称",getPageNameCN());
+                            ZGEvent(params,"进入趣处详情页");
+
+
                             Intent intent = new Intent(SceneDetailActivity.this, QuchuDetailsActivity.class);
                             intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, pid);
                             startActivity(intent);

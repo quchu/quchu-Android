@@ -196,6 +196,12 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                         }else{
 
                             UMEvent("detail_theme_c");
+
+                            ArrayMap<String,Object> params = new ArrayMap<>();
+                            params.put("趣处名称",response.getPlaceList().getResult().get(position).getName());
+                            params.put("入口名称","文章详情");
+                            ZGEvent(params,"进入趣处详情页");
+
                             Intent intent = new Intent(ArticleDetailActivity.this, QuchuDetailsActivity.class);
                             intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, response.getPlaceList().getResult().get(position-1).getPlaceId());
                             startActivity(intent);

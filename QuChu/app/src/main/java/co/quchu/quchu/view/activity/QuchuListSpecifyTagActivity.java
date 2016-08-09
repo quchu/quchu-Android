@@ -68,6 +68,13 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
         mAdapter = new NearbyAdapter(mData, new NearbyAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
+
+
+                ArrayMap<String,Object> params = new ArrayMap<>();
+                params.put("趣处名称",mData.get(position).getName());
+                params.put("入口名称",getPageNameCN());
+                ZGEvent(params,"进入趣处详情页");
+
                 Intent intent = new Intent(QuchuListSpecifyTagActivity.this,QuchuDetailsActivity.class);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID,mData.get(position).getPlaceId());
                 startActivity(intent);
