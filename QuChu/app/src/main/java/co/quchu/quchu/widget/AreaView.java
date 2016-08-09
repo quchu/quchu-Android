@@ -64,12 +64,18 @@ public class AreaView extends LinearLayout {
             areaBeanAll.setAreaName("全部商圈");
             datas.add(0, areaBeanAll);
 
-            RecyclerView area = (RecyclerView) findViewById(R.id.area_area);
-            RecyclerView row = (RecyclerView) findViewById(R.id.area_row);
+            final RecyclerView area = (RecyclerView) findViewById(R.id.area_area);
+            final RecyclerView row = (RecyclerView) findViewById(R.id.area_row);
             area.setHasFixedSize(true);
             row.setHasFixedSize(true);
 
-            area.setLayoutManager(new LinearLayoutManager(getContext()));
+            area.setLayoutManager(new LinearLayoutManager(getContext()){
+                @Override
+                public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                    super.onLayoutChildren(recycler, state);
+                    row.getLayoutParams().height = area.getHeight();
+                }
+            });
             row.setLayoutManager(new LinearLayoutManager(getContext()));
 
             final AreaAdapter areaAdapter = new AreaAdapter();

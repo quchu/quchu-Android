@@ -212,7 +212,19 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
 
 
-                categoryRecyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchActivity.this){
+                    @Override
+                    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                        super.onLayoutChildren(recycler, state);
+                        categoryRecyclerViewChild.getLayoutParams().height = categoryRecyclerView.getHeight();
+                    }
+                };
+
+
+
+
+
+                categoryRecyclerView.setLayoutManager(linearLayoutManager);
                 categoryRecyclerViewChild.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
                 sortRecyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
 
@@ -591,6 +603,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                                 //分类列表显示大的分类
                                 if (filterCategoryAdapter.getItemCount() == 0) {
                                     filterCategoryAdapter.setDatas(categoryParentList);
+                                    System.out.println("---!"+categoryRecyclerView.getLayoutParams().height);
+
                                 }
                                 seachStr(false);
                             }
@@ -628,5 +642,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         if (response.size()>0){
             childTagsAdapter.setData(response.get(0).getDatas());
         }
+
+
     }
 }
