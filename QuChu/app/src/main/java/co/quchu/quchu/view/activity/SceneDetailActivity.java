@@ -195,6 +195,13 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
             ScenePresenter.addFavoriteScene(getApplicationContext(), sceneId, new CommonListener() {
                 @Override
                 public void successListener(Object response) {
+
+
+                    ArrayMap<String,Object> params = new ArrayMap<>();
+                    params.put("趣处名称",mSceneInfo.getSceneName());
+                    params.put("入口名称","场景详情");
+                    ZGEvent(params,"设为常用");
+
                     mFavoriteRunning = false;
                     isFavorite = true;
                     getEnhancedToolbar().getRightTv().setText("移除");

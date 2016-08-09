@@ -66,6 +66,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
 
     private static final String BUNDLE_KEY_ARTICLE_ID = "BUNDLE_KEY_ARTICLE_ID";
     private static final String BUNDLE_KEY_ARTICLE_TITLE = "BUNDLE_KEY_ARTICLE_TITLE";
+    private static final String BUNDLE_KEY_ARTICLE_FROM = "BUNDLE_KEY_ARTICLE_FROM";
 
     @Bind(R.id.rv)
     RecyclerView rv;
@@ -83,6 +84,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
     String articleId;
     String articleTitle;
 
+    private String from;
     private int mMaxPageNo = -1;
     private int mPageNo = 1;
     private EndlessRecyclerOnScrollListener mListener;
@@ -100,7 +102,16 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
 
         articleId = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_ID);
         articleTitle = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_TITLE);
+        from = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_FROM);
+
         getEnhancedToolbar().getTitleTv().setText(articleTitle);
+
+
+        ArrayMap<String,Object> params = new ArrayMap<>();
+        params.put("文章名称",articleTitle);
+        params.put("入口名称",from);
+        ZGEvent(params,"进入主题文章");
+
 
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -317,7 +328,9 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
         }
     }
 
-    public static void enterActivity(Activity from, String articleId, String articleTitle) {
+    public static void enterActivity(Activity from, String articleId, String articleTitle,String strFrom) {
+
+
         Intent intent = new Intent(from, ArticleDetailActivity.class);
         intent.putExtra(BUNDLE_KEY_ARTICLE_ID, articleId);
         intent.putExtra(BUNDLE_KEY_ARTICLE_TITLE, articleTitle);

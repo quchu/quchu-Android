@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -178,7 +179,13 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 //                    ActivityCompat.startActivity(getActivity(), transitionIntent, options.toBundle());
 //                    ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
 //                }else{
-                    SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(), false);
+
+                ArrayMap<String,Object> params = new ArrayMap<>();
+                params.put("趣处名称",mAllSceneList.get(position).getSceneName());
+                params.put("入口名称","场景工坊");
+                ZGEvent(params,"进入场景");
+
+                SceneDetailActivity.enterActivity(getActivity(), mAllSceneList.get(position).getSceneId(), mAllSceneList.get(position).getSceneName(), false);
 //                }
             }
 
@@ -370,6 +377,13 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         ScenePresenter.addFavoriteScene(getContext(), sid, new CommonListener() {
             @Override
             public void successListener(Object response) {
+
+
+                ArrayMap<String,Object> params = new ArrayMap<>();
+                params.put("趣处名称",mAllSceneList.get(position).getSceneName());
+                params.put("入口名称","常用场景");
+                ZGEvent(params,"设为常用");
+
                 int margin = getResources().getDimensionPixelSize(R.dimen.base_margin);
                 playAnimation(v.getX()+margin,v.getY()+margin);
                 notifyAdapters(position, true);
@@ -478,6 +492,11 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     @Override
     public void onCardLick(View view, int position) {
 
+
+        ArrayMap<String,Object> params = new ArrayMap<>();
+        params.put("趣处名称",mFavoriteSceneList.get(position).getSceneName());
+        params.put("入口名称","常用场景");
+        ZGEvent(params,"进入场景");
         SceneDetailActivity.enterActivity(getActivity(), mFavoriteSceneList.get(position).getSceneId(), mFavoriteSceneList.get(position).getSceneName(), true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();

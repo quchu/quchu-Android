@@ -220,7 +220,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         switch (bean.getType()) {
             case "01":
                 rbBottomTab.check(R.id.rbDiscovery);
-                ArticleDetailActivity.enterActivity(this, bean.getEventId(), bean.getTitle());
+                ArticleDetailActivity.enterActivity(this, bean.getEventId(), bean.getTitle(),"场景");
                 break;
             case "03":
                 rbBottomTab.check(R.id.rbDiscovery);

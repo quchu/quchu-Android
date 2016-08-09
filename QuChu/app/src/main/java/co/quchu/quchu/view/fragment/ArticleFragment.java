@@ -83,7 +83,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
             public void onItemClick(View v, int position) {
                 String articleId = articleModels.get(position).getArticleId();
                 String articleTitle = articleModels.get(position).getArticleName();
-                ArticleDetailActivity.enterActivity(getActivity(), articleId, articleTitle);
+                ArticleDetailActivity.enterActivity(getActivity(), articleId, articleTitle,"趣发现");
             }
         });
 
