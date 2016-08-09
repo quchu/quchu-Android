@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import co.quchu.quchu.R;
@@ -24,6 +25,7 @@ public class TagCloudView extends ViewGroup {
     private static final String TAG = TagCloudView.class.getSimpleName();
     private static final int TYPE_TEXT_NORMAL = 1;
     private List<String> tags;
+    private List<Boolean> tagsHighLight;
 
     private LayoutInflater mInflater;
     private OnTagClickListener onTagClickListener;
@@ -252,7 +254,12 @@ public class TagCloudView extends ViewGroup {
             for (int i = 0; i < tags.size(); i++) {
                 TextView tagView = (TextView) mInflater.inflate(mTagResId, null);
                 if (mTagResId == DEFAULT_TAG_RESID) {
-                    tagView.setBackgroundResource(mBackground);
+                    if (null!=tagsHighLight){
+                        tagView.setBackgroundResource(tagsHighLight.get(i).booleanValue()? R.drawable.shape_lineframe_yellow_fill: mBackground);
+                    }else{
+                        tagView.setBackgroundResource(mBackground);
+                    }
+
                     tagView.setTextSize(TypedValue.COMPLEX_UNIT_SP, mTagSize);
                     tagView.setTextColor(mTagColor);
 
@@ -274,6 +281,11 @@ public class TagCloudView extends ViewGroup {
             }
         }
         postInvalidate();
+    }
+
+    public void setTags(List<String> tags,List<Boolean> highLight) {
+        this.tagsHighLight = highLight;
+        setTags(tags);
     }
 
     public void singleLine(boolean mSingleLine) {

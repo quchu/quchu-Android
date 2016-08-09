@@ -432,7 +432,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                                 if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
                                     WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName(),false);
                                 } else {
-                                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, "http://www.dianping.com", dModel.getName(),false);
+                                    Toast.makeText(QuchuDetailsActivity.this, R.string.pre_order_not_supported, Toast.LENGTH_SHORT).show();
                                 }
                             } else {
                                 Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();

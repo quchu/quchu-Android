@@ -36,8 +36,8 @@ import co.quchu.quchu.utils.StringUtils;
 public class WechatHelper {
     private static IWXAPI api;
     private static Context mActivity;
-    public static final String WECHAT_APP_ID = "wx812a0a8cd108d233";
-    private static final String APPSECRET = "b38180312951c88c3c24a5223e53daac";
+    public static final String WECHAT_APP_ID = "wx0cca304d391b258c";
+    private static final String APPSECRET = "667ff40e7b1fcad199f4e0182b4342ca";
     private static WechatHelper instance;
 
     private WechatHelper() {

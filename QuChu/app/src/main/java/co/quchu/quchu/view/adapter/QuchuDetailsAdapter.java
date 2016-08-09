@@ -408,15 +408,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((RatingInfoViewHolder) holder).tvRatingCount.setText(mAnalysisModel.getUserOutCount()+"人评价");
 
                 List<String> tags=  new ArrayList<>();
+                List<Boolean> highLight=  new ArrayList<>();
+
                 if (null!=mAnalysisModel.getResult()){
                     for (int i = 0; i < mAnalysisModel.getResult().size() ; i++) {
                         TagsModel objTag = mAnalysisModel.getResult().get(i);
                         tags.add(" "+objTag.getZh() +" "+objTag.getCount() + " ");
-                        if (objTag.getCount()>20){
-                            ((RatingInfoViewHolder) holder).tagCloudView.setItemBackgound(R.drawable.shape_lineframe_yellow_fill);
-                        }
+                        highLight.add(objTag.getCount()>20);
                     }
-                    ((RatingInfoViewHolder) holder).tagCloudView.setTags(tags);
+                    ((RatingInfoViewHolder) holder).tagCloudView.setTags(tags,highLight);
                 }
             }
         } else if (holder instanceof AdditionalInfoViewHolder) {

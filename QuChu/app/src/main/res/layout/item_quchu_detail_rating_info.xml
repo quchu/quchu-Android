@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             card_view:tcvCanTagClick="false"
-            card_view:tcvTextColor="@color/standard_color_h3_dark"
+            card_view:tcvTextColor="@color/standard_color_h2_dark"
             />
     </LinearLayout>
 </LinearLayout>
