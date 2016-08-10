@@ -160,10 +160,7 @@
 
     <View
         android:id="@+id/search_line"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/half_margin" />
-    <View style="@style/HorizontalLine" />
+        style="@style/HorizontalLine" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_result_rv"

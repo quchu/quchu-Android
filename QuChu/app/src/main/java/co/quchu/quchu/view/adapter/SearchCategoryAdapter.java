@@ -3,9 +3,11 @@ package co.quchu.quchu.view.adapter;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.SearchCategoryBean;
 
 /**
@@ -15,10 +17,21 @@ import co.quchu.quchu.model.SearchCategoryBean;
  */
 public class SearchCategoryAdapter extends SearchPopWinBaseAdapter {
 
-    List<SearchCategoryBean> datas;
+    List<SearchCategoryBean> datas = new ArrayList<>();
 
     public void setDatas(List<SearchCategoryBean> datas) {
-        this.datas = datas;
+        this.datas.clear();
+
+        SearchCategoryBean searchCategoryBean = new SearchCategoryBean();
+
+        searchCategoryBean.setZh("全部");
+        searchCategoryBean.setTagId(-1);
+        searchCategoryBean.setCode("");
+        searchCategoryBean.setDatas(new ArrayList<DetailModel.TagsEntity>());
+
+        this.datas.add(0,searchCategoryBean);
+        this.datas.addAll(datas);
+
         notifyDataSetChanged();
     }
 

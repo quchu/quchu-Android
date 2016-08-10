@@ -24,7 +24,7 @@ public class SearchCategoryBean implements Parcelable {
     private String en;
     private String code;
     private String imageUrl;
-    List<DetailModel.TagsEntity> childTag;
+    private List<DetailModel.TagsEntity> childTag;
 
     public String getImageUrl() {
         return imageUrl;

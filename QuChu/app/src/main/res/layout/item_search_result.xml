@@ -21,7 +21,6 @@
             android:id="@+id/simpleDraweeView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            fresco:overlayImage="@color/translucent_dark"
             fresco:placeholderImage="@mipmap/ic_image_empty"
             fresco:roundBottomLeft="false"
             fresco:roundBottomRight="false"

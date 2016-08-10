@@ -22,7 +22,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1.4">
 
 
             <com.facebook.drawee.view.SimpleDraweeView
@@ -72,8 +72,8 @@
                 android:layout_marginTop="@dimen/half_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginLeft="@dimen/double_margin"
+                android:layout_marginRight="@dimen/double_margin"
                 android:paddingLeft="@dimen/half_margin"
                 android:paddingRight="@dimen/half_margin"
                 android:gravity="center"
@@ -82,6 +82,7 @@
                 android:textSize="@dimen/standard_text_size_h3"
                 android:maxLines="2"
                 android:lineSpacingExtra="4sp"
+                android:ellipsize="end"
                 />
 
 
