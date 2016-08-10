@@ -23,7 +23,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.view.adapter.MultiTouchViewPager;
-import me.relex.circleindicator.CircleIndicator;
+import co.quchu.quchu.widget.CircleIndicator;
 import me.relex.photodraweeview.PhotoDraweeView;
 
 /**

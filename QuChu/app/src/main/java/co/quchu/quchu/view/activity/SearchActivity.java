@@ -16,7 +16,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -109,6 +108,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     ImageView searchBack;
     @Bind(R.id.search_line)
     View searchLine;
+    @Bind(R.id.vCover)
+    View vCover;
 
     private ArrayList<RecommendModel> resultList;
     private SearchAdapter resultAdapter;
@@ -134,6 +135,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     private String categoryCode = "", areaId = "", circleId = "", sortType = "";
     private String categoryName = "";
     private String circleName = "";
+    private String mLastCategoryCode = "";
     private RecyclerView sortRecyclerView;
     private SearchCategoryAdapter filterCategoryAdapter;
     private SearchSortAdapter filterSortAdapter;
@@ -206,8 +208,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     @Override
                     public void onClick(View v) {
                         seachStr(false);
-                        searchLine.setVisibility(View.GONE);
-                        popupWindow.dismiss();
+
+                        dismissDialog();
                     }
                 });
 
@@ -236,8 +238,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                         areaId = areaBean.getAreaId();
                         circleId = circleListBean.getCircleId();
                         circleName = circleListBean.getCircleName();
-                        popupWindow.dismiss();
-                        searchLine.setVisibility(View.GONE);
+                        dismissDialog();
+                        
                         searchFilterTV2.setText(TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaName() : circleListBean.getCircleName());
                         seachStr(false);
                     }
@@ -256,6 +258,10 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                         categoryName = String.valueOf(item.getZh());
                         searchFilterTV1.setText(item.getZh());
                         childTagsAdapter.setData(item.getDatas());
+                        if (item.getTagId()==-1){
+                            categoryCode = "";
+                        }
+                        mLastCategoryCode = categoryCode;
                     }
                 });
 
@@ -264,18 +270,15 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     public void itemClick(int position, DetailModel.TagsEntity item) {
 
                         if (position==0){
-                            popupWindow.dismiss();
-                            searchLine.setVisibility(View.GONE);
-
+                            dismissDialog();
                             seachStr(false);
                         }else{
                             categoryCode = String.valueOf(item.getTagId());
                             categoryName = String.valueOf(item.getZh());
-                            popupWindow.dismiss();
-                            searchLine.setVisibility(View.GONE);
-
+                            dismissDialog();
                             seachStr(false);
                         }
+                        mLastCategoryCode = categoryCode;
                     }
                 });
 
@@ -287,8 +290,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     @Override
                     public void itemClick(int position, SearchSortBean item) {
                         sortType = String.valueOf(item.getSortId());
-                        popupWindow.dismiss();
-                        searchLine.setVisibility(View.GONE);
+                        dismissDialog();
 
                         searchFilterTV3.setText(item.getSortName());
                         seachStr(false);
@@ -321,6 +323,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         } else {
             popupWindow.showAsDropDown(searchFilterContainer);
         }
+        vCover.setVisibility(View.VISIBLE);
     }
 
     private View getPopWinView(int type) {
@@ -398,23 +401,22 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
             case R.id.search_button_rl:
                 searchInputEt.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                 if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                    searchLine.setVisibility(View.GONE);
+                    dismissDialog();
 
                 }
                 break;
             case R.id.search_back:
                 if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                    searchLine.setVisibility(View.GONE);
+                    dismissDialog();
 
                 }
                 finish();
             case R.id.searchFilterLL1:
                 if (currentShowingPopupType == SHOWING_POPUP_TYPE_CATEGORY) {
-                    seachStr(false);
-                    popupWindow.dismiss();
-                    searchLine.setVisibility(View.GONE);
+                    if (mLastCategoryCode !=mLastCategoryCode){}{
+                        seachStr(false);
+                    }
+                    dismissDialog();
 
                 } else {
                     currentShowingPopupType = SHOWING_POPUP_TYPE_CATEGORY;
@@ -423,8 +425,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 break;
             case R.id.searchFilterLL2:
                 if (currentShowingPopupType == SHOWING_POPUP_TYPE_AREA) {
-                    popupWindow.dismiss();
-                    searchLine.setVisibility(View.GONE);
+                    dismissDialog();
 
                 } else {
                     currentShowingPopupType = SHOWING_POPUP_TYPE_AREA;
@@ -433,8 +434,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 break;
             case R.id.searchFilterLL3:
                 if (currentShowingPopupType == SHOWING_POPUP_TYPE_SORT) {
-                    popupWindow.dismiss();
-                    searchLine.setVisibility(View.GONE);
+                    dismissDialog();
 
                 } else {
                     currentShowingPopupType = SHOWING_POPUP_TYPE_SORT;
@@ -443,9 +443,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 break;
             case R.id.search_input_et:
                 if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
-                    searchLine.setVisibility(View.GONE);
-
+                    dismissDialog();
                 }
                 break;
         }
@@ -649,9 +647,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     @Override
     public void onBackPressed() {
         if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
-            searchLine.setVisibility(View.GONE);
-
+            dismissDialog();
         } else
             super.onBackPressed();
     }
@@ -660,9 +656,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     protected void onDestroy() {
 //        SearchHistoryUtil.saveSearchHistory(searchModel);
         if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
-            searchLine.setVisibility(View.GONE);
-
+            dismissDialog();
         }
         super.onDestroy();
     }
@@ -675,5 +669,11 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         }
 
 
+    }
+
+
+    private void dismissDialog(){
+        vCover.setVisibility(View.GONE);
+        popupWindow.dismiss();
     }
 }

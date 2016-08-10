@@ -7,6 +7,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -193,8 +194,11 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                         if (position==0){
                             UMEvent("banner_c");
                             ZGEvent("文章名称",articleTitle,"进入banner文章");
+                            if (!TextUtils.isEmpty(mArticleDetailModel.getArticle().getArticle_url())){
+                                WebViewActivity.enterActivity(ArticleDetailActivity.this,mArticleDetailModel.getArticle().getArticle_url(),articleTitle,false);
+                            }
                         }else{
-
+                            position -=1;
                             UMEvent("detail_theme_c");
 
                             ArrayMap<String,Object> params = new ArrayMap<>();
@@ -203,7 +207,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                             ZGEvent(params,"进入趣处详情页");
 
                             Intent intent = new Intent(ArticleDetailActivity.this, QuchuDetailsActivity.class);
-                            intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, response.getPlaceList().getResult().get(position-1).getPlaceId());
+                            intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, response.getPlaceList().getResult().get(position).getPlaceId());
                             startActivity(intent);
                         }
 

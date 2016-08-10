@@ -86,10 +86,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((BannerViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mSimpleArticleModel.getImageUrl()));
         }else if(holder instanceof ArticleViewHolder){
 
-            position = position-1;
-            ((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position).getContent());
-            ((ArticleViewHolder) holder).tvTitle.setText(mDataSet.get(position).getName());
-            ((ArticleViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getCover()));
+            ((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position-1).getContent());
+            ((ArticleViewHolder) holder).tvTitle.setText(mDataSet.get(position-1).getName());
+            ((ArticleViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position-1).getCover()));
 
 
         }

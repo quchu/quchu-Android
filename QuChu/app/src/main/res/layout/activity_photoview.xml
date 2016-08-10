@@ -17,7 +17,7 @@
         android:layout_height="match_parent"/>
 
 
-    <me.relex.circleindicator.CircleIndicator
+    <co.quchu.quchu.widget.CircleIndicator
         android:id="@+id/indicator"
         android:layout_gravity="bottom"
         android:layout_marginBottom="@dimen/activity_vertical_margin"

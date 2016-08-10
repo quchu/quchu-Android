@@ -13,7 +13,7 @@
 
 
 
-    <me.relex.circleindicator.CircleIndicator
+    <co.quchu.quchu.widget.CircleIndicator
         android:id="@+id/siv"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

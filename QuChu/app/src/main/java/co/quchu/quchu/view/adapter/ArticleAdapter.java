@@ -22,7 +22,7 @@ import co.quchu.quchu.model.ArticleBannerModel;
 import co.quchu.quchu.model.ArticleModel;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.utils.KeyboardUtils;
-import me.relex.circleindicator.CircleIndicator;
+import co.quchu.quchu.widget.CircleIndicator;
 
 /**
  * ArticleAdapter

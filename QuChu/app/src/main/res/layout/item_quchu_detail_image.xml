@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <me.relex.circleindicator.CircleIndicator
+        <co.quchu.quchu.widget.CircleIndicator
             android:id="@+id/siv"
             android:layout_alignBottom="@id/vpGallery"
             android:layout_centerHorizontal="true"

@@ -10,6 +10,8 @@ public class SimpleArticleModel {
     private String articleName;
     private String articleComtent;
     private String imageUrl;
+
+    private String article_url;
     private boolean isFavorite;
 
 
@@ -20,6 +22,15 @@ public class SimpleArticleModel {
         this.setArticleComtent(simpleArticleModel.getArticleComtent());
         this.setImageUrl(simpleArticleModel.getImageUrl());
         this.setFavorite(simpleArticleModel.isFavorite);
+        this.setArticle_url(simpleArticleModel.getArticle_url());
+    }
+
+    public String getArticle_url() {
+        return article_url;
+    }
+
+    public void setArticle_url(String article_url) {
+        this.article_url = article_url;
     }
 
     public int getArticleId() {

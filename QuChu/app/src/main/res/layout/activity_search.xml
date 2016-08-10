@@ -69,7 +69,9 @@
             android:textSize="@dimen/word_subhead_size" />
     </LinearLayout>
 
-    <View style="@style/HorizontalLine" />
+    <View style="@style/HorizontalLine"
+
+        />
 
     <LinearLayout
         android:id="@+id/searchFilterContainer"
@@ -144,7 +146,8 @@
             <TextView
                 android:id="@+id/searchFilterTV3"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height
+                    ="match_parent"
                 android:gravity="center"
                 android:text="智能排序"
                 android:textColor="@color/standard_color_h2_dark"
@@ -160,12 +163,26 @@
 
     <View
         android:id="@+id/search_line"
+        android:visibility="gone"
         style="@style/HorizontalLine" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/search_result_rv"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_result_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <View
+            android:id="@+id/vCover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/translucent_dark"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
 
 
 </LinearLayout>
