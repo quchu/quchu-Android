@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/cp_enhanced_toolbar"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/message_tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:background="@color/standard_color_white"
+        app:tabIndicatorColor="@color/standard_color_h1_dark"
+        app:tabIndicatorHeight="2dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/standard_color_h1_dark"
+        app:tabTextColor="@color/standard_color_h3_dark"/>
+
+    <co.quchu.quchu.widget.NoScrollViewPager
+        android:id="@+id/message_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

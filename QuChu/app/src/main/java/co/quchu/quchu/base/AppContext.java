@@ -24,7 +24,6 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 
-
 import java.util.List;
 
 import co.quchu.quchu.model.RecommendModel;
@@ -35,6 +34,7 @@ import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import io.rong.imkit.RongIM;
 
 public class AppContext extends Application {
     public static Context mContext;
@@ -110,12 +110,12 @@ public class AppContext extends Application {
             e.printStackTrace();
         }
         String processName = getProcessName(this, android.os.Process.myPid());
-        if(processName.endsWith("pushservice")) {
+        if (processName.endsWith("pushservice")) {
             PushManager.getInstance().initialize(this.getApplicationContext());
         }
 
 
-            //禁用页面自动统计
+        //禁用页面自动统计
         MobclickAgent.openActivityDurationTrack(false);
         ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(getApplicationContext())
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
@@ -130,7 +130,7 @@ public class AppContext extends Application {
         initWidths();
 
 
-        if (UserBehaviorPresentor.getDataSize(getApplicationContext())>=200){
+        if (UserBehaviorPresentor.getDataSize(getApplicationContext()) >= 200) {
             UserBehaviorPresentor.postBehaviors(getApplicationContext(), UserBehaviorPresentor.getBehaviors(getApplicationContext()), new CommonListener() {
                 @Override
                 public void successListener(Object response) {
@@ -144,8 +144,9 @@ public class AppContext extends Application {
             });
         }
 
+        //融云im
+        RongIM.init(this);
     }
-
 
     public void initWidths() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
