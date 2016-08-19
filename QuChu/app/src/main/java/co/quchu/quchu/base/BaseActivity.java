@@ -1,31 +1,25 @@
 package co.quchu.quchu.base;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.squareup.leakcanary.RefWatcher;
-
 import com.umeng.analytics.MobclickAgent;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.LoginActivity;
-import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
 
@@ -79,7 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         ZhugeSDK.getInstance().disablePhoneNumber();
         ZhugeSDK.getInstance().disableAccounts();
-        ZhugeSDK.getInstance().disableAppList();
+//        ZhugeSDK.getInstance().disableAppList();
         ZhugeSDK.getInstance().init(getApplicationContext());
         LogUtils.e("base activity onCreate  " + getClass().getSimpleName());
 

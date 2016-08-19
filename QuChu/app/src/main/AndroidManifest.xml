@@ -123,7 +123,6 @@
             android:name=".view.activity.PlaceMapActivity"
             android:label="@string/nearby_quchu"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -139,16 +138,12 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}"/>
-
-
         <meta-data
             android:name="ZHUGE_APPKEY"
             android:value="${ZHUGEIO_APP_KEY}"/>
-
         <meta-data
             android:name="ZHUGE_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}"/>
-
 
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
@@ -253,19 +248,23 @@
             android:name=".view.activity.PhotoViewActivity"
             android:screenOrientation="portrait"/>
 
+        <!-- 选择城市 -->
+        <activity
+            android:name=".view.activity.SelectedCityActivity"
+            android:screenOrientation="portrait"/>
+
         <!-- im -->
         <activity
             android:name=".im.MessageActivity"
             android:screenOrientation="portrait"/>
 
         <receiver
-            android:name="co.quchu.quchu.base.GeTuiReceiver"
+            android:name=".base.GeTuiReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}"/>
             </intent-filter>
         </receiver>
-
         <receiver android:name=".base.NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>

@@ -6,28 +6,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.android.volley.VolleyError;
 import com.umeng.update.UmengUpdateAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,18 +33,15 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.CommonDialog;
-import co.quchu.quchu.dialog.LocationSelectedDialogFg;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UpdateInfoModel;
 import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.RecommendPresenter;
@@ -59,6 +52,8 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.ArticleFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 
 /**
  * RecommendActivity
@@ -68,6 +63,8 @@ import co.quchu.quchu.view.fragment.RecommendFragment;
  */
 public class RecommendActivity extends BaseBehaviorActivity {
 
+    //测试
+    private String RONG_TOKEN = "OiIGtpinFPBxOISqnVkoK1YCaeUquLZa8VVOx7M9yAQAbWZ7CpDRVxyiG8v6W/JD7dJXXEZt9Lx77DiyatL4c06GvDFyad9u";
 
     @Override
     protected String getPageNameCN() {
@@ -110,6 +107,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
     private ArticleFragment articleFragment;
     private MeFragment meFragment;
 
+    boolean checkUpdateRunning = false;
+
     public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
 
     @Override
@@ -140,7 +139,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
         recommendFragment = new RecommendFragment();
         articleFragment = new ArticleFragment();
         meFragment = new MeFragment();
-
 
 
         getSupportFragmentManager().beginTransaction()
@@ -205,7 +203,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             accessPushMessage();
         }
 
-
+        connect(RONG_TOKEN);
     }
 
 
@@ -220,7 +218,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         switch (bean.getType()) {
             case "01":
                 rbBottomTab.check(R.id.rbDiscovery);
-                ArticleDetailActivity.enterActivity(this, bean.getEventId(), bean.getTitle(),"场景");
+                ArticleDetailActivity.enterActivity(this, bean.getEventId(), bean.getTitle(), "场景");
                 break;
             case "03":
                 rbBottomTab.check(R.id.rbDiscovery);
@@ -246,7 +244,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             }
             if (!currentLocation.equals(SPUtils.getCityName())) {
 //                if (!inList) {
-                    //城市列表中没有当前位置
+                //城市列表中没有当前位置
 //                    confirmDialogFg = ConfirmDialogFg.newInstance("切换城市", "你当前所在的城市尚未占领，是否要切换城市");
 //                } else
                 if (inList) {                    //城市列表中有但不是当前位置
@@ -346,16 +344,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
 
     private void showCityDialog() {
-        ivArrow.animate().rotation(180).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
-        LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance(list);
-        lDialog.show(getSupportFragmentManager(), "blur_sample");
-        lDialog.setOnDissMissListener(new LocationSelectedDialogFg.OnDissMissListener() {
-            @Override
-            public void onDissMiss() {
-                ivArrow.animate().rotation(0).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
-            }
-        });
+        SelectedCityActivity.launch(this, list);
 
+//        ivArrow.animate().rotation(180).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
+//        LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance(list);
+//        lDialog.show(getSupportFragmentManager(), "blur_sample");
+//        lDialog.setOnDissMissListener(new LocationSelectedDialogFg.OnDissMissListener() {
+//            @Override
+//            public void onDissMiss() {
+//                ivArrow.animate().rotation(0).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
+//            }
+//        });
     }
 
     private void initView() {
@@ -465,9 +464,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         switch (event.getFlag()) {
             case EventFlags.EVENT_NEW_CITY_SELECTED:
-                ArrayMap<String,Object> arrayMap = new ArrayMap<>();
-                arrayMap.put("城市名称",SPUtils.getCityName());
-                ZGEvent(arrayMap,"选择城市");
+                ArrayMap<String, Object> arrayMap = new ArrayMap<>();
+                arrayMap.put("城市名称", SPUtils.getCityName());
+                ZGEvent(arrayMap, "选择城市");
                 recommendTitleLocationIv.setText(SPUtils.getCityName());
                 break;
             case EventFlags.EVENT_USER_LOGIN_SUCCESS:
@@ -484,13 +483,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 break;
             case EventFlags.EVENT_APPLICATION_CHECK_UPDATE:
 
-                if (!checkUpdateRunning){
+                if (!checkUpdateRunning) {
                     checkUpdateRunning = true;
-                    VersionInfoPresenter.checkUpdate(getApplicationContext(),new CommonListener<UpdateInfoModel>() {
+                    VersionInfoPresenter.checkUpdate(getApplicationContext(), new CommonListener<UpdateInfoModel>() {
                         @Override
                         public void successListener(final UpdateInfoModel response) {
                             checkUpdateRunning = false;
-                            if (BuildConfig.VERSION_CODE < response.getVersionCode()){
+                            if (BuildConfig.VERSION_CODE < response.getVersionCode()) {
 
                                 final CommonDialog commonDialog = CommonDialog.newInstance("有新版本更新", "检测到有新版本，是否下载更新？", "立即前往", "容我三思");
                                 commonDialog.setListener(new CommonDialog.OnActionListener() {
@@ -512,15 +511,15 @@ public class RecommendActivity extends BaseBehaviorActivity {
                                 commonDialog.show(getSupportFragmentManager(), "");
 
 
-                            }else{
-                                Toast.makeText(getApplicationContext(),R.string.no_update_available,Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), R.string.no_update_available, Toast.LENGTH_LONG).show();
                             }
 
                         }
 
                         @Override
                         public void errorListener(VolleyError error, String exception, String msg) {
-                            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_LONG).show();
                             checkUpdateRunning = false;
                         }
 
@@ -532,8 +531,46 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     }
 
+    /**
+     * 建立与融云服务器的连接
+     *
+     * @param token
+     */
+    private void connect(String token) {
+        /**
+         * IMKit SDK调用第二步,建立与服务器的连接
+         */
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
 
-    boolean checkUpdateRunning = false;
+            /**
+             * Token 错误，在线上环境下主要是因为 Token 已经过期，您需要向 App Server 重新请求一个新的 Token
+             */
+            @Override
+            public void onTokenIncorrect() {
+                Log.d(this.getClass().getSimpleName(), "--onTokenIncorrect");
+            }
+
+            /**
+             * 连接融云成功
+             * @param userid 当前 token
+             */
+            @Override
+            public void onSuccess(String userid) {
+                Log.d(this.getClass().getSimpleName(), "--onSuccess" + userid);
+//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                finish();
+            }
+
+            /**
+             * 连接融云失败
+             * @param errorCode 错误码，可到官网 查看错误码对应的注释
+             */
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.d(this.getClass().getSimpleName(), "--onError" + errorCode);
+            }
+        });
+    }
 
     @Override
     protected void onStart() {

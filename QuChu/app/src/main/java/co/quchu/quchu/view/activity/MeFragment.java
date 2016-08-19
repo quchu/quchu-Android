@@ -47,6 +47,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.gallery.utils.ImageUtils;
+import co.quchu.quchu.im.MessageActivity;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
@@ -252,10 +253,13 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.massage://消息中心
-                UMEvent("message_c");
-                intent = new Intent(getActivity(), MessageCenterActivity.class);
+                intent = new Intent(getActivity(), MessageActivity.class);
                 startActivity(intent);
-                unReadMassage.setVisibility(View.INVISIBLE);
+
+//                UMEvent("message_c");
+//                intent = new Intent(getActivity(), MessageCenterActivity.class);
+//                startActivity(intent);
+//                unReadMassage.setVisibility(View.INVISIBLE);
                 break;
             case R.id.findPosition://发现新去处
                 intent = new Intent(getActivity(), FindPositionListActivity.class);

@@ -24,6 +24,17 @@ public class CityModel implements Serializable {
     private int cid = 0;
     private boolean isSelected = false;
 
+    //1-为国内;0-为国外
+    private String isInland = "";
+
+    public String getIsInland() {
+        return isInland;
+    }
+
+    public void setIsInland(String isInland) {
+        this.isInland = isInland;
+    }
+
     public void setCvalue(String cvalue) {
         this.cvalue = cvalue;
     }
