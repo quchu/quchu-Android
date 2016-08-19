@@ -79,7 +79,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         ZhugeSDK.getInstance().disablePhoneNumber();
         ZhugeSDK.getInstance().disableAccounts();
-        ZhugeSDK.getInstance().disableAppList();
         ZhugeSDK.getInstance().init(getApplicationContext());
         LogUtils.e("base activity onCreate  " + getClass().getSimpleName());
 

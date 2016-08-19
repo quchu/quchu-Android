@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/half_margin"
-    android:layout_marginLeft="@dimen/half_margin"
-    android:layout_marginRight="@dimen/half_margin"
+    card_view:cardCornerRadius="0dp"
     card_view:cardPreventCornerOverlap="false"
     >
 

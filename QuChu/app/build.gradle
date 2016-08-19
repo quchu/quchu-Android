@@ -167,3 +167,10 @@ dependencies {
     compile 'com.facebook.fresco:webpsupport:0.11.0'
     compile 'pub.devrel:easypermissions:0.1.0'
 }
+
+//
+//gradle.projectsEvaluated {
+//    tasks.withType(JavaCompile) {
+//        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+//    }
+//}
