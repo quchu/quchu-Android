@@ -253,6 +253,10 @@
             android:name=".view.activity.SelectedCityActivity"
             android:screenOrientation="portrait"/>
 
+        <!-- 设置 -->
+        <activity android:name=".view.activity.SettingActivity"
+                  android:screenOrientation="portrait"/>
+
         <!-- im -->
         <activity
             android:name=".im.MessageActivity"

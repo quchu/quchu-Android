@@ -166,4 +166,9 @@ public interface NetApi {
 
     String getHangoutUsers = HOST + "/im/getUserList";
     String sendInvite = HOST + "/im/joinPartner";
+
+    /**
+     * 用户消息设置
+     */
+    String setUserMsg = HOST + "/userMsSet/msgSet";
 }

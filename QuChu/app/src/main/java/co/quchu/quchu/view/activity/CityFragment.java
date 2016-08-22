@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,6 +27,8 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 
 /**
+ * 城市列表
+ * <p/>
  * Created by mwb on 16/8/19.
  */
 public class CityFragment extends BaseFragment {
@@ -75,6 +78,7 @@ public class CityFragment extends BaseFragment {
 //                    ((RecommendActivity) getActivity()).updateRecommend();
             }
         });
+        recyclerView.addItemDecoration(new MyItemDecoration());
         recyclerView.setAdapter(selectedAdapter);
 
         return view;
@@ -106,5 +110,34 @@ public class CityFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    /**
+     * 列表item间距
+     */
+    private class MyItemDecoration extends RecyclerView.ItemDecoration {
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+
+            int itemCount = parent.getAdapter().getItemCount();
+            int position = parent.getChildAdapterPosition(view);
+            if (position < 3) {
+                outRect.top = 20;
+            }
+            outRect.bottom = 20;
+
+            if (position % 3 == 0) {
+                outRect.left = 40;
+                outRect.right = 10;
+            } else if ((position + 1) % 3 == 0) {
+                outRect.left = 10;
+                outRect.right = 40;
+            } else {
+                outRect.left = 10;
+                outRect.right = 10;
+            }
+        }
     }
 }

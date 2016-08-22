@@ -17,16 +17,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import co.quchu.quchu.model.HangoutUserModel;
-import co.quchu.quchu.presenter.HangoutPresenter;
 import com.android.volley.VolleyError;
 import com.umeng.update.UmengUpdateAgent;
 
-import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,14 +37,15 @@ import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.CommonDialog;
-import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.model.HangoutUserModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UpdateInfoModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.HangoutPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -109,6 +108,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     private RecommendFragment recommendFragment;
     private ArticleFragment articleFragment;
     private MeFragment meFragment;
+//    private MeFragment meFragment;
 
     boolean checkUpdateRunning = false;
 
@@ -328,7 +328,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 break;
 
             case R.id.ivLeft:
-                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "~");
+                startActivity(SettingActivity.class);
+//                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "~");
                 break;
 
             case R.id.tvRight:

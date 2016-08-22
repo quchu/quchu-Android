@@ -1,26 +1,38 @@
 package co.quchu.quchu.base;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import co.quchu.quchu.R;
+import co.quchu.quchu.utils.ToastManager;
 
 /**
  * Created by admin on 2016/3/2.
  */
 public abstract class BaseFragment extends Fragment {
 
+    private ToastManager toastManager;
+
     protected abstract String getPageNameCN();
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        toastManager = ToastManager.getInstance(getActivity());
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
     @Override
     public void onDestroy() {
@@ -45,7 +57,21 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    protected void makeToast(int resId) {
+        if (toastManager != null) {
+            toastManager.show(resId);
+        }
+    }
 
+    private void makeToast(String str) {
+        if (toastManager != null) {
+            toastManager.show(str);
+        }
+    }
+
+    protected void startActivity(Class<? extends BaseActivity> clz) {
+        startActivity(new Intent(getActivity(), clz));
+    }
 
     protected void UMEvent(String strEventName){
         MobclickAgent.onEvent(getContext(),strEventName);

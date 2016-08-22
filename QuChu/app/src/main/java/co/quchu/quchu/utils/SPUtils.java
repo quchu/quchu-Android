@@ -268,7 +268,17 @@ public class SPUtils {
         putValueToSPMap(AppContext.mContext, AppKey.LOGIN_TYPE, type);
     }
 
+    /**
+     * 搭伙开关
+     * @param checked
+     */
+    public static void setDahuoSwitch(boolean checked) {
+        putBooleanToSPMap(AppContext.mContext, AppKey.DAHUO_SWITCH, checked);
+    }
 
+    public static boolean getDahuoSwitch() {
+        return getBooleanFromSPMap(AppContext.mContext, AppKey.DAHUO_SWITCH, false);
+    }
 }
 
 
