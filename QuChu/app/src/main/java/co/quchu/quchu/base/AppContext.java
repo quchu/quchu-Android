@@ -13,11 +13,13 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.android.volley.VolleyError;
+import com.baidu.location.Address;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.google.gson.Gson;
@@ -148,6 +150,8 @@ public class AppContext extends MultiDexApplication {
 
         //融云im
         RongIM.init(this);
+        //百度SDK
+        SDKInitializer.initialize(getApplicationContext());
     }
 
     public void initWidths() {
@@ -161,18 +165,19 @@ public class AppContext extends MultiDexApplication {
     public void onTerminate() {
         super.onTerminate();
         if (null != mLocationClient) {
-            mLocationClient.onDestroy();
+            mLocationClient.stop();
             mLocationClient = null;
         }
         //   System.exit(0);
     }
 
-    //声明AMapLocationClient类对象
-    private static AMapLocationClient mLocationClient = null;
-    //声明定位回调监听器
-    private static AMapLocationListener mLocationListener = null;
+    private static LocationClient mLocationClient = null;
+    private static BDLocationListener mLocationListener = new AppLocationListener();
+
+
+
     //声明mLocationOption对象
-    private static AMapLocationClientOption mLocationOption = null;
+    private static LocationClientOption mLocationOption = null;
 
     @Override protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -183,46 +188,46 @@ public class AppContext extends MultiDexApplication {
         //初始化定位
         if (!AppUtil.isOpen(mContext))
             AppUtil.openGPS(mContext);
-        mLocationClient = new AMapLocationClient(mContext);
+        mLocationClient = new LocationClient(mContext);
         mLocationListener = new AppLocationListener() {
-            @Override
-            public void onLocationChanged(AMapLocation amapLocation) {
-                super.onLocationChanged(amapLocation);
+            @Override public void onReceiveLocation(BDLocation amapLocation) {
+                super.onReceiveLocation(amapLocation);
                 mLastLocatingTimeStamp = System.currentTimeMillis();
             }
         };
         //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
+        mLocationClient.registerLocationListener(mLocationListener);
         //初始化定位参数
-        mLocationOption = new AMapLocationClientOption();
+        mLocationOption = new LocationClientOption();
         //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationOption.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+
         //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-        //设置是否只定位一次,默认为false
-        mLocationOption.setOnceLocation(false);
+        mLocationOption.setIsNeedAddress(true);
+
+        //可选，默认gcj02，设置返回的定位结果坐标系值为间隔
+        mLocationOption.setCoorType("bd09ll");
         //设置是否强制刷新WIFI，默认为强制刷新
-        mLocationOption.setWifiActiveScan(true);
+        //mLocationOption.setWifiActiveScan(true);
         //设置是否允许模拟位置,默认为false，不允许模拟位置
-        mLocationOption.setMockEnable(false);
+        //mLocationOption.setMockEnable(false);
         //设置定位间隔,单位毫秒,默认为2000ms
         if (SPUtils.getLongitude() == 0 && SPUtils.getLatitude() == 0) {
-            mLocationOption.setInterval(5 * 1000);
+            mLocationOption.setScanSpan(1000);//默认0 只定位一次，其他
         } else {
-            mLocationOption.setInterval(3600 * 1000);
+            mLocationOption.setScanSpan(3600 * 1000);
         }
         //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.setLocOption(mLocationOption);
         //启动定位
-        mLocationClient.startLocation();
+        mLocationClient.start();
     }
 
 
     public static void stopLocation() {
         if (null != mLocationClient) {
-            mLocationClient.stopLocation();
+            mLocationClient.stop();
             mLocationClient.unRegisterLocationListener(mLocationListener);
-            mLocationClient.onDestroy();
             mLocationClient = null;
         }
         mLocationListener = null;

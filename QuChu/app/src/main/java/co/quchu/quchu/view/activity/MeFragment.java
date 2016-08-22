@@ -29,10 +29,6 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
 
-import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
-import com.umeng.update.UpdateStatus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -422,24 +418,5 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         unReadMassage.setVisibility(View.VISIBLE);
     }
 
-    public void checkUpdate() {
 
-        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-            @Override
-            public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
-                switch (updateStatus) {
-                    case UpdateStatus.Yes: // has update
-                        UmengUpdateAgent.showUpdateDialog(getActivity(), updateInfo);
-                        break;
-                    case UpdateStatus.No: // has no update
-                        Toast.makeText(getActivity(), "当前已是最新版本!", Toast.LENGTH_SHORT).show();
-                        break;
-                    case UpdateStatus.Timeout: // time out
-                        Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        });
-        UmengUpdateAgent.forceUpdate(getActivity());
-    }
 }

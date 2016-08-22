@@ -55,19 +55,19 @@ android {
             // 移除无用的resource文件
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [AMAP_DEBUG_KEY: "8d635450932036faf3681a8960d884fa",UMENG_APP_KEY:"56abaf9be0f55a4757000e39"]
+            manifestPlaceholders = [BAIDU_APP_KEY: "28:EB:11:F4:F3:47:22:CC:A2:08:DE:8E:75:B5:3D:DD:97:8F:2C:C4;co.quchu.quchu"]
         }
         debug {
             buildConfigField "int", "API_SERVER", "2"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
-            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872",UMENG_APP_KEY:"5655121fe0f55a5ee8008dd5"]
+            manifestPlaceholders = [BAIDU_APP_KEY: "AB:4C:4C:5F:8F:40:4C:A7:AB:E3:54:D2:D0:0C:08:DC:B5:18:42:75;co.quchu.quchu"]
         }
 
         uat {
             buildConfigField "int", "API_SERVER", "1"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
 //            manifestPlaceholders = [AMAP_DEBUG_KEY: "e069ed759bd31de835a577ffd733f14f"]
-            manifestPlaceholders = [AMAP_DEBUG_KEY: "b60847e00e5cc92cc6239b4a664cd872",UMENG_APP_KEY:"5655121fe0f55a5ee8008dd5"]
+            manifestPlaceholders = [BAIDU_APP_KEY:"AB:4C:4C:5F:8F:40:4C:A7:AB:E3:54:D2:D0:0C:08:DC:B5:18:42:75;co.quchu.quchu"]
 //            applicationIdSuffix ".uat"
         }
 
@@ -150,9 +150,7 @@ dependencies {
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.2.jar')
     compile files('libs/open_sdk_r5509.jar')
-    compile files('libs/umeng-update-v2.6.0.1.jar')
-    compile files('libs/AMap_Location_v2.3.0_20160112.jar')
-    compile files('libs/Android_Map_V2.7.20151124.jar')
+    compile files('libs/BaiduLBS_Android.jar')
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' // or 1.4-beta1
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     uatCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'

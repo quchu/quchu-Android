@@ -7,7 +7,7 @@
 
 
 
-    <com.amap.api.maps.MapView
+    <com.baidu.mapapi.map.MapView
         android:id="@+id/place_map_mv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

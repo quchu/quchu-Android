@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
+import com.baidu.location.BDLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 
@@ -268,7 +268,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                 accountSettingUserLocation.setText("定位中...");
                 AppLocationListener.addLocationListener(new AppLocationListener.LocationListener() {
                     @Override
-                    public void location(AMapLocation amapLocation) {
+                    public void location(BDLocation amapLocation) {
                         accountSettingUserLocation.setText(amapLocation.getCity());
                         AppContext.stopLocation();
                         AppLocationListener.removeListener(this);

@@ -15,9 +15,9 @@ import android.text.style.StyleSpan;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
-
+import com.baidu.location.BDLocation;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -349,7 +349,7 @@ public class StringUtils {
     }
 
     public static String getDistance(double latitude, double longitude, double targetLatitude, double targetLonitude) {
-        float distance = AMapUtils.calculateLineDistance(new LatLng(latitude, longitude), new LatLng(targetLatitude, targetLonitude));
+        double distance =  DistanceUtil.getDistance(new LatLng(latitude, longitude), new LatLng(targetLatitude, targetLonitude));
         if(distance/1000<=10){
             return new DecimalFormat("##.#").format(((distance / 1000) / 100f) * 100) + "km";
         }else if(distance/1000>10&&distance/1000<100){

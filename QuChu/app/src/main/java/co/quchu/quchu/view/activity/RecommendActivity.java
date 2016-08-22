@@ -20,7 +20,6 @@ import android.widget.Toast;
 import co.quchu.quchu.model.HangoutUserModel;
 import co.quchu.quchu.presenter.HangoutPresenter;
 import com.android.volley.VolleyError;
-import com.umeng.update.UmengUpdateAgent;
 
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
@@ -150,9 +149,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
         initView();
 
 
-        UmengUpdateAgent.setUpdateListener(null);
-        UmengUpdateAgent.update(AppContext.mContext);
-        UmengUpdateAgent.setUpdateCheckConfig(true);
 
         VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
 

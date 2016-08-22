@@ -10,12 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.android.volley.VolleyError;
 
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -91,8 +89,6 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     private SimpleArticleModel mArticleModel;
     private SceneInfoModel mSceneInfo;
     private SceneDetailAdapter mAdapter;
-    private AMapLocationClient mLocationClient;
-    private AMapLocationClientOption mLocationOption;
 
     private boolean mFavoriteRunning = false;
     private boolean mActivityStop = false;
