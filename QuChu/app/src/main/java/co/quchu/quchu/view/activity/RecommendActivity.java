@@ -17,9 +17,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import co.quchu.quchu.model.HangoutUserModel;
+import co.quchu.quchu.presenter.HangoutPresenter;
 import com.android.volley.VolleyError;
 import com.umeng.update.UmengUpdateAgent;
 
+import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -172,6 +175,28 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         }
 
+        HangoutPresenter.getMapNearbyData(getApplicationContext(), new CommonListener<List<HangoutUserModel>>() {
+
+            @Override public void successListener(List<HangoutUserModel> response) {
+                for (int i = 0; i < response.size(); i++) {
+                    System.out.println(response.get(i).toString());
+                }
+            }
+
+            @Override public void errorListener(VolleyError error, String exception, String msg) {
+
+            }
+        });
+
+        HangoutPresenter.inviteUser(getApplicationContext(), 10086, 413, new CommonListener<String>() {
+            @Override public void successListener(String response) {
+
+            }
+
+            @Override public void errorListener(VolleyError error, String exception, String msg) {
+
+            }
+        });
 
         rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

@@ -163,4 +163,7 @@ public interface NetApi {
 
     String checkUpdate = HOST + "/public/getQuchuVersion";
     String getGroupTags = HOST + "/public/getTagGroupList";
+
+    String getHangoutUsers = HOST + "/im/getUserList";
+    String sendInvite = HOST + "/im/joinPartner";
 }

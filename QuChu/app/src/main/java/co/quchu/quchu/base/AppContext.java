@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
 
 import com.amap.api.location.AMapLocation;
@@ -36,7 +38,7 @@ import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import io.rong.imkit.RongIM;
 
-public class AppContext extends Application {
+public class AppContext extends MultiDexApplication {
     public static Context mContext;
     public static UserInfoModel user;//用户信息
 
@@ -171,6 +173,11 @@ public class AppContext extends Application {
     private static AMapLocationListener mLocationListener = null;
     //声明mLocationOption对象
     private static AMapLocationClientOption mLocationOption = null;
+
+    @Override protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     public static void initLocation() {
         //初始化定位
