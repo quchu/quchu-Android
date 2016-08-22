@@ -126,4 +126,9 @@ public interface AppKey {
     String SPF_KEY_SWIPE_DELETE_PROMPT_FIND="swipeDeletePrompt";
     String SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU="swipeDeletePrompt_quchu";
     String SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_ESSAY="swipeDeletePrompt_essay";
+    /**
+     * 当前用户是否开启搭伙功能
+     * 或默认的
+     */
+    String DAHUO_SWITCH = "dahuo_switch";
 }

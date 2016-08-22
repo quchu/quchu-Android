@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.utils.SPUtils;
 
 /**
  * LocationSelectedAdapter
@@ -50,21 +51,15 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
         return new LocationHodler(LayoutInflater.from(parent.getContext()).inflate(R.layout.dialog_item_city, parent, false));
     }
 
-
     @Override
     public void onBindViewHolder(LocationHodler holder, int position) {
+        CityModel cityModel = cityList.get(position);
         holder.dialogItemCityCb.setText(cityList.get(position).getCvalue());
-        if (cityList.get(position).isSelected()) {
+        int cityId = SPUtils.getCityId();
+        if (cityId == cityModel.getCid()) {
             holder.dialogItemCityCb.setChecked(true);
             holder.dialogItemCityCb.setClickable(false);
-            selectedIndex = position;
             holder.dialogItemCityCb.setTextColor(mContext.getResources().getColor(R.color.standard_color_yellow));
-//            if (dataType == 0) {
-//                titleText.setText("所在城市:" + cityList.get(position).getCvalue());
-//            } else {
-//                titleText.setText("设置性别:" + cityList.get(position).getCvalue());
-//            }
-//            StringUtils.alterTextColor(titleText, 5, 5 + cityList.get(position).getCvalue().length(), R.color.standard_color_yellow);
         } else {
             holder.dialogItemCityCb.setChecked(false);
             holder.dialogItemCityCb.setClickable(true);
@@ -72,16 +67,13 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
         }
     }
 
-
     @Override
     public int getItemCount() {
-        if (cityList != null)
-            return cityList.size();
-        else
-            return 0;
+        return cityList != null ? cityList.size() : 0;
     }
 
     public class LocationHodler extends RecyclerView.ViewHolder {
+
         @Bind(R.id.dialog_item_city_cb)
         public CheckBox dialogItemCityCb;
 
@@ -92,8 +84,6 @@ public class LocationSelectedAdapter extends RecyclerView.Adapter<LocationSelect
 
         @OnClick(R.id.dialog_item_city_cb)
         public void locationClick(View view) {
-            cityList.get(selectedIndex).setIsSelected(false);
-            cityList.get(getAdapterPosition()).setIsSelected(true);
             CityModel model = cityList.get(getAdapterPosition());
             notifyDataSetChanged();
             if (null != mListener) {

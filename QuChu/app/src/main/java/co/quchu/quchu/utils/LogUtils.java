@@ -19,6 +19,12 @@ public class LogUtils {
         }
     }
 
+    public static void e(String tag, String msg) {
+        if (BuildConfig.DISPLAY_LOG) {
+            Log.e(tag, msg);
+        }
+    }
+
     public static void i(String msg) {
         if (BuildConfig.DISPLAY_LOG) {
             Log.i(tag, msg);

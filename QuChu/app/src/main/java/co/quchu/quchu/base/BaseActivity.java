@@ -19,6 +19,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.ToastManager;
 import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
@@ -42,12 +43,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 //    //
 //    protected final int TRANSITION_TYPE_ALPHA = 3;
     protected final int TRANSITION_TYPE_TOP = 4;
+    private ToastManager toastManager;
 
     @SuppressLint("InlinedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         ActManager.getAppManager().addActivity(this);
         if (this instanceof SplashActivity) {
             super.onCreate(savedInstanceState);
@@ -77,6 +77,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         ZhugeSDK.getInstance().init(getApplicationContext());
         LogUtils.e("base activity onCreate  " + getClass().getSimpleName());
 
+        toastManager = ToastManager.getInstance(getApplicationContext());
+    }
+
+    protected void makeToast(int resId) {
+        if (toastManager != null) {
+            toastManager.show(resId);
+        }
+    }
+
+    protected void makeToast(String str) {
+        if (toastManager != null) {
+            toastManager.show(str);
+        }
+    }
+
+    protected void startActivity(Class<? extends BaseActivity> clz) {
+        startActivity(new Intent(this, clz));
     }
 
     /**
@@ -218,7 +235,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         MobclickAgent.onEvent(getApplicationContext(), strEventName);
     }
 
-    protected void ZGEvent(String key,Object value,String eventName) {
+    protected void ZGEvent(String key, Object value, String eventName) {
 
         JSONObject jsonObject = new JSONObject();
         try {
@@ -231,7 +248,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ZhugeSDK.getInstance().track(getApplicationContext(), eventName, jsonObject);
     }
 
-    protected void ZGEvent(ArrayMap<String, Object> params,String eventName) {
+    protected void ZGEvent(ArrayMap<String, Object> params, String eventName) {
 
         JSONObject jsonObject = new JSONObject();
         try {

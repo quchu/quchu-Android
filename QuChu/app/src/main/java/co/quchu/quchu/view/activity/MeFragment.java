@@ -29,7 +29,6 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
 
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -41,7 +40,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseFragment;
-import co.quchu.quchu.dialog.MenuSettingDialogFg;
 import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.im.MessageActivity;
 import co.quchu.quchu.model.MyGeneModel;
@@ -262,9 +260,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.toolbar_iv_right:
-                MenuSettingDialogFg.newInstance().show(getActivity().getSupportFragmentManager(), "menu_setting");
+                //设置
+                startActivity(SettingActivity.class);
+//                MenuSettingDialogFg.newInstance().show(getActivity().getSupportFragmentManager(), "menu_setting");
                 break;
             case R.id.editOrLoginAction:
+                //登录、用户管理
                 if (user.isIsVisitors()) {
                     intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
