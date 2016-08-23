@@ -5,8 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="0dp"
+
+    android:layout_marginLeft="@dimen/base_margin"
+    android:layout_marginRight="@dimen/base_margin"
+    card_view:cardCornerRadius="@dimen/rounded_radius"
     card_view:cardPreventCornerOverlap="false"
+
+    android:layout_marginTop="@dimen/half_margin"
     >
 
     <RelativeLayout
@@ -19,6 +24,7 @@
             android:layout_height="wrap_content"
             fresco:overlayImage="@color/translucent_dark"
             fresco:placeholderImage="@mipmap/ic_image_empty"
+            fresco:roundedCornerRadius="@dimen/rounded_radius"
             fresco:viewAspectRatio="3.3" />
 
         <TextView
