@@ -163,10 +163,10 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             ((RecommendedViewHolder) holder).tvCircleName.setText(null != objScene.getPlaceInfo().getAreaCircleName() ? objScene.getPlaceInfo().getAreaCircleName() : "");
 
-            if (TextUtils.isEmpty(objScene.getPlaceInfo().gdLatitude)||TextUtils.isEmpty(objScene.getPlaceInfo().gdLongitude)){
+            if (TextUtils.isEmpty(objScene.getPlaceInfo().getLatitude())||TextUtils.isEmpty(objScene.getPlaceInfo().getLongitude())){
                 ((RecommendedViewHolder) holder).tvDistance.setVisibility(View.GONE);
             }else{
-                ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.getPlaceInfo().gdLatitude), Double.valueOf(objScene.getPlaceInfo().gdLongitude)));
+                ((RecommendedViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.getPlaceInfo().getLatitude()), Double.valueOf(objScene.getPlaceInfo().getLongitude())));
                 ((RecommendedViewHolder) holder).tvDistance.setVisibility(View.VISIBLE);
             }
             if (!StringUtils.isEmpty(objScene.getPlaceInfo().getPrice())) {
@@ -211,10 +211,10 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
             }
             ((PlaceViewHolder) holder).tvCircleName.setText(null != objScene.getAreaCircleName() ? objScene.getAreaCircleName() : "");
-            if (TextUtils.isEmpty(objScene.gdLatitude)||TextUtils.isEmpty(objScene.gdLongitude)){
+            if (TextUtils.isEmpty(objScene.getLatitude())||TextUtils.isEmpty(objScene.getLongitude())){
                 ((PlaceViewHolder) holder).tvDistance.setVisibility(View.GONE);
             }else{
-                ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.gdLatitude), Double.valueOf(objScene.gdLongitude)));
+                ((PlaceViewHolder) holder).tvDistance.setText(StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(), Double.valueOf(objScene.getLongitude()), Double.valueOf(objScene.gdLongitude)));
                 ((PlaceViewHolder) holder).tvDistance.setVisibility(View.VISIBLE);
             }
 

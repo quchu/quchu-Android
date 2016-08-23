@@ -11,6 +11,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -272,9 +273,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
 
             if (i==0){
-                //TODO
-                //aMap.getMap().showInfoWindow();
-                //TODO END
+                popUpWindow(0);
 
                 marker.setIcon(mMapPinBlue);
                 mLastMarker = i;
@@ -335,6 +334,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
         bundle.putInt("obj",0);
         marker.setExtraInfo(bundle);
         mMarks.add(marker);
+        popUpWindow(0);
     }
 
     @Override
@@ -379,6 +379,31 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
 
 
+    private void popUpWindow(final int index){
+        if(mMarks.size()<=index || mDataSet.size()<=index){
+            return;
+        }
+
+        LatLng latLng = mMarks.get(index).getPosition();
+        View infoWindow = getLayoutInflater().inflate(R.layout.cp_amap_infowindow, null);
+        TextView textView = (TextView) infoWindow.findViewById(R.id.tvAddress);
+
+        if (null != mMarks.get(index).getExtraInfo()) {
+            NearbyMapModel nearbyMapModel = mDataSet.get(index);
+            textView.setText(nearbyMapModel.getAddress());
+        }
+
+        infoWindow.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                NearbyMapModel nearbyMapModel = mDataSet.get(index);
+                popNavigation(nearbyMapModel.getLatitude(),nearbyMapModel.getLongitude(),nearbyMapModel.getGdLatitude(),nearbyMapModel.getGdLongitude());
+            }
+        });
+
+        InfoWindow mInfoWindow = new InfoWindow(infoWindow, latLng, -47);
+        aMap.showInfoWindow(mInfoWindow);
+    }
+
     private void setUpMap() {
 
 //        aMap.getUiSettings().setZoomControlsEnabled(false);
@@ -391,13 +416,12 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
             @Override
             public boolean onMarkerClick(Marker marker) {
                 int index = (int) marker.getExtraInfo().get("obj");
+                popUpWindow(index);
                 mVPNearby.setCurrentItem(index);
                 return false;
             }
         });
 
-        //aMap.setOnInfoWindowClickListener(this);
-        //aMap.setInfoWindowAdapter(this);
 
     }
 
@@ -541,27 +565,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
         }
     }
 
-    //@Override
-    //public void onInfoWindowClick(Marker marker) {
-    //    NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getExtraInfo().get("obj"));
-    //    popNavigation(nearbyMapModel.getLatitude(),nearbyMapModel.getLongitude(),nearbyMapModel.getGdLatitude(),nearbyMapModel.getGdLongitude());
-    //}
-    //
-    //@Override
-    //public View getInfoWindow(Marker marker) {
-    //    View infoWindow = getLayoutInflater().inflate(
-    //            R.layout.cp_amap_infowindow, null);
-    //    TextView textView = (TextView) infoWindow.findViewById(R.id.tvAddress);
-    //
-    //    if (null!=marker.getExtraInfo()){
-    //        NearbyMapModel nearbyMapModel = mDataSet.get((Integer) marker.getExtraInfo().get("obj"));
-    //        textView.setText(nearbyMapModel.getAddress());
-    //
-    //    }
-    //
-    //    return infoWindow;
-    //}
-    //
+
     //@Override
     //public View getInfoContents(Marker marker) {
     //    return null;
