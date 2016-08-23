@@ -67,8 +67,7 @@
             <ImageView
                 android:id="@+id/user_mark_img"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/ic_chihuo_ahsy"/>
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/user_mark_tv"

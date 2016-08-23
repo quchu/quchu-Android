@@ -195,9 +195,36 @@ public class MeAvatarFragment extends BaseFragment {
             userNameTv.setText("未知生物");
         }
 
-        if (SPUtils.getUserMark() != null) {
+        String userMark = SPUtils.getUserMark();
+        if (userMark != null) {
             userMarkLayout.setVisibility(View.VISIBLE);
-            userMarkTv.setText(SPUtils.getUserMark());
+            userMarkTv.setText(userMark);
+        }
+
+        switch (userMark) {
+            case "小食神":
+                userMarkImg.setImageResource(R.mipmap.ic_chihuo_ahsy);
+                break;
+
+            case "艺术家":
+                userMarkImg.setImageResource(R.mipmap.ic_wenyi_ahsy);
+                break;
+
+            case "外交官":
+                userMarkImg.setImageResource(R.mipmap.ic_shejiao_ahsy);
+                break;
+
+            case "时尚精":
+                userMarkImg.setImageResource(R.mipmap.ic_shishang_ahsy);
+                break;
+
+            case "大财阀":
+                userMarkImg.setImageResource(R.mipmap.ic_tuhao_ahsy);
+                break;
+
+            case "玩乐咖":
+                userMarkImg.setImageResource(R.mipmap.ic_haoqi_ahsy);
+                break;
         }
 
         //更换了头像
