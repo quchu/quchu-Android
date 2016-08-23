@@ -2,13 +2,13 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="wrap_content"
     android:fitsSystemWindows="true">
 
     <co.quchu.quchu.widget.WrapContentViewPager
         android:id="@+id/vpGallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="250dp" />
 
 
 
@@ -20,4 +20,44 @@
         android:layout_marginBottom="@dimen/half_margin"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/llDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_below="@id/vpGallery"
+        android:layout_marginTop="@dimen/base_margin"
+        android:layout_marginBottom="@dimen/base_margin"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
+        >
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextView.H1"
+            android:text="@string/qu_faxian_simple_title"
+            />
+        
+        <View
+            android:layout_width="@dimen/base_margin"
+            android:layout_height="1dp"
+            android:background="@color/standard_color_h3_dark"
+            android:layout_marginTop="@dimen/half_margin"
+            android:layout_marginBottom="@dimen/half_margin"
+            />
+
+        <TextView
+            android:id="@+id/tvDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextView.H2"
+            android:lineSpacingExtra="1dp"
+            android:text="@string/qu_faxian_simple_desc"
+            />
+
+    </LinearLayout>
 </RelativeLayout>

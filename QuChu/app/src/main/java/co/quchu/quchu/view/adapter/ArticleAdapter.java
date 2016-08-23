@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -131,11 +132,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ViewPager viewPager;
         @Bind(R.id.siv)
         CircleIndicator siv;
-
+        @Bind(R.id.llDesc)
+        LinearLayout llDesc;
 
         public BannerHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            llDesc.setVisibility(View.VISIBLE);
         }
     }
 
