@@ -279,6 +279,18 @@ public class SPUtils {
     public static boolean getDahuoSwitch() {
         return getBooleanFromSPMap(AppContext.mContext, AppKey.DAHUO_SWITCH, false);
     }
+
+    /**
+     * user mark
+     * @param mark
+     */
+    public static void setUserMark(String mark) {
+        putValueToSPMap(AppContext.mContext, AppKey.USER_MARK, mark);
+    }
+
+    public static String getUserMark() {
+        return getValueFromSPMap(AppContext.mContext, AppKey.USER_MARK, null);
+    }
 }
 
 

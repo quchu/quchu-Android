@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -18,9 +16,9 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
+import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.EventFlags;
@@ -38,8 +36,6 @@ public class CityFragment extends BaseFragment {
     private ArrayList<CityModel> cityList;
     private int cityType;
 
-    @Bind(R.id.location_city_tv)
-    TextView locationCityTv;
     @Bind(R.id.city_recycler_view)
     RecyclerView recyclerView;
 
@@ -61,44 +57,24 @@ public class CityFragment extends BaseFragment {
         cityList = (ArrayList<CityModel>) getArguments().getSerializable(CITY_LIST_MODEL);
         cityType = getArguments().getInt(CITY_LIST_TYPE);
 
-        initLocation();
-
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         LocationSelectedAdapter selectedAdapter = new LocationSelectedAdapter(cityList, null, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
             @Override
             public void onSelected(String cityName, int cityId) {
+//                if (getActivity() instanceof RecommendActivity)
+//                    ((RecommendActivity) getActivity()).updateRecommend();
+
                 //保存数据 而后关闭
                 SPUtils.setCityId(cityId);
                 SPUtils.setCityName(cityName);
                 EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED));
                 getActivity().finish();
-
-                //选择城市后城市列表重新排序
-//                if (getActivity() instanceof RecommendActivity)
-//                    ((RecommendActivity) getActivity()).updateRecommend();
             }
         });
         recyclerView.addItemDecoration(new MyItemDecoration());
         recyclerView.setAdapter(selectedAdapter);
 
         return view;
-    }
-
-    /**
-     * 设置当前定位的城市
-     */
-    private void initLocation() {
-        if (cityType == SelectedCityActivity.TYPE_CHINA) {
-            locationCityTv.setVisibility(View.VISIBLE);
-
-            if (!TextUtils.isEmpty(AppLocationListener.currentCity)) {
-                String currentLocation = AppLocationListener.currentCity;
-                locationCityTv.append(currentLocation);
-            }
-
-        } else {
-            locationCityTv.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -117,6 +93,12 @@ public class CityFragment extends BaseFragment {
      */
     private class MyItemDecoration extends RecyclerView.ItemDecoration {
 
+        private final int space;
+
+        public MyItemDecoration() {
+            space = Utils.dip2px(getActivity(), 19);
+        }
+
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
@@ -124,19 +106,19 @@ public class CityFragment extends BaseFragment {
             int itemCount = parent.getAdapter().getItemCount();
             int position = parent.getChildAdapterPosition(view);
             if (position < 3) {
-                outRect.top = 20;
+                outRect.top = space;
             }
-            outRect.bottom = 20;
+            outRect.bottom = space;
 
             if (position % 3 == 0) {
-                outRect.left = 40;
-                outRect.right = 10;
+                outRect.left = space;
+                outRect.right = space / 2;
             } else if ((position + 1) % 3 == 0) {
-                outRect.left = 10;
-                outRect.right = 40;
+                outRect.left = space / 2;
+                outRect.right = space;
             } else {
-                outRect.left = 10;
-                outRect.right = 10;
+                outRect.left = space / 2;
+                outRect.right = space / 2;
             }
         }
     }

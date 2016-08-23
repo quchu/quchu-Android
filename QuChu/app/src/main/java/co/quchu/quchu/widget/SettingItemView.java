@@ -93,6 +93,7 @@ public class SettingItemView extends LinearLayout {
             public void onSuccess() {
                 switchBtn.setChecked(checked);
                 SPUtils.setDahuoSwitch(true);
+                ToastManager.getInstance(getContext()).show("设置成功");
             }
 
             @Override

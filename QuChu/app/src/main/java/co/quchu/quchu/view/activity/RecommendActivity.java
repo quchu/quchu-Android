@@ -106,7 +106,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     public int viewPagerIndex = 0;
     private RecommendFragment recommendFragment;
     private ArticleFragment articleFragment;
-    private MeFragment meFragment;
+    private NewMeFragment meFragment;
 //    private MeFragment meFragment;
 
     boolean checkUpdateRunning = false;
@@ -140,7 +140,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         recommendFragment = new RecommendFragment();
         articleFragment = new ArticleFragment();
-        meFragment = new MeFragment();
+        meFragment = new NewMeFragment();
 
 
         getSupportFragmentManager().beginTransaction()
@@ -343,14 +343,14 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 UMEvent("location_c");
                 if (NetUtil.isNetworkConnected(getApplicationContext())) {
                     if (list != null) {
-                        showCityDialog();
+                        selectedCity();
                     } else {
                         RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
                             @Override
                             public void hasCityList(ArrayList<CityModel> list) {
                                 RecommendActivity.this.list = list;
                                 if (RecommendActivity.this.list != null) {
-                                    showCityDialog();
+                                    selectedCity();
                                 }
                             }
                         });
@@ -364,19 +364,20 @@ public class RecommendActivity extends BaseBehaviorActivity {
         }
     }
 
-
-    private void showCityDialog() {
+    /**
+     * 切换城市
+     */
+    private void selectedCity() {
         SelectedCityActivity.launch(this, list);
+    }
 
-//        ivArrow.animate().rotation(180).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
-//        LocationSelectedDialogFg lDialog = LocationSelectedDialogFg.newInstance(list);
-//        lDialog.show(getSupportFragmentManager(), "blur_sample");
-//        lDialog.setOnDissMissListener(new LocationSelectedDialogFg.OnDissMissListener() {
-//            @Override
-//            public void onDissMiss() {
-//                ivArrow.animate().rotation(0).setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).start();
-//            }
-//        });
+    /**
+     * 城市切换后调用
+     */
+    public void updateRecommend() {
+        //recommendFragment.initData();
+        //TODO refresh
+        articleFragment.getArticles(false);
     }
 
     private void initView() {
@@ -413,11 +414,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
 
         } else if (index == 2) {
-            if (null != AppContext.user && !AppContext.user.isIsVisitors()) {
-                tvTitle.setText(AppContext.user.getFullname());
-            } else {
-                tvTitle.setText("未知生物");
-            }
+//            if (null != AppContext.user && !AppContext.user.isIsVisitors()) {
+//                tvTitle.setText(AppContext.user.getFullname());
+//            } else {
+//                tvTitle.setText("未知生物");
+//            }
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
             transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
 
@@ -431,16 +432,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         }
         viewPagerIndex = index;
-    }
-
-
-    /**
-     * 城市切换后调用
-     */
-    public void updateRecommend() {
-        //recommendFragment.initData();
-        //TODO refresh
-        articleFragment.getArticles(false);
     }
 
     @Override
@@ -490,16 +481,18 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 arrayMap.put("城市名称", SPUtils.getCityName());
                 ZGEvent(arrayMap, "选择城市");
                 recommendTitleLocationIv.setText(SPUtils.getCityName());
+
+                updateRecommend();
                 break;
             case EventFlags.EVENT_USER_LOGIN_SUCCESS:
                 if (viewPagerIndex == 2) {
-                    tvTitle.setText(AppContext.user.getFullname());
+//                    tvTitle.setText(AppContext.user.getFullname());
                     tvRight.setText(R.string.edit);
                 }
                 break;
             case EventFlags.EVENT_USER_LOGOUT:
                 if (viewPagerIndex == 2) {
-                    tvTitle.setText("未知生物");
+//                    tvTitle.setText("未知生物");
                     tvRight.setText(R.string.login);
                 }
                 break;

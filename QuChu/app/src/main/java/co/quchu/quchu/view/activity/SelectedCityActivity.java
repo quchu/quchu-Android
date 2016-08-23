@@ -31,7 +31,6 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
     private static final String CITY_LIST_MODEL = "city_list_model";
     public static int TYPE_CHINA = 1; // 国内
     public static int TYPE_INTERNATIONAL = 2; // 国外
-    private ArrayList<CityModel> allCityList;
     private ArrayList<CityModel> chinaCity;
     private ArrayList<CityModel> internationalCity;
 
@@ -56,16 +55,14 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
         TextView titleTv = toolbar.getTitleTv();
         titleTv.setText("选择城市");
 
-        allCityList = (ArrayList<CityModel>) getIntent().getSerializableExtra(CITY_LIST_MODEL);
+        ArrayList<CityModel> allCityList = (ArrayList<CityModel>) getIntent().getSerializableExtra(CITY_LIST_MODEL);
         chinaCity = new ArrayList<>();
         internationalCity = new ArrayList<>();
         if (allCityList != null && allCityList.size() > 0) {
             for (CityModel model : allCityList) {
                 if (!TextUtils.isEmpty(model.getIsInland()) && model.getIsInland().equals("1")) {
-                    chinaCity.clear();
                     chinaCity.add(model);
                 } else {
-                    internationalCity.clear();
                     internationalCity.add(model);
                 }
             }
@@ -85,9 +82,9 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return CityFragment.newInstance(allCityList, TYPE_CHINA);
+                return CityFragment.newInstance(chinaCity, TYPE_CHINA);
             }
-            return CityFragment.newInstance(allCityList, TYPE_INTERNATIONAL);
+            return CityFragment.newInstance(internationalCity, TYPE_INTERNATIONAL);
         }
 
         @Override
@@ -106,7 +103,7 @@ public class SelectedCityActivity extends BaseBehaviorActivity {
 
     @Override
     protected int activitySetup() {
-        return 0;
+        return TRANSITION_TYPE_LEFT;
     }
 
     @Override

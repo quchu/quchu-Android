@@ -131,4 +131,8 @@ public interface AppKey {
      * 或默认的
      */
     String DAHUO_SWITCH = "dahuo_switch";
+    /**
+     * mark
+     */
+    String USER_MARK = "user_mark";
 }

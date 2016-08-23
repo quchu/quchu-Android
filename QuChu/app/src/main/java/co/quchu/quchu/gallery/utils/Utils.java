@@ -16,6 +16,7 @@
 
 package co.quchu.quchu.gallery.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -126,5 +127,13 @@ public class Utils {
         Random random = new Random();
         int s = random.nextInt(max) % (max - min + 1) + min;
         return s;
+    }
+
+    /**
+     * dp转换成px
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 }
