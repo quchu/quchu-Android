@@ -20,7 +20,9 @@ android {
                 GETUI_APP_KEY   : "ArD8yYRKxs5EZB2X9aVmR3",
                 GETUI_APP_SECRET: "56VjMk0sR390uEBISPXxv2",
                 PACKAGE_NAME    : applicationId,
-                ZHUGEIO_APP_KEY : "ed26b1ea7c044929bc067eb0cca4426d"
+                ZHUGEIO_APP_KEY : "ed26b1ea7c044929bc067eb0cca4426d",
+                BAIDU_APP_KEY: "yD5GGZTkxazc99VK9hG9a5UqhCBzWAkb"
+
         ]
 
         ndk {//个推配置 如果 project 中包含其他 so 库且只支持某几种 cpu 架构，那么应该根据其他 so 库支持的 cpu 架构来配置
@@ -55,19 +57,16 @@ android {
             // 移除无用的resource文件
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [BAIDU_APP_KEY: "28:EB:11:F4:F3:47:22:CC:A2:08:DE:8E:75:B5:3D:DD:97:8F:2C:C4;co.quchu.quchu"]
         }
         debug {
             buildConfigField "int", "API_SERVER", "2"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
-            manifestPlaceholders = [BAIDU_APP_KEY: "AB:4C:4C:5F:8F:40:4C:A7:AB:E3:54:D2:D0:0C:08:DC:B5:18:42:75;co.quchu.quchu"]
         }
 
         uat {
             buildConfigField "int", "API_SERVER", "1"
             buildConfigField "boolean", "DISPLAY_LOG", "true"
 //            manifestPlaceholders = [AMAP_DEBUG_KEY: "e069ed759bd31de835a577ffd733f14f"]
-            manifestPlaceholders = [BAIDU_APP_KEY:"AB:4C:4C:5F:8F:40:4C:A7:AB:E3:54:D2:D0:0C:08:DC:B5:18:42:75;co.quchu.quchu"]
 //            applicationIdSuffix ".uat"
         }
 

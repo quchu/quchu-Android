@@ -188,25 +188,9 @@ public static final int *;
 ## ----------------------------------
 ##   ########## 高德地图混淆    #########
 ## ----------------------------------
--dontwarn com.amap.api.**
--dontwarn com.aps.**
-#高德相关混淆文件
-#3D 地图
--keep   class com.amap.api.maps2d.**{*;}
--keep   class com.amap.api.maps.**{*;}
--keep   class com.autonavi.amap.mapcore.*{*;}
-#Location
--keep   class com.amap.api.location.**{*;}
--keep   class com.aps.**{*;}
-#Service
--keep   class com.amap.api.services.**{*;}
-
--keep class com.amap.api.location.**{*;}
--keep class com.autonavi.**{*;}
--keep class com.loc.**{*;}
--keep class com.amap.api.fence.**{*;}
--keep class com.amap.api.maps.overlay.**{*;}
--keep class com.autonavi.aps.amapapi.model.**{*;}
+-libraryjars libs/BaiduLBS_Android.jar 替换成自己所用版本的jar包
+-keep class com.baidu.** { *; }
+-keep class vi.com.gdi.bgl.android.**{*;}
 ## ----------------------------------
 ##   ########## nineoldandroids 混淆    #########
 ## ----------------------------------
