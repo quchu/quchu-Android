@@ -317,7 +317,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     private void changeCollectState(boolean isCollect) {
         dModel.setIsf(isCollect);
-        ivFavorite.setImageResource(isCollect ? R.mipmap.ic_star : R.mipmap.ic_star_light);
+        ivFavorite.setImageResource(isCollect ? R.mipmap.ic_star : R.mipmap.ic_star_lt);
         tvFootprintCount.setText(String.valueOf(dModel.getCardCount()));
         tvFootprintCount.setVisibility(dModel.getCardCount()>0?View.VISIBLE:View.INVISIBLE);
         mQuchuDetailAdapter.notifyDataSetChanged();

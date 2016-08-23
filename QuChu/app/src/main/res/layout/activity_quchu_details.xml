@@ -82,7 +82,7 @@
                 android:layout_weight="1"
                 android:padding="@dimen/base_margin"
                 android:background="@color/appBackground_dark"
-                android:src="@mipmap/ic_star_light" />
+                android:src="@mipmap/ic_star_lt" />
 
             <ImageView
                 android:id="@+id/ivMore"

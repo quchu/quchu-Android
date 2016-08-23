@@ -135,6 +135,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
             aMap = mapView.getMap();
             setUpMap();
         }
+        mapView.showZoomControls(false);
         initData();
 
         ZGEvent("趣处名称",placeTitle,"进入地图");
@@ -182,6 +183,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
                     @Override
                     public void run() {
                         //mMarks.get(position).showInfoWindow();
+                        popUpWindow(position);
                         mMarks.get(position).setIcon(mMapPinBlue);
                         if (mLastMarker<mMarks.size()&&mLastMarker>=0){
                             mMarks.get(mLastMarker).setIcon(mMapPin);
