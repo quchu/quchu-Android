@@ -126,13 +126,6 @@
         </LinearLayout>
 
 
-        <ImageView
-            android:id="@+id/ivAddToFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_add_favorite"
-            android:padding="@dimen/base_margin"
-            />
     </RelativeLayout>
 
 

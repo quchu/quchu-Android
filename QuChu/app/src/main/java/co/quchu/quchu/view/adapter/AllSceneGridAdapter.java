@@ -77,14 +77,6 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
 
         holder.tvTitle.setText(mData.get(position).getSceneName());
         holder.tvDesc.setText(mData.get(position).getIntro());
-        holder.ivAddToFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null!=mOnItemClickListener){
-                    mOnItemClickListener.onItemFavoriteClick(holder.itemView,position);
-                }
-            }
-        });
         if (holder.tvDesc.getLineCount()>1){
             holder.tvDesc.setGravity(Gravity.LEFT);
         }else{
@@ -120,7 +112,6 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
 
     public interface OnItemClickListener {
         void onItemClick(View v,int position);
-        void onItemFavoriteClick(View v,int position);
     }
 
     @Override
@@ -146,8 +137,6 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
         @Bind(R.id.tvDesc)
         TextView tvDesc;
 
-        @Bind(R.id.ivAddToFavorite)
-        ImageView ivAddToFavorite;
 
         public ViewHolder(View itemView) {
             super(itemView);
