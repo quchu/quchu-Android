@@ -114,11 +114,6 @@
             android:name=".view.activity.RecommendActivity"
             android:screenOrientation="portrait"/>
 
-        <!-- 搜索 -->
-        <activity
-            android:name=".view.activity.SearchActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".view.activity.PlaceMapActivity"
             android:label="@string/nearby_quchu"

@@ -23,7 +23,7 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.LoginActivity;
-import co.quchu.quchu.view.activity.SearchActivity;
+import co.quchu.quchu.view.activity.SearchFragment;
 
 /**
  * NetService
@@ -179,10 +179,7 @@ public class NetService {
 
                                 }
                             } else {
-                                if (ActManager.getAppManager().currentActivity() instanceof SearchActivity) {
-                                    if (response.has("msg") && !StringUtils.isEmpty(response.getString("msg")))
-                                        pListener.onError(response.getString("msg"));
-                                } else {
+
                                     if (response.has("msg") && response.has("exception") && "error".equals(response.getString("msg")) && !StringUtils.isEmpty(response.getString("exception")) && "登录名已存在".equals(response.getString("exception"))) {
                                         pListener.onSuccess(response);
                                     } else if (response.has("msg") && response.has("exception") && "1077".equals(response.getString("msg"))) {
@@ -210,7 +207,6 @@ public class NetService {
                                         pListener.onError(response.toString());
 
                                     }
-                                }
                             }
                         }
                     } catch (JSONException e) {

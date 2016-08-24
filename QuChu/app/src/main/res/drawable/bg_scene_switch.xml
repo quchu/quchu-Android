@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+
+  <corners android:radius="@dimen/capsule_scene_switch_radius"/> <!-- increasing the value, increases the rounding. And as  TTransmit said, to make it like a capsule make the radius half of your button height -->
+  <stroke
+      android:width="@dimen/horizontal_divider"
+      android:color="@color/standard_color_h2_dark"/>
+
+
+</shape>

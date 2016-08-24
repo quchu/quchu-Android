@@ -1,9 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.ActivityOptions;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,23 +14,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.VolleyError;
-
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -46,10 +37,7 @@ import co.quchu.quchu.model.SceneModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.ScenePresenter;
-import co.quchu.quchu.utils.AnimatorPath;
 import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.utils.PathEvaluator;
-import co.quchu.quchu.utils.PathPoint;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScaleAnimation;
 import co.quchu.quchu.utils.ScreenUtils;
@@ -90,23 +78,16 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     RadioGroup radioGroup;
     @Bind(R.id.rvGrid)
     RecyclerView rvGrid;
-    @Bind(R.id.ivIndicator)
-    View ivIndicator;
+
     @Bind(R.id.rbFavorites)
     RadioButton rbFavorites;
     @Bind(R.id.rbAll)
     RadioButton rbAllScenes;
     @Bind(R.id.rlNodata)
     View rlNodata;
-    @Bind(R.id.tvAddedScene)
-    TextView tvAddedScene;
     @Bind(R.id.tvEmptyView)
     TextView tvEmptyView;
 
-    @Bind(R.id.vIndicatorLeft)
-    View vIndicatorLeft;
-    @Bind(R.id.vIndicatorRight)
-    View vIndicatorRight;
 
 
     int currentIndex = 0;
@@ -121,11 +102,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
 
     private String from = QuchuDetailsActivity.FROM_TYPE_HOME;
 
-    private boolean mAddFavoriteRunning = false;
     private boolean mRefreshRunning = false;
-    private int mScreenWidth = -1;
-
-    private int mNewFavoriteScenes = 0;
     private boolean mItemClickable =  true;
 
     @Nullable
@@ -135,7 +112,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         ButterKnife.bind(this, view);
 
 
-        mScreenWidth =  ScreenUtils.getScreenWidth(getActivity());
         ScaleAnimation dia = new ScaleAnimation();
         dia.setRemoveDuration(300);
         rvGrid.setItemAnimator(dia);
@@ -146,16 +122,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
         vpMyScene.setPadding(padding, 0, padding, 0);
         vpMyScene.setPageMargin(padding / 2);
         vpMyScene.setAdapter(mMySceneAdapter);
-        rbFavorites.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
 
-                tvAddedScene.setTranslationX(rbFavorites.getX()+rbFavorites.getWidth()-(tvAddedScene.getWidth()*2));
-                tvAddedScene.setTranslationY(tvAddedScene.getHeight());
-                rbFavorites.getViewTreeObserver().removeOnPreDrawListener(this);
-                return false;
-            }
-        });
 
         mAllSceneGridAdapter = new AllSceneGridAdapter(mAllSceneList, new AllSceneGridAdapter.OnItemClickListener() {
             @Override
@@ -192,11 +159,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
             @Override
             public void onItemFavoriteClick(View v,int position) {
 
-                if (!mItemClickable){
-                    return;
-                }
-                UMEvent("f_setcommon_c");
-                addFavorite(v,position);
             }
         });
         rvGrid.setAdapter(mAllSceneGridAdapter);
@@ -227,16 +189,13 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                     case R.id.rbFavorites:
 
 
-                        vIndicatorLeft.setVisibility(View.VISIBLE);
-                        vIndicatorRight.setVisibility(View.INVISIBLE);
+                        rbAllScenes.setBackgroundColor(Color.TRANSPARENT);
+                        rbFavorites.setBackgroundResource(R.drawable.bg_scene_switch);
 
                         UMEvent("c_scene_c");
                         rbAllScenes.setTypeface(null,Typeface.BOLD);
                         rbFavorites.setTypeface(null,Typeface.NORMAL);
 
-                        mNewFavoriteScenes = 0;
-                        tvAddedScene.setVisibility(View.INVISIBLE);
-                        
                         currentIndex= 0;
                         vpMyScene.clearAnimation();
                         rvGrid.clearAnimation();
@@ -278,26 +237,13 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                         }, rvGrid.getChildCount() * 30);
 
                         llPageIndicator.setVisibility(View.VISIBLE);
-//                        tvPageIndicator.animate()
-//                                .withLayer()
-//                                .alpha(1)
-//                                .translationY(0)
-//                                .setInterpolator(new AccelerateDecelerateInterpolator())
-//                                .setDuration(ANIMATION_DURATION)
-//                                .withStartAction(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        tvPageIndicator.setVisibility(View.VISIBLE);
-//                                    }
-//                                }).start();
                         resetIndicators();
 
                         break;
                     case R.id.rbAll:
 
-
-                        vIndicatorLeft.setVisibility(View.INVISIBLE);
-                        vIndicatorRight.setVisibility(View.VISIBLE);
+                        rbFavorites.setBackgroundColor(Color.TRANSPARENT);
+                        rbAllScenes.setBackgroundResource(R.drawable.bg_scene_switch);
                         UMEvent("f_scene_c");
                         rbAllScenes.setTypeface(null,Typeface.NORMAL);
                         rbFavorites.setTypeface(null,Typeface.BOLD);
@@ -362,43 +308,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     }
 
 
-    private void addFavorite(final View v, final int position) {
-        if (!NetUtil.isNetworkConnected(getActivity())){
-            Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (mAddFavoriteRunning) {
-            return;
-        }
-        mAddFavoriteRunning = true;
-        mItemClickable = false;
 
-        int sid = mAllSceneList.get(position).getSceneId();
-        ScenePresenter.addFavoriteScene(getContext(), sid, new CommonListener() {
-            @Override
-            public void successListener(Object response) {
-
-
-                ArrayMap<String,Object> params = new ArrayMap<>();
-                params.put("趣处名称",mAllSceneList.get(position).getSceneName());
-                params.put("入口名称","常用场景");
-                ZGEvent(params,"设为常用");
-
-                int margin = getResources().getDimensionPixelSize(R.dimen.base_margin);
-                playAnimation(v.getX()+margin,v.getY()+margin);
-                notifyAdapters(position, true);
-                mAddFavoriteRunning = false;
-                //Toast.makeText(getActivity(),R.string.add_to_favorite_success,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void errorListener(VolleyError error, String exception, String msg) {
-                //Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
-                mAddFavoriteRunning = false;
-                mItemClickable = true;
-            }
-        });
-    }
 
 
     @Override
@@ -604,65 +514,7 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
     }
     private static final AccelerateDecelerateInterpolator sDecelerateInterpolator = new AccelerateDecelerateInterpolator();
 
-    public void playAnimation(final float x, final float y){
-        AnimatorPath path = new AnimatorPath();
-        path.moveTo(x, y);
 
-        int cx0 = (int) x>=(mScreenWidth/2)?((int)(mScreenWidth*.8f)):((int)(mScreenWidth*.2f));//random.nextBoolean()? 400:-400;
-        int finalX = (int) (rbFavorites.getX()+rbFavorites.getWidth() - ivIndicator.getWidth() - tvAddedScene.getWidth());
-        path.curveTo(cx0, 0, finalX, -ivIndicator.getHeight(), finalX, rbFavorites.getY()+tvAddedScene.getHeight());
-
-        ivIndicator.setScaleX(1);
-        ivIndicator.setScaleY(1);
-        // Set up the animation
-        final ObjectAnimator anim = ObjectAnimator.ofObject(this, "floating",
-                new PathEvaluator(), path.getPoints().toArray());
-
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(ivIndicator,"scaleX",1,.3f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(ivIndicator,"scaleY",1,.3f);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(ivIndicator,"alpha",1,.1f);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-
-        animatorSet.setInterpolator(sDecelerateInterpolator);
-        animatorSet.setDuration(800);
-        animatorSet.setStartDelay(600);
-        animatorSet.playTogether(anim,scaleX,scaleY,alpha);
-        animatorSet.start();
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-                mNewFavoriteScenes +=1;
-                if (currentIndex==1){
-                    tvAddedScene.setVisibility(View.VISIBLE);
-                }
-                tvAddedScene.setText(String.valueOf(mNewFavoriteScenes));
-                mItemClickable = true;
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                mItemClickable = true;
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-    }
-
-
-    public void setFloating(PathPoint newLoc) {
-        ivIndicator.setTranslationX(newLoc.mX);
-        ivIndicator.setTranslationY(newLoc.mY);
-    }
 
     private void resetIndicators() {
         rlNodata.setVisibility(View.GONE);

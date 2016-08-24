@@ -107,6 +107,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     private RecommendFragment recommendFragment;
     private ArticleFragment articleFragment;
     private NewMeFragment meFragment;
+    private SearchFragment searchFragment;
 //    private MeFragment meFragment;
 
     boolean checkUpdateRunning = false;
@@ -141,6 +142,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         recommendFragment = new RecommendFragment();
         articleFragment = new ArticleFragment();
         meFragment = new NewMeFragment();
+        searchFragment = new SearchFragment();
 
 
         getSupportFragmentManager().beginTransaction()
@@ -210,11 +212,18 @@ public class RecommendActivity extends BaseBehaviorActivity {
                         viewpagerSelected(1);
                         UMEvent("discovery_c");
                         break;
-                    case R.id.rbMine:
-                        if (!meFragment.isAdded()) {
-                            transaction.add(R.id.container, meFragment, "page_3").commitAllowingStateLoss();
+                    case R.id.rbSearch:
+                        if (!searchFragment.isAdded()){
+                            transaction.add(R.id.container, searchFragment, "page_3").commitAllowingStateLoss();
                         }
                         viewpagerSelected(2);
+                        UMEvent("search_c");
+                        break;
+                    case R.id.rbMine:
+                        if (!meFragment.isAdded()) {
+                            transaction.add(R.id.container, meFragment, "page_4").commitAllowingStateLoss();
+                        }
+                        viewpagerSelected(3);
                         break;
                 }
             }
@@ -317,12 +326,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
             return;
         switch (view.getId()) {
 
-
-            case R.id.recommend_title_more_iv:
-                UMEvent("search_c");
-                startActivity(new Intent(RecommendActivity.this, SearchActivity.class));
-                break;
-
             case R.id.ivLeft:
                 startActivity(SettingActivity.class);
 //                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "~");
@@ -387,48 +390,48 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     private void viewpagerSelected(int index) {
         LogUtils.json("selected == " + index);
+        recommendTitleMoreRl.setVisibility(View.GONE);
+
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (index == 0) {
             tvTitle.setText(R.string.app_name);
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction.hide(articleFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
+            transaction.hide(articleFragment).hide(searchFragment).hide(meFragment).show(recommendFragment).commitAllowingStateLoss();
 
             vDivider.setVisibility(View.VISIBLE);
 
             vLeft.setVisibility(View.VISIBLE);
-            recommendTitleMoreRl.setVisibility(View.VISIBLE);
             ivLeft.setVisibility(View.GONE);
             tvRight.setVisibility(View.GONE);
+            vTitle.setVisibility(View.VISIBLE);
 
         } else if (index == 1) {
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction.hide(recommendFragment).hide(meFragment).show(articleFragment).commitAllowingStateLoss();
-            vTitle.setVisibility(View.VISIBLE);
+            transaction.hide(recommendFragment).hide(searchFragment).hide(meFragment).show(articleFragment).commitAllowingStateLoss();
             ivLeft.setVisibility(View.GONE);
             tvRight.setVisibility(View.GONE);
             vLeft.setVisibility(View.GONE);
-            recommendTitleMoreRl.setVisibility(View.GONE);
             tvTitle.setText("趣发现");
             vDivider.setVisibility(View.VISIBLE);
+            vTitle.setVisibility(View.VISIBLE);
+
 
 
         } else if (index == 2) {
-//            if (null != AppContext.user && !AppContext.user.isIsVisitors()) {
-//                tvTitle.setText(AppContext.user.getFullname());
-//            } else {
-//                tvTitle.setText("未知生物");
-//            }
             transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-            transaction.hide(articleFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
+            transaction.hide(articleFragment).hide(meFragment).hide(recommendFragment).show(searchFragment).commitAllowingStateLoss();
+            vTitle.setVisibility(View.GONE);
 
-
+        } else if(index == 3){
+            transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+            transaction.hide(articleFragment).hide(searchFragment).hide(recommendFragment).show(meFragment).commitAllowingStateLoss();
             vDivider.setVisibility(View.VISIBLE);
             vLeft.setVisibility(View.GONE);
-            recommendTitleMoreRl.setVisibility(View.GONE);
 
             ivLeft.setVisibility(View.VISIBLE);
             tvRight.setVisibility(View.VISIBLE);
+            vTitle.setVisibility(View.VISIBLE);
 
         }
         viewPagerIndex = index;

@@ -20,9 +20,11 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
+            android:visibility="gone"
             android:src="@mipmap/ic_back" />
 
         <LinearLayout
+            android:layout_marginLeft="@dimen/base_margin"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"

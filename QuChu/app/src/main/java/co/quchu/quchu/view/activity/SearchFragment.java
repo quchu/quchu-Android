@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,7 +12,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
@@ -22,8 +25,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
+import co.quchu.quchu.base.BaseBehaviorFragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,11 +56,11 @@ import co.quchu.quchu.widget.AreaView;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 
 /**
- * SearchActivity
+ * SearchFragment
  * User: Chenhs
  * Date: 2015-12-04
  */
-public class SearchActivity extends BaseBehaviorActivity implements View.OnClickListener {
+public class SearchFragment extends BaseBehaviorFragment implements View.OnClickListener {
 
     @Override
     public ArrayMap<String, Object> getUserBehaviorArguments() {
@@ -104,8 +106,6 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     ImageView searchFilterIcon3;
     @Bind(R.id.searchFilterContainer)
     LinearLayout searchFilterContainer;
-    @Bind(R.id.search_back)
-    ImageView searchBack;
     @Bind(R.id.search_line)
     View searchLine;
     @Bind(R.id.vCover)
@@ -143,11 +143,12 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
     private boolean filterUserInput;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        ButterKnife.bind(this);
+    @Nullable @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
+
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.activity_search,container,false);
+        ButterKnife.bind(this,v);
         initPopupWindow();
         initEdittext();
         initData();
@@ -160,6 +161,18 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 filterUserInput = true;
             }
         });
+        return v;
+    }
+
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
+        ButterKnife.unbind(this);
     }
 
 
@@ -195,7 +208,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     }
                 });
 
-                popWinView = View.inflate(SearchActivity.this, R.layout.layout_search_popupwindow, null);
+                popWinView = View.inflate(getActivity(), R.layout.layout_search_popupwindow, null);
                 llCategories = (LinearLayout) popWinView.findViewById(R.id.llCategories);
                 categoryRecyclerView = (RecyclerView) popWinView.findViewById(R.id.rvTags);
                 categoryRecyclerViewChild = (RecyclerView) popWinView.findViewById(R.id.rvChildsTags);
@@ -215,7 +228,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
 
 
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchActivity.this){
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()){
                     @Override
                     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
                         super.onLayoutChildren(recycler, state);
@@ -228,8 +241,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
 
                 categoryRecyclerView.setLayoutManager(linearLayoutManager);
-                categoryRecyclerViewChild.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
-                sortRecyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                categoryRecyclerViewChild.setLayoutManager(new LinearLayoutManager(getActivity()));
+                sortRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
                 //商圈
                 areaView.setAreaSelectedListener(new AreaView.OnAreaSelected() {
@@ -386,7 +399,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
         if (resultAdapter.isCategory()) {
             resultAdapter.setCategoryList(categoryParentList);
-//        SearchPresenter.getTagByParentId(SearchActivity.this, categoryParentList.get(0).getTagId());
+//        SearchPresenter.getTagByParentId(getActivity(), categoryParentList.get(0).getTagId());
         }
 
     }
@@ -405,12 +418,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
                 }
                 break;
-            case R.id.search_back:
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    dismissDialog();
 
-                }
-                finish();
             case R.id.searchFilterLL1:
                 if (currentShowingPopupType == SHOWING_POPUP_TYPE_CATEGORY) {
                     if (mLastCategoryCode !=mLastCategoryCode){}{
@@ -449,10 +457,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         }
     }
 
-    @Override
-    protected int activitySetup() {
-        return TRANSITION_TYPE_LEFT;
-    }
+
 
     private void initData() {
 
@@ -462,10 +467,9 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         searchFilterLL2.setOnClickListener(this);
         searchFilterLL3.setOnClickListener(this);
         searchInputEt.setOnClickListener(this);
-        searchBack.setOnClickListener(this);
 
         resultAdapter = new SearchAdapter();
-        searchResultRv.setLayoutManager(new GridLayoutManager(this, 3));
+        searchResultRv.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         searchResultRv.setAdapter(resultAdapter);
         resultList = new ArrayList<>();
 
@@ -481,7 +485,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     ZGEvent(params,"进入趣处详情页");
 
 
-                    Intent intent = new Intent(SearchActivity.this, QuchuDetailsActivity.class);
+                    Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                     intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, ((RecommendModel) bean).getPid());
                     startActivity(intent);
                 } else {
@@ -510,7 +514,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     categoryGroupAllString = "全部" + ((SearchCategoryBean) bean).getZh();
                     categoryGroupAllId = ((SearchCategoryBean) bean).getCode();
                     searchFilterTV1.setText(categoryGroupAllString);
-                    //SearchPresenter.getTagByParentId(SearchActivity.this, ((SearchCategoryBean) bean).getTagId());
+                    //SearchPresenter.getTagByParentId(getActivity(), ((SearchCategoryBean) bean).getTagId());
                     searchInputEt.setText(((SearchCategoryBean) bean).getZh());
                     filterUserInput=false;
                     seachStr(false);
@@ -543,8 +547,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
             mCurrentPageNo += 1;
         }
         mIsLoading = true;
-        if (NetUtil.isNetworkConnected(this))
-            DialogUtil.showProgess(this, R.string.loading_dialog_text);
+        if (NetUtil.isNetworkConnected(getActivity()))
+            DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
 
         //统计搜索关键字
         Map<String, String> p = new HashMap<>();
@@ -556,7 +560,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         params.put("输入文本",str);
         params.put("分类名称",categoryName);
         ZGEvent(params,"搜索条件");
-        SearchPresenter.searchFromService(this, areaId, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, circleId, sortType, new SearchPresenter.SearchResultListener() {
+        SearchPresenter.searchFromService(getActivity(), areaId, str, mCurrentPageNo, SPUtils.getCityId(), categoryCode, circleId, sortType, new SearchPresenter.SearchResultListener() {
             @Override
             public void successResult(ArrayList<RecommendModel> arrayList, int maxPageNo) {
                 searchResultRv.clearOnScrollListeners();
@@ -571,15 +575,15 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 //                    }
 
 
-                    searchLine.setBackgroundColor(ContextCompat.getColor(SearchActivity.this, R.color.bg_pager));
+                    searchLine.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.bg_pager));
 
                     if (searchResultRv.getLayoutManager() instanceof GridLayoutManager)
-                        searchResultRv.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                        searchResultRv.setLayoutManager(new LinearLayoutManager(getActivity()));
 
                     resultAdapter.setCategory(false);
                     resultList.addAll(arrayList);
 
-                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                    ((InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(searchButtonRl.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     resultAdapter.changeDataSet(resultList);
                     searchResultRv.addOnScrollListener(
@@ -591,7 +595,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                             });
 
                 } else {
-                    Toast.makeText(SearchActivity.this, "没有搜索到内容!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "没有搜索到内容!", Toast.LENGTH_SHORT).show();
                 }
                 mIsLoading = false;
                 DialogUtil.dismissProgess();
@@ -603,7 +607,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
             public void errorNull() {
                 //数据为空
                 DialogUtil.dismissProgess();
-                Toast.makeText(SearchActivity.this, "没有搜索到内容!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "没有搜索到内容!", Toast.LENGTH_SHORT).show();
                 mIsLoading = false;
                 resultAdapter.notifyDataSetChanged();
             }
@@ -616,13 +620,13 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {//修改回车键功能
-                    if (NetUtil.isNetworkConnected(getApplicationContext())) {
+                    if (NetUtil.isNetworkConnected(getActivity())) {
                         if (StringUtils.isEmpty(searchInputEt.getText().toString())) {
-                            Toast.makeText(SearchActivity.this, "请输入搜索内容!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "请输入搜索内容!", Toast.LENGTH_SHORT).show();
 //                            searchInputEt.setFocusable(true);
                         } else {
                             if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
-                                Toast.makeText(SearchActivity.this, getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT).show();
                             } else {
                                 if (resultAdapter.isCategory()) {
                                     categoryCode = "";
@@ -635,8 +639,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                             }
                         }
                     } else {
-                        Toast.makeText(SearchActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
-                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(searchResultRv.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
+                        ((InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(searchResultRv.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                 }
                 return false;
@@ -644,22 +648,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (popupWindow != null && popupWindow.isShowing()) {
-            dismissDialog();
-        } else
-            super.onBackPressed();
-    }
 
-    @Override
-    protected void onDestroy() {
-//        SearchHistoryUtil.saveSearchHistory(searchModel);
-        if (popupWindow != null && popupWindow.isShowing()) {
-            dismissDialog();
-        }
-        super.onDestroy();
-    }
 
     public void initGroupList(List<SearchCategoryBean> response) {
         this.categoryParentList = response;
