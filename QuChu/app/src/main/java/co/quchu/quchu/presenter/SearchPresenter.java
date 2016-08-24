@@ -1,5 +1,6 @@
 package co.quchu.quchu.presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -32,7 +33,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.activity.SearchActivity;
+import co.quchu.quchu.view.activity.SearchFragment;
 
 /**
  * SearchPresenter
@@ -145,12 +146,12 @@ public class SearchPresenter {
     }
 
 
-    public static void getCategoryTag(final SearchActivity context) {
+    public static void getCategoryTag(final SearchFragment context) {
         GsonRequest<ArrayList<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getCagegoryTag, new TypeToken<ArrayList<SearchCategoryBean>>() {
         }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getActivity(), (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -159,15 +160,15 @@ public class SearchPresenter {
 
             }
         });
-        request.start(context);
+        request.start(context.getActivity());
     }
 
-    public static void getAreaList(final SearchActivity context) {
+    public static void getAreaList(final SearchFragment context) {
         GsonRequest<ArrayList<AreaBean>> request = new GsonRequest<>(String.format(Locale.SIMPLIFIED_CHINESE, NetApi.getAreaList, SPUtils.getCityId()), new TypeToken<ArrayList<AreaBean>>() {
         }.getType(), new ResponseListener<ArrayList<AreaBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getActivity(), (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -175,15 +176,15 @@ public class SearchPresenter {
                 context.setAreaData(response);
             }
         });
-        request.start(context);
+        request.start(context.getActivity());
     }
 
-    public static void getSortTypeList(final SearchActivity context) {
+    public static void getSortTypeList(final SearchFragment context) {
         GsonRequest<ArrayList<SearchSortBean>> request = new GsonRequest<>(NetApi.getSortList, new TypeToken<ArrayList<SearchSortBean>>() {
         }.getType(), new ResponseListener<ArrayList<SearchSortBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getActivity(), (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -191,16 +192,16 @@ public class SearchPresenter {
                 context.setSortList(response);
             }
         });
-        request.start(context);
+        request.start(context.getActivity());
     }
 
 
-    public static void getGroupTags(final SearchActivity context) {
+    public static void getGroupTags(final SearchFragment context) {
         GsonRequest<List<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getGroupTags, new TypeToken<List<SearchCategoryBean>>() {
         }.getType(), new ResponseListener<List<SearchCategoryBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getActivity(), (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -209,24 +210,9 @@ public class SearchPresenter {
 
             }
         });
-        request.start(context);
+        request.start(context.getActivity());
     }
 
-//    public static void getTagByParentId(final SearchActivity context, int tagId) {
-//        GsonRequest<ArrayList<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getTagByParentId + "?tagId=" + tagId, new TypeToken<ArrayList<SearchCategoryBean>>() {
-//        }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
-//            @Override
-//            public void onErrorResponse(@Nullable VolleyError error) {
-//                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onResponse(ArrayList<SearchCategoryBean> response, boolean result, String errorCode, @Nullable String msg) {
-//                context.setCategoryList(response);
-//            }
-//        });
-//        request.start(context);
-//    }
 
     public static void getSearchTags(Context context, final SearchTagsListener listener) {
 

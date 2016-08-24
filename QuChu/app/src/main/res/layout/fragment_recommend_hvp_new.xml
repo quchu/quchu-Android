@@ -6,73 +6,49 @@
     android:background="@color/colorBackground"
     android:fitsSystemWindows="true">
 
-
-    <View
-        android:id="@+id/vDivider"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#dbdbdb" />
-
-    <RadioGroup
-        android:id="@+id/rgDisplayMode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/vDivider"
-        android:background="@color/standard_color_white"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rbFavorites"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_item_size"
-            android:layout_weight="1"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:text="常用场景"
-            android:textStyle="bold"
-            android:textColor="@color/color_selector_recommend_b_n_ltg" />
-
-        <RadioButton
-            android:id="@+id/rbAll"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_item_size"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:text="场景工坊"
-            android:textColor="@color/color_selector_recommend_b_n_ltg"
-
-            />
-
-    </RadioGroup>
-
     <LinearLayout
-        android:id="@+id/llTabIndicator"
-        android:layout_below="@+id/rgDisplayMode"
+        android:id="@+id/llDisplayMode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="@dimen/toolbar_item_size"
+        android:background="@color/standard_color_white"
+        android:gravity="center"
         >
-        <View
-            android:id="@+id/vIndicatorLeft"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/standard_color_h1_dark"
-            />
 
+        <RadioGroup
+            android:id="@+id/rgDisplayMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        <View
-            android:id="@+id/vIndicatorRight"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:visibility="invisible"
-            android:background="@color/standard_color_h1_dark"
-            />
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbFavorites"
+                android:layout_width="120dp"
+                android:layout_height="@dimen/capsule_scene_switch"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="常用场景"
+                android:textStyle="bold"
+                android:background="@drawable/bg_scene_switch"
+                android:textColor="@color/color_selector_recommend_b_n_ltg" />
+
+            <RadioButton
+                android:id="@+id/rbAll"
+                android:layout_width="120dp"
+                android:layout_height="@dimen/capsule_scene_switch"
+                android:button="@null"
+                android:gravity="center"
+                android:text="场景工坊"
+                android:textColor="@color/color_selector_recommend_b_n_ltg"
+
+                />
+
+        </RadioGroup>
 
     </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/llPageIndicator"
@@ -120,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/llPageIndicator"
-        android:layout_below="@id/llTabIndicator"
+        android:layout_below="@id/llDisplayMode"
         android:layout_marginTop="@dimen/double_margin"
         android:clickable="true"
         android:clipToPadding="false"
@@ -135,7 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/llPageIndicator"
-        android:layout_below="@id/rgDisplayMode"
+        android:layout_below="@id/llDisplayMode"
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_marginRight="@dimen/half_margin"
         android:layout_marginTop="@dimen/half_margin"
@@ -146,7 +122,7 @@
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rgDisplayMode"
+        android:layout_below="@id/llDisplayMode"
         android:visibility="gone" />
 
     <RelativeLayout
@@ -178,21 +154,5 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/ivIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="0"
-        android:src="@mipmap/ic_add_favorite" />
-
-    <TextView
-        android:id="@+id/tvAddedScene"
-        style="@style/TextView.H5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/ic_di"
-        android:gravity="center"
-        android:textColor="@color/standard_color_black"
-        android:visibility="invisible" />
 
 </RelativeLayout>
