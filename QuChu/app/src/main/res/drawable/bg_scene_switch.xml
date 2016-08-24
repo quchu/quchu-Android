@@ -9,4 +9,8 @@
       android:color="@color/standard_color_h2_dark"/>
 
 
+  <solid
+      android:color="@color/transparent"
+      />
+
 </shape>
