@@ -30,41 +30,27 @@
             android:id="@+id/detail_bottom_group_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/appBackground_dark"
             android:orientation="horizontal">
 
 
-            <RelativeLayout
+
+
+            <ImageView
+                android:id="@+id/ivShouCang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                >
+                android:padding="@dimen/base_margin"
+                android:src="@mipmap/ic_shoucang" />
 
-                <ImageView
-                    android:id="@+id/ivFootprint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="@dimen/base_margin"
-                    android:background="@color/appBackground_dark"
-                    android:src="@mipmap/ic_jiaoying_lt" />
+            <ImageView
+                android:id="@+id/ivPingJia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/base_margin"
+                android:src="@mipmap/ic_pingjia" />
 
-                <TextView
-                    android:id="@+id/tvFootprintCount"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    style="@style/TextView.H3"
-                    android:textSize="10sp"
-                    android:gravity="center"
-                    android:background="@drawable/ic_shape_round_fill_yellow"
-                    android:textColor="@color/standard_color_h1_dark"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    />
-
-            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/ivShare"
@@ -72,25 +58,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="@dimen/base_margin"
-                android:src="@mipmap/ic_quguo" />
-
+                android:src="@mipmap/ic_share" />
 
             <ImageView
-                android:id="@+id/ivFavorite"
+                android:id="@+id/ivPreOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="@dimen/base_margin"
-                android:background="@color/appBackground_dark"
-                android:src="@mipmap/ic_star_lt" />
-
-            <ImageView
-                android:id="@+id/ivMore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="@dimen/base_margin"
-                android:src="@mipmap/ic_more" />
+                android:src="@mipmap/ic_yuyue" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,9 +120,20 @@
         </LinearLayout>
 
 
+
     </LinearLayout>
 
 
+    <ImageView
+        android:id="@+id/ivReturn"
+        android:layout_margin="@dimen/base_margin"
+        android:layout_width="@dimen/toolbar_item_size"
+        android:layout_height="@dimen/toolbar_item_size"
+        android:scaleType="center"
+        android:src="@mipmap/ic_home_lt"
+        android:layout_below="@id/appbar"
+        android:layout_alignParentRight="true"
+        />
 
 
 

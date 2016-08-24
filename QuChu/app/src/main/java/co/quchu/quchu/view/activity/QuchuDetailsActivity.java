@@ -64,22 +64,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.detail_bottom_group_ll)
     View detail_bottom_group_ll;
-//    @Bind(R.id.appbar)
-//    AppBarLayout appbar;
-
-
-    @Bind(R.id.ivFavorite)
-    ImageView ivFavorite;
-    @Bind(R.id.tvFootprintCount)
-    TextView tvFootprintCount;
-//
-//    @Bind(R.id.vpGallery)
-//    ViewPager vpGallery;
-//
-//    @Bind(R.id.siv)
-//    SimpleIndicatorView siv;
-
-    ImageView vFakeReturnButton;
 
     public static final String REQUEST_KEY_PID = "pid";
     public static final String REQUEST_KEY_FROM = "from";
@@ -317,9 +301,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     private void changeCollectState(boolean isCollect) {
         dModel.setIsf(isCollect);
-        ivFavorite.setImageResource(isCollect ? R.mipmap.ic_star : R.mipmap.ic_star_lt);
-        tvFootprintCount.setText(String.valueOf(dModel.getCardCount()));
-        tvFootprintCount.setVisibility(dModel.getCardCount()>0?View.VISIBLE:View.INVISIBLE);
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 
@@ -406,50 +387,60 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     }
 
 
-    @OnClick({R.id.ivFootprint, R.id.ivFavorite, R.id.ivShare, R.id.ivMore})
+    @OnClick({R.id.ivShouCang, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia,R.id.ivReturn})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         if (dModel != null) {
             switch (v.getId()) {
+                case R.id.ivReturn:
+                    UMEvent("back_c");
+                    ZGEvent("趣处名称",dModel.getName(),"返回首页");
+                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
+                    break;
 
-                case R.id.ivMore:
+                case R.id.ivPreOrder:
 
-                    QuchuDetailsMoreDialog quchuDetailsMoreDialog = new QuchuDetailsMoreDialog(QuchuDetailsActivity.this);
-                    quchuDetailsMoreDialog.setOnButtonClickListener(new QuchuDetailsMoreDialog.OnButtonClickListener() {
-                        @Override
-                        public void onReturnClick() {
-                            UMEvent("back_c");
-                            ZGEvent("趣处名称",dModel.getName(),"返回首页");
-                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
+                    UMEvent("reserve_c");
+                    ZGEvent("趣处名称",dModel.getName(),"预定按钮");
+                    if (NetUtil.isNetworkConnected(getApplicationContext())) {
+                        if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
+                            WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName(),false);
+                        } else {
+                            Toast.makeText(QuchuDetailsActivity.this, R.string.pre_order_not_supported, Toast.LENGTH_SHORT).show();
                         }
-
-                        @Override
-                        public void onPreOrderClick() {
-                            UMEvent("reserve_c");
-                            ZGEvent("趣处名称",dModel.getName(),"预定按钮");
-                            if (NetUtil.isNetworkConnected(getApplicationContext())) {
-                                if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
-                                    WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName(),false);
-                                } else {
-                                    Toast.makeText(QuchuDetailsActivity.this, R.string.pre_order_not_supported, Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onShareClick() {
-                            UMEvent("share_c");
-                            ZGEvent("文章名称",dModel.getName(),"趣处分享");
-                            startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
-                        }
-                    });
-                    quchuDetailsMoreDialog.show();
+                    } else {
+                        Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
+                    }
+                    //QuchuDetailsMoreDialog quchuDetailsMoreDialog = new QuchuDetailsMoreDialog(QuchuDetailsActivity.this);
+                    //quchuDetailsMoreDialog.setOnButtonClickListener(new QuchuDetailsMoreDialog.OnButtonClickListener() {
+                    //    @Override
+                    //    public void onReturnClick() {
+                    //
+                    //    }
+                    //
+                    //    @Override
+                    //    public void onPreOrderClick() {
+                    //
+                    //    }
+                    //
+                    //    @Override
+                    //    public void onShareClick() {
+                    //        UMEvent("share_c");
+                    //        ZGEvent("文章名称",dModel.getName(),"趣处分享");
+                    //        startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
+                    //    }
+                    //});
+                    //quchuDetailsMoreDialog.show();
                     break;
 
                 case R.id.ivShare:
+                    UMEvent("share_c");
+                    ZGEvent("文章名称",dModel.getName(),"趣处分享");
+                    startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
+
+                    break;
+                case R.id.ivPingJia:
                     UMEvent("comment_c");
                     ZGEvent("趣处名称",dModel.getName(),"进入评价");
                     RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
@@ -463,15 +454,8 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                             }
                         }
                     });
-
                     break;
-                case R.id.ivFootprint:
-                    Intent footPrintIntent = new Intent(QuchuDetailsActivity.this, FootPrintActivity.class);
-                    footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_ID, dModel.getPid());
-                    footPrintIntent.putExtra(FootPrintActivity.BUNDLE_KEY_QUCHU_NAME, dModel.getName());
-                    startActivity(footPrintIntent);
-                    break;
-                case R.id.ivFavorite:
+                case R.id.ivShouCang:
                     //收藏
                     UMEvent("like_c");
                     ZGEvent("趣处名称",dModel.getName(),"收藏趣处");
@@ -580,16 +564,16 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                 getRatingInfo();
                 getVisitors();
                 break;
-            case EventFlags.EVENT_POST_CARD_ADDED:
-                if ((Integer) event.getContent()[0] == dModel.getPid()) {
-                    dModel.setCardCount(dModel.getCardCount() + 1);
-                }
-                break;
-            case EventFlags.EVENT_POST_CARD_DELETED:
-                if (((Integer) event.getContent()[1]) == dModel.getPid() && dModel.getCardCount() > 1) {
-                    dModel.setCardCount(dModel.getCardCount() - 1);
-                }
-                break;
+            //case EventFlags.EVENT_POST_CARD_ADDED:
+            //    if ((Integer) event.getContent()[0] == dModel.getPid()) {
+            //        dModel.setCardCount(dModel.getCardCount() + 1);
+            //    }
+            //    break;
+            //case EventFlags.EVENT_POST_CARD_DELETED:
+            //    if (((Integer) event.getContent()[1]) == dModel.getPid() && dModel.getCardCount() > 1) {
+            //        dModel.setCardCount(dModel.getCardCount() - 1);
+            //    }
+            //    break;
             case EventFlags.EVENT_GOTO_HOME_PAGE:
                 finish();
                 break;
