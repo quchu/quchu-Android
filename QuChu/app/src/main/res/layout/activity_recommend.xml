@@ -79,7 +79,7 @@
                 android:layout_marginTop="@dimen/half_margin"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@mipmap/ic_search"
+                android:drawableTop="@drawable/ic_qu_search_selecotr"
                 android:gravity="center"
                 android:text="@string/search"
                 android:textColor="@color/color_selector_recommend_b_n_y"

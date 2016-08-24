@@ -242,7 +242,6 @@ public class RecommendFragment extends BaseFragment implements MySceneAdapter.Ca
                         break;
                     case R.id.rbAll:
 
-
                         rbFavorites.setBackgroundColor(Color.TRANSPARENT);
                         rbAllScenes.setBackgroundResource(R.drawable.bg_scene_switch);
                         UMEvent("f_scene_c");
