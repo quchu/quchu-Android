@@ -7,15 +7,13 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -95,12 +93,13 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
     Bundle bundle = getArguments();
 
     title.setText(bundle.getString(KEY_TITLE));
-    subButton.setText(bundle.getString(KEY_SUBTITLE));
+    searchFilterContainer.setText(bundle.getString(KEY_SUBTITLE));
     active.setText(bundle.getString(KEY_ACTIVE));
 
     hideButton = bundle.getBoolean(KEY_HIDE_BUTTON, false);
     if (hideButton) {
       commonDialogBtnLayout.setVisibility(View.GONE);
+      startTimer();
     } else {
       commonDialogBtnLayout.setVisibility(View.VISIBLE);
     }
@@ -140,16 +139,9 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
     ButterKnife.unbind(this);
   }
 
-  @Override public void show(FragmentManager manager, String tag) {
-    if (hideButton) {
-      startTimer();
-    }
-    super.show(manager, tag);
-  }
-
   private void startTimer() {
     cancelTimer();
-    handler.sendEmptyMessageDelayed(TIME_OUT_TASK, 2000);
+    handler.sendEmptyMessageDelayed(TIME_OUT_TASK, 1000);
   }
 
   private void cancelTimer() {
@@ -191,7 +183,6 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
       dismiss();
     }
   }
-
 
   public interface OnActionListener {
 

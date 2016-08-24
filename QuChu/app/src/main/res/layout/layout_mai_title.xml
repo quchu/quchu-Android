@@ -57,7 +57,7 @@
         android:id="@+id/ivLeft"
         android:layout_width="@dimen/toolbar_item_size"
         android:layout_height="@dimen/toolbar_item_size"
-        android:src="@mipmap/ic_zuoshangjiao"
+        android:src="@mipmap/ic_shezhi"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:scaleType="center"

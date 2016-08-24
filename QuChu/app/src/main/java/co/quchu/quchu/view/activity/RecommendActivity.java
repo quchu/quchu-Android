@@ -433,6 +433,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
             tvRight.setVisibility(View.VISIBLE);
             vTitle.setVisibility(View.VISIBLE);
 
+            tvTitle.setText("");
+
         }
         viewPagerIndex = index;
     }
