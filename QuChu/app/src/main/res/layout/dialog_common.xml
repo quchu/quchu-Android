@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#7f000000">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#7f000000">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/base_margin"
+        android:layout_centerVertical="true"
         android:layout_marginBottom="@dimen/base_margin"
         android:layout_marginLeft="@dimen/title_bar_heigh"
         android:layout_marginRight="@dimen/title_bar_heigh"
+        android:layout_marginTop="@dimen/base_margin"
         android:background="@android:color/white"
         android:clickable="true"
         app:cardCornerRadius="10dp"
@@ -32,7 +32,7 @@
                 android:gravity="center_horizontal"
                 android:text="注意!"
                 android:textColor="@color/standard_color_red"
-                android:textSize="@dimen/word_subhead_size" />
+                android:textSize="@dimen/word_subhead_size"/>
 
             <TextView
                 android:id="@+id/searchFilterContainer"
@@ -40,44 +40,54 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_marginRight="@dimen/base_margin"
-                android:minHeight="32dp"
                 android:gravity="center"
-                android:text="哈哈哈哈哈"
+                android:minHeight="32dp"
                 android:paddingBottom="@dimen/double_margin"
+                android:text="哈哈哈哈哈"
                 android:textColor="@color/standard_color_h2_dark"
-                android:textSize="@dimen/word_subhead_size" />
-
-            <View style="@style/HorizontalLine" />
+                android:textSize="@dimen/word_subhead_size"/>
 
             <LinearLayout
+                android:id="@+id/common_dialog_btn_layout"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
 
-                <Button
-                    android:id="@+id/passive"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="取消"
-                    android:textColor="@color/standard_color_h2_dark"
-                    android:textSize="@dimen/word_size_body" />
+                <View style="@style/HorizontalLine"/>
 
-                <View style="@style/VerticalLine" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/active"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="确定"
-                    android:textColor="@color/standard_color_red"
-                    android:textSize="@dimen/word_size_body" />
+                    <Button
+                        android:id="@+id/passive"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="取消"
+                        android:textColor="@color/standard_color_h2_dark"
+                        android:textSize="@dimen/word_size_body"/>
+
+                    <View style="@style/VerticalLine"/>
+
+                    <Button
+                        android:id="@+id/active"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="确定"
+                        android:textColor="@color/standard_color_red"
+                        android:textSize="@dimen/word_size_body"/>
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
+
     </android.support.v7.widget.CardView>
 
     <Button
@@ -92,6 +102,6 @@
         android:gravity="center_horizontal"
         android:padding="@dimen/base_margin"
         android:text="子按钮"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"/>
 
 </RelativeLayout>
