@@ -62,7 +62,7 @@
             android:paddingBottom="2dp"
             android:paddingRight="@dimen/half_margin"
             android:paddingTop="2dp"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/user_mark_img"

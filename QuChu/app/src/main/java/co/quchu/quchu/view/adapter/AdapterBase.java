@@ -151,7 +151,11 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                 loadMoreHold.loadView.clearAnimation();
                 loadMoreHold.loadView.setVisibility(View.INVISIBLE);
                 if (getItemCount() == 1) {
-                    loadMoreHold.retryView.setText(getNullDataHint());
+                    if (getFeedback()) {
+                        loadMoreHold.feedbackEmptyView.setVisibility(View.VISIBLE);
+                    } else {
+                        loadMoreHold.retryView.setText(getNullDataHint());
+                    }
                 } else {
                     loadMoreHold.retryView.setText(getAllDataHint());
                 }
@@ -159,6 +163,10 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
         } else {
             onBindView(holder, position);
         }
+    }
+
+    public boolean getFeedback() {
+        return false;
     }
 
     protected String getNullDataHint() {
@@ -206,10 +214,13 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
         TextView retryView;
         @Bind(R.id.loadmore_massage)
         TextView massage;
+        private final View feedbackEmptyView;
 
         public LoadMoreViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            feedbackEmptyView = itemView.findViewById(R.id.feedback_empty_view);
         }
     }
 

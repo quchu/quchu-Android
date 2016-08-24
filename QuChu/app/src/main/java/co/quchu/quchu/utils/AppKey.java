@@ -135,4 +135,11 @@ public interface AppKey {
      * mark
      */
     String USER_MARK = "user_mark";
+
+    /**
+     * 最近一条反馈
+     */
+    String FEEDBACK_TITLE = "feedback_title";
+
+    String FEEDBACK_CONTENT = "feedback_content";
 }

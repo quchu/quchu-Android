@@ -171,4 +171,14 @@ public interface NetApi {
      * 用户消息设置
      */
     String setUserMsg = HOST + "/userMsSet/msgSet";
+
+    /**
+     * 用户反馈信息列表
+     */
+    String getFeedbackList = HOST + "/feedback/getFeedbackList";
+
+    /**
+     * 提交用户反馈
+     */
+    String sendFeedback = HOST + "/feedback/sendFeedback";
 }

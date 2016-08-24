@@ -59,7 +59,7 @@ public class SettingActivity extends BaseBehaviorActivity {
 
     @Override
     protected int activitySetup() {
-        return 0;
+        return TRANSITION_TYPE_LEFT;
     }
 
     @Override

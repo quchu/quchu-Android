@@ -1,29 +1,31 @@
 package co.quchu.quchu.view.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 
-
-import org.json.JSONObject;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.net.IRequestListener;
-import co.quchu.quchu.net.NetApi;
-import co.quchu.quchu.net.NetService;
-import co.quchu.quchu.utils.AppUtil;
-import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.dialog.CommonDialog;
+import co.quchu.quchu.dialog.FeedbackDialog;
+import co.quchu.quchu.model.FeedbackModel;
+import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.FeedbackPresenter;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.adapter.FeedbackAdapter;
 
 /**
  * FeedbackActivity
@@ -32,6 +34,107 @@ import co.quchu.quchu.utils.StringUtils;
  * 快速反馈
  */
 public class FeedbackActivity extends BaseBehaviorActivity {
+
+    private FeedbackAdapter adapter;
+    private FeedbackDialog feedbackDialog;
+
+    @Bind(R.id.feedback_recycler_view)
+    RecyclerView recyclerView;
+    @Bind(R.id.feedback_swipeRefreshLayout)
+    SwipeRefreshLayout refreshLayout;
+    @Bind(R.id.submit_feedback_btn)
+    ImageView submitFeedbackBtn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_feedback);
+        ButterKnife.bind(this);
+        EnhancedToolbar toolbar = getEnhancedToolbar();
+        TextView textView = toolbar.getTitleTv();
+        textView.setText("Felix");
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new FeedbackAdapter(this);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnFeedbackItemClickListener(onItemClickListener);
+        refreshLayout.setOnRefreshListener(onRefreshListener);
+
+        getFeedbackList();
+    }
+
+    /**
+     * 获取反馈列表
+     */
+    private void getFeedbackList() {
+        FeedbackPresenter.getFeedbackList(this, pageLoadListener);
+    }
+
+    /**
+     * 聊天
+     */
+    private FeedbackAdapter.OnFeedbackItemClickListener onItemClickListener = new FeedbackAdapter.OnFeedbackItemClickListener() {
+        @Override
+        public void onItemClick(FeedbackModel feedbackModel) {
+
+        }
+    };
+
+    /**
+     * 加载数据
+     */
+    private CommonListener<List<FeedbackModel>> pageLoadListener = new CommonListener<List<FeedbackModel>>() {
+        @Override
+        public void successListener(List<FeedbackModel> response) {
+            adapter.initData(response);
+            refreshLayout.setRefreshing(false);
+        }
+
+        @Override
+        public void errorListener(VolleyError error, String exception, String msg) {
+            makeToast(R.string.network_error);
+            refreshLayout.setRefreshing(false);
+        }
+    };
+
+    /**
+     * 下拉刷新
+     */
+    private SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            getFeedbackList();
+        }
+    };
+
+    /**
+     * 提交反馈
+     */
+    private void submitFeedbackClick() {
+        feedbackDialog = new FeedbackDialog(this, new FeedbackDialog.DialogConfirmListener() {
+            @Override
+            public void confirm(String title, String content) {
+                FeedbackPresenter.sendFeedback(FeedbackActivity.this, title, content, new CommonListener() {
+                    @Override
+                    public void successListener(Object response) {
+                        SPUtils.setFeedback("", "");
+                        feedbackDialog.dismiss();
+
+                        CommonDialog commonDialog = CommonDialog.newInstance("提交成功", "谢谢你对我们的支持", true);
+                        commonDialog.show(getSupportFragmentManager(), "");
+
+                        getFeedbackList();
+                    }
+
+                    @Override
+                    public void errorListener(VolleyError error, String exception, String msg) {
+                        makeToast(R.string.network_error);
+                    }
+                });
+            }
+        });
+        feedbackDialog.show();
+    }
 
     @Override
     public ArrayMap<String, Object> getUserBehaviorArguments() {
@@ -43,52 +146,9 @@ public class FeedbackActivity extends BaseBehaviorActivity {
         return 127;
     }
 
-
     @Override
     protected String getPageNameCN() {
-        return getString(R.string.pname_feedback);
-    }
-
-    @Bind(R.id.feedback_hint_tv)
-    TextView feedbackHintTv;
-    @Bind(R.id.feedback_editer_bet)
-    EditText feedbackEditerBet;
-    private String feedBackStr = "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _   \r\n请忽略此处  \r\nModel: Android  \r\nVersion: %s";
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feedback);
-        ButterKnife.bind(this);
-        EnhancedToolbar toolbar = getEnhancedToolbar();
-        feedbackHintTv.setText(String.format(feedBackStr, AppUtil.getVerName(this)));
-
-        TextView textView = toolbar.getRightTv();
-        textView.setText("提交");
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (StringUtils.isEmpty(feedbackEditerBet.getText().toString())) {
-                    Toast.makeText(FeedbackActivity.this, "请填写您在使用趣处过程中产生的任何疑问、反馈或建议", Toast.LENGTH_SHORT).show();
-                } else {
-                    NetService.post(FeedbackActivity.this, String.format(NetApi.FeedBack, feedbackEditerBet.getText().toString()), null, new IRequestListener() {
-                        @Override
-                        public void onSuccess(JSONObject response) {
-                            Toast.makeText(FeedbackActivity.this, "感谢您的反馈!", Toast.LENGTH_SHORT).show();
-                            FeedbackActivity.this.finish();
-                        }
-
-                        @Override
-                        public boolean onError(String error) {
-                            Toast.makeText(FeedbackActivity.this,getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                            return false;
-                        }
-                    });
-                }
-            }
-        });
-
+        return "Felix";
     }
 
     @Override
@@ -96,25 +156,12 @@ public class FeedbackActivity extends BaseBehaviorActivity {
         return TRANSITION_TYPE_LEFT;
     }
 
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        feedbackEditerBet.requestFocus();
-
-        feedbackEditerBet.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                InputMethodManager keyboard = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                keyboard.showSoftInput(feedbackEditerBet, 0);
-            }
-        }, 200);
+    @OnClick(R.id.submit_feedback_btn)
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.submit_feedback_btn:
+                submitFeedbackClick();
+                break;
+        }
     }
 }

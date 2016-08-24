@@ -101,7 +101,7 @@ public class SPUtils {
             e.printStackTrace();
         }
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE + pInfo.versionName , false);
+        return preferences.getBoolean(AppKey.SPF_KEY_FORCE_UPDATE + pInfo.versionName, false);
     }
 
     public static void setForceUpdateIfNecessary(Context context, boolean forceUpdate) {
@@ -112,7 +112,7 @@ public class SPUtils {
             e.printStackTrace();
         }
         preferences = context.getSharedPreferences(AppKey.APPINFO, Context.MODE_PRIVATE);
-        preferences.edit().putBoolean(AppKey.SPF_KEY_FORCE_UPDATE + pInfo.versionName , forceUpdate).commit();
+        preferences.edit().putBoolean(AppKey.SPF_KEY_FORCE_UPDATE + pInfo.versionName, forceUpdate).commit();
     }
 
     public static String getForceUpdateReason(Context context) {
@@ -189,8 +189,6 @@ public class SPUtils {
     }
 
 
-
-
     public static void setUserToken(Context context, String userToken) {
         putValueToSPMap(context, AppKey.USERTOKEN, userToken);
     }
@@ -243,9 +241,9 @@ public class SPUtils {
     }
 
 
-    public static boolean getShowRecommendGuide(){
-        boolean show = getBooleanFromSPMap(AppContext.mContext,AppKey.DISPLAY_RECOMMEND_GUID,false);
-        putBooleanToSPMap(AppContext.mContext,AppKey.DISPLAY_RECOMMEND_GUID,true);
+    public static boolean getShowRecommendGuide() {
+        boolean show = getBooleanFromSPMap(AppContext.mContext, AppKey.DISPLAY_RECOMMEND_GUID, false);
+        putBooleanToSPMap(AppContext.mContext, AppKey.DISPLAY_RECOMMEND_GUID, true);
         return show;
     }
 
@@ -270,6 +268,7 @@ public class SPUtils {
 
     /**
      * 搭伙开关
+     *
      * @param checked
      */
     public static void setDahuoSwitch(boolean checked) {
@@ -282,6 +281,7 @@ public class SPUtils {
 
     /**
      * user mark
+     *
      * @param mark
      */
     public static void setUserMark(String mark) {
@@ -290,6 +290,23 @@ public class SPUtils {
 
     public static String getUserMark() {
         return getValueFromSPMap(AppContext.mContext, AppKey.USER_MARK, null);
+    }
+
+    /**
+     * 保存最近一条反馈
+     *
+     * @param title
+     * @param content
+     */
+    public static void setFeedback(String title, String content) {
+        putValueToSPMap(AppContext.mContext, AppKey.FEEDBACK_TITLE, title);
+        putValueToSPMap(AppContext.mContext, AppKey.FEEDBACK_CONTENT, content);
+    }
+
+    public static String getFeedback() {
+        String title = getValueFromSPMap(AppContext.mContext, AppKey.FEEDBACK_TITLE, "");
+        String content = getValueFromSPMap(AppContext.mContext, AppKey.FEEDBACK_CONTENT, "");
+        return title + "/" + content;
     }
 }
 
