@@ -124,17 +124,6 @@
     </LinearLayout>
 
 
-    <ImageView
-        android:id="@+id/ivReturn"
-        android:layout_margin="@dimen/base_margin"
-        android:layout_width="@dimen/toolbar_item_size"
-        android:layout_height="@dimen/toolbar_item_size"
-        android:scaleType="center"
-        android:src="@mipmap/ic_home_lt"
-        android:layout_below="@id/appbar"
-        android:layout_alignParentRight="true"
-        />
-
 
 
 </RelativeLayout>

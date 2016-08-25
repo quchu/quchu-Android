@@ -226,6 +226,15 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
         dModel.copyFrom(model);
         getEnhancedToolbar().getTitleTv().setText(dModel.getName());
+        getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_home);
+        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+
+                UMEvent("back_c");
+                ZGEvent("趣处名称",dModel.getName(),"返回首页");
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
+            }
+        });
         if(null==mQuchuDetailAdapter){
             return;
         }
@@ -387,18 +396,12 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     }
 
 
-    @OnClick({R.id.ivShouCang, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia,R.id.ivReturn})
+    @OnClick({R.id.ivShouCang, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia})
     public void detailClick(View v) {
         if (KeyboardUtils.isFastDoubleClick())
             return;
         if (dModel != null) {
             switch (v.getId()) {
-                case R.id.ivReturn:
-                    UMEvent("back_c");
-                    ZGEvent("趣处名称",dModel.getName(),"返回首页");
-                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
-                    break;
-
                 case R.id.ivPreOrder:
 
                     UMEvent("reserve_c");

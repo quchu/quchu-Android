@@ -184,12 +184,12 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
                     public void run() {
                         //mMarks.get(position).showInfoWindow();
                         popUpWindow(position);
-                        mMarks.get(position).setIcon(mMapPinBlue);
+                        mMarks.get(position+1).setIcon(mMapPinBlue);
+                        mMarks.get(position+1).setToTop();
                         if (mLastMarker<mMarks.size()&&mLastMarker>=0){
                             mMarks.get(mLastMarker).setIcon(mMapPin);
-                            mMarks.get(mLastMarker).setZIndex(0);
                         }
-                        mLastMarker = position;
+                        mLastMarker = position+1;
                     }
                 }, 250l);
             }
@@ -211,9 +211,6 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
                         mDataSet.remove(i);
                     }
                 }
-                mDataSet.add(0,mCurrentModel);
-
-
                 mAdapter.notifyDataSetChanged();
                 initMarks();
                 DialogUtil.dismissProgess();
@@ -280,6 +277,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
                 marker.setIcon(mMapPinBlue);
                 mLastMarker = i;
             }
+            marker.setToTop();
             mMarks.add(marker);
         }
     }
@@ -336,6 +334,8 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
         bundle.putInt("obj",0);
         marker.setExtraInfo(bundle);
         mMarks.add(marker);
+
+        mDataSet.add(mCurrentModel);
         popUpWindow(0);
     }
 
@@ -365,7 +365,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
                 }
                 //有权限
 
-                MapStatus mapStatus = new MapStatus.Builder().target(placeAddress).zoom(aMap.getMapStatus().zoom).build();
+                MapStatus mapStatus = new MapStatus.Builder().target(new LatLng(SPUtils.getLatitude(),SPUtils.getLongitude())).zoom(aMap.getMapStatus().zoom).build();
                 MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
 
                 aMap.animateMapStatus(mMapStatusUpdate);
@@ -386,7 +386,8 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
             return;
         }
 
-        LatLng latLng = mMarks.get(index).getPosition();
+        LatLng latLng = new LatLng(Double.valueOf(mDataSet.get(index).getLatitude()), Double.valueOf(mDataSet.get(index).getLongitude()));
+
         View infoWindow = getLayoutInflater().inflate(R.layout.cp_amap_infowindow, null);
         TextView textView = (TextView) infoWindow.findViewById(R.id.tvAddress);
 
@@ -402,7 +403,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
             }
         });
 
-        InfoWindow mInfoWindow = new InfoWindow(infoWindow, latLng, -47);
+        InfoWindow mInfoWindow = new InfoWindow(infoWindow, latLng, -56);
         aMap.showInfoWindow(mInfoWindow);
     }
 
@@ -573,6 +574,8 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
     //    return null;
     //}
 
+    private boolean mFirstLocate = true;
+
     @Override public void location(BDLocation amapLocation) {
         if (mListener != null && amapLocation != null) {
             SPUtils.setLatitude(amapLocation.getLatitude());
@@ -581,11 +584,12 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
             //            if (amapLocation.getErrorCode() == 0) {
             mListener.onReceiveLocation(amapLocation);// 显示系统小蓝点
 
-            if (mLocationUpdateCounter<=1){
+            if (mLocationUpdateCounter<=1 && mFirstLocate){
                 MapStatus mapStatus = new MapStatus.Builder().target(placeAddress).zoom(50).build();
                 aMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(mapStatus));
             }
             mLocationUpdateCounter +=1;
+            mFirstLocate = false;
 
         }
     }
