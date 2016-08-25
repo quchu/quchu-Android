@@ -169,7 +169,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             if (!meFragment.isAdded()) {
                 getSupportFragmentManager().beginTransaction().add(R.id.container, meFragment, "page_3").commitAllowingStateLoss();
             }
-            viewpagerSelected(2);
+            viewpagerSelected(3);
 
         }
 
