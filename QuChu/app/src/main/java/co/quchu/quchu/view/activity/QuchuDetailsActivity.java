@@ -6,10 +6,10 @@ import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import co.quchu.quchu.model.HangoutUserModel;
+import co.quchu.quchu.presenter.HangoutPresenter;
 import com.android.volley.VolleyError;
 
 
@@ -26,7 +26,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
-import co.quchu.quchu.dialog.QuchuDetailsMoreDialog;
 import co.quchu.quchu.dialog.RatingQuchuDialog;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.NearbyItemModel;
@@ -73,6 +72,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     public DetailModel dModel = new DetailModel();
     private QuchuDetailsAdapter mQuchuDetailAdapter;
     private VisitedInfoModel mVisitedInfoModel;
+    private List<HangoutUserModel> mAvailableUsers;
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -123,7 +123,22 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
         getRatingInfo();
 
+        getHangoutUsers();
 
+
+    }
+
+    private void getHangoutUsers() {
+        HangoutPresenter.getHangoutUsers(getApplicationContext(), new CommonListener<List<HangoutUserModel>>() {
+            @Override public void successListener(List<HangoutUserModel> response) {
+                mAvailableUsers = response;
+                mQuchuDetailAdapter.updateHangoutUsers(mAvailableUsers);
+            }
+
+            @Override public void errorListener(VolleyError error, String exception, String msg) {
+
+            }
+        });
     }
 
     @Override

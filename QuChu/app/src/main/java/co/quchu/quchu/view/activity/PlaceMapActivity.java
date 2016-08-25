@@ -91,7 +91,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
     private LatLng myAddress;
     private MapView mapView;
     private ViewPager mVPNearby;
-    private BitmapDescriptor mMapPin,mMapPinBlue;
+    private BitmapDescriptor mMapPin,mMapPinBlue,mOverlayMyLocation;
     private NearbyMapModel mCurrentModel;
     private int mLastMarker = -1;
 
@@ -128,6 +128,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
         mMapPin = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_yellow);
         mMapPinBlue = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_blue);
+        mOverlayMyLocation = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_me);
         mapView.onCreate(getApplicationContext(),savedInstanceState);// 此方法必须重写
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
         currentPosition.setOnClickListener(this);
@@ -273,13 +274,22 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
             if (i==0){
                 popUpWindow(0);
-
                 marker.setIcon(mMapPinBlue);
+                marker.setToTop();
                 mLastMarker = i;
             }
-            marker.setToTop();
+
             mMarks.add(marker);
         }
+
+        OverlayOptions optionMyLoc = new MarkerOptions()
+            .position(new LatLng(SPUtils.getLatitude(),SPUtils.getLongitude()))
+            .anchor(.5f,.5f)
+            .perspective(true)
+            .draggable(false)
+            .period(50)
+            .icon(mOverlayMyLocation);
+        aMap.addOverlay(optionMyLoc);
     }
 
     @Override
@@ -418,9 +428,11 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
         aMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                int index = (int) marker.getExtraInfo().get("obj");
-                popUpWindow(index);
-                mVPNearby.setCurrentItem(index);
+                if (null!=marker.getExtraInfo()){
+                    int index = (int) marker.getExtraInfo().get("obj");
+                    popUpWindow(index);
+                    mVPNearby.setCurrentItem(index);
+                }
                 return false;
             }
         });

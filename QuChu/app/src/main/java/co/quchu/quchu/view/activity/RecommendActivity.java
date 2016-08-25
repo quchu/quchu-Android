@@ -173,7 +173,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
         }
 
-        HangoutPresenter.getMapNearbyData(getApplicationContext(), new CommonListener<List<HangoutUserModel>>() {
+        HangoutPresenter.getHangoutUsers(getApplicationContext(), new CommonListener<List<HangoutUserModel>>() {
 
             @Override public void successListener(List<HangoutUserModel> response) {
                 for (int i = 0; i < response.size(); i++) {

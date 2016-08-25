@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import co.quchu.quchu.model.HangoutUserModel;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -75,6 +77,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private int mVisitedUsersAvatarMargin;
     private VisitedInfoModel mVisitedInfoModel;
     private SimpleQuchuDetailAnalysisModel mAnalysisModel;
+    private List<HangoutUserModel> mHangoutUsers;
 
 
     protected static final int VIEW_TYPES[] = new int[]{
@@ -124,6 +127,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void updateVisitedUsers(VisitedUsersModel pUsers) {
         mVisitedUsers = pUsers;
+        notifyDataSetChanged();
+    }
+
+    public void updateHangoutUsers(List<HangoutUserModel> users){
+        mHangoutUsers = users;
         notifyDataSetChanged();
     }
 
@@ -423,7 +431,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         } else if (holder instanceof OpeningInfoViewHolder) {
 
-        } else if (holder instanceof StarterInfoViewHolder) {
+        } else if (holder instanceof LabelViewHolder){
+            if (null!=mHangoutUsers && mHangoutUsers.size()>0){
+                ((LabelViewHolder) holder).rvUsers.setLayoutManager(new GridLayoutManager(mAnchorActivity,8));
+                ((LabelViewHolder) holder).rvUsers.setAdapter(new HangoutUserAdapter(mHangoutUsers));
+            }
+
+        }else if (holder instanceof StarterInfoViewHolder) {
 
             ((StarterInfoViewHolder) holder).detail_activity_initiator_ll.setVisibility(mData.isIsActivity() ? View.VISIBLE : View.GONE);
             ((StarterInfoViewHolder) holder).detail_activity_initiator_name_tv.setText(null != mData.getAutor() ? mData.getAutor() : "");
@@ -475,7 +489,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 final boolean collapsed = mData.getReviewList().get(commentIndex).isCollapsed();
 
-                System.out.println("collapsed "+ commentIndex+"|"+ collapsed );
                 ((CommentViewHolder) holder).tvUserComment.setText(commentModel.getContent());
 
                 if (collapsed){
@@ -618,8 +631,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     public static class LabelViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.rvUsers)
+        RecyclerView rvUsers;
+
         LabelViewHolder(View view) {
             super(view);
+            ButterKnife.bind(this,view);
         }
     }
 
@@ -765,8 +783,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView tvUsername;
         @Bind(R.id.tvDate)
         TextView tvDate;
-        @Bind(R.id.rlUserInfo)
-        RelativeLayout rlUserInfo;
         @Bind(R.id.tvUserComment)
         TextView tvUserComment;
         @Bind(R.id.tvCollapse)
@@ -805,6 +821,38 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
+
+    public class HangoutUserAdapter extends RecyclerView.Adapter<HangoutUserAdapter.ViewHolder>{
+
+        List<HangoutUserModel> mUserSet;
+
+        public HangoutUserAdapter(List<HangoutUserModel> dataSet) {
+            this.mUserSet = dataSet;
+        }
+
+        @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quchu_detail_hangout_user, parent, false));
+        }
+
+        @Override public void onBindViewHolder(ViewHolder holder, int position) {
+
+            holder.sdvAvatar.setImageURI(Uri.parse(mUserSet.get(position).getPhoto()));
+        }
+
+        @Override public int getItemCount() {
+            return null != mUserSet ? mUserSet.size() : 0;
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            @Bind(R.id.sdvAvatar)
+            SimpleDraweeView sdvAvatar;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
+        }
+    }
 
     public class AdditionalInfoAdapter extends RecyclerView.Adapter<AdditionalInfoAdapter.ViewHolder> {
 

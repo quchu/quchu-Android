@@ -6,7 +6,7 @@ package co.quchu.quchu.model;
 public class HangoutUserModel {
 
   private int gender; //0 male ,1 female
-  private int similarity;
+  private String similarity;
   private int userId;
   private String name;
   private String photo;
@@ -15,7 +15,7 @@ public class HangoutUserModel {
   @Override public String toString() {
     return "HangoutUserModel{" +
         "gender=" + gender +
-        ", similarity=" + similarity +
+        ", similarity='" + similarity + '\'' +
         ", userId=" + userId +
         ", name='" + name + '\'' +
         ", photo='" + photo + '\'' +
@@ -31,11 +31,11 @@ public class HangoutUserModel {
     this.gender = gender;
   }
 
-  public int getSimilarity() {
+  public String getSimilarity() {
     return similarity;
   }
 
-  public void setSimilarity(int similarity) {
+  public void setSimilarity(String similarity) {
     this.similarity = similarity;
   }
 

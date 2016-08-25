@@ -1,88 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:background="@color/standard_color_white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/rlUserInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdvAvatar"
+        android:layout_width="@dimen/comment_users_avatar_size"
+        android:layout_height="@dimen/comment_users_avatar_size"
+        fresco:roundAsCircle = "true"
+        android:src="@mipmap/ic_launcher"
+
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginTop="@dimen/half_margin"
-        android:layout_centerVertical="true"
+        />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_alignTop="@+id/sdvAvatar"
+        android:layout_toRightOf="@+id/sdvAvatar"
+        android:layout_toLeftOf="@+id/tvDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/half_margin"
+        style="@style/TextView.H2"
+        tools:text="UserName"
+        />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/sdvAvatar"
         android:layout_marginRight="@dimen/base_margin"
-        >
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/sdvAvatar"
-            android:layout_width="@dimen/comment_users_avatar_size"
-            android:layout_height="@dimen/comment_users_avatar_size"
-            fresco:roundAsCircle = "true"
-            android:src="@mipmap/ic_launcher"
-            />
-
-        <TextView
-            android:id="@+id/tvUsername"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/sdvAvatar"
-            android:layout_toLeftOf="@+id/tvDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/half_margin"
-            style="@style/TextView.H2"
-            tools:text="UserName"
-            />
-
-        <TextView
-            android:id="@+id/tvDate"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextView.H3"
-            tools:text="Date"
-            />
-
-    </RelativeLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextView.H3"
+        tools:text="Date"
+        />
 
 
     <TextView
+        android:layout_alignLeft="@+id/tvUsername"
         android:id="@+id/tvUserComment"
-        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_below="@+id/sdvAvatar"
         android:layout_marginRight="@dimen/base_margin"
-        android:paddingTop="@dimen/half_margin"
-        android:paddingBottom="@dimen/quarter_margin"
         android:lineSpacingExtra="4dp"
+        android:paddingLeft="@dimen/half_margin"
+        android:paddingRight="@dimen/half_margin"
+        android:paddingTop="@dimen/half_margin"
+        android:background="@color/colorBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/TextView.H3"
         tools:text="Comment"
         />
     <TextView
+        android:layout_below="@+id/tvUserComment"
         android:id="@+id/tvCollapse"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignLeft="@+id/tvUsername"
+        android:background="@color/colorBackground"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
-        android:layout_marginBottom="16dp"
+        android:paddingRight="@dimen/half_margin"
+        android:paddingBottom="@dimen/half_margin"
         android:visibility="gone"
-        android:layout_gravity="right"
+        android:gravity="right"
+        android:layout_alignParentRight="true"
         style="@style/TextView.H2"
         tools:text="Comment"
         tools:visibility="visible"
         />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_below="@id/tvCollapse"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:layout_marginRight="@dimen/base_margin"
-        android:layout_marginLeft="@dimen/base_margin"
-
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_alignLeft="@+id/tvUsername"
+        android:paddingBottom="@dimen/half_margin"
         >
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -96,14 +96,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/half_margin"
-            android:layout_alignParentRight="true"
             style="@style/TextView.H3"
+            tools:text="来自大众点评"
             />
 
     </RelativeLayout>
 
     <View
-        android:layout_margin="@dimen/half_margin"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin"
         style="@style/HorizontalLine"
         />
-</LinearLayout>
+</RelativeLayout>

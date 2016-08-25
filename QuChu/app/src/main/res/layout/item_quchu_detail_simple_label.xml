@@ -1,10 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/TextView.H2"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/standard_color_white"
-    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:paddingTop="@dimen/half_margin"
-    android:text="@string/guess_what_you_like" />
+    android:gravity="center"
+    android:background="@color/standard_color_white"
+
+    >
+
+  <ImageView
+      android:id="@+id/ivMoreComments"
+      android:src="@mipmap/ic_gengduopinglun"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      />
+  <TextView
+      android:id="@+id/tvMoreComments"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/more_comments"
+      style="@style/TextView.H2"
+      android:layout_below="@+id/ivMoreComments"
+      android:layout_centerHorizontal="true"
+      />
+
+  <ImageView
+      android:id="@+id/ivLogo"
+      android:layout_below="@+id/tvMoreComments"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_marginRight="@dimen/base_margin"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@mipmap/ic_quchu_text_logo"
+      />
+
+  <TextView
+      android:id="@+id/tvUserBeenInvit"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@style/TextView.H2"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_marginRight="@dimen/base_margin"
+      android:layout_below="@+id/ivLogo"
+      tools:text="111"
+      />
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/rvUsers"
+      android:layout_below="@+id/tvUserBeenInvit"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:spanCount="8"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_marginRight="@dimen/base_margin"
+      android:layout_centerHorizontal="true"
+      tools:listitem="@layout/item_quchu_detail_hangout_user"
+      app:layoutManager="android.support.v7.widget.GridLayoutManager"
+      />
+
+  <ImageView
+      android:id="@+id/ivInvite"
+      android:src="@mipmap/ic_yueren"
+      android:layout_below="@id/rvUsers"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      />
+  <TextView
+      android:id="@+id/tvInvite"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/invite_user"
+      style="@style/TextView.H2"
+      android:layout_below="@+id/ivInvite"
+      android:layout_centerHorizontal="true"
+      />
+
+  <TextView
+      android:layout_below="@+id/tvInvite"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:paddingTop="@dimen/double_margin"
+      android:text="@string/guess_what_you_like"
+      style="@style/TextView.H2"
+      />
+</RelativeLayout>
