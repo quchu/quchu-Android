@@ -45,7 +45,7 @@
       android:layout_marginLeft="@dimen/base_margin"
       android:layout_marginRight="@dimen/base_margin"
       android:layout_below="@+id/ivLogo"
-      tools:text="111"
+      tools:text="多少人来过"
       />
   <android.support.v7.widget.RecyclerView
       android:id="@+id/rvUsers"
@@ -82,8 +82,8 @@
       android:layout_below="@+id/tvInvite"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:gravity="center"
       android:orientation="vertical"
+      android:layout_marginLeft="@dimen/base_margin"
       android:paddingTop="@dimen/double_margin"
       android:text="@string/guess_what_you_like"
       style="@style/TextView.H2"

@@ -43,41 +43,41 @@
         />
 
 
-    <TextView
-        android:layout_alignLeft="@+id/tvUsername"
-        android:id="@+id/tvUserComment"
+    <LinearLayout
+        android:id="@+id/llComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_below="@+id/sdvAvatar"
-        android:layout_marginRight="@dimen/base_margin"
-        android:lineSpacingExtra="4dp"
-        android:paddingLeft="@dimen/half_margin"
-        android:paddingRight="@dimen/half_margin"
-        android:paddingTop="@dimen/half_margin"
-        android:background="@color/colorBackground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextView.H3"
-        tools:text="Comment"
-        />
-    <TextView
-        android:layout_below="@+id/tvUserComment"
-        android:id="@+id/tvCollapse"
-        android:layout_width="match_parent"
         android:layout_alignLeft="@+id/tvUsername"
         android:background="@color/colorBackground"
-        android:layout_height="wrap_content"
+        android:padding="@dimen/half_margin"
         android:layout_marginRight="@dimen/base_margin"
-        android:paddingRight="@dimen/half_margin"
-        android:paddingBottom="@dimen/half_margin"
-        android:visibility="gone"
-        android:gravity="right"
-        android:layout_alignParentRight="true"
-        style="@style/TextView.H2"
-        tools:text="Comment"
-        tools:visibility="visible"
-        />
+
+        >
+        <TextView
+            android:id="@+id/tvUserComment"
+            android:lineSpacingExtra="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextView.H3"
+            tools:text="Comment"
+            />
+        <TextView
+            android:id="@+id/tvCollapse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            style="@style/TextView.H2"
+            tools:text="Comment"
+            android:gravity="right"
+            tools:visibility="visible"
+            />
+
+    </LinearLayout>
 
     <RelativeLayout
-        android:layout_below="@id/tvCollapse"
+        android:layout_below="@id/llComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/half_margin"
