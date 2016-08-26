@@ -15,7 +15,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.im.activity.ConversationListFragment;
-import co.quchu.quchu.view.activity.NoticeFragment;
 import co.quchu.quchu.widget.NoScrollViewPager;
 
 /**
@@ -71,12 +70,11 @@ public class MessageActivity extends BaseBehaviorActivity {
       return 2;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        if (position == 0) {
-            return "私信";
-        }
-        return "通知";
+    @Override public CharSequence getPageTitle(int position) {
+      if (position == 0) {
+        return "私信";
+      }
+      return "通知";
     }
   }
 

@@ -1,5 +1,6 @@
 package co.quchu.quchu.im.activity;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,9 +12,8 @@ import android.view.ViewGroup;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
-import co.quchu.quchu.im.IMPresenter;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
+import io.rong.imkit.model.UIConversation;
 import io.rong.imlib.model.Conversation;
 
 /**
@@ -29,14 +29,21 @@ public class ConversationListFragment extends BaseFragment {
     View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
 
     //设置小Q
-    IMPresenter.sendTextMessage(IMPresenter.userId1, "我是小Q", null, null);
-    RongIM.getInstance().setConversationToTop(Conversation.ConversationType.PRIVATE, IMPresenter.userId1, true, new RongIMClient.ResultCallback<Boolean>() {
-      @Override public void onSuccess(Boolean aBoolean) {
-      }
+    //IMPresenter.sendTextMessage(IMPresenter.userId1, "", null, null);
+    //if (RongIM.getInstance() != null) {
+    //  RongIM.getInstance()
+    //      .setConversationToTop(Conversation.ConversationType.PRIVATE, IMPresenter.userId1, true,
+    //          new RongIMClient.ResultCallback<Boolean>() {
+    //            @Override public void onSuccess(Boolean aBoolean) {
+    //            }
+    //
+    //            @Override public void onError(RongIMClient.ErrorCode errorCode) {
+    //            }
+    //          });
+    //}
 
-      @Override public void onError(RongIMClient.ErrorCode errorCode) {
-      }
-    });
+    //设置会话列表点击事件监听
+    RongIM.setConversationListBehaviorListener(conversationListBehaviorListener);
 
     enterFragment();
 
@@ -47,7 +54,8 @@ public class ConversationListFragment extends BaseFragment {
    * 加载融云会话列表
    */
   private void enterFragment() {
-    io.rong.imkit.fragment.ConversationListFragment fragment = new io.rong.imkit.fragment.ConversationListFragment();
+    io.rong.imkit.fragment.ConversationListFragment fragment =
+        new io.rong.imkit.fragment.ConversationListFragment();
     Uri uri = Uri.parse("rong://" + getActivity().getApplicationInfo().packageName).buildUpon()
         .appendPath("conversationlist")
         .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(),
@@ -67,6 +75,37 @@ public class ConversationListFragment extends BaseFragment {
     fragmentTransaction.add(R.id.conversation_list_fragment, fragment);
     fragmentTransaction.commit();
   }
+
+  /**
+   * 列表点击事件
+   *
+   * @return
+   */
+  private RongIM.ConversationListBehaviorListener conversationListBehaviorListener =
+      new RongIM.ConversationListBehaviorListener() {
+        @Override public boolean onConversationPortraitClick(Context context,
+            Conversation.ConversationType conversationType, String s) {
+          return false;
+        }
+
+        @Override public boolean onConversationPortraitLongClick(Context context,
+            Conversation.ConversationType conversationType, String s) {
+          return false;
+        }
+
+        @Override public boolean onConversationLongClick(Context context, View view,
+            UIConversation uiConversation) {
+          return false;
+        }
+
+        @Override public boolean onConversationClick(Context context, View view,
+            UIConversation uiConversation) {
+          //Intent intent = new Intent(getActivity(), ConversationActivity.class);
+          //intent.putExtra();
+          //startActivity(intent);
+          return false;
+        }
+      };
 
   @Override protected String getPageNameCN() {
     return null;

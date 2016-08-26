@@ -19,8 +19,6 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.MessageModel;
 import co.quchu.quchu.presenter.MessageCenterPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
-import co.quchu.quchu.view.activity.MyFootprintDetailActivity;
-import co.quchu.quchu.view.activity.UserCenterActivity;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MessageCenterAdapter;
 
@@ -93,6 +91,9 @@ public class NoticeFragment extends BaseFragment {
 
         @Override
         public void netError(final int pageNo, String massage) {
+            if (!isDetached()) {
+                return;
+            }
             Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             refreshLayout.setRefreshing(false);
 

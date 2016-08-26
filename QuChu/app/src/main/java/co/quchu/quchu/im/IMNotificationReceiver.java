@@ -2,6 +2,7 @@ package co.quchu.quchu.im;
 
 import android.content.Context;
 
+import co.quchu.quchu.utils.LogUtils;
 import io.rong.push.notification.PushMessageReceiver;
 import io.rong.push.notification.PushNotificationMessage;
 
@@ -12,13 +13,15 @@ import io.rong.push.notification.PushNotificationMessage;
  */
 public class IMNotificationReceiver extends PushMessageReceiver {
 
-    @Override
-    public boolean onNotificationMessageArrived(Context context, PushNotificationMessage pushNotificationMessage) {
-        return false;
-    }
+  @Override public boolean onNotificationMessageArrived(Context context,
+      PushNotificationMessage pushNotificationMessage) {
+    LogUtils.e("IMNotificationReceiver", "onNotificationMessageArrived()");
+    return false;
+  }
 
-    @Override
-    public boolean onNotificationMessageClicked(Context context, PushNotificationMessage pushNotificationMessage) {
-        return false;
-    }
+  @Override public boolean onNotificationMessageClicked(Context context,
+      PushNotificationMessage pushNotificationMessage) {
+    LogUtils.e("IMNotificationReceiver", "onNotificationMessageClicked()");
+    return false;
+  }
 }

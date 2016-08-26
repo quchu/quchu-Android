@@ -268,7 +268,40 @@ public class SPUtils {
   }
 
   public static boolean getDahuoSwitch() {
-    return getBooleanFromSPMap(AppContext.mContext, AppKey.DAHUO_SWITCH, false);
+    return getBooleanFromSPMap(AppContext.mContext, AppKey.DAHUO_SWITCH, true);
+  }
+
+  /**
+   * 推荐文章
+   */
+  public static void setNewsSwitch(boolean checked) {
+    putBooleanToSPMap(AppContext.mContext, AppKey.NEWS_SWITCH, checked);
+  }
+
+  public static boolean getNewsSwitch() {
+    return getBooleanFromSPMap(AppContext.mContext, AppKey.NEWS_SWITCH, true);
+  }
+
+  /**
+   * 推荐趣处
+   */
+  public static void setQuchuSwitch(boolean checked) {
+    putBooleanToSPMap(AppContext.mContext, AppKey.QUCHU_SWITCH, checked);
+  }
+
+  public static boolean getQuchuSwitch() {
+    return getBooleanFromSPMap(AppContext.mContext, AppKey.QUCHU_SWITCH, true);
+  }
+
+  /**
+   * 推荐趣星人
+   */
+  public static void setQuchuUserSwitch(boolean checked) {
+    putBooleanToSPMap(AppContext.mContext, AppKey.QUCHU_USER_SWITCH, checked);
+  }
+
+  public static boolean getQuchuUserSwitch() {
+    return getBooleanFromSPMap(AppContext.mContext, AppKey.QUCHU_USER_SWITCH, true);
   }
 
   /**

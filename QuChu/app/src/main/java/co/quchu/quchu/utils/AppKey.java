@@ -125,11 +125,28 @@ public interface AppKey {
   String SPF_KEY_SWIPE_DELETE_PROMPT_FIND = "swipeDeletePrompt";
   String SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU = "swipeDeletePrompt_quchu";
   String SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_ESSAY = "swipeDeletePrompt_essay";
+
   /**
    * 当前用户是否开启搭伙功能
    * 或默认的
    */
   String DAHUO_SWITCH = "dahuo_switch";
+
+  /**
+   * 推荐文章
+   */
+  String NEWS_SWITCH = "news_switch";
+
+  /**
+   * 推荐趣处
+   */
+  String QUCHU_SWITCH = "quchu_switch";
+
+  /**
+   * 推荐趣星人
+   */
+  String QUCHU_USER_SWITCH = "quchu_user_switch";
+
   /**
    * mark
    */

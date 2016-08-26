@@ -75,7 +75,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
       new FeedbackAdapter.OnFeedbackItemClickListener() {
         @Override public void onItemClick(FeedbackModel feedbackModel) {
           if (RongIM.getInstance() != null) {
-            RongIM.getInstance().startPrivateChat(FeedbackActivity.this, IMPresenter.userId,
+            RongIM.getInstance().startPrivateChat(FeedbackActivity.this, IMPresenter.userId1,
                 feedbackModel.getTitle());
           }
         }

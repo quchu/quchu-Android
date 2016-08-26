@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 
 import com.android.volley.VolleyError;
 
+import java.util.List;
+
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.im.model.RongImModel;
 import co.quchu.quchu.model.UserInfoModel;
@@ -32,12 +34,8 @@ public class IMPresenter {
   private static String TAG = "IMPresenter";
 
   //融云测试
-  public static String userId = "quchuAndroid2015";
-  private static String token =
-      "EUcFSzaMBpI8P3NQh1jWyVYCaeUquLZa8VVOx7M9yARO6x9BVjk+uJdeGXd6O0dotUBCYRNP61eQIlKA6i4SlAJ1+5nAnjq24DpP4BoHN2Q=";
-  public static String userId1 = "quchuAndroid1";
-  private static String token1 =
-      "UGWYYWf7psW75ypSmRP+11YCaeUquLZa8VVOx7M9yARO6x9BVjk+uE4AvNZQwsP4tUBCYRNP61eQIlKA6i4SlHN5zyxvdaVtToa8MXJp324=";
+  public static String userId = "161";
+  public static String userId1 = "216";
 
   /**
    * 获取im token
@@ -92,6 +90,7 @@ public class IMPresenter {
           listener.connectSuccess();
         }
 
+        //指定当前用户信息
         if (AppContext.user != null) {
           UserInfoModel user = AppContext.user;
           int userId = user.getUserId();
@@ -169,6 +168,93 @@ public class IMPresenter {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance()
           .setOnReceiveUnreadCountChangedListener(listener, Conversation.ConversationType.PRIVATE);
+    }
+  }
+
+  /**
+   * 置顶会话
+   */
+  public static void setConversationToTop(String tagetId, boolean isTop) {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance()
+          .setConversationToTop(Conversation.ConversationType.PRIVATE, tagetId, isTop,
+              new RongIMClient.ResultCallback<Boolean>() {
+                @Override public void onSuccess(Boolean aBoolean) {
+                }
+
+                @Override public void onError(RongIMClient.ErrorCode errorCode) {
+                }
+              });
+    }
+  }
+
+  /**
+   * 移除会话
+   */
+  public static void removeConversation(String targetId) {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance().removeConversation(Conversation.ConversationType.PRIVATE, targetId,
+          new RongIMClient.ResultCallback<Boolean>() {
+            @Override public void onSuccess(Boolean aBoolean) {
+
+            }
+
+            @Override public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+          });
+    }
+  }
+
+  /**
+   * 删除消息
+   */
+  public static void deleteMessages(int[] messageIds) {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance().deleteMessages(messageIds, new RongIMClient.ResultCallback<Boolean>() {
+        @Override public void onSuccess(Boolean aBoolean) {
+
+        }
+
+        @Override public void onError(RongIMClient.ErrorCode errorCode) {
+
+        }
+      });
+    }
+  }
+
+  /**
+   * 加入黑名单
+   */
+  public static void addToBlackList(String targetId) {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance().addToBlacklist(targetId, new RongIMClient.OperationCallback() {
+        @Override public void onSuccess() {
+
+        }
+
+        @Override public void onError(RongIMClient.ErrorCode errorCode) {
+
+        }
+      });
+    }
+  }
+
+  /**
+   * 获取指定用户的消息
+   */
+  public static void get(String targetId, int count) {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance().getLatestMessages(Conversation.ConversationType.PRIVATE, targetId, count,
+          new RongIMClient.ResultCallback<List<Message>>() {
+            @Override public void onSuccess(List<Message> messages) {
+
+            }
+
+            @Override public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+          });
     }
   }
 

@@ -63,7 +63,7 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    private void makeToast(String str) {
+    protected void makeToast(String str) {
         if (toastManager != null) {
             toastManager.show(str);
         }

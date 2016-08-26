@@ -1,22 +1,33 @@
 package co.quchu.quchu.im.activity;
 
 import android.content.Intent;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import io.rong.imkit.RongIM;
@@ -35,11 +46,11 @@ import io.rong.message.VoiceMessage;
  */
 public class ConversationActivity extends BaseBehaviorActivity {
 
-  private String TITLE_DEFAULT = "聊天";
+  private int TITLE_DEFAULT = 0;
   //显示“对方正在输入”
-  private String TITLE_TEXT_TYPING = "聊天";
+  private int TITLE_TEXT_TYPING = 1;
   //显示"对方正在讲话"
-  private String TITLE_VOICE_TYPING = "聊天";
+  private int TITLE_VOICE_TYPING = 2;
 
   //私聊的目标id
   private String targetId;
@@ -64,17 +75,7 @@ public class ConversationActivity extends BaseBehaviorActivity {
 
     getTypingStatus();
 
-    RongIM.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
-      @Override public void onSuccess(List<Conversation> conversations) {
-
-      }
-
-      @Override public void onError(RongIMClient.ErrorCode errorCode) {
-
-      }
-    }, Conversation.ConversationType.PRIVATE);
-
-    RongIM.getInstance().setReadReceiptConversationTypeList();
+    //RongIM.getInstance().setReadReceiptConversationTypeList();
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,7 +85,8 @@ public class ConversationActivity extends BaseBehaviorActivity {
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == R.id.action_setting) {
-      makeToast("click");
+      showBehaviorDialog();
+      //startActivity(SettingXioaQActivity.class);
       return true;
     }
     return super.onOptionsItemSelected(item);
@@ -95,8 +97,8 @@ public class ConversationActivity extends BaseBehaviorActivity {
    */
   private void getTypingStatus() {
     RongIMClient.setTypingStatusListener(new RongIMClient.TypingStatusListener() {
-      @Override
-      public void onTypingStatusChanged(Conversation.ConversationType type, String id, Collection<TypingStatus> typingStatusSet) {
+      @Override public void onTypingStatusChanged(Conversation.ConversationType type, String id,
+          Collection<TypingStatus> typingStatusSet) {
         //当输入状态的会话类型和targetID与当前会话一致时，才需要显示
         if (type.equals(conversationType) && id.equals(targetId)) {
           //count表示当前会话中正在输入的用户数量，目前只支持单聊，所以判断大于0就可以给予显示了
@@ -111,22 +113,33 @@ public class ConversationActivity extends BaseBehaviorActivity {
             //匹配对方正在输入的是文本消息还是语音消息
             if (objectName.equals(textTag.value())) {
               //显示“对方正在输入”
-              //mHandler.sendEmptyMessage(TITLE_TEXT_TYPING);
-              titleTv.setText(TITLE_TEXT_TYPING);
+              handler.sendEmptyMessage(TITLE_TEXT_TYPING);
             } else if (objectName.equals(voiceTag.value())) {
               //显示"对方正在讲话"
-              //mHandler.sendEmptyMessage(TITLE_VOICE_TYPING);
-              titleTv.setText(TITLE_VOICE_TYPING);
+              handler.sendEmptyMessage(TITLE_VOICE_TYPING);
             }
           } else {
             //当前会话没有用户正在输入，标题栏仍显示原来标题
-            //mHandler.sendEmptyMessage(TITLE_DEFAULT);
-            titleTv.setText(TITLE_DEFAULT);
+            handler.sendEmptyMessage(TITLE_DEFAULT);
           }
         }
       }
     });
   }
+
+  private Handler handler = new Handler() {
+    @Override public void handleMessage(Message msg) {
+      if (msg.what == TITLE_DEFAULT) {
+        titleTv.setText("聊天");
+
+      } else if (msg.what == TITLE_TEXT_TYPING) {
+        titleTv.setText("对方正在输入");
+
+      } else if (msg.what == TITLE_VOICE_TYPING) {
+        titleTv.setText("对方正在讲话");
+      }
+    }
+  };
 
   /**
    * 得到 融云会话页面传递的 Uri
@@ -145,13 +158,13 @@ public class ConversationActivity extends BaseBehaviorActivity {
   /**
    * 加载会话页面 ConversationFragment
    */
-  private void enterFragment(Conversation.ConversationType mConversationType, String mTargetId) {
+  private void enterFragment(Conversation.ConversationType conversationType, String mTargetId) {
 
     ConversationFragment fragment = (ConversationFragment) getSupportFragmentManager()
         .findFragmentById(R.id.conversation_fragment);
 
     Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
-        .appendPath("conversation").appendPath(mConversationType.getName().toLowerCase())
+        .appendPath("conversation").appendPath(conversationType.getName().toLowerCase())
         .appendQueryParameter("targetId", mTargetId).build();
 
     fragment.setUri(uri);
@@ -189,6 +202,72 @@ public class ConversationActivity extends BaseBehaviorActivity {
     IMPresenter.connectIMService(token, new IMPresenter.RongYunConnectListener() {
       @Override public void connectSuccess() {
         enterFragment(conversationType, targetId);
+      }
+    });
+  }
+
+  /**
+   * 显示dialog
+   * 举报、屏蔽
+   */
+  private void showBehaviorDialog() {
+    FrameLayout viewGroup = new FrameLayout(this);
+
+    View view = LayoutInflater.from(this).inflate(R.layout.dialog_message_behavior, null);
+
+    //举报
+    View reportView = view.findViewById(R.id.dialog_message_behavior_report);
+
+    //屏蔽
+    View shieldView = view.findViewById(R.id.dialog_message_behavior_shield);
+
+    FrameLayout.LayoutParams lp =
+        new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.RIGHT);
+    Rect frame = new Rect();
+    getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+    lp.topMargin = Utils.dip2px(this, (48 - 6)) + frame.top;
+    lp.rightMargin = Utils.dip2px(this, 6);
+    viewGroup.addView(view, lp);
+
+    final PopupWindow popWin = new PopupWindow(viewGroup, ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.MATCH_PARENT, true);
+    popWin.setBackgroundDrawable(new ColorDrawable(0));
+    popWin.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+
+    viewGroup.setFocusable(true);
+    viewGroup.setFocusableInTouchMode(true);
+    viewGroup.setOnClickListener(new View.OnClickListener() {
+
+      @Override public void onClick(View v) {
+        popWin.dismiss();
+      }
+    });
+
+    viewGroup.setOnKeyListener(new View.OnKeyListener() {
+
+      @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
+          popWin.dismiss();
+          return true;
+        }
+        return false;
+      }
+    });
+
+    //举报
+    reportView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        popWin.dismiss();
+        makeToast("举报");
+      }
+    });
+
+    //屏蔽
+    shieldView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        popWin.dismiss();
+        makeToast("屏蔽");
       }
     });
   }

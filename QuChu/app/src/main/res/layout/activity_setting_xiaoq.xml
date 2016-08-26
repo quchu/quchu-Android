@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+  <include layout="@layout/cp_enhanced_toolbar"/>
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小Q"
+            android:textColor="@color/standard_color_h2_dark"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="小Q是趣处的人工智能推荐助手"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="14sp"/>
+
+      </LinearLayout>
+
+      <co.quchu.quchu.widget.SettingItemView
+          android:id="@+id/setting_item_news"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:stShowSwitchBtn="true"
+          app:stText="推荐咨询"/>
+
+      <View style="@style/HorizontalLine"/>
+
+      <co.quchu.quchu.widget.SettingItemView
+          android:id="@+id/setting_item_quchu"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:stShowSwitchBtn="true"
+          app:stText="推荐趣处"/>
+
+      <View style="@style/HorizontalLine"/>
+
+      <co.quchu.quchu.widget.SettingItemView
+          android:id="@+id/setting_item_quchu_user"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:stShowSwitchBtn="true"
+          app:stText="推荐趣星人"/>
+
+    </LinearLayout>
+
+  </ScrollView>
+
+</LinearLayout>
