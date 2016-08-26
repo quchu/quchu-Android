@@ -37,6 +37,15 @@ public class UserInfoModel implements Parcelable {
     private int age;// 来趣处的总共多少年
     private int cardCount;// 脚印的个数
     private boolean isphone;//是否绑定手机号
+    private String rongYunToken;//融云token
+
+    public String getRongYunToken() {
+        return rongYunToken;
+    }
+
+    public void setRongYunToken(String rongYunToken) {
+        this.rongYunToken = rongYunToken;
+    }
 
     public void setIsphone(boolean isphone) {
         this.isphone = isphone;

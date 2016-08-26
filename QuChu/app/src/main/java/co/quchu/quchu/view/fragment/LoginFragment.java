@@ -27,185 +27,170 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
 import co.quchu.quchu.thirdhelp.WechatHelper;
 import co.quchu.quchu.thirdhelp.WeiboHelper;
 import co.quchu.quchu.utils.AppUtil;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
-
 
 /**
  * Created by Nico on 16/5/13.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener, UserLoginListener {
 
-    public static final String TAG = "LoginFragment";
-    @Bind(R.id.llAuthorizationViaWeibo)
-    LinearLayout llAuthorizationViaWeibo;
-    @Bind(R.id.llAuthorizationViaMm)
-    LinearLayout llAuthorizationViaMm;
-    @Bind(R.id.thirdLoginContainer)
-    LinearLayout thirdLoginContainer;
-    @Bind(R.id.hellWord)
-    TextView hellWord;
-    @Bind(R.id.tvLoginViaPhone)
-    TextView tvLoginViaPhone;
-    @Bind(R.id.tvCreateAccountViaPhone)
-    TextView tvCreateAccountViaPhone;
-    @Bind(R.id.tvForgottenPassword)
-    TextView tvForgottenPassword;
-    private int mContainerId = -1;
+  public static final String TAG = "LoginFragment";
+  @Bind(R.id.llAuthorizationViaWeibo) LinearLayout llAuthorizationViaWeibo;
+  @Bind(R.id.llAuthorizationViaMm) LinearLayout llAuthorizationViaMm;
+  @Bind(R.id.thirdLoginContainer) LinearLayout thirdLoginContainer;
+  @Bind(R.id.hellWord) TextView hellWord;
+  @Bind(R.id.tvLoginViaPhone) TextView tvLoginViaPhone;
+  @Bind(R.id.tvCreateAccountViaPhone) TextView tvCreateAccountViaPhone;
+  @Bind(R.id.tvForgottenPassword) TextView tvForgottenPassword;
+  private int mContainerId = -1;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login_main, container, false);
-        ButterKnife.bind(this, view);
-        return view;
-    }
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_login_main, container, false);
+    ButterKnife.bind(this, view);
+    return view;
+  }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    ButterKnife.unbind(this);
+  }
 
+  public void sinaLogin() {
+    WeiboHelper instance = WeiboHelper.getInstance(getActivity());
+    ((LoginActivity) getActivity()).handler =
+        new SsoHandler(getActivity(), instance.getmAuthInfo());
+    instance.weiboLogin(((LoginActivity) getActivity()).handler, this, true);
+  }
 
+  public void weixinLogin() {
+    WechatHelper.getInstance(getActivity()).login(this);
+  }
 
-    public void sinaLogin() {
-        WeiboHelper instance = WeiboHelper.getInstance(getActivity());
-        ((LoginActivity)getActivity()).handler = new SsoHandler(getActivity(), instance.getmAuthInfo());
-        instance.weiboLogin(((LoginActivity)getActivity()).handler , this, true);
-    }
+  private FragmentTransaction getFragmentTransactor() {
+    return getFragmentManager().beginTransaction()
+        .setCustomAnimations(R.animator.card_flip_horizontal_right_in,
+            R.animator.card_flip_horizontal_left_out, R.animator.card_flip_horizontal_left_in,
+            R.animator.card_flip_horizontal_right_out);
+  }
 
-    public void weixinLogin() {
-        WechatHelper.getInstance(getActivity()).login(this);
-    }
-
-
-    private FragmentTransaction getFragmentTransactor(){
-        return getFragmentManager().beginTransaction().setCustomAnimations(
-                R.animator.card_flip_horizontal_right_in,
-                R.animator.card_flip_horizontal_left_out,
-                R.animator.card_flip_horizontal_left_in,
-                R.animator.card_flip_horizontal_right_out);
-    }
-
-    @OnClick({R.id.tvForgottenPassword,R.id.tvLoginViaPhone,R.id.tvCreateAccountViaPhone,R.id.llAuthorizationViaMm,R.id.llAuthorizationViaWeibo})
-    public void onClick(View v) {
-        mContainerId = mContainerId == -1? ((ViewGroup)getView().getParent()).getId():mContainerId;
-        switch (v.getId()){
-            case R.id.tvForgottenPassword:
-                PhoneValidationFragment pvfResetPwd = new PhoneValidationFragment();
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION,false);
-                pvfResetPwd.setArguments(bundle);
-                getFragmentTransactor()
-                        .replace(mContainerId,pvfResetPwd)
-                        .addToBackStack(TAG)
-                        .commitAllowingStateLoss();
-                getFragmentManager().executePendingTransactions();
-                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
-                break;
-            case R.id.tvLoginViaPhone:
-                getFragmentTransactor()
-                        .replace(mContainerId,new LoginByPhoneFragment())
-                        .addToBackStack(TAG)
-                        .commitAllowingStateLoss();
-                getFragmentManager().executePendingTransactions();
-                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
-                MobclickAgent.onEvent(getActivity(),"pop_login_c");
-                break;
-            case R.id.tvCreateAccountViaPhone:
-                getFragmentTransactor()
-                        .replace(mContainerId,new PhoneValidationFragment())
-                        .addToBackStack(TAG)
-                        .commitAllowingStateLoss();
-                getFragmentManager().executePendingTransactions();
-                ((BaseActivity)getActivity()).getEnhancedToolbar().show();
-                MobclickAgent.onEvent(getActivity(),"pop_registerphone_c");
-                break;
-            case R.id.llAuthorizationViaMm:
-
-                if (NetUtil.isNetworkConnected(getActivity())) {
-                    weixinLogin();
-                } else {
-                    Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                }
-                MobclickAgent.onEvent(getActivity(),"pop_loginwechat_c");
-
-
-                break;
-            case R.id.llAuthorizationViaWeibo:
-
-                if (NetUtil.isNetworkConnected(getActivity())) {
-                sinaLogin();
-                } else {
-                    Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                }
-                MobclickAgent.onEvent(getActivity(),"pop_loginweibo_c");
-
-                break;
+  @OnClick({
+      R.id.tvForgottenPassword, R.id.tvLoginViaPhone, R.id.tvCreateAccountViaPhone,
+      R.id.llAuthorizationViaMm, R.id.llAuthorizationViaWeibo
+  }) public void onClick(View v) {
+    mContainerId = mContainerId == -1 ? ((ViewGroup) getView().getParent()).getId() : mContainerId;
+    switch (v.getId()) {
+      case R.id.tvForgottenPassword:
+        //忘记密码
+        PhoneValidationFragment pvfResetPwd = new PhoneValidationFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
+        pvfResetPwd.setArguments(bundle);
+        getFragmentTransactor().replace(mContainerId, pvfResetPwd)
+            .addToBackStack(TAG)
+            .commitAllowingStateLoss();
+        getFragmentManager().executePendingTransactions();
+        ((BaseActivity) getActivity()).getEnhancedToolbar().show();
+        break;
+      case R.id.tvLoginViaPhone:
+        //手机账号登录
+        getFragmentTransactor().replace(mContainerId, new LoginByPhoneFragment())
+            .addToBackStack(TAG)
+            .commitAllowingStateLoss();
+        getFragmentManager().executePendingTransactions();
+        ((BaseActivity) getActivity()).getEnhancedToolbar().show();
+        MobclickAgent.onEvent(getActivity(), "pop_login_c");
+        break;
+      case R.id.tvCreateAccountViaPhone:
+        //手机号注册
+        getFragmentTransactor().replace(mContainerId, new PhoneValidationFragment())
+            .addToBackStack(TAG)
+            .commitAllowingStateLoss();
+        getFragmentManager().executePendingTransactions();
+        ((BaseActivity) getActivity()).getEnhancedToolbar().show();
+        MobclickAgent.onEvent(getActivity(), "pop_registerphone_c");
+        break;
+      case R.id.llAuthorizationViaMm:
+        //微信登录
+        if (NetUtil.isNetworkConnected(getActivity())) {
+          weixinLogin();
+        } else {
+          Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
         }
-    }
+        MobclickAgent.onEvent(getActivity(), "pop_loginwechat_c");
 
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOGIN_ACTIVITY_SHOW_RETURN));
-        ((BaseActivity)getActivity()).getEnhancedToolbar().hide();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOGIN_ACTIVITY_HIDE_RETURN));
-    }
-
-    @Override
-    public void loginSuccess(int type, String token, String appId) {
-
-        ArrayMap<String,Object> params = new ArrayMap<>();
-
-        if (AppContext.user.isIsweixin()){
-            params.put("登陆方式","微信登录");
-        }else if(AppContext.user.isIsweibo()){
-            params.put("登陆方式","微博登录");
-        }else if(AppContext.user.isIsVisitors()){
-            params.put("登陆方式","游客登录");
-        }else{
-            params.put("登陆方式","手机号登录");
+        break;
+      case R.id.llAuthorizationViaWeibo:
+        //微博登录
+        if (NetUtil.isNetworkConnected(getActivity())) {
+          sinaLogin();
+        } else {
+          Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
         }
-        params.put("用户名", AppContext.user.getFullname());
+        MobclickAgent.onEvent(getActivity(), "pop_loginweibo_c");
 
-        JSONObject jsonObject = new JSONObject();
-        try {
-            for (String key : params.keySet()) {
-                jsonObject.put(key, params.get(key));
-            }
-            jsonObject.put("时间", System.currentTimeMillis());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        ZhugeSDK.getInstance().track(getActivity(), "用户登录", jsonObject);
-
-
-        AppUtil.resignUser(getActivity());
-        startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN,true));
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
+        break;
     }
+  }
 
-    @Override
-    public void loginFail(String message) {
+  @Override public void onResume() {
+    super.onResume();
+    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOGIN_ACTIVITY_SHOW_RETURN));
+    ((BaseActivity) getActivity()).getEnhancedToolbar().hide();
+  }
 
+  @Override public void onPause() {
+    super.onPause();
+    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOGIN_ACTIVITY_HIDE_RETURN));
+  }
+
+  @Override public void loginSuccess(int type, String token, String appId) {
+
+    //连接融云服务
+    IMPresenter.getToken(getActivity());
+
+    ArrayMap<String, Object> params = new ArrayMap<>();
+
+    if (AppContext.user.isIsweixin()) {
+      params.put("登陆方式", "微信登录");
+    } else if (AppContext.user.isIsweibo()) {
+      params.put("登陆方式", "微博登录");
+    } else if (AppContext.user.isIsVisitors()) {
+      params.put("登陆方式", "游客登录");
+    } else {
+      params.put("登陆方式", "手机号登录");
     }
+    params.put("用户名", AppContext.user.getFullname());
 
+    JSONObject jsonObject = new JSONObject();
+    try {
+      for (String key : params.keySet()) {
+        jsonObject.put(key, params.get(key));
+      }
+      jsonObject.put("时间", System.currentTimeMillis());
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    ZhugeSDK.getInstance().track(getActivity(), "用户登录", jsonObject);
 
+    AppUtil.resignUser(getActivity());
+    startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(
+        RecommendActivity.REQUEST_KEY_FROM_LOGIN, true));
+    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
+  }
+
+  @Override public void loginFail(String message) {
+    LogUtils.e("LoginFragment", "login fail message : " + message);
+  }
 }

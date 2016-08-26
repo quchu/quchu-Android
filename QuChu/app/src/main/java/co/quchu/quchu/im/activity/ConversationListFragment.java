@@ -1,0 +1,74 @@
+package co.quchu.quchu.im.activity;
+
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import co.quchu.quchu.R;
+import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.im.IMPresenter;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+
+/**
+ * im聊天列表
+ *
+ * Created by mwb on 16/8/25.
+ */
+public class ConversationListFragment extends BaseFragment {
+
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
+
+    //设置小Q
+    IMPresenter.sendTextMessage(IMPresenter.userId1, "我是小Q", null, null);
+    RongIM.getInstance().setConversationToTop(Conversation.ConversationType.PRIVATE, IMPresenter.userId1, true, new RongIMClient.ResultCallback<Boolean>() {
+      @Override public void onSuccess(Boolean aBoolean) {
+      }
+
+      @Override public void onError(RongIMClient.ErrorCode errorCode) {
+      }
+    });
+
+    enterFragment();
+
+    return view;
+  }
+
+  /**
+   * 加载融云会话列表
+   */
+  private void enterFragment() {
+    io.rong.imkit.fragment.ConversationListFragment fragment = new io.rong.imkit.fragment.ConversationListFragment();
+    Uri uri = Uri.parse("rong://" + getActivity().getApplicationInfo().packageName).buildUpon()
+        .appendPath("conversationlist")
+        .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(),
+            "false") //设置私聊会话是否聚合显示
+        .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "true")//群组
+        .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "false")//讨论组
+        .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(),
+            "false")//公共服务号
+        .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(),
+            "false")//公共服务号
+        .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//系统
+        .build();
+    fragment.setUri(uri);
+
+    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    fragmentTransaction.add(R.id.conversation_list_fragment, fragment);
+    fragmentTransaction.commit();
+  }
+
+  @Override protected String getPageNameCN() {
+    return null;
+  }
+}

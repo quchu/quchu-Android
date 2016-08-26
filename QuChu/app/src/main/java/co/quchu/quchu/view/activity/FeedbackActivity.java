@@ -24,8 +24,10 @@ import co.quchu.quchu.dialog.FeedbackDialog;
 import co.quchu.quchu.model.FeedbackModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.FeedbackPresenter;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.FeedbackAdapter;
+import io.rong.imkit.RongIM;
 
 /**
  * FeedbackActivity
@@ -35,133 +37,123 @@ import co.quchu.quchu.view.adapter.FeedbackAdapter;
  */
 public class FeedbackActivity extends BaseBehaviorActivity {
 
-    private FeedbackAdapter adapter;
-    private FeedbackDialog feedbackDialog;
+  private FeedbackAdapter adapter;
+  private FeedbackDialog feedbackDialog;
 
-    @Bind(R.id.feedback_recycler_view)
-    RecyclerView recyclerView;
-    @Bind(R.id.feedback_swipeRefreshLayout)
-    SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.submit_feedback_btn)
-    ImageView submitFeedbackBtn;
+  @Bind(R.id.feedback_recycler_view) RecyclerView recyclerView;
+  @Bind(R.id.feedback_swipeRefreshLayout) SwipeRefreshLayout refreshLayout;
+  @Bind(R.id.submit_feedback_btn) ImageView submitFeedbackBtn;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feedback);
-        ButterKnife.bind(this);
-        EnhancedToolbar toolbar = getEnhancedToolbar();
-        TextView textView = toolbar.getTitleTv();
-        textView.setText("Felix");
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_feedback);
+    ButterKnife.bind(this);
+    EnhancedToolbar toolbar = getEnhancedToolbar();
+    TextView textView = toolbar.getTitleTv();
+    textView.setText("Felix");
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new FeedbackAdapter(this);
-        recyclerView.setAdapter(adapter);
-        adapter.setOnFeedbackItemClickListener(onItemClickListener);
-        refreshLayout.setOnRefreshListener(onRefreshListener);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    adapter = new FeedbackAdapter(this);
+    recyclerView.setAdapter(adapter);
+    adapter.setOnFeedbackItemClickListener(onItemClickListener);
+    refreshLayout.setOnRefreshListener(onRefreshListener);
 
-        getFeedbackList();
-    }
+    getFeedbackList();
+  }
 
-    /**
-     * 获取反馈列表
-     */
-    private void getFeedbackList() {
-        FeedbackPresenter.getFeedbackList(this, pageLoadListener);
-    }
+  /**
+   * 获取反馈列表
+   */
+  private void getFeedbackList() {
+    FeedbackPresenter.getFeedbackList(this, pageLoadListener);
+  }
 
-    /**
-     * 聊天
-     */
-    private FeedbackAdapter.OnFeedbackItemClickListener onItemClickListener = new FeedbackAdapter.OnFeedbackItemClickListener() {
-        @Override
-        public void onItemClick(FeedbackModel feedbackModel) {
-
+  /**
+   * 聊天
+   */
+  private FeedbackAdapter.OnFeedbackItemClickListener onItemClickListener =
+      new FeedbackAdapter.OnFeedbackItemClickListener() {
+        @Override public void onItemClick(FeedbackModel feedbackModel) {
+          if (RongIM.getInstance() != null) {
+            RongIM.getInstance().startPrivateChat(FeedbackActivity.this, IMPresenter.userId,
+                feedbackModel.getTitle());
+          }
         }
-    };
+      };
 
-    /**
-     * 加载数据
-     */
-    private CommonListener<List<FeedbackModel>> pageLoadListener = new CommonListener<List<FeedbackModel>>() {
-        @Override
-        public void successListener(List<FeedbackModel> response) {
-            adapter.initData(response);
-            refreshLayout.setRefreshing(false);
+  /**
+   * 加载数据
+   */
+  private CommonListener<List<FeedbackModel>> pageLoadListener =
+      new CommonListener<List<FeedbackModel>>() {
+        @Override public void successListener(List<FeedbackModel> response) {
+          adapter.initData(response);
+          refreshLayout.setRefreshing(false);
         }
 
-        @Override
-        public void errorListener(VolleyError error, String exception, String msg) {
-            makeToast(R.string.network_error);
-            refreshLayout.setRefreshing(false);
+        @Override public void errorListener(VolleyError error, String exception, String msg) {
+          makeToast(R.string.network_error);
+          refreshLayout.setRefreshing(false);
         }
-    };
+      };
 
-    /**
-     * 下拉刷新
-     */
-    private SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-        @Override
-        public void onRefresh() {
+  /**
+   * 下拉刷新
+   */
+  private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
+      new SwipeRefreshLayout.OnRefreshListener() {
+        @Override public void onRefresh() {
+          getFeedbackList();
+        }
+      };
+
+  /**
+   * 提交反馈
+   */
+  private void submitFeedbackClick() {
+    feedbackDialog = new FeedbackDialog(this, new FeedbackDialog.DialogConfirmListener() {
+      @Override public void confirm(String title, String content) {
+        FeedbackPresenter.sendFeedback(FeedbackActivity.this, title, content, new CommonListener() {
+          @Override public void successListener(Object response) {
+            SPUtils.setFeedback("", "");
+            feedbackDialog.dismiss();
+
+            CommonDialog commonDialog = CommonDialog.newInstance("提交成功", "谢谢你对我们的支持", true);
+            commonDialog.show(getSupportFragmentManager(), "");
+
             getFeedbackList();
-        }
-    };
+          }
 
-    /**
-     * 提交反馈
-     */
-    private void submitFeedbackClick() {
-        feedbackDialog = new FeedbackDialog(this, new FeedbackDialog.DialogConfirmListener() {
-            @Override
-            public void confirm(String title, String content) {
-                FeedbackPresenter.sendFeedback(FeedbackActivity.this, title, content, new CommonListener() {
-                    @Override
-                    public void successListener(Object response) {
-                        SPUtils.setFeedback("", "");
-                        feedbackDialog.dismiss();
-
-                        CommonDialog commonDialog = CommonDialog.newInstance("提交成功", "谢谢你对我们的支持", true);
-                        commonDialog.show(getSupportFragmentManager(), "");
-
-                        getFeedbackList();
-                    }
-
-                    @Override
-                    public void errorListener(VolleyError error, String exception, String msg) {
-                        makeToast(R.string.network_error);
-                    }
-                });
-            }
+          @Override public void errorListener(VolleyError error, String exception, String msg) {
+            makeToast(R.string.network_error);
+          }
         });
-        feedbackDialog.show();
-    }
+      }
+    });
+    feedbackDialog.show();
+  }
 
-    @Override
-    public ArrayMap<String, Object> getUserBehaviorArguments() {
-        return null;
-    }
+  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+    return null;
+  }
 
-    @Override
-    public int getUserBehaviorPageId() {
-        return 127;
-    }
+  @Override public int getUserBehaviorPageId() {
+    return 127;
+  }
 
-    @Override
-    protected String getPageNameCN() {
-        return "Felix";
-    }
+  @Override protected String getPageNameCN() {
+    return "Felix";
+  }
 
-    @Override
-    protected int activitySetup() {
-        return TRANSITION_TYPE_LEFT;
-    }
+  @Override protected int activitySetup() {
+    return TRANSITION_TYPE_LEFT;
+  }
 
-    @OnClick(R.id.submit_feedback_btn)
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.submit_feedback_btn:
-                submitFeedbackClick();
-                break;
-        }
+  @OnClick(R.id.submit_feedback_btn) public void onClick(View view) {
+    switch (view.getId()) {
+      case R.id.submit_feedback_btn:
+        submitFeedbackClick();
+        break;
     }
+  }
 }

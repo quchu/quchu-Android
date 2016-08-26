@@ -1,4 +1,4 @@
-package co.quchu.quchu.im;
+package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -85,7 +85,9 @@ public class NoticeFragment extends BaseFragment {
 
         @Override
         public void nullData() {
-            refreshLayout.setRefreshing(false);
+            if (refreshLayout != null) {
+                refreshLayout.setRefreshing(false);
+            }
             adapter.setLoadMoreEnable(false);
         }
 

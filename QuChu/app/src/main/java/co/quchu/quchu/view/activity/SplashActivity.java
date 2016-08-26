@@ -11,13 +11,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.UserInfoModel;
-import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.AppUtil;
@@ -171,11 +168,17 @@ public class SplashActivity extends BaseActivity {
 
                 AppUtil.resignUser(getApplicationContext());
 
+                //连接融云服务
+                IMPresenter.getToken(AppContext.mContext);
+
             } else {
                 visitorStartTime = System.currentTimeMillis() / 1000;
                 UserLoginPresenter.visitorRegiest(this, new UserLoginPresenter.UserNameUniqueListener() {
                     @Override
                     public void isUnique(JSONObject msg) {
+
+                        //连接融云服务
+                        IMPresenter.getToken(AppContext.mContext);
 
                         ArrayMap<String,Object> params = new ArrayMap<>();
                         params.put("用户名",AppContext.user.getFullname());

@@ -19,7 +19,6 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -41,7 +40,6 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.gallery.utils.ImageUtils;
-import co.quchu.quchu.im.MessageActivity;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;

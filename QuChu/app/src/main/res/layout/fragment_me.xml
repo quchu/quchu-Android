@@ -122,17 +122,15 @@
 
                 <TextView
                     android:id="@+id/unReadMassage"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="5dp"
+                    android:layout_height="5dp"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="@dimen/quarter_margin"
                     android:layout_toRightOf="@id/tvMsg"
                     android:background="@drawable/shape_round_red"
                     android:gravity="center"
                     android:textColor="@color/standard_color_white"
-                    android:visibility="invisible"
-                    tools:text="1"
-                    tools:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:layout_width="wrap_content"

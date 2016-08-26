@@ -24,14 +24,14 @@
     <string name="rc_image_default_saved_path">/RongCloud/Image/</string>
 
     <!-- 设置是否支持消息撤回-->
-    <bool name="rc_enable_message_recall">false</bool>
+    <bool name="rc_enable_message_recall">true</bool>
     <!-- 消息撤回有效时间（单位：秒）-->
     <integer name="rc_message_recall_interval">120</integer>
     
     <bool name="rc_enable_mentioned_message">false</bool>
 
     <!-- 设置已读回执，仅限单聊 -->
-    <bool name="rc_read_receipt">false</bool>
+    <bool name="rc_read_receipt">true</bool>
 
     <!-- 开启之后，用户在其他端上阅读过的消息，当前客户端会清掉该消息的未读数。目前仅支持单聊、群聊、讨论组。-->
     <!--需要先开启rc_read_receipt。-->
