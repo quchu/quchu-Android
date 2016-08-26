@@ -2,7 +2,6 @@
 <com.facebook.drawee.view.SimpleDraweeView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sdvAvatar"
-    android:orientation="vertical"
     android:layout_width="@dimen/detail_hangout_users_avatar_size"
     android:layout_height="@dimen/detail_hangout_users_avatar_size"
     app:placeholderImage="@color/standard_color_h3_dark"

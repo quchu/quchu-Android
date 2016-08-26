@@ -63,6 +63,12 @@
             style="@style/TextView.H3"
             tools:text="Comment"
             />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/rc_item_image_message"
+            />
         <TextView
             android:id="@+id/tvCollapse"
             android:layout_width="match_parent"

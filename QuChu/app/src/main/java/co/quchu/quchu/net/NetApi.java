@@ -9,7 +9,7 @@ public interface NetApi {
   String RELEASE_HOST = "http://www.quchu.co/app-main-service";
   String HOST_UAT = "http://uat.quchu.co/app-main-service";
 
-  String HOST_SIT = "http://sit.quchu.co/app-main-service";
+  String HOST_SIT = "http://sit.quchu.co:8080/app-service";
 
   String HOST = BuildConfig.API_SERVER == 0 ? RELEASE_HOST
       : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;

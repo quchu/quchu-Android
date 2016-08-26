@@ -61,6 +61,8 @@ public class DetailModel implements Serializable{
     private String traffic = "";
     public String gdLatitude= "";
     public String gdLongitude= "";
+    private int joinPartnerCount;
+    private int placeReviewCount;
     private boolean isActivity;
     private boolean isf;
     private boolean isout;
@@ -103,7 +105,21 @@ public class DetailModel implements Serializable{
         this.recommendPlaces = nearPlace;
     }
 
+    public int getJoinPartnerCount() {
+        return joinPartnerCount;
+    }
 
+    public void setJoinPartnerCount(int joinPartnerCount) {
+        this.joinPartnerCount = joinPartnerCount;
+    }
+
+    public int getPlaceReviewCount() {
+        return placeReviewCount;
+    }
+
+    public void setPlaceReviewCount(int placeReviewCount) {
+        this.placeReviewCount = placeReviewCount;
+    }
 
     public NearbyMapModel convert2NearbyMapItem(){
         NearbyMapModel model = new NearbyMapModel();
@@ -172,6 +188,8 @@ public class DetailModel implements Serializable{
         setSuggest(objTarget.getSuggest());
         setMyCardId(objTarget.getMyCardId());
         setMap(objTarget.isMap());
+        setJoinPartnerCount(objTarget.getJoinPartnerCount());
+        setPlaceReviewCount(objTarget.getPlaceReviewCount());
 
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;
