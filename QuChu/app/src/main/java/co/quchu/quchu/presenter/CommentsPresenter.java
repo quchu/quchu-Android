@@ -18,7 +18,7 @@ public class CommentsPresenter {
         HashMap<String,String> params = new HashMap<>();
         params.put("placeId",String.valueOf(pid));
         params.put("pagesNo",String.valueOf(pageNo));
-        NetService.get(context, NetApi.getAllScene, params,new IRequestListener() {
+        NetService.get(context, NetApi.getDetailComments, params,new IRequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 PagerModel<CommentModel> sceneModels = new Gson().fromJson(response.toString(), new TypeToken<PagerModel<CommentModel>>() {}.getType());

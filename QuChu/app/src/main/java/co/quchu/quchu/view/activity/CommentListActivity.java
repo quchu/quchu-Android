@@ -212,7 +212,7 @@ public class CommentListActivity extends BaseActivity implements SwipeRefreshLay
 
 
 
-    public static void enterActivity(Activity from, long pid) {
+    public static void enterActivity(Activity from, int pid) {
         Intent intent = new Intent(from, CommentListActivity.class);
         intent.putExtra(BUNDLE_KEY_PLACE_ID, pid);
         from.startActivity(intent);
