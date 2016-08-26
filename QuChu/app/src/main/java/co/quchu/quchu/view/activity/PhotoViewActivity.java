@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
+import butterknife.Bind;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -35,6 +37,7 @@ public class PhotoViewActivity extends BaseActivity {
     private int mIndex = -1;
     private static String BUNDLE_KEY_PHOTO_LIST = "BUNDLE_KEY_PHOTO_LIST";
     private static String BUNDLE_KEY_PHOTO_LIST_INDEX = "BUNDLE_KEY_PHOTO_LIST_INDEX";
+    @Bind(R.id.ivReturn) ImageView mIvReturn;
 
 
     public static void enterActivity(Activity from,int position, List<ImageModel> imageSet) {
@@ -53,8 +56,12 @@ public class PhotoViewActivity extends BaseActivity {
 
         setContentView(R.layout.activity_photoview);
 
-        getEnhancedToolbar().getTitleTv().setText("查看大图");
 
+        mIvReturn.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 //        ((Toolbar) findViewById(R.id.toolbar)).setNavigationOnClickListener(
 //                new View.OnClickListener() {
 //                    @Override public void onClick(View v) {
@@ -127,6 +134,11 @@ public class PhotoViewActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
+            photoDraweeView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View view) {
+                    PhotoViewActivity.this.finish();
+                }
+            });
             return photoDraweeView;
         }
     }

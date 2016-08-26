@@ -24,18 +24,18 @@ public interface NetApi {
    * orderby 排序类型(hot/new) 为空则为hot
    */
   String GetImageAlbum = HOST + "/personal/getAlbum?accesstoken=%s&type=image&orderby=%s&pageno=%d";
-      //相册接口
+  //相册接口
   String GetFavoriteAlbum =
       HOST + "/personal/getAlbum?accesstoken=%s&type=favorite&orderby=%s&pageno=%d"; //相册接口
   String AlbumTypeHot = "hot";
   String AlbumTypeNew = "new";
   String GetCaptcha = HOST + "/mregister/getCaptcha?username=%s&method=%s";
-      //获取验证码 register=注册  reset=重置密码
+  //获取验证码 register=注册  reset=重置密码
   String WeiboLogin = HOST + "/oauth/checkWeibo?token=%s&openId=%s&equip=%s&type=login";
-      //微博注册/登录 token=微博返回的token openid= 微博返回的uid  equip=设备uuid
+  //微博注册/登录 token=微博返回的token openid= 微博返回的uid  equip=设备uuid
   String WeiboBind = HOST + "/oauth/checkWeibo"; //账号绑定微博   accesstoken=服务器返回的用户token
   String WechatLogin = HOST + "/oauth/checkWeixin?token=%s&openId=%s&equip=%s&type=login";
-      //微信注册登录   accesstoken=服务器返回的用户token
+  //微信注册登录   accesstoken=服务器返回的用户token
   String WechatBind = HOST + "/oauth/checkWeixin"; //微信绑定   accesstoken=服务器返回的用户token
 
   String UserStar = HOST + "/personal/getUserStar"; //我的趣星球
@@ -46,11 +46,11 @@ public interface NetApi {
   //  String getPlaceList = HOST + "/place/getPlaceList";//获取趣处 推荐列表
   String getPlaceList =
       HOST + "/place/getPlaceList?cityId=%d&tagsEn=%s&latitude=%s&longitude=%s&pageno=%d";
-      //获取趣处 推荐列表按照分类
+  //获取趣处 推荐列表按照分类
   // String getDefaultPlaceList = HOST + "/place/getPlaceList?cityId=%d&latitude=%s&longitude=%s&pageno=%d";//获取趣处 推荐列表
   String getDefaultPlaceList =
       HOST + "/place/getPlaceList?tagsEn=%s&cityId=%d&latitude=%s&longitude=%s&pageno=%d";
-      // 1.1 根据tag获取趣处 列表
+  // 1.1 根据tag获取趣处 列表
   String GetCityList = HOST + "/place/getCityList";  //获取城市列表  或验证城市
   //    String Seach = HOST + "/search?value=%s&pageno=%d&cityId=%s";  //搜索 value=搜索内容  gageno=分页页码
   String Seach = HOST + "/search/searchPlace";  //搜索 value=搜索内容  gageno=分页页码
@@ -63,9 +63,9 @@ public interface NetApi {
   String FavTypePlace = "place";
   String FavTypeCard = "card";
   String userFavorite = HOST + "/sns/favorite?formId=%d&type=%s";
-      //收藏 formId=423&type=image  formId=id  type=（image:图片,article:资讯,place:趣处,card: 明信片）
+  //收藏 formId=423&type=image  formId=id  type=（image:图片,article:资讯,place:趣处,card: 明信片）
   String userDelFavorite = HOST + "/sns/delfavorite?formId=%d&type=%s";
-      //收藏 formId=423&type=image  formId=id  type=（image:图片,article:资讯,place:趣处,card: 明信片）
+  //收藏 formId=423&type=image  formId=id  type=（image:图片,article:资讯,place:趣处,card: 明信片）
   String getFavorite = HOST + "/personal/getFavorite";  //获取我的收藏
   String getProposalPlaceList = HOST + "/personal/getProposalPlaceList?pageno=%d";  //获取我的发现
   String getFavoriteList = HOST + "/personal/getFavoriteList?pageno=%d&type=%s";  //获取我收藏的趣处/明信片
@@ -93,11 +93,11 @@ public interface NetApi {
   String getUserInfo = HOST + "/personal/getUserInfo?userId=%d";  //获取自己用户信息
   String getUserCardList = HOST + "/place/getUserCardList";  //获取某个用户的明信片
   String getUsercenterFavoriteList = HOST + "/place/getFavoriteList?userId=%d&pageno=%d";
-      //获取某个用户收藏的趣处列表
+  //获取某个用户收藏的趣处列表
   String getFollow = HOST + "/place/getFollow?userId=%d&pageno=%d&head=no&type=%s";  //获取某个用户收藏的趣处列表
 
   String getCurrentUserFollowers = HOST + "/personal/getFollow?head=%s&type=%s&pageno=%d";
-      //获取当前用户的关注列表
+  //获取当前用户的关注列表
 
   String getCategoryTags = HOST + "/place/getCategoryTags?cityId=%d";  //获取tag 列表
   String getNearby = HOST
@@ -116,14 +116,14 @@ public interface NetApi {
    * POST
    *******************/
   String IsUnique = HOST + "/mregister/isUnique?username=%s&type=username";
-      //验证用户唯一性   type=username 验证手机号码  type=fullname  验证用户昵称 是否可用
+  //验证用户唯一性   type=username 验证手机号码  type=fullname  验证用户昵称 是否可用
   String Regiester =
       HOST + "/mregister?username=%s&password=%s&captcha=%s&regType=tel&equip=%s&fullname=%s";
-      //用户注册  username=PhoneNo  captcha =验证码 equip=uuid  fullname=NickName
+  //用户注册  username=PhoneNo  captcha =验证码 equip=uuid  fullname=NickName
   String Mlogin = HOST + "/login/android?j_username=%s&j_password=%s&equip=%s";
-      //用户登录  username=PhoneNo  captcha =验证码 equip=uuid
+  //用户登录  username=PhoneNo  captcha =验证码 equip=uuid
   String ResertPsw = HOST + "/mregister/resertPsw?resType=tel&tel=%s&newpsw=%s&captcha=%s";
-      //重置密码  username=PhoneNo  captcha =验证码 newpsw=密码
+  //重置密码  username=PhoneNo  captcha =验证码 newpsw=密码
   String FeedBack = HOST + "/sns/feedback?value=%s"; //意见反馈
   String saveOrUpdateCard = HOST + "/operate/saveOrUpdateCard"; //意见反馈
   String updateUser = HOST + "/personal/updateUser"; //修改用户设置
@@ -174,7 +174,7 @@ public interface NetApi {
   String addFavoriteScene = HOST + "/scene/favoriteSceneById";        //sceneId
   String delFavoriteScene = HOST + "/scene/delFavoriteSceneById";     //sceneId
   String getSceneDetail = HOST + "/scene/getSceneDetail";
-      //sceneId,placeIds,longitude,latitude,cityId,pagesNo,name
+  //sceneId,placeIds,longitude,latitude,cityId,pagesNo,name
   String addFavoriteArticle = HOST + "/searchSpecial/favoriteArticleById";
   String delFavoriteArticle = HOST + "/searchSpecial/delFavoriteArticleById";
 
@@ -185,6 +185,8 @@ public interface NetApi {
 
   String getHangoutUsers = HOST + "/im/getUserList";
   String sendInvite = HOST + "/im/joinPartner";
+
+  String getDetailComments = HOST + "/placeReview/getListByPlaceId";
 
   /**
    * 用户消息设置

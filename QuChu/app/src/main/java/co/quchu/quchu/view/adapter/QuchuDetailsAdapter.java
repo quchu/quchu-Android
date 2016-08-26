@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import co.quchu.quchu.model.CommentImageModel;
 import co.quchu.quchu.model.HangoutUserModel;
+import co.quchu.quchu.view.activity.CommentListActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -464,6 +465,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (mData.getPlaceReviewCount()>3){
           ((LabelViewHolder) holder).ivMoreComments.setVisibility(View.VISIBLE);
           ((LabelViewHolder) holder).tvMoreComments.setVisibility(View.VISIBLE);
+          ((LabelViewHolder) holder).ivMoreComments.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+              CommentListActivity.enterActivity(mAnchorActivity,mData.getPid());
+            }
+          });
         }
       }
     } else if (holder instanceof StarterInfoViewHolder) {
