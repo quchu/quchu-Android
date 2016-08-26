@@ -5,15 +5,6 @@
     android:background="@color/standard_color_black"
     >
 
-    <ImageView
-        android:id="@+id/ivReturn"
-        android:layout_width="@dimen/toolbar_item_size"
-        android:layout_height="@dimen/toolbar_item_size"
-        android:src="@mipmap/ic_forward"
-        android:rotation="180"
-        android:scaleType="center"
-        />
-
 
     <co.quchu.quchu.view.adapter.MultiTouchViewPager
         android:id="@+id/view_pager"
@@ -28,4 +19,14 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
 
+
+
+    <ImageView
+        android:id="@+id/ivReturn"
+        android:layout_width="@dimen/toolbar_item_size"
+        android:layout_height="@dimen/toolbar_item_size"
+        android:src="@mipmap/ic_forward"
+        android:rotation="180"
+        android:scaleType="center"
+        />
 </FrameLayout>
