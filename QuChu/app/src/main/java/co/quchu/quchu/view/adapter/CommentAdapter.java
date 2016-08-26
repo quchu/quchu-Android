@@ -54,8 +54,8 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
   }
 
   @Override public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-      final CommentModel commentModel = mDataSet.get(position);
       if (holder instanceof CommentViewHolder){
+        final CommentModel commentModel = mDataSet.get(position);
 
         ((CommentViewHolder) holder).rvImages.setLayoutManager(new GridLayoutManager(mAnchorActivity,2));
         CommentImageAdapter adapter = new CommentImageAdapter(commentModel.getImageList());
@@ -123,11 +123,11 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
   }
 
   @Override public int getItemCount() {
-    return null!=mDataSet?mDataSet.size():0 +(mShowingNoData?1:0);
+    return null!=mDataSet?mDataSet.size()+(mShowingNoData?1:0):0;
   }
   @Override
   public int getItemViewType(int position) {
-    if (position <=mDataSet.size()) {
+    if (position <mDataSet.size()) {
       return TYPE_INFO;
     } else{
       return TYPE_PAGE_END;

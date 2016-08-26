@@ -3,7 +3,6 @@ package co.quchu.quchu.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,31 +13,18 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.CommentModel;
-import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.PagerModel;
-import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.model.SceneDetailModel;
-import co.quchu.quchu.model.SceneHeaderModel;
-import co.quchu.quchu.model.SceneInfoModel;
-import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommentsPresenter;
 import co.quchu.quchu.presenter.CommonListener;
-import co.quchu.quchu.presenter.ScenePresenter;
-import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.CommentAdapter;
-import co.quchu.quchu.view.adapter.SceneDetailAdapter;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.ErrorView;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by Nico on 16/7/11.
@@ -113,18 +99,7 @@ public class CommentListActivity extends BaseActivity implements SwipeRefreshLay
 
     public void getData() {
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
-        int delay = 0;
-        if (Math.abs(AppContext.mLastLocatingTimeStamp - System.currentTimeMillis())>=(60000*5)){
-            AppContext.initLocation();
-            delay += 3000;
-        }
-
-        rv.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getData(true, false);
-            }
-        },delay);
+        getData(true, false);
     }
 
 
@@ -138,6 +113,7 @@ public class CommentListActivity extends BaseActivity implements SwipeRefreshLay
             mPageNo = 1;
         }
 
+        System.out.println(mMaxPageNo + "|" + mPageNo + "|"+mMaxPageNo + "|"+loadMore);
         if (mMaxPageNo != -1 && mPageNo >= mMaxPageNo && loadMore) {
             mAdapter.showPageEnd(true);
             return;

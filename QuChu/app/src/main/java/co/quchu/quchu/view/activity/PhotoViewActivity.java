@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import android.widget.ImageView;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -26,6 +27,7 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.view.adapter.MultiTouchViewPager;
 import co.quchu.quchu.widget.CircleIndicator;
+import me.relex.photodraweeview.OnPhotoTapListener;
 import me.relex.photodraweeview.PhotoDraweeView;
 
 /**
@@ -55,6 +57,7 @@ public class PhotoViewActivity extends BaseActivity {
         mIndex = getIntent().getIntExtra(BUNDLE_KEY_PHOTO_LIST_INDEX,-1);
 
         setContentView(R.layout.activity_photoview);
+        ButterKnife.bind(this);
 
 
         mIvReturn.setOnClickListener(new View.OnClickListener() {
@@ -134,8 +137,8 @@ public class PhotoViewActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            photoDraweeView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View view) {
+            photoDraweeView.setOnPhotoTapListener(new OnPhotoTapListener() {
+                @Override public void onPhotoTap(View view, float x, float y) {
                     PhotoViewActivity.this.finish();
                 }
             });
