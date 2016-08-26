@@ -179,6 +179,13 @@
     </style>
 
 
+    <style name="StarProgressBar_Small" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/star_ratingbar_small_selector</item>
+        <item name="android:minHeight">13dip</item>
+        <item name="android:maxHeight">13dip</item>
+    </style>
+
+
     <style name="CustomProgressBarLarge" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/custom_ratingbar_larger_selector</item>
         <item name="android:minHeight">19dip</item>

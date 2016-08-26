@@ -17,9 +17,9 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import co.quchu.quchu.model.CommentImageModel;
 import co.quchu.quchu.model.HangoutUserModel;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -512,7 +512,31 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             .get(commentIndex)) {
           return;
         }
-        CommentModel commentModel = mData.getReviewList().get(commentIndex);
+
+        final CommentModel commentModel = mData.getReviewList().get(commentIndex);
+
+        ((CommentViewHolder) holder).rvImages.setLayoutManager(new GridLayoutManager(mAnchorActivity,2));
+        CommentImageAdapter adapter = new CommentImageAdapter(commentModel.getImageList());
+        if (null!=commentModel && null!=commentModel.getImageList()){
+
+          adapter.setOnItemClickListener(new CommonItemClickListener() {
+            @Override public void onItemClick(View v, int position) {
+              List<ImageModel> imageModels = new ArrayList<>();
+              for (int i = 0; i < commentModel.getImageList().size(); i++) {
+                ImageModel imageModel = new ImageModel();
+                imageModel.setWidth(commentModel.getImageList().get(i).getWidth());
+                imageModel.setHeight(commentModel.getImageList().get(i).getHeight());
+                imageModel.setPath(commentModel.getImageList().get(i).getPathStr());
+                imageModels.add(imageModel);
+              }
+              PhotoViewActivity.enterActivity(mAnchorActivity,position,imageModels);
+            }
+          });
+        }
+        ((CommentViewHolder) holder).rvImages.setAdapter(adapter);
+
+
+        ((CommentViewHolder) holder).rbRating.setRating(commentModel.getScore());
         ((CommentViewHolder) holder).tvUsername.setText(commentModel.getUserName());
         if (null != commentModel.getCreateDate()) {
           ((CommentViewHolder) holder).tvDate.setText(
@@ -790,6 +814,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.tvCollapse) TextView tvCollapse;
     @Bind(R.id.ivFrom) SimpleDraweeView ivFrom;
     @Bind(R.id.tvFrom) TextView tvFrom;
+    @Bind(R.id.rbRating) RatingBar rbRating;
+    @Bind(R.id.rvImages) RecyclerView rvImages;
 
     CommentViewHolder(View view) {
       super(view);
@@ -812,6 +838,50 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     NearbyViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
+    }
+  }
+
+
+  public class CommentImageAdapter extends RecyclerView.Adapter<CommentImageAdapter.ViewHolder> {
+
+    List<CommentImageModel> mImageSet;
+    CommonItemClickListener mListener;
+
+    public CommentImageAdapter(List<CommentImageModel> dataSet) {
+      this.mImageSet = dataSet;
+    }
+
+    public void setOnItemClickListener(CommonItemClickListener listener){
+      mListener = listener;
+    }
+
+    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      return new ViewHolder(LayoutInflater.from(parent.getContext())
+          .inflate(R.layout.item_comment_image, parent, false));
+    }
+
+    @Override public void onBindViewHolder(ViewHolder holder, final int position) {
+      holder.sdvImage.setImageURI(Uri.parse(mImageSet.get(position).getPathStr()));
+      holder.sdvImage.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View view) {
+          if (null!=mListener){
+            mListener.onItemClick(view,position);
+          }
+        }
+      });
+    }
+
+    @Override public int getItemCount() {
+      return null != mImageSet ? mImageSet.size() : 0;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+      @Bind(R.id.sdvImage) SimpleDraweeView sdvImage;
+
+      public ViewHolder(View itemView) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
+      }
     }
   }
 

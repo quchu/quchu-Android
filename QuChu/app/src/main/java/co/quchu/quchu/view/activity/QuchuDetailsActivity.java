@@ -6,6 +6,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import co.quchu.quchu.model.HangoutUserModel;
@@ -61,6 +62,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     @Bind(R.id.detail_recyclerview)
     RecyclerView mRecyclerView;
+    @Bind(R.id.ivShouCang) ImageView ivShouCang;
     @Bind(R.id.detail_bottom_group_ll)
     View detail_bottom_group_ll;
 
@@ -125,7 +127,10 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
         getHangoutUsers();
 
+    }
 
+    private void resetFavorite(){
+        ivShouCang.setImageResource(dModel.isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_shoucang);
     }
 
     private void getHangoutUsers() {
@@ -325,6 +330,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     private void changeCollectState(boolean isCollect) {
         dModel.setIsf(isCollect);
+        resetFavorite();
         mQuchuDetailAdapter.notifyDataSetChanged();
     }
 
@@ -545,7 +551,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     @Override
     public void onBackPressed() {
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_CANCLE_FAVORITE_QUCHU, dModel.isIsf(), pId));
         super.onBackPressed();
     }
 
@@ -581,6 +586,8 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
             case EventFlags.EVENT_QUCHU_RATING_UPDATE:
                 getRatingInfo();
                 getVisitors();
+                break;
+            case EventFlags.EVENT_CANCLE_FAVORITE_QUCHU:
                 break;
             //case EventFlags.EVENT_POST_CARD_ADDED:
             //    if ((Integer) event.getContent()[0] == dModel.getPid()) {

@@ -14,9 +14,8 @@
         android:layout_height="@dimen/comment_users_avatar_size"
         fresco:roundAsCircle = "true"
         android:src="@mipmap/ic_launcher"
-
         android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginTop="@dimen/base_margin"
         />
 
     <TextView
@@ -26,7 +25,7 @@
         android:layout_toLeftOf="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginLeft="@dimen/base_margin"
         style="@style/TextView.H2"
         tools:text="UserName"
         />
@@ -43,12 +42,25 @@
         />
 
 
+    <RatingBar
+        android:id="@+id/rbRating"
+        android:layout_below="@+id/tvUsername"
+        android:layout_alignLeft="@id/tvUsername"
+        android:layout_marginTop="@dimen/quarter_margin"
+        android:layout_marginBottom="@dimen/base_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:max="5"
+        android:stepSize="0.5"
+        android:rating="3"
+        android:isIndicator="true"
+        style="@style/StarProgressBar_Small"/>
     <LinearLayout
         android:id="@+id/llComments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/sdvAvatar"
+        android:layout_below="@+id/rbRating"
         android:layout_alignLeft="@+id/tvUsername"
         android:background="@color/colorBackground"
         android:padding="@dimen/half_margin"
@@ -60,20 +72,35 @@
             android:lineSpacingExtra="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/half_margin"
             style="@style/TextView.H3"
             tools:text="Comment"
             />
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvImages"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/rc_item_image_message"
-            />
+            android:orientation="horizontal"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvImages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/rc_item_image_message"
+                android:visibility="visible"
+                android:layout_weight="0.4"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="0.6"
+                />
+        </LinearLayout>
         <TextView
             android:id="@+id/tvCollapse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:layout_marginTop="@dimen/half_margin"
             style="@style/TextView.H2"
             tools:text="Comment"
             android:gravity="right"
@@ -88,17 +115,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/half_margin"
         android:layout_alignLeft="@+id/tvUsername"
-        android:paddingBottom="@dimen/half_margin"
+        android:paddingBottom="@dimen/base_margin"
         >
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ivFrom"
             android:layout_width="@dimen/comment_from_avatar_size"
             android:layout_height="@dimen/comment_from_avatar_size"
-            android:layout_toLeftOf="@+id/tvFrom"
             />
         <TextView
             android:id="@+id/tvFrom"
+            android:layout_toRightOf="@id/ivFrom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/half_margin"

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.facebook.drawee.view.SimpleDraweeView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sdv"
+    android:id="@+id/sdvImage"
     android:orientation="vertical"
     android:layout_margin="@dimen/quarter_margin"
     app:placeholderImage="@color/standard_color_h3_dark"
-    android:layout_width="@dimen/detail_comment_image_size"
-    android:layout_height="@dimen/detail_comment_image_size"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:viewAspectRatio = "1"
+    app:actualImageScaleType="centerCrop"
     >
 
 </com.facebook.drawee.view.SimpleDraweeView>
