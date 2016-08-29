@@ -22,7 +22,7 @@
             fresco:roundedCornerRadius="@dimen/rounded_radius"
             fresco:overlayImage="@color/translucent_dark"
             fresco:placeholderImage="@mipmap/ic_image_empty"
-            fresco:viewAspectRatio="3.3" />
+            fresco:viewAspectRatio="3" />
 
         <TextView
             android:id="@+id/desc"

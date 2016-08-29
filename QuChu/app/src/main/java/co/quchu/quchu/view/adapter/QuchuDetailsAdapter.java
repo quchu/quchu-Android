@@ -22,6 +22,7 @@ import android.widget.TextView;
 import co.quchu.quchu.model.CommentImageModel;
 import co.quchu.quchu.model.HangoutUserModel;
 import co.quchu.quchu.view.activity.CommentListActivity;
+import co.quchu.quchu.view.activity.InviteHangoutUsersActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -462,6 +463,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((LabelViewHolder) holder).tvUserBeenInvit.setText("接受邀请的人有"+mData.getJoinPartnerCount());
         ((LabelViewHolder) holder).ivMoreComments.setVisibility(View.GONE);
         ((LabelViewHolder) holder).tvMoreComments.setVisibility(View.GONE);
+        ((LabelViewHolder) holder).ivInvite.setOnClickListener(new View.OnClickListener() {
+          @Override public void onClick(View view) {
+            InviteHangoutUsersActivity.enterActivity(mAnchorActivity);
+          }
+        });
         if (mData.getPlaceReviewCount()>3){
           ((LabelViewHolder) holder).ivMoreComments.setVisibility(View.VISIBLE);
           ((LabelViewHolder) holder).tvMoreComments.setVisibility(View.VISIBLE);

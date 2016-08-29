@@ -118,6 +118,13 @@
         android:name=".view.activity.PlaceMapActivity"
         android:label="@string/nearby_quchu"
         android:screenOrientation="portrait"/>
+
+
+    <activity
+        android:name=".view.activity.InviteHangoutUsersActivity"
+        android:label="@string/pname_invite_user"
+        android:screenOrientation="portrait"/>
+
     <activity
         android:name=".wxapi.WXEntryActivity"
         android:exported="true"

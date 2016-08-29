@@ -47,6 +47,7 @@ public class AMapNearbyVPAdapter extends PagerAdapter {
         TextView name = (TextView) v.findViewById(R.id.desc);
         TagCloudView tagCloudView = (TagCloudView) v.findViewById(R.id.tag);
         SimpleDraweeView simpleDraweeView = (SimpleDraweeView) v.findViewById(R.id.simpleDraweeView);
+        TextView tvAddress = (TextView) v.findViewById(R.id.address);
 
         simpleDraweeView.setImageURI(Uri.parse(mData.get(position).getCover()));
         name.setText(mData.get(position).getName());
@@ -57,6 +58,10 @@ public class AMapNearbyVPAdapter extends PagerAdapter {
                 tagsString.add(tags.get(i).getZh());
             }
         tagCloudView.setTags(tagsString);
+
+        tvAddress.setText(mData.get(position).getAddress());
+        tvAddress.setVisibility(View.VISIBLE);
+
 
 //        if (!StringUtils.isEmpty(mData.get(position).getGdLatitude())&&!StringUtils.isEmpty(mData.get(position).getGdLatitude())){
 //            float distance = AMapUtils.calculateLineDistance(new LatLng(Double.valueOf(mData.get(position).getGdLatitude()), Double.valueOf(mData.get(position).getGdLongitude())),new LatLng(SPUtils.getLatitude(),SPUtils.getLongitude()));

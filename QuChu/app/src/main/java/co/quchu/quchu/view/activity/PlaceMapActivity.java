@@ -93,7 +93,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
     private ViewPager mVPNearby;
     private BitmapDescriptor mMapPin,mMapPinBlue,mOverlayMyLocation;
     private NearbyMapModel mCurrentModel;
-    private int mLastMarker = -1;
+    private int mLastMarker = 0;
 
 
 

@@ -243,6 +243,9 @@
     <string name="pname_f_foot_print">脚印详情</string>
     <string name="pname_f_foot_print_list">脚印列表</string>
     <string name="pname_f_subscribe">关注**</string>
+    <string name="pname_invite_user">邀请用户</string>
+    <string name="pname_comment_list">评价列表</string>
+
     <string name="no_update_available">当前版本已是最新！</string>
     <string name="pre_order_not_supported">暂不支持预定</string>
     <string name="qu_faxian_simple_title">Hello，趣星人！</string>
@@ -250,9 +253,9 @@
     <string name="invite_user">邀人一起去</string>
     <string name="more_comments">更多评论</string>
     <string name="quchu_intro">趣处介绍</string>
-    <string name="pname_comment_list">评价列表</string>
     <string name="view_comments">查看评论</string>
     <string name="submitRating">提交评价</string>
     <string name="rating">评价</string>
+    <string name="change_hangout_users_list">给朕换</string>
 
 </resources>
