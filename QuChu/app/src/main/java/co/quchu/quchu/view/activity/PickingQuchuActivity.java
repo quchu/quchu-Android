@@ -89,7 +89,6 @@ public class PickingQuchuActivity extends BaseActivity {
 
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mData.get(position).getId());
                     intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mData.get(position).getName());
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ALLOW_PICKING_STORE, true);
                     startActivity(intent);
                     finish();
                 } else {
@@ -137,7 +136,6 @@ public class PickingQuchuActivity extends BaseActivity {
                             Intent intent = new Intent(PickingQuchuActivity.this, AddFootprintActivity.class);
                             intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, item.getId());
                             intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, item.getName());
-                            intent.putExtra(AddFootprintActivity.REQUEST_KEY_ALLOW_PICKING_STORE, true);
                             intent.putExtra(AddFootprintActivity.REQUEST_KEY_FROM_PAGE_NAME, getPageNameCN());
                             startActivity(intent);
                             finish();

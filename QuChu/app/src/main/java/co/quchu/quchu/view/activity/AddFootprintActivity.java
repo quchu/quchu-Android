@@ -3,7 +3,6 @@ package co.quchu.quchu.view.activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,23 +11,11 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.VolleyError;
-
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.CommonDialog;
@@ -38,14 +25,14 @@ import co.quchu.quchu.gallery.model.PhotoInfo;
 import co.quchu.quchu.model.PostCardItemModel;
 import co.quchu.quchu.model.PostCardModel;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.ImageUpload;
-import co.quchu.quchu.net.NetApi;
-import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.presenter.PostCardPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.adapter.FindPositionAdapter;
 import co.quchu.quchu.widget.SelectedImagePopWin;
+import java.util.ArrayList;
+import java.util.List;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Nico on 16/4/12.
@@ -74,10 +61,6 @@ public class AddFootprintActivity extends BaseBehaviorActivity implements FindPo
 
     TextView titleName;
     List<PhotoInfo> photoInfos;
-    @Bind(R.id.textLength)
-    TextView textLength;
-    @Bind(R.id.actionDelete)
-    ImageView actionDelete;
 
 
     private FindPositionAdapter adapter;
@@ -86,20 +69,16 @@ public class AddFootprintActivity extends BaseBehaviorActivity implements FindPo
     public static final String REQUEST_KEY_ID = "id";
     public static final String REQUEST_KEY_NAME = "name";
     public static final String REQUEST_KEY_ENTITY = "entity";
-    public static final String REQUEST_KEY_IS_EDIT = "edit";
     public static final String REQUEST_KEY_FROM_PAGE_NAME = "";
-    public static final String REQUEST_KEY_ALLOW_PICKING_STORE = "REQUEST_KEY_ALLOW_PICKING_STORE";
 
     private int cId = -1;
     private int pId;
     private String fromPageName;
     private String pName;
     private PostCardItemModel mData;
-    private int REQUEST_PICKING_QUCHU = 0x0001;
-    private boolean mAllowPicking = false;
+
 
     private boolean dataChange;
-    private boolean mIsEdit;
 
     @Override
     protected int activitySetup() {
@@ -114,7 +93,6 @@ public class AddFootprintActivity extends BaseBehaviorActivity implements FindPo
 
         pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
         pName = getIntent().getStringExtra(REQUEST_KEY_NAME);
-        mAllowPicking = getIntent().getBooleanExtra(REQUEST_KEY_ALLOW_PICKING_STORE, false);
         fromPageName = getIntent().getStringExtra(REQUEST_KEY_FROM_PAGE_NAME);
 
 
@@ -133,46 +111,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity implements FindPo
         titleName = toolbar.getTitleTv();
 
         toolbar.getRightTv().setText(R.string.save);
-        mIsEdit = getIntent().getBooleanExtra(REQUEST_KEY_IS_EDIT, false);
-        if (mIsEdit) {
-            actionDelete.setVisibility(View.VISIBLE);
-            actionDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CommonDialog dialog = CommonDialog.newInstance("确认删除?", "该操作无法撤销,请注意", "确定", "取消");
-                    dialog.setListener(new CommonDialog.OnActionListener() {
-                        @Override
-                        public boolean dialogClick(int clickId) {
-                            if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
-                                String uri = String.format(Locale.CHINA, NetApi.delPostCard, cId);
 
-                                GsonRequest<Object> request = new GsonRequest<>(uri, Object.class, new ResponseListener<Object>() {
-                                    @Override
-                                    public void onErrorResponse(@Nullable VolleyError error) {
-                                        Toast.makeText(AddFootprintActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    @Override
-                                    public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
-                                        if (result) {
-                                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_DELETED, cId, pId));
-                                            Toast.makeText(AddFootprintActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                            finish();
-                                        } else {
-                                            Toast.makeText(AddFootprintActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                                request.start(AddFootprintActivity.this);
-
-                            }
-                            return true;
-                        }
-                    });
-                    dialog.show(getSupportFragmentManager(), "");
-                }
-            });
-        }
         init();
     }
 
@@ -188,25 +127,6 @@ public class AddFootprintActivity extends BaseBehaviorActivity implements FindPo
     private void init() {
         photoInfos = new ArrayList<>();
         adapter = new FindPositionAdapter();
-
-        etContent.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                textLength.setText("剩余" + (140 - s.length()) + "字");
-            }
-        });
-
-
         etContent.setText(null != mData ? mData.getComment() : "");
         tackImage = new PhotoInfo();
 
@@ -325,14 +245,8 @@ public class AddFootprintActivity extends BaseBehaviorActivity implements FindPo
             @Override
             public void onSuccess(PostCardModel model) {
                 DialogUtil.dismissProgessDirectly();
-                if (mIsEdit) {
-                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FOOTPRINT_UPDATED, pId));
-                    Toast.makeText(AddFootprintActivity.this, "脚印修改成功", Toast.LENGTH_SHORT).show();
-                } else {
-                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_ADDED, pId));
-                    Toast.makeText(AddFootprintActivity.this, "脚印添加成功!", Toast.LENGTH_SHORT).show();
-                }
-
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_ADDED, pId));
+                Toast.makeText(AddFootprintActivity.this, "脚印添加成功!", Toast.LENGTH_SHORT).show();
                 AddFootprintActivity.this.finish();
             }
 

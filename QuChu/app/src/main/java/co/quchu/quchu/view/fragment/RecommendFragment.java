@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import co.quchu.quchu.view.activity.AddFootprintActivity;
 import com.android.volley.VolleyError;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -94,6 +96,10 @@ public class RecommendFragment extends BaseFragment
     final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
     ButterKnife.bind(this, view);
 
+    //TODO remove it!
+    startActivity(new Intent(getActivity(),AddFootprintActivity.class));
+    //TODO end
+
     ScaleAnimation dia = new ScaleAnimation();
     dia.setRemoveDuration(300);
     rvGrid.setItemAnimator(dia);
@@ -113,20 +119,6 @@ public class RecommendFragment extends BaseFragment
             if (!mItemClickable) {
               return;
             }
-
-            //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //                    Intent transitionIntent = new Intent(getActivity(), SceneDetailActivity.class);
-            //                    SimpleDraweeView placeImage = (SimpleDraweeView) v.findViewById(R.id.sdv);
-            //                    TextView tvTitle = (TextView) v.findViewById(R.id.tvTitle);
-            //
-            //
-            //                    Pair<View, String> imagePair = Pair.create((View) placeImage, "tImage");
-            //                    Pair<View, String> textPair = Pair.create((View) tvTitle, "tNameHolder");
-            //
-            //                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imagePair, textPair);
-            //                    ActivityCompat.startActivity(getActivity(), transitionIntent, options.toBundle());
-            //                    ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-            //                }else{
 
             ArrayMap<String, Object> params = new ArrayMap<>();
             params.put("趣处名称", mAllSceneList.get(position).getSceneName());

@@ -12,10 +12,8 @@
         android:id="@+id/sdvCover"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_marginRight="@dimen/half_margin"
         android:layout_weight="1"
-        card_view:actualImageScaleType="centerInside"
+        card_view:actualImageScaleType="center"
         fresco:failureImage="@mipmap/ic_image_empty"
         fresco:failureImageScaleType="center"
         fresco:placeholderImage="@mipmap/ic_image_empty"
@@ -31,6 +29,7 @@
         <TextView
             android:id="@+id/desc"
             style="@style/TextView.H1"
+            android:layout_marginTop="@dimen/half_margin"
             android:layout_centerHorizontal="true"
             android:text="@string/empty_string"
             android:transitionName="tNameHolder"
@@ -99,6 +98,7 @@
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginRight="@dimen/base_margin"
             android:layout_marginTop="@dimen/base_margin"
+            android:layout_marginBottom="@dimen/half_margin"
             android:lineSpacingExtra="4sp"
             android:textColor="@color/standard_color_h3_dark"
             android:gravity="left" />
