@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center"
     >
 
   <RelativeLayout
+      android:layout_marginTop="@dimen/half_margin"
       android:layout_width="@dimen/invite_user_avatar_size"
       android:layout_height="@dimen/invite_user_avatar_size"
       >

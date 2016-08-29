@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -54,6 +55,11 @@ public class InviteHangoutUsersActivity extends BaseActivity {
     ButterKnife.bind(this);
     mPid = getIntent().getIntExtra(REQUEST_INVITE_USER_PID,-1);
     getEnhancedToolbar().getRightTv().setText(R.string.change_hangout_users_list);
+    getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        getUsers();
+      }
+    });
 
     swipeRefreshLayout.setEnabled(false);
     mAdapter = new InviteHangoutUsersAdapter(mUsers);
@@ -75,10 +81,12 @@ public class InviteHangoutUsersActivity extends BaseActivity {
         mUsers.clear();
         mUsers.addAll(response);
         mAdapter.notifyDataSetChanged();
+        mLoading = false;
       }
 
       @Override public void errorListener(VolleyError error, String exception, String msg) {
         DialogUtil.dismissProgessDirectly();
+        mLoading = false;
       }
     });
   }
