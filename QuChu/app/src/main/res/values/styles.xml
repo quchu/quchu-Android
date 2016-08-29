@@ -130,6 +130,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+
+    <style name="TextView.H0" parent="TextView">
+        <item name="android:textSize">@dimen/standard_text_size_h0</item>
+        <item name="android:textColor">@color/standard_color_h1_dark</item>
+    </style>
+
     <style name="TextView.H1" parent="TextView">
         <item name="android:textSize">@dimen/standard_text_size_h1</item>
         <item name="android:textColor">@color/standard_color_h1_dark</item>
