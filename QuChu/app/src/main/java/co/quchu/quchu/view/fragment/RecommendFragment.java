@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import co.quchu.quchu.view.activity.AddFootprintActivity;
 import com.android.volley.VolleyError;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -96,9 +95,6 @@ public class RecommendFragment extends BaseFragment
     final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
     ButterKnife.bind(this, view);
 
-    //TODO remove it!
-    startActivity(new Intent(getActivity(),AddFootprintActivity.class));
-    //TODO end
 
     ScaleAnimation dia = new ScaleAnimation();
     dia.setRemoveDuration(300);

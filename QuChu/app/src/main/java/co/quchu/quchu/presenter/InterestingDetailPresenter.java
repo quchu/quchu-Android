@@ -6,6 +6,8 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import co.quchu.quchu.R;
@@ -143,6 +145,35 @@ public class InterestingDetailPresenter {
         });
     }
 
+
+    public static void submitDetailRating(Context context, String images, String tagIds,int pId,String content, int score, final CommonListener listener) {
+        JSONObject params = new JSONObject();
+
+        try {
+            params.put("images",images);
+            params.put("content",String.valueOf(content));
+            params.put("tagIds",tagIds);
+            params.put("score",String.valueOf(score));
+            params.put("placeId",String.valueOf(pId));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        NetService.post(context, NetApi.commitDetailRating,params, new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                listener.successListener(response);
+
+            }
+
+            @Override
+            public boolean onError(String error) {
+                listener.errorListener(null,null,null);
+                return false;
+            }
+        });
+    }
     public static void updateRatingInfo(Context context, int pId, int score, String tagIds, final DetailDataListener listener) {
         NetService.get(context, String.format(NetApi.updateRatingInfo, pId, tagIds, score), new IRequestListener() {
             @Override

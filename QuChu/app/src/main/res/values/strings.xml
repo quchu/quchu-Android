@@ -253,5 +253,6 @@
     <string name="pname_comment_list">评价列表</string>
     <string name="view_comments">查看评论</string>
     <string name="submitRating">提交评价</string>
+    <string name="rating">评价</string>
 
 </resources>

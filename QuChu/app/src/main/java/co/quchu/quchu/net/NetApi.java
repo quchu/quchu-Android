@@ -187,6 +187,7 @@ public interface NetApi {
   String sendInvite = HOST + "/im/joinPartner";
 
   String getDetailComments = HOST + "/placeReview/getListByPlaceId";
+  String commitDetailRating = HOST + "/placeReview/add";
 
   /**
    * 用户消息设置

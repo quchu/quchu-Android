@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/standard_color_white"
@@ -10,6 +10,12 @@
 
     <include layout="@layout/cp_enhanced_toolbar" />
 
+    <LinearLayout
+        android:layout_below="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
     <RelativeLayout
         android:id="@+id/edit_container"
@@ -22,11 +28,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:max="5"
-            android:padding="@dimen/base_margin"
+            android:paddingTop="@dimen/base_margin"
+            android:paddingBottom="@dimen/base_margin"
             android:layout_centerHorizontal="true"
-            android:stepSize="0.5"
+            android:stepSize="1"
             android:rating="3"
-            android:isIndicator="true"
             style="@style/CustomProgressBar"/>
 
 
@@ -41,13 +47,24 @@
             android:background="@drawable/bg_shape_textfield_ltgray"
             android:gravity="top|left"
             android:hint="@string/hint_add_footprint"
-            android:maxLength="140"
+            android:maxLines="5"
             android:minLines="5"
             android:padding="@dimen/base_margin"
             android:textColor="@color/standard_color_h3_dark"
             android:textColorHint="@color/translucent_dark"
             android:textCursorDrawable="@drawable/shape_edit_text_cursor"
             android:textSize="@dimen/word_size_body" />
+        <TextView
+            android:id="@+id/textLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/etContent"
+            android:layout_alignRight="@+id/etContent"
+            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_marginRight="@dimen/half_margin"
+            android:text="@string/hint_max_text_length"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="@dimen/word_size_minimum" />
 
     </RelativeLayout>
 
@@ -95,7 +112,7 @@
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
         app:spanCount="4"
         tools:listitem="@layout/item_find_position_image" />
-
+    </LinearLayout>
     <TextView
         android:id="@+id/tvSubmit"
         android:layout_marginTop="@dimen/base_margin"
@@ -110,4 +127,4 @@
         android:textColor="@color/standard_color_white"
         />
 
-</LinearLayout>
+</RelativeLayout>

@@ -85,12 +85,12 @@ public class PickingQuchuActivity extends BaseActivity {
             @Override
             public void onItemClick(int position) {
                 if (fromMyfootprint) {
-                    Intent intent = new Intent(PickingQuchuActivity.this, AddFootprintActivity.class);
-
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mData.get(position).getId());
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mData.get(position).getName());
-                    startActivity(intent);
-                    finish();
+                    //Intent intent = new Intent(PickingQuchuActivity.this, AddFootprintActivity.class);
+                    //
+                    //intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, mData.get(position).getId());
+                    //intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, mData.get(position).getName());
+                    //startActivity(intent);
+                    //finish();
                 } else {
                     Intent intent = new Intent();
                     intent.putExtra(BUNDLE_KEY_PICKING_RESULT_ID, mData.get(position).getId());
@@ -133,12 +133,12 @@ public class PickingQuchuActivity extends BaseActivity {
                     if (item.getName().equals(trim)) {
                         filterSucceed = true;
                         if (fromMyfootprint) {
-                            Intent intent = new Intent(PickingQuchuActivity.this, AddFootprintActivity.class);
-                            intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, item.getId());
-                            intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, item.getName());
-                            intent.putExtra(AddFootprintActivity.REQUEST_KEY_FROM_PAGE_NAME, getPageNameCN());
-                            startActivity(intent);
-                            finish();
+                            //Intent intent = new Intent(PickingQuchuActivity.this, AddFootprintActivity.class);
+                            //intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, item.getId());
+                            //intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, item.getName());
+                            //intent.putExtra(AddFootprintActivity.REQUEST_KEY_FROM_PAGE_NAME, getPageNameCN());
+                            //startActivity(intent);
+                            //finish();
                         } else {
                             Intent intent = new Intent();
                             intent.putExtra(BUNDLE_KEY_PICKING_RESULT_ID, item.getId());

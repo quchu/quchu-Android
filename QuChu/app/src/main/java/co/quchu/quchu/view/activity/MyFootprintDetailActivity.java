@@ -427,31 +427,31 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                 break;
             case R.id.edit://编辑
                 //获取一个脚印
-                Intent intent = new Intent(this, AddFootprintActivity.class);
-                if (model != null) {
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, model);
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, model.getPlcaeName());
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
-                    startActivity(intent);
-                } else if (mEntitys != null) {
-                    FootprintModel.Entity entity = mEntitys.get(viewPager.getCurrentItem());
-                    PostCardItemModel model = new PostCardItemModel();
-                    model.setPlaceName(entity.PlcaeName);
-                    model.setPlaceId(entity.PlcaeId);
-                    model.setCardId(entity.cardId);
-                    model.setComment(entity.Comment);
-                    for (FootprintModel.Entity item : mEntitys) {
-                        if (item.cardId == entity.cardId) {
-                            model.addImageModel(item.image);
-                        }
-                    }
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, model);
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, model.getPlcaeName());
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
-                    intent.putExtra(AddFootprintActivity.REQUEST_KEY_FROM_PAGE_NAME, getPageNameCN());
-
-                    startActivity(intent);
-                }
+                //Intent intent = new Intent(this, AddFootprintActivity.class);
+                //if (model != null) {
+                //    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, model);
+                //    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, model.getPlcaeName());
+                //    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
+                //    startActivity(intent);
+                //} else if (mEntitys != null) {
+                //    FootprintModel.Entity entity = mEntitys.get(viewPager.getCurrentItem());
+                //    PostCardItemModel model = new PostCardItemModel();
+                //    model.setPlaceName(entity.PlcaeName);
+                //    model.setPlaceId(entity.PlcaeId);
+                //    model.setCardId(entity.cardId);
+                //    model.setComment(entity.Comment);
+                //    for (FootprintModel.Entity item : mEntitys) {
+                //        if (item.cardId == entity.cardId) {
+                //            model.addImageModel(item.image);
+                //        }
+                //    }
+                //    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ENTITY, model);
+                //    intent.putExtra(AddFootprintActivity.REQUEST_KEY_NAME, model.getPlcaeName());
+                //    intent.putExtra(AddFootprintActivity.REQUEST_KEY_ID, model.getPlaceId());
+                //    intent.putExtra(AddFootprintActivity.REQUEST_KEY_FROM_PAGE_NAME, getPageNameCN());
+                //
+                //    startActivity(intent);
+                //}
                 if (!EventBus.getDefault().isRegistered(this))
                     EventBus.getDefault().register(this);
                 break;

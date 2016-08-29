@@ -1,11 +1,12 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Nico on 16/4/19.
  */
-public class VisitedInfoModel {
+public class VisitedInfoModel implements Serializable{
 
     private int userCount;
     private int score;

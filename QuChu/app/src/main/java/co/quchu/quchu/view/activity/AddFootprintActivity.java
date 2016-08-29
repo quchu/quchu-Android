@@ -1,6 +1,8 @@
 package co.quchu.quchu.view.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
@@ -11,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -20,266 +23,269 @@ import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.dialog.adapter.RatingQuchuDialogAdapter;
 import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoInfo;
-import co.quchu.quchu.model.PostCardItemModel;
-import co.quchu.quchu.model.PostCardModel;
-import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.model.TagsModel;
+import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.net.ImageUpload;
-import co.quchu.quchu.presenter.PostCardPresenter;
-import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.view.adapter.FindPositionAdapter;
 import co.quchu.quchu.widget.SelectedImagePopWin;
+import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Nico on 16/4/12.
  */
-public class AddFootprintActivity extends BaseBehaviorActivity implements FindPositionAdapter.ItemClickListener {
+public class AddFootprintActivity extends BaseBehaviorActivity
+    implements FindPositionAdapter.ItemClickListener {
 
-    @Override
-    public ArrayMap<String, Object> getUserBehaviorArguments() {
-        return null;
-    }
+  @Bind(R.id.etContent) EditText etContent;
+  @Bind(R.id.recyclerView) RecyclerView recyclerView;
+  @Bind(R.id.rvTags) RecyclerView rvTags;
+  @Bind(R.id.textLength) TextView textLength;
+  @Bind(R.id.rbRating) RatingBar rbRating;
+  @Bind(R.id.tvSubmit) TextView tvSubmit;
 
-    @Override
-    public int getUserBehaviorPageId() {
-        return 106;
-    }
+  TextView titleName;
+  List<PhotoInfo> photoInfos;
+  List<TagsModel> tags;
 
+  private FindPositionAdapter adapter;
+  private PhotoInfo tackImage;
 
-    @Override
-    protected String getPageNameCN() {
-        return getString(R.string.pname_add_footprint);
-    }
-    @Bind(R.id.etContent)
-    EditText etContent;
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
+  public static final String REQUEST_KEY_ID = "REQUEST_KEY_ID";
+  public static final String REQUEST_KEY_ENTITY = "REQUEST_KEY_ENTITY";
+  public static final String REQUEST_KEY_FROM_PAGE_NAME = "REQUEST_KEY_FROM_PAGE_NAME";
 
-    TextView titleName;
-    List<PhotoInfo> photoInfos;
+  private int pId;
+  private int rating = 0;
+  private String fromPageName;
+  private VisitedInfoModel mData;
+  private RatingQuchuDialogAdapter ratingQuchuDialogAdapter;
 
+  private boolean dataChange;
 
-    private FindPositionAdapter adapter;
-    private PhotoInfo tackImage;
+  @Override protected int activitySetup() {
+    return TRANSITION_TYPE_LEFT;
+  }
 
-    public static final String REQUEST_KEY_ID = "id";
-    public static final String REQUEST_KEY_NAME = "name";
-    public static final String REQUEST_KEY_ENTITY = "entity";
-    public static final String REQUEST_KEY_FROM_PAGE_NAME = "";
+  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+    return null;
+  }
 
-    private int cId = -1;
-    private int pId;
-    private String fromPageName;
-    private String pName;
-    private PostCardItemModel mData;
+  @Override public int getUserBehaviorPageId() {
+    return 106;
+  }
 
+  @Override protected String getPageNameCN() {
+    return getString(R.string.rating);
+  }
 
-    private boolean dataChange;
+  public static void enterActivity(Activity from, VisitedInfoModel infoModel, int pid,
+      String pageName) {
+    Intent intent = new Intent(from, AddFootprintActivity.class);
+    intent.putExtra(REQUEST_KEY_ID, pid);
+    intent.putExtra(REQUEST_KEY_ENTITY, infoModel);
+    intent.putExtra(REQUEST_KEY_FROM_PAGE_NAME, pageName);
+    from.startActivity(intent);
+  }
 
-    @Override
-    protected int activitySetup() {
-        return TRANSITION_TYPE_LEFT;
-    }
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_add_footprint);
+    ButterKnife.bind(this);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_footprint);
-        ButterKnife.bind(this);
+    pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
+    fromPageName = getIntent().getStringExtra(REQUEST_KEY_FROM_PAGE_NAME);
+    mData = (VisitedInfoModel) getIntent().getSerializableExtra(REQUEST_KEY_ENTITY);
+    rating = mData.getScore();
+    tags = mData.getResult();
 
-        pId = getIntent().getIntExtra(REQUEST_KEY_ID, -1);
-        pName = getIntent().getStringExtra(REQUEST_KEY_NAME);
-        fromPageName = getIntent().getStringExtra(REQUEST_KEY_FROM_PAGE_NAME);
+    getEnhancedToolbar().getTitleTv().setText(R.string.rating);
 
+    etContent.addTextChangedListener(new TextWatcher() {
+      @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        ArrayMap<String,Object> params = new ArrayMap<>();
-        params.put("趣处名称",pName);
-        params.put("入口名称",fromPageName);
-        ZGEvent(params,"添加脚印");
+      }
 
-        //ZGEvent("文章名称",dModel.getName(),"趣处分享");
+      @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-        //数据是重新封装过的,如果部分属性丢失请返回前面页面添加
-        mData = getIntent().getParcelableExtra(REQUEST_KEY_ENTITY);
-        pId = mData == null ? pId : mData.getPlaceId();
-        cId = mData == null ? cId : mData.getCardId();
-        EnhancedToolbar toolbar = getEnhancedToolbar();
-        titleName = toolbar.getTitleTv();
+      }
 
-        toolbar.getRightTv().setText(R.string.save);
+      @Override public void afterTextChanged(Editable s) {
+        textLength.setText("剩余" + (140 - s.length()) + "字");
+      }
+    });
 
-        init();
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
-        GalleryFinal.setmCallback(null);
-    }
-
-
-    private void init() {
-        photoInfos = new ArrayList<>();
-        adapter = new FindPositionAdapter();
-        etContent.setText(null != mData ? mData.getComment() : "");
-        tackImage = new PhotoInfo();
-
-        tackImage.setPhotoPath("res:///" + R.mipmap.ic_take_photo);
-
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-
-
-        if (null != mData) {
-            for (int i = 0; i < mData.getImglist().size(); i++) {
-                PhotoInfo photoModel = new PhotoInfo();
-                photoModel.setHeight(mData.getImglist().get(i).getHeight());
-                photoModel.setWidth(mData.getImglist().get(i).getWidth());
-                photoModel.setPhotoPath(mData.getImglist().get(i).getPath());
-                photoModel.setPhotoId(mData.getImglist().get(i).getImgId());
-                photoInfos.add(photoModel);
-            }
-        }
-
-        if (photoInfos.size() < 4) {
-            photoInfos.add(0, tackImage);
-        }
-        adapter.setImages(photoInfos);
-        adapter.setListener(this);
-        if (null == mData) {
-            titleName.setText(pName);
-        } else {
-            titleName.setText(mData.getPlcaeName());
-            pId = mData.getPlaceId();
-        }
-
-        recyclerView.setAdapter(adapter);
-        getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dataChange()) {
-                    List<String> im = new ArrayList<>();
-                    for (PhotoInfo item : photoInfos) {
-                        if (item.getPhotoPath().contains("file://")) {
-                            im.add(Uri.parse(item.getPhotoPath()).getPath());
-                        } else if (item.getPhotoPath().contains("http://")) {
-                            im.add(item.getPhotoPath());
-                        }
-                    }
-                    if (im.size() > 0) {
-                        DialogUtil.showProgess(AddFootprintActivity.this, "母星正在接收中");
-                        new ImageUpload(AddFootprintActivity.this, im, new ImageUpload.UploadResponseListener() {
-                            @Override
-                            public void finish(String result) {
-
-                                saveCard(pId, etContent.getText().toString(), result);
-                            }
-
-                            @Override
-                            public void error() {
-                                DialogUtil.dismissProgessDirectly();
-                                Toast.makeText(AddFootprintActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        Toast.makeText(AddFootprintActivity.this, "至少留下一张图片才能转身离去", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(AddFootprintActivity.this, "您未做任何修改", Toast.LENGTH_SHORT).show();
-                }
-            }
+    init();
+    ratingQuchuDialogAdapter =
+        new RatingQuchuDialogAdapter(tags, new RatingQuchuDialogAdapter.OnItemSelectedListener() {
+          @Override public void onSelected(int index, boolean select) {
+            tags.get(index).setPraise(!tags.get(index).isPraise());
+            ratingQuchuDialogAdapter.notifyDataSetChanged();
+          }
         });
+    rvTags.setLayoutManager(new GridLayoutManager(AddFootprintActivity.this, 3));
+    rvTags.setAdapter(ratingQuchuDialogAdapter);
+  }
 
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    ButterKnife.unbind(this);
+    GalleryFinal.setmCallback(null);
+  }
+
+  private void init() {
+    photoInfos = new ArrayList<>();
+    adapter = new FindPositionAdapter();
+    tackImage = new PhotoInfo();
+
+    tackImage.setPhotoPath("res:///" + R.mipmap.ic_take_photo);
+
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+
+    rbRating.setRating(rating);
+
+    if (photoInfos.size() < 4) {
+      photoInfos.add(0, tackImage);
     }
+    adapter.setImages(photoInfos);
+    adapter.setListener(this);
 
-
-    @Override
-    public void itemClick(boolean isDelete, int position, final PhotoInfo photoInfo) {
-        if (!isDelete && position == 0 && photoInfo.getPhotoPath().contains("res:///")) {
-            View view = getWindow().peekDecorView();
-            if (view != null) {
-                InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-            new SelectedImagePopWin(AddFootprintActivity.this, recyclerView, photoInfos, 4, new GalleryFinal.OnHanlderResultCallback() {
-                @Override
-                public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                    for (PhotoInfo info : resultList) {
-                        String path = info.getPhotoPath();
-                        if (!path.startsWith("file://") && !path.startsWith("res:///") && !path.startsWith("http://"))
-                            info.setPhotoPath("file://" + path);
-                    }
-                    photoInfos.clear();
-                    photoInfos.addAll(resultList);
-                    if (photoInfos.size() < 4)
-                        photoInfos.add(0, tackImage);
-                    adapter.notifyDataSetChanged();
-                    dataChange = true;
-                }
-
-                @Override
-                public void onHanlderFailure(int requestCode, String errorMsg) {
-                    Toast.makeText(AddFootprintActivity.this, "获取失败", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        if (isDelete) {
-            dataChange = true;
-            photoInfos.remove(position);
-            if (photoInfos.size() < 4 && photoInfos.size() > 0 && !photoInfos.get(0).getPhotoPath().contains("res:///")) {
-                photoInfos.add(0, tackImage);
-            }
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    private void saveCard(final int pId, String comment, String imgs) {
-        PostCardPresenter.sacePostCard(this, pId, 0, comment, imgs, cId, new PostCardPresenter.MyPostCardListener() {
-            @Override
-            public void onSuccess(PostCardModel model) {
-                DialogUtil.dismissProgessDirectly();
-                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_POST_CARD_ADDED, pId));
-                Toast.makeText(AddFootprintActivity.this, "脚印添加成功!", Toast.LENGTH_SHORT).show();
-                AddFootprintActivity.this.finish();
-            }
-
-            @Override
-            public void onError(String error) {
-                DialogUtil.dismissProgessDirectly();
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed() {
+    recyclerView.setAdapter(adapter);
+    tvSubmit.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
         if (dataChange()) {
-            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "继续编辑", "退出");
-            dialog.setListener(new CommonDialog.OnActionListener() {
-                @Override
-                public boolean dialogClick(int clickId) {
-                    if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
-                        finish();
+          List<String> im = new ArrayList<>();
+          for (PhotoInfo item : photoInfos) {
+            if (item.getPhotoPath().contains("file://")) {
+              im.add(Uri.parse(item.getPhotoPath()).getPath());
+            } else if (item.getPhotoPath().contains("http://")) {
+              im.add(item.getPhotoPath());
+            }
+          }
+          if (im.size() > 0) {
+            DialogUtil.showProgess(AddFootprintActivity.this, "母星正在接收中");
+            new ImageUpload(AddFootprintActivity.this, im,
+                new ImageUpload.UploadResponseListener() {
+                  @Override public void finish(String result) {
+
+                    StringBuffer sb = new StringBuffer();
+                    for (int i = 0; i < tags.size(); i++) {
+                      if (tags.get(i).isPraise()) {
+                        sb.append(tags.get(i).getTagId()).append(",");
+                      }
                     }
-                    return true;
-                }
-            });
+                    String strTagIds = sb.toString();
+                    if (null != strTagIds && strTagIds.endsWith(",")) {
+                      strTagIds = strTagIds.substring(0, strTagIds.length() - 1);
+                    }
 
-            dialog.show(getSupportFragmentManager(), "");
+                    saveCard(result, strTagIds, pId, etContent.getText().toString(),
+                        (int) rbRating.getRating());
+                  }
+
+                  @Override public void error() {
+                    DialogUtil.dismissProgessDirectly();
+                    Toast.makeText(AddFootprintActivity.this, getString(R.string.network_error),
+                        Toast.LENGTH_SHORT).show();
+                  }
+                });
+          } else {
+            Toast.makeText(AddFootprintActivity.this, "至少留下一张图片才能转身离去", Toast.LENGTH_SHORT).show();
+          }
         } else {
-            super.onBackPressed();
+          Toast.makeText(AddFootprintActivity.this, "您未做任何修改", Toast.LENGTH_SHORT).show();
         }
-    }
+      }
+    });
+  }
 
-    private boolean dataChange() {
-        String s = null != mData ? mData.getComment() : "";
-        return dataChange || !etContent.getText().toString().trim().equals(s);
-    }
+  @Override public void itemClick(boolean isDelete, int position, final PhotoInfo photoInfo) {
+    if (!isDelete && position == 0 && photoInfo.getPhotoPath().contains("res:///")) {
+      View view = getWindow().peekDecorView();
+      if (view != null) {
+        InputMethodManager inputmanger =
+            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
+      }
+      new SelectedImagePopWin(AddFootprintActivity.this, recyclerView, photoInfos, 4,
+          new GalleryFinal.OnHanlderResultCallback() {
+            @Override public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+              for (PhotoInfo info : resultList) {
+                String path = info.getPhotoPath();
+                if (!path.startsWith("file://") && !path.startsWith("res:///") && !path.startsWith(
+                    "http://")) {
+                  info.setPhotoPath("file://" + path);
+                }
+              }
+              photoInfos.clear();
+              photoInfos.addAll(resultList);
+              if (photoInfos.size() < 4) photoInfos.add(0, tackImage);
+              adapter.notifyDataSetChanged();
+              dataChange = true;
+            }
 
+            @Override public void onHanlderFailure(int requestCode, String errorMsg) {
+              Toast.makeText(AddFootprintActivity.this, "获取失败", Toast.LENGTH_SHORT).show();
+            }
+          });
+    }
+    if (isDelete) {
+      dataChange = true;
+      photoInfos.remove(position);
+      if (photoInfos.size() < 4 && photoInfos.size() > 0 && !photoInfos.get(0)
+          .getPhotoPath()
+          .contains("res:///")) {
+        photoInfos.add(0, tackImage);
+      }
+      adapter.notifyDataSetChanged();
+    }
+  }
+
+  private void saveCard(String images, String tagIds, int pId, String content, int score) {
+    InterestingDetailPresenter.submitDetailRating(this, images, tagIds, pId, content, score,
+        new CommonListener() {
+          @Override public void successListener(Object response) {
+            DialogUtil.dismissProgessDirectly();
+            Toast.makeText(AddFootprintActivity.this, "评价提交成功!", Toast.LENGTH_SHORT).show();
+            AddFootprintActivity.this.finish();
+          }
+
+          @Override public void errorListener(VolleyError error, String exception, String msg) {
+            DialogUtil.dismissProgessDirectly();
+            Toast.makeText(AddFootprintActivity.this, "评价提交失败!", Toast.LENGTH_SHORT).show();
+
+          }
+        });
+  }
+
+  @Override public void onBackPressed() {
+    if (dataChange()) {
+      CommonDialog dialog =
+          CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "继续编辑", "退出");
+      dialog.setListener(new CommonDialog.OnActionListener() {
+        @Override public boolean dialogClick(int clickId) {
+          if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
+            finish();
+          }
+          return true;
+        }
+      });
+
+      dialog.show(getSupportFragmentManager(), "");
+    } else {
+      super.onBackPressed();
+    }
+  }
+
+  private boolean dataChange() {
+    String s = "";
+    return dataChange || !etContent.getText().toString().trim().equals(s);
+  }
 }

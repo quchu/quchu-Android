@@ -465,19 +465,23 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
                     break;
                 case R.id.ivPingJia:
-                    UMEvent("comment_c");
-                    ZGEvent("趣处名称",dModel.getName(),"进入评价");
-                    RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
-                    tagsFilterDialog.show(getSupportFragmentManager(), "");
-                    tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
-                        @Override
-                        public void onFinishPicking(List<TagsModel> selection, int score) {
-                            if (null != selection) {
-                                ZGEvent("趣处名称",dModel.getName(),"提交评价");
-                                ratingQuchu(selection, score);
-                            }
-                        }
-                    });
+
+                    if (null!=mVisitedInfoModel){
+                        UMEvent("comment_c");
+                        ZGEvent("趣处名称",dModel.getName(),"进入评价");
+                        AddFootprintActivity.enterActivity(QuchuDetailsActivity.this,mVisitedInfoModel,dModel.getPid(),getPageNameCN());
+                    }
+                    //RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
+                    //tagsFilterDialog.show(getSupportFragmentManager(), "");
+                    //tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
+                    //    @Override
+                    //    public void onFinishPicking(List<TagsModel> selection, int score) {
+                    //        if (null != selection) {
+                    //            ZGEvent("趣处名称",dModel.getName(),"提交评价");
+                    //            ratingQuchu(selection, score);
+                    //        }
+                    //    }
+                    //});
                     break;
                 case R.id.ivShouCang:
                     //收藏
