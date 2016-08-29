@@ -1,42 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/tools"
-    android:id="@+id/root_cv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/dialog_margin"
-    android:layout_marginLeft="@dimen/half_margin"
-    android:layout_marginRight="@dimen/half_margin"
-    android:layout_marginTop="@dimen/dialog_margin"
     android:clickable="false"
     android:fitsSystemWindows="true"
-    android:background="@drawable/shape_card_background_ltgray"
     >
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        fresco:failureImage="@mipmap/ic_image_empty"
+        fresco:failureImageScaleType="center"
+        fresco:placeholderImage="@mipmap/ic_image_empty"
+        fresco:placeholderImageScaleType="center"
+        fresco:actualImageScaleType="center"
+        fresco:roundedCornerRadius ="@dimen/rounded_radius"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.4">
 
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/photo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/half_margin"
-                android:layout_marginRight="@dimen/half_margin"
-
-                fresco:failureImage="@mipmap/ic_image_empty"
-                fresco:failureImageScaleType="center"
-                fresco:placeholderImage="@mipmap/ic_image_empty"
-                fresco:placeholderImageScaleType="center"
-                card_view:actualImageScaleType="centerInside" />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/activity"
@@ -50,12 +39,11 @@
                 card_view:roundTopLeft="true"
                 card_view:roundTopRight="false"
                 card_view:roundedCornerRadius="@dimen/rounded_radius" />
-        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.3">
+            android:layout_height="wrap_content"
+            >
 
 
             <TextView
@@ -102,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/base_margin"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
@@ -152,4 +141,4 @@
         </RelativeLayout>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

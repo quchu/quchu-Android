@@ -55,7 +55,6 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
         container.addView(view);
         ViewHolder holder = new ViewHolder(view);
         RecommendModel model = mData.get(position);
-        holder.rootCv.setCardBackgroundColor(Color.parseColor("#E6EEEFEF"));
         holder.itemRecommendCardPhotoSdv.setImageURI(Uri.parse(model.getCover()));
         if (model.isIsActivity()) {
             holder.item_place_event_tv.setVisibility(View.VISIBLE);
@@ -135,8 +134,6 @@ public class DiscoverDetailPagerAdapter extends PagerAdapter {
         TextView tag2;
         @Bind(R.id.recommend_tag3)
         TextView tag3;
-        @Bind(R.id.root_cv)
-        CardView rootCv;
 //        @Bind(R.id.distance)
 //        TextView item_recommend_card_distance_tv;
 
