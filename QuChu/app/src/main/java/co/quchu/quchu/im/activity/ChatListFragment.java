@@ -21,12 +21,12 @@ import io.rong.imlib.model.Conversation;
  *
  * Created by mwb on 16/8/25.
  */
-public class ConversationListFragment extends BaseFragment {
+public class ChatListFragment extends BaseFragment {
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
+    View view = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
     //设置小Q
     //IMPresenter.sendTextMessage(IMPresenter.userId1, "", null, null);
@@ -85,24 +85,25 @@ public class ConversationListFragment extends BaseFragment {
       new RongIM.ConversationListBehaviorListener() {
         @Override public boolean onConversationPortraitClick(Context context,
             Conversation.ConversationType conversationType, String s) {
+          //点击头像
           return false;
         }
 
         @Override public boolean onConversationPortraitLongClick(Context context,
             Conversation.ConversationType conversationType, String s) {
+          //长按头像
           return false;
         }
 
         @Override public boolean onConversationLongClick(Context context, View view,
             UIConversation uiConversation) {
+          //列表长按
           return false;
         }
 
         @Override public boolean onConversationClick(Context context, View view,
             UIConversation uiConversation) {
-          //Intent intent = new Intent(getActivity(), ConversationActivity.class);
-          //intent.putExtra();
-          //startActivity(intent);
+          //列表点击
           return false;
         }
       };

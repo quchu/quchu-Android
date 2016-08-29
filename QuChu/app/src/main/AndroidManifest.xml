@@ -254,7 +254,7 @@
         android:screenOrientation="portrait"/>
 
     <activity
-        android:name=".im.activity.ConversationActivity"
+        android:name=".im.activity.ChatActivity"
         android:launchMode="singleTask"
         android:screenOrientation="portrait"
         android:windowSoftInputMode="stateHidden|adjustResize">

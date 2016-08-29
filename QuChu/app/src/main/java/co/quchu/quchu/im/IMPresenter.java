@@ -10,12 +10,14 @@ import java.util.List;
 
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.im.model.RongImModel;
-import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.ToastManager;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
@@ -90,25 +92,32 @@ public class IMPresenter {
           listener.connectSuccess();
         }
 
+        //指定用户信息
+        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+          @Override public UserInfo getUserInfo(String userId) {
+            return findUserById(userId);
+          }
+        }, true);
+
         //指定当前用户信息
-        if (AppContext.user != null) {
-          UserInfoModel user = AppContext.user;
-          int userId = user.getUserId();
-          String fullName = user.getFullname();
-          String userName = user.getUsername();
-          String avatar = user.getPhoto();
-
-          LogUtils.e(TAG,
-              "userId = " + userid + ", fullName = " + fullName + ", userName = " + userName
-                  + ", avatar = " + avatar);
-
-          // 是指当前用户信息
-          UserInfo userInfo = new UserInfo(String.valueOf(userId), fullName, Uri.parse(avatar));
-          RongIM.getInstance().setCurrentUserInfo(userInfo);
-
-          //设置消息携带用户信息
-          RongIM.getInstance().setMessageAttachedUserInfo(true);
-        }
+        //if (AppContext.user != null) {
+        //  UserInfoModel user = AppContext.user;
+        //  int userId = user.getUserId();
+        //  String fullName = user.getFullname();
+        //  String userName = user.getUsername();
+        //  String avatar = user.getPhoto();
+        //
+        //  LogUtils.e(TAG,
+        //      "userId = " + userid + ", fullName = " + fullName + ", userName = " + userName
+        //          + ", avatar = " + avatar);
+        //
+        //  // 是指当前用户信息
+        //  UserInfo userInfo = new UserInfo(String.valueOf(userId), fullName, Uri.parse(avatar));
+        //  RongIM.getInstance().setCurrentUserInfo(userInfo);
+        //
+        //  //设置消息携带用户信息
+        //  RongIM.getInstance().setMessageAttachedUserInfo(true);
+        //}
       }
 
       /**
@@ -119,6 +128,33 @@ public class IMPresenter {
         LogUtils.e("IMPresenter", "onError()-----" + "errorCode = " + errorCode);
       }
     });
+  }
+
+  /**
+   * 在App服务器查询用户信息，返回给融云显示
+   */
+  private static UserInfo findUserById(final String userId) {
+    final String[] name = { "" };
+    final String[] avatar = { "" };
+    UserCenterPresenter.getUserCenterInfo(AppContext.mContext, Integer.valueOf(userId),
+        new UserCenterPresenter.UserCenterInfoCallBack() {
+          @Override public void onSuccess(UserCenterInfo userCenterInfo) {
+            if (userCenterInfo != null) {
+              name[0] = userCenterInfo.getName();
+              avatar[0] = userCenterInfo.getPhoto();
+            }
+          }
+
+          @Override public void onError() {
+
+          }
+        });
+
+    UserInfo userInfo = new UserInfo(userId, name[0], Uri.parse(avatar[0]));
+
+    LogUtils.e(TAG, "UserInfo : " + "userId = " + userId + ", name = " + name[0] + ", avatar = " + avatar[0]);
+
+    return userInfo;
   }
 
   /**
@@ -230,13 +266,24 @@ public class IMPresenter {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().addToBlacklist(targetId, new RongIMClient.OperationCallback() {
         @Override public void onSuccess() {
-
+          ToastManager.getInstance(AppContext.mContext).show("您将不会再收到该用户的消息！");
         }
 
         @Override public void onError(RongIMClient.ErrorCode errorCode) {
 
         }
       });
+    }
+  }
+
+  /**
+   * 获取本地聊天列表
+   */
+  public static void getConversationList(
+      RongIMClient.ResultCallback<List<Conversation>> resultCallback) {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance()
+          .getConversationList(resultCallback, Conversation.ConversationType.PRIVATE);
     }
   }
 

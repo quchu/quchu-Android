@@ -1,5 +1,6 @@
 package co.quchu.quchu.im.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -36,6 +37,7 @@ import io.rong.imlib.MessageTag;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.TypingMessage.TypingStatus;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.UserInfo;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 
@@ -44,7 +46,7 @@ import io.rong.message.VoiceMessage;
  *
  * Created by mwb on 16/8/25.
  */
-public class ConversationActivity extends BaseBehaviorActivity {
+public class ChatActivity extends BaseBehaviorActivity {
 
   private int TITLE_DEFAULT = 0;
   //显示“对方正在输入”
@@ -63,7 +65,7 @@ public class ConversationActivity extends BaseBehaviorActivity {
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_conversation);
+    setContentView(R.layout.activity_chat);
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     titleTv = toolbar.getTitleTv();
@@ -75,8 +77,46 @@ public class ConversationActivity extends BaseBehaviorActivity {
 
     getTypingStatus();
 
+    RongIM.setConversationBehaviorListener(conversationBehaviorListener);
+
     //RongIM.getInstance().setReadReceiptConversationTypeList();
   }
+
+  /**
+   * 会话界面操作监听
+   */
+  private RongIM.ConversationBehaviorListener conversationBehaviorListener =
+      new RongIM.ConversationBehaviorListener() {
+
+        @Override public boolean onUserPortraitClick(Context context,
+            Conversation.ConversationType conversationType, UserInfo userInfo) {
+          //当点击用户头像后执行
+          return false;
+        }
+
+        @Override public boolean onUserPortraitLongClick(Context context,
+            Conversation.ConversationType conversationType, UserInfo userInfo) {
+          //当长按用户头像后执行
+          return false;
+        }
+
+        @Override public boolean onMessageClick(Context context, View view,
+            io.rong.imlib.model.Message message) {
+          //当点击消息时执行
+          return false;
+        }
+
+        @Override public boolean onMessageLinkClick(Context context, String s) {
+          //当点击链接消息时执行
+          return false;
+        }
+
+        @Override public boolean onMessageLongClick(Context context, View view,
+            io.rong.imlib.model.Message message) {
+          //当长按消息时执行
+          return false;
+        }
+      };
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_conversation, menu);
@@ -131,10 +171,8 @@ public class ConversationActivity extends BaseBehaviorActivity {
     @Override public void handleMessage(Message msg) {
       if (msg.what == TITLE_DEFAULT) {
         titleTv.setText("聊天");
-
       } else if (msg.what == TITLE_TEXT_TYPING) {
         titleTv.setText("对方正在输入");
-
       } else if (msg.what == TITLE_VOICE_TYPING) {
         titleTv.setText("对方正在讲话");
       }

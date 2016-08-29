@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.im.activity.ConversationListFragment;
+import co.quchu.quchu.im.activity.ChatListFragment;
 import co.quchu.quchu.widget.NoScrollViewPager;
 
 /**
@@ -46,14 +46,15 @@ public class MessageActivity extends BaseBehaviorActivity {
    */
   private class MessageAdapter extends FragmentPagerAdapter {
 
-    private final ConversationListFragment conversationListFragment;
+    private final ChatListFragment chatListFragment;
     private final NoticeFragment noticeFragment;
+    //private final NewChatListFragment chatListFragment;
 
     public MessageAdapter(FragmentManager fm) {
       super(fm);
 
       //im列表
-      conversationListFragment = new ConversationListFragment();
+      chatListFragment = new ChatListFragment();
 
       //通知
       noticeFragment = new NoticeFragment();
@@ -61,7 +62,7 @@ public class MessageActivity extends BaseBehaviorActivity {
 
     @Override public Fragment getItem(int position) {
       if (position == 0) {
-        return conversationListFragment;
+        return chatListFragment;
       }
       return noticeFragment;
     }
