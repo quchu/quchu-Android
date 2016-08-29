@@ -73,7 +73,7 @@ public class SettingXioaQActivity extends BaseBehaviorActivity {
   }
 
   @Override protected int activitySetup() {
-    return 0;
+    return TRANSITION_TYPE_LEFT;
   }
 
   @Override protected String getPageNameCN() {

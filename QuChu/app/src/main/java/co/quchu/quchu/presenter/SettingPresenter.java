@@ -50,27 +50,53 @@ public class SettingPresenter {
 
           @Override public void onResponse(Object response, boolean result, String errorCode,
               @Nullable String msg) {
-            if (type.equals(SETTING_TYPE_DAHUO)) {
-              //搭伙
-              SPUtils.setDahuoSwitch(isChecked);
-
-            } else if (type.equals(SETTING_TYPE_NEWS)) {
-              //推荐文章
-              SPUtils.setNewsSwitch(isChecked);
-
-            } else if (type.equals(SETTING_TYPE_QUCHU)) {
-              //推荐趣处
-              SPUtils.setQuchuSwitch(isChecked);
-
-            } else if (type.equals(SETTING_TYPE_QUCHU_USER)) {
-              //推荐趣星人
-              SPUtils.setQuchuUserSwitch(isChecked);
-            }
-
-            ToastManager.getInstance(context).show("设置成功");
+            setUserMsgSuccess(context, type, isChecked);
           }
         });
     request.start(context);
+  }
+
+  private static void setUserMsgSuccess(Context context, String type, boolean isChecked) {
+    if (type.equals(SETTING_TYPE_DAHUO)) {
+      //搭伙
+      SPUtils.setDahuoSwitch(isChecked);
+
+      if (isChecked) {
+        ToastManager.getInstance(context).show("开启搭伙功能");
+      } else {
+        ToastManager.getInstance(context).show("关闭搭伙功能");
+      }
+
+    } else if (type.equals(SETTING_TYPE_NEWS)) {
+      //推荐文章
+      SPUtils.setNewsSwitch(isChecked);
+
+      if (isChecked) {
+        ToastManager.getInstance(context).show("开启推荐咨询");
+      } else {
+        ToastManager.getInstance(context).show("关闭推荐咨询");
+      }
+
+    } else if (type.equals(SETTING_TYPE_QUCHU)) {
+      //推荐趣处
+      SPUtils.setQuchuSwitch(isChecked);
+
+      if (isChecked) {
+        ToastManager.getInstance(context).show("开启推荐趣处");
+      } else {
+        ToastManager.getInstance(context).show("关闭推荐趣处");
+      }
+
+    } else if (type.equals(SETTING_TYPE_QUCHU_USER)) {
+      //推荐趣星人
+      SPUtils.setQuchuUserSwitch(isChecked);
+
+      if (isChecked) {
+        ToastManager.getInstance(context).show("开启推荐趣星人");
+      } else {
+        ToastManager.getInstance(context).show("关闭推荐趣星人");
+      }
+    }
   }
 
   public interface OnUserMsgListener {

@@ -28,9 +28,12 @@ import java.util.Locale;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.gallery.utils.Utils;
+import co.quchu.quchu.im.IMDialog;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.activity.UserCenterActivity;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.MessageTag;
@@ -58,6 +61,8 @@ public class ChatActivity extends BaseBehaviorActivity {
   private String targetId;
   //刚刚创建完讨论组后获得讨论组的id 为targetIds，需要根据 为targetIds 获取 targetId
   private String targetIds;
+  //
+  private String title;
   //会话类型
   private Conversation.ConversationType conversationType;
 
@@ -69,7 +74,6 @@ public class ChatActivity extends BaseBehaviorActivity {
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     titleTv = toolbar.getTitleTv();
-    titleTv.setText("聊天");
 
     getIntentDate(getIntent());
 
@@ -91,7 +95,10 @@ public class ChatActivity extends BaseBehaviorActivity {
         @Override public boolean onUserPortraitClick(Context context,
             Conversation.ConversationType conversationType, UserInfo userInfo) {
           //当点击用户头像后执行
-          return false;
+          Intent intent = new Intent(ChatActivity.this, UserCenterActivity.class);
+          intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, Integer.valueOf(userInfo.getUserId()));
+          startActivity(intent);
+          return true;
         }
 
         @Override public boolean onUserPortraitLongClick(Context context,
@@ -114,7 +121,9 @@ public class ChatActivity extends BaseBehaviorActivity {
         @Override public boolean onMessageLongClick(Context context, View view,
             io.rong.imlib.model.Message message) {
           //当长按消息时执行
-          return false;
+          IMDialog dialog = new IMDialog(ChatActivity.this, message);
+          dialog.show();
+          return true;
         }
       };
 
@@ -126,7 +135,6 @@ public class ChatActivity extends BaseBehaviorActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == R.id.action_setting) {
       showBehaviorDialog();
-      //startActivity(SettingXioaQActivity.class);
       return true;
     }
     return super.onOptionsItemSelected(item);
@@ -170,7 +178,7 @@ public class ChatActivity extends BaseBehaviorActivity {
   private Handler handler = new Handler() {
     @Override public void handleMessage(Message msg) {
       if (msg.what == TITLE_DEFAULT) {
-        titleTv.setText("聊天");
+        titleTv.setText(title);
       } else if (msg.what == TITLE_TEXT_TYPING) {
         titleTv.setText("对方正在输入");
       } else if (msg.what == TITLE_VOICE_TYPING) {
@@ -186,7 +194,10 @@ public class ChatActivity extends BaseBehaviorActivity {
   private void getIntentDate(Intent intent) {
     targetId = intent.getData().getQueryParameter("targetId");
     targetIds = intent.getData().getQueryParameter("targetIds");
-    //intent.getData().getLastPathSegment();//获得当前会话类型
+    title = intent.getData().getQueryParameter("title");
+    titleTv.setText(title);
+
+    //intent.getData().getLastPathSegment();获得当前会话类型
     conversationType = Conversation.ConversationType
         .valueOf(intent.getData().getLastPathSegment().toUpperCase(Locale.getDefault()));
 
@@ -306,6 +317,17 @@ public class ChatActivity extends BaseBehaviorActivity {
       @Override public void onClick(View v) {
         popWin.dismiss();
         makeToast("屏蔽");
+
+        CommonDialog commonDialog = CommonDialog.newInstance("确定要屏蔽此用户吗？", "屏蔽该用户后，90天内您将不会再收到该用户的消息", "确定", "取消");
+        commonDialog.setListener(new CommonDialog.OnActionListener() {
+          @Override public boolean dialogClick(int clickId) {
+            if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
+              IMPresenter.addToBlackList(targetId);
+            }
+            return true;
+          }
+        });
+        commonDialog.show(getSupportFragmentManager(), "");
       }
     });
   }

@@ -38,6 +38,10 @@ public class IMPresenter {
   //融云测试
   public static String userId = "161";
   public static String userId1 = "216";
+  //用户信息，名称，头像
+  private static UserInfo userInfo;
+  private static String name;
+  private static String avatar;
 
   /**
    * 获取im token
@@ -87,7 +91,7 @@ public class IMPresenter {
        * @param userid 当前 token
        */
       @Override public void onSuccess(String userid) {
-        LogUtils.e(TAG, "onSuccess()-----" + "userid = " + userid + ", token = " + token);
+        LogUtils.e(TAG, "connectIMService() ---- onSuccess()-----" + "userid = " + userid + ", token = " + token);
         if (listener != null) {
           listener.connectSuccess();
         }
@@ -95,29 +99,12 @@ public class IMPresenter {
         //指定用户信息
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
           @Override public UserInfo getUserInfo(String userId) {
+
+            LogUtils.e(TAG, "getUserInfo() ===== userId = " + userId);
+
             return findUserById(userId);
           }
         }, true);
-
-        //指定当前用户信息
-        //if (AppContext.user != null) {
-        //  UserInfoModel user = AppContext.user;
-        //  int userId = user.getUserId();
-        //  String fullName = user.getFullname();
-        //  String userName = user.getUsername();
-        //  String avatar = user.getPhoto();
-        //
-        //  LogUtils.e(TAG,
-        //      "userId = " + userid + ", fullName = " + fullName + ", userName = " + userName
-        //          + ", avatar = " + avatar);
-        //
-        //  // 是指当前用户信息
-        //  UserInfo userInfo = new UserInfo(String.valueOf(userId), fullName, Uri.parse(avatar));
-        //  RongIM.getInstance().setCurrentUserInfo(userInfo);
-        //
-        //  //设置消息携带用户信息
-        //  RongIM.getInstance().setMessageAttachedUserInfo(true);
-        //}
       }
 
       /**
@@ -134,25 +121,28 @@ public class IMPresenter {
    * 在App服务器查询用户信息，返回给融云显示
    */
   private static UserInfo findUserById(final String userId) {
-    final String[] name = { "" };
-    final String[] avatar = { "" };
     UserCenterPresenter.getUserCenterInfo(AppContext.mContext, Integer.valueOf(userId),
         new UserCenterPresenter.UserCenterInfoCallBack() {
           @Override public void onSuccess(UserCenterInfo userCenterInfo) {
             if (userCenterInfo != null) {
-              name[0] = userCenterInfo.getName();
-              avatar[0] = userCenterInfo.getPhoto();
+              name = userCenterInfo.getName();
+              avatar = userCenterInfo.getPhoto();
+
+              userInfo = new UserInfo(userId, name, Uri.parse(avatar));
+
+              //刷新用户缓存用户
+              if (RongIM.getInstance() != null) {
+                LogUtils.e(TAG, "UserInfo : " + ", userId = " + userId + ", name = " + name + ", avatar = " + avatar);
+                RongIM.getInstance().refreshUserInfoCache(new UserInfo(userId, name, Uri.parse(
+                    avatar)));
+              }
             }
           }
 
           @Override public void onError() {
-
+            LogUtils.e(TAG, "UserCenterInfo-----onError()");
           }
         });
-
-    UserInfo userInfo = new UserInfo(userId, name[0], Uri.parse(avatar[0]));
-
-    LogUtils.e(TAG, "UserInfo : " + "userId = " + userId + ", name = " + name[0] + ", avatar = " + avatar[0]);
 
     return userInfo;
   }
@@ -210,10 +200,10 @@ public class IMPresenter {
   /**
    * 置顶会话
    */
-  public static void setConversationToTop(String tagetId, boolean isTop) {
+  public static void setConversationToTop(String targetId, boolean isTop) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance()
-          .setConversationToTop(Conversation.ConversationType.PRIVATE, tagetId, isTop,
+          .setConversationToTop(Conversation.ConversationType.PRIVATE, targetId, isTop,
               new RongIMClient.ResultCallback<Boolean>() {
                 @Override public void onSuccess(Boolean aBoolean) {
                 }
@@ -256,6 +246,15 @@ public class IMPresenter {
 
         }
       });
+    }
+  }
+
+  /**
+   * 撤回消息
+   */
+  public static void recallMessage(Message message) {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance().recallMessage(message);
     }
   }
 

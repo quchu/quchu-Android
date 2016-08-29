@@ -46,7 +46,7 @@ public class CommonDialog extends DialogFragment implements View.OnClickListener
   private static final String KEY_ACTIVE = "sactive";
   private static final String KEY_PASSIVE = "passive";
   private static final String KEY_SUBBUTTON = "subButton";
-  private static final String KEY_HIDE_BUTTON = "showButton";
+  private static final String KEY_HIDE_BUTTON = "hideButton";
 
   public static CommonDialog newInstance(@NonNull String title, @NonNull String subTitle,
       @NonNull boolean hideButton) {

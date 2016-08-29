@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.im.IMDialog;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imlib.model.Conversation;
@@ -27,20 +28,6 @@ public class ChatListFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_chat_list, container, false);
-
-    //设置小Q
-    //IMPresenter.sendTextMessage(IMPresenter.userId1, "", null, null);
-    //if (RongIM.getInstance() != null) {
-    //  RongIM.getInstance()
-    //      .setConversationToTop(Conversation.ConversationType.PRIVATE, IMPresenter.userId1, true,
-    //          new RongIMClient.ResultCallback<Boolean>() {
-    //            @Override public void onSuccess(Boolean aBoolean) {
-    //            }
-    //
-    //            @Override public void onError(RongIMClient.ErrorCode errorCode) {
-    //            }
-    //          });
-    //}
 
     //设置会话列表点击事件监听
     RongIM.setConversationListBehaviorListener(conversationListBehaviorListener);
@@ -98,13 +85,22 @@ public class ChatListFragment extends BaseFragment {
         @Override public boolean onConversationLongClick(Context context, View view,
             UIConversation uiConversation) {
           //列表长按
-          return false;
+          IMDialog dialog = new IMDialog(getActivity(), uiConversation.getConversationTargetId(),
+              uiConversation.isTop());
+          dialog.show();
+          return true;
         }
 
         @Override public boolean onConversationClick(Context context, View view,
             UIConversation uiConversation) {
           //列表点击
-          return false;
+          String targetId = uiConversation.getConversationTargetId();
+          String title = uiConversation.getUIConversationTitle();
+
+          if (RongIM.getInstance() != null) {
+            RongIM.getInstance().startPrivateChat(getActivity(), targetId, title);
+          }
+          return true;
         }
       };
 

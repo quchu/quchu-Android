@@ -65,10 +65,14 @@ public class NewMeFragment extends BaseFragment {
     viewpager.setAdapter(new MyViewPagerAdapter(getActivity().getSupportFragmentManager()));
     indicator.setViewPager(viewpager);
 
-    getUnreadMessage();
     getUserCenterInfo();
 
     return view;
+  }
+
+  @Override public void onResume() {
+    getUnreadMessage();
+    super.onResume();
   }
 
   /**
@@ -121,6 +125,8 @@ public class NewMeFragment extends BaseFragment {
     if (count > 0) {
       unReadMassage.setText(String.valueOf(count));
       unReadMassage.setVisibility(View.VISIBLE);
+    } else {
+      unReadMassage.setVisibility(View.GONE);
     }
   }
 

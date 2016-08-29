@@ -24,7 +24,6 @@ import co.quchu.quchu.dialog.FeedbackDialog;
 import co.quchu.quchu.model.FeedbackModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.FeedbackPresenter;
-import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.FeedbackAdapter;
 import io.rong.imkit.RongIM;
@@ -75,7 +74,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
       new FeedbackAdapter.OnFeedbackItemClickListener() {
         @Override public void onItemClick(FeedbackModel feedbackModel) {
           if (RongIM.getInstance() != null) {
-            RongIM.getInstance().startPrivateChat(FeedbackActivity.this, IMPresenter.userId1,
+            RongIM.getInstance().startPrivateChat(FeedbackActivity.this, "1593",
                 feedbackModel.getTitle());
           }
         }
