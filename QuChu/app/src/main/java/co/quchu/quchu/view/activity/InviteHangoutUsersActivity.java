@@ -2,6 +2,8 @@ package co.quchu.quchu.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -73,7 +75,7 @@ public class InviteHangoutUsersActivity extends BaseActivity {
         HangoutUserModel user = mUsers.get(position);
         DialogHangoutUserInfo dialog =
             DialogHangoutUserInfo.getInstance(mPid, user.getUserId(), user.getPhoto(),
-                user.getMark(), Integer.valueOf(user.getSimilarity()), user.getName());
+                user.getMark(), (int) (user.getSimilarity()*100), user.getName());
         dialog.setOnConfirmListener(new DialogHangoutUserInfo.OnUserInvitedListener() {
           @Override public void onInvite(int uid) {
             inviteUser(uid);
@@ -84,8 +86,12 @@ public class InviteHangoutUsersActivity extends BaseActivity {
     });
     rv.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
     rv.setAdapter(mAdapter);
-    rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-    rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL_LIST));
+    DividerItemDecoration verticle = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST,new ColorDrawable(Color.parseColor("#dbdbdb")));
+    verticle.setHeight(1);
+    rv.addItemDecoration(verticle);
+    DividerItemDecoration horizontal = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL_LIST,new ColorDrawable(Color.parseColor("#dbdbdb")));
+    horizontal.setWidth(1);
+    rv.addItemDecoration(horizontal);
     getUsers();
   }
 
