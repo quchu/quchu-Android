@@ -2,23 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:orientation="vertical"
     >
 
   <RelativeLayout
-      android:layout_marginTop="@dimen/half_margin"
-      android:layout_width="@dimen/invite_user_avatar_size"
-      android:layout_height="@dimen/invite_user_avatar_size"
+      android:layout_width="55dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/base_margin"
+
       >
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdvAvatar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         app:placeholderImage="@color/standard_color_h3_dark"
-        app:roundAsCircle= "true"
+        app:roundAsCircle="true"
+        app:viewAspectRatio="1"
         />
 
     <ImageView
@@ -36,9 +38,13 @@
       android:id="@+id/tvUserName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      tools:text="UserName"
-      android:layout_marginTop="@dimen/half_margin"
+      android:singleLine="true"
+      android:layout_marginLeft="@dimen/half_margin"
+      android:layout_marginRight="@dimen/half_margin"
+      android:paddingBottom="@dimen/base_margin"
+      android:textColor="@color/standard_color_h2_dark"
       android:textSize="@dimen/standard_text_size_h2"
+      tools:text="UserName"
       />
 
 </LinearLayout>

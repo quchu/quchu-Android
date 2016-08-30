@@ -257,5 +257,12 @@
     <string name="submitRating">提交评价</string>
     <string name="rating">评价</string>
     <string name="change_hangout_users_list">给朕换</string>
+    <string name="match_top_genes">确定突出基因</string>
+    <string name="match_genes">趣基因分析中...</string>
+    <string name="match_hobbits">分析兴趣爱好</string>
+    <string name="match_looking_for_similares">寻找相同基因的人</string>
+    <string name="match_final">人群筛选</string>
+    <string name="user_invited">用户邀请成功</string>
+    <string name="user_invited_faile">用户邀请失败</string>
 
 </resources>

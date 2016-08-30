@@ -3,6 +3,7 @@ package co.quchu.quchu.view.adapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
@@ -23,6 +24,8 @@ import co.quchu.quchu.model.CommentImageModel;
 import co.quchu.quchu.model.HangoutUserModel;
 import co.quchu.quchu.view.activity.CommentListActivity;
 import co.quchu.quchu.view.activity.InviteHangoutUsersActivity;
+import co.quchu.quchu.view.fragment.DialogHangoutUserInfo;
+import co.quchu.quchu.view.fragment.DialogMatchingUsers;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -423,10 +426,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       }
     } else if (holder instanceof RatingInfoViewHolder) {
 
-      if (!mData.isIsActivity()){
+      if (!mData.isIsActivity()) {
         ((RatingInfoViewHolder) holder).tvActivityDesc.setVisibility(View.GONE);
         ((RatingInfoViewHolder) holder).tvActivityLabel.setVisibility(View.GONE);
-      }else{
+      } else {
         ((RatingInfoViewHolder) holder).tvActivityDesc.setVisibility(View.VISIBLE);
         ((RatingInfoViewHolder) holder).tvActivityLabel.setVisibility(View.VISIBLE);
         ((RatingInfoViewHolder) holder).tvActivityDesc.setText(mData.getActivityInfo());
@@ -460,20 +463,24 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((LabelViewHolder) holder).rvUsers.setLayoutManager(
             new GridLayoutManager(mAnchorActivity, 8));
         ((LabelViewHolder) holder).rvUsers.setAdapter(new HangoutUserAdapter(mHangoutUsers));
-        ((LabelViewHolder) holder).tvUserBeenInvit.setText("接受邀请的人有"+mData.getJoinPartnerCount());
+        ((LabelViewHolder) holder).tvUserBeenInvit.setText("接受邀请的人有" + mData.getJoinPartnerCount());
         ((LabelViewHolder) holder).ivMoreComments.setVisibility(View.GONE);
         ((LabelViewHolder) holder).tvMoreComments.setVisibility(View.GONE);
         ((LabelViewHolder) holder).ivInvite.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View view) {
+
+            //DialogFragment d = new DialogMatchingUsers();
+            //d.show(mAnchorActivity.getFragmentManager(),"wth");
+
             InviteHangoutUsersActivity.enterActivity(mAnchorActivity);
           }
         });
-        if (mData.getPlaceReviewCount()>3){
+        if (mData.getPlaceReviewCount() > 3) {
           ((LabelViewHolder) holder).ivMoreComments.setVisibility(View.VISIBLE);
           ((LabelViewHolder) holder).tvMoreComments.setVisibility(View.VISIBLE);
           ((LabelViewHolder) holder).ivMoreComments.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-              CommentListActivity.enterActivity(mAnchorActivity,mData.getPid());
+              CommentListActivity.enterActivity(mAnchorActivity, mData.getPid());
             }
           });
         }
@@ -527,9 +534,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         final CommentModel commentModel = mData.getReviewList().get(commentIndex);
 
-        ((CommentViewHolder) holder).rvImages.setLayoutManager(new GridLayoutManager(mAnchorActivity,2));
+        ((CommentViewHolder) holder).rvImages.setLayoutManager(
+            new GridLayoutManager(mAnchorActivity, 2));
         CommentImageAdapter adapter = new CommentImageAdapter(commentModel.getImageList());
-        if (null!=commentModel && null!=commentModel.getImageList()){
+        if (null != commentModel && null != commentModel.getImageList()) {
 
           adapter.setOnItemClickListener(new CommonItemClickListener() {
             @Override public void onItemClick(View v, int position) {
@@ -541,12 +549,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 imageModel.setPath(commentModel.getImageList().get(i).getPathStr());
                 imageModels.add(imageModel);
               }
-              PhotoViewActivity.enterActivity(mAnchorActivity,position,imageModels);
+              PhotoViewActivity.enterActivity(mAnchorActivity, position, imageModels);
             }
           });
         }
         ((CommentViewHolder) holder).rvImages.setAdapter(adapter);
-
 
         ((CommentViewHolder) holder).rbRating.setRating(commentModel.getScore());
         ((CommentViewHolder) holder).tvUsername.setText(commentModel.getUserName());
@@ -853,7 +860,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
-
   public class CommentImageAdapter extends RecyclerView.Adapter<CommentImageAdapter.ViewHolder> {
 
     List<CommentImageModel> mImageSet;
@@ -863,7 +869,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       this.mImageSet = dataSet;
     }
 
-    public void setOnItemClickListener(CommonItemClickListener listener){
+    public void setOnItemClickListener(CommonItemClickListener listener) {
       mListener = listener;
     }
 
@@ -876,8 +882,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       holder.sdvImage.setImageURI(Uri.parse(mImageSet.get(position).getPathStr()));
       holder.sdvImage.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View view) {
-          if (null!=mListener){
-            mListener.onItemClick(view,position);
+          if (null != mListener) {
+            mListener.onItemClick(view, position);
           }
         }
       });
@@ -916,7 +922,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override public int getItemCount() {
-      return null != mUserSet ? mUserSet.size() : 0;
+      return null != mUserSet ? mUserSet.size() > 16 ? 16 : mUserSet.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+
+
+  <RelativeLayout
+      android:layout_width="240dp"
+      android:layout_height="360dp"
+      >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+      <android.support.v7.widget.CardView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_gravity="center"
+          android:layout_marginBottom="@dimen/dialog_margin"
+          android:background="@color/standard_color_white"
+          app:cardCornerRadius="@dimen/rounded_radius"
+          app:cardPreventCornerOverlap="true"
+          >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+          <com.facebook.drawee.view.SimpleDraweeView
+              android:id="@+id/sdv"
+              app:roundBottomRight="false"
+              app:roundBottomLeft="false"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="0.6"
+              app:actualImageScaleType="centerCrop"
+              app:failureImage="@mipmap/ic_image_empty"
+              app:failureImageScaleType="center"
+              app:placeholderImage="@mipmap/ic_image_empty"
+              app:placeholderImageScaleType="center"
+              app:roundedCornerRadius="@dimen/rounded_radius"
+
+              />
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginBottom="@dimen/base_margin"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:orientation="vertical"
+              >
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                android:gravity="center"
+                tools:text="Username"
+                style="@style/TextView.H1"
+                />
+
+
+            <TextView
+                android:id="@+id/tvTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/half_margin"
+                android:background="@drawable/shape_lineframe_black_thin"
+                android:paddingBottom="@dimen/tow_dp_margin"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:paddingTop="@dimen/tow_dp_margin"
+                tools:text="土豪"
+                style="@style/TextView.H2"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                >
+              <TextView
+                  android:id="@+id/tvLabel"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="与你的基因相似度为："
+                  style="@style/TextView.H2"
+                  />
+
+
+              <TextView
+                  android:id="@+id/tvSimilar"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/standard_color_yellow"
+                  tools:text="96%"
+                  style="@style/TextView.H1"
+                  />
+
+            </LinearLayout>
+          </LinearLayout>
+
+        </LinearLayout>
+      </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ivConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_dahuo"
+        />
+
+  </RelativeLayout>
+
+
+</LinearLayout>
+
+

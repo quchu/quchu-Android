@@ -21,7 +21,13 @@ public class InviteHangoutUsersAdapter
     extends RecyclerView.Adapter<InviteHangoutUsersAdapter.ViewHolder> {
 
 
+  private CommonItemClickListener mListener;
   private List<HangoutUserModel> mUsers;
+
+
+  public void setOnItemClickListener(CommonItemClickListener pListener){
+    mListener = pListener;
+  }
 
   public InviteHangoutUsersAdapter(List<HangoutUserModel> pUsers) {
     this.mUsers = pUsers;
@@ -32,10 +38,17 @@ public class InviteHangoutUsersAdapter
         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_invite_user, parent, false));
   }
 
-  @Override public void onBindViewHolder(ViewHolder holder, int position) {
+  @Override public void onBindViewHolder(ViewHolder holder, final int position) {
     Uri uri = Uri.parse(mUsers.get(position).getPhoto());
     holder.tvUserName.setText(mUsers.get(position).getName());
     holder.sdvAvatar.setImageURI(uri);
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        if (null!=mListener){
+          mListener.onItemClick(view,position);
+        }
+      }
+    });
   }
 
   @Override public int getItemCount() {
