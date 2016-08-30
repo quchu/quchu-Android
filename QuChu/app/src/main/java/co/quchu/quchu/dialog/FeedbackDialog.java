@@ -76,11 +76,7 @@ public class FeedbackDialog extends Dialog {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if (charSequence.toString().length() > 0) {
-                hasFeedbackTitle = true;
-            } else {
-                hasFeedbackTitle = false;
-            }
+            hasFeedbackTitle = charSequence.toString().length() > 0;
 
             if (hasFeedbackTitle && hasFeedbackContent) {
                 submitBtn.setEnabled(true);
@@ -103,11 +99,7 @@ public class FeedbackDialog extends Dialog {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if (charSequence.toString().length() > 0) {
-                hasFeedbackContent = true;
-            } else {
-                hasFeedbackContent = false;
-            }
+            hasFeedbackContent = charSequence.toString().length() > 0;
 
             if (hasFeedbackTitle && hasFeedbackContent) {
                 submitBtn.setEnabled(true);

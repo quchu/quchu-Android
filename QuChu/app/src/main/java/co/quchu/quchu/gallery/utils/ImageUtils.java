@@ -114,7 +114,7 @@ public class ImageUtils {
      */
     public static Bitmap rotaingImageView(int angle , Bitmap bitmap) {
         //旋转图片 动作
-        Matrix matrix = new Matrix();;
+        Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         // 创建新的图片
         return Bitmap.createBitmap(bitmap, 0, 0,

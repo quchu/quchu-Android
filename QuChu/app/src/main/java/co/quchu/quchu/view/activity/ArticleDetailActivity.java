@@ -249,7 +249,6 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
 
         if (mFavoriteProgressRunning) {
             Toast.makeText(getApplicationContext(), R.string.process_running_please_wait, Toast.LENGTH_SHORT).show();
-            ;
         }
         mFavoriteProgressRunning = true;
 
