@@ -126,7 +126,7 @@ public class FeedbackPresenter {
 
       @Override public void onResponse(Object response, boolean result, String errorCode,
           @Nullable String msg) {
-          if (response != null && listener != null) {
+          if (listener != null) {
             listener.successListener(response);
           }
       }

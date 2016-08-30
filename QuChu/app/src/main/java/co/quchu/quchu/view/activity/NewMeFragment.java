@@ -33,6 +33,7 @@ import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.EventFlags;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.CircleIndicator;
 import io.rong.imkit.RongIM;
@@ -66,6 +67,16 @@ public class NewMeFragment extends BaseFragment {
     indicator.setViewPager(viewpager);
 
     getUserCenterInfo();
+
+    boolean isChat = getActivity().getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT, false);
+    boolean isChatList = getActivity().getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT_LIST, false);
+    LogUtils.e("NewMeFragment-------mwb", "isChat = " + isChat + ", isChatList = " + isChatList);
+
+    if (isChat) {
+      startChat();
+    } else if (isChatList) {
+      startChatList();
+    }
 
     return view;
   }
@@ -122,12 +133,25 @@ public class NewMeFragment extends BaseFragment {
   }
 
   public void notReadMassage(int count) {
+    if (unReadMassage == null) {
+      return;
+    }
     if (count > 0) {
       unReadMassage.setText(String.valueOf(count));
       unReadMassage.setVisibility(View.VISIBLE);
     } else {
       unReadMassage.setVisibility(View.GONE);
     }
+  }
+
+  public void startChat() {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance().startPrivateChat(getActivity(), SPUtils.getRongYunTargetId(), SPUtils.getRongYunTitle());
+    }
+  }
+
+  public void startChatList() {
+    startActivity(MessageActivity.class);
   }
 
   @Override protected String getPageNameCN() {

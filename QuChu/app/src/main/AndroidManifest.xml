@@ -237,8 +237,9 @@
         android:screenOrientation="portrait"/>
 
     <!-- 用户反馈详情 -->
-    <activity android:name=".view.activity.FeedbackDetailActivity"
-              android:screenOrientation="portrait"/>
+    <activity
+        android:name=".view.activity.FeedbackDetailActivity"
+        android:screenOrientation="portrait"/>
 
     <!-- 选择城市 -->
     <activity
@@ -258,7 +259,19 @@
     <!-- im -->
     <activity
         android:name=".view.activity.MessageActivity"
-        android:screenOrientation="portrait"/>
+        android:launchMode="singleTask"
+        android:screenOrientation="portrait">
+
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data
+            android:host="co.quchu.quchu"
+            android:path="/conversationlist"
+            android:scheme="rong"/>
+      </intent-filter>
+
+    </activity>
 
     <activity
         android:name=".view.activity.CommentListActivity"

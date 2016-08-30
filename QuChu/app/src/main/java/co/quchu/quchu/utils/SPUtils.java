@@ -339,6 +339,28 @@ public class SPUtils {
   public static String getRongYunToken() {
     return getValueFromSPMap(AppContext.mContext, AppKey.RONGYUN_TOKEN, "");
   }
+
+  /**
+   * 保存融云私聊的目标id
+   */
+  public static void setRongYunTargetId(String targetId) {
+    putValueToSPMap(AppContext.mContext, AppKey.TARGET_ID, targetId);
+  }
+
+  public static String getRongYunTargetId() {
+    return getValueFromSPMap(AppContext.mContext, AppKey.TARGET_ID, "");
+  }
+
+  /**
+   * 保存融云私聊标题
+   */
+  public static void setRongYunTitle(String title) {
+    putValueToSPMap(AppContext.mContext, AppKey.CHAT_TITLE, title);
+  }
+
+  public static String getRongYunTitle() {
+    return getValueFromSPMap(AppContext.mContext, AppKey.CHAT_TITLE, "");
+  }
 }
 
 

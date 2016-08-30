@@ -32,7 +32,7 @@ public class SettingXioaQActivity extends BaseBehaviorActivity {
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView titleTv = toolbar.getTitleTv();
-    titleTv.setText("Q设置");
+    titleTv.setText("Little Q设置");
 
     initView();
   }

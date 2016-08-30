@@ -32,7 +32,10 @@ import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.im.IMDialog;
 import co.quchu.quchu.im.IMPresenter;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.activity.SettingXioaQActivity;
+import co.quchu.quchu.view.activity.SplashActivity;
 import co.quchu.quchu.view.activity.UserCenterActivity;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
@@ -58,13 +61,13 @@ public class ChatActivity extends BaseBehaviorActivity {
   private int TITLE_VOICE_TYPING = 2;
 
   //私聊的目标id
-  private String targetId;
+  private String mTargetId;
   //刚刚创建完讨论组后获得讨论组的id 为targetIds，需要根据 为targetIds 获取 targetId
-  private String targetIds;
-  //
-  private String title;
+  private String mTargetIds;
+  //显示的title
+  private String mTitle;
   //会话类型
-  private Conversation.ConversationType conversationType;
+  private Conversation.ConversationType mConversationType;
 
   private TextView titleTv;
 
@@ -75,6 +78,10 @@ public class ChatActivity extends BaseBehaviorActivity {
     EnhancedToolbar toolbar = getEnhancedToolbar();
     titleTv = toolbar.getTitleTv();
 
+    if (getIntent() == null || getIntent().getData() == null) {
+      return;
+    }
+
     getIntentDate(getIntent());
 
     isPushMessage(getIntent());
@@ -82,8 +89,6 @@ public class ChatActivity extends BaseBehaviorActivity {
     getTypingStatus();
 
     RongIM.setConversationBehaviorListener(conversationBehaviorListener);
-
-    //RongIM.getInstance().setReadReceiptConversationTypeList();
   }
 
   /**
@@ -96,7 +101,8 @@ public class ChatActivity extends BaseBehaviorActivity {
             Conversation.ConversationType conversationType, UserInfo userInfo) {
           //当点击用户头像后执行
           Intent intent = new Intent(ChatActivity.this, UserCenterActivity.class);
-          intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, Integer.valueOf(userInfo.getUserId()));
+          intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID,
+              Integer.valueOf(userInfo.getUserId()));
           startActivity(intent);
           return true;
         }
@@ -148,7 +154,7 @@ public class ChatActivity extends BaseBehaviorActivity {
       @Override public void onTypingStatusChanged(Conversation.ConversationType type, String id,
           Collection<TypingStatus> typingStatusSet) {
         //当输入状态的会话类型和targetID与当前会话一致时，才需要显示
-        if (type.equals(conversationType) && id.equals(targetId)) {
+        if (type.equals(mConversationType) && id.equals(mTargetId)) {
           //count表示当前会话中正在输入的用户数量，目前只支持单聊，所以判断大于0就可以给予显示了
           int count = typingStatusSet.size();
           if (count > 0) {
@@ -178,7 +184,7 @@ public class ChatActivity extends BaseBehaviorActivity {
   private Handler handler = new Handler() {
     @Override public void handleMessage(Message msg) {
       if (msg.what == TITLE_DEFAULT) {
-        titleTv.setText(title);
+        titleTv.setText(mTitle);
       } else if (msg.what == TITLE_TEXT_TYPING) {
         titleTv.setText("对方正在输入");
       } else if (msg.what == TITLE_VOICE_TYPING) {
@@ -187,36 +193,27 @@ public class ChatActivity extends BaseBehaviorActivity {
     }
   };
 
+  @Override protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+
+    LogUtils.e("ChatActivity", "onNewIntent()");
+  }
+
   /**
    * 得到 融云会话页面传递的 Uri
    * rong://{应用包名}/conversation/[private|discussion|group]?targetId={目标Id}&[title={开启会话名称}]
    */
   private void getIntentDate(Intent intent) {
-    targetId = intent.getData().getQueryParameter("targetId");
-    targetIds = intent.getData().getQueryParameter("targetIds");
-    title = intent.getData().getQueryParameter("title");
-    titleTv.setText(title);
+    mTargetId = intent.getData().getQueryParameter("targetId");
+    mTargetIds = intent.getData().getQueryParameter("targetIds");
+    mTitle = intent.getData().getQueryParameter("title");
+    titleTv.setText(mTitle);
 
     //intent.getData().getLastPathSegment();获得当前会话类型
-    conversationType = Conversation.ConversationType
+    mConversationType = Conversation.ConversationType
         .valueOf(intent.getData().getLastPathSegment().toUpperCase(Locale.getDefault()));
 
-    enterFragment(conversationType, targetId);
-  }
-
-  /**
-   * 加载会话页面 ConversationFragment
-   */
-  private void enterFragment(Conversation.ConversationType conversationType, String mTargetId) {
-
-    ConversationFragment fragment = (ConversationFragment) getSupportFragmentManager()
-        .findFragmentById(R.id.conversation_fragment);
-
-    Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
-        .appendPath("conversation").appendPath(conversationType.getName().toLowerCase())
-        .appendQueryParameter("targetId", mTargetId).build();
-
-    fragment.setUri(uri);
+    enterFragment(mConversationType, mTargetId);
   }
 
   /**
@@ -225,23 +222,53 @@ public class ChatActivity extends BaseBehaviorActivity {
   private void isPushMessage(Intent intent) {
     String token = SPUtils.getRongYunToken();
 
-    //push或通知过来
-    if (intent != null && intent.getData() != null && intent.getData().getScheme().equals("rong")) {
+    if (intent.getData().getScheme().equals("rong")
+        && intent.getData().getQueryParameter("push") != null) {
+      //push消息
+
       //通过intent.getData().getQueryParameter("push") 为true，判断是否是push消息
-      if (intent.getData().getQueryParameter("push") != null && intent.getData()
-          .getQueryParameter("push").equals("true")) {
+      if (intent.getData().getQueryParameter("push").equals("true")) {
 
-        reconnect(token);
-      } else {
-        //程序切到后台，收到消息后点击进入,会执行这里
-        if (RongIM.getInstance() == null || RongIM.getInstance().getRongIMClient() == null) {
-
-          reconnect(token);
-        } else {
-          enterFragment(conversationType, targetId);
-        }
+        enterActivity();
       }
+
+    } else {
+      //程序切到后台，收到消息后点击进入,会执行这里
+      if (!RongIMClient.getInstance().getCurrentConnectionStatus()
+          .equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
+
+        enterActivity();
+      }
+
+      //enterFragment(mConversationType, mTargetId);
+      reconnect(token);
     }
+  }
+
+  /**
+   * 应用处于后台且进程被杀死，进入应用主页
+   */
+  private void enterActivity() {
+    SPUtils.setRongYunTargetId(mTargetId);
+    SPUtils.setRongYunTitle(mTitle);
+    Intent intent = new Intent(ChatActivity.this, SplashActivity.class);
+    intent.putExtra(SplashActivity.INTENT_KEY_IM_CHAT, true);
+    startActivity(intent);
+    finish();
+  }
+
+  /**
+   * 加载会话页面 ConversationFragment
+   */
+  private void enterFragment(Conversation.ConversationType conversationType, String targetId) {
+    ConversationFragment fragment = (ConversationFragment) getSupportFragmentManager()
+        .findFragmentById(R.id.conversation_fragment);
+
+    Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+        .appendPath("conversation").appendPath(conversationType.getName().toLowerCase())
+        .appendQueryParameter("targetId", targetId).build();
+
+    fragment.setUri(uri);
   }
 
   /**
@@ -250,7 +277,7 @@ public class ChatActivity extends BaseBehaviorActivity {
   private void reconnect(String token) {
     IMPresenter.connectIMService(token, new IMPresenter.RongYunConnectListener() {
       @Override public void connectSuccess() {
-        enterFragment(conversationType, targetId);
+        enterFragment(mConversationType, mTargetId);
       }
     });
   }
@@ -309,6 +336,7 @@ public class ChatActivity extends BaseBehaviorActivity {
       @Override public void onClick(View v) {
         popWin.dismiss();
         makeToast("举报");
+        startActivity(SettingXioaQActivity.class);
       }
     });
 
@@ -318,11 +346,12 @@ public class ChatActivity extends BaseBehaviorActivity {
         popWin.dismiss();
         makeToast("屏蔽");
 
-        CommonDialog commonDialog = CommonDialog.newInstance("确定要屏蔽此用户吗？", "屏蔽该用户后，90天内您将不会再收到该用户的消息", "确定", "取消");
+        CommonDialog commonDialog =
+            CommonDialog.newInstance("确定要屏蔽此用户吗？", "屏蔽该用户后，90天内您将不会再收到该用户的消息", "确定", "取消");
         commonDialog.setListener(new CommonDialog.OnActionListener() {
           @Override public boolean dialogClick(int clickId) {
             if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
-              IMPresenter.addToBlackList(targetId);
+              IMPresenter.addToBlackList(mTargetId);
             }
             return true;
           }

@@ -1,92 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-  <LinearLayout
-      android:layout_width="match_parent"
+  <RelativeLayout
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
-      android:layout_marginLeft="20dp"
-      android:layout_marginRight="20dp"
-      android:background="@drawable/shape_feedback_dialog"
-      android:orientation="vertical"
-      android:padding="15dp">
-
-    <EditText
-        android:id="@+id/title_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:hint="标题"
-        android:paddingLeft="15dp"
-        android:textColor="@color/standard_color_h2_dark"
-        android:textColorHint="@color/standard_color_h3_dark"
-        android:textCursorDrawable="@drawable/shape_edit_text_cursor"
-        android:textSize="18sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorDivider" />
-
-    <EditText
-        android:id="@+id/content_edit"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/shape_border_feedback_dialog"
-        android:gravity="top|left"
-        android:hint="问题描述"
-        android:padding="15dp"
-        android:textColor="@color/standard_color_h2_dark"
-        android:textColorHint="@color/standard_color_h3_dark"
-        android:textCursorDrawable="@drawable/shape_edit_text_cursor"
-        android:textSize="14sp" />
+      android:layout_centerInParent="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="15dp">
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/shape_feedback_dialog"
+        android:orientation="vertical"
+        android:layout_below="@+id/icon"
+        android:layout_marginTop="-30dp"
+        android:paddingTop="60dp">
 
-      <TextView
-          android:id="@+id/cancel_btn"
-          android:layout_width="wrap_content"
+      <EditText
+          android:id="@+id/title_edit"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:background="@drawable/selector_cancel_btn"
-          android:paddingBottom="5dp"
-          android:paddingLeft="20dp"
-          android:paddingRight="20dp"
-          android:paddingTop="5dp"
-          android:text="取消"
-          android:textColor="@color/standard_color_h1_dark" />
+          android:layout_marginLeft="24dp"
+          android:layout_marginRight="10dp"
+          android:background="@android:color/white"
+          android:hint="标题"
+          android:textColor="@color/standard_color_h3_dark"
+          android:textColorHint="@color/standard_color_h3_dark"
+          android:textCursorDrawable="@drawable/shape_edit_text_cursor"
+          android:textSize="13sp"/>
 
-      <Space
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1" />
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_marginBottom="7dp"
+          android:layout_marginLeft="22dp"
+          android:layout_marginRight="22dp"
+          android:layout_marginTop="7dp"
+          android:background="#DBDBDB"/>
 
-      <TextView
-          android:id="@+id/submit_btn"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:background="@drawable/selector_confirm_btn"
-          android:enabled="false"
-          android:paddingBottom="5dp"
-          android:paddingLeft="20dp"
-          android:paddingRight="20dp"
-          android:paddingTop="5dp"
-          android:text="提交"
-          android:textColor="@color/standard_color_h1_dark" />
+      <EditText
+          android:id="@+id/content_edit"
+          android:layout_width="match_parent"
+          android:layout_height="100dp"
+          android:layout_marginLeft="24dp"
+          android:layout_marginRight="24dp"
+          android:background="@android:color/transparent"
+          android:gravity="top|left"
+          android:hint="问题描述"
+          android:textColor="@color/standard_color_h3_dark"
+          android:textColorHint="@color/standard_color_h3_dark"
+          android:textCursorDrawable="@drawable/shape_edit_text_cursor"
+          android:textSize="13sp"/>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="36dp"
+          android:gravity="center_horizontal"
+          android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_cancel_btn"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="#111111"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/submit_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_confirm_btn"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="#111111"
+            android:textSize="12sp"/>
+
+      </LinearLayout>
 
     </LinearLayout>
 
-  </LinearLayout>
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_launcher"
+        android:layout_centerHorizontal="true"/>
+
+  </RelativeLayout>
 
 </RelativeLayout>

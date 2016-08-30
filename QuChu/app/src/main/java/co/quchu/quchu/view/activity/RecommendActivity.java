@@ -15,6 +15,14 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,10 +49,6 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.ArticleFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
-import com.android.volley.VolleyError;
-import java.util.ArrayList;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 /**
  * RecommendActivity
@@ -138,7 +142,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
       viewpagerSelected(3);
     }
 
-
+    //im推送跳转
+    boolean isChat = getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT, false);
+    boolean isChatList = getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT_LIST, false);
+    if (isChat || isChatList) {
+      rbBottomTab.check(R.id.rbMine);
+      if (!meFragment.isAdded()) {
+        getSupportFragmentManager().beginTransaction().add(R.id.container, meFragment, "page_3")
+            .commitAllowingStateLoss();
+      }
+      viewpagerSelected(3);
+    }
 
     rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(RadioGroup group, int checkedId) {

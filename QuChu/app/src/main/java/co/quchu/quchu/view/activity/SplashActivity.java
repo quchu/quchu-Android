@@ -42,6 +42,10 @@ import co.quchu.quchu.utils.StringUtils;
  */
 public class SplashActivity extends BaseActivity {
 
+    public static String INTENT_KEY_IM_CHAT = "intent_key_im_chat";
+    public static String INTENT_KEY_IM_CHAT_LIST = "intent_key_im_chat_list";
+    private boolean mIsChat;
+    private boolean mIsChatList;
 
     @Override
     protected String getPageNameCN() {
@@ -75,6 +79,9 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mIsChat = getIntent().getBooleanExtra(INTENT_KEY_IM_CHAT, false);
+        mIsChatList = getIntent().getBooleanExtra(INTENT_KEY_IM_CHAT_LIST, false);
 
 
         if(BuildConfig.API_SERVER!=0){
@@ -225,10 +232,10 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void enterApp() {
-
-
-        startActivity(new Intent(this, RecommendActivity.class));
-//        startActivity(new Intent(this, LoginActivity.class));
+        Intent intent = new Intent(this, RecommendActivity.class);
+        intent.putExtra(INTENT_KEY_IM_CHAT, mIsChat);
+        intent.putExtra(INTENT_KEY_IM_CHAT_LIST, mIsChatList);
+        startActivity(intent);
         SplashActivity.this.finish();
     }
 

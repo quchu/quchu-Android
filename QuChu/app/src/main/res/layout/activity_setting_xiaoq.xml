@@ -26,24 +26,34 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
             android:src="@mipmap/ic_launcher"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="小Q"
-            android:textColor="@color/standard_color_h2_dark"
-            android:textSize="14sp"/>
+            android:layout_marginTop="22dp"
+            android:text="Little Q"
+            android:textColor="@color/standard_color_h1_dark"
+            android:textSize="18sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="小Q是趣处的人工智能推荐助手"
-            android:textColor="@color/standard_color_h3_dark"
+            android:layout_marginBottom="36dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="17dp"
+            android:text="小Q是趣处的人工智能助手，它可以帮助你找到和你兴 趣相同的咨询、趣处和趣星人，关闭后你将无法继续接 受到此类信息，请谨慎关闭。"
+            android:textColor="@color/standard_color_h2_dark"
             android:textSize="14sp"/>
 
       </LinearLayout>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="10dp"
+          android:background="#F4F4F4"/>
 
       <co.quchu.quchu.widget.SettingItemView
           android:id="@+id/setting_item_news"

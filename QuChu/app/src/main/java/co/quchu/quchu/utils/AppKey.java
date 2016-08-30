@@ -163,4 +163,14 @@ public interface AppKey {
    * 融云token
    */
   String RONGYUN_TOKEN = "rongyun_token";
+
+  /**
+   * 融云私聊目标id
+   */
+  String TARGET_ID = "target_id";
+
+  /**
+   * 融云私聊title
+   */
+  String CHAT_TITLE = "chat_title";
 }

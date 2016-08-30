@@ -107,7 +107,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
             SPUtils.setFeedback("", "");
             feedbackDialog.dismiss();
 
-            CommonDialog commonDialog = CommonDialog.newInstance("提交成功", "谢谢你对我们的支持", true);
+            CommonDialog commonDialog = CommonDialog.newInstance("提交成功", "感谢您对我们的支持", true);
             commonDialog.show(getSupportFragmentManager(), "");
 
             getFeedbackList();

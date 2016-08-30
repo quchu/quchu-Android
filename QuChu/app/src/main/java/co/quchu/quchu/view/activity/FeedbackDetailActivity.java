@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -118,9 +119,9 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
     FeedbackPresenter
         .sendFeedMsg(this, String.valueOf(mFeedbackId), inputStr, new CommonListener() {
           @Override public void successListener(Object response) {
-            getFeedbackDetail(mFeedbackId);
             inputEditText.setText("");
             hideSoftware(inputEditText);
+            getFeedbackDetail(mFeedbackId);
           }
 
           @Override public void errorListener(VolleyError error, String exception, String msg) {
@@ -134,8 +135,13 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
    */
   private void hideSoftware(EditText editText) {
     InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-    manager
-        .hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+    if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+      if (getCurrentFocus() != null)
+        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+    //InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+    //manager
+    //    .hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
   }
 
   @Override public ArrayMap<String, Object> getUserBehaviorArguments() {

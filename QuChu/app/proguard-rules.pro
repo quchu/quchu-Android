@@ -273,3 +273,40 @@ public static final int *;
 ##个推
 -dontwarn com.igexin.**
 -keep class com.igexin.**{*;}
+
+############## 融云
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+ public *;
+}
+-keepattributes Exceptions,InnerClasses
+
+-keepattributes Signature
+
+-keepattributes *Annotation*
+
+-keep class com.google.gson.examples.android.model.** { *; }
+
+-keep class **$Properties
+-dontwarn org.eclipse.jdt.annotation.**
+
+-libraryjars libs/agora-rtc-sdk.jar
+-keep class io.agora.rtc.** {*;}
+
+-keep class io.rong.** {*;}
+-keep class io.agora.rtc.** {*; }
+-keep class * implements io.rong.imlib.model.MessageContent{*;}
+
+-dontwarn io.rong.push.** 
+-dontnote com.xiaomi.** 
+-dontnote com.huawei.android.pushagent.** 
+-dontnote com.google.android.gms.gcm.** 
+-dontnote io.rong.**
+ -ignorewarnings
+-keep class co.quchu.quchu.im.IMNotificationReceiver {*;}
+
+-dontwarn io.rong.push.**
+ -dontnote com.xiaomi.**
+ -dontnote com.huawei.android.pushagent.** 
+-dontnote com.google.android.gms.gcm.**
+ -dontnote io.rong.**
+############## 融云 end

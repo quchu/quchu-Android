@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,8 +15,11 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.im.activity.ChatListFragment;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.NoScrollViewPager;
+import io.rong.imlib.RongIMClient;
 
 /**
  * 消息首页
@@ -39,6 +43,58 @@ public class MessageActivity extends BaseBehaviorActivity {
     MessageAdapter messageAdapter = new MessageAdapter(getSupportFragmentManager());
     viewpager.setAdapter(messageAdapter);
     tabLayout.setupWithViewPager(viewpager);
+
+    isPushMessage(getIntent());
+  }
+
+  /**
+   * 判断消息是否是 push 消息
+   */
+  private void isPushMessage(Intent intent) {
+    if (intent == null || intent.getData() == null) {
+      return;
+    }
+
+    String token = SPUtils.getRongYunToken();
+
+    if (intent.getData().getScheme().equals("rong")
+        && intent.getData().getQueryParameter("push") != null) {
+      //push消息
+
+      //通过intent.getData().getQueryParameter("push") 为true，判断是否是push消息
+      if (intent.getData().getQueryParameter("push").equals("true")) {
+
+        enterActivity();
+      }
+
+    } else {
+      //程序切到后台，收到消息后点击进入,会执行这里
+      if (!RongIMClient.getInstance().getCurrentConnectionStatus()
+          .equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
+
+        enterActivity();
+      }
+
+      //enterFragment(mConversationType, mTargetId);
+      reconnect(token);
+    }
+  }
+
+  /**
+   * 应用处于后台且进程被杀死，进入应用主页
+   */
+  private void enterActivity() {
+    Intent intent = new Intent(MessageActivity.this, SplashActivity.class);
+    intent.putExtra(SplashActivity.INTENT_KEY_IM_CHAT_LIST, true);
+    startActivity(intent);
+    finish();
+  }
+
+  /**
+   * 重连融云服务
+   */
+  private void reconnect(String token) {
+    IMPresenter.connectIMService(token, null);
   }
 
   /**
@@ -48,7 +104,6 @@ public class MessageActivity extends BaseBehaviorActivity {
 
     private final ChatListFragment chatListFragment;
     private final NoticeFragment noticeFragment;
-    //private final NewChatListFragment chatListFragment;
 
     public MessageAdapter(FragmentManager fm) {
       super(fm);
