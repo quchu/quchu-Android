@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+  <include layout="@layout/cp_enhanced_toolbar"/>
+
+  <TextView
+      android:id="@+id/feedback_content_tv"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:padding="15dp"
+      android:text="text"
+      android:textColor="@color/standard_color_h2_dark"
+      android:textSize="14sp"/>
+
+  <android.support.v4.widget.SwipeRefreshLayout
+      android:id="@+id/feedback_swipeRefreshLayout"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:visibility="visible">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/feedback_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:overScrollMode="always"/>
+
+  </android.support.v4.widget.SwipeRefreshLayout>
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/feedback_detail_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/feedback_detail_submit_btn"
+        android:background="@android:color/transparent"
+        android:hint="撩产品得永生"
+        android:minHeight="40dp"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textColorHint="@color/standard_color_h3_dark"
+        android:textSize="14sp"/>
+
+    <Button
+        android:id="@+id/feedback_detail_submit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="发送"/>
+
+  </RelativeLayout>
+
+</LinearLayout>

@@ -205,6 +205,16 @@ public interface NetApi {
   String sendFeedback = HOST + "/feedback/sendFeedback";
 
   /**
+   * 用户反馈详情列表
+   */
+  String getFeedMsgList = HOST + "/feedback/getFeedMsgList";
+
+  /**
+   * 用户反馈详情发送反馈
+   */
+  String sendFeedMsg = HOST + "/feedback/sendFeedMsg";
+
+  /**
    * 申请融云im token
    */
   String getRongYunToken = HOST + "/userMsSet/appRongYunToken";

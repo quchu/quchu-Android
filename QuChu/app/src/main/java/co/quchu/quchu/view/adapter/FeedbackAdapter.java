@@ -39,7 +39,7 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
         holder.createTimeTv.setText(feedbackModel.getCreateDate());
         holder.titleTv.setText(feedbackModel.getTitle());
         holder.contentTv.setText(feedbackModel.getValue());
-        if (feedbackModel.getState() == "1") {
+        if (feedbackModel.getState().equals("1")) {
             holder.settleTv.setVisibility(View.VISIBLE);
             holder.unsettleTv.setVisibility(View.GONE);
         } else {

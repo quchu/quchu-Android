@@ -236,6 +236,10 @@
         android:name=".view.activity.PhotoViewActivity"
         android:screenOrientation="portrait"/>
 
+    <!-- 用户反馈详情 -->
+    <activity android:name=".view.activity.FeedbackDetailActivity"
+              android:screenOrientation="portrait"/>
+
     <!-- 选择城市 -->
     <activity
         android:name=".view.activity.SelectedCityActivity"

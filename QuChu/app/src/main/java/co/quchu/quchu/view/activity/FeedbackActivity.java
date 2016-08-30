@@ -26,7 +26,6 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.FeedbackPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.FeedbackAdapter;
-import io.rong.imkit.RongIM;
 
 /**
  * FeedbackActivity
@@ -64,7 +63,17 @@ public class FeedbackActivity extends BaseBehaviorActivity {
    * 获取反馈列表
    */
   private void getFeedbackList() {
-    FeedbackPresenter.getFeedbackList(this, pageLoadListener);
+    FeedbackPresenter.getFeedbackList(this, new CommonListener<List<FeedbackModel>>() {
+      @Override public void successListener(List<FeedbackModel> response) {
+        adapter.initData(response);
+        refreshLayout.setRefreshing(false);
+      }
+
+      @Override public void errorListener(VolleyError error, String exception, String msg) {
+        makeToast(R.string.network_error);
+        refreshLayout.setRefreshing(false);
+      }
+    });
   }
 
   /**
@@ -73,26 +82,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
   private FeedbackAdapter.OnFeedbackItemClickListener onItemClickListener =
       new FeedbackAdapter.OnFeedbackItemClickListener() {
         @Override public void onItemClick(FeedbackModel feedbackModel) {
-          if (RongIM.getInstance() != null) {
-            RongIM.getInstance().startPrivateChat(FeedbackActivity.this, "1593",
-                feedbackModel.getTitle());
-          }
-        }
-      };
-
-  /**
-   * 加载数据
-   */
-  private CommonListener<List<FeedbackModel>> pageLoadListener =
-      new CommonListener<List<FeedbackModel>>() {
-        @Override public void successListener(List<FeedbackModel> response) {
-          adapter.initData(response);
-          refreshLayout.setRefreshing(false);
-        }
-
-        @Override public void errorListener(VolleyError error, String exception, String msg) {
-          makeToast(R.string.network_error);
-          refreshLayout.setRefreshing(false);
+          FeedbackDetailActivity.launch(FeedbackActivity.this, feedbackModel);
         }
       };
 
