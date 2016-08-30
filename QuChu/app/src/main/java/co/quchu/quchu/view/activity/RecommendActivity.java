@@ -40,7 +40,6 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.ArticleFragment;
-import co.quchu.quchu.view.fragment.DialogHangoutUserInfo;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;

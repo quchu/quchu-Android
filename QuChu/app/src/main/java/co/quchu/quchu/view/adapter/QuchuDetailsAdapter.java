@@ -472,7 +472,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             //DialogFragment d = new DialogMatchingUsers();
             //d.show(mAnchorActivity.getFragmentManager(),"wth");
 
-            InviteHangoutUsersActivity.enterActivity(mAnchorActivity);
+            InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid());
           }
         });
         if (mData.getPlaceReviewCount() > 3) {

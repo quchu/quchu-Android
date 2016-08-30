@@ -50,9 +50,9 @@ public class InviteHangoutUsersActivity extends BaseActivity {
     return getString(R.string.pname_invite_user);
   }
 
-  public static void enterActivity(Activity from) {
+  public static void enterActivity(Activity from,int pid) {
     Intent intent = new Intent(from, InviteHangoutUsersActivity.class);
-    //intent.putExtra(REQUEST_INVITE_USER_PID,pid);
+    intent.putExtra(REQUEST_INVITE_USER_PID,pid);
     from.startActivity(intent);
   }
 
