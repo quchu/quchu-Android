@@ -80,6 +80,24 @@ public class DetailModel implements Serializable{
     private List<NearPlace> recommendPlaces;
     private List<CommentModel> reviewList;
     private int cardCount;
+    private SimpleCircleModel areaMap;
+    private SimpleCircleModel circleMap;
+
+    public SimpleCircleModel getAreaMap() {
+        return areaMap;
+    }
+
+    public void setAreaMap(SimpleCircleModel areaMap) {
+        this.areaMap = areaMap;
+    }
+
+    public SimpleCircleModel getCircleMap() {
+        return circleMap;
+    }
+
+    public void setCircleMap(SimpleCircleModel circleMap) {
+        this.circleMap = circleMap;
+    }
 
     public String getAreaCircleName() {
         return areaCircleName;
@@ -190,6 +208,8 @@ public class DetailModel implements Serializable{
         setMap(objTarget.isMap());
         setJoinPartnerCount(objTarget.getJoinPartnerCount());
         setPlaceReviewCount(objTarget.getPlaceReviewCount());
+        setAreaMap(objTarget.getAreaMap());
+        setCircleMap(objTarget.getCircleMap());
 
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;

@@ -86,9 +86,9 @@ public class InviteHangoutUsersActivity extends BaseActivity {
     });
     rv.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
     rv.setAdapter(mAdapter);
-    DividerItemDecoration verticle = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST,new ColorDrawable(Color.parseColor("#dbdbdb")));
-    verticle.setHeight(1);
-    rv.addItemDecoration(verticle);
+    DividerItemDecoration vertical = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST,new ColorDrawable(Color.parseColor("#dbdbdb")));
+    vertical.setHeight(1);
+    rv.addItemDecoration(vertical);
     DividerItemDecoration horizontal = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL_LIST,new ColorDrawable(Color.parseColor("#dbdbdb")));
     horizontal.setWidth(1);
     rv.addItemDecoration(horizontal);
