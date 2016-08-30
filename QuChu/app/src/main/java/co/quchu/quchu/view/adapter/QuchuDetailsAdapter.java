@@ -3,7 +3,6 @@ package co.quchu.quchu.view.adapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
@@ -20,12 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import co.quchu.quchu.model.CommentImageModel;
-import co.quchu.quchu.model.HangoutUserModel;
-import co.quchu.quchu.view.activity.CommentListActivity;
-import co.quchu.quchu.view.activity.InviteHangoutUsersActivity;
-import co.quchu.quchu.view.fragment.DialogHangoutUserInfo;
-import co.quchu.quchu.view.fragment.DialogMatchingUsers;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -35,17 +28,22 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.BottomListDialog;
+import co.quchu.quchu.model.CommentImageModel;
 import co.quchu.quchu.model.CommentModel;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.HangoutUserModel;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.CommentListActivity;
+import co.quchu.quchu.view.activity.InviteHangoutUsersActivity;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
+import co.quchu.quchu.view.fragment.DialogMatchingUsers;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
 
@@ -469,10 +467,14 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((LabelViewHolder) holder).ivInvite.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View view) {
 
-            //DialogFragment d = new DialogMatchingUsers();
-            //d.show(mAnchorActivity.getFragmentManager(),"wth");
-
-            InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid());
+            final DialogMatchingUsers d = new DialogMatchingUsers();
+            d.setOnDialogMatchListener(new DialogMatchingUsers.OnDialogMatchListener() {
+              @Override public void onMatchfinish() {
+                d.dismiss();
+                InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid());
+              }
+            });
+            d.show(mAnchorActivity.getFragmentManager(),"wth");
           }
         });
         if (mData.getPlaceReviewCount() > 3) {

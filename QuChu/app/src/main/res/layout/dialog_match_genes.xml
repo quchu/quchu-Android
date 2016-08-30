@@ -8,130 +8,51 @@
     android:layout_gravity="center"
     android:background="@color/standard_color_white"
     app:cardCornerRadius="@dimen/rounded_radius"
-    app:cardPreventCornerOverlap="true"
-    >
+    app:cardPreventCornerOverlap="true">
 
   <LinearLayout
       android:layout_width="240dp"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
-      >
+      android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="@dimen/base_margin"
-        android:text="@string/match_genes"
+        android:id="@+id/tv_title"
         style="@style/TextView.H1"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="left"
+        android:padding="@dimen/base_margin"
+        android:text="趣基因分析中."/>
 
-    <LinearLayout
-        android:id="@+id/llLabel1"
+    <co.quchu.quchu.widget.MatchUserItemView
+        android:id="@+id/match_item_view_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/base_margin"
-        >
-      <TextView
-          android:id="@+id/tvLabel1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:text="@string/match_top_genes"
-          android:textColor="@color/standard_color_h1_dark"
-          android:textSize="@dimen/standard_text_size_h2"
-          />
+        app:muiText="@string/match_top_genes"
+        app:muiProgress="true"/>
 
-      <ImageView
-          android:id="@+id/ivComplete1"
-          android:layout_width="@dimen/visited_users_avatar_size"
-          android:layout_height="@dimen/visited_users_avatar_size"
-          android:src="@mipmap/ic_logo"
-          />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/llLabel2"
+    <co.quchu.quchu.widget.MatchUserItemView
+        android:id="@+id/match_item_view_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/base_margin"
-        >
-      <TextView
-          android:id="@+id/tvLabel2"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:text="@string/match_hobbits"
-          android:textColor="@color/standard_color_h1_dark"
-          android:textSize="@dimen/standard_text_size_h2"
-          />
+        app:muiText="@string/match_hobbits"
+        app:muiProgress="true"/>
 
-      <ImageView
-          android:id="@+id/ivComplete2"
-          android:layout_width="@dimen/visited_users_avatar_size"
-          android:layout_height="@dimen/visited_users_avatar_size"
-          android:src="@mipmap/ic_logo"
-          />
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/llLabel3"
+    <co.quchu.quchu.widget.MatchUserItemView
+        android:id="@+id/match_item_view_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/base_margin"
-        >
-      <TextView
-          android:id="@+id/tvLabel3"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:text="@string/match_looking_for_similares"
-          android:textColor="@color/standard_color_h1_dark"
-          android:textSize="@dimen/standard_text_size_h2"
-          />
+        app:muiText="@string/match_looking_for_similarity"
+        app:muiProgress="true"/>
 
-      <ImageView
-          android:id="@+id/ivComplete3"
-          android:layout_width="@dimen/visited_users_avatar_size"
-          android:layout_height="@dimen/visited_users_avatar_size"
-          android:src="@mipmap/ic_logo"
-          />
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/llLabel4"
+    <co.quchu.quchu.widget.MatchUserItemView
+        android:id="@+id/match_item_view_4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/base_margin"
-        >
-      <TextView
-          android:id="@+id/tvLabel4"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:text="@string/match_final"
-          android:textColor="@color/standard_color_h1_dark"
-          android:textSize="@dimen/standard_text_size_h2"
-          />
+        app:muiText="@string/match_final"
+        app:muiProgress="true"/>
 
-      <ImageView
-          android:id="@+id/ivComplete4"
-          android:layout_width="@dimen/visited_users_avatar_size"
-          android:layout_height="@dimen/visited_users_avatar_size"
-          android:src="@mipmap/ic_logo"
-          />
-
-    </LinearLayout>
   </LinearLayout>
 
 </android.support.v7.widget.CardView>

@@ -302,7 +302,7 @@ public class ChatActivity extends BaseBehaviorActivity {
             FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.RIGHT);
     Rect frame = new Rect();
     getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-    lp.topMargin = Utils.dip2px(this, (48 - 6)) + frame.top;
+    lp.topMargin = Utils.dip2px(this, 20) + frame.top;
     lp.rightMargin = Utils.dip2px(this, 6);
     viewGroup.addView(view, lp);
 

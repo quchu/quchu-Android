@@ -25,15 +25,14 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.CommonListener;
-import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.CircleIndicator;
 import io.rong.imkit.RongIM;
@@ -70,7 +69,6 @@ public class NewMeFragment extends BaseFragment {
 
     boolean isChat = getActivity().getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT, false);
     boolean isChatList = getActivity().getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT_LIST, false);
-    LogUtils.e("NewMeFragment-------mwb", "isChat = " + isChat + ", isChatList = " + isChatList);
 
     if (isChat) {
       startChat();
