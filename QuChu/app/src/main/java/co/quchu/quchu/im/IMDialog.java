@@ -20,24 +20,30 @@ import io.rong.imlib.model.Message;
 
 /**
  * im对话框
- *
+ * <p/>
  * Created by mwb on 16/8/29.
  */
 public class IMDialog extends Dialog {
 
-  @Bind(R.id.im_dialog_top_tv) TextView topTv;//置顶聊天、复制消息
-  @Bind(R.id.im_dialog_delete_tv) TextView deleteTv;//删除聊天、删除消息
-  @Bind(R.id.im_dialog_recall_tv) TextView recallTv;//撤回消息
+  @Bind(R.id.im_dialog_top_tv)
+  TextView topTv;//置顶聊天、复制消息
+  @Bind(R.id.im_dialog_delete_tv)
+  TextView deleteTv;//删除聊天、删除消息
+  @Bind(R.id.im_dialog_recall_tv)
+  TextView recallTv;//撤回消息
+  @Bind(R.id.im_dialog_resend_tv)
+  TextView mResendTv;//重发消息
 
   private boolean mIsChatList;//聊天列表
   private boolean mIsTop;//聊天是否置顶
-  private String mTargetId;//聊天列表id
+  private String mTargetId;
   private int[] messageIds;//消息id
   private String mMessageContent;//消息内容
   private Message mMessage;//消息实体
 
   private String topTitle;
   private String deleteTitle;
+  private Message.SentStatus mSentStatus;
 
   /**
    * 聊天列表
@@ -61,7 +67,11 @@ public class IMDialog extends Dialog {
 
     mIsChatList = false;
     mMessage = message;
-    messageIds = new int[] { Integer.valueOf(message.getTargetId()) };
+    messageIds = new int[]{Integer.valueOf(message.getMessageId())};
+    mTargetId = message.getTargetId();
+
+    //消息发送状态
+    mSentStatus = message.getSentStatus();
 
     try {
       JSONObject jsonObject = new JSONObject(new String(message.getContent().encode()));
@@ -74,7 +84,8 @@ public class IMDialog extends Dialog {
     deleteTitle = "删除消息";
   }
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.dialog_im);
     ButterKnife.bind(this);
@@ -82,13 +93,18 @@ public class IMDialog extends Dialog {
     topTv.setText(topTitle);
     deleteTv.setText(deleteTitle);
 
+    //聊天列表，且点击的是小Q
     if (mIsChatList && mTargetId.equals("1")) {
-      //聊天列表，且点击的是小Q
       deleteTv.setVisibility(View.GONE);
     }
 
+    //发送消息失败
+    if (!mIsChatList && mSentStatus != null && mSentStatus.getValue() == 20) {
+      mResendTv.setVisibility(View.VISIBLE);
+    }
+
+    //聊天界面，如果是自己发送的消息，并且在有效时间之内可以撤回消息
     if (!mIsChatList && mMessage != null) {
-      //聊天界面，如果是自己发送的消息，并且在有效时间之内可以撤回消息
       Message.MessageDirection messageDirection = mMessage.getMessageDirection();
       long sentTime = mMessage.getSentTime();
       Calendar calendar = Calendar.getInstance();
@@ -99,7 +115,7 @@ public class IMDialog extends Dialog {
     }
   }
 
-  @OnClick({ R.id.im_dialog_top_tv, R.id.im_dialog_delete_tv, R.id.im_dialog_recall_tv })
+  @OnClick({R.id.im_dialog_top_tv, R.id.im_dialog_delete_tv, R.id.im_dialog_recall_tv, R.id.im_dialog_resend_tv})
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.im_dialog_top_tv:
@@ -127,6 +143,11 @@ public class IMDialog extends Dialog {
       case R.id.im_dialog_recall_tv:
         //撤回消息
         IMPresenter.recallMessage(mMessage);
+        break;
+
+      case R.id.im_dialog_resend_tv:
+        //重发消息
+        IMPresenter.sendTextMessage(mTargetId, mMessageContent, null, null);
         break;
     }
 

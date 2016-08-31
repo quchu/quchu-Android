@@ -90,6 +90,7 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
           @Override public void successListener(FeedbackModel response) {
             if (response != null) {
               mAdapter.initData(response.getMsgList());
+              mAdapter.setAvatar(response.getIphone(), response.getYphone());
               refreshLayout.setRefreshing(false);
             }
           }

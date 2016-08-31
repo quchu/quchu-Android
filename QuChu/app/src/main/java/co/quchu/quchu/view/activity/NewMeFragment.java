@@ -18,6 +18,8 @@ import com.android.volley.VolleyError;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,6 +38,11 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.CircleIndicator;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
 
 /**
  * 我的 TAB
@@ -44,19 +51,27 @@ import io.rong.imkit.RongIM;
  */
 public class NewMeFragment extends BaseFragment {
 
-  @Bind(R.id.me_viewpager) ViewPager viewpager;
-  @Bind(R.id.me_indicator) CircleIndicator indicator;
-  @Bind(R.id.friend_layout) LinearLayout friendLayout;
-  @Bind(R.id.quchu_layout) LinearLayout quchuLayout;
-  @Bind(R.id.unReadMassage) TextView unReadMassage;
-  @Bind(R.id.massage_layout) RelativeLayout massageLayout;
-  @Bind(R.id.feedback_layout) LinearLayout feedbackLayout;
+  @Bind(R.id.me_viewpager)
+  ViewPager viewpager;
+  @Bind(R.id.me_indicator)
+  CircleIndicator indicator;
+  @Bind(R.id.friend_layout)
+  LinearLayout friendLayout;
+  @Bind(R.id.quchu_layout)
+  LinearLayout quchuLayout;
+  @Bind(R.id.unReadMassage)
+  TextView unReadMassage;
+  @Bind(R.id.massage_layout)
+  RelativeLayout massageLayout;
+  @Bind(R.id.feedback_layout)
+  LinearLayout feedbackLayout;
 
   private MeActivityPresenter presenter;
 
-  @Nullable @Override
+  @Nullable
+  @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
+                           @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_me, container, false);
     ButterKnife.bind(this, view);
 
@@ -79,9 +94,62 @@ public class NewMeFragment extends BaseFragment {
     return view;
   }
 
-  @Override public void onResume() {
+  @Override
+  public void onResume() {
     getUnreadMessage();
+    initXiaoQConversation();
     super.onResume();
+  }
+
+  /**
+   * 设置小Q会话
+   */
+  private void initXiaoQConversation() {
+    IMPresenter.getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+      @Override
+      public void onSuccess(List<Conversation> conversations) {
+        //遍历当前会话列表，如果没有小Q会话，则主动发消息在本地显示会话
+        boolean hasXiaoQConversation = false;
+
+        if (conversations != null && conversations.size() > 0) {
+          for (Conversation conversation : conversations) {
+            if (conversation.getTargetId().equals("1")) {
+              hasXiaoQConversation = true;
+              break;
+            }
+          }
+        }
+
+        if (!hasXiaoQConversation) {
+          if (RongIM.getInstance() != null) {
+            TextMessage textMessage = TextMessage.obtain("");
+            Message message = Message.obtain("1", Conversation.ConversationType.PRIVATE, textMessage);
+            RongIM.getInstance().sendMessage(message, null, null, new IRongCallback.ISendMessageCallback() {
+              @Override
+              public void onAttached(Message message) {
+
+              }
+
+              @Override
+              public void onSuccess(Message message) {
+                int[] messageIds = new int[]{Integer.valueOf(message.getMessageId())};
+                IMPresenter.deleteMessages(messageIds);
+              }
+
+              @Override
+              public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+              }
+            });
+          }
+        }
+      }
+
+      @Override
+      public void onError(RongIMClient.ErrorCode errorCode) {
+
+      }
+    });
   }
 
   /**
@@ -96,14 +164,16 @@ public class NewMeFragment extends BaseFragment {
 
     UserCenterPresenter
         .getUserCenterInfo(getActivity(), userId, new UserCenterPresenter.UserCenterInfoCallBack() {
-          @Override public void onSuccess(UserCenterInfo userCenterInfo) {
+          @Override
+          public void onSuccess(UserCenterInfo userCenterInfo) {
             if (userCenterInfo != null) {
               String mark = userCenterInfo.getMark();
               SPUtils.setUserMark(mark);
             }
           }
 
-          @Override public void onError() {
+          @Override
+          public void onError() {
           }
         });
   }
@@ -114,17 +184,20 @@ public class NewMeFragment extends BaseFragment {
   private void getUnreadMessage() {
     //推送通知
     presenter.getUnreadMassageCound(new CommonListener<Integer>() {
-      @Override public void successListener(Integer response) {
+      @Override
+      public void successListener(Integer response) {
         notReadMassage(response);
       }
 
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
       }
     });
 
     //im未读消息数
     IMPresenter.getUnreadCount(new RongIM.OnReceiveUnreadCountChangedListener() {
-      @Override public void onMessageIncreased(int i) {
+      @Override
+      public void onMessageIncreased(int i) {
         notReadMassage(i);
       }
     });
@@ -152,26 +225,31 @@ public class NewMeFragment extends BaseFragment {
     startActivity(MessageActivity.class);
   }
 
-  @Override protected String getPageNameCN() {
+  @Override
+  protected String getPageNameCN() {
     return null;
   }
 
-  @Override public void onDestroyView() {
+  @Override
+  public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.unbind(this);
   }
 
-  @Override public void onStart() {
+  @Override
+  public void onStart() {
     super.onStart();
     EventBus.getDefault().register(this);
   }
 
-  @Override public void onStop() {
+  @Override
+  public void onStop() {
     EventBus.getDefault().unregister(this);
     super.onStop();
   }
 
-  @Subscribe public void onMessageEvent(QuchuEventModel event) {
+  @Subscribe
+  public void onMessageEvent(QuchuEventModel event) {
     switch (event.getFlag()) {
       case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
         getUnreadMessage();
@@ -179,7 +257,7 @@ public class NewMeFragment extends BaseFragment {
     }
   }
 
-  @OnClick({ R.id.friend_layout, R.id.quchu_layout, R.id.massage_layout, R.id.feedback_layout })
+  @OnClick({R.id.friend_layout, R.id.quchu_layout, R.id.massage_layout, R.id.feedback_layout})
   public void onClick(View view) {
     UserInfoModel user = AppContext.user;
     switch (view.getId()) {
@@ -225,14 +303,16 @@ public class NewMeFragment extends BaseFragment {
       genFragment = new MeGenFragment();
     }
 
-    @Override public Fragment getItem(int position) {
+    @Override
+    public Fragment getItem(int position) {
       if (position == 0) {
         return avatarFragment;
       }
       return genFragment;
     }
 
-    @Override public int getCount() {
+    @Override
+    public int getCount() {
       return 2;
     }
   }

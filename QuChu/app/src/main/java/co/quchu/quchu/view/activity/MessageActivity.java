@@ -10,8 +10,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.util.ArrayMap;
 import android.widget.TextView;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -22,7 +20,6 @@ import co.quchu.quchu.im.activity.ChatListFragment;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.NoScrollViewPager;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Conversation;
 
 /**
  * 消息首页
@@ -48,26 +45,6 @@ public class MessageActivity extends BaseBehaviorActivity {
     tabLayout.setupWithViewPager(viewpager);
 
     isPushMessage(getIntent());
-
-    IMPresenter.getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
-      @Override public void onSuccess(List<Conversation> conversations) {
-        boolean hasXiaoQ = false;
-        for (Conversation conversation : conversations) {
-          if (conversation.getTargetId().equals("1")) {
-            hasXiaoQ = true;
-          }
-          continue;
-        }
-
-        if (!hasXiaoQ) {
-          IMPresenter.sendTextMessage("1", "我是小Q，有问题可以联系我", null, null);
-        }
-      }
-
-      @Override public void onError(RongIMClient.ErrorCode errorCode) {
-
-      }
-    });
   }
 
   /**

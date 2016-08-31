@@ -41,6 +41,16 @@
         android:textSize="14sp"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/im_dialog_resend_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="重发消息"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="14sp"
+        android:visibility="gone"/>
+
   </LinearLayout>
 
 </RelativeLayout>
