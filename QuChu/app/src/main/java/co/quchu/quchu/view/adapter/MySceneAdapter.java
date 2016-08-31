@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.Gravity;
@@ -66,6 +67,9 @@ public class MySceneAdapter extends PagerAdapter {
         }
 
 
+        Typeface face = Typeface.createFromAsset(holder.tvDescription.getContext().getAssets(), "AGENCYFB.TTF");
+
+        holder.item_recommend_card_name_tv.setTypeface(face);
         holder.item_recommend_card_name_tv.setText(model.getEn());
 
         holder.tvDescription.setText(model.getSceneName());

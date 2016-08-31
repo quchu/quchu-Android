@@ -427,6 +427,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/quarter_margin"
                         android:layout_weight="1"
+
                         android:drawableLeft="@mipmap/ic_shoucang_blk"
 
                         android:drawablePadding="8dp"

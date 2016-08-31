@@ -3,61 +3,71 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    >
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="190dp"
+      android:orientation="vertical"
+      android:id="@+id/llGallery"
+      >
 
     <co.quchu.quchu.widget.WrapContentViewPager
         android:id="@+id/vpGallery"
         android:layout_width="match_parent"
-        android:layout_height="250dp" />
-
-
+        android:layout_height="match_parent"
+        />
 
 
     <co.quchu.quchu.widget.CircleIndicator
         android:id="@+id/siv"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/half_margin"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+        />
 
-
-    <LinearLayout
-        android:id="@+id/llDesc"
+  </LinearLayout>
+  <LinearLayout
+      android:id="@+id/llDesc"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/llGallery"
+      android:layout_marginBottom="@dimen/base_margin"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_marginRight="@dimen/base_margin"
+      android:layout_marginTop="@dimen/base_margin"
+      android:orientation="vertical"
+      android:visibility="gone"
+      >
+    <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_below="@id/vpGallery"
-        android:layout_marginTop="@dimen/base_margin"
-        android:layout_marginBottom="@dimen/base_margin"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
-        >
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextView.H1"
-            android:text="@string/qu_faxian_simple_title"
-            />
-        
-        <View
-            android:layout_width="@dimen/base_margin"
-            android:layout_height="1dp"
-            android:background="@color/standard_color_h3_dark"
-            android:layout_marginTop="@dimen/half_margin"
-            android:layout_marginBottom="@dimen/half_margin"
-            />
+        android:paddingTop="@dimen/half_margin"
+        android:text="@string/qu_faxian_simple_title"
+        style="@style/TextView.H1"
+        />
 
-        <TextView
-            android:id="@+id/tvDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextView.H2"
-            android:lineSpacingExtra="1dp"
-            android:text="@string/qu_faxian_simple_desc"
-            />
+    <View
+        android:layout_width="@dimen/base_margin"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/half_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:background="@color/standard_color_h3_dark"
+        />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="1dp"
+        android:paddingBottom="@dimen/half_margin"
+        android:text="@string/qu_faxian_simple_desc"
+        style="@style/TextView.H2"
+        />
+
+  </LinearLayout>
 </RelativeLayout>

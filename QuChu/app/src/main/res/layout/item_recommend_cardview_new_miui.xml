@@ -15,6 +15,7 @@
       >
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/photo"
+        fresco:overlayImage="@color/colorSceneColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         fresco:actualImageScaleType="centerCrop"

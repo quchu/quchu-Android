@@ -23,8 +23,11 @@
 
             <RadioButton
                 android:id="@+id/rbFavorites"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/capsule_scene_switch"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:drawablePadding="@dimen/quarter_margin"
                 android:button="@null"
                 android:checked="true"
                 android:gravity="center"
@@ -36,12 +39,15 @@
 
             <RadioButton
                 android:id="@+id/rbAll"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/base_margin"
                 android:layout_height="@dimen/capsule_scene_switch"
                 android:button="@null"
                 android:gravity="center"
                 android:text="场景工坊"
+                android:paddingLeft="@dimen/half_margin"
+                android:paddingRight="@dimen/half_margin"
+                android:drawablePadding="@dimen/quarter_margin"
                 android:drawableLeft="@mipmap/ic_changjinggongfang"
                 android:textColor="@color/color_selector_recommend_b_n_ltg"
 

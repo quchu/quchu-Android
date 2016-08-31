@@ -95,7 +95,6 @@ public class RecommendFragment extends BaseFragment
     final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
     ButterKnife.bind(this, view);
 
-
     ScaleAnimation dia = new ScaleAnimation();
     dia.setRemoveDuration(300);
     rvGrid.setItemAnimator(dia);
@@ -124,11 +123,17 @@ public class RecommendFragment extends BaseFragment
             SceneDetailActivity.enterActivity(getActivity(),
                 mAllSceneList.get(position).getSceneId(),
                 mAllSceneList.get(position).getSceneName(), false);
-            //                }
           }
         });
     rvGrid.setAdapter(mAllSceneGridAdapter);
-    rvGrid.setLayoutManager(new GridLayoutManager(getContext(), 2));
+    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2,GridLayoutManager.HORIZONTAL,false);
+    layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+      @Override public int getSpanSize(int position) {
+        return position==0?2:0;
+      }
+
+    });
+    rvGrid.setLayoutManager(layoutManager);
     Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "AGENCYFB.TTF");
     TvPageIndicatorSize.setTypeface(face);
     tvPageIndicatorLabel.setTypeface(face);

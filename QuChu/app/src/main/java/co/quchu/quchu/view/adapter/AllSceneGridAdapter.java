@@ -2,6 +2,7 @@ package co.quchu.quchu.view.adapter;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -74,6 +75,7 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
                 }
             }
         });
+
 
         holder.tvTitle.setText(mData.get(position).getSceneName());
         holder.tvDesc.setText(mData.get(position).getIntro());

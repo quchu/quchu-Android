@@ -67,14 +67,14 @@ public class NearbyActivity extends BaseBehaviorActivity {
     private List<NearbyItemModel> mData = new ArrayList<>();
     private List<TagsModel> mSelection = new ArrayList<>();
     private boolean mIsLoading = false;
-    public static final String BUNDLE_KEY_PID = "BUNDLE_KEY_PID";
-    public static final String BUNDLE_KEY_RECOMMEND_PIDS = "BUNDLE_KEY_RECOMMEND_PIDS";
-    public static final String BUNDLE_KEY_DATA = "BUNDLE_KEY_DATA";
     private int mPlaceId;
     private String mRecommendPlaceIds;
     private String mStrFilterPattern;
     private ArrayList<TagsModel> mFilterTags = new ArrayList<>();
 
+    public static final String BUNDLE_KEY_PID = "BUNDLE_KEY_PID";
+    public static final String BUNDLE_KEY_RECOMMEND_PIDS = "BUNDLE_KEY_RECOMMEND_PIDS";
+    public static final String BUNDLE_KEY_DATA = "BUNDLE_KEY_DATA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

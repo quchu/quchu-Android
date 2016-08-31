@@ -9,14 +9,14 @@ public interface NetApi {
   String RELEASE_HOST = "http://www.quchu.co/app-main-service";
   String HOST_UAT = "http://uat.quchu.co/app-main-service";
 
-  String HOST_SIT = "http://sit.quchu.co:8080/app-service";//http://sit.quchu.co/app-main-service
+  String HOST_SIT = "http://sit.quchu.co/app-main-service"; //"http://sit.quchu.co:8080/app-service";//http://sit.quchu.co/app-main-service
 
   String HOST = BuildConfig.API_SERVER == 0 ? RELEASE_HOST
       : BuildConfig.API_SERVER == 1 ? HOST_UAT : HOST_SIT;
   /****
    * Get start
    ****/
-  String GetCircleList = HOST + "/place/GetCircleList";
+  String GetCircleList = HOST + "/place/GetCircleListb";
   String GetCardList = HOST + "/personal/getCardList"; //获取我的明信片
   /**
    * URL:{host}/appservices/personal/getAlbum?accesstoke=075a849f43383e6f18daba73c229532f3b671a0d&pageno=1&type=favorite&orderby=new

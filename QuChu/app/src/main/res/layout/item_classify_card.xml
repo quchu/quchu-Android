@@ -20,6 +20,7 @@
       fresco:failureImageScaleType="center"
       fresco:placeholderImage="@mipmap/ic_image_empty"
       fresco:placeholderImageScaleType="center"
+      fresco:overlayImage="@color/colorSceneColor"
       fresco:viewAspectRatio="1.7"
       />
 

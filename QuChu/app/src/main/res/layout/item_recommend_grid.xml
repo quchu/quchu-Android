@@ -16,9 +16,9 @@
     <com.facebook.drawee.view.SimpleDraweeView
 
         android:id="@+id/sdv"
-
+        fresco:overlayImage="@color/colorSceneColor"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="220dp"
         fresco:actualImageScaleType="centerCrop"
         fresco:failureImage="@mipmap/ic_image_empty"
         fresco:failureImageScaleType="center"
@@ -45,7 +45,8 @@
           android:shadowColor="@color/translucent_dark"
           android:shadowRadius="25"
           android:textColor="@color/standard_color_white"
-          android:textSize="@dimen/standard_text_size_h1"
+          android:textSize="@dimen/standard_text_size_h2"
+          android:singleLine="true"
           android:textStyle="bold"
           tools:text="text"
           />
@@ -65,6 +66,7 @@
           android:textColor="@color/standard_color_white"
           android:textSize="@dimen/standard_text_size_h2"
           android:visibility="gone"
+          android:textStyle="bold"
           tools:text="text"
           />
 
@@ -75,7 +77,6 @@
           android:layout_marginBottom="@dimen/half_margin"
           android:gravity="left"
           android:orientation="horizontal"
-          android:paddingTop="@dimen/quarter_margin"
           >
 
 
@@ -89,7 +90,7 @@
             android:shadowRadius="25"
             android:text="标签1"
             android:textColor="@color/standard_color_white"
-            android:textSize="@dimen/standard_text_size_h2"
+            android:textSize="@dimen/standard_text_size_h4"
             tools:text="Tag"
             tools:visibility="visible"
             />
@@ -104,7 +105,7 @@
             android:shadowColor="@color/translucent_dark"
             android:shadowRadius="25"
             android:textColor="@color/standard_color_white"
-            android:textSize="@dimen/standard_text_size_h2"
+            android:textSize="@dimen/standard_text_size_h4"
             android:visibility="gone"
             tools:text="Tag"
             tools:visibility="visible"
@@ -120,7 +121,7 @@
             android:shadowColor="@color/translucent_dark"
             android:shadowRadius="25"
             android:textColor="@color/standard_color_white"
-            android:textSize="@dimen/standard_text_size_h2"
+            android:textSize="@dimen/standard_text_size_h4"
             android:visibility="gone"
             tools:text="Tag"
             tools:visibility="visible"
