@@ -15,6 +15,15 @@ public class SceneModel {
     private String[] sceneTitle;
     private String width;
     private String intro;
+    private String en;
+
+    public String getEn() {
+        return en;
+    }
+
+    public void setEn(String en) {
+        this.en = en;
+    }
 
     public String getIntro() {
         return intro;

@@ -66,9 +66,9 @@ public class MySceneAdapter extends PagerAdapter {
         }
 
 
-        holder.item_recommend_card_name_tv.setText(model.getSceneName());
+        holder.item_recommend_card_name_tv.setText(model.getEn());
 
-        holder.tvDescription.setText(model.getSceneContent());
+        holder.tvDescription.setText(model.getSceneName());
 
 
 //        if (holder.tvDescription.getLineCount()>1){
