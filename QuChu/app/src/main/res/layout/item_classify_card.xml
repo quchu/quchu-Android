@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/tvReviews"
-            android:drawableLeft="@mipmap/ic_zang"
+            android:drawableLeft="@mipmap/ic_faxian_shoucang"
             />
     </RelativeLayout>
 
