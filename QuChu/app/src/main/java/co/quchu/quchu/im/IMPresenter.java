@@ -6,7 +6,12 @@ import android.support.annotation.Nullable;
 
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.im.model.RongImModel;
@@ -14,6 +19,7 @@ import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
@@ -42,6 +48,31 @@ public class IMPresenter {
   private static UserInfo userInfo;
   private static String name;
   private static String avatar;
+
+  /**
+   * 举报
+   */
+  public static void sendImReport(Context context, String targetId, String content, final CommonListener<Object> listener) {
+    Map<String, String> map = new HashMap<>();
+    map.put("toUserId", targetId);
+    map.put("content", content);
+
+    GsonRequest<Object> request = new GsonRequest<Object>(NetApi.sendImReport, Object.class, map, new ResponseListener<Object>() {
+      @Override public void onErrorResponse(@Nullable VolleyError error) {
+        if (listener != null) {
+          listener.errorListener(error, "", "");
+        }
+      }
+
+      @Override public void onResponse(Object response, boolean result, String errorCode,
+          @Nullable String msg) {
+        if (listener != null) {
+          listener.successListener(response);
+        }
+      }
+    });
+    request.start(context);
+  }
 
   /**
    * 获取im token
@@ -93,7 +124,7 @@ public class IMPresenter {
       @Override public void onSuccess(String userid) {
         LogUtils.e(TAG, "connectIMService() ---- onSuccess()-----" + "userid = " + userid + ", token = " + token);
         if (listener != null) {
-          listener.connectSuccess();
+          listener.onSuccess("");
         }
 
         //指定用户信息
@@ -289,12 +320,25 @@ public class IMPresenter {
   /**
    * 获取指定用户的消息
    */
-  public static void get(String targetId, int count) {
+  public static void getLatestMessages(final String targetId, int count, final RongYunConnectListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().getLatestMessages(Conversation.ConversationType.PRIVATE, targetId, count,
           new RongIMClient.ResultCallback<List<Message>>() {
             @Override public void onSuccess(List<Message> messages) {
-
+              StringBuffer sb = new StringBuffer();
+              for (Message message : messages) {
+                try {
+                  JSONObject jsonObject = new JSONObject(new String(message.getContent().encode()));
+                  String content = jsonObject.getString("content");
+                  sb.append(content);
+                  sb.append(",");
+                  if (listener != null) {
+                    listener.onSuccess(sb.toString());
+                  }
+                } catch (JSONException e) {
+                  e.printStackTrace();
+                }
+              }
             }
 
             @Override public void onError(RongIMClient.ErrorCode errorCode) {
@@ -305,6 +349,6 @@ public class IMPresenter {
   }
 
   public interface RongYunConnectListener {
-    void connectSuccess();
+    void onSuccess(String msg);
   }
 }

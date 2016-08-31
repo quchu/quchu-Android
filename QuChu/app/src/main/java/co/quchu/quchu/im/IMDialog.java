@@ -82,6 +82,11 @@ public class IMDialog extends Dialog {
     topTv.setText(topTitle);
     deleteTv.setText(deleteTitle);
 
+    if (mIsChatList && mTargetId.equals("1")) {
+      //聊天列表，且点击的是小Q
+      deleteTv.setVisibility(View.GONE);
+    }
+
     if (!mIsChatList && mMessage != null) {
       //聊天界面，如果是自己发送的消息，并且在有效时间之内可以撤回消息
       Message.MessageDirection messageDirection = mMessage.getMessageDirection();

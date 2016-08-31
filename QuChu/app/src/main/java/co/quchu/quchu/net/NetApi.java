@@ -218,4 +218,9 @@ public interface NetApi {
    * 申请融云im token
    */
   String getRongYunToken = HOST + "/userMsSet/appRongYunToken";
+
+  /**
+   * im举报接口
+   */
+  String sendImReport = HOST + "/im/report";
 }

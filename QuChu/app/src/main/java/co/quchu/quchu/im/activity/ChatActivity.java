@@ -21,6 +21,8 @@ import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
@@ -32,6 +34,7 @@ import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.im.IMDialog;
 import co.quchu.quchu.im.IMPresenter;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.SettingXioaQActivity;
@@ -140,7 +143,13 @@ public class ChatActivity extends BaseBehaviorActivity {
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == R.id.action_setting) {
-      showBehaviorDialog();
+      if (mTargetId.equals("1")) {
+        //跳转小Q设置
+        startActivity(SettingXioaQActivity.class);
+      } else {
+        //普通聊天设置
+        showBehaviorDialog();
+      }
       return true;
     }
     return super.onOptionsItemSelected(item);
@@ -276,7 +285,7 @@ public class ChatActivity extends BaseBehaviorActivity {
    */
   private void reconnect(String token) {
     IMPresenter.connectIMService(token, new IMPresenter.RongYunConnectListener() {
-      @Override public void connectSuccess() {
+      @Override public void onSuccess(String msg) {
         enterFragment(mConversationType, mTargetId);
       }
     });
@@ -336,7 +345,20 @@ public class ChatActivity extends BaseBehaviorActivity {
       @Override public void onClick(View v) {
         popWin.dismiss();
         makeToast("举报");
-        startActivity(SettingXioaQActivity.class);
+        IMPresenter.getLatestMessages(mTargetId, 50, new IMPresenter.RongYunConnectListener() {
+          @Override public void onSuccess(String msg) {
+            IMPresenter.sendImReport(ChatActivity.this, mTargetId, msg, new CommonListener<Object>() {
+              @Override public void successListener(Object response) {
+                makeToast("您已经举报该用户");
+              }
+
+              @Override public void errorListener(VolleyError error, String exception, String msg) {
+                makeToast(R.string.network_error);
+              }
+            });
+          }
+        });
+        //startActivity(SettingXioaQActivity.class);
       }
     });
 

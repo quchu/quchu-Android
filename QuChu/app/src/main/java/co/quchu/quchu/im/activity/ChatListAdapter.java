@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 import butterknife.Bind;
@@ -20,9 +18,7 @@ import co.quchu.quchu.utils.DateUtils;
 import co.quchu.quchu.utils.LogUtils;
 import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.MentionedInfo;
 import io.rong.imlib.model.MessageContent;
-import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by mwb on 16/8/29.
@@ -50,10 +46,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
     String draft = conversation.getDraft();
     //最后一条消息
     MessageContent latestMessage = conversation.getLatestMessage();
-    JSONObject mentionInfoJson = latestMessage.getJsonMentionInfo();
-    JSONObject userInfoJson = latestMessage.getJSONUserInfo();
-    MentionedInfo mentionedInfo = latestMessage.getMentionedInfo();
-    UserInfo userInfo = latestMessage.getUserInfo();
+    //JSONObject mentionInfoJson = latestMessage.getJsonMentionInfo();
+    //JSONObject userInfoJson = latestMessage.getJSONUserInfo();
+    //MentionedInfo mentionedInfo = latestMessage.getMentionedInfo();
+    //UserInfo userInfo = latestMessage.getUserInfo();
     //未读消息数
     int unreadMessageCount = conversation.getUnreadMessageCount();
     String receivedTime = DateUtils.dateTimeFormat(conversation.getReceivedTime());

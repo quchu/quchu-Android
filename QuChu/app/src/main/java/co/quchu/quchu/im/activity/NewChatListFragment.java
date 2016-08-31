@@ -34,6 +34,7 @@ public class NewChatListFragment extends BaseFragment {
 
   private List<Conversation> mConversations = new ArrayList<>();
   private ChatListAdapter mAdapter;
+  private Conversation mXiaoQConversation;
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -47,6 +48,8 @@ public class NewChatListFragment extends BaseFragment {
     mAdapter.setOnConversationItemClickListener(onItemClickListener);
     conversationListRv.setAdapter(mAdapter);
     refreshLayout.setOnRefreshListener(onRefreshListener);
+
+    mXiaoQConversation = Conversation.obtain(Conversation.ConversationType.PRIVATE, "1", "admin");
 
     getConversationList();
 
@@ -63,6 +66,7 @@ public class NewChatListFragment extends BaseFragment {
         refreshLayout.setRefreshing(false);
 
         mConversations.clear();
+        mConversations.add(mXiaoQConversation);
         mConversations.addAll(conversations);
         mAdapter.notifyDataSetChanged();
       }

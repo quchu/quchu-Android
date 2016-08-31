@@ -14,7 +14,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.MatchUserItemView;
 
 /**
@@ -114,35 +113,30 @@ public class DialogMatchingUsers extends DialogFragment {
   private void refreshItem(int arg1) {
     switch (arg1) {
       case 1:
-        LogUtils.e("----mwb", "1");
         mItemView1.setProgress(false);
         mItemView1.setTextColor(getActivity().getResources().getColor(R.color.standard_color_yellow));
         startItemTimer(2, 400);
         break;
 
       case 2:
-        LogUtils.e("----mwb", "2");
         mItemView2.setProgress(false);
         mItemView2.setTextColor(getActivity().getResources().getColor(R.color.standard_color_yellow));
         startItemTimer(3, 600);
         break;
 
       case 3:
-        LogUtils.e("----mwb", "3");
         mItemView3.setProgress(false);
         mItemView3.setTextColor(getActivity().getResources().getColor(R.color.standard_color_yellow));
         startItemTimer(4, 300);
         break;
 
       case 4:
-        LogUtils.e("----mwb", "4");
         mItemView4.setProgress(false);
         mItemView4.setTextColor(getActivity().getResources().getColor(R.color.standard_color_yellow));
         startItemTimer(5, 200);
         break;
 
       case 5:
-        LogUtils.e("----mwb", "定时任务结束");
         mTvTitle.setText(match_gens_title_3);
         handler.removeMessages(TITLE_CHANGE_TASK);
         handler.removeMessages(CONTENT_CHANGE_TASK);
