@@ -26,138 +26,119 @@ import co.quchu.quchu.widget.RitalinLayout;
 
 public class LoginActivity extends BaseBehaviorActivity {
 
-    @Override
-    public ArrayMap<String, Object> getUserBehaviorArguments() {
-        return null;
-    }
+  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+    return null;
+  }
 
-    @Override
-    public int getUserBehaviorPageId() {
-        return 129;
-    }
+  @Override public int getUserBehaviorPageId() {
+    return 129;
+  }
 
+  @Override protected String getPageNameCN() {
+    return getString(R.string.pname_login);
+  }
 
-    @Override
-    protected String getPageNameCN() {
-        return getString(R.string.pname_login);
-    }
+  @Bind(R.id.flContent) RitalinLayout flContent;
 
-    @Bind(R.id.flContent)
-    RitalinLayout flContent;
+  LoginFragment loginFragment;
+  android.app.FragmentManager fragmentManager;
+  public SsoHandler handler;
+  public long mRequestVerifyCode = -1;
 
-    LoginFragment loginFragment;
-    android.app.FragmentManager fragmentManager;
-    public SsoHandler handler;
-    public long mRequestVerifyCode = -1;
+  @Bind(R.id.ivClose) ImageView ivClose;
+  @Bind(R.id.tvForgottenPassword) TextView tvForgetPassword;
 
-    @Bind(R.id.ivClose)
-    ImageView ivClose;
-    @Bind(R.id.tvForgottenPassword) TextView tvForgetPassword;
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (handler != null) handler.authorizeCallBack(requestCode, resultCode, data);
+  }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (handler != null)
-            handler.authorizeCallBack(requestCode, resultCode, data);
-    }
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_login);
 
+    ButterKnife.bind(this);
+    ivClose.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        LoginActivity.this.finish();
+      }
+    });
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    getEnhancedToolbar().hide();
 
-        ButterKnife.bind(this);
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginActivity.this.finish();
-            }
-        });
+    loginFragment = new LoginFragment();
+    fragmentManager = getFragmentManager();
+    fragmentManager.beginTransaction()
+        .add(R.id.flContent, loginFragment, LoginFragment.TAG)
+        .commit();
+    getFragmentManager().executePendingTransactions();
 
-        getEnhancedToolbar().hide();
-
-        loginFragment = new LoginFragment();
-        fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.flContent,loginFragment,LoginFragment.TAG).commit();
+    tvForgetPassword.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        //忘记密码
+        PhoneValidationFragment pvfResetPwd = new PhoneValidationFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
+        pvfResetPwd.setArguments(bundle);
+        FragmentTransaction manager = getFragmentManager().beginTransaction()
+            .setCustomAnimations(R.animator.card_flip_horizontal_right_in,
+                R.animator.card_flip_horizontal_left_out, R.animator.card_flip_horizontal_left_in,
+                R.animator.card_flip_horizontal_right_out);
+        manager.replace(flContent.getId(), pvfResetPwd)
+            .addToBackStack(TAG)
+            .commitAllowingStateLoss();
         getFragmentManager().executePendingTransactions();
+        getEnhancedToolbar().show();
+      }
+    });
+    //        if (null!= AppContext.user ){
+    //            UserLoginPresenter.visitorRegiest(getApplicationContext(), new UserLoginPresenter.UserNameUniqueListener() {
+    //                @Override
+    //                public void isUnique(JSONObject msg) {}
+    //
+    //                @Override
+    //                public void notUnique(String msg) {}
+    //            });
+    //        }
 
+  }
 
-        tvForgetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
-                //忘记密码
-                PhoneValidationFragment pvfResetPwd = new PhoneValidationFragment();
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
-                pvfResetPwd.setArguments(bundle);
-                FragmentTransaction manager = getFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.animator.card_flip_horizontal_right_in,
-                        R.animator.card_flip_horizontal_left_out, R.animator.card_flip_horizontal_left_in,
-                        R.animator.card_flip_horizontal_right_out);
-                manager.replace(flContent.getId(), pvfResetPwd)
-                    .addToBackStack(TAG)
-                    .commitAllowingStateLoss();
-                getFragmentManager().executePendingTransactions();
-                getEnhancedToolbar().show();
-            }
-        });
-//        if (null!= AppContext.user ){
-//            UserLoginPresenter.visitorRegiest(getApplicationContext(), new UserLoginPresenter.UserNameUniqueListener() {
-//                @Override
-//                public void isUnique(JSONObject msg) {}
-//
-//                @Override
-//                public void notUnique(String msg) {}
-//            });
-//        }
-
+  @Override public void onBackPressed() {
+    if (getFragmentManager().getBackStackEntryCount() > 0) {
+      getFragmentManager().popBackStack();
+    } else {
+      super.onBackPressed();
     }
+  }
 
-    @Override
-    public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0 ) {
-            getFragmentManager().popBackStack();
-        }else{
-            super.onBackPressed();
-        }
+  @Override protected int activitySetup() {
+    return TRANSITION_TYPE_LEFT;
+  }
 
+  @Override public void onStart() {
+    super.onStart();
+    EventBus.getDefault().register(this);
+  }
+
+  @Override public void onStop() {
+    EventBus.getDefault().unregister(this);
+    super.onStop();
+  }
+
+  @Subscribe public void onMessageEvent(QuchuEventModel event) {
+    switch (event.getFlag()) {
+      case EventFlags.EVENT_LOGIN_ACTIVITY_HIDE_RETURN:
+        ivClose.setVisibility(View.GONE);
+        tvForgetPassword.setVisibility(View.GONE);
+        break;
+      case EventFlags.EVENT_LOGIN_ACTIVITY_SHOW_RETURN:
+        ivClose.postDelayed(new Runnable() {
+          @Override public void run() {
+            ivClose.setVisibility(View.VISIBLE);
+            tvForgetPassword.setVisibility(View.VISIBLE);
+          }
+        }, 300);
+        break;
     }
-
-    @Override
-    protected int activitySetup() {
-        return TRANSITION_TYPE_LEFT;
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    @Subscribe
-    public void onMessageEvent(QuchuEventModel event) {
-        switch (event.getFlag()) {
-            case EventFlags.EVENT_LOGIN_ACTIVITY_HIDE_RETURN:
-                ivClose.setVisibility(View.GONE);
-                tvForgetPassword.setVisibility(View.GONE);
-                break;
-            case EventFlags.EVENT_LOGIN_ACTIVITY_SHOW_RETURN:
-                ivClose.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ivClose.setVisibility(View.VISIBLE);
-                        tvForgetPassword.setVisibility(View.VISIBLE);
-                    }
-                },300);
-                break;
-        }
-    }
-
+  }
 }
