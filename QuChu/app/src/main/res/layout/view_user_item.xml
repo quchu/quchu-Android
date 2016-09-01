@@ -13,7 +13,9 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"
-      android:text="null"/>
+      android:text="null"
+      android:textColor="@color/standard_color_h2_dark"
+      android:textSize="16sp"/>
 
   <co.quchu.quchu.widget.swithbutton.SwitchButton
       android:id="@+id/item_switch_btn"
@@ -23,15 +25,13 @@
       android:layout_centerVertical="true"
       android:checked="true"
       android:clickable="true"
-      android:paddingTop="5dp"
-      app:kswAnimationDuration="300"
       app:kswBackDrawable="@drawable/ios_back_drawable"
-      app:kswBackMeasureRatio="1.4"
-      app:kswThumbDrawable="@drawable/ios_thumb"
-      app:kswThumbMarginBottom="-8dp"
-      app:kswThumbMarginLeft="-5dp"
-      app:kswThumbMarginRight="-5dp"
-      app:kswThumbMarginTop="-2.5dp"/>
+      app:kswBackMeasureRatio="1.45"
+      app:kswThumbDrawable="@drawable/ksw_md_thumb"
+      app:kswThumbMarginBottom="-14dp"
+      app:kswThumbMarginLeft="-16dp"
+      app:kswThumbMarginRight="-16dp"
+      app:kswThumbMarginTop="-14dp"/>
 
   <ImageView
       android:id="@+id/item_right_arrow_img"
