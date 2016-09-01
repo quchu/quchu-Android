@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
@@ -16,7 +17,7 @@ import co.quchu.quchu.widget.SettingItemView;
 
 /**
  * 小Q设置
- *
+ * <p/>
  * Created by mwb on 16/8/26.
  */
 public class SettingXioaQActivity extends BaseBehaviorActivity {
@@ -24,8 +25,10 @@ public class SettingXioaQActivity extends BaseBehaviorActivity {
   @Bind(R.id.setting_item_news) SettingItemView itemNews;
   @Bind(R.id.setting_item_quchu) SettingItemView itemQuchu;
   @Bind(R.id.setting_item_quchu_user) SettingItemView itemQuchuUser;
+  @Bind(R.id.xiaoq_title_tv) TextView mXiaoqTitleTv;
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_setting_xiaoq);
     ButterKnife.bind(this);
@@ -38,9 +41,13 @@ public class SettingXioaQActivity extends BaseBehaviorActivity {
   }
 
   private void initView() {
+    Typeface face = Typeface.createFromAsset(getAssets(), "AGENCYFB.TTF");
+    mXiaoqTitleTv.setTypeface(face);
+
     //推荐文章
     itemNews.setSwitchChecked(SPUtils.getNewsSwitch(), new SettingItemView.SwitchChangedListener() {
-      @Override public void onSwitch(boolean isChecked) {
+      @Override
+      public void onSwitch(boolean isChecked) {
         SettingPresenter
             .setUserMsg(SettingXioaQActivity.this, SettingPresenter.SETTING_TYPE_NEWS, isChecked);
       }
@@ -48,7 +55,8 @@ public class SettingXioaQActivity extends BaseBehaviorActivity {
 
     //推荐趣处
     itemQuchu.setSwitchChecked(SPUtils.getQuchuSwitch(), new SettingItemView.SwitchChangedListener() {
-      @Override public void onSwitch(boolean isChecked) {
+      @Override
+      public void onSwitch(boolean isChecked) {
         SettingPresenter
             .setUserMsg(SettingXioaQActivity.this, SettingPresenter.SETTING_TYPE_QUCHU, isChecked);
       }
@@ -56,7 +64,8 @@ public class SettingXioaQActivity extends BaseBehaviorActivity {
 
     //推荐趣星人
     itemQuchuUser.setSwitchChecked(SPUtils.getQuchuUserSwitch(), new SettingItemView.SwitchChangedListener() {
-      @Override public void onSwitch(boolean isChecked) {
+      @Override
+      public void onSwitch(boolean isChecked) {
         SettingPresenter
             .setUserMsg(SettingXioaQActivity.this, SettingPresenter.SETTING_TYPE_QUCHU_USER,
                 isChecked);
@@ -64,19 +73,23 @@ public class SettingXioaQActivity extends BaseBehaviorActivity {
     });
   }
 
-  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+  @Override
+  public ArrayMap<String, Object> getUserBehaviorArguments() {
     return null;
   }
 
-  @Override public int getUserBehaviorPageId() {
+  @Override
+  public int getUserBehaviorPageId() {
     return 0;
   }
 
-  @Override protected int activitySetup() {
+  @Override
+  protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
   }
 
-  @Override protected String getPageNameCN() {
+  @Override
+  protected String getPageNameCN() {
     return null;
   }
 }
