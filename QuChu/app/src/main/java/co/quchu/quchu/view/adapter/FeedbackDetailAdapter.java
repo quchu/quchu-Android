@@ -33,13 +33,14 @@ public class FeedbackDetailAdapter
 
   @Override
   public void onBindView(FeedbackDetailViewHolder holder, int position) {
-    if (data == null || data.size() == 0) {
-      return;
-    }
+//    if (data == null || data.size() == 0) {
+//      return;
+//    }
 
     FeedbackModel.MsgListBean msgListBean = data.get(position);
     if (msgListBean.getType().equals("0")) {
       //自己发出的消息
+      holder.createTimeTv.setText(msgListBean.getCreateDate());
       holder.contentTv.setText(msgListBean.getContent());
       holder.contentTv.setBackgroundResource(R.drawable.rc_ic_bubble_right);
       holder.leftAvatarImg.setVisibility(View.INVISIBLE);
@@ -51,6 +52,7 @@ public class FeedbackDetailAdapter
       }
 
     } else {
+      holder.createTimeTv.setText(msgListBean.getCreateDate());
       holder.contentTv.setText(msgListBean.getContent());
       holder.contentTv.setBackgroundResource(R.drawable.rc_ic_bubble_left);
       holder.rightAvatarImg.setVisibility(View.INVISIBLE);
@@ -82,6 +84,8 @@ public class FeedbackDetailAdapter
     SimpleDraweeView leftAvatarImg;
     @Bind(R.id.feedback_right_avatar_img)
     SimpleDraweeView rightAvatarImg;
+    @Bind(R.id.feedback_item_create_time_tv)
+    TextView createTimeTv;
 
     public FeedbackDetailViewHolder(View itemView) {
       super(itemView);

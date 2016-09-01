@@ -90,6 +90,7 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
           @Override public void successListener(FeedbackModel response) {
             if (response != null) {
               mAdapter.initData(response.getMsgList());
+              mAdapter.setLoadMoreEnable(false);
               mAdapter.setAvatar(response.getIphone(), response.getYphone());
               refreshLayout.setRefreshing(false);
             }
@@ -97,6 +98,7 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
 
           @Override public void errorListener(VolleyError error, String exception, String msg) {
             makeToast(R.string.network_error);
+            mAdapter.setLoadMoreEnable(false);
             refreshLayout.setRefreshing(false);
           }
         });

@@ -66,11 +66,13 @@ public class FeedbackActivity extends BaseBehaviorActivity {
     FeedbackPresenter.getFeedbackList(this, new CommonListener<List<FeedbackModel>>() {
       @Override public void successListener(List<FeedbackModel> response) {
         adapter.initData(response);
+        adapter.setLoadMoreEnable(false);
         refreshLayout.setRefreshing(false);
       }
 
       @Override public void errorListener(VolleyError error, String exception, String msg) {
         makeToast(R.string.network_error);
+        adapter.setLoadMoreEnable(false);
         refreshLayout.setRefreshing(false);
       }
     });

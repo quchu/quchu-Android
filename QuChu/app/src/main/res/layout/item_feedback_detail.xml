@@ -1,34 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:fresco="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-  <com.facebook.drawee.view.SimpleDraweeView
-      android:id="@+id/feedback_left_avatar_img"
-      android:layout_width="48dp"
-      android:layout_height="48dp"
-      fresco:actualImageScaleType="centerCrop"
-      fresco:roundAsCircle="true"/>
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp">
 
   <TextView
-      android:id="@+id/feedback_content_tv"
+      android:id="@+id/feedback_item_create_time_tv"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:background="@drawable/shape_feedback_time_bg"
+      android:paddingBottom="5dp"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingTop="5dp"
+      android:textColor="@android:color/white"
+      android:textSize="12sp" />
+
+  <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginRight="20dp"
-      android:layout_toLeftOf="@+id/feedback_right_avatar_img"
-      android:layout_toRightOf="@+id/feedback_left_avatar_img"
-      android:textColor="@color/standard_color_h2_dark"
-      android:textSize="14sp"/>
+      android:layout_below="@+id/feedback_item_create_time_tv"
+      android:layout_marginTop="19dp">
 
-  <com.facebook.drawee.view.SimpleDraweeView
-      android:id="@+id/feedback_right_avatar_img"
-      android:layout_width="48dp"
-      android:layout_height="48dp"
-      android:layout_alignParentRight="true"
-      fresco:actualImageScaleType="centerCrop"
-      fresco:roundAsCircle="true"/>
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/feedback_left_avatar_img"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:roundAsCircle="true" />
+
+    <TextView
+        android:id="@+id/feedback_content_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_toLeftOf="@+id/feedback_right_avatar_img"
+        android:layout_toRightOf="@+id/feedback_left_avatar_img"
+        android:background="@drawable/rc_ic_bubble_right"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="14sp" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/feedback_right_avatar_img"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentRight="true"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:roundAsCircle="true" />
+
+  </RelativeLayout>
 
 </RelativeLayout>

@@ -29,7 +29,7 @@
     <dimen name="detail_comment_image_size">56dp</dimen>
     <dimen name="comment_from_avatar_size">16dp</dimen>
 
-    <dimen name="personal_gene_text_size">24sp</dimen>
+    <dimen name="personal_gene_text_size">40sp</dimen>
     <dimen name="standard_h2_height">36dp</dimen>
 
     <dimen name="quchu_detail_contact_info_height">46dp</dimen>
