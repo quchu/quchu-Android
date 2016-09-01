@@ -329,7 +329,7 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
 
         Marker marker = (Marker) aMap.addOverlay(option);
 
-        MapStatus mapStatus = new MapStatus.Builder().target(placeAddress).zoom(aMap.getMapStatus().zoom).build();
+        MapStatus mapStatus = new MapStatus.Builder().target(placeAddress).zoom(15).build();
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
 
 

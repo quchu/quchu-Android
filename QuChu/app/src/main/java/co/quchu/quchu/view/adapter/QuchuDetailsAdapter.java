@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import co.quchu.quchu.view.activity.WebViewActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -385,7 +386,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
         ((ContactInfoViewHolder) holder).detail_store_phone_tv.setVisibility(View.VISIBLE);
         ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText(mData.getTel());
-        ((ContactInfoViewHolder) holder).detail_store_phone_tv.setOnClickListener(
+        ((ContactInfoViewHolder) holder).detail_store_phone_ll.setOnClickListener(
             new View.OnClickListener() {
               @Override public void onClick(View v) {
                 BottomListDialog b =
@@ -557,6 +558,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         ((CommentViewHolder) holder).rvImages.setAdapter(adapter);
 
+
         ((CommentViewHolder) holder).rbRating.setRating(commentModel.getScore());
         ((CommentViewHolder) holder).tvUsername.setText(commentModel.getUserName());
         if (null != commentModel.getCreateDate()) {
@@ -566,6 +568,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           ((CommentViewHolder) holder).tvDate.setText("-");
         }
         ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
+        if (!StringUtils.isEmpty(commentModel.getPqUrl())){
+          ((CommentViewHolder) holder).tvFrom.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+              WebViewActivity.enterActivity(mAnchorActivity,commentModel.getPqUrl(),"查看评论",false);
+            }
+          });
+        }
 
         final boolean collapsed = mData.getReviewList().get(commentIndex).isCollapsed();
 

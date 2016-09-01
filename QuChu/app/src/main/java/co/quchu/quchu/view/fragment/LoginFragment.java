@@ -51,7 +51,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
   @Bind(R.id.hellWord) TextView hellWord;
   @Bind(R.id.tvLoginViaPhone) TextView tvLoginViaPhone;
   @Bind(R.id.tvCreateAccountViaPhone) TextView tvCreateAccountViaPhone;
-  @Bind(R.id.tvForgottenPassword) TextView tvForgottenPassword;
   private int mContainerId = -1;
 
   @Nullable @Override
@@ -85,24 +84,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
             R.animator.card_flip_horizontal_right_out);
   }
 
-  @OnClick({
-      R.id.tvForgottenPassword, R.id.tvLoginViaPhone, R.id.tvCreateAccountViaPhone,
+  @OnClick({ R.id.tvLoginViaPhone, R.id.tvCreateAccountViaPhone,
       R.id.llAuthorizationViaMm, R.id.llAuthorizationViaWeibo
   }) public void onClick(View v) {
     mContainerId = mContainerId == -1 ? ((ViewGroup) getView().getParent()).getId() : mContainerId;
     switch (v.getId()) {
-      case R.id.tvForgottenPassword:
-        //忘记密码
-        PhoneValidationFragment pvfResetPwd = new PhoneValidationFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
-        pvfResetPwd.setArguments(bundle);
-        getFragmentTransactor().replace(mContainerId, pvfResetPwd)
-            .addToBackStack(TAG)
-            .commitAllowingStateLoss();
-        getFragmentManager().executePendingTransactions();
-        ((BaseActivity) getActivity()).getEnhancedToolbar().show();
-        break;
       case R.id.tvLoginViaPhone:
         //手机账号登录
         getFragmentTransactor().replace(mContainerId, new LoginByPhoneFragment())

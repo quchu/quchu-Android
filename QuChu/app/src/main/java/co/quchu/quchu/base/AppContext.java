@@ -143,7 +143,7 @@ public class AppContext extends MultiDexApplication {
 
                 @Override
                 public void errorListener(VolleyError error, String exception, String msg) {
-                    UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
+                    //UserBehaviorPresentor.insertBehavior(getApplicationContext(), 0, "startup", "", System.currentTimeMillis());
                 }
             });
         }

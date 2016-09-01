@@ -126,13 +126,7 @@ public class RecommendFragment extends BaseFragment
           }
         });
     rvGrid.setAdapter(mAllSceneGridAdapter);
-    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2,GridLayoutManager.HORIZONTAL,false);
-    layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-      @Override public int getSpanSize(int position) {
-        return position==0?2:0;
-      }
-
-    });
+    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
     rvGrid.setLayoutManager(layoutManager);
     Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "AGENCYFB.TTF");
     TvPageIndicatorSize.setTypeface(face);

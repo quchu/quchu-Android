@@ -1,5 +1,6 @@
 package co.quchu.quchu.view.activity;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +8,9 @@ import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.ImageView;
 
+import android.widget.TextView;
+import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.view.fragment.PhoneValidationFragment;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,7 +52,7 @@ public class LoginActivity extends BaseBehaviorActivity {
 
     @Bind(R.id.ivClose)
     ImageView ivClose;
-
+    @Bind(R.id.tvForgottenPassword) TextView tvForgetPassword;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -79,6 +83,24 @@ public class LoginActivity extends BaseBehaviorActivity {
         getFragmentManager().executePendingTransactions();
 
 
+        tvForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                //忘记密码
+                PhoneValidationFragment pvfResetPwd = new PhoneValidationFragment();
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
+                pvfResetPwd.setArguments(bundle);
+                FragmentTransaction manager = getFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.animator.card_flip_horizontal_right_in,
+                        R.animator.card_flip_horizontal_left_out, R.animator.card_flip_horizontal_left_in,
+                        R.animator.card_flip_horizontal_right_out);
+                manager.replace(flContent.getId(), pvfResetPwd)
+                    .addToBackStack(TAG)
+                    .commitAllowingStateLoss();
+                getFragmentManager().executePendingTransactions();
+                getEnhancedToolbar().show();
+            }
+        });
 //        if (null!= AppContext.user ){
 //            UserLoginPresenter.visitorRegiest(getApplicationContext(), new UserLoginPresenter.UserNameUniqueListener() {
 //                @Override
@@ -124,12 +146,14 @@ public class LoginActivity extends BaseBehaviorActivity {
         switch (event.getFlag()) {
             case EventFlags.EVENT_LOGIN_ACTIVITY_HIDE_RETURN:
                 ivClose.setVisibility(View.GONE);
+                tvForgetPassword.setVisibility(View.GONE);
                 break;
             case EventFlags.EVENT_LOGIN_ACTIVITY_SHOW_RETURN:
                 ivClose.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         ivClose.setVisibility(View.VISIBLE);
+                        tvForgetPassword.setVisibility(View.VISIBLE);
                     }
                 },300);
                 break;

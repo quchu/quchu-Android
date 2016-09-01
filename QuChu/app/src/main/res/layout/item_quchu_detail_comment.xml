@@ -97,13 +97,14 @@
         </LinearLayout>
         <TextView
             android:id="@+id/tvCollapse"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_marginTop="@dimen/half_margin"
             style="@style/TextView.H2"
             tools:text="Comment"
             android:gravity="right"
+            android:layout_gravity="right"
             tools:visibility="visible"
             />
 
