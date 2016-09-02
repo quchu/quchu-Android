@@ -161,8 +161,6 @@ public class RecommendFragment extends BaseFragment
             rbFavorites.setBackgroundResource(R.drawable.bg_scene_switch);
 
             UMEvent("c_scene_c");
-            rbAllScenes.setTypeface(null, Typeface.BOLD);
-            rbFavorites.setTypeface(null, Typeface.NORMAL);
 
             currentIndex = 0;
             vpMyScene.clearAnimation();
@@ -220,8 +218,6 @@ public class RecommendFragment extends BaseFragment
             rbFavorites.setBackgroundColor(Color.TRANSPARENT);
             rbAllScenes.setBackgroundResource(R.drawable.bg_scene_switch);
             UMEvent("f_scene_c");
-            rbAllScenes.setTypeface(null, Typeface.NORMAL);
-            rbFavorites.setTypeface(null, Typeface.BOLD);
             currentIndex = 1;
             vpMyScene.clearAnimation();
             rvGrid.clearAnimation();

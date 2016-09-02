@@ -81,6 +81,9 @@ public class MySceneAdapter extends PagerAdapter {
 //            holder.tvDescription.setGravity(Gravity.CENTER);
 //        }
 
+        holder.vDivider1.setVisibility(View.INVISIBLE);
+        holder.vDivider2.setVisibility(View.INVISIBLE);
+
         if (null != model.getSceneTitle() && model.getSceneTitle().length > 0) {
             for (int i = 0; i < model.getSceneTitle().length; i++) {
                 switch (i) {

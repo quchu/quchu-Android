@@ -103,6 +103,8 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ViewHolder) holder).tvTag1.setVisibility(View.GONE);
 
 
+            ((ViewHolder) holder).vDivider1.setVisibility(View.INVISIBLE);
+            ((ViewHolder) holder).vDivider2.setVisibility(View.INVISIBLE);
             if (null != mData.get(position).getSceneTitle() && mData.get(position).getSceneTitle().length > 0) {
                 for (int i = 0; i < mData.get(position).getSceneTitle().length; i++) {
                     switch (i) {
