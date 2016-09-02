@@ -96,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/tvDescription"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:visibility="visible"
             >
@@ -116,11 +117,21 @@
               tools:visibility="visible"
               />
 
+
+          <View
+              android:id="@+id/vHorizontalDivider1"
+              android:background="@color/standard_color_white"
+              android:layout_width="1px"
+              android:layout_marginLeft="@dimen/half_margin"
+              android:layout_marginRight="@dimen/half_margin"
+              android:layout_height="@dimen/half_margin"
+              android:visibility="invisible"
+
+              />
           <TextView
               android:id="@+id/recommend_tag2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="@dimen/half_margin"
               android:paddingBottom="2dp"
               android:paddingTop="2dp"
               android:shadowColor="@color/translucent_dark"
@@ -132,11 +143,21 @@
               tools:visibility="visible"
               />
 
+
+          <View
+              android:id="@+id/vHorizontalDivider2"
+              android:background="@color/standard_color_white"
+              android:layout_width="1px"
+              android:layout_height="@dimen/half_margin"
+              android:layout_marginLeft="@dimen/half_margin"
+              android:layout_marginRight="@dimen/half_margin"
+              android:visibility="invisible"
+
+              />
           <TextView
               android:id="@+id/recommend_tag3"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="@dimen/half_margin"
               android:paddingBottom="2dp"
               android:paddingTop="2dp"
               android:shadowColor="@color/translucent_dark"

@@ -91,10 +91,12 @@ public class MySceneAdapter extends PagerAdapter {
                     case 1:
                         holder.tag2.setText(model.getSceneTitle()[i]);
                         holder.tag2.setVisibility(View.VISIBLE);
+                        holder.vDivider1.setVisibility(View.VISIBLE);
                         break;
                     case 2:
                         holder.tag3.setText(model.getSceneTitle()[i]);
                         holder.tag3.setVisibility(View.VISIBLE);
+                        holder.vDivider2.setVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -169,7 +171,11 @@ public class MySceneAdapter extends PagerAdapter {
         @Bind(R.id.recommend_tag3)
         TextView tag3;
         @Bind(R.id.tvDescription)
-                TextView tvDescription;
+        TextView tvDescription;
+        @Bind(R.id.vHorizontalDivider1)
+        View vDivider1;
+        @Bind(R.id.vHorizontalDivider2)
+        View vDivider2;
 //        @Bind(R.id.rbRating)
 //        RatingBar rbRating;
 

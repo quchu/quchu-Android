@@ -264,5 +264,6 @@
     <string name="match_final">人群筛选</string>
     <string name="user_invited">用户邀请成功</string>
     <string name="user_invited_faile">用户邀请失败</string>
+    <string name="scene_header_desc">场景工坊为趣处为你们量身定做的适用场景 致力解决单身狗，失恋狗的爱情 总有一款适合您.</string>
 
 </resources>

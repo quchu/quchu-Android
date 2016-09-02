@@ -25,7 +25,10 @@ import co.quchu.quchu.model.SceneModel;
 /**
  * Created by Nico on 16/4/7.
  */
-public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapter.ViewHolder> {
+public class AllSceneGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    public static final int TYPE_HEADER = 0x0001;
+    public static final int TYPE_CONTENT = 0x0002;
 
     List<SceneModel> mData;
 
@@ -36,79 +39,94 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
         this.mOnItemClickListener = onItemClickListener;
     }
 
+    @Override public int getItemViewType(int position) {
+        return position==0?TYPE_HEADER:TYPE_CONTENT;
+    }
+
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recommend_grid, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType==TYPE_HEADER){
+            return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_scene_header, parent, false));
+        }else{
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recommend_grid, parent, false));
+        }
+
     }
 
     private int mFinalAnimatedIndex = -1;
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
 
-        if (position > mFinalAnimatedIndex) {
-            mFinalAnimatedIndex = position;
-            AnimatorSet animator = new AnimatorSet();
-            int scrollY = position * 20;
-            animator.playTogether(
-                    ObjectAnimator.ofFloat(holder.sdv, "translationY", scrollY, 0.0f),
-                    ObjectAnimator.ofFloat(holder.sdv, "alpha", 0f, 1.0f)
-            );
-            animator.setDuration(500);
-            animator.setInterpolator(new AccelerateDecelerateInterpolator());
-            animator.start();
-            int delay = 10 * position;
-            animator.setStartDelay(delay);
-        }
+        if (holder instanceof AllSceneGridAdapter.ViewHolder){
+            position -= 1;
+            if (position > mFinalAnimatedIndex) {
+                mFinalAnimatedIndex = position;
+                AnimatorSet animator = new AnimatorSet();
+                int scrollY = position * 20;
+                animator.playTogether(
+                    ObjectAnimator.ofFloat(((ViewHolder) holder).sdv, "translationY", scrollY, 0.0f),
+                    ObjectAnimator.ofFloat(((ViewHolder) holder).sdv, "alpha", 0f, 1.0f)
+                );
+                animator.setDuration(500);
+                animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                animator.start();
+                int delay = 10 * position;
+                animator.setStartDelay(delay);
+            }
 
-        if (null != mData.get(position) && null != mData.get(position).getSceneCover()) {
-            holder.sdv.setImageURI(Uri.parse(mData.get(position).getSceneCover()));
-        }
+            if (null != mData.get(position) && null != mData.get(position).getSceneCover()) {
+                ((ViewHolder) holder).sdv.setImageURI(Uri.parse(mData.get(position).getSceneCover()));
+            }
 
-        holder.sdv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mOnItemClickListener) {
-                    mOnItemClickListener.onItemClick(holder.itemView,position);
+            final int finalPosition = position;
+            ((ViewHolder) holder).sdv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mOnItemClickListener) {
+                        mOnItemClickListener.onItemClick(holder.itemView, finalPosition);
+                    }
+                }
+            });
+
+
+            ((ViewHolder) holder).tvTitle.setText(mData.get(position).getSceneName());
+            ((ViewHolder) holder).tvDesc.setText(mData.get(position).getIntro());
+            if (((ViewHolder) holder).tvDesc.getLineCount()>1){
+                ((ViewHolder) holder).tvDesc.setGravity(Gravity.LEFT);
+            }else{
+                ((ViewHolder) holder).tvDesc.setGravity(Gravity.CENTER);
+            }
+            ((ViewHolder) holder).tvTag3.setVisibility(View.GONE);
+            ((ViewHolder) holder).tvTag2.setVisibility(View.GONE);
+            ((ViewHolder) holder).tvTag1.setVisibility(View.GONE);
+
+
+            if (null != mData.get(position).getSceneTitle() && mData.get(position).getSceneTitle().length > 0) {
+                for (int i = 0; i < mData.get(position).getSceneTitle().length; i++) {
+                    switch (i) {
+                        case 0:
+                            ((ViewHolder) holder).tvTag1.setText(mData.get(position).getSceneTitle()[i]);
+                            ((ViewHolder) holder).tvTag1.setVisibility(View.VISIBLE);
+                            break;
+                        case 1:
+                            ((ViewHolder) holder).tvTag2.setText(mData.get(position).getSceneTitle()[i]);
+                            ((ViewHolder) holder).tvTag2.setVisibility(View.VISIBLE);
+                            ((ViewHolder) holder).vDivider1.setVisibility(View.VISIBLE);
+                            break;
+                        case 2:
+                            ((ViewHolder) holder).tvTag3.setText(mData.get(position).getSceneTitle()[i]);
+                            ((ViewHolder) holder).tvTag3.setVisibility(View.VISIBLE);
+                            ((ViewHolder) holder).vDivider2.setVisibility(View.VISIBLE);
+                            break;
+                    }
                 }
             }
-        });
-
-
-        holder.tvTitle.setText(mData.get(position).getSceneName());
-        holder.tvDesc.setText(mData.get(position).getIntro());
-        if (holder.tvDesc.getLineCount()>1){
-            holder.tvDesc.setGravity(Gravity.LEFT);
-        }else{
-            holder.tvDesc.setGravity(Gravity.CENTER);
+            holder.itemView.setPivotX(0);
+            holder.itemView.setPivotY(0);
         }
-        holder.tvTag3.setVisibility(View.GONE);
-        holder.tvTag2.setVisibility(View.GONE);
-        holder.tvTag1.setVisibility(View.GONE);
 
-
-        if (null != mData.get(position).getSceneTitle() && mData.get(position).getSceneTitle().length > 0) {
-            for (int i = 0; i < mData.get(position).getSceneTitle().length; i++) {
-                switch (i) {
-                    case 0:
-                        holder.tvTag1.setText(mData.get(position).getSceneTitle()[i]);
-                        holder.tvTag1.setVisibility(View.VISIBLE);
-                        break;
-                    case 1:
-                        holder.tvTag2.setText(mData.get(position).getSceneTitle()[i]);
-                        holder.tvTag2.setVisibility(View.VISIBLE);
-                        break;
-                    case 2:
-                        holder.tvTag3.setText(mData.get(position).getSceneTitle()[i]);
-                        holder.tvTag3.setVisibility(View.VISIBLE);
-                        break;
-                }
-            }
-        }
-        holder.itemView.setPivotX(0);
-        holder.itemView.setPivotY(0);
 
     }
 
@@ -118,8 +136,13 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
 
     @Override
     public int getItemCount() {
+        return null != mData ? mData.size()+1 : 1;
+    }
 
-        return null != mData ? mData.size() : 0;
+    public class HeaderViewHolder extends RecyclerView.ViewHolder{
+        public HeaderViewHolder(View itemView){
+            super(itemView);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -135,6 +158,10 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<AllSceneGridAdapte
         TextView tvTag2;
         @Bind(R.id.recommend_tag3)
         TextView tvTag3;
+        @Bind(R.id.vHorizontalDivider1)
+        View vDivider1;
+        @Bind(R.id.vHorizontalDivider2)
+        View vDivider2;
 
         @Bind(R.id.tvDesc)
         TextView tvDesc;

@@ -75,7 +75,7 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_marginBottom="@dimen/half_margin"
-          android:gravity="left"
+          android:gravity="left|center_vertical"
           android:orientation="horizontal"
           >
 
@@ -93,13 +93,25 @@
             android:textSize="@dimen/standard_text_size_h4"
             tools:text="Tag"
             tools:visibility="visible"
+            tools:textColor="@color/standard_color_black"
+            />
+
+        <View
+            android:id="@+id/vHorizontalDivider1"
+            android:background="@color/standard_color_white"
+            android:layout_width="1px"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_marginRight="@dimen/half_margin"
+            android:layout_height="@dimen/half_margin"
+            tools:background="@color/standard_color_black"
+            android:visibility="invisible"
+
             />
 
         <TextView
             android:id="@+id/recommend_tag2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/half_margin"
             android:paddingBottom="2dp"
             android:paddingTop="2dp"
             android:shadowColor="@color/translucent_dark"
@@ -109,13 +121,24 @@
             android:visibility="gone"
             tools:text="Tag"
             tools:visibility="visible"
+            tools:textColor="@color/standard_color_black"
+
             />
 
+        <View
+            android:id="@+id/vHorizontalDivider2"
+            android:background="@color/standard_color_white"
+            android:layout_width="1px"
+            tools:background="@color/standard_color_black"
+            android:layout_marginLeft="@dimen/half_margin"
+            android:layout_marginRight="@dimen/half_margin"
+            android:layout_height="@dimen/half_margin"
+            android:visibility="invisible"
+            />
         <TextView
             android:id="@+id/recommend_tag3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/half_margin"
             android:paddingBottom="2dp"
             android:paddingTop="2dp"
             android:shadowColor="@color/translucent_dark"
@@ -124,6 +147,7 @@
             android:textSize="@dimen/standard_text_size_h4"
             android:visibility="gone"
             tools:text="Tag"
+            tools:textColor="@color/standard_color_black"
             tools:visibility="visible"
             />
 
