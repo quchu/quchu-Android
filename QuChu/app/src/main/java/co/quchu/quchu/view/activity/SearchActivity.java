@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -124,13 +125,32 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
   private SearchCategoryAdapter filterCategoryAdapter;
   private SearchSortAdapter filterSortAdapter;
   private SearchChildCategoryAdapter childTagsAdapter;
-
   private boolean filterUserInput;
+
+  public static final String BUNDLE_KEY_CATEGORY_NAME = "BUNDLE_KEY_CATEGORY_NAME";
+  public static final String BUNDLE_KEY_CATEGORY_CODE = "BUNDLE_KEY_CATEGORY_CODE";
+  public static final String BUNDLE_KEY_KEYWORD = "BUNDLE_KEY_KEYWORD";
+
+  public static void enterActivity(Activity from,String cName,String cCode,String keyWord){
+    Intent intent = new Intent(from,SearchActivity.class);
+    intent.putExtra(BUNDLE_KEY_CATEGORY_NAME,cName);
+    intent.putExtra(BUNDLE_KEY_CATEGORY_CODE,cCode);
+    intent.putExtra(BUNDLE_KEY_KEYWORD,keyWord);
+    from.startActivity(intent);
+  }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
     ButterKnife.bind(this);
+
+    String keyword = getIntent().getStringExtra(BUNDLE_KEY_KEYWORD);
+    categoryCode = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_CODE);
+    categoryName = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_NAME);
+    searchInputEt.setText(keyword);
+    seachStr(false);
+
+
     initPopupWindow();
     initEdittext();
     initData();
@@ -498,7 +518,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     if (mIsLoading) return;
 
     if (loadMore && mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
-    if (!loadMore) {
+    if (!loadMore && null!=resultList) {
       resultList.clear();
       mCurrentPageNo = 1;
     } else if (mCurrentPageNo < mMaxPageNo) {
