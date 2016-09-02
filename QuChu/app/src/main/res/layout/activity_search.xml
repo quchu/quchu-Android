@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/base_margin"
             android:paddingRight="@dimen/base_margin"
-            android:visibility="gone"
+            android:visibility="visible"
             android:src="@mipmap/ic_back" />
 
         <LinearLayout

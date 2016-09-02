@@ -33,132 +33,126 @@ import java.util.ArrayList;
  */
 public class SearchFragment extends BaseFragment implements View.OnClickListener {
 
+  @Override protected String getPageNameCN() {
+    return getString(R.string.pname_search);
+  }
 
-    @Override
-    protected String getPageNameCN() {
-        return getString(R.string.pname_search);
+  @Bind(R.id.search_input_et) EditText searchInputEt;
+  @Bind(R.id.search_button_rl) TextView searchButtonRl;
+
+  @Bind(R.id.search_result_rv) RecyclerView searchResultRv;
+
+  private SearchAdapter resultAdapter;
+
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+
+    View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_search, container, false);
+    ButterKnife.bind(this, v);
+    initEdittext();
+    initData();
+    SearchPresenter.getCategoryTag(this);
+
+    searchInputEt.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        searchInputEt.setCursorVisible(true);
+      }
+    });
+    return v;
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    ButterKnife.unbind(this);
+  }
+
+  //获取大的分类
+  public void initCategoryList(ArrayList<SearchCategoryBean> categoryParentList) {
+    if (resultAdapter.isCategory()) {
+      resultAdapter.setCategoryList(categoryParentList);
     }
-    @Bind(R.id.search_input_et)
-    EditText searchInputEt;
-    @Bind(R.id.search_button_rl)
-    TextView searchButtonRl;
+  }
 
-    @Bind(R.id.search_result_rv)
-    RecyclerView searchResultRv;
+  @Override public void onClick(View v) {
+    if (KeyboardUtils.isFastDoubleClick()) return;
+    switch (v.getId()) {
+      case R.id.search_button_rl:
+        searchInputEt.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+        startActivity(new Intent(getActivity(), SearchActivity.class));
+        break;
 
-    private SearchAdapter resultAdapter;
-
-    @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState) {
-
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.activity_search,container,false);
-        ButterKnife.bind(this,v);
-        initEdittext();
-        initData();
-        SearchPresenter.getCategoryTag(this);
-
-        searchInputEt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchInputEt.setCursorVisible(true);
-            }
-        });
-        return v;
+      case R.id.search_input_et:
+        break;
     }
+  }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
+  private void initData() {
+    searchButtonRl.setOnClickListener(this);
+    searchInputEt.setOnClickListener(this);
+    resultAdapter = new SearchAdapter();
+    searchResultRv.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+    searchResultRv.setAdapter(resultAdapter);
 
-    //获取大的分类
-    public void initCategoryList(ArrayList<SearchCategoryBean> categoryParentList) {
-        if (resultAdapter.isCategory()) {
-            resultAdapter.setCategoryList(categoryParentList);
+    resultAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+      @Override public void onClick(int position, Parcelable bean, int itemYype) {
+
+        switch (position) {
+          case 0:
+            UMEvent("food_c");
+            break;
+          case 1:
+            UMEvent("hotel_c");
+            break;
+          case 2:
+            UMEvent("entertainment_c");
+            break;
+          case 3:
+            UMEvent("relaxation_c");
+            break;
+          case 4:
+            UMEvent("shopping_c");
+            break;
+          case 5:
+            UMEvent("event_c");
+            break;
         }
-    }
+        searchInputEt.setText(((SearchCategoryBean) bean).getZh());
 
-    @Override
-    public void onClick(View v) {
-        if (KeyboardUtils.isFastDoubleClick())
-            return;
-        switch (v.getId()) {
-            case R.id.search_button_rl:
-                searchInputEt.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
-                break;
+        searchInputEt.setSelection(searchInputEt.getText().toString().trim().length());
+        searchInputEt.setCursorVisible(false);
+        startActivity(new Intent(getActivity(), SearchActivity.class));
+      }
+    });
+  }
 
-            case R.id.search_input_et:
-                break;
+  private void initEdittext() {
+
+    searchInputEt.setOnKeyListener(new View.OnKeyListener() {//输入完后按键盘上的搜索键【回车键改为了搜索键】
+
+      public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {//修改回车键功能
+          if (NetUtil.isNetworkConnected(getActivity())) {
+            if (StringUtils.isEmpty(searchInputEt.getText().toString())) {
+              Toast.makeText(getActivity(), "请输入搜索内容!", Toast.LENGTH_SHORT).show();
+            } else {
+              if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
+                Toast.makeText(getActivity(),
+                    getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT)
+                    .show();
+              } else {
+                startActivity(new Intent(getActivity(), SearchActivity.class));
+              }
+            }
+          } else {
+            Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            ((InputMethodManager) getActivity().getSystemService(
+                getActivity().INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
+                searchResultRv.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+          }
         }
-    }
-
-    private void initData() {
-        searchButtonRl.setOnClickListener(this);
-        searchInputEt.setOnClickListener(this);
-        resultAdapter = new SearchAdapter();
-        searchResultRv.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        searchResultRv.setAdapter(resultAdapter);
-
-        resultAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(int position, Parcelable bean, int itemYype) {
-
-                    switch (position){
-                        case 0:
-                            UMEvent("food_c");
-                            break;
-                        case 1:
-                            UMEvent("hotel_c");
-                            break;
-                        case 2:
-                            UMEvent("entertainment_c");
-                            break;
-                        case 3:
-                            UMEvent("relaxation_c");
-                            break;
-                        case 4:
-                            UMEvent("shopping_c");
-                            break;
-                        case 5:
-                            UMEvent("event_c");
-                            break;
-                    }
-                    searchInputEt.setText(((SearchCategoryBean) bean).getZh());
-
-                    searchInputEt.setSelection(searchInputEt.getText().toString().trim().length());
-                    searchInputEt.setCursorVisible(false);
-
-            }
-        });
-    }
-
-
-    private void initEdittext() {
-
-        searchInputEt.setOnKeyListener(new View.OnKeyListener() {//输入完后按键盘上的搜索键【回车键改为了搜索键】
-
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {//修改回车键功能
-                    if (NetUtil.isNetworkConnected(getActivity())) {
-                        if (StringUtils.isEmpty(searchInputEt.getText().toString())) {
-                            Toast.makeText(getActivity(), "请输入搜索内容!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            if (StringUtils.containsEmoji(searchInputEt.getText().toString())) {
-                                Toast.makeText(getActivity(), getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT).show();
-                            } else {
-                                startActivity(new Intent(getActivity(),SearchActivity.class));
-                            }
-                        }
-                    } else {
-                        Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
-                        ((InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(searchResultRv.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    }
-                }
-                return false;
-            }
-        });
-    }
-
+        return false;
+      }
+    });
+  }
 }
