@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import co.quchu.quchu.view.activity.WebViewActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ import co.quchu.quchu.view.activity.InviteHangoutUsersActivity;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
+import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.view.fragment.DialogMatchingUsers;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
@@ -463,8 +463,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             new GridLayoutManager(mAnchorActivity, 8));
         ((LabelViewHolder) holder).rvUsers.setAdapter(new HangoutUserAdapter(mHangoutUsers));
         ((LabelViewHolder) holder).tvUserBeenInvit.setText("接受邀请的人有" + mData.getJoinPartnerCount());
-        ((LabelViewHolder) holder).ivMoreComments.setVisibility(View.GONE);
-        ((LabelViewHolder) holder).tvMoreComments.setVisibility(View.GONE);
         ((LabelViewHolder) holder).ivInvite.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View view) {
 
@@ -478,15 +476,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             d.show(mAnchorActivity.getFragmentManager(),"wth");
           }
         });
-        if (mData.getPlaceReviewCount() > 3) {
-          ((LabelViewHolder) holder).ivMoreComments.setVisibility(View.VISIBLE);
-          ((LabelViewHolder) holder).tvMoreComments.setVisibility(View.VISIBLE);
-          ((LabelViewHolder) holder).ivMoreComments.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
-              CommentListActivity.enterActivity(mAnchorActivity, mData.getPid());
-            }
-          });
-        }
       }
     } else if (holder instanceof StarterInfoViewHolder) {
 
@@ -607,6 +596,17 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((CommentViewHolder) holder).sdvAvatar.setImageURI(
             Uri.parse(commentModel.getUserPhoneUrl()));
         ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
+
+        //显示更多评论
+        if (mData.getPlaceReviewCount() > 3 && commentIndex == 2) {
+          ((CommentViewHolder)holder).moreCommentsLayout.setVisibility(View.VISIBLE);
+          ((CommentViewHolder)holder).moreCommentsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              CommentListActivity.enterActivity(mAnchorActivity, mData.getPid());
+            }
+          });
+        }
       }
     } else if (holder instanceof NearbyViewHolder) {
       if (null != mData.getNearPlace()) {
@@ -713,8 +713,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   public static class LabelViewHolder extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.ivMoreComments) ImageView ivMoreComments;
-    @Bind(R.id.tvMoreComments) TextView tvMoreComments;
     @Bind(R.id.ivLogo) ImageView ivLogo;
     @Bind(R.id.tvUserBeenInvit) TextView tvUserBeenInvit;
     @Bind(R.id.rvUsers) RecyclerView rvUsers;
@@ -846,6 +844,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.tvFrom) TextView tvFrom;
     @Bind(R.id.rbRating) RatingBar rbRating;
     @Bind(R.id.rvImages) RecyclerView rvImages;
+    @Bind(R.id.more_comments_layout) LinearLayout moreCommentsLayout;
 
     CommentViewHolder(View view) {
       super(view);

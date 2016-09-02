@@ -11,25 +11,7 @@
     >
 
   <ImageView
-      android:id="@+id/ivMoreComments"
-      android:src="@mipmap/ic_gengduopinglun"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
-      />
-  <TextView
-      android:id="@+id/tvMoreComments"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/more_comments"
-      style="@style/TextView.H2"
-      android:layout_below="@+id/ivMoreComments"
-      android:layout_centerHorizontal="true"
-      />
-
-  <ImageView
       android:id="@+id/ivLogo"
-      android:layout_below="@+id/tvMoreComments"
       android:layout_marginLeft="@dimen/base_margin"
       android:layout_marginRight="@dimen/base_margin"
       android:layout_width="wrap_content"

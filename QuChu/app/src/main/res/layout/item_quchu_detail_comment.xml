@@ -1,144 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="@color/standard_color_white"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/sdvAvatar"
-        android:layout_width="@dimen/comment_users_avatar_size"
-        android:layout_height="@dimen/comment_users_avatar_size"
-        fresco:roundAsCircle = "true"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginTop="@dimen/base_margin"
-        />
-
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_alignTop="@+id/sdvAvatar"
-        android:layout_toRightOf="@+id/sdvAvatar"
-        android:layout_toLeftOf="@+id/tvDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/base_margin"
-        style="@style/TextView.H2"
-        tools:text="UserName"
-        />
-
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/sdvAvatar"
-        android:layout_marginRight="@dimen/base_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/TextView.H3"
-        tools:text="Date"
-        />
-
-
-    <RatingBar
-        android:id="@+id/rbRating"
-        android:layout_below="@+id/tvUsername"
-        android:layout_alignLeft="@id/tvUsername"
-        android:layout_marginTop="@dimen/quarter_margin"
-        android:layout_marginBottom="@dimen/base_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:max="5"
-        android:stepSize="0.5"
-        android:rating="3"
-        android:isIndicator="true"
-        style="@style/StarProgressBar_Small"/>
-    <LinearLayout
-        android:id="@+id/llComments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/rbRating"
-        android:layout_alignLeft="@+id/tvUsername"
-        android:background="@color/colorBackground"
-        android:padding="@dimen/half_margin"
-        android:layout_marginRight="@dimen/base_margin"
-
-        >
-        <TextView
-            android:id="@+id/tvUserComment"
-            android:lineSpacingExtra="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/half_margin"
-            style="@style/TextView.H3"
-            tools:text="Comment"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvImages"
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/rc_item_image_message"
-                android:visibility="visible"
-                android:layout_weight="0.4"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="0.6"
-                />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/tvCollapse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/half_margin"
-            style="@style/TextView.H2"
-            tools:text="Comment"
-            android:gravity="right"
-            android:layout_gravity="right"
-            tools:visibility="visible"
-            />
+                android:background="@color/standard_color_white"
+                android:orientation="vertical">
 
-    </LinearLayout>
 
-    <RelativeLayout
-        android:layout_below="@id/llComments"
-        android:layout_width="wrap_content"
+  <com.facebook.drawee.view.SimpleDraweeView
+      android:id="@+id/sdvAvatar"
+      android:layout_width="@dimen/comment_users_avatar_size"
+      android:layout_height="@dimen/comment_users_avatar_size"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_marginTop="@dimen/base_margin"
+      android:src="@mipmap/ic_launcher"
+      fresco:roundAsCircle="true"
+      />
+
+  <TextView
+      android:id="@+id/tvUsername"
+      style="@style/TextView.H2"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignTop="@+id/sdvAvatar"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_toLeftOf="@+id/tvDate"
+      android:layout_toRightOf="@+id/sdvAvatar"
+      tools:text="UserName"
+      />
+
+  <TextView
+      android:id="@+id/tvDate"
+      style="@style/TextView.H3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignTop="@+id/sdvAvatar"
+      android:layout_marginRight="@dimen/base_margin"
+      tools:text="Date"
+      />
+
+
+  <RatingBar
+      android:id="@+id/rbRating"
+      style="@style/StarProgressBar_Small"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@id/tvUsername"
+      android:layout_below="@+id/tvUsername"
+      android:layout_marginBottom="@dimen/base_margin"
+      android:layout_marginTop="@dimen/quarter_margin"
+      android:isIndicator="true"
+      android:max="5"
+      android:rating="3"
+      android:stepSize="0.5"/>
+
+  <LinearLayout
+      android:id="@+id/llComments"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@+id/tvUsername"
+      android:layout_below="@+id/rbRating"
+      android:layout_marginRight="@dimen/base_margin"
+      android:background="@color/colorBackground"
+      android:orientation="vertical"
+      android:padding="@dimen/half_margin"
+
+      >
+
+    <TextView
+        android:id="@+id/tvUserComment"
+        style="@style/TextView.H3"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/half_margin"
-        android:layout_alignLeft="@+id/tvUsername"
-        android:paddingBottom="@dimen/base_margin"
+        android:layout_marginBottom="@dimen/half_margin"
+        android:lineSpacingExtra="4dp"
+        tools:text="Comment"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         >
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/ivFrom"
-            android:layout_width="@dimen/comment_from_avatar_size"
-            android:layout_height="@dimen/comment_from_avatar_size"
-            />
-        <TextView
-            android:id="@+id/tvFrom"
-            android:layout_toRightOf="@id/ivFrom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/half_margin"
-            style="@style/TextView.H3"
-            tools:text="来自大众点评"
-            />
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/rvImages"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.4"
+          tools:listitem="@layout/rc_item_image_message"
+          />
 
-    </RelativeLayout>
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_weight="0.6"
+          />
+    </LinearLayout>
 
-    <View
-        android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginRight="@dimen/base_margin"
-        style="@style/HorizontalLine"
+    <TextView
+        android:id="@+id/tvCollapse"
+        style="@style/TextView.H2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/half_margin"
+        android:gravity="right"
+        android:visibility="gone"
+        tools:text="Comment"
+        tools:visibility="visible"
         />
+
+  </LinearLayout>
+
+  <RelativeLayout
+      android:id="@+id/bottom_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@+id/tvUsername"
+      android:layout_below="@id/llComments"
+      android:layout_marginTop="@dimen/half_margin"
+      android:paddingBottom="@dimen/base_margin"
+      >
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/ivFrom"
+        android:layout_width="@dimen/comment_from_avatar_size"
+        android:layout_height="@dimen/comment_from_avatar_size"
+        />
+
+    <TextView
+        android:id="@+id/tvFrom"
+        style="@style/TextView.H3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_toRightOf="@id/ivFrom"
+        tools:text="来自大众点评"
+        />
+
+  </RelativeLayout>
+
+  <View
+      style="@style/HorizontalLine"
+      android:layout_marginLeft="@dimen/base_margin"
+      android:layout_marginRight="@dimen/base_margin"
+      />
+
+  <LinearLayout
+      android:id="@+id/more_comments_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/bottom_layout"
+      android:layout_centerHorizontal="true"
+      android:orientation="vertical"
+      android:gravity="center_horizontal"
+      android:visibility="gone">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_gengduopinglun"/>
+
+    <TextView
+        style="@style/TextView.H2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/more_comments"/>
+
+  </LinearLayout>
+
 </RelativeLayout>
