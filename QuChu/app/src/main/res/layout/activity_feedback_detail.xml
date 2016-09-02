@@ -62,11 +62,15 @@
 
     <Button
         android:id="@+id/feedback_detail_submit_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="81dp"
+        android:layout_height="34dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="发送" />
+        android:layout_marginLeft="10dp"
+        android:text="发送"
+        android:textSize="14sp"
+        android:textColor="@color/standard_color_h1_dark"
+        android:background="@drawable/shape_common_btn"/>
 
   </RelativeLayout>
 

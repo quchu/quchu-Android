@@ -13,11 +13,10 @@ import android.support.v4.util.ArrayMap;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -52,7 +51,7 @@ import io.rong.message.VoiceMessage;
 
 /**
  * 聊天界面
- *
+ * <p/>
  * Created by mwb on 16/8/25.
  */
 public class ChatActivity extends BaseBehaviorActivity {
@@ -74,12 +73,27 @@ public class ChatActivity extends BaseBehaviorActivity {
 
   private TextView titleTv;
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_chat);
 
     EnhancedToolbar toolbar = getEnhancedToolbar();
     titleTv = toolbar.getTitleTv();
+    ImageView settingIv = toolbar.getRightIv();
+    settingIv.setImageResource(R.mipmap.ic_shezhi);
+    settingIv.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if (mTargetId.equals("1")) {
+          //跳转小Q设置
+          startActivity(SettingXioaQActivity.class);
+        } else {
+          //普通聊天设置
+          showBehaviorDialog();
+        }
+      }
+    });
 
     if (getIntent() == null || getIntent().getData() == null) {
       return;
@@ -100,8 +114,9 @@ public class ChatActivity extends BaseBehaviorActivity {
   private RongIM.ConversationBehaviorListener conversationBehaviorListener =
       new RongIM.ConversationBehaviorListener() {
 
-        @Override public boolean onUserPortraitClick(Context context,
-            Conversation.ConversationType conversationType, UserInfo userInfo) {
+        @Override
+        public boolean onUserPortraitClick(Context context,
+                                           Conversation.ConversationType conversationType, UserInfo userInfo) {
           //当点击用户头像后执行
           Intent intent = new Intent(ChatActivity.this, UserCenterActivity.class);
           intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID,
@@ -110,25 +125,29 @@ public class ChatActivity extends BaseBehaviorActivity {
           return true;
         }
 
-        @Override public boolean onUserPortraitLongClick(Context context,
-            Conversation.ConversationType conversationType, UserInfo userInfo) {
+        @Override
+        public boolean onUserPortraitLongClick(Context context,
+                                               Conversation.ConversationType conversationType, UserInfo userInfo) {
           //当长按用户头像后执行
           return false;
         }
 
-        @Override public boolean onMessageClick(Context context, View view,
-            io.rong.imlib.model.Message message) {
+        @Override
+        public boolean onMessageClick(Context context, View view,
+                                      io.rong.imlib.model.Message message) {
           //当点击消息时执行
           return false;
         }
 
-        @Override public boolean onMessageLinkClick(Context context, String s) {
+        @Override
+        public boolean onMessageLinkClick(Context context, String s) {
           //当点击链接消息时执行
           return false;
         }
 
-        @Override public boolean onMessageLongClick(Context context, View view,
-            io.rong.imlib.model.Message message) {
+        @Override
+        public boolean onMessageLongClick(Context context, View view,
+                                          io.rong.imlib.model.Message message) {
           //当长按消息时执行
           IMDialog dialog = new IMDialog(ChatActivity.this, message);
           dialog.show();
@@ -136,32 +155,14 @@ public class ChatActivity extends BaseBehaviorActivity {
         }
       };
 
-  @Override public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.menu_conversation, menu);
-    return true;
-  }
-
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == R.id.action_setting) {
-      if (mTargetId.equals("1")) {
-        //跳转小Q设置
-        startActivity(SettingXioaQActivity.class);
-      } else {
-        //普通聊天设置
-        showBehaviorDialog();
-      }
-      return true;
-    }
-    return super.onOptionsItemSelected(item);
-  }
-
   /**
    * 用户输入状态
    */
   private void getTypingStatus() {
     RongIMClient.setTypingStatusListener(new RongIMClient.TypingStatusListener() {
-      @Override public void onTypingStatusChanged(Conversation.ConversationType type, String id,
-          Collection<TypingStatus> typingStatusSet) {
+      @Override
+      public void onTypingStatusChanged(Conversation.ConversationType type, String id,
+                                        Collection<TypingStatus> typingStatusSet) {
         //当输入状态的会话类型和targetID与当前会话一致时，才需要显示
         if (type.equals(mConversationType) && id.equals(mTargetId)) {
           //count表示当前会话中正在输入的用户数量，目前只支持单聊，所以判断大于0就可以给予显示了
@@ -191,7 +192,8 @@ public class ChatActivity extends BaseBehaviorActivity {
   }
 
   private Handler handler = new Handler() {
-    @Override public void handleMessage(Message msg) {
+    @Override
+    public void handleMessage(Message msg) {
       if (msg.what == TITLE_DEFAULT) {
         titleTv.setText(mTitle);
       } else if (msg.what == TITLE_TEXT_TYPING) {
@@ -202,7 +204,8 @@ public class ChatActivity extends BaseBehaviorActivity {
     }
   };
 
-  @Override protected void onNewIntent(Intent intent) {
+  @Override
+  protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
 
     LogUtils.e("ChatActivity", "onNewIntent()");
@@ -285,7 +288,8 @@ public class ChatActivity extends BaseBehaviorActivity {
    */
   private void reconnect(String token) {
     IMPresenter.connectIMService(token, new IMPresenter.RongYunConnectListener() {
-      @Override public void onSuccess(String msg) {
+      @Override
+      public void onSuccess(String msg) {
         enterFragment(mConversationType, mTargetId);
       }
     });
@@ -324,14 +328,16 @@ public class ChatActivity extends BaseBehaviorActivity {
     viewGroup.setFocusableInTouchMode(true);
     viewGroup.setOnClickListener(new View.OnClickListener() {
 
-      @Override public void onClick(View v) {
+      @Override
+      public void onClick(View v) {
         popWin.dismiss();
       }
     });
 
     viewGroup.setOnKeyListener(new View.OnKeyListener() {
 
-      @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
+      @Override
+      public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
           popWin.dismiss();
           return true;
@@ -342,17 +348,21 @@ public class ChatActivity extends BaseBehaviorActivity {
 
     //举报
     reportView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
+      @Override
+      public void onClick(View v) {
         popWin.dismiss();
         makeToast("举报");
         IMPresenter.getLatestMessages(mTargetId, 50, new IMPresenter.RongYunConnectListener() {
-          @Override public void onSuccess(String msg) {
+          @Override
+          public void onSuccess(String msg) {
             IMPresenter.sendImReport(ChatActivity.this, mTargetId, msg, new CommonListener<Object>() {
-              @Override public void successListener(Object response) {
+              @Override
+              public void successListener(Object response) {
                 makeToast("您已经举报该用户");
               }
 
-              @Override public void errorListener(VolleyError error, String exception, String msg) {
+              @Override
+              public void errorListener(VolleyError error, String exception, String msg) {
                 makeToast(R.string.network_error);
               }
             });
@@ -364,14 +374,16 @@ public class ChatActivity extends BaseBehaviorActivity {
 
     //屏蔽
     shieldView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
+      @Override
+      public void onClick(View v) {
         popWin.dismiss();
         makeToast("屏蔽");
 
         CommonDialog commonDialog =
             CommonDialog.newInstance("确定要屏蔽此用户吗？", "屏蔽该用户后，90天内您将不会再收到该用户的消息", "确定", "取消");
         commonDialog.setListener(new CommonDialog.OnActionListener() {
-          @Override public boolean dialogClick(int clickId) {
+          @Override
+          public boolean dialogClick(int clickId) {
             if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
               IMPresenter.addToBlackList(mTargetId);
             }
@@ -383,19 +395,23 @@ public class ChatActivity extends BaseBehaviorActivity {
     });
   }
 
-  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+  @Override
+  public ArrayMap<String, Object> getUserBehaviorArguments() {
     return null;
   }
 
-  @Override public int getUserBehaviorPageId() {
+  @Override
+  public int getUserBehaviorPageId() {
     return 0;
   }
 
-  @Override protected int activitySetup() {
+  @Override
+  protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
   }
 
-  @Override protected String getPageNameCN() {
+  @Override
+  protected String getPageNameCN() {
     return null;
   }
 }

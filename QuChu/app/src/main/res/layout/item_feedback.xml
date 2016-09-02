@@ -73,12 +73,12 @@
             android:drawableLeft="@mipmap/ic_yichuli"
             android:drawablePadding="5dp"
             android:gravity="center"
-            android:paddingBottom="2dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="2dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="5dp"
             android:text="已处理"
-            android:textColor="@color/standard_color_h3_dark"
+            android:textColor="@color/standard_color_h1_dark"
             android:textSize="10sp"
             android:visibility="gone" />
 
@@ -91,10 +91,10 @@
             android:drawableLeft="@mipmap/ic_weichuli"
             android:drawablePadding="5dp"
             android:gravity="center"
-            android:paddingBottom="2dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="2dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="5dp"
             android:text="未处理"
             android:textColor="@android:color/white"
             android:textSize="10sp"
@@ -127,7 +127,7 @@
             android:paddingRight="5dp"
             android:paddingTop="2dp"
             android:text="回复"
-            android:textColor="@color/standard_color_h3_dark"
+            android:textColor="@color/standard_color_h1_dark"
             android:textSize="10sp" />
 
       </RelativeLayout>

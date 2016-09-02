@@ -23,7 +23,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="趣基因和你的真实基因一样，记录了你的兴趣喜好 同时决定了你的个性。"
+        android:text="趣基因和你的真实基因一样，记录了你的兴趣喜好，同时决定了你的个性。"
         android:textColor="#999"
         android:textSize="14sp" />
 
