@@ -410,9 +410,9 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         if (currentShowingPopupType == SHOWING_POPUP_TYPE_CATEGORY) {
           if (mLastCategoryCode != mLastCategoryCode) {
           }
-          {
-            seachStr(false);
-          }
+
+          seachStr(false);
+
           dismissDialog();
         } else {
           currentShowingPopupType = SHOWING_POPUP_TYPE_CATEGORY;
@@ -526,7 +526,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     }
     mIsLoading = true;
     if (NetUtil.isNetworkConnected(getApplicationContext())) {
-      DialogUtil.showProgess(getApplicationContext(), R.string.loading_dialog_text);
+      DialogUtil.showProgess(SearchActivity.this, R.string.loading_dialog_text);
     }
 
     //统计搜索关键字
