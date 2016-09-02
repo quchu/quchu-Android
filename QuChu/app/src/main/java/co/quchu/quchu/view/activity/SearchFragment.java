@@ -550,6 +550,14 @@ public class SearchFragment extends BaseBehaviorFragment implements View.OnClick
         if (NetUtil.isNetworkConnected(getActivity()))
             DialogUtil.showProgess(getActivity(), R.string.loading_dialog_text);
 
+        if(null!=str){
+          searchInputEt.setText(str);
+        } else if (null==str&&circleName!=null){
+            searchInputEt.setText(circleName);
+        }else if(null==str&&categoryName!=null){
+            searchInputEt.setText(categoryName);
+        }
+
         //统计搜索关键字
         Map<String, String> p = new HashMap<>();
         p.put("search_keyword", str);
