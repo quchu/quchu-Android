@@ -93,44 +93,7 @@ public class SearchPresenter {
         });
         request.start(context);
 
-//        NetService.post(context, NetApi.Seach, object, new IRequestListener() {
-//            @Override
-//            public void onSuccess(JSONObject response) {
-//                try {
-//                    if (response != null) {
-//                        JSONArray array = response.getJSONArray("result");
-//                        if (array.length() > 0) {
-//                            Gson gson = new Gson();
-//                            ArrayList<RecommendModel> arrayList = new ArrayList<RecommendModel>();
-//                            RecommendModel model;
-//                            for (int i = 0; i < array.length(); i++) {
-//                                model = gson.fromJson(array.getString(i), RecommendModel.class);
-//                                arrayList.add(model);
-//                            }
-//                            int maxPageNo = response.getInt("pageCount");
-//                            listener.successResult(arrayList, maxPageNo);
-//                        } else {
-//                            listener.errorNull();
-//                        }
-//                        DialogUtil.dismissProgess();
-//                    } else {
-//                        listener.errorNull();
-//                    }
-//                } catch (JSONException e) {
-//                    DialogUtil.dismissProgess();
-//                    listener.errorNull();
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public boolean onError(String error) {
-//                LogUtils.json("onError=" + error.toString());
-//                DialogUtil.dismissProgess();
-//                listener.errorNull();
-//                return false;
-//            }
-//        });
+
     }
 
     public interface SearchResultListener {
@@ -147,12 +110,12 @@ public class SearchPresenter {
     }
 
 
-    public static void getCategoryTag(final SearchActivity context) {
+    public static void getCategoryTag(final SearchFragment context) {
         GsonRequest<ArrayList<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getCagegoryTag, new TypeToken<ArrayList<SearchCategoryBean>>() {
         }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getActivity(), (R.string.network_error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -161,7 +124,7 @@ public class SearchPresenter {
 
             }
         });
-        request.start(context);
+        request.start(context.getActivity());
     }
 
     public static void getAreaList(final SearchActivity context) {

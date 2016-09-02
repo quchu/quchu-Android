@@ -151,7 +151,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         initPopupWindow();
         initEdittext();
         initData();
-        SearchPresenter.getCategoryTag(this);
+        //SearchPresenter.getCategoryTag(this);
         SearchPresenter.getGroupTags(this);
         searchInputEt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -345,7 +345,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         switch (type) {
             case 0:
                 if (categoryParentList == null) {
-                    SearchPresenter.getCategoryTag(this);
+                    //SearchPresenter.getCategoryTag(this);
                 }
                 llCategories.setVisibility(View.VISIBLE);
                 areaView.setVisibility(View.INVISIBLE);
