@@ -110,6 +110,8 @@ public interface NetApi {
   String getQuchuListViaTagId =
       HOST + "/place/getPlaceByTagId?tagId=%d&cityId=%d&latitude=%s&longitude=%s";
 
+  String getPlaceByAreaId = HOST + "/place/getPlaceByAreaId";
+  String getPlaceByCircleId = HOST + "/place/getPlaceByCircleId";
   /****  Get end  ****/
 
   /******************

@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,11 +34,50 @@ import co.quchu.quchu.utils.SPUtils;
  */
 public class NearbyPresenter {
 
+    public static final int TYPE_AREA = 1;
+    public static final int TYPE_CIRCLE = 0;
 
 
     public static void getQuchuListViaTagId(Context context,int tagId,int cityId,String lat,String lon,final getNearbyDataListener listener){
         String url = String.format(NetApi.getQuchuListViaTagId,tagId, cityId, lat, lon);
         NetService.post(context, url, null,new IRequestListener() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                if (response != null && response.has("result") && response.has("pageCount")) {
+                    int maxPageNo = -1;
+                    Gson gson = new Gson();
+                    List<NearbyItemModel> nearbyItemModels = null;
+                    try {
+                        maxPageNo = response.getInt("pageCount");
+                        nearbyItemModels = gson.fromJson(response.getString("result"), new TypeToken<List<NearbyItemModel>>() {
+                        }.getType());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    listener.getNearbyData(nearbyItemModels, maxPageNo);
+                }
+            }
+
+            @Override
+            public boolean onError(String error) {
+                DialogUtil.dismissProgess();
+                return false;
+            }
+        });
+
+    }
+
+    public static void getGuessWhatYouLike(Context context,int tagId,int type,String lat,String lon,final getNearbyDataListener listener){
+        HashMap<String,String> params = new HashMap<>();
+        if (type==TYPE_CIRCLE){
+            params.put("CircleId",String.valueOf(tagId));
+        }else{
+            params.put("areaId",String.valueOf(tagId));
+        }
+        params.put("latitude",lat);
+        params.put("longitude",lon);
+        NetService.get(context,type==0?NetApi.getPlaceByAreaId:NetApi.getPlaceByCircleId,params,new IRequestListener(){
+
             @Override
             public void onSuccess(JSONObject response) {
                 if (response != null && response.has("result") && response.has("pageCount")) {

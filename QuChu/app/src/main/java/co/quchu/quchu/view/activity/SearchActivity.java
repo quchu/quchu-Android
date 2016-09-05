@@ -217,6 +217,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
             popWinView.setOnClickListener(new View.OnClickListener() {
               @Override public void onClick(View v) {
                 doSearch(false);
+                  searchInputEt.setText(categoryName);
 
                 dismissDialog();
               }
@@ -280,12 +281,14 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     if (position == 0) {
                       dismissDialog();
                       doSearch(false);
+
                     } else {
                       categoryCode = String.valueOf(item.getTagId());
                       categoryName = String.valueOf(item.getZh());
                       dismissDialog();
                       doSearch(false);
                     }
+                    searchInputEt.setText(categoryName);
                     mLastCategoryCode = categoryCode;
                   }
                 });
@@ -590,7 +593,6 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
   private void hideKeyBoard() {
 
     if(getCurrentFocus()!=null) {
-      System.out.println("getCurrentFocus()!=null");
       searchInputEt.postDelayed(new Runnable() {
         @Override public void run() {
           InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);

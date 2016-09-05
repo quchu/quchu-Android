@@ -61,6 +61,7 @@
       />
 
   <TextView
+      android:id="@+id/tvLabel"
       android:layout_below="@+id/tvInvite"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -70,4 +71,30 @@
       android:text="@string/guess_what_you_like"
       style="@style/TextView.H2"
       />
+
+  <RelativeLayout
+      android:id="@+id/rlTags"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_below="@+id/tvLabel"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="@dimen/half_margin"
+      android:orientation="horizontal">
+
+
+    <co.quchu.quchu.widget.TagCloudView
+        android:id="@+id/tcvTags"
+        app:tcvBackground="@drawable/shape_lineframe_black_thin"
+        app:tcvTextSize="5dp"
+        app:tcvBorder = "8dp"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_marginRight="@dimen/half_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tcvCanTagClick="false"
+        app:tcvTextColor="@color/standard_color_h2_dark"
+        />
+
+  </RelativeLayout>
 </RelativeLayout>

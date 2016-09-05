@@ -36,11 +36,14 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
     }
 
     private int mTagId = 0;
+    private int mDataType = -1;
     private String mTagName;
     private String mQuchuName;
     public static String BUNDLE_KEY_TAG_ID = "BUNDLE_KEY_TAG_ID";
     public static String BUNDLE_KEY_TAG_NAME = "BUNDLE_KEY_TAG_NAME";
     public static String BUNDLE_KEY_TAG_QUCHU_NAME = "BUNDLE_KEY_TAG_QUCHU_NAME";
+    public static String BUNDLE_KEY_DATA_TYPE = "BUNDLE_KEY_DATA_TYPE";
+
     @Bind(R.id.rv)
     RecyclerView mRecyclerView;
     NearbyAdapter mAdapter;
@@ -59,6 +62,7 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
         mTagId = getIntent().getIntExtra(BUNDLE_KEY_TAG_ID, -1);
         mTagName = getIntent().getStringExtra(BUNDLE_KEY_TAG_NAME);
         mQuchuName = getIntent().getStringExtra(BUNDLE_KEY_TAG_QUCHU_NAME);
+        mDataType = getIntent().getIntExtra(BUNDLE_KEY_DATA_TYPE,-1);
         ArrayMap<String,Object> params = new ArrayMap<>();
         params.put("趣处名称",mQuchuName);
         params.put("标签名称",mTagName);
@@ -84,15 +88,30 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
-        NearbyPresenter.getQuchuListViaTagId(getApplicationContext(), mTagId, SPUtils.getCityId(), String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()),
+        if (mDataType==-1){
+            NearbyPresenter.getQuchuListViaTagId(getApplicationContext(), mTagId, SPUtils.getCityId(), String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()),
                 new NearbyPresenter.getNearbyDataListener() {
-            @Override
-            public void getNearbyData(List<NearbyItemModel> model, int i) {
-                mData.clear();
-                mData.addAll(model);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+                    @Override
+                    public void getNearbyData(List<NearbyItemModel> model, int i) {
+                        mData.clear();
+                        mData.addAll(model);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+        }else {
+
+            NearbyPresenter.getGuessWhatYouLike(getApplicationContext(), mTagId, mDataType, String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()),
+                new NearbyPresenter.getNearbyDataListener() {
+                    @Override
+                    public void getNearbyData(List<NearbyItemModel> model, int i) {
+                        mData.clear();
+                        mData.addAll(model);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+        }
+
+
 
     }
 
