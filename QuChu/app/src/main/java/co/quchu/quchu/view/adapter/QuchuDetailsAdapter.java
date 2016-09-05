@@ -652,34 +652,35 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       }
     } else if (holder instanceof LoadMoreViewHolder) {
 
-      if (mEnableLoadMore) {
-        ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
-        ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.GONE);
-        ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
-        ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
-        ((LoadMoreViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
-          @Override public void onClick(View v) {
-            ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.VISIBLE);
-            ((LoadMoreViewHolder) holder).textView.setText(R.string.loading_dialog_text);
-            ObjectAnimator rotation =
-                ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore, "rotation", 0,
-                    360);
-            rotation.setInterpolator(new LinearInterpolator());
-            rotation.setRepeatMode(ValueAnimator.RESTART);
-            rotation.setRepeatCount(ValueAnimator.INFINITE);
-            rotation.setDuration(1500);
-            rotation.start();
-            if (null != mLoadMoreListener) {
-              mLoadMoreListener.onLoadMore();
-            }
-          }
-        });
-      } else {
-        ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.GONE);
-        ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
-        ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
-        ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
-      }
+      holder.itemView.setVisibility(View.GONE);
+      //if (mEnableLoadMore) {
+      //  ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
+      //  ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.GONE);
+      //  ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
+      //  ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
+      //  ((LoadMoreViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+      //    @Override public void onClick(View v) {
+      //      ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.VISIBLE);
+      //      ((LoadMoreViewHolder) holder).textView.setText(R.string.loading_dialog_text);
+      //      ObjectAnimator rotation =
+      //          ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore, "rotation", 0,
+      //              360);
+      //      rotation.setInterpolator(new LinearInterpolator());
+      //      rotation.setRepeatMode(ValueAnimator.RESTART);
+      //      rotation.setRepeatCount(ValueAnimator.INFINITE);
+      //      rotation.setDuration(1500);
+      //      rotation.start();
+      //      if (null != mLoadMoreListener) {
+      //        mLoadMoreListener.onLoadMore();
+      //      }
+      //    }
+      //  });
+      //} else {
+      //  ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.GONE);
+      //  ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
+      //  ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
+      //  ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
+      //}
     }
   }
 

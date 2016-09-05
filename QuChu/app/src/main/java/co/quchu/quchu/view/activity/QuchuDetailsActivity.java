@@ -582,6 +582,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     public void onMessageEvent(QuchuEventModel event) {
 
         switch (event.getFlag()) {
+
             case EventFlags.EVENT_FOOTPRINT_UPDATED:
                 if (null != dModel && (Integer) event.getContent()[0] == dModel.getPid()) {
                     dModel.setMyCardId((Integer) event.getContent()[0]);

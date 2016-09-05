@@ -11,7 +11,8 @@
     <RelativeLayout
         android:id="@+id/rlBanner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="240dp"
+        >
 
         <co.quchu.quchu.widget.WrapContentViewPager
             android:id="@+id/vpGallery"

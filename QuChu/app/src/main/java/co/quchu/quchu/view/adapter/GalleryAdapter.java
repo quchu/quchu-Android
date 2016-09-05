@@ -96,10 +96,7 @@ public class GalleryAdapter extends PagerAdapter {
                 .setImageRequest(imageRequest.build())
                 .build();
         ((SimpleDraweeView) view).setController(controller);
-
-
         ((SimpleDraweeView) view).setAspectRatio(1.5f);
-
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
