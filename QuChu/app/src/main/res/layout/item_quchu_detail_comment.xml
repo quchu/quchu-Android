@@ -138,6 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_toRightOf="@id/ivFrom"
+        android:drawableRight="@mipmap/ic_tiaozhuan"
         tools:text="来自大众点评"
         />
 

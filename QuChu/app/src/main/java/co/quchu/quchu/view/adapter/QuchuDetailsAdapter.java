@@ -595,7 +595,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         });
         ((CommentViewHolder) holder).sdvAvatar.setImageURI(
             Uri.parse(commentModel.getUserPhoneUrl()));
-        ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
+        if (null!=commentModel.getSourceUrl()){
+          ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
+        }
 
         //显示更多评论
         if (mData.getPlaceReviewCount() > 3 && commentIndex == 2) {
