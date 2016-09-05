@@ -32,7 +32,7 @@
             android:paddingBottom="@dimen/base_margin"
             android:layout_centerHorizontal="true"
             android:stepSize="1"
-            android:rating="3"
+            android:rating="0"
             style="@style/CustomProgressBar"/>
 
 

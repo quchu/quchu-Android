@@ -87,6 +87,13 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     }
   }
 
+  @Override public void onResume() {
+    super.onResume();
+    if (null!=searchInputEt){
+      searchInputEt.setText("");
+    }
+  }
+
   private void initData() {
     searchButtonRl.setOnClickListener(this);
     searchInputEt.setOnClickListener(this);

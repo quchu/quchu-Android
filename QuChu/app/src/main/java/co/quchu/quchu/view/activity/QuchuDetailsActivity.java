@@ -287,42 +287,42 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 //        }
 
         mQuchuDetailAdapter.notifyDataSetChanged();
-        mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                if(!NetUtil.isNetworkConnected(getApplicationContext())){
-                    Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
-                    return;
-
-                }
-
-                if (mLoadingMore) {
-                    return;
-                }
-
-                mLoadingMore = true;
-                String str = "";
-
-                for (int i = 0; i < dModel.getNearPlace().size(); i++) {
-                    str += dModel.getNearPlace().get(i).getPlaceId();
-                    str += "|";
-                }
-                if (str.contains("|")) {
-                    str = str.substring(0, str.length() - 1);
-                }
-                double la;
-                double lo;
-                try {
-                    la = Double.valueOf(dModel.getLatitude());
-                    lo = Double.valueOf(dModel.getLongitude());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return;
-                }
-
-                loadMore(str, null, 1, dModel.getPid(), SPUtils.getCityId(), la, lo);
-            }
-        });
+        //mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
+        //    @Override
+        //    public void onLoadMore() {
+        //        if(!NetUtil.isNetworkConnected(getApplicationContext())){
+        //            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
+        //            return;
+        //
+        //        }
+        //
+        //        if (mLoadingMore) {
+        //            return;
+        //        }
+        //
+        //        mLoadingMore = true;
+        //        String str = "";
+        //
+        //        for (int i = 0; i < dModel.getNearPlace().size(); i++) {
+        //            str += dModel.getNearPlace().get(i).getPlaceId();
+        //            str += "|";
+        //        }
+        //        if (str.contains("|")) {
+        //            str = str.substring(0, str.length() - 1);
+        //        }
+        //        double la;
+        //        double lo;
+        //        try {
+        //            la = Double.valueOf(dModel.getLatitude());
+        //            lo = Double.valueOf(dModel.getLongitude());
+        //        } catch (Exception e) {
+        //            e.printStackTrace();
+        //            return;
+        //        }
+        //
+        //        loadMore(str, null, 1, dModel.getPid(), SPUtils.getCityId(), la, lo);
+        //    }
+        //});
 
         changeCollectState(dModel.isIsf());
     }

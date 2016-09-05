@@ -149,7 +149,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
 
-    rbRating.setRating(rating);
+    //rbRating.setRating(rating);
 
     if (photoInfos.size() < 4) {
       photoInfos.add(0, tackImage);
@@ -197,7 +197,18 @@ public class AddFootprintActivity extends BaseBehaviorActivity
                   }
                 });
           } else {
-            Toast.makeText(AddFootprintActivity.this, "至少留下一张图片才能转身离去", Toast.LENGTH_SHORT).show();
+            DialogUtil.showProgess(AddFootprintActivity.this, "母星正在接收中");
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < tags.size(); i++) {
+              if (tags.get(i).isPraise()) {
+                sb.append(tags.get(i).getTagId()).append(",");
+              }
+            }
+            String strTagIds = sb.toString();
+            if (null != strTagIds && strTagIds.endsWith(",")) {
+              strTagIds = strTagIds.substring(0, strTagIds.length() - 1);
+            }
+            saveCard("", strTagIds, pId, etContent.getText().toString(), (int) rbRating.getRating());
           }
         } else {
           Toast.makeText(AddFootprintActivity.this, "您未做任何修改", Toast.LENGTH_SHORT).show();

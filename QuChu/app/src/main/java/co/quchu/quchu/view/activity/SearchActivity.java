@@ -13,9 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
@@ -30,7 +28,6 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
-import co.quchu.quchu.base.BaseBehaviorFragment;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.AreaBean;
 import co.quchu.quchu.model.DetailModel;
@@ -143,12 +140,14 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
     ButterKnife.bind(this);
+    hideKeyBoard();
+
 
     String keyword = getIntent().getStringExtra(BUNDLE_KEY_KEYWORD);
     categoryCode = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_CODE);
     categoryName = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_NAME);
     searchInputEt.setText(keyword);
-    seachStr(false);
+    doSearch(false);
 
 
     initPopupWindow();
@@ -217,7 +216,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
             popWinView.setOnClickListener(new View.OnClickListener() {
               @Override public void onClick(View v) {
-                seachStr(false);
+                doSearch(false);
 
                 dismissDialog();
               }
@@ -250,7 +249,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 searchFilterTV2.setText(
                     TextUtils.isEmpty(circleListBean.getCircleId()) ? areaBean.getAreaName()
                         : circleListBean.getCircleName());
-                seachStr(false);
+                doSearch(false);
               }
             });
             //类别
@@ -280,12 +279,12 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
 
                     if (position == 0) {
                       dismissDialog();
-                      seachStr(false);
+                      doSearch(false);
                     } else {
                       categoryCode = String.valueOf(item.getTagId());
                       categoryName = String.valueOf(item.getZh());
                       dismissDialog();
-                      seachStr(false);
+                      doSearch(false);
                     }
                     mLastCategoryCode = categoryCode;
                   }
@@ -302,7 +301,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                     dismissDialog();
 
                     searchFilterTV3.setText(item.getSortName());
-                    seachStr(false);
+                    doSearch(false);
                   }
                 });
           }
@@ -411,7 +410,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
           if (mLastCategoryCode != mLastCategoryCode) {
           }
 
-          seachStr(false);
+          doSearch(false);
 
           dismissDialog();
         } else {
@@ -498,7 +497,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
           //SearchPresenter.getTagByParentId(getApplicationContext(), ((SearchCategoryBean) bean).getTagId());
           searchInputEt.setText(((SearchCategoryBean) bean).getZh());
           filterUserInput = false;
-          seachStr(false);
+          doSearch(false);
 
           searchInputEt.setSelection(searchInputEt.getText().toString().trim().length());
           searchInputEt.setCursorVisible(false);
@@ -510,7 +509,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
   private String categoryGroupAllString = "全部";
   private String categoryGroupAllId = "";
 
-  private void seachStr(final boolean loadMore) {
+  private void doSearch(final boolean loadMore) {
 
     String str = "";
     if (filterUserInput) str = searchInputEt.getText().toString().trim();
@@ -563,13 +562,12 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
               resultAdapter.setCategory(false);
               resultList.addAll(arrayList);
 
-              ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
-                  searchButtonRl.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+              hideKeyBoard();
               resultAdapter.changeDataSet(resultList);
               searchResultRv.addOnScrollListener(new EndlessRecyclerOnScrollListener(
                   (LinearLayoutManager) searchResultRv.getLayoutManager()) {
                 @Override public void onLoadMore(int current_page) {
-                  seachStr(true);
+                  doSearch(true);
                 }
               });
             } else {
@@ -587,6 +585,19 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
             resultAdapter.notifyDataSetChanged();
           }
         });
+  }
+
+  private void hideKeyBoard() {
+
+    if(getCurrentFocus()!=null) {
+      System.out.println("getCurrentFocus()!=null");
+      searchInputEt.postDelayed(new Runnable() {
+        @Override public void run() {
+          InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+          inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+      },30);
+    }
   }
 
   private void initEdittext() {
@@ -612,14 +623,14 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 if (filterCategoryAdapter.getItemCount() == 0) {
                   filterCategoryAdapter.setDatas(categoryParentList);
                 }
-                seachStr(false);
+                doSearch(false);
               }
             }
           } else {
             Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT)
                 .show();
-            ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
-                searchResultRv.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            hideKeyBoard();
+
           }
         }
         return false;

@@ -1,12 +1,18 @@
 package co.quchu.quchu.presenter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.utils.SPUtils;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -146,34 +152,32 @@ public class InterestingDetailPresenter {
     }
 
 
-    public static void submitDetailRating(Context context, String images, String tagIds,int pId,String content, int score, final CommonListener listener) {
-        JSONObject params = new JSONObject();
+    public static void submitDetailRating(Activity context, String images, String tagIds,int pId,String content, int score, final CommonListener listener) {
 
-        try {
-            params.put("images",images);
-            params.put("content",String.valueOf(content));
-            params.put("tagIds",tagIds);
-            params.put("score",String.valueOf(score));
-            params.put("placeId",String.valueOf(pId));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        NetService.post(context, NetApi.commitDetailRating,params, new IRequestListener() {
+        Map<String, String> params = new HashMap<>();
+        params.put("images",images);
+        params.put("content",String.valueOf(content));
+        params.put("tagIds",tagIds);
+        params.put("score",String.valueOf(score));
+        params.put("placeId",String.valueOf(pId));
+        System.out.println("!--!");
+        new GsonRequest<>(NetApi.commitDetailRating, Object.class, params, new ResponseListener<Object>() {
             @Override
-            public void onSuccess(JSONObject response) {
-                listener.successListener(response);
-
-            }
-
-            @Override
-            public boolean onError(String error) {
+            public void onErrorResponse(@Nullable VolleyError error) {
                 listener.errorListener(null,null,null);
-                return false;
+                System.out.println("---!");
             }
-        });
+
+            @Override
+            public void onResponse(Object response, boolean isNull, String exception, @Nullable String msg) {
+                listener.successListener(response);
+                System.out.println("---!!!!!");
+            }
+        }).start(context);
+
     }
+
+
     public static void updateRatingInfo(Context context, int pId, int score, String tagIds, final DetailDataListener listener) {
         NetService.get(context, String.format(NetApi.updateRatingInfo, pId, tagIds, score), new IRequestListener() {
             @Override
