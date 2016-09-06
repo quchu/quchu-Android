@@ -10,6 +10,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -17,20 +23,13 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.model.HangoutUserModel;
-import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.HangoutPresenter;
-import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.adapter.CommonItemClickListener;
 import co.quchu.quchu.view.adapter.InviteHangoutUsersAdapter;
 import co.quchu.quchu.view.fragment.DialogHangoutUserInfo;
 import co.quchu.quchu.widget.DividerItemDecoration;
 import co.quchu.quchu.widget.ErrorView;
-import com.android.volley.VolleyError;
-import java.util.ArrayList;
-import java.util.List;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by Nico on 16/8/29.
@@ -113,7 +112,7 @@ public class InviteHangoutUsersActivity extends BaseActivity {
       return;
     }
     mInviteRunning = true;
-    IMPresenter.sendMessage(String.valueOf(uid), "Hey，#"+userName+"#我想约你一起去 #"+mPName+"#，点击查看（点击后跳转目标趣处）", "0", String.valueOf(mPid), new IMPresenter.RongYunBehaviorListener() {
+    IMPresenter.sendMessage(String.valueOf(uid), "Hey，#"+userName+"#我想约你一起去 #"+mPName+"#，点击查看（点击后跳转目标趣处）", IMPresenter.JUMP_TYPE_QUCHU_DETAIL, String.valueOf(mPid), new IMPresenter.RongYunBehaviorListener() {
       @Override public void onSuccess(String msg) {
         for (int i = 0; i < mUsers.size(); i++) {
           if (mUsers.get(i).getUserId()==uid){

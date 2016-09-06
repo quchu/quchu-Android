@@ -41,6 +41,10 @@ public class IMPresenter {
 
   private static String TAG = "IMPresenter";
 
+  public static String JUMP_TYPE_QUCHU_DETAIL = "0";
+  public static String JUMP_TYPE_USER = "1";
+  public static String JUMP_TYPE_ARTICLE_DETAIL = "2";
+
   public static String xiaoqId = "1";
 
   //用户信息，名称，头像
@@ -220,7 +224,7 @@ public class IMPresenter {
     textMessage.setExtra(jsonObject.toString());
     Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, textMessage);
 
-    send(message, null);
+    send(message, listener);
   }
 
   private static void send(Message message, final RongYunBehaviorListener listener) {

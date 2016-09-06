@@ -241,24 +241,21 @@ public class ChatActivity extends BaseBehaviorActivity {
         }
 
         Intent intent = null;
-        switch (type) {
-          case "0":
-            intent = new Intent(ChatActivity.this, QuchuDetailsActivity.class);
-            intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, id);
-            startActivity(intent);
-            break;
-
-          case "1":
-            intent = new Intent(ChatActivity.this, UserCenterActivity.class);
-            intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, id);
-            break;
-
-          case "2":
-            ArticleDetailActivity.enterActivity(ChatActivity.this, id, "文章详情", "小Q聊天界面");
-            break;
-        }
-        if (intent != null) {
+        if (type.equals(IMPresenter.JUMP_TYPE_QUCHU_DETAIL)) {
+          //趣处详情
+          intent = new Intent(ChatActivity.this, QuchuDetailsActivity.class);
+          intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, id);
           startActivity(intent);
+
+        } else if (type.equals(IMPresenter.JUMP_TYPE_USER)) {
+          //用户
+          intent = new Intent(ChatActivity.this, UserCenterActivity.class);
+          intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, id);
+          startActivity(intent);
+
+        } else if (type.equals(IMPresenter.JUMP_TYPE_ARTICLE_DETAIL)) {
+          //文章详情
+          ArticleDetailActivity.enterActivity(ChatActivity.this, id, "文章详情", "小Q聊天界面");
         }
 
         return true;
