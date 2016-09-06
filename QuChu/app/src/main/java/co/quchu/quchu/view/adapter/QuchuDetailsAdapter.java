@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -29,6 +30,7 @@ import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.presenter.NearbyPresenter;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.CommentListActivity;
 import co.quchu.quchu.view.activity.InviteHangoutUsersActivity;
@@ -444,7 +446,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             d.setOnDialogMatchListener(new DialogMatchingUsers.OnDialogMatchListener() {
               @Override public void onMatchfinish() {
                 d.dismiss();
-                InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid(),mData.getName());
+
+                if (SPUtils.getDahuoSwitch()){
+                  InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid(),mData.getName());
+                }else{
+                  Toast.makeText(mAnchorActivity,R.string.enable_dahuo_feature,Toast.LENGTH_SHORT).show();
+                }
               }
             });
             d.show(mAnchorActivity.getFragmentManager(),"wth");
