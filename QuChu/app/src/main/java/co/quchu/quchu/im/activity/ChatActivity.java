@@ -405,10 +405,15 @@ public class ChatActivity extends BaseBehaviorActivity {
    * 重连融云服务
    */
   private void reconnect(String token) {
-    IMPresenter.connectIMService(token, new IMPresenter.RongYunConnectListener() {
+    IMPresenter.connectIMService(token, new IMPresenter.RongYunBehaviorListener() {
       @Override
       public void onSuccess(String msg) {
         enterFragment(mConversationType, mTargetId);
+      }
+
+      @Override
+      public void onError() {
+
       }
     });
   }
@@ -470,7 +475,7 @@ public class ChatActivity extends BaseBehaviorActivity {
       public void onClick(View v) {
         popWin.dismiss();
         makeToast("举报");
-        IMPresenter.getLatestMessages(mTargetId, 50, new IMPresenter.RongYunConnectListener() {
+        IMPresenter.getLatestMessages(mTargetId, 50, new IMPresenter.RongYunBehaviorListener() {
           @Override
           public void onSuccess(String msg) {
             IMPresenter.sendImReport(ChatActivity.this, mTargetId, msg, new CommonListener<Object>() {
@@ -484,6 +489,11 @@ public class ChatActivity extends BaseBehaviorActivity {
                 makeToast(R.string.network_error);
               }
             });
+          }
+
+          @Override
+          public void onError() {
+
           }
         });
         //startActivity(SettingXioaQActivity.class);

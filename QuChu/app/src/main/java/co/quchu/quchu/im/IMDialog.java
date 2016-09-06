@@ -147,7 +147,7 @@ public class IMDialog extends Dialog {
 
       case R.id.im_dialog_resend_tv:
         //重发消息
-        IMPresenter.sendTextMessage(mTargetId, mMessageContent, null, null);
+        IMPresenter.sendMessage(mTargetId, mMessageContent);
         break;
     }
 

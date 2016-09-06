@@ -104,7 +104,7 @@ public class IMPresenter {
   /**
    * 建立与融云服务器的连接
    */
-  public static void connectIMService(final String token, final RongYunConnectListener listener) {
+  public static void connectIMService(final String token, final RongYunBehaviorListener listener) {
 
     RongIM.connect(token, new RongIMClient.ConnectCallback() {
 
@@ -182,23 +182,51 @@ public class IMPresenter {
    *
    * @param targetId    目标id
    * @param content     发送的内容
-   * @param pushContent 当下发 push 消息时，在通知栏里会显示这个字段。
-   *                    如果发送的是自定义消息，该字段必须填写，否则无法收到 push 消息。
-   *                    如果发送 sdk 中默认的消息类型，例如 RC:TxtMsg, RC:VcMsg, RC:ImgMsg，则不需要填写，默认已经指定。
-   * @param pushData    push附加信息。如果设置该字段，用户在收到 push 消息时，能通过
-   *                    {@link io.rong.push.notification.PushNotificationMessage#getPushData()}
-   *                    方法获取。
    */
-  public static void sendTextMessage(String targetId, String content, String pushContent,
-      String pushData) {
+  public static void sendMessage(String targetId, String content) {
     TextMessage myTextMessage = TextMessage.obtain(content);
+    Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, myTextMessage);
 
-    Message message =
-        Message.obtain(targetId, Conversation.ConversationType.PRIVATE, myTextMessage);
+    send(message, null);
+  }
 
+  /**
+   * 发送消息
+   *
+   * @param targetId  目标id
+   * @param content   发送的内容
+   * @param jumpType  点击消息跳转类型 0-趣处详情；1-用户；2-趣处文章
+   * @param jumpId    点击消息跳转id
+   * @param listener
+   */
+  public static void sendMessage(String targetId, String content, String jumpType, String jumpId, RongYunBehaviorListener listener) {
+    TextMessage textMessage = TextMessage.obtain(content);
+    JSONObject jsonObject = null;
+    try {
+      jsonObject = new JSONObject();
+      jsonObject.put("id", jumpId);
+      jsonObject.put("type", jumpType);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+
+    if (jsonObject == null) {
+      if (listener != null) {
+        listener.onError();
+      }
+      return;
+    }
+
+    textMessage.setExtra(jsonObject.toString());
+    Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, textMessage);
+
+    send(message, null);
+  }
+
+  private static void send(Message message, final RongYunBehaviorListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance()
-          .sendMessage(message, pushContent, pushData, new IRongCallback.ISendMessageCallback() {
+          .sendMessage(message, null, null, new IRongCallback.ISendMessageCallback() {
             @Override public void onAttached(Message message) {
               //消息本地数据库存储成功的回调
               LogUtils.e("IMPresenter", "message send onAttached()");
@@ -207,11 +235,17 @@ public class IMPresenter {
             @Override public void onSuccess(Message message) {
               //消息通过网络发送成功的回调
               LogUtils.e("IMPresenter", "message send onSuccess()");
+              if (listener != null) {
+                listener.onSuccess("");
+              }
             }
 
             @Override public void onError(Message message, RongIMClient.ErrorCode errorCode) {
               //消息发送失败的回调
               LogUtils.e("IMPresenter", "message send onError()");
+              if (listener != null) {
+                listener.onError();
+              }
             }
           });
     }
@@ -319,7 +353,7 @@ public class IMPresenter {
   /**
    * 获取指定用户的消息
    */
-  public static void getLatestMessages(final String targetId, int count, final RongYunConnectListener listener) {
+  public static void getLatestMessages(final String targetId, int count, final RongYunBehaviorListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().getLatestMessages(Conversation.ConversationType.PRIVATE, targetId, count,
           new RongIMClient.ResultCallback<List<Message>>() {
@@ -347,7 +381,9 @@ public class IMPresenter {
     }
   }
 
-  public interface RongYunConnectListener {
+  public interface RongYunBehaviorListener {
     void onSuccess(String msg);
+
+    void onError();
   }
 }
