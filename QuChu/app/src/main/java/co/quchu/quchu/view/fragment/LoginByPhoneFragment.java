@@ -3,6 +3,7 @@ package co.quchu.quchu.view.fragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -77,7 +78,7 @@ public class LoginByPhoneFragment extends Fragment
     } else {
       mEmptyForum = true;
       tvLoginViaPhone.setText(R.string.login);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+      tvLoginViaPhone.setBackgroundColor(Color.parseColor("#dbdbdb"));
     }
   }
 
@@ -149,7 +150,7 @@ public class LoginByPhoneFragment extends Fragment
       status = true;
     } else {
       tvLoginViaPhone.setText(R.string.login);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+      tvLoginViaPhone.setBackgroundColor(Color.parseColor("#dbdbdb"));
     }
     return status;
   }

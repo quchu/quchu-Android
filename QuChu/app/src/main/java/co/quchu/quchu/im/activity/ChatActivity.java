@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,6 +22,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,6 +40,8 @@ import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.activity.ArticleDetailActivity;
+import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SettingXioaQActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
 import co.quchu.quchu.view.activity.UserCenterActivity;
@@ -136,7 +142,15 @@ public class ChatActivity extends BaseBehaviorActivity {
         public boolean onMessageClick(Context context, View view,
                                       io.rong.imlib.model.Message message) {
           //当点击消息时执行
-          return false;
+
+          if (!mTargetId.equals("1")) {
+            //融云默认chu处理方式
+            return false;
+          }
+
+          customClickMessage(message);
+
+          return true;
         }
 
         @Override
@@ -154,6 +168,62 @@ public class ChatActivity extends BaseBehaviorActivity {
           return true;
         }
       };
+
+  /**
+   * 自定义消息点击事件
+   * 小Q聊天消息
+   */
+  private void customClickMessage(io.rong.imlib.model.Message message) {
+    try {
+      JSONObject jsonObject = new JSONObject(new String(message.getContent().encode()));
+      if (jsonObject.has("content")) {
+        String content = jsonObject.getString("content");
+        LogUtils.e("ChatActivity", "Message content = " + content);
+      }
+
+      if (jsonObject.has("extra")) {
+        String extra = jsonObject.getString("extra");
+        LogUtils.e("ChatActivity", "Message extra = " + extra);
+        JSONObject extraObject = new JSONObject(extra);
+        String id = "";
+        String type = "";
+        if (extraObject.has("id")) {
+          id = extraObject.getString("id");
+        }
+        if (extraObject.has("type")) {
+          type = extraObject.getString("type");
+        }
+
+        if (TextUtils.isEmpty(id)) {
+          return;
+        }
+
+        //0-趣处详情；1-用户；2-趣处文章
+        Intent intent = null;
+        switch (type) {
+          case "0":
+            intent = new Intent(ChatActivity.this, QuchuDetailsActivity.class);
+            intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, id);
+            startActivity(intent);
+            break;
+
+          case "1":
+            intent = new Intent(ChatActivity.this, UserCenterActivity.class);
+            intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, id);
+            break;
+
+          case "2":
+            ArticleDetailActivity.enterActivity(ChatActivity.this, id, "文章详情", "小Q聊天界面");
+            break;
+        }
+        if (intent != null) {
+          startActivity(intent);
+        }
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
 
   /**
    * 用户输入状态

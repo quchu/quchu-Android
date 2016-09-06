@@ -118,7 +118,7 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@id/thirdLoginContainer"
         android:layout_centerHorizontal="true"
-        android:background="@color/standard_color_black"
+        android:background="#dbdbdb"
         android:gravity="center"
         android:text="@string/login"
         android:textColor="@android:color/white"

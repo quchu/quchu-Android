@@ -41,9 +41,6 @@ public class IMPresenter {
 
   private static String TAG = "IMPresenter";
 
-  //融云测试
-  public static String userId = "161";
-  public static String userId1 = "216";
   //用户信息，名称，头像
   private static UserInfo userInfo;
   private static String name;

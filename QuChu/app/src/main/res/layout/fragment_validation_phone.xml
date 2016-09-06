@@ -120,7 +120,7 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@id/thirdLoginContainer"
         android:layout_centerHorizontal="true"
-        android:background="@android:color/black"
+        android:background="#dbdbdb"
         android:gravity="center"
         android:text="@string/next"
         android:textColor="@android:color/white"

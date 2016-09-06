@@ -2,6 +2,7 @@ package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -16,14 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
@@ -102,7 +100,7 @@ public class RestorePasswordFragment extends Fragment {
                     public void afterTextChanged(Editable s) {
                         if (null==etPassword.getText()||StringUtils.isEmpty(etPassword.getText().toString())){
                             tvNext.setText(R.string.next);
-                            tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+                            tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
                         }else {
                             tvNext.setText(R.string.next);
                             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));

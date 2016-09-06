@@ -2,6 +2,7 @@ package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,7 +22,6 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.Timer;
@@ -31,11 +31,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
-import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.widget.ErrorView;
 
@@ -91,7 +89,7 @@ public class PhoneValidationFragment extends Fragment {
         }else{
             tvNext.setText(R.string.next);
             mEmptyForum = true;
-            tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+            tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
         }
         if (StringUtils.isMobileNO(userName)){
             tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
@@ -116,7 +114,7 @@ public class PhoneValidationFragment extends Fragment {
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
             status = true;
         }else{
-            tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+            tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
         }
         return status;
     }
