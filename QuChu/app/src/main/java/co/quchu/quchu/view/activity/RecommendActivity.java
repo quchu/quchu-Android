@@ -34,6 +34,7 @@ import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.dialog.CommonDialog;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -389,6 +390,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
         firstTime = secondTime;// 更新firstTime
         return true;
       } else {
+        IMPresenter.disconnect();
+
         ActManager.getAppManager().AppExit();
       }
     }

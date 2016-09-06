@@ -142,59 +142,7 @@ public class ChatActivity extends BaseBehaviorActivity {
         public boolean onMessageClick(Context context, View view,
                                       io.rong.imlib.model.Message message) {
           //当点击消息时执行
-          try {
-            JSONObject jsonObject = new JSONObject(new String(message.getContent().encode()));
-            if (jsonObject.has("content")) {
-              String content = jsonObject.getString("content");
-            }
-
-            if (jsonObject.has("extra")) {
-              String extra = jsonObject.getString("extra");
-              JSONObject extraObject = new JSONObject(extra);
-              String id = "";
-              String type = "";
-              if (extraObject.has("id")) {
-                id = extraObject.getString("id");
-              }
-              if (extraObject.has("type")) {
-                type = extraObject.getString("type");
-              }
-
-              if (TextUtils.isEmpty(id)) {
-                return false;
-              }
-
-              Intent intent = null;
-              switch (type) {
-                case "0":
-                  intent = new Intent(ChatActivity.this, QuchuDetailsActivity.class);
-                  intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, id);
-                  startActivity(intent);
-                  break;
-
-                case "1":
-                  intent = new Intent(ChatActivity.this, UserCenterActivity.class);
-                  intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, id);
-                  break;
-
-                case "2":
-                  ArticleDetailActivity.enterActivity(ChatActivity.this, id, "文章详情", "小Q聊天界面");
-                  break;
-              }
-              if (intent != null) {
-                startActivity(intent);
-              }
-
-              return true;
-
-            } else {
-              return false;
-            }
-          } catch (JSONException e) {
-            e.printStackTrace();
-          }
-
-          return false;
+          return customClickMessage(message);
         }
 
         @Override
@@ -367,8 +315,8 @@ public class ChatActivity extends BaseBehaviorActivity {
         enterActivity();
       }
 
-      //enterFragment(mConversationType, mTargetId);
-      reconnect(token);
+      enterFragment(mConversationType, mTargetId);
+//      reconnect(token);
     }
   }
 
@@ -376,6 +324,9 @@ public class ChatActivity extends BaseBehaviorActivity {
    * 应用处于后台且进程被杀死，进入应用主页
    */
   private void enterActivity() {
+
+    LogUtils.e("-------mwb", "enterActivity()");
+
     SPUtils.setRongYunTargetId(mTargetId);
     SPUtils.setRongYunTitle(mTitle);
     Intent intent = new Intent(ChatActivity.this, SplashActivity.class);
@@ -388,6 +339,9 @@ public class ChatActivity extends BaseBehaviorActivity {
    * 加载会话页面 ConversationFragment
    */
   private void enterFragment(Conversation.ConversationType conversationType, String targetId) {
+
+    LogUtils.e("-------mwb", "enterFragment()");
+
     ConversationFragment fragment = (ConversationFragment) getSupportFragmentManager()
         .findFragmentById(R.id.conversation_fragment);
 

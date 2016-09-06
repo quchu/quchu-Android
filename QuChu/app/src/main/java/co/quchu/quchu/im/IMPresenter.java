@@ -252,6 +252,15 @@ public class IMPresenter {
   }
 
   /**
+   * 断开连接
+   */
+  public static void disconnect() {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance().disconnect();
+    }
+  }
+
+  /**
    * 发送文本消息
    *
    * @param targetId    目标id
