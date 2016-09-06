@@ -103,6 +103,10 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     mData = (VisitedInfoModel) getIntent().getSerializableExtra(REQUEST_KEY_ENTITY);
     rating = mData.getScore();
     tags = mData.getResult();
+
+    for (int i = 0; i < mData.getResult().size(); i++) {
+      mData.getResult().get(i).setPraise(false);
+    }
     tvSubmit.setBackgroundResource(R.color.colorBorder);
 
     getEnhancedToolbar().getTitleTv().setText(R.string.rating);
