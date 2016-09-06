@@ -82,7 +82,7 @@ public class DialogHangoutUserInfo extends DialogFragment {
     ivConfirm.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         if (null!=mListener){
-          mListener.onInvite(mUserId);
+          mListener.onInvite(mUserId,mUserName);
           dismiss();
         }
       }
@@ -101,6 +101,6 @@ public class DialogHangoutUserInfo extends DialogFragment {
   }
 
   public interface OnUserInvitedListener{
-    void onInvite(int uid);
+    void onInvite(int uid,String userName);
   }
 }

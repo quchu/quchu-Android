@@ -444,7 +444,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             d.setOnDialogMatchListener(new DialogMatchingUsers.OnDialogMatchListener() {
               @Override public void onMatchfinish() {
                 d.dismiss();
-                InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid());
+                InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid(),mData.getName());
               }
             });
             d.show(mAnchorActivity.getFragmentManager(),"wth");

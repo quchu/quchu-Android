@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.model.HangoutUserModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.CommonListener;
@@ -44,7 +45,9 @@ public class InviteHangoutUsersActivity extends BaseActivity {
   boolean mInviteRunning = false;
 
   public static final String REQUEST_INVITE_USER_PID = "REQUEST_INVITE_USER_PID";
+  public static final String REQUEST_INVITE_USER_PNAME = "REQUEST_INVITE_USER_PNAME";
   private int mPid;
+  private String mPName;
 
   @Override protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
@@ -54,9 +57,10 @@ public class InviteHangoutUsersActivity extends BaseActivity {
     return getString(R.string.pname_invite_user);
   }
 
-  public static void enterActivity(Activity from, int pid) {
+  public static void enterActivity(Activity from, int pid,String pName) {
     Intent intent = new Intent(from, InviteHangoutUsersActivity.class);
     intent.putExtra(REQUEST_INVITE_USER_PID, pid);
+    intent.putExtra(REQUEST_INVITE_USER_PNAME, pName);
     from.startActivity(intent);
   }
 
@@ -65,6 +69,7 @@ public class InviteHangoutUsersActivity extends BaseActivity {
     setContentView(R.layout.activity_simple_recyclerview);
     ButterKnife.bind(this);
     mPid = getIntent().getIntExtra(REQUEST_INVITE_USER_PID, -1);
+    mPName = getIntent().getStringExtra(REQUEST_INVITE_USER_PNAME);
     getEnhancedToolbar().getRightTv().setText(R.string.change_hangout_users_list);
     getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
@@ -81,8 +86,8 @@ public class InviteHangoutUsersActivity extends BaseActivity {
             DialogHangoutUserInfo.getInstance(mPid, user.getUserId(), user.getPhoto(),
                 user.getMark(), (int) (user.getSimilarity() * 100), user.getName());
         dialog.setOnConfirmListener(new DialogHangoutUserInfo.OnUserInvitedListener() {
-          @Override public void onInvite(int uid) {
-            inviteUser(uid);
+          @Override public void onInvite(int uid,String userName) {
+            inviteUser(uid,userName);
           }
         });
         dialog.show(getFragmentManager(), "inviteuser");
@@ -103,13 +108,13 @@ public class InviteHangoutUsersActivity extends BaseActivity {
     getUsers();
   }
 
-  private void inviteUser(final int uid) {
+  private void inviteUser(final int uid,final String userName) {
     if (mInviteRunning) {
       return;
     }
     mInviteRunning = true;
-    HangoutPresenter.inviteUser(getApplicationContext(), uid, mPid, new CommonListener<String>() {
-      @Override public void successListener(String response) {
+    IMPresenter.sendMessage(String.valueOf(uid), "Hey，#"+userName+"#我想约你一起去 #"+mPName+"#，点击查看（点击后跳转目标趣处）", "0", String.valueOf(mPid), new IMPresenter.RongYunBehaviorListener() {
+      @Override public void onSuccess(String msg) {
         for (int i = 0; i < mUsers.size(); i++) {
           if (mUsers.get(i).getUserId()==uid){
             mUsers.remove(i);
@@ -118,14 +123,20 @@ public class InviteHangoutUsersActivity extends BaseActivity {
         mAdapter.notifyDataSetChanged();
         Toast.makeText(getApplicationContext(), R.string.user_invited, Toast.LENGTH_SHORT).show();
         mInviteRunning = false;
+        HangoutPresenter.inviteUser(getApplicationContext(), uid, mPid, new CommonListener<String>() {
+          @Override public void successListener(String response) {}
+
+          @Override public void errorListener(VolleyError error, String exception, String msg) {}
+        });
       }
 
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
+      @Override public void onError() {
         Toast.makeText(getApplicationContext(), R.string.user_invited_faile, Toast.LENGTH_SHORT)
             .show();
         mInviteRunning = false;
       }
     });
+
 
   }
 
