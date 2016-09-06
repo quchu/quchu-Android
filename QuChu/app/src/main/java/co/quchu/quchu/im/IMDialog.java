@@ -94,7 +94,7 @@ public class IMDialog extends Dialog {
     deleteTv.setText(deleteTitle);
 
     //聊天列表，且点击的是小Q
-    if (mIsChatList && mTargetId.equals("1")) {
+    if (mIsChatList && mTargetId.equals(IMPresenter.xiaoqId)) {
       deleteTv.setVisibility(View.GONE);
     }
 

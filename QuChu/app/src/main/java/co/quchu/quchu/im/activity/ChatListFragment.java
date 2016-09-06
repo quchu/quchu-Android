@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.im.IMDialog;
+import co.quchu.quchu.im.IMPresenter;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imlib.model.Conversation;
@@ -85,6 +86,10 @@ public class ChatListFragment extends BaseFragment {
         @Override public boolean onConversationLongClick(Context context, View view,
             UIConversation uiConversation) {
           //列表长按
+          if (uiConversation.getConversationTargetId().equals(IMPresenter.xiaoqId)) {
+            return true;
+          }
+
           IMDialog dialog = new IMDialog(getActivity(), uiConversation.getConversationTargetId(),
               uiConversation.isTop());
           dialog.show();

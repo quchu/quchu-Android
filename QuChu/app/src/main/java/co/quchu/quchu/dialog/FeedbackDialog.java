@@ -8,6 +8,8 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -66,6 +68,20 @@ public class FeedbackDialog extends Dialog {
 
             submitBtn.setEnabled(true);
         }
+    }
+
+    @Override
+    public void show() {
+        super.show();
+
+        showSoftWare(titleEdit);
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+
+        hideSoftware();
     }
 
     private TextWatcher titleEditWatchListener = new TextWatcher() {
@@ -145,6 +161,33 @@ public class FeedbackDialog extends Dialog {
                 }
                 break;
         }
+    }
+
+    /**
+     * 打开软键盘
+     */
+    private void showSoftWare(final EditText editText) {
+        final InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
+        editText.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 200);
+    }
+
+    /**
+     * 隐藏键盘
+     */
+    private void hideSoftware() {
+        InputMethodManager manager = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
+        if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (getCurrentFocus() != null)
+                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+        //InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        //manager
+        //    .hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     public interface DialogConfirmListener {

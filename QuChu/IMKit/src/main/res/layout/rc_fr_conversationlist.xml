@@ -3,7 +3,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/rc_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
     <TextView
         android:id="@+id/rc_status_bar"
         android:layout_width="match_parent"
@@ -35,12 +36,12 @@
         android:gravity="center"
         android:visibility="gone"
         android:orientation="vertical"
-        android:layout_marginTop="127dp">
+        android:layout_marginTop="40dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/rc_conversation_list_empty"/>
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/rc_conversation_list_empty"/>-->
 
         <TextView
             android:id="@+id/rc_empty_tv"

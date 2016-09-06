@@ -91,7 +91,7 @@ public class ChatActivity extends BaseBehaviorActivity {
     settingIv.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if (mTargetId.equals("1")) {
+        if (mTargetId.equals(IMPresenter.xiaoqId)) {
           //跳转小Q设置
           startActivity(SettingXioaQActivity.class);
         } else {
@@ -142,15 +142,59 @@ public class ChatActivity extends BaseBehaviorActivity {
         public boolean onMessageClick(Context context, View view,
                                       io.rong.imlib.model.Message message) {
           //当点击消息时执行
+          try {
+            JSONObject jsonObject = new JSONObject(new String(message.getContent().encode()));
+            if (jsonObject.has("content")) {
+              String content = jsonObject.getString("content");
+            }
 
-          if (!mTargetId.equals("1")) {
-            //融云默认chu处理方式
-            return false;
+            if (jsonObject.has("extra")) {
+              String extra = jsonObject.getString("extra");
+              JSONObject extraObject = new JSONObject(extra);
+              String id = "";
+              String type = "";
+              if (extraObject.has("id")) {
+                id = extraObject.getString("id");
+              }
+              if (extraObject.has("type")) {
+                type = extraObject.getString("type");
+              }
+
+              if (TextUtils.isEmpty(id)) {
+                return false;
+              }
+
+              Intent intent = null;
+              switch (type) {
+                case "0":
+                  intent = new Intent(ChatActivity.this, QuchuDetailsActivity.class);
+                  intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, id);
+                  startActivity(intent);
+                  break;
+
+                case "1":
+                  intent = new Intent(ChatActivity.this, UserCenterActivity.class);
+                  intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, id);
+                  break;
+
+                case "2":
+                  ArticleDetailActivity.enterActivity(ChatActivity.this, id, "文章详情", "小Q聊天界面");
+                  break;
+              }
+              if (intent != null) {
+                startActivity(intent);
+              }
+
+              return true;
+
+            } else {
+              return false;
+            }
+          } catch (JSONException e) {
+            e.printStackTrace();
           }
 
-          customClickMessage(message);
-
-          return true;
+          return false;
         }
 
         @Override
@@ -171,19 +215,17 @@ public class ChatActivity extends BaseBehaviorActivity {
 
   /**
    * 自定义消息点击事件
-   * 小Q聊天消息
+   * 0-趣处详情；1-用户；2-趣处文章
    */
-  private void customClickMessage(io.rong.imlib.model.Message message) {
+  private boolean customClickMessage(io.rong.imlib.model.Message message) {
     try {
       JSONObject jsonObject = new JSONObject(new String(message.getContent().encode()));
       if (jsonObject.has("content")) {
         String content = jsonObject.getString("content");
-        LogUtils.e("ChatActivity", "Message content = " + content);
       }
 
       if (jsonObject.has("extra")) {
         String extra = jsonObject.getString("extra");
-        LogUtils.e("ChatActivity", "Message extra = " + extra);
         JSONObject extraObject = new JSONObject(extra);
         String id = "";
         String type = "";
@@ -195,10 +237,9 @@ public class ChatActivity extends BaseBehaviorActivity {
         }
 
         if (TextUtils.isEmpty(id)) {
-          return;
+          return false;
         }
 
-        //0-趣处详情；1-用户；2-趣处文章
         Intent intent = null;
         switch (type) {
           case "0":
@@ -219,10 +260,17 @@ public class ChatActivity extends BaseBehaviorActivity {
         if (intent != null) {
           startActivity(intent);
         }
+
+        return true;
+
+      } else {
+        return false;
       }
     } catch (JSONException e) {
       e.printStackTrace();
     }
+
+    return false;
   }
 
   /**

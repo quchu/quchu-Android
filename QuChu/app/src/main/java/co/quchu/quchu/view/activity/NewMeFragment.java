@@ -97,7 +97,13 @@ public class NewMeFragment extends BaseFragment {
   @Override
   public void onResume() {
     getUnreadMessage();
-    initXiaoQConversation();
+
+    if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
+      initXiaoQConversation();
+    } else {
+      IMPresenter.removeConversation(IMPresenter.xiaoqId);
+    }
+
     super.onResume();
   }
 
@@ -113,7 +119,7 @@ public class NewMeFragment extends BaseFragment {
 
         if (conversations != null && conversations.size() > 0) {
           for (Conversation conversation : conversations) {
-            if (conversation.getTargetId().equals("1")) {
+            if (conversation.getTargetId().equals(IMPresenter.xiaoqId)) {
               hasXiaoQConversation = true;
               break;
             }
@@ -123,7 +129,7 @@ public class NewMeFragment extends BaseFragment {
         if (!hasXiaoQConversation) {
           if (RongIM.getInstance() != null) {
             TextMessage textMessage = TextMessage.obtain("");
-            Message message = Message.obtain("1", Conversation.ConversationType.PRIVATE, textMessage);
+            Message message = Message.obtain(IMPresenter.xiaoqId, Conversation.ConversationType.PRIVATE, textMessage);
             RongIM.getInstance().sendMessage(message, null, null, new IRongCallback.ISendMessageCallback() {
               @Override
               public void onAttached(Message message) {
@@ -150,6 +156,9 @@ public class NewMeFragment extends BaseFragment {
 
       }
     });
+
+    //置顶小Q
+    IMPresenter.setConversationToTop(IMPresenter.xiaoqId, true);
   }
 
   /**

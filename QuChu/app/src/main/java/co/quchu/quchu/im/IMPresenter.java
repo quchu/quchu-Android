@@ -41,6 +41,8 @@ public class IMPresenter {
 
   private static String TAG = "IMPresenter";
 
+  public static String xiaoqId = "1";
+
   //用户信息，名称，头像
   private static UserInfo userInfo;
   private static String name;
