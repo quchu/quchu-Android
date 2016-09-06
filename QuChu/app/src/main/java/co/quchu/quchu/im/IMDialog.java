@@ -93,9 +93,9 @@ public class IMDialog extends Dialog {
     topTv.setText(topTitle);
     deleteTv.setText(deleteTitle);
 
-    //聊天列表，且点击的是小Q
-    if (mIsChatList && mTargetId.equals(IMPresenter.xiaoqId)) {
-      deleteTv.setVisibility(View.GONE);
+    //聊天列表，隐藏置顶聊天
+    if (mIsChatList) {
+      topTv.setVisibility(View.GONE);
     }
 
     //发送消息失败

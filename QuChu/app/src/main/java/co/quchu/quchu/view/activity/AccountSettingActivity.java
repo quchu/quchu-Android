@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.baidu.location.BDLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
@@ -32,7 +31,6 @@ import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
@@ -45,6 +43,7 @@ import co.quchu.quchu.gallery.FrescoImageLoader;
 import co.quchu.quchu.gallery.FunctionConfig;
 import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoInfo;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
@@ -233,15 +232,19 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                                 AppContext.user = null;
                                 SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);
 
+                                //退出当前账号登录的融云信息
+                                IMPresenter.logout();
+
                                 UserLoginPresenter.visitorRegiest(AccountSettingActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
                                     @Override
                                     public void isUnique(JSONObject msg) {
-
-
                                         ArrayMap<String,Object> params = new ArrayMap<>();
                                         params.put("用户名",AppContext.user.getFullname());
                                         params.put("登陆方式","游客模式");
                                         ZGEvent(params,"用户登陆");
+
+                                        //重新获取融云token连接服务器
+                                        IMPresenter.getToken(AccountSettingActivity.this);
 
                                         commonDialog.dismiss();
                                         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));

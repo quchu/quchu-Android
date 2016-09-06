@@ -52,6 +52,8 @@ public class IMPresenter {
   private static String name;
   private static String avatar;
 
+  private static boolean hasXiaoQConversation;
+
   /**
    * 举报
    */
@@ -139,6 +141,11 @@ public class IMPresenter {
             return findUserById(userId);
           }
         }, true);
+
+        //初始化小Q
+        if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
+          initXiaoQConversation();
+        }
       }
 
       /**
@@ -179,6 +186,69 @@ public class IMPresenter {
         });
 
     return userInfo;
+  }
+
+  /**
+   * 设置小Q会话
+   */
+  private static void initXiaoQConversation() {
+    IMPresenter.getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+      @Override
+      public void onSuccess(List<Conversation> conversations) {
+        //遍历当前会话列表，如果没有小Q会话，则主动发消息在本地显示会话
+        if (conversations != null && conversations.size() > 0) {
+          for (Conversation conversation : conversations) {
+            if (conversation.getTargetId().equals(IMPresenter.xiaoqId)) {
+              hasXiaoQConversation = true;
+              break;
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onError(RongIMClient.ErrorCode errorCode) {
+
+      }
+    });
+
+    //如果小Q会话不显示，则主动发消息给小Q
+    if (!hasXiaoQConversation) {
+      if (RongIM.getInstance() != null) {
+        TextMessage textMessage = TextMessage.obtain("");
+        Message message = Message.obtain(IMPresenter.xiaoqId, Conversation.ConversationType.PRIVATE, textMessage);
+        RongIM.getInstance().sendMessage(message, null, null, new IRongCallback.ISendMessageCallback() {
+          @Override
+          public void onAttached(Message message) {
+
+          }
+
+          @Override
+          public void onSuccess(Message message) {
+            int[] messageIds = new int[]{Integer.valueOf(message.getMessageId())};
+            IMPresenter.deleteMessages(messageIds);
+          }
+
+          @Override
+          public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+          }
+        });
+      }
+    }
+
+    //置顶小Q
+    IMPresenter.setConversationToTop(IMPresenter.xiaoqId, true);
+  }
+
+  /**
+   * 退出融云连接
+   */
+  public static void logout() {
+    if (RongIM.getInstance() != null) {
+      SPUtils.setRongYunToken("");
+      RongIM.getInstance().logout();
+    }
   }
 
   /**

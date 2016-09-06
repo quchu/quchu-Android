@@ -18,8 +18,6 @@ import com.android.volley.VolleyError;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -38,11 +36,6 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.CircleIndicator;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.IRongCallback;
-import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.Message;
-import io.rong.message.TextMessage;
 
 /**
  * 我的 TAB
@@ -97,68 +90,7 @@ public class NewMeFragment extends BaseFragment {
   @Override
   public void onResume() {
     getUnreadMessage();
-
-    if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
-      initXiaoQConversation();
-    } else {
-      IMPresenter.removeConversation(IMPresenter.xiaoqId);
-    }
-
     super.onResume();
-  }
-
-  /**
-   * 设置小Q会话
-   */
-  private void initXiaoQConversation() {
-    IMPresenter.getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
-      @Override
-      public void onSuccess(List<Conversation> conversations) {
-        //遍历当前会话列表，如果没有小Q会话，则主动发消息在本地显示会话
-        boolean hasXiaoQConversation = false;
-
-        if (conversations != null && conversations.size() > 0) {
-          for (Conversation conversation : conversations) {
-            if (conversation.getTargetId().equals(IMPresenter.xiaoqId)) {
-              hasXiaoQConversation = true;
-              break;
-            }
-          }
-        }
-
-        if (!hasXiaoQConversation) {
-          if (RongIM.getInstance() != null) {
-            TextMessage textMessage = TextMessage.obtain("");
-            Message message = Message.obtain(IMPresenter.xiaoqId, Conversation.ConversationType.PRIVATE, textMessage);
-            RongIM.getInstance().sendMessage(message, null, null, new IRongCallback.ISendMessageCallback() {
-              @Override
-              public void onAttached(Message message) {
-
-              }
-
-              @Override
-              public void onSuccess(Message message) {
-                int[] messageIds = new int[]{Integer.valueOf(message.getMessageId())};
-                IMPresenter.deleteMessages(messageIds);
-              }
-
-              @Override
-              public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-
-              }
-            });
-          }
-        }
-      }
-
-      @Override
-      public void onError(RongIMClient.ErrorCode errorCode) {
-
-      }
-    });
-
-    //置顶小Q
-    IMPresenter.setConversationToTop(IMPresenter.xiaoqId, true);
   }
 
   /**
