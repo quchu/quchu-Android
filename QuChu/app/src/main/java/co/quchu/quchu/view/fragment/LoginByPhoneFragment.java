@@ -169,10 +169,28 @@ public class LoginByPhoneFragment extends Fragment
         keyboard.showSoftInput(etUsername, 0);
       }
     }, 350);
+
+    ((BaseActivity) getActivity()).getEnhancedToolbar().getRightTv().setText(R.string.forget_password);
+    ((BaseActivity) getActivity()).getEnhancedToolbar().getRightTv().setVisibility(View.VISIBLE);
+    ((BaseActivity) getActivity()).getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        Fragment f = new PhoneValidationFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
+        bundle.putString(PhoneValidationFragment.BUNDLE_KEY_PHONE_NUMBER,
+            etUsername.getText().toString());
+        f.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.flContent, f)
+            .addToBackStack(TAG).commitAllowingStateLoss();
+        getFragmentManager().executePendingTransactions();
+        ((BaseActivity) getActivity()).getEnhancedToolbar().show();
+      }
+    });
   }
 
   @Override public void onPause() {
     super.onPause();
+    ((BaseActivity) getActivity()).getEnhancedToolbar().getRightTv().setVisibility(View.GONE);
     View view = getActivity().getCurrentFocus();
     if (view != null) {
       InputMethodManager imm =
@@ -214,21 +232,21 @@ public class LoginByPhoneFragment extends Fragment
             if (object.has("msg") && !object.isNull("msg")) {
               tvLoginViaPhone.setText(object.get("msg").toString());
               tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-              tvForgetPassword.setVisibility(View.VISIBLE);
-              tvForgetPassword.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                  Fragment f = new PhoneValidationFragment();
-                  Bundle bundle = new Bundle();
-                  bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
-                  bundle.putString(PhoneValidationFragment.BUNDLE_KEY_PHONE_NUMBER,
-                      etUsername.getText().toString());
-                  f.setArguments(bundle);
-                  getFragmentManager().beginTransaction().replace(R.id.flContent, f)
-                      .addToBackStack(TAG).commitAllowingStateLoss();
-                  getFragmentManager().executePendingTransactions();
-                  ((BaseActivity) getActivity()).getEnhancedToolbar().show();
-                }
-              });
+              //tvForgetPassword.setVisibility(View.GONE);
+              //tvForgetPassword.setOnClickListener(new View.OnClickListener() {
+              //  @Override public void onClick(View v) {
+              //    Fragment f = new PhoneValidationFragment();
+              //    Bundle bundle = new Bundle();
+              //    bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
+              //    bundle.putString(PhoneValidationFragment.BUNDLE_KEY_PHONE_NUMBER,
+              //        etUsername.getText().toString());
+              //    f.setArguments(bundle);
+              //    getFragmentManager().beginTransaction().replace(R.id.flContent, f)
+              //        .addToBackStack(TAG).commitAllowingStateLoss();
+              //    getFragmentManager().executePendingTransactions();
+              //    ((BaseActivity) getActivity()).getEnhancedToolbar().show();
+              //  }
+              //});
             }
             //TODO
           } catch (JSONException e) {

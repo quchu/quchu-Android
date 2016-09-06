@@ -126,6 +126,7 @@ public class InviteHangoutUsersActivity extends BaseActivity {
         mInviteRunning = false;
       }
     });
+
   }
 
   private void getUsers() {

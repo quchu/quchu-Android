@@ -109,6 +109,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/base_margin"
         android:gravity="center"
+        android:visibility="gone"
         android:text="@string/forget_password" />
 
     <TextView
