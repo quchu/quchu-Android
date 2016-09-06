@@ -19,6 +19,8 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.BottomListDialog;
 import co.quchu.quchu.model.CommentImageModel;
 import co.quchu.quchu.model.CommentModel;
@@ -442,19 +444,22 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((LabelViewHolder) holder).ivInvite.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View view) {
 
-            final DialogMatchingUsers d = new DialogMatchingUsers();
-            d.setOnDialogMatchListener(new DialogMatchingUsers.OnDialogMatchListener() {
-              @Override public void onMatchfinish() {
-                d.dismiss();
+            if (AppContext.user.isIsVisitors()){
+              ((BaseActivity)mAnchorActivity).showLoginDialog();
+            }else{
+              final DialogMatchingUsers d = new DialogMatchingUsers();
+              d.setOnDialogMatchListener(new DialogMatchingUsers.OnDialogMatchListener() {
+                @Override public void onMatchfinish() {
+                  d.dismiss();
 
-                if (SPUtils.getDahuoSwitch()){
                   InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid(),mData.getName());
-                }else{
-                  Toast.makeText(mAnchorActivity,R.string.enable_dahuo_feature,Toast.LENGTH_SHORT).show();
+
                 }
-              }
-            });
-            d.show(mAnchorActivity.getFragmentManager(),"wth");
+              });
+              d.show(mAnchorActivity.getFragmentManager(),"wth");
+            }
+
+
           }
         });
       }
