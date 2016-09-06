@@ -1,5 +1,6 @@
 package co.quchu.quchu.dialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -32,7 +33,9 @@ public class DialogUtil {
             } else {
                 loadingDialog.setText(msg);
             }
-            loadingDialog.show();
+            if(!((Activity) activity).isFinishing()) {
+                loadingDialog.show();
+            }
         }
     }
 
@@ -43,7 +46,7 @@ public class DialogUtil {
             } else {
                 loadingDialog.setText(msg);
             }
-            if (!loadingDialog.isShowing()) {
+            if (!loadingDialog.isShowing()&&!((Activity) activity).isFinishing()) {
                 loadingDialog.show();
                 handler.sendMessageDelayed(handler.obtainMessage(2), 50 * 1000);
             }

@@ -1,7 +1,5 @@
 package co.quchu.quchu.view.adapter;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,18 +11,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
-import co.quchu.quchu.presenter.NearbyPresenter;
-import com.facebook.drawee.view.SimpleDraweeView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -38,6 +28,7 @@ import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
+import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.CommentListActivity;
 import co.quchu.quchu.view.activity.InviteHangoutUsersActivity;
@@ -48,6 +39,9 @@ import co.quchu.quchu.view.activity.WebViewActivity;
 import co.quchu.quchu.view.fragment.DialogMatchingUsers;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
+import com.facebook.drawee.view.SimpleDraweeView;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 2016/3/7.
@@ -458,22 +452,26 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         });
       }
       List<String> tags = new ArrayList<>();
+      List<Boolean> highLights = new ArrayList<>();
       int blockIndex = 0;
       if (null!=mData){
         if (null!=mData.getAreaMap()){
           tags.add(mData.getAreaMap().getName());
           blockIndex+=1;
+          highLights.add(true);
         }
         if (null!=mData.getCircleMap()){
           tags.add(mData.getCircleMap().getName());
           blockIndex+=1;
+          highLights.add(true);
         }
       }
       if (null != mData.getTags()) {
         for (int i = 0; i < mData.getTags().size(); i++) {
           tags.add(" " + mData.getTags().get(i).getZh() + " ");
+          highLights.add(false);
         }
-        ((LabelViewHolder) holder).tags.setTags(tags);
+        ((LabelViewHolder) holder).tags.setTags(tags,highLights);
         final int finalBlockIndex = blockIndex;
         ((LabelViewHolder) holder).tags.setOnTagClickListener(
             new TagCloudView.OnTagClickListener() {

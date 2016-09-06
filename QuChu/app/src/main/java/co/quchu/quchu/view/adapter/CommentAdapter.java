@@ -15,7 +15,9 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.model.CommentImageModel;
 import co.quchu.quchu.model.CommentModel;
 import co.quchu.quchu.model.ImageModel;
+import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
+import co.quchu.quchu.view.activity.WebViewActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +121,14 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ((CommentViewHolder) holder).sdvAvatar.setImageURI(
             Uri.parse(commentModel.getUserPhoneUrl()));
         ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
+
+        if (!StringUtils.isEmpty(commentModel.getPqUrl())){
+          ((CommentViewHolder) holder).tvFrom.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+              WebViewActivity.enterActivity(mAnchorActivity,commentModel.getPqUrl(),"查看评论",false);
+            }
+          });
+        }
       }
   }
 

@@ -20,7 +20,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
-import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.adapter.RatingQuchuDialogAdapter;
@@ -67,7 +66,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
   private VisitedInfoModel mData;
   private RatingQuchuDialogAdapter ratingQuchuDialogAdapter;
 
-  private boolean dataChange;
+  private boolean dataChange = false;
 
   @Override protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
@@ -104,6 +103,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     mData = (VisitedInfoModel) getIntent().getSerializableExtra(REQUEST_KEY_ENTITY);
     rating = mData.getScore();
     tags = mData.getResult();
+    tvSubmit.setBackgroundResource(R.color.colorBorder);
 
     getEnhancedToolbar().getTitleTv().setText(R.string.rating);
 
@@ -150,9 +150,18 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
 
     //rbRating.setRating(rating);
+    rbRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+      @Override public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+        tvSubmit.setBackgroundResource(R.color.standard_color_yellow);
+        dataChange = true;
+        if (v<1){
+          ratingBar.setRating(1);
+        }
+      }
+    });
 
     if (photoInfos.size() < 4) {
-      photoInfos.add(0, tackImage);
+      photoInfos.add(tackImage);
     }
     adapter.setImages(photoInfos);
     adapter.setListener(this);
@@ -160,7 +169,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     recyclerView.setAdapter(adapter);
     tvSubmit.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        if (dataChange()) {
+        if (dataChange) {
           List<String> im = new ArrayList<>();
           for (PhotoInfo item : photoInfos) {
             if (item.getPhotoPath().contains("file://")) {
@@ -186,7 +195,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
                       strTagIds = strTagIds.substring(0, strTagIds.length() - 1);
                     }
 
-                    saveCard(result, strTagIds, pId, etContent.getText().toString(),
+                    saveRating(result, strTagIds, pId, etContent.getText().toString(),
                         (int) rbRating.getRating());
                   }
 
@@ -208,17 +217,17 @@ public class AddFootprintActivity extends BaseBehaviorActivity
             if (null != strTagIds && strTagIds.endsWith(",")) {
               strTagIds = strTagIds.substring(0, strTagIds.length() - 1);
             }
-            saveCard("", strTagIds, pId, etContent.getText().toString(), (int) rbRating.getRating());
+            saveRating("", strTagIds, pId, etContent.getText().toString(), (int) rbRating.getRating());
           }
         } else {
-          Toast.makeText(AddFootprintActivity.this, "您未做任何修改", Toast.LENGTH_SHORT).show();
+          Toast.makeText(AddFootprintActivity.this, "你还没有做出评价~", Toast.LENGTH_SHORT).show();
         }
       }
     });
   }
 
   @Override public void itemClick(boolean isDelete, int position, final PhotoInfo photoInfo) {
-    if (!isDelete && position == 0 && photoInfo.getPhotoPath().contains("res:///")) {
+    if (!isDelete && position == photoInfos.size()-1 && photoInfo.getPhotoPath().contains("res:///")) {
       View view = getWindow().peekDecorView();
       if (view != null) {
         InputMethodManager inputmanger =
@@ -237,9 +246,8 @@ public class AddFootprintActivity extends BaseBehaviorActivity
               }
               photoInfos.clear();
               photoInfos.addAll(resultList);
-              if (photoInfos.size() < 4) photoInfos.add(0, tackImage);
+              if (photoInfos.size() < 4) photoInfos.add(tackImage);
               adapter.notifyDataSetChanged();
-              dataChange = true;
             }
 
             @Override public void onHanlderFailure(int requestCode, String errorMsg) {
@@ -248,18 +256,17 @@ public class AddFootprintActivity extends BaseBehaviorActivity
           });
     }
     if (isDelete) {
-      dataChange = true;
       photoInfos.remove(position);
-      if (photoInfos.size() < 4 && photoInfos.size() > 0 && !photoInfos.get(0)
+      if (photoInfos.size() < 4 && photoInfos.size() > 0 && !photoInfos.get(photoInfos.size()-1)
           .getPhotoPath()
           .contains("res:///")) {
-        photoInfos.add(0, tackImage);
+        photoInfos.add( tackImage);
       }
       adapter.notifyDataSetChanged();
     }
   }
 
-  private void saveCard(String images, String tagIds, int pId, String content, int score) {
+  private void saveRating(String images, String tagIds, int pId, String content, int score) {
     InterestingDetailPresenter.submitDetailRating(this, images, tagIds, pId, content, score,
         new CommonListener() {
           @Override public void successListener(Object response) {
@@ -277,7 +284,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
   }
 
   @Override public void onBackPressed() {
-    if (dataChange()) {
+    if (dataChange) {
       CommonDialog dialog =
           CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "继续编辑", "退出");
       dialog.setListener(new CommonDialog.OnActionListener() {
@@ -295,8 +302,5 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     }
   }
 
-  private boolean dataChange() {
-    String s = "";
-    return dataChange || !etContent.getText().toString().trim().equals(s);
-  }
+
 }

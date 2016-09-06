@@ -133,11 +133,12 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (mWebView.canGoBack()) {
-            mWebView.goBack();
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
+        //
+        //if (mWebView.canGoBack()) {
+        //    mWebView.goBack();
+        //} else {
+        //}
     }
 
     private class SimpleWebViewClient extends WebViewClient {

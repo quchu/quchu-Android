@@ -16,8 +16,10 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.HangoutUserModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.HangoutPresenter;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.adapter.CommonItemClickListener;
 import co.quchu.quchu.view.adapter.InviteHangoutUsersAdapter;
 import co.quchu.quchu.view.fragment.DialogHangoutUserInfo;
@@ -26,6 +28,8 @@ import co.quchu.quchu.widget.ErrorView;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by Nico on 16/8/29.
@@ -50,9 +54,9 @@ public class InviteHangoutUsersActivity extends BaseActivity {
     return getString(R.string.pname_invite_user);
   }
 
-  public static void enterActivity(Activity from,int pid) {
+  public static void enterActivity(Activity from, int pid) {
     Intent intent = new Intent(from, InviteHangoutUsersActivity.class);
-    intent.putExtra(REQUEST_INVITE_USER_PID,pid);
+    intent.putExtra(REQUEST_INVITE_USER_PID, pid);
     from.startActivity(intent);
   }
 
@@ -75,7 +79,7 @@ public class InviteHangoutUsersActivity extends BaseActivity {
         HangoutUserModel user = mUsers.get(position);
         DialogHangoutUserInfo dialog =
             DialogHangoutUserInfo.getInstance(mPid, user.getUserId(), user.getPhoto(),
-                user.getMark(), (int) (user.getSimilarity()*100), user.getName());
+                user.getMark(), (int) (user.getSimilarity() * 100), user.getName());
         dialog.setOnConfirmListener(new DialogHangoutUserInfo.OnUserInvitedListener() {
           @Override public void onInvite(int uid) {
             inviteUser(uid);
@@ -86,22 +90,32 @@ public class InviteHangoutUsersActivity extends BaseActivity {
     });
     rv.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
     rv.setAdapter(mAdapter);
-    DividerItemDecoration vertical = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST,new ColorDrawable(Color.parseColor("#dbdbdb")));
+    DividerItemDecoration vertical =
+        new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST,
+            new ColorDrawable(Color.parseColor("#dbdbdb")));
     vertical.setHeight(1);
     rv.addItemDecoration(vertical);
-    DividerItemDecoration horizontal = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL_LIST,new ColorDrawable(Color.parseColor("#dbdbdb")));
+    DividerItemDecoration horizontal =
+        new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL_LIST,
+            new ColorDrawable(Color.parseColor("#dbdbdb")));
     horizontal.setWidth(1);
     rv.addItemDecoration(horizontal);
     getUsers();
   }
 
-  private void inviteUser(int uid) {
+  private void inviteUser(final int uid) {
     if (mInviteRunning) {
       return;
     }
     mInviteRunning = true;
     HangoutPresenter.inviteUser(getApplicationContext(), uid, mPid, new CommonListener<String>() {
       @Override public void successListener(String response) {
+        for (int i = 0; i < mUsers.size(); i++) {
+          if (mUsers.get(i).getUserId()==uid){
+            mUsers.remove(i);
+          }
+        }
+        mAdapter.notifyDataSetChanged();
         Toast.makeText(getApplicationContext(), R.string.user_invited, Toast.LENGTH_SHORT).show();
         mInviteRunning = false;
       }
@@ -137,4 +151,7 @@ public class InviteHangoutUsersActivity extends BaseActivity {
           }
         });
   }
+
+
+
 }
