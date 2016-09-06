@@ -47,8 +47,12 @@ public class FindPositionAdapter extends RecyclerView.Adapter<FindPositionAdapte
         ImageUtils.ShowImage(info.getPhotoPath(), holder.simpleDraweeView);
         if (info.getPhotoPath().contains("res:///")) {
             holder.delete.setVisibility(View.GONE);
+            holder.simpleDraweeView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            holder.simpleDraweeView.setBackgroundColor(holder.itemView.getContext().getResources().getColor(R.color.standard_color_yellow));
         } else {
             holder.delete.setVisibility(View.VISIBLE);
+            holder.simpleDraweeView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            holder.simpleDraweeView.setBackgroundColor(holder.itemView.getContext().getResources().getColor(R.color.bg_pager));
 
         }
 

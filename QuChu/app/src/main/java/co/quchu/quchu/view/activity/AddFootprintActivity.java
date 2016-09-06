@@ -148,7 +148,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     adapter = new FindPositionAdapter();
     tackImage = new PhotoInfo();
 
-    tackImage.setPhotoPath("res:///" + R.mipmap.ic_take_photo);
+    tackImage.setPhotoPath("res:///" + R.mipmap.ic_camera);
 
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new GridLayoutManager(this, 4));

@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_pager"
-        android:scaleType="fitXY"
         fresco:viewAspectRatio="1" />
 
     <ImageView
