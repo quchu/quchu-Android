@@ -133,7 +133,7 @@ public class IMDialog extends Dialog {
       case R.id.im_dialog_delete_tv:
         if (mIsChatList) {
           //聊天列表，删除聊天
-          IMPresenter.removeConversation(mTargetId);
+          IMPresenter.removeConversation(mTargetId, null);
         } else {
           //聊天界面，删除消息
           IMPresenter.deleteMessages(messageIds);

@@ -225,4 +225,9 @@ public interface NetApi {
    * im举报接口
    */
   String sendImReport = HOST + "/im/report";
+
+  /**
+   * 屏蔽
+   */
+  String shieldUrl = HOST + "/im/shield";
 }

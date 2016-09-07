@@ -102,6 +102,7 @@ public class ChatActivity extends BaseBehaviorActivity {
     });
 
     if (getIntent() == null || getIntent().getData() == null) {
+      LogUtils.e("------mwb", "intent null");
       return;
     }
 
@@ -279,6 +280,7 @@ public class ChatActivity extends BaseBehaviorActivity {
    * rong://{应用包名}/conversation/[private|discussion|group]?targetId={目标Id}&[title={开启会话名称}]
    */
   private void getIntentDate(Intent intent) {
+    LogUtils.e("------mwb", "getIntentDate");
     mTargetId = intent.getData().getQueryParameter("targetId");
     mTargetIds = intent.getData().getQueryParameter("targetIds");
     mTitle = intent.getData().getQueryParameter("title");
@@ -295,6 +297,7 @@ public class ChatActivity extends BaseBehaviorActivity {
    * 判断消息是否是 push 消息
    */
   private void isPushMessage(Intent intent) {
+    LogUtils.e("------mwb", "isPushMessage");
     String token = SPUtils.getRongYunToken();
 
     if (intent.getData().getScheme().equals("rong")
@@ -315,8 +318,8 @@ public class ChatActivity extends BaseBehaviorActivity {
         enterActivity();
       }
 
-      enterFragment(mConversationType, mTargetId);
-//      reconnect(token);
+//      enterFragment(mConversationType, mTargetId);
+      reconnect(token);
     }
   }
 
@@ -324,9 +327,6 @@ public class ChatActivity extends BaseBehaviorActivity {
    * 应用处于后台且进程被杀死，进入应用主页
    */
   private void enterActivity() {
-
-    LogUtils.e("-------mwb", "enterActivity()");
-
     SPUtils.setRongYunTargetId(mTargetId);
     SPUtils.setRongYunTitle(mTitle);
     Intent intent = new Intent(ChatActivity.this, SplashActivity.class);
@@ -339,9 +339,6 @@ public class ChatActivity extends BaseBehaviorActivity {
    * 加载会话页面 ConversationFragment
    */
   private void enterFragment(Conversation.ConversationType conversationType, String targetId) {
-
-    LogUtils.e("-------mwb", "enterFragment()");
-
     ConversationFragment fragment = (ConversationFragment) getSupportFragmentManager()
         .findFragmentById(R.id.conversation_fragment);
 
@@ -390,7 +387,7 @@ public class ChatActivity extends BaseBehaviorActivity {
     Rect frame = new Rect();
     getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
     lp.topMargin = Utils.dip2px(this, 20) + frame.top;
-    lp.rightMargin = Utils.dip2px(this, 6);
+    lp.rightMargin = Utils.dip2px(this, 10);
     viewGroup.addView(view, lp);
 
     final PopupWindow popWin = new PopupWindow(viewGroup, ViewGroup.LayoutParams.MATCH_PARENT,
@@ -425,7 +422,6 @@ public class ChatActivity extends BaseBehaviorActivity {
       @Override
       public void onClick(View v) {
         popWin.dismiss();
-        makeToast("举报");
         IMPresenter.getLatestMessages(mTargetId, 50, new IMPresenter.RongYunBehaviorListener() {
           @Override
           public void onSuccess(String msg) {
@@ -447,7 +443,6 @@ public class ChatActivity extends BaseBehaviorActivity {
 
           }
         });
-        //startActivity(SettingXioaQActivity.class);
       }
     });
 
@@ -456,7 +451,6 @@ public class ChatActivity extends BaseBehaviorActivity {
       @Override
       public void onClick(View v) {
         popWin.dismiss();
-        makeToast("屏蔽");
 
         CommonDialog commonDialog =
             CommonDialog.newInstance("确定要屏蔽此用户吗？", "屏蔽该用户后，90天内您将不会再收到该用户的消息", "确定", "取消");
@@ -464,12 +458,50 @@ public class ChatActivity extends BaseBehaviorActivity {
           @Override
           public boolean dialogClick(int clickId) {
             if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
-              IMPresenter.addToBlackList(mTargetId);
+              addToBack();
             }
             return true;
           }
         });
         commonDialog.show(getSupportFragmentManager(), "");
+      }
+    });
+  }
+
+  /**
+   * 屏蔽用户
+   */
+  private void addToBack() {
+    //加入黑名单
+    IMPresenter.addToBlackList(mTargetId, new IMPresenter.RongYunBehaviorListener() {
+      @Override
+      public void onSuccess(String msg) {
+        //本地历史中删除该聊天
+        IMPresenter.removeConversation(mTargetId, new IMPresenter.RongYunBehaviorListener() {
+          @Override
+          public void onSuccess(String msg) {
+            IMPresenter.shield(ChatActivity.this, mTargetId, new CommonListener<Object>() {
+              @Override
+              public void successListener(Object response) {
+                makeToast("成功屏蔽该用户");
+                finish();
+              }
+
+              @Override
+              public void errorListener(VolleyError error, String exception, String msg) {
+              }
+            });
+          }
+
+          @Override
+          public void onError() {
+          }
+        });
+      }
+
+      @Override
+      public void onError() {
+        makeToast("屏蔽失败");
       }
     });
   }

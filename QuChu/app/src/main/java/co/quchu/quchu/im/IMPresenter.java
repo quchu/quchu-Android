@@ -23,7 +23,6 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.utils.ToastManager;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
@@ -72,6 +71,33 @@ public class IMPresenter {
 
       @Override public void onResponse(Object response, boolean result, String errorCode,
           @Nullable String msg) {
+        if (listener != null) {
+          listener.successListener(response);
+        }
+      }
+    });
+    request.start(context);
+  }
+
+  /**
+   * 屏蔽
+   */
+  public static void shield(Context context, String targetId, final CommonListener<Object> listener) {
+    Map<String, String> map = new HashMap<>();
+    map.put("toUserId", targetId);
+
+    GsonRequest<Object> request = new GsonRequest<Object>(NetApi.shieldUrl, Object.class, map, new ResponseListener<Object>() {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        LogUtils.e(TAG, "屏蔽用户失败");
+        if (listener != null) {
+          listener.errorListener(error, "", "");
+        }
+      }
+
+      @Override
+      public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
+        LogUtils.e(TAG, "屏蔽用户成功");
         if (listener != null) {
           listener.successListener(response);
         }
@@ -365,16 +391,20 @@ public class IMPresenter {
   /**
    * 移除会话
    */
-  public static void removeConversation(String targetId) {
+  public static void removeConversation(String targetId, final RongYunBehaviorListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().removeConversation(Conversation.ConversationType.PRIVATE, targetId,
           new RongIMClient.ResultCallback<Boolean>() {
             @Override public void onSuccess(Boolean aBoolean) {
-
+              if (listener != null) {
+                listener.onSuccess("");
+              }
             }
 
             @Override public void onError(RongIMClient.ErrorCode errorCode) {
-
+              if (listener != null) {
+                listener.onError();
+              }
             }
           });
     }
@@ -409,15 +439,19 @@ public class IMPresenter {
   /**
    * 加入黑名单
    */
-  public static void addToBlackList(String targetId) {
+  public static void addToBlackList(String targetId, final RongYunBehaviorListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().addToBlacklist(targetId, new RongIMClient.OperationCallback() {
         @Override public void onSuccess() {
-          ToastManager.getInstance(AppContext.mContext).show("您将不会再收到该用户的消息！");
+          if (listener != null) {
+            listener.onSuccess("");
+          }
         }
 
         @Override public void onError(RongIMClient.ErrorCode errorCode) {
-
+          if (listener != null) {
+            listener.onError();
+          }
         }
       });
     }
