@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -77,7 +78,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (null == mArticleModel) {
                 return TYPE_EMPTY;
             } else {
-                return TYPE_RECOMMENDED;
+                return TYPE_ARTICLE;
             }
         } else if (position> getRecommendedListSize()+1 && position< getRecommendedListSize()+getPlaceListSize()+2){
             return TYPE_PLACE_LIST;
@@ -149,8 +150,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((RecommendedViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getPlaceInfo().getCover()));
             }
             ((RecommendedViewHolder) holder).tvTitle.setText(objScene.getPlaceInfo().getName());
-            ((RecommendedViewHolder) holder).cornerLabelTextView.setText(objScene.getTitle());
-            ((RecommendedViewHolder) holder).tvHeader.setVisibility(View.GONE);
+            ((RecommendedViewHolder) holder).tvHeader.setText(objScene.getTitle());
+            ((RecommendedViewHolder) holder).tvHeader.setVisibility(View.VISIBLE);
             ((RecommendedViewHolder) holder).recommendTag1.setVisibility(View.GONE);
             ((RecommendedViewHolder) holder).recommendTag2.setVisibility(View.GONE);
             ((RecommendedViewHolder) holder).recommendTag3.setVisibility(View.GONE);
@@ -174,6 +175,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 ((RecommendedViewHolder) holder).tvPrice.setText("¥- 元｜");
             }
+            ((RecommendedViewHolder) holder).ivFavorite.setImageResource(objScene.getPlaceInfo().isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_faxian_shoucang);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -189,8 +191,16 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             if (null != mArticleModel) {
                 ((ArticleViewHolder) holder).sdvCover.setImageURI(Uri.parse(mArticleModel.getImageUrl()));
-                ((ArticleViewHolder) holder).tvTitle.setText(mArticleModel.getArticleName());
-                ((ArticleViewHolder) holder).tvDescription.setText(mArticleModel.getArticleComtent());
+                ((ArticleViewHolder) holder).tvTitle.setText(mArticleModel.getName());
+                ((ArticleViewHolder) holder).tvLikes.setText(String.valueOf(mArticleModel.getFavoriteCount()));
+                ((ArticleViewHolder) holder).tvReviews.setText(String.valueOf(mArticleModel.getReadCount()));
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override public void onClick(View view) {
+                        if (null != mListener) {
+                            mListener.onArticleClick(mArticleModel.getArticleId(),mArticleModel.getName());
+                        }
+                    }
+                });
             }
 
         } else if (holder instanceof PlaceViewHolder) {
@@ -199,8 +209,6 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((PlaceViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getCover()));
             ((PlaceViewHolder) holder).tvTitle.setText(objScene.getName());
             ((PlaceViewHolder) holder).tvHeader.setVisibility(View.GONE);
-
-            ((PlaceViewHolder) holder).cornerLabelTextView.setVisibility(View.GONE);
             ((PlaceViewHolder) holder).recommendTag1.setVisibility(View.GONE);
             ((PlaceViewHolder) holder).recommendTag2.setVisibility(View.GONE);
             ((PlaceViewHolder) holder).recommendTag3.setVisibility(View.GONE);
@@ -224,6 +232,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((PlaceViewHolder) holder).tvPrice.setText("¥- 元｜");
             }
 
+            ((RecommendedViewHolder) holder).ivFavorite.setImageResource(objScene.isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_faxian_shoucang);
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -238,7 +248,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     public interface OnSceneItemClickListener {
-        void onArticleClick();
+        void onArticleClick(int aid,String articleTitle);
 
         void onPlaceClick(int pid,String placeName);
     }
@@ -319,8 +329,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvDistance;
         @Bind(R.id.tvPrice)
         TextView tvPrice;
-        @Bind(R.id.clt)
-        CornerLabelTextView cornerLabelTextView;
+        @Bind(R.id.ivFavorite) ImageView ivFavorite;
 
         public RecommendedViewHolder(View itemView) {
             super(itemView);
@@ -333,8 +342,10 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         SimpleDraweeView sdvCover;
         @Bind(R.id.tvTitle)
         TextView tvTitle;
-        @Bind(R.id.tvDescription)
-        TextView tvDescription;
+        @Bind(R.id.tvReviews)
+        TextView tvReviews;
+        @Bind(R.id.tvLikes)
+        TextView tvLikes;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);
@@ -365,8 +376,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvDistance;
         @Bind(R.id.tvPrice)
         TextView tvPrice;
-        @Bind(R.id.clt)
-        CornerLabelTextView cornerLabelTextView;
+        @Bind(R.id.ivFavorite) ImageView ivFavorite;
 
         public PlaceViewHolder(View itemView) {
             super(itemView);

@@ -7,30 +7,31 @@ public class SimpleArticleModel {
 
     private int articleId;
     private int imageId;
-    private String articleName;
-    private String articleComtent;
+    private String name;
+    private String comtent;
     private String imageUrl;
-
     private String article_url;
     private boolean isFavorite;
+    private int readCount;
+    private int favoriteCount;
 
+    private String articleName;
+    private String articleComtent;
 
-    public void copyFrom(SimpleArticleModel simpleArticleModel){
-        this.setArticleName(simpleArticleModel.getArticleName());
-        this.setArticleId(simpleArticleModel.getArticleId());
-        this.setImageId(simpleArticleModel.getImageId());
-        this.setArticleComtent(simpleArticleModel.getArticleComtent());
-        this.setImageUrl(simpleArticleModel.getImageUrl());
-        this.setFavorite(simpleArticleModel.isFavorite);
-        this.setArticle_url(simpleArticleModel.getArticle_url());
+    public String getArticleName() {
+        return articleName;
     }
 
-    public String getArticle_url() {
-        return article_url;
+    public void setArticleName(String articleName) {
+        this.articleName = articleName;
     }
 
-    public void setArticle_url(String article_url) {
-        this.article_url = article_url;
+    public String getArticleComtent() {
+        return articleComtent;
+    }
+
+    public void setArticleComtent(String articleComtent) {
+        this.articleComtent = articleComtent;
     }
 
     public int getArticleId() {
@@ -49,20 +50,20 @@ public class SimpleArticleModel {
         this.imageId = imageId;
     }
 
-    public String getArticleName() {
-        return articleName;
+    public String getName() {
+        return name;
     }
 
-    public void setArticleName(String articleName) {
-        this.articleName = articleName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getArticleComtent() {
-        return articleComtent;
+    public String getComtent() {
+        return comtent;
     }
 
-    public void setArticleComtent(String articleComtent) {
-        this.articleComtent = articleComtent;
+    public void setComtent(String comtent) {
+        this.comtent = comtent;
     }
 
     public String getImageUrl() {
@@ -73,11 +74,35 @@ public class SimpleArticleModel {
         this.imageUrl = imageUrl;
     }
 
+    public String getArticle_url() {
+        return article_url;
+    }
+
+    public void setArticle_url(String article_url) {
+        this.article_url = article_url;
+    }
+
     public boolean isFavorite() {
         return isFavorite;
     }
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public int getReadCount() {
+        return readCount;
+    }
+
+    public void setReadCount(int readCount) {
+        this.readCount = readCount;
+    }
+
+    public int getFavoriteCount() {
+        return favoriteCount;
+    }
+
+    public void setFavoriteCount(int favoriteCount) {
+        this.favoriteCount = favoriteCount;
     }
 }

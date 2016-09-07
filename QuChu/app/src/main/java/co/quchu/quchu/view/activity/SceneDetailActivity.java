@@ -259,8 +259,8 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
                     mSceneInfo = response.getSceneInfo();
                     mAdapter = new SceneDetailAdapter(getApplicationContext(), mSceneList, mRecommendedList, mArticleModel, mSceneInfo, new SceneDetailAdapter.OnSceneItemClickListener() {
                         @Override
-                        public void onArticleClick() {
-
+                        public void onArticleClick(int i,String t) {
+                            ArticleDetailActivity.enterActivity(SceneDetailActivity.this,String.valueOf(i),t,"");
                         }
 
                         @Override

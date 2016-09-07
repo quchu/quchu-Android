@@ -4,13 +4,14 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:clickable="false"
     android:fitsSystemWindows="true"
     android:background="@color/standard_color_white"
     >
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -20,7 +21,7 @@
             android:id="@+id/sdvCover"
             card_view:actualImageScaleType="centerCrop"
             card_view:failureImage="@mipmap/ic_image_empty"
-
+            card_view:overlayImage="@color/colorSceneColor"
             card_view:failureImageScaleType="center"
             card_view:placeholderImage="@mipmap/ic_image_empty"
             card_view:placeholderImageScaleType="center"
@@ -33,30 +34,67 @@
             card_view:roundTopRight="true"
             android:src="@mipmap/ic_launcher" />
 
-
-        <TextView
-            android:id="@+id/tvTitle"
-            style="@style/TextView.H1"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/rl"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sdvCover"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            android:text="title"
-            android:textStyle="bold" />
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            >
 
-        <TextView
-            android:id="@+id/tvDescription"
-            style="@style/TextView.H2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvTitle"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/quarter_margin"
-            android:lineSpacingExtra="4sp"
-            android:paddingBottom="@dimen/base_margin"
-            android:text="description" />
-    </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/standard_color_white"
+                android:textStyle="bold"
+                tools:text="title"
+                style="@style/TextView.H1"
+                android:shadowColor="@color/standard_color_h1_dark"
+                android:shadowRadius="10"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTitle"
+                android:layout_marginTop="@dimen/half_margin"
+                android:gravity="center"
+                android:orientation="horizontal"
+
+                >
+
+                <TextView
+                    android:id="@+id/tvReviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_eyes"
+                    android:drawablePadding="@dimen/half_margin"
+                    android:shadowColor="@color/standard_color_h1_dark"
+                    android:shadowRadius="10"
+                    android:textColor="@color/standard_color_white"
+                    tools:text="10086"
+                    />
+
+                <TextView
+                    android:id="@+id/tvLikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:drawableLeft="@mipmap/ic_faxian_shoucang"
+                    android:drawablePadding="@dimen/half_margin"
+                    android:shadowColor="@color/standard_color_h1_dark"
+                    android:shadowRadius="10"
+                    android:textColor="@color/standard_color_white"
+                    tools:text="10086"
+                    />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
 </LinearLayout>

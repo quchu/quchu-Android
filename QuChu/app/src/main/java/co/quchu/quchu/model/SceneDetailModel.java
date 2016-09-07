@@ -10,7 +10,7 @@ public class SceneDetailModel {
     private SceneInfoModel sceneInfo;
     private PagerModel<DetailModel> placeList;
     private List<SceneHeaderModel> bestList;
-    private SimpleArticleModel articleModel;
+    private SimpleArticleModel article;
     private int[]placeIds;
 
     public SceneInfoModel getSceneInfo() {
@@ -46,10 +46,10 @@ public class SceneDetailModel {
     }
 
     public SimpleArticleModel getArticleModel() {
-        return articleModel;
+        return article;
     }
 
     public void setArticleModel(SimpleArticleModel articleModel) {
-        this.articleModel = articleModel;
+        this.article = articleModel;
     }
 }

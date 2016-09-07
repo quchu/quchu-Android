@@ -133,9 +133,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
                 mQuchuDetailAdapter.updateHangoutUsers(mAvailableUsers);
             }
 
-            @Override public void errorListener(VolleyError error, String exception, String msg) {
-
-            }
+            @Override public void errorListener(VolleyError error, String exception, String msg) {}
         });
     }
 

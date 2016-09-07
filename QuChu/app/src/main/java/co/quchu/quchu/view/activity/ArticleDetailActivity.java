@@ -243,6 +243,10 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
     boolean mFavoriteProgressRunning = false;
 
     private void setFavorite() {
+        if (!NetUtil.isNetworkConnected(this)) {
+            Toast.makeText(ArticleDetailActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (null == mArticleDetailModel || null == mArticleDetailModel.getArticle()) {
             return;
         }
