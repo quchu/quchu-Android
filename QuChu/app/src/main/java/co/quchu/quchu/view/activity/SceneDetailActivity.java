@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import com.android.volley.VolleyError;
 
 import com.baidu.location.LocationClient;
@@ -261,6 +262,21 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
                         @Override
                         public void onArticleClick(int i,String t) {
                             ArticleDetailActivity.enterActivity(SceneDetailActivity.this,String.valueOf(i),t,"");
+                        }
+
+                        @Override public void onFavoriteClick(int pid, final boolean status, final int index,
+                            final boolean fromRecommand) {
+                            InterestingDetailPresenter.setDetailFavorite(SceneDetailActivity.this,
+                                pid, !status, new InterestingDetailPresenter.DetailDataListener() {
+                                    @Override public void onSuccessCall(String str) {
+                                        Toast.makeText(SceneDetailActivity.this,"收藏成功!",Toast.LENGTH_SHORT).show();
+                                        mAdapter.updateFavorite(index,status,fromRecommand?fromRecommand:false);
+                                    }
+
+                                    @Override public void onErrorCall(String str) {
+                                        Toast.makeText(SceneDetailActivity.this,"取消收藏!",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                         }
 
                         @Override

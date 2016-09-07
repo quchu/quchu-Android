@@ -51,6 +51,20 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 
+    public void updateFavorite(int index,boolean status,boolean fromRec){
+        if (fromRec){
+            if (mBestPlace.size()>index){
+                mBestPlace.get(index).getPlaceInfo().setIsf(!status);
+            }
+        }else{
+            if (mData.size()>index){
+                mData.get(index).setIsf(!status);
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+
     private boolean mShowingNoData = false;
 
     public void showPageEnd(boolean bl){
@@ -121,6 +135,9 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((InfoViewHolder) holder).recommendTag1.setVisibility(View.GONE);
                 ((InfoViewHolder) holder).recommendTag2.setVisibility(View.GONE);
                 ((InfoViewHolder) holder).recommendTag3.setVisibility(View.GONE);
+
+                ((InfoViewHolder) holder).vDivider1.setVisibility(View.INVISIBLE);
+                ((InfoViewHolder) holder).vDivider2.setVisibility(View.INVISIBLE);
                 if (null!=tags){
                     for (int i = 0; i < tags.length; i++) {
                         switch (i) {
@@ -131,10 +148,12 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             case 1:
                                 ((InfoViewHolder) holder).recommendTag2.setVisibility(View.VISIBLE);
                                 ((InfoViewHolder) holder).recommendTag2.setText(tags[i]);
+                                ((InfoViewHolder) holder).vDivider1.setVisibility(View.VISIBLE);
                                 break;
                             case 2:
                                 ((InfoViewHolder) holder).recommendTag3.setVisibility(View.VISIBLE);
                                 ((InfoViewHolder) holder).recommendTag3.setText(tags[i]);
+                                ((InfoViewHolder) holder).vDivider2.setVisibility(View.VISIBLE);
                                 break;
                         }
                     }
@@ -145,7 +164,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         } else if (holder instanceof RecommendedViewHolder) {
 
-            final SceneHeaderModel objScene = mBestPlace.get(position - 1);
+            final int finalPosition = position - 1;
+            final SceneHeaderModel objScene = mBestPlace.get(finalPosition);
             if (null!=objScene.getPlaceInfo() && null!=objScene.getPlaceInfo().getCover()){
                 ((RecommendedViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getPlaceInfo().getCover()));
             }
@@ -177,6 +197,13 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             ((RecommendedViewHolder) holder).ivFavorite.setImageResource(objScene.getPlaceInfo().isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_faxian_shoucang);
 
+            ((RecommendedViewHolder) holder).ivFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View view) {
+                    if (null!=mListener){
+                        mListener.onFavoriteClick(objScene.getPlaceInfo().getPid(),objScene.getPlaceInfo().isIsf(),finalPosition,true);
+                    }
+                }
+            });
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -205,7 +232,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         } else if (holder instanceof PlaceViewHolder) {
 
-            final DetailModel objScene = mData.get(position - 2 - getRecommendedListSize());
+            final int finalPosition = position - 2 - getRecommendedListSize();
+            final DetailModel objScene = mData.get(finalPosition);
             ((PlaceViewHolder) holder).sdvCover.setImageURI(Uri.parse(objScene.getCover()));
             ((PlaceViewHolder) holder).tvTitle.setText(objScene.getName());
             ((PlaceViewHolder) holder).tvHeader.setVisibility(View.GONE);
@@ -232,7 +260,14 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((PlaceViewHolder) holder).tvPrice.setText("¥- 元｜");
             }
 
-            ((RecommendedViewHolder) holder).ivFavorite.setImageResource(objScene.isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_faxian_shoucang);
+            ((PlaceViewHolder) holder).ivFavorite.setImageResource(objScene.isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_faxian_shoucang);
+            ((PlaceViewHolder) holder).ivFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View view) {
+                    if (null!=mListener){
+                        mListener.onFavoriteClick(objScene.getPid(),objScene.isIsf(),finalPosition,false);
+                    }
+                }
+            });
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -249,6 +284,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public interface OnSceneItemClickListener {
         void onArticleClick(int aid,String articleTitle);
+
+        void onFavoriteClick(int pid,boolean status,int index,boolean recommend);
 
         void onPlaceClick(int pid,String placeName);
     }
@@ -298,6 +335,10 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvDescription;
         @Bind(R.id.llRoot)
         LinearLayout llRoot;
+        @Bind(R.id.vHorizontalDivider1)
+        View vDivider1;
+        @Bind(R.id.vHorizontalDivider2)
+        View vDivider2;
 
         public InfoViewHolder(View itemView) {
             super(itemView);

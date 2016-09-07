@@ -123,7 +123,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     }
 
     private void resetFavorite(){
-        ivShouCang.setImageResource(dModel.isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_shoucang);
+        ivShouCang.setImageResource(dModel.isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_shoucang_large);
     }
 
     private void getHangoutUsers() {

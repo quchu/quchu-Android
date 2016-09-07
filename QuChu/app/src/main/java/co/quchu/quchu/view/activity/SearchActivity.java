@@ -574,7 +574,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 }
               });
             } else {
-              Toast.makeText(getApplicationContext(), "没有搜索到内容!", Toast.LENGTH_SHORT).show();
+              Toast.makeText(getApplicationContext(), "没有该物种!", Toast.LENGTH_SHORT).show();
             }
             mIsLoading = false;
             DialogUtil.dismissProgess();
@@ -583,7 +583,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
           @Override public void errorNull() {
             //数据为空
             DialogUtil.dismissProgess();
-            Toast.makeText(getApplicationContext(), "没有搜索到内容!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "没有该物种!", Toast.LENGTH_SHORT).show();
             mIsLoading = false;
             resultAdapter.notifyDataSetChanged();
           }
