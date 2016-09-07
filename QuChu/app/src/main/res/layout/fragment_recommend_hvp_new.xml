@@ -57,6 +57,12 @@
     </LinearLayout>
 
 
+    <View
+        android:id="@+id/vDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/llDisplayMode"
+        android:background="#dbdbdb" />
 
     <LinearLayout
         android:id="@+id/llPageIndicator"
@@ -104,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/llPageIndicator"
-        android:layout_below="@id/llDisplayMode"
+        android:layout_below="@id/vDivider"
         android:layout_marginTop="@dimen/double_margin"
         android:clickable="true"
         android:clipToPadding="false"

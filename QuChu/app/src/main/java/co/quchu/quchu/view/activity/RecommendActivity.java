@@ -362,7 +362,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
       transaction.hide(articleFragment).hide(searchFragment).hide(meFragment)
           .show(recommendFragment).commitAllowingStateLoss();
 
-      vDivider.setVisibility(View.VISIBLE);
+      vDivider.setVisibility(View.GONE);
 
       vLeft.setVisibility(View.VISIBLE);
       ivLeft.setVisibility(View.GONE);
