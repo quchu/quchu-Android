@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="@dimen/base_margin"
-                    android:src="@mipmap/ic_shoucang" />
+                    android:src="@mipmap/ic_shoucang_large" />
 
                 <ImageView
                     android:id="@+id/ivPingJia"
