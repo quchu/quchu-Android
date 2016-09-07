@@ -75,15 +75,6 @@ public class NewMeFragment extends BaseFragment {
 
     getUserCenterInfo();
 
-    boolean isChat = getActivity().getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT, false);
-    boolean isChatList = getActivity().getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT_LIST, false);
-
-    if (isChat) {
-      startChat();
-    } else if (isChatList) {
-      startChatList();
-    }
-
     return view;
   }
 
@@ -154,16 +145,6 @@ public class NewMeFragment extends BaseFragment {
     } else {
       unReadMassage.setVisibility(View.GONE);
     }
-  }
-
-  public void startChat() {
-    if (RongIM.getInstance() != null) {
-      RongIM.getInstance().startPrivateChat(getActivity(), SPUtils.getRongYunTargetId(), SPUtils.getRongYunTitle());
-    }
-  }
-
-  public void startChatList() {
-    startActivity(MessageActivity.class);
   }
 
   @Override

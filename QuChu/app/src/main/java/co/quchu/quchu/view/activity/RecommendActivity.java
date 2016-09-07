@@ -50,6 +50,7 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.ArticleFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
+import io.rong.imkit.RongIM;
 
 /**
  * RecommendActivity
@@ -143,16 +144,16 @@ public class RecommendActivity extends BaseBehaviorActivity {
       viewpagerSelected(3);
     }
 
+    //连接融云服务
+    IMPresenter.getToken(getApplicationContext());
+
     //im推送跳转
     boolean isChat = getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT, false);
     boolean isChatList = getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT_LIST, false);
-    if (isChat || isChatList) {
-      rbBottomTab.check(R.id.rbMine);
-      if (!meFragment.isAdded()) {
-        getSupportFragmentManager().beginTransaction().add(R.id.container, meFragment, "page_3")
-            .commitAllowingStateLoss();
-      }
-      viewpagerSelected(3);
+    if (isChat) {
+      startChat();
+    } else if (isChatList) {
+      startChatList();
     }
 
     rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -190,6 +191,22 @@ public class RecommendActivity extends BaseBehaviorActivity {
     if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
       accessPushMessage();
     }
+  }
+
+  /**
+   * 开启聊天界面
+   */
+  public void startChat() {
+    if (RongIM.getInstance() != null) {
+      RongIM.getInstance().startPrivateChat(this, SPUtils.getRongYunTargetId(), SPUtils.getRongYunTitle());
+    }
+  }
+
+  /**
+   * 开启聊天列表
+   */
+  public void startChatList() {
+    startActivity(MessageActivity.class);
   }
 
   public void accessPushMessage() {

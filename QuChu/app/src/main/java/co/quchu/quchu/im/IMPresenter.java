@@ -41,6 +41,7 @@ public class IMPresenter {
 
   private static String TAG = "IMPresenter";
 
+  //0-趣处详情；1-用户；2-文章详情
   public static String JUMP_TYPE_QUCHU_DETAIL = "0";
   public static String JUMP_TYPE_USER = "1";
   public static String JUMP_TYPE_ARTICLE_DETAIL = "2";
