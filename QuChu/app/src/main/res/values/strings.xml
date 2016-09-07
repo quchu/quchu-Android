@@ -266,5 +266,6 @@
     <string name="user_invited_faile">用户邀请失败</string>
     <string name="scene_header_desc">场景工坊为趣处为你们量身定做的适用场景 致力解决单身狗，失恋狗的爱情 总有一款适合您.</string>
     <string name="enable_dahuo_feature">你尚未打开搭伙开关</string>
+    <string name="promote_invalid_phone_number">手机号错误</string>
 
 </resources>

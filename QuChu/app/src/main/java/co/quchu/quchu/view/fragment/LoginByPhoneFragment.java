@@ -92,6 +92,15 @@ public class LoginByPhoneFragment extends Fragment
     }
     if (StringUtils.isMobileNO(mPhoneNumber)) {
       etUsername.setText(mPhoneNumber);
+      etPassword.postDelayed(new Runnable() {
+
+        @Override public void run() {
+          etPassword.requestFocus();
+          InputMethodManager keyboard =
+              (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+          keyboard.showSoftInput(etPassword, 0);
+        }
+      }, 50);
     }
     etUsername.setOnFocusChangeListener(this);
     etPassword.setOnFocusChangeListener(this);

@@ -65,6 +65,9 @@ public class PhoneValidationFragment extends Fragment {
 
     @Bind(R.id.errorView)
     ErrorView errorView;
+    private int mSecs = 0;
+    private boolean isRunning = false;
+    private boolean registed = false;
     public static final String TAG = "PhoneValidationFragment";
     private boolean mEmptyForum = false;private long mRequestTimeStamp = -1;
     private Timer mCountingTimer;
@@ -73,10 +76,15 @@ public class PhoneValidationFragment extends Fragment {
     public static final String BUNDLE_KEY_REGISTRATION = "BUNDLE_KEY_REGISTRATION";
     public static final String BUNDLE_KEY_PHONE_NUMBER = "BUNDLE_KEY_PHONE_NUMBER";
     private String mPhoneNumber = "";
+    private boolean codeSent = false;
 
     private int mContainerId = R.id.flContent;
 
     public void updateButtonStatus(){
+        if (registed && null!=tvLoginViaThisNumber){
+            tvLoginViaThisNumber.setVisibility(View.GONE);
+        }
+
         if (null==etUsername){
             return;
         }
@@ -108,7 +116,7 @@ public class PhoneValidationFragment extends Fragment {
             tvNext.setText(R.string.promote_empty_username);
             tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }else if (!StringUtils.isMobileNO(userName)){
-            tvNext.setText(R.string.promote_invalid_username);
+            tvNext.setText(R.string.promote_invalid_phone_number);
             tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }else if( !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())){
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
@@ -177,15 +185,17 @@ public class PhoneValidationFragment extends Fragment {
         tvSendValidCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=etUsername.getText() && StringUtils.isMobileNO(etUsername.getText().toString())){
-                    getValidCode();
+                if (verifyForm()){
+                    if (null!=etUsername.getText() && StringUtils.isMobileNO(etUsername.getText().toString())){
+                        getValidCode();
+                    }
                 }
             }
         });
         tvNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(verifyForm()){
+                if(codeSent && verifyForm()){
                     if (mVerifyed){
                         verifySms();
                     }else{
@@ -302,7 +312,6 @@ public class PhoneValidationFragment extends Fragment {
             }
         },350);
     }
-    private boolean isRunning = false;
     private void getValidCode(){
 
 
@@ -347,7 +356,10 @@ public class PhoneValidationFragment extends Fragment {
                 public void notUnique(String msg) {
                     isRunning = false;
                     tvNext.setText(R.string.promote_duplicate_username);
+                    registed = true;
                     tvLoginViaThisNumber.setVisibility(View.VISIBLE);
+                    tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+
                 }
             });
         }else{
@@ -411,6 +423,8 @@ public class PhoneValidationFragment extends Fragment {
     };
 
     private void scheduleCountDownTask() {
+        codeSent = true;
+        tvSendValidCode.setBackgroundResource(R.color.colorBorder);
         mSecs = 60;
         mCountingTimer = new Timer();
         mCountingTimer.schedule(new TimerTask() {
@@ -418,6 +432,7 @@ public class PhoneValidationFragment extends Fragment {
             public void run() {
                 if (mSecs<=0){
                     mCountingTimer.cancel();
+                    tvSendValidCode.setBackgroundResource(R.color.colorAccent);
                 }else{
                     mSecs-=1;
                 }
@@ -426,7 +441,6 @@ public class PhoneValidationFragment extends Fragment {
         },10,1000);
     }
 
-    private int mSecs = 0;
 
 
     @Override

@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,6 +66,15 @@ public class RestorePasswordFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(R.string.forget_pwd_step_2);
+        etPassword.postDelayed(new Runnable() {
+
+            @Override public void run() {
+                etPassword.requestFocus();
+                InputMethodManager keyboard =
+                    (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(etPassword, 0);
+            }
+        }, 50);
 
     }
     @Nullable
