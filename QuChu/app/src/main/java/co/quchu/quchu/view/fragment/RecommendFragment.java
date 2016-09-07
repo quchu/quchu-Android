@@ -498,10 +498,9 @@ public class RecommendFragment extends BaseFragment
         }
       }
       TvPageIndicatorSize.setText(String.valueOf(mFavoriteSceneList.size()));
+      llPageIndicator.setVisibility(View.VISIBLE);
     } else {
-      tvPageIndicatorCurrent.setText("");
-      tvPageIndicatorLabel.setText("");
-      TvPageIndicatorSize.setText("");
+      llPageIndicator.setVisibility(View.INVISIBLE);
     }
   }
 

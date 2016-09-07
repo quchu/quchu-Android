@@ -441,28 +441,31 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             new GridLayoutManager(mAnchorActivity, 8));
         ((LabelViewHolder) holder).rvUsers.setAdapter(new HangoutUserAdapter(mHangoutUsers));
         ((LabelViewHolder) holder).tvUserBeenInvit.setText("接受邀请的人有" + mData.getJoinPartnerCount());
-        ((LabelViewHolder) holder).ivInvite.setOnClickListener(new View.OnClickListener() {
-          @Override public void onClick(View view) {
 
-            if (AppContext.user.isIsVisitors()){
-              ((BaseActivity)mAnchorActivity).showLoginDialog();
-            }else{
-              final DialogMatchingUsers d = new DialogMatchingUsers();
-              d.setOnDialogMatchListener(new DialogMatchingUsers.OnDialogMatchListener() {
-                @Override public void onMatchfinish() {
-                  d.dismiss();
-
-                  InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid(),mData.getName());
-
-                }
-              });
-              d.show(mAnchorActivity.getFragmentManager(),"wth");
-            }
-
-
-          }
-        });
       }
+
+      ((LabelViewHolder) holder).ivInvite.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View view) {
+          if (AppContext.user.isIsVisitors()){
+            ((BaseActivity)mAnchorActivity).showLoginDialog();
+          }else{
+            final DialogMatchingUsers d = new DialogMatchingUsers();
+            d.setOnDialogMatchListener(new DialogMatchingUsers.OnDialogMatchListener() {
+              @Override public void onMatchfinish() {
+                d.dismiss();
+                InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid(),mData.getName());
+              }
+            });
+            d.show(mAnchorActivity.getFragmentManager(),"wth");
+          }
+        }
+      });
+      ((LabelViewHolder) holder).rvUsers.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View view) {
+          ((LabelViewHolder) holder).ivInvite.performClick();
+        }
+      });
+
       List<String> tags = new ArrayList<>();
       List<Boolean> highLights = new ArrayList<>();
       int blockIndex = 0;
@@ -620,7 +623,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (collapsed) {
           ((CommentViewHolder) holder).tvCollapse.setText("展开");
-          ((CommentViewHolder) holder).tvUserComment.setMaxLines(3);
+          ((CommentViewHolder) holder).tvUserComment.setMaxLines(4);
         } else {
           ((CommentViewHolder) holder).tvCollapse.setText("收起");
           ((CommentViewHolder) holder).tvUserComment.setMaxLines(Integer.MAX_VALUE);
@@ -628,7 +631,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         final int finalCommentIndex = commentIndex;
         ((CommentViewHolder) holder).tvUserComment.post(new Runnable() {
           @Override public void run() {
-            if (((CommentViewHolder) holder).tvUserComment.getLineCount() > 3) {
+            if (((CommentViewHolder) holder).tvUserComment.getLineCount() > 4) {
               ((CommentViewHolder) holder).tvCollapse.setVisibility(View.VISIBLE);
             } else {
               ((CommentViewHolder) holder).tvCollapse.setVisibility(View.GONE);

@@ -121,6 +121,12 @@ public class AddFootprintActivity extends BaseBehaviorActivity
       }
 
       @Override public void afterTextChanged(Editable s) {
+
+        if (140-s.length()>0){
+          textLength.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
+        }else{
+          textLength.setTextColor(getResources().getColor(R.color.standard_color_red));
+        }
         textLength.setText("剩余" + (140 - s.length()) + "字");
       }
     });
@@ -174,6 +180,10 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     tvSubmit.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         if (dataChange) {
+
+          if (etContent.length()>140){
+            Toast.makeText(AddFootprintActivity.this,R.string.promote_comment_over_length,Toast.LENGTH_SHORT).show();
+          }
           List<String> im = new ArrayList<>();
           for (PhotoInfo item : photoInfos) {
             if (item.getPhotoPath().contains("file://")) {

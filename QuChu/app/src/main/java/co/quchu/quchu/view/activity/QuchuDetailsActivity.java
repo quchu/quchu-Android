@@ -104,6 +104,9 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
             dModel = (DetailModel) savedInstanceState.getSerializable(BUNDLE_KEY_DATA_MODEL);
         }
 
+        detail_bottom_group_ll.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+
         initData();
         mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
 
@@ -113,11 +116,8 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
         startViewTime = System.currentTimeMillis();
 
         getVisitors();
-
         getVisitorsAnlysis();
-
         getRatingInfo();
-
         getHangoutUsers();
 
     }
@@ -251,6 +251,9 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
         if(null==mQuchuDetailAdapter){
             return;
         }
+
+        detail_bottom_group_ll.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
 //        if (null != dModel.getImglist()&&dModel.getImglist().size()>0) {
 //            List<ImageModel> imageSet = new ArrayList<>();
 //            for (int i = 0; i < dModel.getImglist().size(); i++) {
@@ -412,6 +415,10 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     @OnClick({R.id.ivShouCang, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia})
     public void detailClick(View v) {
+        if (!NetUtil.isNetworkConnected(this)) {
+            Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
+        }
+
         if (KeyboardUtils.isFastDoubleClick())
             return;
         if (dModel != null) {

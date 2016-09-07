@@ -80,7 +80,6 @@
             android:digits="@string/passFilter"
             android:gravity="center_vertical"
             android:hint="@string/hint_input_password"
-            android:maxLength="12"
             android:singleLine="true"
             android:textCursorDrawable="@drawable/shape_edit_text_cursor" />
 
