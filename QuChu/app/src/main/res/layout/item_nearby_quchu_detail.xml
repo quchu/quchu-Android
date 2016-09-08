@@ -23,7 +23,7 @@
             fresco:overlayImage="@color/translucent_dark"
             fresco:placeholderImage="@mipmap/ic_image_empty"
             fresco:roundedCornerRadius="@dimen/rounded_radius"
-            fresco:viewAspectRatio="3.3" />
+            fresco:viewAspectRatio="2.9" />
 
         <TextView
             android:id="@+id/desc"
@@ -39,15 +39,16 @@
 
         <co.quchu.quchu.widget.TagCloudView
             android:id="@+id/tag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_below="@id/desc"
             android:layout_marginLeft="@dimen/base_margin"
+            card_view:tcvTextSize="4dp"
+            card_view:tcvBorder = "8dp"
             android:layout_marginTop="@dimen/half_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             card_view:tcvCanTagClick="false"
-            card_view:tcvItemBorderHorizontal="10dp"
-            card_view:tcvRightResId="@null"
             card_view:tcvSingleLine="true"
+            card_view:tcvItemBorderHorizontal="5dp"
             card_view:tcvBackground="@drawable/shape_lineframe_white_cap"
             card_view:tcvTextColor="@color/standard_color_white" />
 
@@ -68,6 +69,7 @@
             android:textColor="@color/standard_color_white"
             android:visibility="invisible"
             tools:text="厦门观音山.dfd"
+            android:textSize="@dimen/standard_text_size_h3"
             tools:visibility="visible" />
 
 

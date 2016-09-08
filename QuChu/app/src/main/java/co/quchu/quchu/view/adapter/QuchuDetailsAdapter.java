@@ -169,7 +169,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         + nearbySize)) {
       return LAYOUT_TYPE_NEARBY;
     } else {
-      return LAYOUT_TYPE_LOAD_MORE;
+      return LAYOUT_TYPE_BLANK;
     }
   }
 
@@ -666,7 +666,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         List<TagsModel> tags = mData.getNearPlace().get(imgIndex - 1).getTags();
         if (null != tags && tags.size() > 0) {
           for (int i = 0; i < Math.min(tags.size(), 3); i++) {
-            strTags.add(tags.get(i).getZh());
+            strTags.add(" "+tags.get(i).getZh()+" ");
           }
         }
 

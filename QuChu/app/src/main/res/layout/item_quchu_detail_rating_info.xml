@@ -71,7 +71,7 @@
 
         <co.quchu.quchu.widget.TagCloudView
             android:id="@+id/tcvTags"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/half_margin"
             android:layout_marginBottom="20dp"
             card_view:tcvBackground="@drawable/shape_lineframe_black_thin_rect"
             card_view:tcvTextSize="4dp"
