@@ -118,7 +118,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(mLayoutManager);
         getData(articleId,true);
-        if (!NetUtil.isNetworkConnected(getApplicationContext()) && mArticleDetailModel==null){
+        if (!NetUtil.isNetworkConnected(getApplicationContext()) || mArticleDetailModel==null){
             errorView.showViewDefault(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

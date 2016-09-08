@@ -8,6 +8,7 @@ import android.widget.Toast;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.adapter.CommonItemClickListener;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
@@ -32,7 +33,7 @@ import co.quchu.quchu.net.NetService;
  * Date: 2015-12-13
  */
 public class InterestingDetailPresenter {
-    public static void getInterestingData(final Context context, int pId, final getDetailDataListener listener) {
+    public static void getInterestingData(final Context context, int pId, final CommonListener<DetailModel> listener) {
 
         NetService.get(context, String.format(NetApi.getDetail, pId), new IRequestListener() {
                     @Override
@@ -41,20 +42,18 @@ public class InterestingDetailPresenter {
                             Gson gson = new Gson();
                             DetailModel detailModel = gson.fromJson(response.toString(), DetailModel.class);
                             if (detailModel != null)
-                                listener.getDetailData(detailModel);
+                                listener.successListener(detailModel);
                             else {
-                                DialogUtil.dismissProgess();
-                                Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
+                                listener.errorListener(null,null,null);
                             }
                         } else {
-                            DialogUtil.dismissProgess();
-                            Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
+                            listener.errorListener(null,null,null);
                         }
                     }
 
                     @Override
                     public boolean onError(String error) {
-                        DialogUtil.dismissProgess();
+                        listener.errorListener(null,null,null);
                         return false;
                     }
                 }

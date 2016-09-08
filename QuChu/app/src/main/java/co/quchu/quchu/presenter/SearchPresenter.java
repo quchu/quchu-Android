@@ -110,17 +110,17 @@ public class SearchPresenter {
     }
 
 
-    public static void getCategoryTag(final SearchFragment context) {
+    public static void getCategoryTag(final SearchFragment context,final CommonListener<ArrayList<SearchCategoryBean>> listener) {
         GsonRequest<ArrayList<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getCagegoryTag, new TypeToken<ArrayList<SearchCategoryBean>>() {
         }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(context.getActivity(), (R.string.network_error), Toast.LENGTH_SHORT).show();
+                listener.errorListener(null,null,null);
             }
 
             @Override
             public void onResponse(ArrayList<SearchCategoryBean> response, boolean result, String errorCode, @Nullable String msg) {
-                context.initCategoryList(response);
+                listener.successListener(response);
 
             }
         });

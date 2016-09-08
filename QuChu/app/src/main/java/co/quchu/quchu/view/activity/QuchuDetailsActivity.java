@@ -32,12 +32,12 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
+import co.quchu.quchu.widget.ErrorView;
 import com.android.volley.VolleyError;
 import java.io.Serializable;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 
 /**
  * InterestingDetailsActivity
@@ -47,578 +47,576 @@ import org.greenrobot.eventbus.Subscribe;
  */
 public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
+  @Override protected String getPageNameCN() {
+    return getString(R.string.pname_quchu_details);
+  }
 
-    @Override
-    protected String getPageNameCN() {
-        return getString(R.string.pname_quchu_details);
+  @Bind(R.id.detail_recyclerview) RecyclerView mRecyclerView;
+  @Bind(R.id.ivShouCang) ImageView ivShouCang;
+  @Bind(R.id.detail_bottom_group_ll) View detail_bottom_group_ll;
+
+  @Bind(R.id.errorView) ErrorView errorView;
+
+  public static final String REQUEST_KEY_PID = "pid";
+  public static final String REQUEST_KEY_FROM = "from";
+  private long startViewTime = 0L;
+  private int pId = 0;
+  private boolean mLoadingMore = false;
+  public DetailModel dModel = new DetailModel();
+  private QuchuDetailsAdapter mQuchuDetailAdapter;
+  private VisitedInfoModel mVisitedInfoModel;
+  private List<HangoutUserModel> mAvailableUsers;
+  private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+    @Override public void onClick(View v) {
+      detailClick(v);
+    }
+  };
+  boolean mIsRatingRunning = false;
+  boolean mIsLoadMoreRunning = false;
+
+  public static final String FROM_TYPE_HOME = "detail_home_t";//从智能推荐进来的
+  public static final String FROM_TYPE_MAP = "map";//从智能推荐进来的
+  public static final String FROM_TYPE_TAG = "detail_tag_t";//从其他类别进来的
+  public static final String FROM_TYPE_SUBJECT = "detail_subject_t";//从发现进来的
+  public static final String FROM_TYPE_RECOM = "detail_recommendation_t";//从详情页推荐进来的
+  public static final String FROM_TYPE_PROFILE = "detail_profile_t";//从用户收藏进来的
+  public static final String BUNDLE_KEY_DATA_MODEL = "BUNDLE_KEY_DATA_MODEL";
+  private String from;
+
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    //        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+    //            overridePendingTransition(-1,-1);
+    //        }
+
+    setContentView(R.layout.activity_quchu_details);
+    ButterKnife.bind(this);
+    from = getIntent().getStringExtra(REQUEST_KEY_FROM);
+    getEnhancedToolbar().getTitleTv().setText("");
+
+    if (null != savedInstanceState) {
+      dModel = (DetailModel) savedInstanceState.getSerializable(BUNDLE_KEY_DATA_MODEL);
     }
 
-    @Bind(R.id.detail_recyclerview)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.ivShouCang) ImageView ivShouCang;
-    @Bind(R.id.detail_bottom_group_ll)
-    View detail_bottom_group_ll;
+    detail_bottom_group_ll.setVisibility(View.INVISIBLE);
+    mRecyclerView.setVisibility(View.INVISIBLE);
 
-    public static final String REQUEST_KEY_PID = "pid";
-    public static final String REQUEST_KEY_FROM = "from";
-    private long startViewTime = 0L;
-    private int pId = 0;
-    private boolean mLoadingMore = false;
-    public DetailModel dModel = new DetailModel();
-    private QuchuDetailsAdapter mQuchuDetailAdapter;
-    private VisitedInfoModel mVisitedInfoModel;
-    private List<HangoutUserModel> mAvailableUsers;
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            detailClick(v);
-        }
-    };
-    boolean mIsRatingRunning = false;
-    boolean mIsLoadMoreRunning = false;
+    initData();
+    mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
 
-    public static final String FROM_TYPE_HOME = "detail_home_t";//从智能推荐进来的
-    public static final String FROM_TYPE_MAP = "map";//从智能推荐进来的
-    public static final String FROM_TYPE_TAG = "detail_tag_t";//从其他类别进来的
-    public static final String FROM_TYPE_SUBJECT = "detail_subject_t";//从发现进来的
-    public static final String FROM_TYPE_RECOM = "detail_recommendation_t";//从详情页推荐进来的
-    public static final String FROM_TYPE_PROFILE = "detail_profile_t";//从用户收藏进来的
-    public static final String BUNDLE_KEY_DATA_MODEL = "BUNDLE_KEY_DATA_MODEL";
-    private String from;
+    mRecyclerView.setLayoutManager(
+        new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+    mRecyclerView.setAdapter(mQuchuDetailAdapter);
 
+    startViewTime = System.currentTimeMillis();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-//            overridePendingTransition(-1,-1);
-//        }
+    getVisitors();
+    getVisitorsAnlysis();
+    getRatingInfo();
+    getHangoutUsers();
+  }
 
-        setContentView(R.layout.activity_quchu_details);
-        ButterKnife.bind(this);
-        from = getIntent().getStringExtra(REQUEST_KEY_FROM);
-        getEnhancedToolbar().getTitleTv().setText("");
+  private void resetFavorite() {
+    ivShouCang.setImageResource(
+        dModel.isIsf() ? R.mipmap.ic_shoucang_yellow : R.mipmap.ic_shoucang_large);
+  }
 
+  private void getHangoutUsers() {
+    HangoutPresenter.getHangoutUsers(getApplicationContext(),
+        new CommonListener<List<HangoutUserModel>>() {
+          @Override public void successListener(List<HangoutUserModel> response) {
+            mAvailableUsers = response;
+            mQuchuDetailAdapter.updateHangoutUsers(mAvailableUsers);
+          }
 
-        if (null != savedInstanceState) {
-            dModel = (DetailModel) savedInstanceState.getSerializable(BUNDLE_KEY_DATA_MODEL);
-        }
-
-        detail_bottom_group_ll.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-
-        initData();
-        mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(mQuchuDetailAdapter);
-
-        startViewTime = System.currentTimeMillis();
-
-        getVisitors();
-        getVisitorsAnlysis();
-        getRatingInfo();
-        getHangoutUsers();
-
-    }
-
-    private void resetFavorite(){
-        ivShouCang.setImageResource(dModel.isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_shoucang_large);
-    }
-
-    private void getHangoutUsers() {
-        HangoutPresenter.getHangoutUsers(getApplicationContext(), new CommonListener<List<HangoutUserModel>>() {
-            @Override public void successListener(List<HangoutUserModel> response) {
-                mAvailableUsers = response;
-                mQuchuDetailAdapter.updateHangoutUsers(mAvailableUsers);
-            }
-
-            @Override public void errorListener(VolleyError error, String exception, String msg) {}
+          @Override public void errorListener(VolleyError error, String exception, String msg) {
+          }
         });
-    }
+  }
 
-    @Override
-    public ArrayMap<String, Object> getUserBehaviorArguments() {
+  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
 
-        ArrayMap<String,Object> data = new ArrayMap<>();
-        data.put("pid",getIntent().getIntExtra(REQUEST_KEY_PID, -1));
-        return data;
-    }
+    ArrayMap<String, Object> data = new ArrayMap<>();
+    data.put("pid", getIntent().getIntExtra(REQUEST_KEY_PID, -1));
+    return data;
+  }
 
-    @Override
-    public int getUserBehaviorPageId() {
-        return 104;
-    }
+  @Override public int getUserBehaviorPageId() {
+    return 104;
+  }
 
-    private void getVisitorsAnlysis() {
-        InterestingDetailPresenter.getVisitorAnalysis(getApplicationContext(), pId, new CommonListener<SimpleQuchuDetailAnalysisModel>() {
-            @Override
-            public void successListener(SimpleQuchuDetailAnalysisModel response) {
-                if (null != response) {
-                    mQuchuDetailAdapter.updateVisitorAnalysis(response);
-                }
+  private void getVisitorsAnlysis() {
+    InterestingDetailPresenter.getVisitorAnalysis(getApplicationContext(), pId,
+        new CommonListener<SimpleQuchuDetailAnalysisModel>() {
+          @Override public void successListener(SimpleQuchuDetailAnalysisModel response) {
+            if (null != response) {
+              mQuchuDetailAdapter.updateVisitorAnalysis(response);
             }
+          }
 
-            @Override
-            public void errorListener(VolleyError error, String exception, String msg) {
-            }
+          @Override public void errorListener(VolleyError error, String exception, String msg) {
+          }
         });
-    }
+  }
 
-    private void getVisitors() {
-        InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId, new CommonListener<VisitedUsersModel>() {
-            @Override
-            public void successListener(VisitedUsersModel response) {
-                if (null != response) {
-                    mQuchuDetailAdapter.updateVisitedUsers(response);
-                }
+  private void getVisitors() {
+    InterestingDetailPresenter.getVisitedUsers(getApplicationContext(), pId,
+        new CommonListener<VisitedUsersModel>() {
+          @Override public void successListener(VisitedUsersModel response) {
+            if (null != response) {
+              mQuchuDetailAdapter.updateVisitedUsers(response);
             }
+          }
 
-            @Override
-            public void errorListener(VolleyError error, String exception, String msg) {
-            }
+          @Override public void errorListener(VolleyError error, String exception, String msg) {
+          }
         });
-    }
+  }
 
-    private void getRatingInfo() {
-        InterestingDetailPresenter.getVisitedInfo(getApplicationContext(), pId, new CommonListener<VisitedInfoModel>() {
-            @Override
-            public void successListener(VisitedInfoModel response) {
-                if (null != response) {
-                    mVisitedInfoModel = response;
-                    mQuchuDetailAdapter.updateRatingInfo(mVisitedInfoModel);
-                }
+  private void getRatingInfo() {
+    InterestingDetailPresenter.getVisitedInfo(getApplicationContext(), pId,
+        new CommonListener<VisitedInfoModel>() {
+          @Override public void successListener(VisitedInfoModel response) {
+            if (null != response) {
+              mVisitedInfoModel = response;
+              mQuchuDetailAdapter.updateRatingInfo(mVisitedInfoModel);
             }
+          }
 
-            @Override
-            public void errorListener(VolleyError error, String exception, String msg) {
-            }
+          @Override public void errorListener(VolleyError error, String exception, String msg) {
+          }
         });
-    }
+  }
 
-    @Override
-    protected int activitySetup() {
-        return TRANSITION_TYPE_LEFT;
-    }
+  @Override protected int activitySetup() {
+    return TRANSITION_TYPE_LEFT;
+  }
 
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putSerializable(BUNDLE_KEY_DATA_MODEL, dModel);
+  }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(BUNDLE_KEY_DATA_MODEL, dModel);
-    }
+  private void initData() {
+    pId = getIntent().getIntExtra(REQUEST_KEY_PID, -1);
+    if (-1 == pId) {
+      Toast.makeText(this, "该趣处已不存在!", Toast.LENGTH_SHORT).show();
+    } else {
 
+      if (dModel == null || StringUtils.isEmpty(dModel.getName())) {
 
-    private void initData() {
-        pId = getIntent().getIntExtra(REQUEST_KEY_PID, -1);
-        if (-1 == pId) {
-            Toast.makeText(this, "该趣处已不存在!", Toast.LENGTH_SHORT).show();
-        } else {
-            if (dModel == null || StringUtils.isEmpty(dModel.getName())) {
-
-                DialogUtil.showProgess(this, "数据加载中...");
-                InterestingDetailPresenter.getInterestingData(this, pId, new InterestingDetailPresenter.getDetailDataListener() {
-                    @Override
-                    public void getDetailData(DetailModel model) {
-
-                        bindingDetailData(model);
-                        DialogUtil.dismissProgess();
-                    }
-                });
-            } else {
-                bindingDetailData(dModel);
+        if (!NetUtil.isNetworkConnected(getApplicationContext()) ){
+          errorView.showViewDefault(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              DialogUtil.showProgess(QuchuDetailsActivity.this, "加载中");
+              getData();
             }
-
+          });
         }
+
+      } else {
+        bindingDetailData(dModel);
+      }
     }
+  }
 
+  private void getData(){
 
-    private void bindingDetailData(DetailModel model) {
+    DialogUtil.showProgess(this, "数据加载中...");
+    InterestingDetailPresenter.getInterestingData(this, pId, new CommonListener<DetailModel>() {
+      @Override public void successListener(DetailModel response) {
+        bindingDetailData(response);
+        DialogUtil.dismissProgess();
+        errorView.hideView();
+      }
 
-        dModel.copyFrom(model);
-        getEnhancedToolbar().getTitleTv().setText(dModel.getName());
-        getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_home);
-        getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
-
-                UMEvent("back_c");
-                ZGEvent("趣处名称",dModel.getName(),"返回首页");
-                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
-            }
+      @Override public void errorListener(VolleyError error, String exception, String msg) {
+        errorView.showViewDefault(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            DialogUtil.showProgess(QuchuDetailsActivity.this, "加载中");
+            getData();
+          }
         });
-        if(null==mQuchuDetailAdapter){
-            return;
-        }
+      }
+    });
+  }
 
-        detail_bottom_group_ll.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-//        if (null != dModel.getImglist()&&dModel.getImglist().size()>0) {
-//            List<ImageModel> imageSet = new ArrayList<>();
-//            for (int i = 0; i < dModel.getImglist().size(); i++) {
-//                imageSet.add(dModel.getImglist().get(i).convert2ImageModel());
-//            }
-//            vpGallery.setAdapter(new GalleryAdapter(imageSet));
-//            siv.setIndicators(imageSet.size());
-//            siv.setVisibility(View.VISIBLE);
-//            vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//                @Override
-//                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//                }
-//
-//                @Override
-//                public void onPageSelected(int position) {
-//                    siv.setCurrentIndex(position);
-//                }
-//
-//                @Override
-//                public void onPageScrollStateChanged(int state) {
-//
-//                }
-//            });
-//        }else{
-//            siv.setVisibility(View.GONE);
-//        }
+  private void bindingDetailData(DetailModel model) {
 
-        mQuchuDetailAdapter.notifyDataSetChanged();
-        //mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
-        //    @Override
-        //    public void onLoadMore() {
-        //        if(!NetUtil.isNetworkConnected(getApplicationContext())){
-        //            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
-        //            return;
-        //
-        //        }
-        //
-        //        if (mLoadingMore) {
-        //            return;
-        //        }
-        //
-        //        mLoadingMore = true;
-        //        String str = "";
-        //
-        //        for (int i = 0; i < dModel.getNearPlace().size(); i++) {
-        //            str += dModel.getNearPlace().get(i).getPlaceId();
-        //            str += "|";
-        //        }
-        //        if (str.contains("|")) {
-        //            str = str.substring(0, str.length() - 1);
-        //        }
-        //        double la;
-        //        double lo;
-        //        try {
-        //            la = Double.valueOf(dModel.getLatitude());
-        //            lo = Double.valueOf(dModel.getLongitude());
-        //        } catch (Exception e) {
-        //            e.printStackTrace();
-        //            return;
-        //        }
-        //
-        //        loadMore(str, null, 1, dModel.getPid(), SPUtils.getCityId(), la, lo);
-        //    }
-        //});
+    dModel.copyFrom(model);
+    getEnhancedToolbar().getTitleTv().setText(dModel.getName());
+    getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_home);
+    getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
 
-        changeCollectState(dModel.isIsf());
+        UMEvent("back_c");
+        ZGEvent("趣处名称", dModel.getName(), "返回首页");
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_GOTO_HOME_PAGE));
+      }
+    });
+    if (null == mQuchuDetailAdapter) {
+      return;
     }
 
+    detail_bottom_group_ll.setVisibility(View.VISIBLE);
+    mRecyclerView.setVisibility(View.VISIBLE);
+    //        if (null != dModel.getImglist()&&dModel.getImglist().size()>0) {
+    //            List<ImageModel> imageSet = new ArrayList<>();
+    //            for (int i = 0; i < dModel.getImglist().size(); i++) {
+    //                imageSet.add(dModel.getImglist().get(i).convert2ImageModel());
+    //            }
+    //            vpGallery.setAdapter(new GalleryAdapter(imageSet));
+    //            siv.setIndicators(imageSet.size());
+    //            siv.setVisibility(View.VISIBLE);
+    //            vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    //                @Override
+    //                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    //
+    //                }
+    //
+    //                @Override
+    //                public void onPageSelected(int position) {
+    //                    siv.setCurrentIndex(position);
+    //                }
+    //
+    //                @Override
+    //                public void onPageScrollStateChanged(int state) {
+    //
+    //                }
+    //            });
+    //        }else{
+    //            siv.setVisibility(View.GONE);
+    //        }
 
-    private void changeCollectState(boolean isCollect) {
-        dModel.setIsf(isCollect);
-        resetFavorite();
-        mQuchuDetailAdapter.notifyDataSetChanged();
-    }
+    mQuchuDetailAdapter.notifyDataSetChanged();
+    //mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
+    //    @Override
+    //    public void onLoadMore() {
+    //        if(!NetUtil.isNetworkConnected(getApplicationContext())){
+    //            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
+    //            return;
+    //
+    //        }
+    //
+    //        if (mLoadingMore) {
+    //            return;
+    //        }
+    //
+    //        mLoadingMore = true;
+    //        String str = "";
+    //
+    //        for (int i = 0; i < dModel.getNearPlace().size(); i++) {
+    //            str += dModel.getNearPlace().get(i).getPlaceId();
+    //            str += "|";
+    //        }
+    //        if (str.contains("|")) {
+    //            str = str.substring(0, str.length() - 1);
+    //        }
+    //        double la;
+    //        double lo;
+    //        try {
+    //            la = Double.valueOf(dModel.getLatitude());
+    //            lo = Double.valueOf(dModel.getLongitude());
+    //        } catch (Exception e) {
+    //            e.printStackTrace();
+    //            return;
+    //        }
+    //
+    //        loadMore(str, null, 1, dModel.getPid(), SPUtils.getCityId(), la, lo);
+    //    }
+    //});
 
+    changeCollectState(dModel.isIsf());
+  }
 
-    private void loadMore(final String recommendPids, final String cateIds, final int isFirst, final int pid, final int cid, final double lat, final double lon) {
-        if (mIsLoadMoreRunning) return;
-        mIsLoadMoreRunning = true;
+  private void changeCollectState(boolean isCollect) {
+    dModel.setIsf(isCollect);
+    resetFavorite();
+    mQuchuDetailAdapter.notifyDataSetChanged();
+  }
 
-        mRecyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                NearbyPresenter.getNearbyData(getApplicationContext(), recommendPids, cateIds, isFirst, pid, cid, lat, lon, 1, new NearbyPresenter.getNearbyDataListener() {
-                    @Override
-                    public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
-                        Intent intent = new Intent(QuchuDetailsActivity.this, NearbyActivity.class);
+  private void loadMore(final String recommendPids, final String cateIds, final int isFirst,
+      final int pid, final int cid, final double lat, final double lon) {
+    if (mIsLoadMoreRunning) return;
+    mIsLoadMoreRunning = true;
 
-                        String pids = "";
-                        List<DetailModel.NearPlace> places = dModel.getNearPlace();
+    mRecyclerView.postDelayed(new Runnable() {
+      @Override public void run() {
+        NearbyPresenter.getNearbyData(getApplicationContext(), recommendPids, cateIds, isFirst, pid,
+            cid, lat, lon, 1, new NearbyPresenter.getNearbyDataListener() {
+              @Override public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
+                Intent intent = new Intent(QuchuDetailsActivity.this, NearbyActivity.class);
 
-                        if (places.size() == 1) {
-                            pids += places.get(0).getPlaceId();
-                        } else {
-                            for (int i = 0; i < places.size(); i++) {
-                                pids += places.get(i).getPlaceId();
-                                pids += "|";
-                            }
-                            pids = pids.substring(0, pids.length() - 1);
-                        }
-                        intent.putExtra(NearbyActivity.BUNDLE_KEY_DATA, (Serializable) model);
-                        intent.putExtra(NearbyActivity.BUNDLE_KEY_PID, dModel.getPid());
-                        intent.putExtra(NearbyActivity.BUNDLE_KEY_RECOMMEND_PIDS, pids);
-                        mQuchuDetailAdapter.finishLoadMore();
-                        startActivity(intent);
-                        mRecyclerView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mIsLoadMoreRunning = false;
-                                mLoadingMore = false;
-                            }
-                        }, 500);
-                    }
-                });
-            }
-        }, 1000l);
-    }
+                String pids = "";
+                List<DetailModel.NearPlace> places = dModel.getNearPlace();
 
-
-    private void ratingQuchu(final List<TagsModel> selection, final int score) {
-        String strTags = "";
-        if (selection.size() == 1) {
-            strTags += selection.get(0).getTagId();
-        }
-        for (int i = 0; i < selection.size(); i++) {
-            if (selection.get(i).isPraise()) {
-                strTags += selection.get(i).getTagId();
-                strTags += ",";
-            }
-        }
-        if (strTags.contains(",")) {
-            strTags = strTags.substring(0, strTags.length() - 1);
-        }
-        if (mIsRatingRunning) return;
-        mIsRatingRunning = true;
-        InterestingDetailPresenter.updateRatingInfo(getApplicationContext(), dModel.getPid(), score, strTags, new InterestingDetailPresenter.DetailDataListener() {
-            @Override
-            public void onSuccessCall(String str) {
-                Toast.makeText(QuchuDetailsActivity.this, "评价成功", Toast.LENGTH_SHORT).show();
-                mVisitedInfoModel.setScore(score);
-                for (int i = 0; i < selection.size(); i++) {
-                    mVisitedInfoModel.getResult().get(i).setPraise(selection.get(i).isPraise());
-                }
-                mIsRatingRunning = false;
-                dModel.setIsout(true);
-                getVisitors();
-                getRatingInfo();
-            }
-
-            @Override
-            public void onErrorCall(String str) {
-                mIsRatingRunning = false;
-            }
-        });
-
-    }
-
-
-    @OnClick({R.id.ivShouCang, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia})
-    public void detailClick(View v) {
-        if (!NetUtil.isNetworkConnected(this)) {
-            Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
-        }
-
-        if (KeyboardUtils.isFastDoubleClick())
-            return;
-        if (dModel != null) {
-            switch (v.getId()) {
-                case R.id.ivPreOrder:
-
-                    UMEvent("reserve_c");
-                    ZGEvent("趣处名称",dModel.getName(),"预定按钮");
-                    if (NetUtil.isNetworkConnected(getApplicationContext())) {
-                        if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(dModel.getNet())) {
-                            WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(), dModel.getName(),false);
-                        } else {
-                            Toast.makeText(QuchuDetailsActivity.this, R.string.pre_order_not_supported, Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
-                    }
-                    //QuchuDetailsMoreDialog quchuDetailsMoreDialog = new QuchuDetailsMoreDialog(QuchuDetailsActivity.this);
-                    //quchuDetailsMoreDialog.setOnButtonClickListener(new QuchuDetailsMoreDialog.OnButtonClickListener() {
-                    //    @Override
-                    //    public void onReturnClick() {
-                    //
-                    //    }
-                    //
-                    //    @Override
-                    //    public void onPreOrderClick() {
-                    //
-                    //    }
-                    //
-                    //    @Override
-                    //    public void onShareClick() {
-                    //        UMEvent("share_c");
-                    //        ZGEvent("文章名称",dModel.getName(),"趣处分享");
-                    //        startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
-                    //    }
-                    //});
-                    //quchuDetailsMoreDialog.show();
-                    break;
-
-                case R.id.ivShare:
-                    UMEvent("share_c");
-                    ZGEvent("文章名称",dModel.getName(),"趣处分享");
-                    startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
-
-                    break;
-                case R.id.ivPingJia:
-
-                    if (null!=mVisitedInfoModel){
-                        UMEvent("comment_c");
-                        ZGEvent("趣处名称",dModel.getName(),"进入评价");
-                        AddFootprintActivity.enterActivity(QuchuDetailsActivity.this,mVisitedInfoModel,dModel.getPid(),getPageNameCN());
-                    }
-                    //RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
-                    //tagsFilterDialog.show(getSupportFragmentManager(), "");
-                    //tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
-                    //    @Override
-                    //    public void onFinishPicking(List<TagsModel> selection, int score) {
-                    //        if (null != selection) {
-                    //            ZGEvent("趣处名称",dModel.getName(),"提交评价");
-                    //            ratingQuchu(selection, score);
-                    //        }
-                    //    }
-                    //});
-                    break;
-                case R.id.ivShouCang:
-                    //收藏
-                    UMEvent("like_c");
-                    ZGEvent("趣处名称",dModel.getName(),"收藏趣处");
-                    setFavorite();
-                    break;
-//                case R.id.ivShare:
-//                    //分享
-//                    try {
-//                        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
-//                        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
-//                    } catch (Exception ex) {
-//                        ex.printStackTrace();
-//                    }
-//                    break;
-
-                case R.id.detail_store_address_ll:
-
-                    if (!NetUtil.isNetworkConnected(getApplicationContext())){
-                        Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
-                    }else if(!dModel.isMap()){
-                        Toast.makeText(QuchuDetailsActivity.this, "此趣处暂无导航信息!", Toast.LENGTH_SHORT).show();
-                    }else {
-                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_MAP));
-
-                        UMEvent("map_c");
-                        Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
-                        mapIntent.putExtra("pid",dModel.getPid());
-                        mapIntent.putExtra("lat", dModel.getLatitude());
-                        mapIntent.putExtra("lon", dModel.getLongitude());
-                        mapIntent.putExtra("gdlon", dModel.gdLongitude);
-                        mapIntent.putExtra("gdlat", dModel.gdLatitude);
-                        mapIntent.putExtra("title", dModel.getName());
-                        mapIntent.putExtra("entity",dModel.convert2NearbyMapItem());
-                        mapIntent.putExtra("placeAddress", dModel.getAddress());
-                        startActivity(mapIntent);
-                    }
-
-                    break;
-            }
-        }
-    }
-
-    /**
-     * 收藏
-     */
-    private void setFavorite() {
-        InterestingDetailPresenter.setDetailFavorite(this, pId, dModel.isIsf(), new InterestingDetailPresenter.DetailDataListener() {
-            @Override
-            public void onSuccessCall(String str) {
-                dModel.setIsf(!dModel.isIsf());
-                changeCollectState(dModel.isIsf());
-                if (AppContext.selectedPlace != null) {
-                    AppContext.selectedPlace.setIsf(dModel.isIsf());
-                    AppContext.dCardListNeedUpdate = true;
-                }
-                if (dModel.isIsf()) {
-                    Toast.makeText(QuchuDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+                if (places.size() == 1) {
+                  pids += places.get(0).getPlaceId();
                 } else {
-                    Toast.makeText(QuchuDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
+                  for (int i = 0; i < places.size(); i++) {
+                    pids += places.get(i).getPlaceId();
+                    pids += "|";
+                  }
+                  pids = pids.substring(0, pids.length() - 1);
                 }
-            }
+                intent.putExtra(NearbyActivity.BUNDLE_KEY_DATA, (Serializable) model);
+                intent.putExtra(NearbyActivity.BUNDLE_KEY_PID, dModel.getPid());
+                intent.putExtra(NearbyActivity.BUNDLE_KEY_RECOMMEND_PIDS, pids);
+                mQuchuDetailAdapter.finishLoadMore();
+                startActivity(intent);
+                mRecyclerView.postDelayed(new Runnable() {
+                  @Override public void run() {
+                    mIsLoadMoreRunning = false;
+                    mLoadingMore = false;
+                  }
+                }, 500);
+              }
+            });
+      }
+    }, 1000l);
+  }
 
-            @Override
-            public void onErrorCall(String str) {
-
+  private void ratingQuchu(final List<TagsModel> selection, final int score) {
+    String strTags = "";
+    if (selection.size() == 1) {
+      strTags += selection.get(0).getTagId();
+    }
+    for (int i = 0; i < selection.size(); i++) {
+      if (selection.get(i).isPraise()) {
+        strTags += selection.get(i).getTagId();
+        strTags += ",";
+      }
+    }
+    if (strTags.contains(",")) {
+      strTags = strTags.substring(0, strTags.length() - 1);
+    }
+    if (mIsRatingRunning) return;
+    mIsRatingRunning = true;
+    InterestingDetailPresenter.updateRatingInfo(getApplicationContext(), dModel.getPid(), score,
+        strTags, new InterestingDetailPresenter.DetailDataListener() {
+          @Override public void onSuccessCall(String str) {
+            Toast.makeText(QuchuDetailsActivity.this, "评价成功", Toast.LENGTH_SHORT).show();
+            mVisitedInfoModel.setScore(score);
+            for (int i = 0; i < selection.size(); i++) {
+              mVisitedInfoModel.getResult().get(i).setPraise(selection.get(i).isPraise());
             }
+            mIsRatingRunning = false;
+            dModel.setIsout(true);
+            getVisitors();
+            getRatingInfo();
+          }
+
+          @Override public void onErrorCall(String str) {
+            mIsRatingRunning = false;
+          }
         });
+  }
+
+  @OnClick({ R.id.ivShouCang, R.id.ivPreOrder, R.id.ivShare, R.id.ivPingJia })
+  public void detailClick(View v) {
+    if (!NetUtil.isNetworkConnected(this)) {
+      Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    if (KeyboardUtils.isFastDoubleClick()) return;
+    if (dModel != null) {
+      switch (v.getId()) {
+        case R.id.ivPreOrder:
+
+          UMEvent("reserve_c");
+          ZGEvent("趣处名称", dModel.getName(), "预定按钮");
+          if (NetUtil.isNetworkConnected(getApplicationContext())) {
+            if (null != dModel && null != dModel.getNet() && !StringUtils.isEmpty(
+                dModel.getNet())) {
+              WebViewActivity.enterActivity(QuchuDetailsActivity.this, dModel.getNet(),
+                  dModel.getName(), false);
+            } else {
+              Toast.makeText(QuchuDetailsActivity.this, R.string.pre_order_not_supported,
+                  Toast.LENGTH_SHORT).show();
+            }
+          } else {
+            Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT)
+                .show();
+          }
+          //QuchuDetailsMoreDialog quchuDetailsMoreDialog = new QuchuDetailsMoreDialog(QuchuDetailsActivity.this);
+          //quchuDetailsMoreDialog.setOnButtonClickListener(new QuchuDetailsMoreDialog.OnButtonClickListener() {
+          //    @Override
+          //    public void onReturnClick() {
+          //
+          //    }
+          //
+          //    @Override
+          //    public void onPreOrderClick() {
+          //
+          //    }
+          //
+          //    @Override
+          //    public void onShareClick() {
+          //        UMEvent("share_c");
+          //        ZGEvent("文章名称",dModel.getName(),"趣处分享");
+          //        startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
+          //    }
+          //});
+          //quchuDetailsMoreDialog.show();
+          break;
+
+        case R.id.ivShare:
+          UMEvent("share_c");
+          ZGEvent("文章名称", dModel.getName(), "趣处分享");
+          startActivity(ShareQuchuActivity.getStartIntent(QuchuDetailsActivity.this, dModel));
+
+          break;
+        case R.id.ivPingJia:
+
+          if (null != mVisitedInfoModel) {
+            UMEvent("comment_c");
+            ZGEvent("趣处名称", dModel.getName(), "进入评价");
+            AddFootprintActivity.enterActivity(QuchuDetailsActivity.this, mVisitedInfoModel,
+                dModel.getPid(), getPageNameCN());
+          }
+          //RatingQuchuDialog tagsFilterDialog = RatingQuchuDialog.newInstance(mVisitedInfoModel.getUserCount(), mVisitedInfoModel.getScore(), mVisitedInfoModel.getResult());
+          //tagsFilterDialog.show(getSupportFragmentManager(), "");
+          //tagsFilterDialog.setPickingListener(new RatingQuchuDialog.OnFinishPickingListener() {
+          //    @Override
+          //    public void onFinishPicking(List<TagsModel> selection, int score) {
+          //        if (null != selection) {
+          //            ZGEvent("趣处名称",dModel.getName(),"提交评价");
+          //            ratingQuchu(selection, score);
+          //        }
+          //    }
+          //});
+          break;
+        case R.id.ivShouCang:
+          //收藏
+          UMEvent("like_c");
+          ZGEvent("趣处名称", dModel.getName(), "收藏趣处");
+          setFavorite();
+          break;
+        //                case R.id.ivShare:
+        //                    //分享
+        //                    try {
+        //                        ShareDialogFg shareDialogFg = ShareDialogFg.newInstance(dModel.getPid(), dModel.getName(), true);
+        //                        shareDialogFg.show(getSupportFragmentManager(), "share_dialog");
+        //                    } catch (Exception ex) {
+        //                        ex.printStackTrace();
+        //                    }
+        //                    break;
+
+        case R.id.detail_store_address_ll:
+
+          if (!NetUtil.isNetworkConnected(getApplicationContext())) {
+            Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT)
+                .show();
+          } else if (!dModel.isMap()) {
+            Toast.makeText(QuchuDetailsActivity.this, "此趣处暂无导航信息!", Toast.LENGTH_SHORT).show();
+          } else {
+            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_MAP));
+
+            UMEvent("map_c");
+            Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
+            mapIntent.putExtra("pid", dModel.getPid());
+            mapIntent.putExtra("lat", dModel.getLatitude());
+            mapIntent.putExtra("lon", dModel.getLongitude());
+            mapIntent.putExtra("gdlon", dModel.gdLongitude);
+            mapIntent.putExtra("gdlat", dModel.gdLatitude);
+            mapIntent.putExtra("title", dModel.getName());
+            mapIntent.putExtra("entity", dModel.convert2NearbyMapItem());
+            mapIntent.putExtra("placeAddress", dModel.getAddress());
+            startActivity(mapIntent);
+          }
+
+          break;
+      }
     }
+  }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+  /**
+   * 收藏
+   */
+  private void setFavorite() {
+    InterestingDetailPresenter.setDetailFavorite(this, pId, dModel.isIsf(),
+        new InterestingDetailPresenter.DetailDataListener() {
+          @Override public void onSuccessCall(String str) {
+            dModel.setIsf(!dModel.isIsf());
+            changeCollectState(dModel.isIsf());
+            if (AppContext.selectedPlace != null) {
+              AppContext.selectedPlace.setIsf(dModel.isIsf());
+              AppContext.dCardListNeedUpdate = true;
+            }
+            if (dModel.isIsf()) {
+              Toast.makeText(QuchuDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
+            } else {
+              Toast.makeText(QuchuDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
+            }
+          }
 
+          @Override public void onErrorCall(String str) {
 
+          }
+        });
+  }
 
+  @Override public void onBackPressed() {
+    super.onBackPressed();
+  }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
+  @Override protected void onDestroy() {
+    super.onDestroy();
+  }
 
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
+  @Override public void onStart() {
+    super.onStart();
+    EventBus.getDefault().register(this);
+  }
 
-    @Subscribe
-    public void onMessageEvent(QuchuEventModel event) {
+  @Override public void onStop() {
+    EventBus.getDefault().unregister(this);
+    super.onStop();
+  }
 
-        switch (event.getFlag()) {
+  @Subscribe public void onMessageEvent(QuchuEventModel event) {
 
-            case EventFlags.EVENT_FOOTPRINT_UPDATED:
-                if (null != dModel && (Integer) event.getContent()[0] == dModel.getPid()) {
-                    dModel.setMyCardId((Integer) event.getContent()[0]);
-                }
-                break;
-            case EventFlags.EVENT_QUCHU_RATING_UPDATE:
-                getRatingInfo();
-                getVisitors();
-                break;
-            case EventFlags.EVENT_CANCLE_FAVORITE_QUCHU:
-                break;
-            //case EventFlags.EVENT_POST_CARD_ADDED:
-            //    if ((Integer) event.getContent()[0] == dModel.getPid()) {
-            //        dModel.setCardCount(dModel.getCardCount() + 1);
-            //    }
-            //    break;
-            //case EventFlags.EVENT_POST_CARD_DELETED:
-            //    if (((Integer) event.getContent()[1]) == dModel.getPid() && dModel.getCardCount() > 1) {
-            //        dModel.setCardCount(dModel.getCardCount() - 1);
-            //    }
-            //    break;
-            case EventFlags.EVENT_GOTO_HOME_PAGE:
-                finish();
-                break;
+    switch (event.getFlag()) {
+
+      case EventFlags.EVENT_FOOTPRINT_UPDATED:
+        if (null != dModel && (Integer) event.getContent()[0] == dModel.getPid()) {
+          dModel.setMyCardId((Integer) event.getContent()[0]);
         }
-
+        break;
+      case EventFlags.EVENT_QUCHU_RATING_UPDATE:
+        getRatingInfo();
+        getVisitors();
+        break;
+      case EventFlags.EVENT_CANCLE_FAVORITE_QUCHU:
+        break;
+      //case EventFlags.EVENT_POST_CARD_ADDED:
+      //    if ((Integer) event.getContent()[0] == dModel.getPid()) {
+      //        dModel.setCardCount(dModel.getCardCount() + 1);
+      //    }
+      //    break;
+      //case EventFlags.EVENT_POST_CARD_DELETED:
+      //    if (((Integer) event.getContent()[1]) == dModel.getPid() && dModel.getCardCount() > 1) {
+      //        dModel.setCardCount(dModel.getCardCount() - 1);
+      //    }
+      //    break;
+      case EventFlags.EVENT_GOTO_HOME_PAGE:
+        finish();
+        break;
     }
+  }
 
-//    @Override
-//    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//        if (appbar.getTotalScrollRange()==0 || verticalOffset==0){
-//            return;
-//        }
-//        float alpha = Math.abs(Float.valueOf(verticalOffset))/appbar.getTotalScrollRange();
-//        getEnhancedToolbar().getTitleTv().setAlpha(alpha);
-//        int color = (int) (255-(alpha*255));
-//        getEnhancedToolbar().getLeftIv().setColorFilter(Color.argb(255,color,color,color), PorterDuff.Mode.MULTIPLY);
-//
-//
-//    }
+  //    @Override
+  //    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+  //        if (appbar.getTotalScrollRange()==0 || verticalOffset==0){
+  //            return;
+  //        }
+  //        float alpha = Math.abs(Float.valueOf(verticalOffset))/appbar.getTotalScrollRange();
+  //        getEnhancedToolbar().getTitleTv().setAlpha(alpha);
+  //        int color = (int) (255-(alpha*255));
+  //        getEnhancedToolbar().getLeftIv().setColorFilter(Color.argb(255,color,color,color), PorterDuff.Mode.MULTIPLY);
+  //
+  //
+  //    }
 }

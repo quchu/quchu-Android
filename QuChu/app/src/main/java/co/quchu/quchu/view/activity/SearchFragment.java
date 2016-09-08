@@ -18,13 +18,18 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
+import co.quchu.quchu.widget.ErrorView;
+import com.android.volley.VolleyError;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SearchFragment
@@ -41,8 +46,13 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
   @Bind(R.id.search_button_rl) TextView searchButtonRl;
 
   @Bind(R.id.search_result_rv) RecyclerView searchResultRv;
+  @Bind(R.id.errorView) ErrorView errorView;
+
 
   private SearchAdapter resultAdapter;
+
+  private ArrayList<SearchCategoryBean> categoryParentList = new ArrayList<>();
+
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -52,8 +62,16 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     ButterKnife.bind(this, v);
     initEdittext();
     initData();
-    SearchPresenter.getCategoryTag(this);
-
+    if (!NetUtil.isNetworkConnected(getActivity()) || categoryParentList==null){
+      errorView.showViewDefault(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          DialogUtil.showProgess(getActivity(), "加载中");
+          getData();
+        }
+      });
+    }
+    getData();
     searchInputEt.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         searchInputEt.setCursorVisible(true);
@@ -62,14 +80,37 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     return v;
   }
 
+  private void getData(){
+    SearchPresenter.getCategoryTag(this, new CommonListener<ArrayList<SearchCategoryBean>>() {
+      @Override public void successListener(ArrayList<SearchCategoryBean> response) {
+        initCategoryList(response);
+        errorView.hideView();
+      }
+
+      @Override public void errorListener(VolleyError error, String exception, String msg) {
+        errorView.showViewDefault(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            DialogUtil.showProgess(getActivity(), "加载中");
+            getData();
+          }
+        });
+      }
+    });
+  }
+
+
   @Override public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.unbind(this);
   }
 
   //获取大的分类
-  public void initCategoryList(ArrayList<SearchCategoryBean> categoryParentList) {
+  public void initCategoryList(ArrayList<SearchCategoryBean> pData) {
+
     if (resultAdapter.isCategory()) {
+      categoryParentList.clear();
+      categoryParentList.addAll(pData);
       resultAdapter.setCategoryList(categoryParentList);
     }
   }

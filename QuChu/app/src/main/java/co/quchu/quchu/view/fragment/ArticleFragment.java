@@ -100,7 +100,7 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
         recyclerView.addOnScrollListener(mListener);
 
 
-        if (!NetUtil.isNetworkConnected(getActivity()) && mAdapter == null) {
+        if (!NetUtil.isNetworkConnected(getActivity()) || articleModels == null) {
             errorView.showViewDefault(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

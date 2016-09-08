@@ -86,7 +86,7 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((BannerViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mSimpleArticleModel.getImageUrl()));
         }else if(holder instanceof ArticleViewHolder){
 
-            ((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position-1).getContent());
+            //((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position-1).getContent());
             ((ArticleViewHolder) holder).tvTitle.setText(mDataSet.get(position-1).getName());
             ((ArticleViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position-1).getCover()));
 
@@ -132,8 +132,6 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         SimpleDraweeView itemClassifyImageSdv;
         @Bind(R.id.tvTitle)
         TextView tvTitle;
-        @Bind(R.id.tvDescription)
-        TextView tvDescription;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);
