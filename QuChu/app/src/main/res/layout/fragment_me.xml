@@ -111,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/toolbar_item_size"
             android:layout_marginLeft="@dimen/quarter_margin"
-            android:drawableLeft="@mipmap/ic_xiaoxi"
+            android:drawableLeft="@mipmap/ic_xinxi"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:text="消息"

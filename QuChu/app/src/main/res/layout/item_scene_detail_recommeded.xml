@@ -47,7 +47,7 @@
 
 
       <LinearLayout
-          android:id="@+id/llHighLight"
+          android:id="@+id/llHighLigh"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_alignBottom="@id/sdvCover"
@@ -82,7 +82,7 @@
           android:layout_marginTop="@dimen/base_margin"
           android:background="@drawable/shape_round_scene_favorite_dark_background"
           android:scaleType="center"
-          android:src="@mipmap/ic_faxian_shoucang"
+          android:src="@mipmap/ic_weishoucang"
           />
     </RelativeLayout>
 

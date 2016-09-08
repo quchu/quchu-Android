@@ -203,7 +203,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 ((RecommendedViewHolder) holder).tvPrice.setText("¥- 元");
             }
-            ((RecommendedViewHolder) holder).ivFavorite.setImageResource(objScene.getPlaceInfo().isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_faxian_shoucang);
+            ((RecommendedViewHolder) holder).ivFavorite.setImageResource(objScene.getPlaceInfo().isIsf()?R.mipmap.ic_xuanzhong:R.mipmap.ic_weishoucang);
 
             ((RecommendedViewHolder) holder).ivFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View view) {
