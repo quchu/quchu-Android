@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:TagCloudView="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/quarter_margin"
     android:layout_marginTop="@dimen/quarter_margin"
-    android:elevation="0dp"
-    card_view:cardCornerRadius="0dp">
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -113,4 +111,4 @@
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</LinearLayout>

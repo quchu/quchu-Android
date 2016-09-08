@@ -174,7 +174,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/search_result_rv"
-            android:background="@color/colorBackground"
+            android:background="#efefef"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
