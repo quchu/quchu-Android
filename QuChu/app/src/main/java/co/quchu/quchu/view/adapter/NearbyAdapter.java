@@ -33,7 +33,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_nearby_quchu_no_vertical_margin, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_nearby_quchu_detail, parent, false));
     }
 
 
@@ -43,9 +43,11 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         holder.simpleDraweeView.setImageURI(Uri.parse(mData.get(position).getCover()));
         List<String> tags = new ArrayList<>();
         for (int i = 0; i < Math.min(mData.get(position).getTags().size(),3); i++) {
-            tags.add(mData.get(position).getTags().get(i).getZh());
+            tags.add(" "+mData.get(position).getTags().get(i).getZh()+" ");
         }
         holder.tag.setTags(tags);
+        holder.tvAddress.setText(mData.get(position).getAddress());
+        holder.tvAddress.setVisibility(View.VISIBLE);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +70,8 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
         TagCloudView tag;
         @Bind(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
+        @Bind(R.id.address)
+        TextView tvAddress;
 
         public ViewHolder(View itemView) {
             super(itemView);

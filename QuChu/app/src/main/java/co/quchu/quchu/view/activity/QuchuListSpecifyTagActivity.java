@@ -87,7 +87,7 @@ public class QuchuListSpecifyTagActivity extends BaseActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
+        //mRecyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.half_margin)));
         if (mDataType==-1){
             NearbyPresenter.getQuchuListViaTagId(getApplicationContext(), mTagId, SPUtils.getCityId(), String.valueOf(SPUtils.getLatitude()), String.valueOf(SPUtils.getLongitude()),
                 new NearbyPresenter.getNearbyDataListener() {

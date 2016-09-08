@@ -11,6 +11,15 @@ public class NearbyItemModel implements Serializable {
     private String cover;
     private String name;
     private List<TagsModel> tags;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public int getPlaceId() {
         return placeId;
