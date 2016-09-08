@@ -24,6 +24,7 @@
     <color name="standard_color_h1_dark">#333333</color>                            //一级字体 深色 色值 用于：Actionbar元素及自定义标题 或线框
     <color name="standard_color_h2_dark">#666666</color>                            //二级字体 深色 色值 用于：页面子标题或线框
     <color name="standard_color_h3_dark">#999999</color>                            //三级字体 深色 色值 用于：文章内容或线框
+    <color name="standard_color_h0_dark">#111111</color>
     <color name="tagTextColor">#fff</color>
     <!--页面空间之间背景-->
     <color name="bg_pager">#EFEFEF</color>
