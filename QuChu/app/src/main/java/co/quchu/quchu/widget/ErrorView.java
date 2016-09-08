@@ -65,6 +65,9 @@ public class ErrorView extends FrameLayout {
     }
 
     public void showViewDefault(OnClickListener actionListener) {
+        if (ErrorView.this==null){
+            return;
+        }
         setVisibility(VISIBLE);
         refreshLayout.setVisibility(VISIBLE);
         loadingView.setVisibility(INVISIBLE);
@@ -74,6 +77,9 @@ public class ErrorView extends FrameLayout {
     }
 
     public void hideView() {
+        if (ErrorView.this==null){
+            return;
+        }
         refreshLayout.setVisibility(GONE);
         loadingView.setVisibility(GONE);
         setVisibility(GONE);

@@ -46,7 +46,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@color/standard_color_h1_dark"
-            android:textSize="14sp"
+            android:textSize="16sp"
             tools:text="我的手_做不到"/>
 
         <LinearLayout

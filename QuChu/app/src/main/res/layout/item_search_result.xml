@@ -7,10 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/quarter_margin"
-    android:layout_marginLeft="@dimen/half_margin"
-    android:layout_marginRight="@dimen/half_margin"
     android:layout_marginTop="@dimen/quarter_margin"
-    card_view:cardCornerRadius="@dimen/half_margin">
+    card_view:cardCornerRadius="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,36 +37,23 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@color/standard_color_h2_dark"
-            android:textSize="@dimen/word_subhead_size"
+            android:textSize="20sp"
             tools:text="标题" />
 
 
 
 
-        <co.quchu.quchu.widget.TagCloudView
-            android:id="@+id/tag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/search_result_name"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            TagCloudView:tcvBackground="@drawable/tag_background_dark"
-            TagCloudView:tcvCanTagClick="false"
-            TagCloudView:tcvItemBorderHorizontal="10dp"
-            TagCloudView:tcvRightResId="@null"
-            TagCloudView:tcvSingleLine="true"
-            TagCloudView:tcvTextColor="@color/standard_color_h3_dark" />
 
         <TextView
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/tag"
             android:layout_marginRight="@dimen/half_margin"
             android:layout_marginTop="@dimen/half_margin"
             android:ellipsize="marquee"
             android:focusable="true"
+            android:layout_below="@id/search_result_name"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
@@ -81,7 +66,7 @@
             android:ellipsize="marquee"
             android:focusable="true"
             android:layout_marginTop="@dimen/half_margin"
-            android:layout_below="@id/tag"
+            android:layout_below="@id/search_result_name"
             android:layout_toLeftOf="@+id/distance"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
@@ -93,7 +78,7 @@
             android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tag"
+            android:layout_below="@id/search_result_name"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginTop="@dimen/half_margin"
             android:layout_toLeftOf="@id/searchPrice"
@@ -106,6 +91,31 @@
             android:textColor="@color/standard_color_h3_dark"
             tools:text="厦门观音山.dfd" />
 
+        <View
+            android:id="@+id/vDivider"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/half_margin"
+            android:layout_height="1px"
+            android:layout_below="@id/address"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginRight="@dimen/base_margin"
+            android:background="@color/colorBorder"
+            />
+
+        <co.quchu.quchu.widget.TagCloudView
+            android:id="@+id/tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vDivider"
+            android:layout_marginBottom="@dimen/base_margin"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginTop="@dimen/half_margin"
+            TagCloudView:tcvBackground="@drawable/shape_lineframe_black_thin"
+            TagCloudView:tcvCanTagClick="false"
+            TagCloudView:tcvItemBorderHorizontal="10dp"
+            TagCloudView:tcvRightResId="@null"
+            TagCloudView:tcvSingleLine="true"
+            TagCloudView:tcvTextColor="@color/standard_color_h3_dark" />
 
     </RelativeLayout>
 
