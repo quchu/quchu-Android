@@ -57,10 +57,27 @@
                 />
 
 
+            <TextView
+                android:id="@+id/tvDescription"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTitle"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/half_margin"
+                android:lineSpacingExtra="4sp"
+                android:textColor="@color/standard_color_white"
+                tools:text="#desc"
+                style="@style/TextView.H2"
+                android:shadowColor="@color/standard_color_h1_dark"
+                android:shadowRadius="10"
+                />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvTitle"
+                android:layout_below="@+id/tvDescription"
                 android:layout_marginTop="@dimen/half_margin"
                 android:gravity="center"
                 android:orientation="horizontal"

@@ -189,6 +189,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
             }
+            ((RecommendedViewHolder) holder).llHighLight.setVisibility(View.VISIBLE);
             ((RecommendedViewHolder) holder).tvCircleName.setText(null != objScene.getPlaceInfo().getAreaCircleName() ? objScene.getPlaceInfo().getAreaCircleName() : "");
 
             if (TextUtils.isEmpty(objScene.getPlaceInfo().getLatitude())||TextUtils.isEmpty(objScene.getPlaceInfo().getLongitude())){
@@ -247,6 +248,8 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((PlaceViewHolder) holder).recommendTag1.setVisibility(View.GONE);
             ((PlaceViewHolder) holder).recommendTag2.setVisibility(View.GONE);
             ((PlaceViewHolder) holder).recommendTag3.setVisibility(View.GONE);
+            ((PlaceViewHolder) holder).llHighLight.setVisibility(View.GONE);
+
             for (int i = 0; i < objScene.getTags().size(); i++) {
                 if (null != ((PlaceViewHolder) holder).tags.getChildAt(i)) {
                     ((PlaceViewHolder) holder).tags.getChildAt(i).setVisibility(View.VISIBLE);
@@ -382,6 +385,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Bind(R.id.tvPrice)
         TextView tvPrice;
         @Bind(R.id.ivFavorite) ImageView ivFavorite;
+        @Bind(R.id.llHighLight) LinearLayout llHighLight;
 
         public RecommendedViewHolder(View itemView) {
             super(itemView);
@@ -429,6 +433,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Bind(R.id.tvPrice)
         TextView tvPrice;
         @Bind(R.id.ivFavorite) ImageView ivFavorite;
+        @Bind(R.id.llHighLight) LinearLayout llHighLight;
 
         public PlaceViewHolder(View itemView) {
             super(itemView);

@@ -47,11 +47,11 @@
 
 
       <LinearLayout
+          android:id="@+id/llHighLight"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_alignBottom="@id/sdvCover"
           android:layout_marginTop="@dimen/double_margin"
-
           android:background="@color/translucent_dark"
           android:gravity="center"
           android:paddingBottom="@dimen/quarter_margin"

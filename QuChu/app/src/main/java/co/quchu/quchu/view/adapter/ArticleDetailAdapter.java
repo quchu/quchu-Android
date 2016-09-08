@@ -89,7 +89,8 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             //((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position-1).getContent());
             ((ArticleViewHolder) holder).tvTitle.setText(mDataSet.get(position-1).getName());
             ((ArticleViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position-1).getCover()));
-
+            ((ArticleViewHolder) holder).tvDescription.setVisibility(View.VISIBLE);
+            ((ArticleViewHolder) holder).tvDescription.setText("# 小编推荐");
 
         }
         final int finalPosition = position;
@@ -132,6 +133,8 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
         SimpleDraweeView itemClassifyImageSdv;
         @Bind(R.id.tvTitle)
         TextView tvTitle;
+        @Bind(R.id.tvDescription)
+        TextView tvDescription;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);

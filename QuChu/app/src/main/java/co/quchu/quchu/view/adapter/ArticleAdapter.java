@@ -93,6 +93,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((ArticleHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position).getImageUrl() + ""));
             ((ArticleHolder) holder).tvTitle.setText(mDataSet.get(position).getArticleName());
             ((ArticleHolder) holder).tvDescription.setText(mDataSet.get(position).getArticleComtent());
+            ((ArticleHolder) holder).tvDescription.setVisibility(View.VISIBLE);
+            ((ArticleHolder) holder).tvDescription.setText("# 小编推荐");
             ((ArticleHolder) holder).tvReviews.setText(mDataSet.get(position).getReadCount());
             ((ArticleHolder) holder).tvFavorite.setText(mDataSet.get(position).getFavoriteCount());
             ((ArticleHolder) holder).sdvAvatar.setImageURI(Uri.parse(mDataSet.get(position).getUserUrl()));

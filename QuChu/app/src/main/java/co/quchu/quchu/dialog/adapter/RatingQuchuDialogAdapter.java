@@ -35,7 +35,7 @@ public class RatingQuchuDialogAdapter extends RecyclerView.Adapter<RatingQuchuDi
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvTag.setText(mData.get(position).getZh());
-        holder.tvTag.setBackgroundResource(mData.get(position).isPraise()?R.drawable.shape_lineframe_yellow_fill:R.drawable.shape_lineframe_black_thin);
+        holder.tvTag.setBackgroundResource(mData.get(position).isPraise()?R.drawable.shape_lineframe_yellow_fill:R.drawable.shape_lineframe_black_thin_rect);
         int color = holder.tvTag.getResources().getColor(R.color.standard_color_h2_dark);
         holder.tvTag.setTextColor(color);
 

@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:max="5"
-            android:paddingTop="@dimen/base_margin"
+            android:paddingTop="@dimen/dialog_margin"
             android:paddingBottom="@dimen/base_margin"
             android:layout_centerHorizontal="true"
             android:stepSize="1"
@@ -71,30 +71,30 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/colorBackground"
+        android:background="@color/colorBorder"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvTags"
-        android:layout_marginTop="@dimen/base_margin"
-        android:layout_marginBottom="@dimen/base_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginBottom="@dimen/half_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
         app:spanCount="3"
-        android:layout_marginLeft="@dimen/dialog_margin"
-        android:layout_marginRight="@dimen/dialog_margin"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
         tools:listitem="@layout/item_tags_filter"
         />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/colorBackground"
+        android:background="@color/colorBorder"
         android:layout_marginLeft="@dimen/base_margin"
         android:layout_marginRight="@dimen/base_margin"
         />
