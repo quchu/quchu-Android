@@ -8,6 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/quarter_margin"
     android:layout_marginTop="@dimen/quarter_margin"
+    android:elevation="0dp"
     card_view:cardCornerRadius="0dp">
 
     <RelativeLayout
@@ -20,12 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             fresco:placeholderImage="@mipmap/ic_image_empty"
-            fresco:roundBottomLeft="false"
-            fresco:roundBottomRight="false"
-            fresco:roundTopLeft="true"
-            fresco:roundTopRight="true"
-            fresco:roundedCornerRadius="8dp"
-            fresco:viewAspectRatio="2.5" />
+            fresco:viewAspectRatio="2" />
 
         <TextView
             android:id="@+id/search_result_name"
@@ -48,7 +44,6 @@
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/half_margin"
             android:layout_marginTop="@dimen/half_margin"
             android:ellipsize="marquee"
@@ -56,6 +51,7 @@
             android:layout_below="@id/search_result_name"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
+            android:layout_toRightOf="@+id/address"
             android:singleLine="true"
             android:textColor="@color/standard_color_h3_dark"
             tools:text="10km" />
@@ -67,7 +63,7 @@
             android:focusable="true"
             android:layout_marginTop="@dimen/half_margin"
             android:layout_below="@id/search_result_name"
-            android:layout_toLeftOf="@+id/distance"
+            android:layout_toRightOf="@+id/distance"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
@@ -76,12 +72,11 @@
 
         <TextView
             android:id="@+id/address"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/search_result_name"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginTop="@dimen/half_margin"
-            android:layout_toLeftOf="@id/searchPrice"
             android:drawableLeft="@mipmap/ic_zuobiao"
             android:ellipsize="marquee"
             android:focusable="true"
@@ -107,7 +102,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/vDivider"
-            android:layout_marginBottom="@dimen/base_margin"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginTop="@dimen/half_margin"
             TagCloudView:tcvBackground="@drawable/shape_lineframe_black_thin"

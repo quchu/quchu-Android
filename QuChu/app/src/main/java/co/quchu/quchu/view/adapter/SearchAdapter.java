@@ -83,16 +83,16 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             final RecommendModel model = resultList.get(position);
             holder.tvName.setText(model.getName());
             if (TextUtils.isEmpty(model.getPrice())) {
-                holder.searchPrice.setText("¥- 元｜");
+                holder.searchPrice.setText(" ｜ ¥- 元");
             } else {
-                holder.searchPrice.setText("¥" + model.getPrice() + "元｜");
+                holder.searchPrice.setText(" ｜ ¥" + model.getPrice() + "元");
             }
 
             List<String> strTags = new ArrayList<>();
             List<RecommendModel.TagsEntity> tags = model.getTags();
             if (null != tags && tags.size() > 0) {
                 for (int i = 0; i < tags.size(); i++) {
-                    strTags.add(tags.get(i).getZh());
+                    strTags.add(" "+tags.get(i).getZh()+" ");
                 }
             }
             holder.tcvTag.setTags(strTags);
@@ -103,7 +103,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             } else {
                 holder.distance.setVisibility(View.VISIBLE);
                 String distance = StringUtils.getDistance(model.getLatitude(), model.getLongitude(), SPUtils.getLatitude(), SPUtils.getLongitude());
-                holder.distance.setText(distance);
+                holder.distance.setText(distance+" | ");
             }
 
             holder.sdvImage.setImageURI(Uri.parse(model.getCover()));
