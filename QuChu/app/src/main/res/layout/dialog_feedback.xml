@@ -73,6 +73,11 @@
             android:textColor="#111111"
             android:textSize="12sp"/>
 
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#dbdbdb"/>
+
         <TextView
             android:id="@+id/submit_btn"
             android:layout_width="0dp"

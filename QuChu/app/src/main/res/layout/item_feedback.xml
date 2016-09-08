@@ -47,7 +47,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
         android:textColor="@color/standard_color_h1_dark"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 
     <View
         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/shape_feedback_settle_btn"
-            android:drawableLeft="@mipmap/ic_yichuli"
+            android:drawableLeft="@mipmap/ic_gou"
             android:drawablePadding="5dp"
             android:gravity="center"
             android:paddingBottom="5dp"
@@ -79,7 +79,7 @@
             android:paddingTop="5dp"
             android:text="已处理"
             android:textColor="@color/standard_color_h1_dark"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:visibility="gone" />
 
         <TextView
@@ -97,7 +97,7 @@
             android:paddingTop="5dp"
             android:text="未处理"
             android:textColor="@android:color/white"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:visibility="gone" />
 
       </RelativeLayout>
@@ -128,7 +128,7 @@
             android:paddingTop="2dp"
             android:text="回复"
             android:textColor="@color/standard_color_h1_dark"
-            android:textSize="10sp" />
+            android:textSize="11sp" />
 
       </RelativeLayout>
 

@@ -30,6 +30,7 @@
       android:layout_alignParentRight="true"
       android:layout_marginBottom="49dp"
       android:layout_marginRight="20dp"
-      android:src="@mipmap/ic_baocuo"/>
+      android:src="@mipmap/ic_baocuo"
+      android:background="@drawable/shape_feedback_btn"/>
 
 </RelativeLayout>

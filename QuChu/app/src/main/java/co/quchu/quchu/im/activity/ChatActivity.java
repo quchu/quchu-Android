@@ -196,13 +196,13 @@ public class ChatActivity extends BaseBehaviorActivity {
         if (type.equals(IMPresenter.JUMP_TYPE_QUCHU_DETAIL)) {
           //趣处详情
           intent = new Intent(ChatActivity.this, QuchuDetailsActivity.class);
-          intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, id);
+          intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, Integer.valueOf(id));
           startActivity(intent);
 
         } else if (type.equals(IMPresenter.JUMP_TYPE_USER)) {
           //用户
           intent = new Intent(ChatActivity.this, UserCenterActivity.class);
-          intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, id);
+          intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, Integer.valueOf(id));
           startActivity(intent);
 
         } else if (type.equals(IMPresenter.JUMP_TYPE_ARTICLE_DETAIL)) {
