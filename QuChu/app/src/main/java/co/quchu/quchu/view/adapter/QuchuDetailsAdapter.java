@@ -546,22 +546,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       ((PartyInfoViewHolder) holder).detail_activity_info_tv.setText(
           mData.isIsActivity() && null != mData.getActivityInfo() ? mData.getActivityInfo() : "");
     } else if (holder instanceof ImageViewHolder) {
-      //            int imgIndex = position - BLOCK_INDEX;
-      //            if (null != mData.getImglist() && mData.getImglist().size() > imgIndex) {
-      //
-      //                if (null != mData.getImglist().get(imgIndex).getImgpath()) {
-      //                    String strUri = mData.getImglist().get(imgIndex).getImgpath();
-      //                    ((ImageViewHolder) holder).item_card_image_sdv.setImageURI(Uri.parse(strUri));
-      //
-      //                    if (0 == mData.getImglist().get(imgIndex).getWidth() || 0 == mData.getImglist().get(imgIndex).getHeight()) {
-      //                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
-      //                    } else {
-      //                        ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio((float) mData.getImglist().get(imgIndex).getWidth() / (float) mData.getImglist().get(imgIndex).getHeight());
-      //                    }
-      //                }
-      //            } else {
-      //                ((ImageViewHolder) holder).item_card_image_sdv.setAspectRatio(1.2f);
-      //            }
 
     } else if (holder instanceof CommentViewHolder) {
       if (null != mData.getReviewList()) {
@@ -687,7 +671,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
-        //                ((NearbyViewHolder) holder).tvAddress.setText(mData.getNearPlace().get(imgIndex - 1).getAddress());
+        ((NearbyViewHolder) holder).address.setText(mData.getNearPlace().get(imgIndex - 1).getAddress());
         ((NearbyViewHolder) holder).sdvImage.setImageURI(
             Uri.parse(mData.getNearPlace().get(imgIndex - 1).getCover()));
         final int pid = mData.getNearPlace().get(imgIndex - 1).getPlaceId();
@@ -917,6 +901,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.tag) TagCloudView tcvTag;
     @Bind(R.id.simpleDraweeView) SimpleDraweeView sdvImage;
     @Bind(R.id.cvRoot) CardView cardView;
+    @Bind(R.id.address) TextView address;
 
     NearbyViewHolder(View view) {
       super(view);

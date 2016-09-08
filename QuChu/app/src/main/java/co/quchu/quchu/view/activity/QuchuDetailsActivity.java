@@ -101,7 +101,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     detail_bottom_group_ll.setVisibility(View.INVISIBLE);
     mRecyclerView.setVisibility(View.INVISIBLE);
 
-    initData();
     mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
 
     mRecyclerView.setLayoutManager(
@@ -109,7 +108,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     mRecyclerView.setAdapter(mQuchuDetailAdapter);
 
     startViewTime = System.currentTimeMillis();
-
+    initData();
     getVisitors();
     getVisitorsAnlysis();
     getRatingInfo();
@@ -209,10 +208,11 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
           errorView.showViewDefault(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              DialogUtil.showProgess(QuchuDetailsActivity.this, "加载中");
               getData();
             }
           });
+        }else{
+          getData();
         }
 
       } else {
@@ -244,7 +244,8 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   }
 
   private void bindingDetailData(DetailModel model) {
-
+    mRecyclerView.setVisibility(View.VISIBLE);
+    detail_bottom_group_ll.setVisibility(View.VISIBLE);
     dModel.copyFrom(model);
     getEnhancedToolbar().getTitleTv().setText(dModel.getName());
     getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_home);

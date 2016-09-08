@@ -256,6 +256,7 @@ public class TagCloudView extends ViewGroup {
                 if (mTagResId == DEFAULT_TAG_RESID) {
                     if (null!=tagsHighLight){
                         tagView.setBackgroundResource(tagsHighLight.get(i).booleanValue()? R.drawable.shape_lineframe_yellow_fill: mBackground);
+                        tagView.setTextColor(Color.parseColor("#111111"));
                     }else{
                         tagView.setBackgroundResource(mBackground);
                     }

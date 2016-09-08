@@ -48,6 +48,7 @@
             card_view:tcvItemBorderHorizontal="10dp"
             card_view:tcvRightResId="@null"
             card_view:tcvSingleLine="true"
+            card_view:tcvBackground="@drawable/shape_lineframe_white_cap"
             card_view:tcvTextColor="@color/standard_color_white" />
 
         <TextView
