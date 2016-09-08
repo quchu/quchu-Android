@@ -7,11 +7,19 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/standard_color_white"
-
     >
+
+  <View
+      android:id="@+id/vSpaceTop"
+      android:background="@color/colorBackground"
+      android:layout_height="@dimen/half_margin"
+      android:layout_width="match_parent"
+      />
 
   <ImageView
       android:id="@+id/ivLogo"
+      android:layout_marginTop="@dimen/base_margin"
+      android:layout_below="@+id/vSpaceTop"
       android:layout_marginLeft="@dimen/base_margin"
       android:layout_marginRight="@dimen/base_margin"
       android:layout_width="wrap_content"
@@ -48,6 +56,7 @@
       android:layout_below="@id/rvUsers"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/base_margin"
       android:layout_centerHorizontal="true"
       />
   <TextView
@@ -55,19 +64,30 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/invite_user"
+      android:layout_marginTop="@dimen/half_margin"
       style="@style/TextView.H2"
       android:layout_below="@+id/ivInvite"
       android:layout_centerHorizontal="true"
       />
 
+
+  <View
+      android:id="@+id/vSpace"
+      android:layout_marginTop="@dimen/base_margin"
+      android:background="@color/colorBackground"
+      android:layout_height="@dimen/half_margin"
+      android:layout_width="match_parent"
+      android:layout_below="@+id/tvInvite"
+      />
+
   <TextView
       android:id="@+id/tvLabel"
-      android:layout_below="@+id/tvInvite"
+      android:layout_below="@+id/vSpace"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
       android:layout_marginLeft="@dimen/base_margin"
-      android:paddingTop="@dimen/double_margin"
+      android:paddingTop="@dimen/base_margin"
       android:text="@string/guess_what_you_like"
       style="@style/TextView.H2"
       />

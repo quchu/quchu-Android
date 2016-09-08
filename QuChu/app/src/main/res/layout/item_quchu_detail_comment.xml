@@ -74,7 +74,6 @@
         style="@style/TextView.H3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/half_margin"
         android:lineSpacingExtra="4dp"
         tools:text="Comment"
         />
@@ -87,6 +86,7 @@
 
       <android.support.v7.widget.RecyclerView
           android:id="@+id/rvImages"
+          android:layout_marginTop="@dimen/half_margin"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_weight="0.4"
@@ -106,7 +106,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginTop="@dimen/half_margin"
         android:gravity="right"
         android:visibility="gone"
         tools:text="Comment"
@@ -158,6 +157,7 @@
       android:layout_centerHorizontal="true"
       android:orientation="vertical"
       android:gravity="center_horizontal"
+      android:layout_marginTop="@dimen/half_margin"
       android:visibility="gone">
 
     <ImageView
@@ -167,6 +167,7 @@
 
     <TextView
         style="@style/TextView.H2"
+        android:layout_marginTop="@dimen/half_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/more_comments"/>

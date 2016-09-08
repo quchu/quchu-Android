@@ -43,6 +43,7 @@
             android:layout_below="@id/desc"
             android:layout_marginLeft="@dimen/base_margin"
             android:layout_marginTop="@dimen/half_margin"
+            card_view:tcvTextSize="4dp"
             card_view:tcvCanTagClick="false"
             card_view:tcvItemBorderHorizontal="10dp"
             card_view:tcvRightResId="@null"
