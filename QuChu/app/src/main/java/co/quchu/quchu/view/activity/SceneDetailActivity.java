@@ -270,7 +270,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
                                 pid, !status, new InterestingDetailPresenter.DetailDataListener() {
                                     @Override public void onSuccessCall(String str) {
                                         Toast.makeText(SceneDetailActivity.this,"收藏成功!",Toast.LENGTH_SHORT).show();
-                                        mAdapter.updateFavorite(index,status,fromRecommand?fromRecommand:false);
+                                        mAdapter.updateFavorite(index,!status,fromRecommand?fromRecommand:false);
                                     }
 
                                     @Override public void onErrorCall(String str) {

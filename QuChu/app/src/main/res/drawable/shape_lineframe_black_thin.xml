@@ -5,6 +5,6 @@
         android:width="1px"
         android:color="@color/standard_color_h1_dark" />
     <!-- 圆角 -->
-    <corners android:radius="4dp" />
+    <corners android:radius="10dp" />
     <solid android:color="@color/transparent"/>
 </shape>

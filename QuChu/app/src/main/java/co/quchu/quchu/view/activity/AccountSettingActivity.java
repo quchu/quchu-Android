@@ -361,10 +361,10 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
             Toast.makeText(this, "昵称必须为1-10位字符", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (StringUtils.containsEmoji(newUserNickName)) {
-            Toast.makeText(this, "昵称不能使用表情", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        //if (StringUtils.containsEmoji(newUserNickName)) {
+        //    Toast.makeText(this, "昵称不能使用表情", Toast.LENGTH_SHORT).show();
+        //    return;
+        //}
 
         DialogUtil.showProgess(this, R.string.loading_dialog_text);
         if (!StringUtils.isEmpty(newUserPhoto) && !newUserPhoto.startsWith("http")) {

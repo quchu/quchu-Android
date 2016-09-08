@@ -13,7 +13,15 @@ public class SceneInfoModel {
     private String[] sceneTitle;
     private String width = "";
     private int sceneId;
+    private String en;
 
+    public String getEn() {
+        return en;
+    }
+
+    public void setEn(String en) {
+        this.en = en;
+    }
 
     public void copyFrom(SceneInfoModel sceneInfoModel){
         this.height = sceneInfoModel.getHeight();

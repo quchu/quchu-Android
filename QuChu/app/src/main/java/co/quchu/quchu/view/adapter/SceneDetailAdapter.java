@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.RecyclerView;
@@ -128,6 +129,12 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (holder instanceof InfoViewHolder) {
             if (null != mSceneInfoModel) {
 
+
+                Typeface face = Typeface.createFromAsset(((InfoViewHolder) holder).tvENTitle.getContext().getAssets(), "AGENCYFB.TTF");
+
+                ((InfoViewHolder) holder).tvENTitle.setTypeface(face);
+                ((InfoViewHolder) holder).tvENTitle.setText(mSceneInfoModel.getEn());
+                ((InfoViewHolder) holder).tvCNTitle.setText(mSceneInfoModel.getSceneName());
                 ((InfoViewHolder) holder).sdvCover.setImageURI(Uri.parse(mSceneInfoModel.getSceneCover()));
                 ((InfoViewHolder) holder).desc.setText(mSceneInfoModel.getSceneName());
                 ((InfoViewHolder) holder).tvDescription.setText(mSceneInfoModel.getSceneContent());
@@ -191,9 +198,9 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((RecommendedViewHolder) holder).tvDistance.setVisibility(View.VISIBLE);
             }
             if (!StringUtils.isEmpty(objScene.getPlaceInfo().getPrice())) {
-                ((RecommendedViewHolder) holder).tvPrice.setText("¥" + objScene.getPlaceInfo().getPrice() + "元｜");
+                ((RecommendedViewHolder) holder).tvPrice.setText("¥" + objScene.getPlaceInfo().getPrice() + "元");
             } else {
-                ((RecommendedViewHolder) holder).tvPrice.setText("¥- 元｜");
+                ((RecommendedViewHolder) holder).tvPrice.setText("¥- 元");
             }
             ((RecommendedViewHolder) holder).ivFavorite.setImageResource(objScene.getPlaceInfo().isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_faxian_shoucang);
 
@@ -255,9 +262,9 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             if (!StringUtils.isEmpty(objScene.getPrice())) {
-                ((PlaceViewHolder) holder).tvPrice.setText("¥" + objScene.getPrice() + "元｜");
+                ((PlaceViewHolder) holder).tvPrice.setText("¥" + objScene.getPrice() + "元");
             } else {
-                ((PlaceViewHolder) holder).tvPrice.setText("¥- 元｜");
+                ((PlaceViewHolder) holder).tvPrice.setText("¥- 元");
             }
 
             ((PlaceViewHolder) holder).ivFavorite.setImageResource(objScene.isIsf()?R.mipmap.ic_shoucang_yellow:R.mipmap.ic_faxian_shoucang);
@@ -339,6 +346,10 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         View vDivider1;
         @Bind(R.id.vHorizontalDivider2)
         View vDivider2;
+        @Bind(R.id.tvCNTitle)
+        TextView tvCNTitle;
+        @Bind(R.id.tvENTitle)
+        TextView tvENTitle;
 
         public InfoViewHolder(View itemView) {
             super(itemView);
