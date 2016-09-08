@@ -78,6 +78,7 @@ public class ChatActivity extends BaseBehaviorActivity {
   private Conversation.ConversationType mConversationType;
 
   private TextView titleTv;
+  private IMPresenter mImPresenter;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +101,8 @@ public class ChatActivity extends BaseBehaviorActivity {
         }
       }
     });
+
+    mImPresenter = new IMPresenter();
 
     if (getIntent() == null || getIntent().getData() == null) {
       LogUtils.e("------mwb", "intent null");
@@ -353,7 +356,7 @@ public class ChatActivity extends BaseBehaviorActivity {
    * 重连融云服务
    */
   private void reconnect(String token) {
-    IMPresenter.connectIMService(token, new IMPresenter.RongYunBehaviorListener() {
+    mImPresenter.connectIMService(token, new IMPresenter.RongYunBehaviorListener() {
       @Override
       public void onSuccess(String msg) {
         enterFragment(mConversationType, mTargetId);
@@ -422,10 +425,10 @@ public class ChatActivity extends BaseBehaviorActivity {
       @Override
       public void onClick(View v) {
         popWin.dismiss();
-        IMPresenter.getLatestMessages(mTargetId, 50, new IMPresenter.RongYunBehaviorListener() {
+        mImPresenter.getLatestMessages(mTargetId, 50, new IMPresenter.RongYunBehaviorListener() {
           @Override
           public void onSuccess(String msg) {
-            IMPresenter.sendImReport(ChatActivity.this, mTargetId, msg, new CommonListener<Object>() {
+            mImPresenter.sendImReport(ChatActivity.this, mTargetId, msg, new CommonListener<Object>() {
               @Override
               public void successListener(Object response) {
                 makeToast("您已经举报该用户");
@@ -473,14 +476,14 @@ public class ChatActivity extends BaseBehaviorActivity {
    */
   private void addToBack() {
     //加入黑名单
-    IMPresenter.addToBlackList(mTargetId, new IMPresenter.RongYunBehaviorListener() {
+    mImPresenter.addToBlackList(mTargetId, new IMPresenter.RongYunBehaviorListener() {
       @Override
       public void onSuccess(String msg) {
         //本地历史中删除该聊天
-        IMPresenter.removeConversation(mTargetId, new IMPresenter.RongYunBehaviorListener() {
+        mImPresenter.removeConversation(mTargetId, new IMPresenter.RongYunBehaviorListener() {
           @Override
           public void onSuccess(String msg) {
-            IMPresenter.shield(ChatActivity.this, mTargetId, new CommonListener<Object>() {
+            mImPresenter.shield(ChatActivity.this, mTargetId, new CommonListener<Object>() {
               @Override
               public void successListener(Object response) {
                 makeToast("成功屏蔽该用户");

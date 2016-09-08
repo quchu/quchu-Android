@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,9 +11,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +46,7 @@ import co.quchu.quchu.model.UpdateInfoModel;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -60,7 +65,8 @@ import io.rong.imkit.RongIM;
  */
 public class RecommendActivity extends BaseBehaviorActivity {
 
-  @Override protected String getPageNameCN() {
+  @Override
+  protected String getPageNameCN() {
     return null;
   }
 
@@ -82,6 +88,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.ivLeft) View ivLeft;
   @Bind(R.id.tvRight) TextView tvRight;
 
+  @Bind(R.id.rbMine) RadioButton mRbMine;
+  @Bind(R.id.unReadMassage) TextView mUnReadMassageView;
+
   public long firstTime = 0;
   private ArrayList<CityModel> list = new ArrayList<>();
   public int viewPagerIndex = 0;
@@ -92,17 +101,23 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
   boolean checkUpdateRunning = false;
 
+  private boolean mHasPushUnreadMessage;//个推消息
+  private boolean mHasImUnreadMessage;//im消息
+
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
 
-  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+  @Override
+  public ArrayMap<String, Object> getUserBehaviorArguments() {
     return null;
   }
 
-  @Override public int getUserBehaviorPageId() {
+  @Override
+  public int getUserBehaviorPageId() {
     return 110;
   }
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_recommend);
     ButterKnife.bind(this);
@@ -125,10 +140,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
         .commitAllowingStateLoss();
     initView();
 
+    initUnreadView();
+
     VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
 
     RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-      @Override public void hasCityList(ArrayList<CityModel> pList) {
+      @Override
+      public void hasCityList(ArrayList<CityModel> pList) {
         list.clear();
         list.addAll(pList);
         checkIfCityChanged();
@@ -144,9 +162,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
       viewpagerSelected(3);
     }
 
-    //连接融云服务
-    IMPresenter.getToken(getApplicationContext());
-
     //im推送跳转
     boolean isChat = getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT, false);
     boolean isChatList = getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT_LIST, false);
@@ -156,8 +171,24 @@ public class RecommendActivity extends BaseBehaviorActivity {
       startChatList();
     }
 
+    if (!isChat && !isChatList) {
+      //连接融云服务
+      new IMPresenter().getToken(this, new IMPresenter.RongYunBehaviorListener() {
+        @Override
+        public void onSuccess(String msg) {
+          getUnreadMessage();
+        }
+
+        @Override
+        public void onError() {
+
+        }
+      });
+    }
+
     rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-      @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
+      @Override
+      public void onCheckedChanged(RadioGroup group, int checkedId) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (checkedId) {
 
@@ -191,6 +222,84 @@ public class RecommendActivity extends BaseBehaviorActivity {
     if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
       accessPushMessage();
     }
+  }
+
+  /**
+   * 设置我的Tab红点
+   */
+  private void initUnreadView() {
+    final ViewTreeObserver observer = mRbMine.getViewTreeObserver();
+    observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+      @Override
+      public void onGlobalLayout() {
+        int width = mRbMine.getWidth();
+        int x = (int) mRbMine.getX();
+        int y = (int) mRbMine.getY();
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mUnReadMassageView.getLayoutParams();
+        params.setMargins(x + width / 2 + 30, y, 0, 0);
+
+        if (observer.isAlive()) {
+          if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            observer.removeOnGlobalLayoutListener(this);
+          } else {
+            observer.removeGlobalOnLayoutListener(this);
+          }
+        }
+      }
+    });
+  }
+
+  private void getUnreadMessage() {
+    //推送通知
+    new MeActivityPresenter(this).getUnreadMassageCound(new CommonListener<Integer>() {
+      @Override
+      public void successListener(Integer response) {
+        mHasPushUnreadMessage = response > 0 ? true : false;
+        showUnreadView();
+      }
+
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
+      }
+    });
+
+    //im未读消息数
+    new IMPresenter().getUnreadCount(new RongIM.OnReceiveUnreadCountChangedListener() {
+      @Override
+      public void onMessageIncreased(int i) {
+        mHasPushUnreadMessage = false;
+        mHasImUnreadMessage = i > 0 ? true : false;
+        showUnreadView();
+      }
+    });
+  }
+
+  /**
+   * 显示我的红点
+   */
+  private void showUnreadView() {
+    if (mUnReadMassageView == null) {
+      return;
+    }
+
+    if (mHasPushUnreadMessage) {
+      mUnReadMassageView.setVisibility(View.VISIBLE);
+    } else {
+      if (mHasImUnreadMessage) {
+        mUnReadMassageView.setVisibility(View.VISIBLE);
+      } else {
+        mUnReadMassageView.setVisibility(View.INVISIBLE);
+      }
+    }
+  }
+
+  public void showUnreadView(boolean isShow) {
+    if (mUnReadMassageView == null) {
+      return;
+    }
+
+    mUnReadMassageView.setVisibility(isShow ? View.VISIBLE : View.GONE);
   }
 
   /**
@@ -255,7 +364,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
           final CommonDialog commonDialog =
               CommonDialog.newInstance("切换城市", "检测到你在" + currentLocation + "，是否切换？", "确定", "取消");
           commonDialog.setListener(new CommonDialog.OnActionListener() {
-            @Override public boolean dialogClick(int id) {
+            @Override
+            public boolean dialogClick(int id) {
               switch (id) {
                 case CommonDialog.CLICK_ID_ACTIVE:
                   if (finalInList) {
@@ -282,12 +392,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
     }
   }
 
-  @Override protected int activitySetup() {
+  @Override
+  protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
   }
 
   @OnClick({
-      R.id.recommend_title_location_rl, R.id.tvRight, R.id.ivLeft, R.id.recommend_title_more_iv })
+      R.id.recommend_title_location_rl, R.id.tvRight, R.id.ivLeft, R.id.recommend_title_more_iv})
   public void titleClick(View view) {
     if (KeyboardUtils.isFastDoubleClick()) return;
     switch (view.getId()) {
@@ -315,7 +426,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
             selectedCity();
           } else {
             RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-              @Override public void hasCityList(ArrayList<CityModel> list) {
+              @Override
+              public void hasCityList(ArrayList<CityModel> list) {
                 RecommendActivity.this.list = list;
                 if (RecommendActivity.this.list != null) {
                   selectedCity();
@@ -399,7 +511,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
     viewPagerIndex = index;
   }
 
-  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK) {
       long secondTime = System.currentTimeMillis();
       if (secondTime - firstTime > 700) {// 如果两次按键时间间隔大于800毫秒，则不退出
@@ -407,7 +520,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         firstTime = secondTime;// 更新firstTime
         return true;
       } else {
-        IMPresenter.disconnect();
+        new IMPresenter().disconnect();
 
         ActManager.getAppManager().AppExit();
       }
@@ -415,14 +528,16 @@ public class RecommendActivity extends BaseBehaviorActivity {
     return true;
   }
 
-  @Override protected void onResume() {
+  @Override
+  protected void onResume() {
     resumeUpdateDataTimes = 0;
     netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
     super.onResume();
   }
 
   private Handler netHandler = new Handler() {
-    @Override public void handleMessage(Message msg) {
+    @Override
+    public void handleMessage(Message msg) {
       switch (msg.what) {
         case 0x00:
           netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 2000);
@@ -432,7 +547,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
   };
   private int resumeUpdateDataTimes = 0;
 
-  @Subscribe public void onMessageEvent(QuchuEventModel event) {
+  @Subscribe
+  public void onMessageEvent(QuchuEventModel event) {
 
     switch (event.getFlag()) {
       case EventFlags.EVENT_NEW_CITY_SELECTED:
@@ -461,14 +577,16 @@ public class RecommendActivity extends BaseBehaviorActivity {
           checkUpdateRunning = true;
           VersionInfoPresenter
               .checkUpdate(getApplicationContext(), new CommonListener<UpdateInfoModel>() {
-                @Override public void successListener(final UpdateInfoModel response) {
+                @Override
+                public void successListener(final UpdateInfoModel response) {
                   checkUpdateRunning = false;
                   if (BuildConfig.VERSION_CODE < response.getVersionCode()) {
 
                     final CommonDialog commonDialog =
                         CommonDialog.newInstance("有新版本更新", "检测到有新版本，是否下载更新？", "立即前往", "容我三思");
                     commonDialog.setListener(new CommonDialog.OnActionListener() {
-                      @Override public boolean dialogClick(int id) {
+                      @Override
+                      public boolean dialogClick(int id) {
                         switch (id) {
                           case CommonDialog.CLICK_ID_ACTIVE:
                             Intent browserIntent =
@@ -503,17 +621,20 @@ public class RecommendActivity extends BaseBehaviorActivity {
     }
   }
 
-  @Override protected void onStart() {
+  @Override
+  protected void onStart() {
     super.onStart();
     EventBus.getDefault().register(this);
   }
 
-  @Override protected void onStop() {
+  @Override
+  protected void onStop() {
     EventBus.getDefault().unregister(this);
     super.onStop();
   }
 
-  @Override protected void onDestroy() {
+  @Override
+  protected void onDestroy() {
     super.onDestroy();
     ButterKnife.unbind(this);
   }

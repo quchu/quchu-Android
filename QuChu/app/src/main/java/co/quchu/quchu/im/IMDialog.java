@@ -44,6 +44,7 @@ public class IMDialog extends Dialog {
   private String topTitle;
   private String deleteTitle;
   private Message.SentStatus mSentStatus;
+  private IMPresenter mImPresenter;
 
   /**
    * 聊天列表
@@ -90,6 +91,8 @@ public class IMDialog extends Dialog {
     setContentView(R.layout.dialog_im);
     ButterKnife.bind(this);
 
+    mImPresenter = new IMPresenter();
+
     topTv.setText(topTitle);
     deleteTv.setText(deleteTitle);
 
@@ -121,7 +124,7 @@ public class IMDialog extends Dialog {
       case R.id.im_dialog_top_tv:
         if (mIsChatList) {
           //聊天列表，置顶聊天、取消置顶聊天
-          IMPresenter.setConversationToTop(mTargetId, !mIsTop);
+          mImPresenter.setConversationToTop(mTargetId, !mIsTop);
         } else {
           //聊天界面，复制消息
           ClipboardManager cmb =
@@ -133,21 +136,21 @@ public class IMDialog extends Dialog {
       case R.id.im_dialog_delete_tv:
         if (mIsChatList) {
           //聊天列表，删除聊天
-          IMPresenter.removeConversation(mTargetId, null);
+          mImPresenter.removeConversation(mTargetId, null);
         } else {
           //聊天界面，删除消息
-          IMPresenter.deleteMessages(messageIds);
+          mImPresenter.deleteMessages(messageIds);
         }
         break;
 
       case R.id.im_dialog_recall_tv:
         //撤回消息
-        IMPresenter.recallMessage(mMessage);
+        mImPresenter.recallMessage(mMessage);
         break;
 
       case R.id.im_dialog_resend_tv:
         //重发消息
-        IMPresenter.sendMessage(mTargetId, mMessageContent);
+        mImPresenter.sendMessage(mTargetId, mMessageContent);
         break;
     }
 

@@ -112,7 +112,7 @@ public class InviteHangoutUsersActivity extends BaseActivity {
       return;
     }
     mInviteRunning = true;
-    IMPresenter.sendMessage(String.valueOf(uid), "Hey，#"+userName+"#我想约你一起去 #"+mPName+"#，点击查看（点击后跳转目标趣处）", IMPresenter.JUMP_TYPE_QUCHU_DETAIL, String.valueOf(mPid), new IMPresenter.RongYunBehaviorListener() {
+    new IMPresenter().sendMessage(String.valueOf(uid), "Hey，#"+userName+"#我想约你一起去 #"+mPName+"#，点击查看（点击后跳转目标趣处）", IMPresenter.JUMP_TYPE_QUCHU_DETAIL, String.valueOf(mPid), new IMPresenter.RongYunBehaviorListener() {
       @Override public void onSuccess(String msg) {
         for (int i = 0; i < mUsers.size(); i++) {
           if (mUsers.get(i).getUserId()==uid){

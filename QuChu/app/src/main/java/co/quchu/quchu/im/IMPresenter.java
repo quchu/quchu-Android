@@ -48,16 +48,16 @@ public class IMPresenter {
   public static String xiaoqId = "1";
 
   //用户信息，名称，头像
-  private static UserInfo userInfo;
-  private static String name;
-  private static String avatar;
+  private UserInfo userInfo;
+  private String name;
+  private String avatar;
 
-  private static boolean hasXiaoQConversation;
+  private boolean hasXiaoQConversation;
 
   /**
    * 举报
    */
-  public static void sendImReport(Context context, String targetId, String content, final CommonListener<Object> listener) {
+  public void sendImReport(Context context, String targetId, String content, final CommonListener<Object> listener) {
     Map<String, String> map = new HashMap<>();
     map.put("toUserId", targetId);
     map.put("content", content);
@@ -82,7 +82,7 @@ public class IMPresenter {
   /**
    * 屏蔽
    */
-  public static void shield(Context context, String targetId, final CommonListener<Object> listener) {
+  public void shield(Context context, String targetId, final CommonListener<Object> listener) {
     Map<String, String> map = new HashMap<>();
     map.put("toUserId", targetId);
 
@@ -109,12 +109,15 @@ public class IMPresenter {
   /**
    * 获取im token
    */
-  public static void getToken(Context context) {
+  public void getToken(Context context, final RongYunBehaviorListener listener) {
     GsonRequest<RongImModel> request =
         new GsonRequest<RongImModel>(NetApi.getRongYunToken, RongImModel.class,
             new ResponseListener<RongImModel>() {
               @Override public void onErrorResponse(@Nullable VolleyError error) {
                 LogUtils.e(TAG, "onErrorResponse()");
+                if (listener != null) {
+                  listener.onError();
+                }
               }
 
               @Override
@@ -122,6 +125,10 @@ public class IMPresenter {
                   @Nullable String msg) {
                 if (response != null) {
                   LogUtils.e(TAG, "onResponse() token = " + response.getRongYunToken());
+
+                  if (listener != null) {
+                    listener.onSuccess(response.getRongYunToken());
+                  }
 
                   //连接融云服务器
                   connectIMService(response.getRongYunToken(), null);
@@ -137,7 +144,7 @@ public class IMPresenter {
   /**
    * 建立与融云服务器的连接
    */
-  public static void connectIMService(final String token, final RongYunBehaviorListener listener) {
+  public void connectIMService(final String token, final RongYunBehaviorListener listener) {
 
     RongIM.connect(token, new RongIMClient.ConnectCallback() {
 
@@ -145,7 +152,7 @@ public class IMPresenter {
        * Token 错误，在线上环境下主要是因为 Token 已经过期，您需要向 App Server 重新请求一个新的 Token
        */
       @Override public void onTokenIncorrect() {
-        getToken(AppContext.mContext);
+        getToken(AppContext.mContext, null);
         LogUtils.e(TAG, "onTokenIncorrect()");
       }
 
@@ -188,7 +195,7 @@ public class IMPresenter {
   /**
    * 在App服务器查询用户信息，返回给融云显示
    */
-  private static UserInfo findUserById(final String userId) {
+  private UserInfo findUserById(final String userId) {
     UserCenterPresenter.getUserCenterInfo(AppContext.mContext, Integer.valueOf(userId),
         new UserCenterPresenter.UserCenterInfoCallBack() {
           @Override public void onSuccess(UserCenterInfo userCenterInfo) {
@@ -218,8 +225,8 @@ public class IMPresenter {
   /**
    * 设置小Q会话
    */
-  private static void initXiaoQConversation() {
-    IMPresenter.getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+  private void initXiaoQConversation() {
+    this.getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
       @Override
       public void onSuccess(List<Conversation> conversations) {
         //遍历当前会话列表，如果没有小Q会话，则主动发消息在本地显示会话
@@ -253,7 +260,7 @@ public class IMPresenter {
           @Override
           public void onSuccess(Message message) {
             int[] messageIds = new int[]{Integer.valueOf(message.getMessageId())};
-            IMPresenter.deleteMessages(messageIds);
+            IMPresenter.this.deleteMessages(messageIds);
           }
 
           @Override
@@ -265,13 +272,13 @@ public class IMPresenter {
     }
 
     //置顶小Q
-    IMPresenter.setConversationToTop(IMPresenter.xiaoqId, true);
+    IMPresenter.this.setConversationToTop(IMPresenter.xiaoqId, true);
   }
 
   /**
    * 退出融云连接
    */
-  public static void logout() {
+  public void logout() {
     if (RongIM.getInstance() != null) {
       SPUtils.setRongYunToken("");
       RongIM.getInstance().logout();
@@ -281,7 +288,7 @@ public class IMPresenter {
   /**
    * 断开连接
    */
-  public static void disconnect() {
+  public void disconnect() {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().disconnect();
     }
@@ -293,7 +300,7 @@ public class IMPresenter {
    * @param targetId    目标id
    * @param content     发送的内容
    */
-  public static void sendMessage(String targetId, String content) {
+  public void sendMessage(String targetId, String content) {
     TextMessage myTextMessage = TextMessage.obtain(content);
     Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, myTextMessage);
 
@@ -309,7 +316,7 @@ public class IMPresenter {
    * @param jumpId    点击消息跳转id
    * @param listener
    */
-  public static void sendMessage(String targetId, String content, String jumpType, String jumpId, RongYunBehaviorListener listener) {
+  public void sendMessage(String targetId, String content, String jumpType, String jumpId, RongYunBehaviorListener listener) {
     TextMessage textMessage = TextMessage.obtain(content);
     JSONObject jsonObject = null;
     try {
@@ -333,7 +340,7 @@ public class IMPresenter {
     send(message, listener);
   }
 
-  private static void send(Message message, final RongYunBehaviorListener listener) {
+  private void send(Message message, final RongYunBehaviorListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance()
           .sendMessage(message, null, null, new IRongCallback.ISendMessageCallback() {
@@ -364,7 +371,7 @@ public class IMPresenter {
   /**
    * 获取未读消息数
    */
-  public static void getUnreadCount(RongIM.OnReceiveUnreadCountChangedListener listener) {
+  public void getUnreadCount(RongIM.OnReceiveUnreadCountChangedListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance()
           .setOnReceiveUnreadCountChangedListener(listener, Conversation.ConversationType.PRIVATE);
@@ -374,7 +381,7 @@ public class IMPresenter {
   /**
    * 置顶会话
    */
-  public static void setConversationToTop(String targetId, boolean isTop) {
+  public void setConversationToTop(String targetId, boolean isTop) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance()
           .setConversationToTop(Conversation.ConversationType.PRIVATE, targetId, isTop,
@@ -391,7 +398,7 @@ public class IMPresenter {
   /**
    * 移除会话
    */
-  public static void removeConversation(String targetId, final RongYunBehaviorListener listener) {
+  public void removeConversation(String targetId, final RongYunBehaviorListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().removeConversation(Conversation.ConversationType.PRIVATE, targetId,
           new RongIMClient.ResultCallback<Boolean>() {
@@ -413,7 +420,7 @@ public class IMPresenter {
   /**
    * 删除消息
    */
-  public static void deleteMessages(int[] messageIds) {
+  public void deleteMessages(int[] messageIds) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().deleteMessages(messageIds, new RongIMClient.ResultCallback<Boolean>() {
         @Override public void onSuccess(Boolean aBoolean) {
@@ -430,7 +437,7 @@ public class IMPresenter {
   /**
    * 撤回消息
    */
-  public static void recallMessage(Message message) {
+  public void recallMessage(Message message) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().recallMessage(message);
     }
@@ -439,7 +446,7 @@ public class IMPresenter {
   /**
    * 加入黑名单
    */
-  public static void addToBlackList(String targetId, final RongYunBehaviorListener listener) {
+  public void addToBlackList(String targetId, final RongYunBehaviorListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().addToBlacklist(targetId, new RongIMClient.OperationCallback() {
         @Override public void onSuccess() {
@@ -460,7 +467,7 @@ public class IMPresenter {
   /**
    * 获取本地聊天列表
    */
-  public static void getConversationList(
+  public void getConversationList(
       RongIMClient.ResultCallback<List<Conversation>> resultCallback) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance()
@@ -471,7 +478,7 @@ public class IMPresenter {
   /**
    * 获取指定用户的消息
    */
-  public static void getLatestMessages(final String targetId, int count, final RongYunBehaviorListener listener) {
+  public void getLatestMessages(final String targetId, int count, final RongYunBehaviorListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().getLatestMessages(Conversation.ConversationType.PRIVATE, targetId, count,
           new RongIMClient.ResultCallback<List<Message>>() {

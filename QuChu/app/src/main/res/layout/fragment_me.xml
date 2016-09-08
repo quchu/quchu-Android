@@ -39,7 +39,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_view"
-        android:layout_marginTop="15dp"
         android:background="@color/standard_color_white"
         android:orientation="vertical"
         android:paddingLeft="@dimen/base_margin"
@@ -71,7 +70,7 @@
             android:src="@mipmap/ic_go_right" />
       </LinearLayout>
 
-      <View style="@style/HorizontalLine" />
+      <View style="@style/HorizontalDivider" />
 
       <LinearLayout
           android:id="@+id/quchu_layout"
@@ -99,7 +98,7 @@
             android:src="@mipmap/ic_go_right" />
       </LinearLayout>
 
-      <View style="@style/HorizontalLine" />
+      <View style="@style/HorizontalDivider" />
 
       <RelativeLayout
           android:id="@+id/massage_layout"
@@ -139,7 +138,7 @@
             android:src="@mipmap/ic_go_right" />
       </RelativeLayout>
 
-      <View style="@style/HorizontalLine" />
+      <View style="@style/HorizontalDivider" />
 
       <LinearLayout
           android:id="@+id/feedback_layout"

@@ -60,7 +60,7 @@ public class NewChatListFragment extends BaseFragment {
    * 获取本地存储的会话列表
    */
   private void getConversationList() {
-    IMPresenter.getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+    new IMPresenter().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
       @Override public void onSuccess(List<Conversation> conversations) {
         LogUtils.e("ConversationListFragment", "getConversationList()-----onSuccess");
         refreshLayout.setRefreshing(false);

@@ -223,7 +223,7 @@ public class LoginByPhoneFragment extends Fragment
         LogUtils.e("LoginByPhoneFragment", "login success");
 
         //连接融云服务
-        IMPresenter.getToken(getActivity());
+        new IMPresenter().getToken(getActivity(), null);
 
         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
         getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class)

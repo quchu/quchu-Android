@@ -50,14 +50,14 @@
             android:paddingTop="10dp">
 
           <ImageView
-              android:id="@+id/tuhao_img"
+              android:id="@+id/wenyi_img"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_tuhao_blue" />
+              android:src="@mipmap/ic_wenyi_blue" />
 
           <TextView
-              android:id="@+id/tuhao_tv"
+              android:id="@+id/wenyi_tv"
               android:layout_width="match_parent"
               android:layout_height="0dp"
               android:layout_weight="1"
@@ -70,93 +70,11 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:text="土豪基因"
+              android:text="文艺基因"
               android:textColor="#BAD2D8"
               android:textSize="@dimen/standard_text_size_h4" />
 
         </co.quchu.quchu.widget.SquaredLinearLayout>
-
-        <co.quchu.quchu.widget.SquaredLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/quarter_margin"
-            android:layout_weight="1"
-            android:background="@drawable/shape_lineframe_ltgray_thin"
-            android:orientation="vertical"
-            android:paddingBottom="15dp"
-            android:paddingTop="10dp">
-
-          <ImageView
-              android:id="@+id/chihuo_img"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center"
-              android:src="@mipmap/ic_chihuo_blue" />
-
-          <TextView
-              android:id="@+id/chihuo_tv"
-              android:layout_width="match_parent"
-              android:layout_height="0dp"
-              android:layout_weight="1"
-              android:gravity="center"
-              android:text="0"
-              android:textColor="@color/standard_color_h2_dark"
-              android:textSize="@dimen/personal_gene_text_size" />
-
-          <TextView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:gravity="center"
-              android:text="吃货基因"
-              android:textColor="#BAD2D8"
-              android:textSize="@dimen/standard_text_size_h4" />
-
-        </co.quchu.quchu.widget.SquaredLinearLayout>
-
-        <co.quchu.quchu.widget.SquaredLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/quarter_margin"
-            android:layout_weight="1"
-            android:background="@drawable/shape_lineframe_ltgray_thin"
-            android:orientation="vertical"
-            android:paddingBottom="15dp"
-            android:paddingTop="10dp">
-
-          <ImageView
-              android:id="@+id/haoqi_img"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center"
-              android:src="@mipmap/ic_haoqi_blue" />
-
-          <TextView
-              android:id="@+id/haoqi_tv"
-              android:layout_width="match_parent"
-              android:layout_height="0dp"
-              android:layout_weight="1"
-              android:gravity="center"
-              android:text="0"
-              android:textColor="@color/standard_color_h2_dark"
-              android:textSize="@dimen/personal_gene_text_size" />
-
-          <TextView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:gravity="center"
-              android:text="好奇基因"
-              android:textColor="#BAD2D8"
-              android:textSize="@dimen/standard_text_size_h4" />
-
-        </co.quchu.quchu.widget.SquaredLinearLayout>
-
-      </LinearLayout>
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="1"
-          android:orientation="horizontal">
 
         <co.quchu.quchu.widget.SquaredLinearLayout
             android:layout_width="match_parent"
@@ -190,6 +108,88 @@
               android:layout_height="wrap_content"
               android:gravity="center"
               android:text="社交基因"
+              android:textColor="#BAD2D8"
+              android:textSize="@dimen/standard_text_size_h4" />
+
+        </co.quchu.quchu.widget.SquaredLinearLayout>
+
+        <co.quchu.quchu.widget.SquaredLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/quarter_margin"
+            android:layout_weight="1"
+            android:background="@drawable/shape_lineframe_ltgray_thin"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:paddingTop="10dp">
+
+          <ImageView
+              android:id="@+id/tuhao_img"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:src="@mipmap/ic_tuhao_blue" />
+
+          <TextView
+              android:id="@+id/tuhao_tv"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:text="0"
+              android:textColor="@color/standard_color_h2_dark"
+              android:textSize="@dimen/personal_gene_text_size" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="土豪基因"
+              android:textColor="#BAD2D8"
+              android:textSize="@dimen/standard_text_size_h4" />
+
+        </co.quchu.quchu.widget.SquaredLinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:orientation="horizontal">
+
+        <co.quchu.quchu.widget.SquaredLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/quarter_margin"
+            android:layout_weight="1"
+            android:background="@drawable/shape_lineframe_ltgray_thin"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:paddingTop="10dp">
+
+          <ImageView
+              android:id="@+id/chihuo_img"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:src="@mipmap/ic_chihuo_blue" />
+
+          <TextView
+              android:id="@+id/chihuo_tv"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:text="0"
+              android:textColor="@color/standard_color_h2_dark"
+              android:textSize="@dimen/personal_gene_text_size" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="吃货基因"
               android:textColor="#BAD2D8"
               android:textSize="@dimen/standard_text_size_h4" />
 
@@ -243,14 +243,14 @@
             android:paddingTop="10dp">
 
           <ImageView
-              android:id="@+id/wenyi_img"
+              android:id="@+id/haoqi_img"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_wenyi_blue" />
+              android:src="@mipmap/ic_haoqi_blue" />
 
           <TextView
-              android:id="@+id/wenyi_tv"
+              android:id="@+id/haoqi_tv"
               android:layout_width="match_parent"
               android:layout_height="0dp"
               android:layout_weight="1"
@@ -263,7 +263,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:text="文艺基因"
+              android:text="好奇基因"
               android:textColor="#BAD2D8"
               android:textSize="@dimen/standard_text_size_h4" />
 

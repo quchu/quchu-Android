@@ -53,13 +53,16 @@ public class NewMeFragment extends BaseFragment {
   @Bind(R.id.quchu_layout)
   LinearLayout quchuLayout;
   @Bind(R.id.unReadMassage)
-  TextView unReadMassage;
+  TextView unReadMassageView;
   @Bind(R.id.massage_layout)
   RelativeLayout massageLayout;
   @Bind(R.id.feedback_layout)
   LinearLayout feedbackLayout;
 
   private MeActivityPresenter presenter;
+
+  private boolean mHasPushUnreadMessage;//个推消息
+  private boolean mHasImUnreadMessage;//im消息
 
   @Nullable
   @Override
@@ -118,7 +121,8 @@ public class NewMeFragment extends BaseFragment {
     presenter.getUnreadMassageCound(new CommonListener<Integer>() {
       @Override
       public void successListener(Integer response) {
-        notReadMassage(response);
+        mHasPushUnreadMessage = response > 0 ? true : false;
+        showUnreadView();
       }
 
       @Override
@@ -127,23 +131,35 @@ public class NewMeFragment extends BaseFragment {
     });
 
     //im未读消息数
-    IMPresenter.getUnreadCount(new RongIM.OnReceiveUnreadCountChangedListener() {
+    new IMPresenter().getUnreadCount(new RongIM.OnReceiveUnreadCountChangedListener() {
       @Override
       public void onMessageIncreased(int i) {
-        notReadMassage(i);
+        mHasPushUnreadMessage = false;
+        mHasImUnreadMessage = i > 0 ? true : false;
+        showUnreadView();
       }
     });
   }
 
-  public void notReadMassage(int count) {
-    if (unReadMassage == null) {
+  /**
+   * 显示我的红点
+   */
+  private void showUnreadView() {
+    if (unReadMassageView == null) {
       return;
     }
-    if (count > 0) {
-      unReadMassage.setText(String.valueOf(count));
-      unReadMassage.setVisibility(View.VISIBLE);
+
+    if (mHasPushUnreadMessage) {
+      unReadMassageView.setVisibility(View.VISIBLE);
+      ((RecommendActivity)getActivity()).showUnreadView(true);
     } else {
-      unReadMassage.setVisibility(View.GONE);
+      if (mHasImUnreadMessage) {
+        unReadMassageView.setVisibility(View.VISIBLE);
+        ((RecommendActivity)getActivity()).showUnreadView(true);
+      } else {
+        unReadMassageView.setVisibility(View.INVISIBLE);
+        ((RecommendActivity)getActivity()).showUnreadView(false);
+      }
     }
   }
 
@@ -203,7 +219,6 @@ public class NewMeFragment extends BaseFragment {
         //消息
         UMEvent("message_c");
         startActivity(MessageActivity.class);
-        unReadMassage.setVisibility(View.INVISIBLE);
         break;
 
       case R.id.feedback_layout:

@@ -157,7 +157,12 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                         loadMoreHold.retryView.setText(getNullDataHint());
                     }
                 } else {
-                    loadMoreHold.retryView.setText(getAllDataHint());
+                    if (getFeedback()) {
+                        loadMoreHold.feedbackEmptyView.setVisibility(View.GONE);
+                        loadMoreHold.retryView.setText(getAllDataHint());
+                    } else {
+                        loadMoreHold.retryView.setText(getAllDataHint());
+                    }
                 }
             }
         } else {

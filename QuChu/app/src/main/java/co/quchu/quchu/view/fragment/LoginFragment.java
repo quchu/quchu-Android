@@ -159,7 +159,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
   @Override public void loginSuccess(int type, String token, String appId) {
 
     //连接融云服务
-    IMPresenter.getToken(getActivity());
+    new IMPresenter().getToken(getActivity(), null);
 
     ArrayMap<String, Object> params = new ArrayMap<>();
 

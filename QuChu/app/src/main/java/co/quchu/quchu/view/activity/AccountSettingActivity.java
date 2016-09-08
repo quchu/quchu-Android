@@ -49,6 +49,7 @@ import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.AccountSettingPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserInfoHelper;
@@ -233,7 +234,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                                 SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);
 
                                 //退出当前账号登录的融云信息
-                                IMPresenter.logout();
+                                new IMPresenter().logout();
 
                                 UserLoginPresenter.visitorRegiest(AccountSettingActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
                                     @Override
@@ -244,7 +245,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                                         ZGEvent(params,"用户登陆");
 
                                         //重新获取融云token连接服务器
-                                        IMPresenter.getToken(AccountSettingActivity.this);
+                                        new IMPresenter().getToken(AccountSettingActivity.this, null);
 
                                         commonDialog.dismiss();
                                         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
@@ -355,6 +356,11 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
     //保存修改信息
     public void saveUserChange() {
+        if (!NetUtil.isNetworkConnected(this)) {
+            makeToast(R.string.network_error);
+            return;
+        }
+
         newUserNickName = nickname.getText().toString().trim();
 
         if (newUserNickName.length() < 1 || newUserNickName.length() > 10) {

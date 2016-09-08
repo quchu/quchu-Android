@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
@@ -16,6 +17,7 @@ import co.quchu.quchu.im.IMDialog;
 import co.quchu.quchu.im.IMPresenter;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.UIConversation;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
 /**
@@ -99,6 +101,13 @@ public class ChatListFragment extends BaseFragment {
         @Override public boolean onConversationClick(Context context, View view,
             UIConversation uiConversation) {
           //列表点击
+          if (RongIMClient.getInstance() != null) {
+            if (!RongIMClient.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
+              Toast.makeText(getActivity(), "IM连接失败，请检查网络或者重启应用！", Toast.LENGTH_SHORT).show();
+              return true;
+            }
+          }
+
           String targetId = uiConversation.getConversationTargetId();
           String title = uiConversation.getUIConversationTitle();
 
