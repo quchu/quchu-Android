@@ -1,12 +1,12 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -40,7 +40,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
 
   @Bind(R.id.feedback_recycler_view) RecyclerView recyclerView;
   @Bind(R.id.feedback_swipeRefreshLayout) SwipeRefreshLayout refreshLayout;
-  @Bind(R.id.submit_feedback_btn) ImageView submitFeedbackBtn;
+  @Bind(R.id.submit_feedback_btn) FloatingActionButton submitFeedbackBtn;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
