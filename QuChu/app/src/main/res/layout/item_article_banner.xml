@@ -63,7 +63,7 @@
         android:layout_toLeftOf="@+id/tvFavorites"
         android:layout_marginRight="20dp"
         android:drawablePadding="5dp"
-        tools:text="111"
+        android:text="0"
         />
     <TextView
         android:id="@+id/tvFavorites"
@@ -73,7 +73,7 @@
         android:drawableLeft="@mipmap/ic_faxianshoucang_dk"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        tools:text="111"
+        android:text="0"
         />
 
 
@@ -123,7 +123,7 @@
       android:layout_marginTop="19dp"
       android:lineSpacingExtra="4sp"
       android:paddingBottom="20dp"
-      android:text="description"
+      tools:text="description"
       style="@style/TextView.H2"
       />
 
@@ -131,6 +131,11 @@
       android:layout_width="match_parent"
       android:layout_height="11dp"
       android:background="@color/colorBackground"
+      />
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="20dp"
       />
 
 </LinearLayout>

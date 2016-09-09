@@ -8,6 +8,7 @@
     android:clickable="false"
     android:fitsSystemWindows="true"
     android:background="@color/standard_color_white"
+    android:orientation="vertical"
     >
 
 
@@ -21,7 +22,6 @@
             android:id="@+id/sdvCover"
             card_view:actualImageScaleType="centerCrop"
             card_view:failureImage="@mipmap/ic_image_empty"
-            card_view:overlayImage="@color/colorSceneColor"
             card_view:failureImageScaleType="center"
             card_view:placeholderImage="@mipmap/ic_image_empty"
             card_view:placeholderImageScaleType="center"
@@ -51,6 +51,7 @@
                 android:textColor="@color/standard_color_white"
                 android:textStyle="bold"
                 tools:text="title"
+                android:visibility="gone"
                 style="@style/TextView.H1"
                 android:shadowColor="@color/standard_color_h1_dark"
                 android:shadowRadius="10"
@@ -75,6 +76,7 @@
 
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvDescription"
@@ -114,4 +116,39 @@
 
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvArticleTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="@dimen/standard_text_size_h1"
+        android:textColor="@color/standard_color_h1_dark"
+        android:layout_marginTop="25dp"
+        tools:text="标题"
+        android:layout_marginLeft="20dp"
+        />
+
+    <View
+        android:layout_width="9dp"
+        android:layout_height="2dp"
+        android:background="@color/standard_color_yellow"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        />
+
+
+    <TextView
+        android:id="@+id/tvDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:lineSpacingExtra="4sp"
+        android:paddingBottom="20dp"
+        tools:text="description"
+        style="@style/TextView.H2"
+        />
 </LinearLayout>

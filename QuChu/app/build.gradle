@@ -10,7 +10,7 @@ android {
         targetSdkVersion 22
         minSdkVersion 16
         versionCode 1074
-        versionName "1.4.2.10"
+        versionName "1.5.0"
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
 

@@ -80,17 +80,19 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
   @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
     if (holder instanceof BannerViewHolder) {
       ((BannerViewHolder) holder).tvDescription.setText(mSimpleArticleModel.getArticleComtent());
-      ((BannerViewHolder) holder).tvTitle.setText(mSimpleArticleModel.getArticleName());
-      ((BannerViewHolder) holder).itemClassifyImageSdv.setImageURI(
-          Uri.parse(mSimpleArticleModel.getImageUrl()));
+      ((BannerViewHolder) holder).tvArticleTitle.setText(mSimpleArticleModel.getArticleName());
+      ((BannerViewHolder) holder).tvReviews.setText(String.valueOf(mSimpleArticleModel.getReadCount()));
+      ((BannerViewHolder) holder).tvFavorites.setText(String.valueOf(mSimpleArticleModel.getFavoriteCount()));
+      ((BannerViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mSimpleArticleModel.getImageUrl()));
+
     } else if (holder instanceof ArticleViewHolder) {
 
       //((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position-1).getContent());
       ((ArticleViewHolder) holder).tvTitle.setText(mDataSet.get(position - 1).getName());
-      ((ArticleViewHolder) holder).itemClassifyImageSdv.setImageURI(
-          Uri.parse(mDataSet.get(position - 1).getCover()));
-      ((ArticleViewHolder) holder).tvDescription.setVisibility(View.VISIBLE);
-      ((ArticleViewHolder) holder).tvDescription.setText("# 小编推荐");
+      ((ArticleViewHolder) holder).itemClassifyImageSdv.setImageURI(Uri.parse(mDataSet.get(position - 1).getCover()));
+      //((ArticleViewHolder) holder).tvDescription.setVisibility(View.VISIBLE);
+      //((ArticleViewHolder) holder).tvDescription.setText("# 小编推荐");
+      ((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position-1).getContent());
     }
     final int finalPosition = position;
     holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +111,6 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
   public class BannerViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.sdvCover) SimpleDraweeView itemClassifyImageSdv;
-    @Bind(R.id.tvTitle) TextView tvTitle;
     @Bind(R.id.tvDescription) TextView tvDescription;
     @Bind(R.id.tvArticleTitle) TextView tvArticleTitle;
     @Bind(R.id.tvSubTitle) TextView tvSubTitle;
@@ -125,8 +126,8 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
   public class ArticleViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.sdvCover) SimpleDraweeView itemClassifyImageSdv;
-    @Bind(R.id.tvTitle) TextView tvTitle;
-    @Bind(R.id.tvDescription) TextView tvDescription;
+    @Bind(R.id.tvArticleTitle) TextView tvTitle;
+    @Bind(R.id.tvDesc) TextView tvDescription;
 
     public ArticleViewHolder(View itemView) {
       super(itemView);
