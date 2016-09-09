@@ -114,7 +114,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_RECOMMENDED:
                 return new RecommendedViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_scene_detail_recommeded, parent, false));
             case TYPE_ARTICLE:
-                return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_article_detail, parent, false));
+                return new ArticleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_scene_detail, parent, false));
             case TYPE_PLACE_LIST:
                 return new PlaceViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_scene_detail_recommeded, parent, false));
             case TYPE_PAGE_END:
