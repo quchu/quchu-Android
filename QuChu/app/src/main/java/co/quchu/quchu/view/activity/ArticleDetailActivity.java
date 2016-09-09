@@ -105,7 +105,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
         articleTitle = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_TITLE);
         from = getIntent().getStringExtra(BUNDLE_KEY_ARTICLE_FROM);
 
-        getEnhancedToolbar().getTitleTv().setText(articleTitle);
+        getEnhancedToolbar().getTitleTv().setText("文章详情");
 
 
         ArrayMap<String,Object> params = new ArrayMap<>();
