@@ -502,6 +502,12 @@ public class RecommendFragment extends BaseFragment
     } else {
       llPageIndicator.setVisibility(View.INVISIBLE);
     }
+
+    if (currentIndex==0){
+      llPageIndicator.setVisibility(View.VISIBLE);
+    }else{
+      llPageIndicator.setVisibility(View.GONE);
+    }
   }
 
   public static float MIN_SCALE = .9f;

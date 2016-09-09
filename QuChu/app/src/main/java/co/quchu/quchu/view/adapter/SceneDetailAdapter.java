@@ -53,13 +53,16 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     public void updateFavorite(int index,boolean status,boolean fromRec){
+        System.out.println("place "+index+" | "+status+" | "+fromRec);
         if (fromRec){
             if (mBestPlace.size()>index){
-                mBestPlace.get(index).getPlaceInfo().setIsf(!status);
+                System.out.println("rec place changed");
+                mBestPlace.get(index).getPlaceInfo().setIsf(status);
             }
         }else{
             if (mData.size()>index){
-                mData.get(index).setIsf(!status);
+                System.out.println("place changed");
+                mData.get(index).setIsf(status);
             }
         }
         notifyDataSetChanged();

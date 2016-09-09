@@ -267,14 +267,18 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
                         @Override public void onFavoriteClick(int pid, final boolean status, final int index,
                             final boolean fromRecommand) {
                             InterestingDetailPresenter.setDetailFavorite(SceneDetailActivity.this,
-                                pid, !status, new InterestingDetailPresenter.DetailDataListener() {
+                                pid, status, new InterestingDetailPresenter.DetailDataListener() {
                                     @Override public void onSuccessCall(String str) {
-                                        Toast.makeText(SceneDetailActivity.this,"收藏成功!",Toast.LENGTH_SHORT).show();
+                                        if (status){
+                                            Toast.makeText(SceneDetailActivity.this,"收藏成功!",Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            Toast.makeText(SceneDetailActivity.this,"取消收藏!",Toast.LENGTH_SHORT).show();
+                                        }
+
                                         mAdapter.updateFavorite(index,!status,fromRecommand?fromRecommand:false);
                                     }
 
                                     @Override public void onErrorCall(String str) {
-                                        Toast.makeText(SceneDetailActivity.this,"取消收藏!",Toast.LENGTH_SHORT).show();
                                     }
                                 });
                         }
