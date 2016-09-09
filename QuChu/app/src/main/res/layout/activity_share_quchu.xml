@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_above="@+id/tvShare"
+                    android:layout_above="@+id/vAnchor"
                     android:layout_marginLeft="@dimen/base_margin"
                     android:background="@color/standard_color_h3_dark" />
 
@@ -203,6 +203,14 @@
                     </RelativeLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/vAnchor"
+                    android:layout_below="@+id/llContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/toolbar_item_size"
+                    android:layout_marginTop="@dimen/base_margin"
+                    />
             </RelativeLayout>
 
     </ScrollView>
