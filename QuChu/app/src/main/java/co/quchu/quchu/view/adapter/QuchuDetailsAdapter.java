@@ -471,7 +471,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       int blockIndex = 0;
       if (null!=mData){
         if (null!=mData.getAreaMap()){
-          tags.add("" +mData.getAreaMap().getName()+" ");
+          tags.add(" " +mData.getAreaMap().getName()+" ");
           blockIndex+=1;
           highLights.add(true);
         }

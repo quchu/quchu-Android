@@ -269,7 +269,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
                             InterestingDetailPresenter.setDetailFavorite(SceneDetailActivity.this,
                                 pid, status, new InterestingDetailPresenter.DetailDataListener() {
                                     @Override public void onSuccessCall(String str) {
-                                        if (status){
+                                        if (!status){
                                             Toast.makeText(SceneDetailActivity.this,"收藏成功!",Toast.LENGTH_SHORT).show();
                                         }else{
                                             Toast.makeText(SceneDetailActivity.this,"取消收藏!",Toast.LENGTH_SHORT).show();

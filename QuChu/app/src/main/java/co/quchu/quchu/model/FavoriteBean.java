@@ -143,7 +143,7 @@ public class FavoriteBean {
             ArrayList<String> list = new ArrayList<>();
             if (tags != null) {
                 for (TagsBean item : tags) {
-                    list.add(item.getZh());
+                    list.add(" "+item.getZh()+" ");
                 }
             }
             return list;

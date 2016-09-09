@@ -248,9 +248,9 @@ public class PolygonProgressView extends View {
         int maxLength = r;
         Bitmap bitmap = bl[i];
 
-        float actuallyValues = maxLength + bitmap.getWidth();
+        float actuallyValues = maxLength -20 + bitmap.getWidth();
 
-        float x = (int) (Math.cos(angle) * actuallyValues + c);
+        float x = (int) (Math.cos(angle) * actuallyValues + c );
         float y = (int) (Math.sin(angle) * actuallyValues + c);
 
         pab.setAlpha((int) (apv[0]*255));
