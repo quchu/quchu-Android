@@ -215,7 +215,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                 });
                 rv.setAdapter(mAdapter);
 
-                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_shoucang_yellow:R.mipmap.ic_shoucang_lt);
+                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_shoucang_yellow:R.mipmap.ic_shoucang);
                 mSwipeRefreshLayout.setRefreshing(false);
                 errorView.hideView();
 
@@ -263,7 +263,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                 public void successListener(Object response) {
                     mFavoriteProgressRunning = false;
                     Toast.makeText(getApplicationContext(), R.string.add_to_favorite_article_success, Toast.LENGTH_SHORT).show();
-                    ivFavorite.setImageResource(R.mipmap.ic_favorite_hl);
+                    ivFavorite.setImageResource(R.mipmap.ic_shoucang_yellow);
                     mArticleDetailModel.getArticle().setFavorite(true);
                 }
 
@@ -279,13 +279,13 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                 public void successListener(Object response) {
                     mFavoriteProgressRunning = false;
                     Toast.makeText(getApplicationContext(), R.string.del_to_favorite_article_success, Toast.LENGTH_SHORT).show();
-                    ivFavorite.setImageResource(R.mipmap.ic_favorite);
+                    ivFavorite.setImageResource(R.mipmap.ic_shoucang);
                     mArticleDetailModel.getArticle().setFavorite(false);
                 }
 
                 @Override
                 public void errorListener(VolleyError error, String exception, String msg) {
-                    Toast.makeText(getApplicationContext(), R.string.del_to_favorite_article_success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.del_to_favorite_article_fail, Toast.LENGTH_SHORT).show();
                     mFavoriteProgressRunning = false;
                 }
             });
