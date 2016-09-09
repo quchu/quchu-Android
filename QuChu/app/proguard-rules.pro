@@ -188,7 +188,7 @@ public static final int *;
 ## ----------------------------------
 ##   ########## 高德地图混淆    #########
 ## ----------------------------------
--libraryjars libs/BaiduLBS_Android.jar 替换成自己所用版本的jar包
+-libraryjars libs/BaiduLBS_Android.jar #替换成自己所用版本的jar包
 -keep class com.baidu.** { *; }
 -keep class vi.com.gdi.bgl.android.**{*;}
 ## ----------------------------------
