@@ -25,19 +25,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 fresco:placeholderImage="@mipmap/ic_image_empty"
+                fresco:overlayImage="@color/colorSceneColor"
                 fresco:viewAspectRatio="1.8" />
 
             <!--fresco:overlayImage="@color/translucent_dark"-->
-            <TextView
-                android:id="@+id/favorite_essay_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/simpleDraweeView"
-                android:layout_marginBottom="@dimen/base_margin"
-                android:layout_marginLeft="@dimen/base_margin"
-                android:textColor="@color/standard_color_white"
-                android:textSize="@dimen/word_subhead_size"
-                tools:text="哈哈哈发的身份" />
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/favorite_essay_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/standard_color_white"
+                    android:textSize="@dimen/word_subhead_size"
+                    tools:text="标题" />
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/half_margin"
+                    android:lineSpacingExtra="4sp"
+                    android:textColor="@color/standard_color_white"
+                    android:text="# 小编推荐"
+                    style="@style/TextView.H2"
+                    android:shadowColor="@color/standard_color_h1_dark"
+                    android:shadowRadius="10"
+
+                    />
+
+            </LinearLayout>
 
             <View
                 style="@style/HorizontalLine"

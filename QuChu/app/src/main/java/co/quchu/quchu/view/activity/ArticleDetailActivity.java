@@ -215,7 +215,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                 });
                 rv.setAdapter(mAdapter);
 
-                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_favorite_hl:R.mipmap.ic_favorite);
+                ivFavorite.setImageResource(mArticleDetailModel.getArticle().isFavorite()? R.mipmap.ic_shoucang_yellow:R.mipmap.ic_shoucang_lt);
                 mSwipeRefreshLayout.setRefreshing(false);
                 errorView.hideView();
 

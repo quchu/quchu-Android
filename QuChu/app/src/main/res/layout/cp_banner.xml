@@ -66,7 +66,7 @@
         android:lineSpacingExtra="1dp"
         android:paddingBottom="@dimen/half_margin"
         android:text="@string/qu_faxian_simple_desc"
-        style="@style/TextView.H2"
+        style="@style/TextView.H3"
         />
 
   </LinearLayout>
