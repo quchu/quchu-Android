@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/standard_color_white"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/standard_color_white"
+                android:orientation="vertical">
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -13,19 +13,28 @@
       android:paddingLeft="@dimen/base_margin"
       android:paddingRight="@dimen/base_margin">
 
-    <ImageView
+    <LinearLayout
+        android:id="@+id/gene_top_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="20dp"
-        android:background="@mipmap/ic_quchu" />
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="趣基因和你的真实基因一样，记录了你的兴趣喜好，同时决定了你的个性。"
-        android:textColor="#999"
-        android:textSize="14sp" />
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="5dp"
+          android:layout_marginTop="20dp"
+          android:background="@mipmap/ic_quchu"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="趣基因和你的真实基因一样，记录了你的兴趣喜好，同时决定了你的个性。"
+          android:textColor="#999"
+          android:textSize="14sp"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +63,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_wenyi_blue" />
+              android:src="@mipmap/ic_wenyi_blue"/>
 
           <TextView
               android:id="@+id/wenyi_tv"
@@ -64,7 +73,7 @@
               android:gravity="center"
               android:text="0"
               android:textColor="@color/standard_color_h2_dark"
-              android:textSize="@dimen/personal_gene_text_size" />
+              android:textSize="@dimen/personal_gene_text_size"/>
 
           <TextView
               android:layout_width="match_parent"
@@ -72,7 +81,7 @@
               android:gravity="center"
               android:text="文艺基因"
               android:textColor="#BAD2D8"
-              android:textSize="@dimen/standard_text_size_h4" />
+              android:textSize="@dimen/standard_text_size_h4"/>
 
         </co.quchu.quchu.widget.SquaredLinearLayout>
 
@@ -91,7 +100,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_shejiao_blue" />
+              android:src="@mipmap/ic_shejiao_blue"/>
 
           <TextView
               android:id="@+id/shejiao_tv"
@@ -101,7 +110,7 @@
               android:gravity="center"
               android:text="0"
               android:textColor="@color/standard_color_h2_dark"
-              android:textSize="@dimen/personal_gene_text_size" />
+              android:textSize="@dimen/personal_gene_text_size"/>
 
           <TextView
               android:layout_width="match_parent"
@@ -109,7 +118,7 @@
               android:gravity="center"
               android:text="社交基因"
               android:textColor="#BAD2D8"
-              android:textSize="@dimen/standard_text_size_h4" />
+              android:textSize="@dimen/standard_text_size_h4"/>
 
         </co.quchu.quchu.widget.SquaredLinearLayout>
 
@@ -128,7 +137,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_tuhao_blue" />
+              android:src="@mipmap/ic_tuhao_blue"/>
 
           <TextView
               android:id="@+id/tuhao_tv"
@@ -138,7 +147,7 @@
               android:gravity="center"
               android:text="0"
               android:textColor="@color/standard_color_h2_dark"
-              android:textSize="@dimen/personal_gene_text_size" />
+              android:textSize="@dimen/personal_gene_text_size"/>
 
           <TextView
               android:layout_width="match_parent"
@@ -146,7 +155,7 @@
               android:gravity="center"
               android:text="土豪基因"
               android:textColor="#BAD2D8"
-              android:textSize="@dimen/standard_text_size_h4" />
+              android:textSize="@dimen/standard_text_size_h4"/>
 
         </co.quchu.quchu.widget.SquaredLinearLayout>
 
@@ -173,7 +182,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_chihuo_blue" />
+              android:src="@mipmap/ic_chihuo_blue"/>
 
           <TextView
               android:id="@+id/chihuo_tv"
@@ -183,7 +192,7 @@
               android:gravity="center"
               android:text="0"
               android:textColor="@color/standard_color_h2_dark"
-              android:textSize="@dimen/personal_gene_text_size" />
+              android:textSize="@dimen/personal_gene_text_size"/>
 
           <TextView
               android:layout_width="match_parent"
@@ -191,7 +200,7 @@
               android:gravity="center"
               android:text="吃货基因"
               android:textColor="#BAD2D8"
-              android:textSize="@dimen/standard_text_size_h4" />
+              android:textSize="@dimen/standard_text_size_h4"/>
 
         </co.quchu.quchu.widget.SquaredLinearLayout>
 
@@ -210,7 +219,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_shishang_blue" />
+              android:src="@mipmap/ic_shishang_blue"/>
 
           <TextView
               android:id="@+id/shishang_tv"
@@ -220,7 +229,7 @@
               android:gravity="center"
               android:text="0"
               android:textColor="@color/standard_color_h2_dark"
-              android:textSize="@dimen/personal_gene_text_size" />
+              android:textSize="@dimen/personal_gene_text_size"/>
 
           <TextView
               android:layout_width="match_parent"
@@ -228,7 +237,7 @@
               android:gravity="center"
               android:text="时尚基因"
               android:textColor="#BAD2D8"
-              android:textSize="@dimen/standard_text_size_h4" />
+              android:textSize="@dimen/standard_text_size_h4"/>
 
         </co.quchu.quchu.widget.SquaredLinearLayout>
 
@@ -247,7 +256,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:src="@mipmap/ic_haoqi_blue" />
+              android:src="@mipmap/ic_haoqi_blue"/>
 
           <TextView
               android:id="@+id/haoqi_tv"
@@ -257,7 +266,7 @@
               android:gravity="center"
               android:text="0"
               android:textColor="@color/standard_color_h2_dark"
-              android:textSize="@dimen/personal_gene_text_size" />
+              android:textSize="@dimen/personal_gene_text_size"/>
 
           <TextView
               android:layout_width="match_parent"
@@ -265,7 +274,7 @@
               android:gravity="center"
               android:text="好奇基因"
               android:textColor="#BAD2D8"
-              android:textSize="@dimen/standard_text_size_h4" />
+              android:textSize="@dimen/standard_text_size_h4"/>
 
         </co.quchu.quchu.widget.SquaredLinearLayout>
 

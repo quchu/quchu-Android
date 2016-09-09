@@ -10,7 +10,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.view.fragment.FavoriteEssayFragment;
@@ -51,7 +50,7 @@ public class FavoriteActivity extends BaseBehaviorActivity {
         tabLayout.addTab(tabLayout.newTab().setText("趣处"));
         tabLayout.addTab(tabLayout.newTab().setText("文章"));
 
-        final FavoriteQuchuFragment quchuFragment = new FavoriteQuchuFragment();
+        final FavoriteQuchuFragment quchuFragment = FavoriteQuchuFragment.newInstance(true, -1);
         final FavoriteEssayFragment essayFragment = new FavoriteEssayFragment();
 
 

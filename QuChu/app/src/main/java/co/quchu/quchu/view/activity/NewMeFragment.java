@@ -237,7 +237,7 @@ public class NewMeFragment extends BaseFragment {
       super(fm);
 
       avatarFragment = new MeAvatarFragment();
-      genFragment = new MeGenFragment();
+      genFragment = MeGenFragment.newInstance(true, -1);
     }
 
     @Override

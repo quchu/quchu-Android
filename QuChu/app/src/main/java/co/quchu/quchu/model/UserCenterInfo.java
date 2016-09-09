@@ -1,12 +1,14 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
+
 /**
  * UserCenterInfo
  * User: Chenhs
  * Date: 2016-02-24
  * 用户中心model
  */
-public class UserCenterInfo {
+public class UserCenterInfo implements Serializable{
 
     /**
      * age : 1

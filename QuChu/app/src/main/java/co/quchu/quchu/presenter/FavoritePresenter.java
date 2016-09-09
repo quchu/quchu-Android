@@ -28,135 +28,163 @@ import co.quchu.quchu.view.activity.FindPositionListActivity;
  */
 public class FavoritePresenter {
 
-    private QuchuModel model;
-    private Context context;
+  private QuchuModel model;
+  private Context context;
 
-    public FavoritePresenter(Context context) {
-        this.context = context;
-        model = new QuchuModel(context);
-    }
+  public FavoritePresenter(Context context) {
+    this.context = context;
+    model = new QuchuModel(context);
+  }
 
-    //获取收藏
-    public void getFavoriteData(final int pageNo, final PageLoadListener<FavoriteBean> view) {
-        model.getFavoriteData(pageNo, new ResponseListener<FavoriteBean>() {
+  /**
+   * 获取用户的收藏趣处
+   */
+  public static void getPersonFavorite(Context context, int userId, final int pageNo, final PageLoadListener<FavoriteBean> listener) {
+    String url = String.format(Locale.CHINA, NetApi.getUsercenterFavorite, userId, pageNo);
 
-            @Override
-            public void onErrorResponse(@Nullable VolleyError error) {
-                view.netError(pageNo, "");
-            }
+    GsonRequest<FavoriteBean> request = new GsonRequest<FavoriteBean>(url, FavoriteBean.class, new ResponseListener<FavoriteBean>() {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        if (listener != null) {
+          listener.netError(pageNo, "");
+        }
+      }
 
-            @Override
-            public void onResponse(FavoriteBean response, boolean result, @Nullable String exception, @Nullable String msg) {
-                if (response == null) {
-                    view.nullData();
-                } else if (pageNo == 1) {
-                    view.initData(response);
-                } else {
-                    view.moreData(response);
-                }
-            }
-        });
-    }
+      @Override
+      public void onResponse(FavoriteBean response, boolean result, String errorCode, @Nullable String msg) {
+        if (response == null) {
+          listener.nullData();
+        } else if (pageNo == 1 && response != null) {
+          listener.initData(response);
+        } else {
+          listener.moreData(response);
+        }
+      }
+    });
+    request.start(context);
+  }
 
+  //获取收藏
+  public void getFavoriteData(final int pageNo, final PageLoadListener<FavoriteBean> view) {
+    model.getFavoriteData(pageNo, new ResponseListener<FavoriteBean>() {
 
-    //获取发现
-    public void getFindData(final int pageNo, final PageLoadListener<FindBean> view) {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        view.netError(pageNo, "");
+      }
 
-
-        model.getFindData(pageNo, new ResponseListener<FindBean>() {
-            @Override
-            public void onErrorResponse(@Nullable VolleyError error) {
-                view.netError(pageNo, null);
-            }
-
-            @Override
-            public void onResponse(FindBean response, boolean result, @Nullable String exception, @Nullable String msg) {
-                if (response == null) {
-                    view.nullData();
-                } else if (pageNo == 1) {
-                    view.initData(response);
-                } else {
-                    view.moreData(response);
-                }
-            }
-        });
-    }
-
-    //删除我发现的趣处
-    public void deleteMyFindQuchu(int placeId, final FindBean.ResultEntity entity, final RecyclerView.ViewHolder holder, final FindPositionListActivity view) {
-        String uri = String.format(Locale.SIMPLIFIED_CHINESE, NetApi.deletePlace, placeId);
-
-        GsonRequest<String> request = new GsonRequest<>(uri, new ResponseListener<String>() {
-            @Override
-            public void onErrorResponse(@Nullable VolleyError error) {
-                Toast.makeText(view, (R.string.network_error), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
-                if (result) {
-                    view.deleteSucceed(holder, entity);
-                } else {
-                    Toast.makeText(view, (R.string.network_error), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        request.start(view);
-
-    }
-
-    public void getFavoriteEssay(int cityId, final int pageNo, final PageLoadListener<FavoriteEssayBean> view) {
-        Map<String, String> params = new HashMap<>();
-        params.put("cityId", String.valueOf(cityId));
-        params.put("pagesNo", String.valueOf(pageNo));
+      @Override
+      public void onResponse(FavoriteBean response, boolean result, @Nullable String exception, @Nullable String msg) {
+        if (response == null) {
+          view.nullData();
+        } else if (pageNo == 1) {
+          view.initData(response);
+        } else {
+          view.moreData(response);
+        }
+      }
+    });
+  }
 
 
-        GsonRequest<FavoriteEssayBean> request = new GsonRequest<>(NetApi.getFavoriteEssay, FavoriteEssayBean.class, params, new ResponseListener<FavoriteEssayBean>() {
-            @Override
-            public void onErrorResponse(@Nullable VolleyError error) {
-                view.netError(pageNo, null);
-            }
-
-            @Override
-            public void onResponse(FavoriteEssayBean response, boolean result, String errorCode, @Nullable String msg) {
-                if (response == null) {
-                    view.nullData();
-                } else if (pageNo == 1) {
-                    view.initData(response);
-                } else {
-                    view.moreData(response);
-                }
-            }
-        });
-        request.start(context);
-    }
-
-    /**
-     * 取消收藏
-     */
-    public void deleteFavoriteEssay(int cityId, final int pageNo, final PageLoadListener<FavoriteEssayBean> view) {
-        Map<String, String> params = new HashMap<>();
-        params.put("cityId", String.valueOf(cityId));
-        params.put("pagesNo", String.valueOf(pageNo));
+  //获取发现
+  public void getFindData(final int pageNo, final PageLoadListener<FindBean> view) {
 
 
-        GsonRequest<FavoriteEssayBean> request = new GsonRequest<>(NetApi.getFavoriteEssay, FavoriteEssayBean.class, params, new ResponseListener<FavoriteEssayBean>() {
-            @Override
-            public void onErrorResponse(@Nullable VolleyError error) {
-                view.netError(pageNo, null);
-            }
+    model.getFindData(pageNo, new ResponseListener<FindBean>() {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        view.netError(pageNo, null);
+      }
 
-            @Override
-            public void onResponse(FavoriteEssayBean response, boolean result, String errorCode, @Nullable String msg) {
-                if (response == null) {
-                    view.nullData();
-                } else if (pageNo == 1) {
-                    view.initData(response);
-                } else {
-                    view.moreData(response);
-                }
-            }
-        });
-        request.start(context);
-    }
+      @Override
+      public void onResponse(FindBean response, boolean result, @Nullable String exception, @Nullable String msg) {
+        if (response == null) {
+          view.nullData();
+        } else if (pageNo == 1) {
+          view.initData(response);
+        } else {
+          view.moreData(response);
+        }
+      }
+    });
+  }
+
+  //删除我发现的趣处
+  public void deleteMyFindQuchu(int placeId, final FindBean.ResultEntity entity, final RecyclerView.ViewHolder holder, final FindPositionListActivity view) {
+    String uri = String.format(Locale.SIMPLIFIED_CHINESE, NetApi.deletePlace, placeId);
+
+    GsonRequest<String> request = new GsonRequest<>(uri, new ResponseListener<String>() {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        Toast.makeText(view, (R.string.network_error), Toast.LENGTH_SHORT).show();
+      }
+
+      @Override
+      public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
+        if (result) {
+          view.deleteSucceed(holder, entity);
+        } else {
+          Toast.makeText(view, (R.string.network_error), Toast.LENGTH_SHORT).show();
+        }
+      }
+    });
+    request.start(view);
+
+  }
+
+  public void getFavoriteEssay(int cityId, final int pageNo, final PageLoadListener<FavoriteEssayBean> view) {
+    Map<String, String> params = new HashMap<>();
+    params.put("cityId", String.valueOf(cityId));
+    params.put("pagesNo", String.valueOf(pageNo));
+
+
+    GsonRequest<FavoriteEssayBean> request = new GsonRequest<>(NetApi.getFavoriteEssay, FavoriteEssayBean.class, params, new ResponseListener<FavoriteEssayBean>() {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        view.netError(pageNo, null);
+      }
+
+      @Override
+      public void onResponse(FavoriteEssayBean response, boolean result, String errorCode, @Nullable String msg) {
+        if (response == null) {
+          view.nullData();
+        } else if (pageNo == 1) {
+          view.initData(response);
+        } else {
+          view.moreData(response);
+        }
+      }
+    });
+    request.start(context);
+  }
+
+  /**
+   * 取消收藏
+   */
+  public void deleteFavoriteEssay(int cityId, final int pageNo, final PageLoadListener<FavoriteEssayBean> view) {
+    Map<String, String> params = new HashMap<>();
+    params.put("cityId", String.valueOf(cityId));
+    params.put("pagesNo", String.valueOf(pageNo));
+
+
+    GsonRequest<FavoriteEssayBean> request = new GsonRequest<>(NetApi.getFavoriteEssay, FavoriteEssayBean.class, params, new ResponseListener<FavoriteEssayBean>() {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        view.netError(pageNo, null);
+      }
+
+      @Override
+      public void onResponse(FavoriteEssayBean response, boolean result, String errorCode, @Nullable String msg) {
+        if (response == null) {
+          view.nullData();
+        } else if (pageNo == 1) {
+          view.initData(response);
+        } else {
+          view.moreData(response);
+        }
+      }
+    });
+    request.start(context);
+  }
 }

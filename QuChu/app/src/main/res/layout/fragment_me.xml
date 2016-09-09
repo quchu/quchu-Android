@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBackground">
 
   <RelativeLayout
       android:layout_width="match_parent"
@@ -22,16 +22,21 @@
           android:id="@+id/me_viewpager"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:layout_above="@+id/me_indicator" />
+          android:layout_above="@+id/me_indicator"/>
 
       <co.quchu.quchu.widget.CircleIndicator
           android:id="@+id/me_indicator"
           android:layout_width="match_parent"
           android:layout_height="40dp"
-          android:layout_alignParentBottom="true"
+          android:layout_above="@+id/me_bottom_line"
           android:layout_centerHorizontal="true"
           app:ci_drawable="@drawable/yellow_radius"
-          app:ci_drawable_unselected="@drawable/grey_radius" />
+          app:ci_drawable_unselected="@drawable/grey_radius"/>
+
+      <View
+          android:id="@+id/me_bottom_line"
+          style="@style/HorizontalDivider"
+          android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 
@@ -62,15 +67,15 @@
             android:gravity="center_vertical"
             android:text="趣友圈"
             android:textColor="@color/standard_color_h1_dark"
-            android:textSize="@dimen/standard_text_size_h2" />
+            android:textSize="@dimen/standard_text_size_h2"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_go_right" />
+            android:src="@mipmap/ic_go_right"/>
       </LinearLayout>
 
-      <View style="@style/HorizontalDivider" />
+      <View style="@style/HorizontalDivider"/>
 
       <LinearLayout
           android:id="@+id/quchu_layout"
@@ -90,15 +95,15 @@
             android:gravity="center_vertical"
             android:text="收藏"
             android:textColor="@color/standard_color_h1_dark"
-            android:textSize="@dimen/standard_text_size_h2" />
+            android:textSize="@dimen/standard_text_size_h2"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_go_right" />
+            android:src="@mipmap/ic_go_right"/>
       </LinearLayout>
 
-      <View style="@style/HorizontalDivider" />
+      <View style="@style/HorizontalDivider"/>
 
       <RelativeLayout
           android:id="@+id/massage_layout"
@@ -116,7 +121,7 @@
             android:gravity="center_vertical"
             android:text="消息"
             android:textColor="@color/standard_color_h1_dark"
-            android:textSize="@dimen/standard_text_size_h2" />
+            android:textSize="@dimen/standard_text_size_h2"/>
 
         <TextView
             android:id="@+id/unReadMassage"
@@ -128,17 +133,17 @@
             android:background="@drawable/shape_round_red"
             android:gravity="center"
             android:textColor="@color/standard_color_white"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:src="@mipmap/ic_go_right" />
+            android:src="@mipmap/ic_go_right"/>
       </RelativeLayout>
 
-      <View style="@style/HorizontalDivider" />
+      <View style="@style/HorizontalDivider"/>
 
       <LinearLayout
           android:id="@+id/feedback_layout"
@@ -158,12 +163,12 @@
             android:gravity="center_vertical"
             android:text="意见与反馈"
             android:textColor="@color/standard_color_h1_dark"
-            android:textSize="@dimen/standard_text_size_h2" />
+            android:textSize="@dimen/standard_text_size_h2"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_go_right" />
+            android:src="@mipmap/ic_go_right"/>
       </LinearLayout>
 
     </LinearLayout>

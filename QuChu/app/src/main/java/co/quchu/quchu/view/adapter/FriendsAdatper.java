@@ -18,7 +18,7 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.FollowUserModel;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.view.activity.UserCenterActivity;
+import co.quchu.quchu.view.activity.UserCenterActivityNew;
 
 /**
  * FriendsAdatper
@@ -81,7 +81,7 @@ public class FriendsAdatper extends AdapterBase<FollowUserModel, FriendsAdatper.
             if (KeyboardUtils.isFastDoubleClick())
                 return;
             if (isInnerClick) {
-                mContext.startActivity(new Intent(mContext, UserCenterActivity.class).putExtra("USERID", data.get(getPosition()).getUserId()));
+                mContext.startActivity(new Intent(mContext, UserCenterActivityNew.class).putExtra("USERID", data.get(getPosition()).getUserId()));
             } else {
                 if (clickListener != null)
                     clickListener.itemClick(v, getAdapterPosition());

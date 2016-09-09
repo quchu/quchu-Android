@@ -85,6 +85,7 @@ public interface NetApi {
   String sharePostCard = HOST + "/footprint/share?postCardId=%d&imageId=%d";  //分享明信片
 
   String getUserGene = HOST + "/personal/getUserGene";  //获取用户基因
+  String getPersonGene = HOST + "/personal/getPersonGene"; //获取好友的基因
   String userBehavior = HOST + "/push/userBehavior";  //用户数据采集
 
   String followFriends = HOST + "/sns/follow?followId=%d";  //关注他人
@@ -93,6 +94,7 @@ public interface NetApi {
   String getUserInfo = HOST + "/personal/getUserInfo?userId=%d";  //获取自己用户信息
   String getUserCardList = HOST + "/place/getUserCardList";  //获取某个用户的明信片
   String getUsercenterFavoriteList = HOST + "/place/getFavoriteList?userId=%d&pageno=%d";
+  static String getUsercenterFavorite = HOST + "/place/getFavoriteList?userId=%d&pageno=%d";
   //获取某个用户收藏的趣处列表
   String getFollow = HOST + "/place/getFollow?userId=%d&pageno=%d&head=no&type=%s";  //获取某个用户收藏的趣处列表
 

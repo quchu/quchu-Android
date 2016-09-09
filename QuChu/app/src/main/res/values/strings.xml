@@ -269,4 +269,7 @@
     <string name="enable_dahuo_feature">你尚未打开搭伙开关</string>
     <string name="promote_invalid_phone_number">手机号错误</string>
 
+    <string name="follow_str">关注(%d)</string>
+    <string name="friend_str">趣粉(%d)</string>
+
 </resources>

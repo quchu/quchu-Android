@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -23,6 +24,7 @@ import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
+import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.SPUtils;
 
 /**
@@ -54,8 +56,22 @@ public class MeGenFragment extends BaseFragment {
   TextView shishangTv;
   @Bind(R.id.wenyi_tv)
   TextView wenyiTv;
+  @Bind(R.id.gene_top_layout) LinearLayout mGeneTopLayout;
 
+  private static String IS_ME_BUNDLE_KEY = "is_me_bundle_key";
+  private static String USER_ID_BUNDLE_KEY = "user_id_bundle_key";
   private MeActivityPresenter meActivityPresenter;
+  private boolean mIsMe;//是否是自己
+  private int mUserId;
+
+  public static MeGenFragment newInstance(boolean isMe, int userId) {
+    MeGenFragment fragment = new MeGenFragment();
+    Bundle bundle = new Bundle();
+    bundle.putBoolean(IS_ME_BUNDLE_KEY, isMe);
+    bundle.putInt(USER_ID_BUNDLE_KEY, userId);
+    fragment.setArguments(bundle);
+    return fragment;
+  }
 
   @Nullable
   @Override
@@ -64,6 +80,11 @@ public class MeGenFragment extends BaseFragment {
     ButterKnife.bind(this, view);
 
     meActivityPresenter = new MeActivityPresenter(getActivity());
+
+    mIsMe = getArguments().getBoolean(IS_ME_BUNDLE_KEY, false);
+    mUserId = getArguments().getInt(USER_ID_BUNDLE_KEY, -1);
+
+    mGeneTopLayout.setVisibility(mIsMe ? View.VISIBLE : View.GONE);
 
     Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "AGENCYFB.TTF");
     tuhaoTv.setTypeface(face);
@@ -79,19 +100,37 @@ public class MeGenFragment extends BaseFragment {
   }
 
   private void getGenes() {
-    meActivityPresenter.getGene(new CommonListener<MyGeneModel>() {
-      @Override
-      public void successListener(MyGeneModel response) {
-        if (response != null) {
-          List<MyGeneModel.GenesEntity> genes = response.getGenes();
-          initGene(genes);
+    if (mIsMe) {
+      meActivityPresenter.getGene(new CommonListener<MyGeneModel>() {
+        @Override
+        public void successListener(MyGeneModel response) {
+          if (response != null) {
+            List<MyGeneModel.GenesEntity> genes = response.getGenes();
+            initGene(genes);
+          }
         }
-      }
 
-      @Override
-      public void errorListener(VolleyError error, String exception, String msg) {
-      }
-    });
+        @Override
+        public void errorListener(VolleyError error, String exception, String msg) {
+        }
+      });
+
+    } else {
+      UserCenterPresenter.getPersonGene(getActivity(), mUserId, new CommonListener<MyGeneModel>() {
+        @Override
+        public void successListener(MyGeneModel response) {
+          if (response != null) {
+            List<MyGeneModel.GenesEntity> genes = response.getGenes();
+            initGene(genes);
+          }
+        }
+
+        @Override
+        public void errorListener(VolleyError error, String exception, String msg) {
+
+        }
+      });
+    }
   }
 
   public void initGene(final List<MyGeneModel.GenesEntity> genes) {

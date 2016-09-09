@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,7 +26,6 @@ import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.model.FavoriteBean;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.presenter.FavoritePresenter;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
@@ -45,7 +43,9 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
         SwipeRefreshLayout.OnRefreshListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean>, PageLoadListener<FavoriteBean> {
 
 
-    @Override
+    private boolean mIsMe;
+    private int mUserId;
+
     protected String getPageNameCN() {
         return getString(R.string.pname_f_favorite_quchu);
     }
@@ -58,11 +58,26 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
     private FavoritePresenter presenter;
     private int pagesNo = 1;
 
+    private static String IS_ME_BUNDLE_KEY = "is_me_bundle_key";
+    private static String USER_ID_BUNDLE_KEY = "user_id_bundle_key";
+
+    public static FavoriteQuchuFragment newInstance(boolean isMe, int userId) {
+        FavoriteQuchuFragment fragment = new FavoriteQuchuFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(IS_ME_BUNDLE_KEY, isMe);
+        bundle.putInt(USER_ID_BUNDLE_KEY, userId);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_refresh_recyclerview, container, false);
         ButterKnife.bind(this, view);
+
+        mIsMe = getArguments().getBoolean(IS_ME_BUNDLE_KEY, false);
+        mUserId = getArguments().getInt(USER_ID_BUNDLE_KEY, -1);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -71,7 +86,12 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
         adapter.setLoadmoreListener(this);
         adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);
-        presenter.getFavoriteData(pagesNo, this);
+
+        if (mIsMe) {
+            presenter.getFavoriteData(pagesNo, this);
+        } else {
+            FavoritePresenter.getPersonFavorite(getActivity(), mUserId, pagesNo, this);
+        }
 
         refreshLayout.setOnRefreshListener(this);
         return view;
@@ -80,7 +100,11 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
 
     @Override
     public void onLoadmore() {
-        presenter.getFavoriteData(pagesNo + 1, this);
+        if (mIsMe) {
+            presenter.getFavoriteData(pagesNo + 1, this);
+        } else {
+            FavoritePresenter.getPersonFavorite(getActivity(), mUserId, pagesNo + 1, this);
+        }
     }
 
     RecyclerView.ViewHolder holder;
@@ -184,7 +208,11 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
         adapter.setNetError(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.getFavoriteData(pagesNo, FavoriteQuchuFragment.this);
+                if (mIsMe) {
+                    presenter.getFavoriteData(pagesNo, FavoriteQuchuFragment.this);
+                } else {
+                    FavoritePresenter.getPersonFavorite(getActivity(), mUserId, pagesNo, FavoriteQuchuFragment.this);
+                }
             }
         });
     }
@@ -209,7 +237,10 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
     @Override
     public void onRefresh() {
         pagesNo = 1;
-        presenter.getFavoriteData(pagesNo, this);
-
+        if (mIsMe) {
+            presenter.getFavoriteData(pagesNo, this);
+        } else {
+            FavoritePresenter.getPersonFavorite(getActivity(), mUserId, pagesNo, this);
+        }
     }
 }

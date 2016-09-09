@@ -175,11 +175,6 @@ public class IMPresenter {
             return findUserById(userId);
           }
         }, true);
-
-        //初始化小Q
-        if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
-          initXiaoQConversation();
-        }
       }
 
       /**
@@ -225,7 +220,7 @@ public class IMPresenter {
   /**
    * 设置小Q会话
    */
-  private void initXiaoQConversation() {
+  public void initXiaoQConversation() {
     this.getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
       @Override
       public void onSuccess(List<Conversation> conversations) {

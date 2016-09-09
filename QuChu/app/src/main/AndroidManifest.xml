@@ -105,6 +105,10 @@
         android:name=".view.activity.UserCenterActivity"
         android:label="@string/titlebar_word_user_center"
         android:screenOrientation="portrait"/>
+    <activity android:name=".view.activity.UserCenterActivityNew"
+              android:label="@string/titlebar_word_user_center"
+              android:screenOrientation="portrait"/>
+
     <!-- 关注的 -->
     <activity
         android:name=".view.activity.FollowingActivity"

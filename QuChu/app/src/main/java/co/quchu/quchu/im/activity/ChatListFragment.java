@@ -32,6 +32,11 @@ public class ChatListFragment extends BaseFragment {
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
+    //初始化小Q
+//    if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
+//      new IMPresenter().initXiaoQConversation();
+//    }
+
     //设置会话列表点击事件监听
     RongIM.setConversationListBehaviorListener(conversationListBehaviorListener);
 
