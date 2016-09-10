@@ -50,12 +50,12 @@ android {
             buildConfigField "boolean", "DISPLAY_LOG", "false"
             buildConfigField "int", "API_SERVER", "0" //0 prd ,1 uat, 2 sit
             //混淆
-            //minifyEnabled true
+            minifyEnabled true
             //Zipalign优化
-            //zipAlignEnabled true
+            zipAlignEnabled true
             // 移除无用的resource文件
-            //shrinkResources true
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             buildConfigField "int", "API_SERVER", "2"
