@@ -173,7 +173,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     if (!isChat && !isChatList) {
       //连接融云服务
-      new IMPresenter().getToken(this, new IMPresenter.RongYunBehaviorListener() {
+      new IMPresenter().connectIMService(new IMPresenter.RongYunBehaviorListener() {
         @Override
         public void onSuccess(String msg) {
           getUnreadMessage();

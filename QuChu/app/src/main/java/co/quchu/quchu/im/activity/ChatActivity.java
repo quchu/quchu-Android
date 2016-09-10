@@ -301,8 +301,6 @@ public class ChatActivity extends BaseBehaviorActivity {
    */
   private void isPushMessage(Intent intent) {
     LogUtils.e("------mwb", "isPushMessage");
-    String token = SPUtils.getRongYunToken();
-
     if (intent.getData().getScheme().equals("rong")
         && intent.getData().getQueryParameter("push") != null) {
       //push消息
@@ -322,7 +320,7 @@ public class ChatActivity extends BaseBehaviorActivity {
       }
 
 //      enterFragment(mConversationType, mTargetId);
-      reconnect(token);
+      reconnect();
     }
   }
 
@@ -355,8 +353,8 @@ public class ChatActivity extends BaseBehaviorActivity {
   /**
    * 重连融云服务
    */
-  private void reconnect(String token) {
-    mImPresenter.connectIMService(token, new IMPresenter.RongYunBehaviorListener() {
+  private void reconnect() {
+    mImPresenter.connectIMService(new IMPresenter.RongYunBehaviorListener() {
       @Override
       public void onSuccess(String msg) {
         enterFragment(mConversationType, mTargetId);
