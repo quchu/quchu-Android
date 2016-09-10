@@ -278,6 +278,7 @@ public static final int *;
 -keepclassmembers class fqcn.of.javascript.interface.for.webview {
  public *;
 }
+
 -keepattributes Exceptions,InnerClasses
 -keepattributes Signature
 -keepattributes *Annotation*
