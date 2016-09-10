@@ -181,7 +181,7 @@ public class SplashActivity extends BaseActivity {
                     public void isUnique(JSONObject msg) {
 
                         ArrayMap<String,Object> params = new ArrayMap<>();
-                        params.put("用户名",AppContext.user.getFullname());
+                        //params.put("用户名","-");
                         params.put("登陆方式","游客模式");
                         ZGEvent(params,"用户登陆");
 

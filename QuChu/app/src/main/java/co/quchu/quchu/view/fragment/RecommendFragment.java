@@ -349,6 +349,7 @@ public class RecommendFragment extends BaseFragment
   }
 
   public void getData(final boolean loadMore) {
+    System.out.println("~~~~~~");
     mRefreshRunning = true;
 
     ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 1,
