@@ -44,7 +44,7 @@ import co.quchu.quchu.view.activity.ArticleDetailActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SettingXioaQActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
-import co.quchu.quchu.view.activity.UserCenterActivity;
+import co.quchu.quchu.view.activity.UserCenterActivityNew;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.MessageTag;
@@ -128,8 +128,8 @@ public class ChatActivity extends BaseBehaviorActivity {
         public boolean onUserPortraitClick(Context context,
                                            Conversation.ConversationType conversationType, UserInfo userInfo) {
           //当点击用户头像后执行
-          Intent intent = new Intent(ChatActivity.this, UserCenterActivity.class);
-          intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID,
+          Intent intent = new Intent(ChatActivity.this, UserCenterActivityNew.class);
+          intent.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID,
               Integer.valueOf(userInfo.getUserId()));
           startActivity(intent);
           return true;
@@ -201,8 +201,8 @@ public class ChatActivity extends BaseBehaviorActivity {
 
         } else if (type.equals(IMPresenter.JUMP_TYPE_USER)) {
           //用户
-          intent = new Intent(ChatActivity.this, UserCenterActivity.class);
-          intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, Integer.valueOf(id));
+          intent = new Intent(ChatActivity.this, UserCenterActivityNew.class);
+          intent.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID, Integer.valueOf(id));
           startActivity(intent);
 
         } else if (type.equals(IMPresenter.JUMP_TYPE_ARTICLE_DETAIL)) {

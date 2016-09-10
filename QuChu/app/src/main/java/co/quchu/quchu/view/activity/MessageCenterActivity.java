@@ -9,12 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.DialogUtil;
@@ -144,8 +141,8 @@ public class MessageCenterActivity extends BaseBehaviorActivity implements PageL
                         });
                 break;
             case MessageCenterAdapter.CLICK_TYPE_USER_INFO://头像
-                Intent intent = new Intent(this, UserCenterActivity.class);
-                intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, item.getFormId());
+                Intent intent = new Intent(this, UserCenterActivityNew.class);
+                intent.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID, item.getFormId());
                 startActivity(intent);
                 break;
             case MessageCenterAdapter.CLICK_TYPE_FOOTPRINT_COVER://脚印大图

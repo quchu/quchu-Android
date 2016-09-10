@@ -31,11 +31,13 @@ import co.quchu.quchu.widget.TagCloudView;
  * desc :
  */
 public class FavoriteQuchuAdapter extends AdapterBase<FavoriteBean.ResultBean, FavoriteQuchuAdapter.ViewHold> {
+
     private boolean animationed;
+    private boolean isMe;
 
-
-    public FavoriteQuchuAdapter() {
+    public FavoriteQuchuAdapter(boolean isMe) {
         animationed = SPUtils.getBooleanFromSPMap(AppContext.mContext, AppKey.SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU, false);
+        this.isMe = isMe;
     }
 
     @Override
@@ -59,7 +61,14 @@ public class FavoriteQuchuAdapter extends AdapterBase<FavoriteBean.ResultBean, F
 
         final FavoriteBean.ResultBean bean = data.get(position);
 
-        holder.swipeDeleteItem.setScrollX(0);
+        if (isMe) {
+            holder.swipeDeleteItem.hideAction(false);
+            holder.swipeDeleteItem.setScrollX(0);
+            holder.swipeDeleteAction.setVisibility(View.VISIBLE);
+        } else {
+            holder.swipeDeleteItem.hideAction(true);
+            holder.swipeDeleteAction.setVisibility(View.GONE);
+        }
         holder.name.setText(bean.getName());
         holder.simpleDraweeView.setImageURI(Uri.parse(bean.getCover()));
         holder.tag.setTags(bean.getTagsString());
