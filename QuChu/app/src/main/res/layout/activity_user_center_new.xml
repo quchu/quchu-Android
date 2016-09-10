@@ -45,7 +45,7 @@
           <co.quchu.quchu.widget.CircleIndicator
               android:id="@+id/user_center_indicator"
               android:layout_width="match_parent"
-              android:layout_height="40dp"
+              android:layout_height="20dp"
               android:layout_alignParentBottom="true"
               android:layout_centerHorizontal="true"
               app:ci_drawable="@drawable/yellow_radius"

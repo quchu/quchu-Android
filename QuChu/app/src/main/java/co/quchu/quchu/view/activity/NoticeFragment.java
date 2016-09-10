@@ -138,8 +138,8 @@ public class NoticeFragment extends BaseFragment {
                             });
                     break;
                 case MessageCenterAdapter.CLICK_TYPE_USER_INFO://头像
-                    Intent intent = new Intent(getActivity(), UserCenterActivity.class);
-                    intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, item.getFormId());
+                    Intent intent = new Intent(getActivity(), UserCenterActivityNew.class);
+                    intent.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID, item.getFormId());
                     startActivity(intent);
                     break;
                 case MessageCenterAdapter.CLICK_TYPE_FOOTPRINT_COVER://脚印大图

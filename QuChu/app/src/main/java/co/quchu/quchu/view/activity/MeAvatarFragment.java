@@ -62,8 +62,8 @@ public class MeAvatarFragment extends BaseFragment {
   private MeActivityPresenter meActivityPresenter;
   private List<MyGeneModel.GenesEntity> genes;
   private static final int[] mBitmapSet = new int[] {
-      R.mipmap.ic_tuhao_blue, R.mipmap.ic_chihuo_blue, R.mipmap.ic_haoqi_blue,
-      R.mipmap.ic_shejiao_blue, R.mipmap.ic_shishang_blue, R.mipmap.ic_wenyi_blue
+      R.mipmap.ic_wenyi_blue, R.mipmap.ic_shejiao_blue, R.mipmap.ic_tuhao_blue,
+      R.mipmap.ic_chihuo_blue, R.mipmap.ic_shishang_blue, R.mipmap.ic_haoqi_blue
   };
 
   @Nullable @Override

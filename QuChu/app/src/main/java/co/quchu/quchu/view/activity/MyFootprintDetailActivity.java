@@ -466,8 +466,8 @@ public class MyFootprintDetailActivity extends BaseBehaviorActivity implements V
                 if (userID == 0) {
                     return;
                 }
-                Intent intent2 = new Intent(this, UserCenterActivity.class);
-                intent2.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, userID);
+                Intent intent2 = new Intent(this, UserCenterActivityNew.class);
+                intent2.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID, userID);
                 startActivity(intent2);
                 break;
             case R.id.fooopDetailActionBack:

@@ -82,7 +82,7 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         presenter = new FavoritePresenter(getContext());
-        adapter = new FavoriteQuchuAdapter();
+        adapter = new FavoriteQuchuAdapter(mIsMe);
         adapter.setLoadmoreListener(this);
         adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);

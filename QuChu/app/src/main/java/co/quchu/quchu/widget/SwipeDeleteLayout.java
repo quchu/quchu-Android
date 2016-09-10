@@ -24,6 +24,7 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
 
     private View mActionView;
     private int contentMargin;
+    private boolean isHideAction;
 
     public SwipeDeleteLayout(Context context) {
         this(context, null);
@@ -63,22 +64,27 @@ public class SwipeDeleteLayout extends HorizontalScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        if (isHideAction) {
+            return true;
+        }
         switch (ev.getAction()) {
             case MotionEvent.ACTION_UP:
-                int scrollX = getScrollX();
-                if (scrollX != 0) {
-                    scrollBy(0, 0);
-                    if (scrollX > mActionView.getWidth() / 2) {
-                        animation(mActionView.getWidth() - scrollX);
-                    } else {
-                        animation(-scrollX);
+                    int scrollX = getScrollX();
+                    if (scrollX != 0) {
+                        scrollBy(0, 0);
+                        if (scrollX > mActionView.getWidth() / 2) {
+                            animation(mActionView.getWidth() - scrollX);
+                        } else {
+                            animation(-scrollX);
+                        }
                     }
-                }
                 break;
         }
         return super.onTouchEvent(ev);
+    }
 
-
+    public void hideAction(boolean isHide) {
+        isHideAction = isHide;
     }
 
     public void animation(int offset) {

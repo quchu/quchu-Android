@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -28,7 +27,6 @@ import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.fragment.FriendsFollowerFg;
-import co.quchu.quchu.widget.AnimationViewPager.RotatePageTransformer;
 
 /**
  * QuFriendsActivity
@@ -84,26 +82,8 @@ public class QuFriendsActivity extends BaseActivity {
         fragments.add(fragment1);
         fragments.add(fragment2);
         quFriendsVp.setAdapter(new fragmentAdapter(getSupportFragmentManager(), fragments));
-
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                quFriendsVp.setCurrentItem(tab.getPosition(), false);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-
-        quFriendsVp.setPageTransformer(true, new RotatePageTransformer());
+//        quFriendsVp.setPageTransformer(true, new RotatePageTransformer());
+        tabLayout.setupWithViewPager(quFriendsVp);
 
         whatIs.setOnClickListener(new View.OnClickListener() {
             @Override

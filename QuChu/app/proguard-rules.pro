@@ -188,7 +188,7 @@ public static final int *;
 ## ----------------------------------
 ##   ########## 高德地图混淆    #########
 ## ----------------------------------
--libraryjars libs/BaiduLBS_Android.jar 替换成自己所用版本的jar包
+-libraryjars libs/BaiduLBS_Android.jar
 -keep class com.baidu.** { *; }
 -keep class vi.com.gdi.bgl.android.**{*;}
 ## ----------------------------------
@@ -237,7 +237,6 @@ public static final int *;
 -keepattributes Signature
 -dontskipnonpubliclibraryclasses
 -dontwarn net.poemcode.**
--ignorewarnings
 -keep class co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager{*;}
 ## ----------------------------------
 ##   ########## 其他混淆    #########
@@ -279,34 +278,24 @@ public static final int *;
  public *;
 }
 -keepattributes Exceptions,InnerClasses
-
 -keepattributes Signature
-
 -keepattributes *Annotation*
-
 -keep class com.google.gson.examples.android.model.** { *; }
-
 -keep class **$Properties
 -dontwarn org.eclipse.jdt.annotation.**
-
+#VoIP 相关
 -libraryjars libs/agora-rtc-sdk.jar
 -keep class io.agora.rtc.** {*;}
 
 -keep class io.rong.** {*;}
--keep class io.agora.rtc.** {*; }
 -keep class * implements io.rong.imlib.model.MessageContent{*;}
 
+#小米，华为，GCM 相关
 -dontwarn io.rong.push.** 
 -dontnote com.xiaomi.** 
 -dontnote com.huawei.android.pushagent.** 
 -dontnote com.google.android.gms.gcm.** 
 -dontnote io.rong.**
- -ignorewarnings
--keep class co.quchu.quchu.im.IMNotificationReceiver {*;}
 
--dontwarn io.rong.push.**
- -dontnote com.xiaomi.**
- -dontnote com.huawei.android.pushagent.** 
--dontnote com.google.android.gms.gcm.**
- -dontnote io.rong.**
+-keep class co.quchu.quchu.im.IMNotificationReceiver {*;}
 ############## 融云 end
