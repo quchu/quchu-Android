@@ -279,34 +279,22 @@ public static final int *;
  public *;
 }
 -keepattributes Exceptions,InnerClasses
-
 -keepattributes Signature
-
 -keepattributes *Annotation*
-
 -keep class com.google.gson.examples.android.model.** { *; }
-
 -keep class **$Properties
 -dontwarn org.eclipse.jdt.annotation.**
-
--libraryjars libs/agora-rtc-sdk.jar
+#VoIP 相关
+#-libraryjars libs/agora-rtc-sdk.jar
 -keep class io.agora.rtc.** {*;}
-
 -keep class io.rong.** {*;}
--keep class io.agora.rtc.** {*; }
 -keep class * implements io.rong.imlib.model.MessageContent{*;}
-
+#小米，华为，GCM 相关
 -dontwarn io.rong.push.** 
 -dontnote com.xiaomi.** 
 -dontnote com.huawei.android.pushagent.** 
 -dontnote com.google.android.gms.gcm.** 
--dontnote io.rong.**
- -ignorewarnings
--keep class co.quchu.quchu.im.IMNotificationReceiver {*;}
 
--dontwarn io.rong.push.**
- -dontnote com.xiaomi.**
- -dontnote com.huawei.android.pushagent.** 
--dontnote com.google.android.gms.gcm.**
- -dontnote io.rong.**
+-dontnote io.rong.**
+-keep class co.quchu.quchu.im.IMNotificationReceiver {*;}
 ############## 融云 end
