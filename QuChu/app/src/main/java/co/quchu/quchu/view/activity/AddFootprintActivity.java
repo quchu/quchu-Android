@@ -183,6 +183,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
 
           if (etContent.length()>140){
             Toast.makeText(AddFootprintActivity.this,R.string.promote_comment_over_length,Toast.LENGTH_SHORT).show();
+            return;
           }
           List<String> im = new ArrayList<>();
           for (PhotoInfo item : photoInfos) {
