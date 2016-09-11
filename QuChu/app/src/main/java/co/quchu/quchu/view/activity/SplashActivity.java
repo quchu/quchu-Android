@@ -132,7 +132,12 @@ public class SplashActivity extends BaseActivity {
 
         //mViewBg.setAlpha(1);
         if (!NetUtil.isNetworkConnected(getApplicationContext())){
-            Toast.makeText(SplashActivity.this,"失去与母星的通讯，请检查网络",Toast.LENGTH_SHORT).show();
+            mTvAppName.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(SplashActivity.this,"失去与母星的通讯，请检查网络",Toast.LENGTH_LONG).show();
+                }
+            },500);
         }else{
             initLogic();
         }
@@ -279,8 +284,12 @@ public class SplashActivity extends BaseActivity {
             return;
         }
         switch (event.getFlag()) {
+
+            case EventFlags.EVENT_DEVICE_NETWORK_CONNECTED_OR_CONNECTING:
+                Toast.makeText(SplashActivity.this,"尝试建立与母星的通讯，请稍后",Toast.LENGTH_LONG).show();
+                break;
+
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
-                Toast.makeText(SplashActivity.this,"尝试建立与母星的通讯，请稍后",Toast.LENGTH_SHORT).show();
                 initLogic();
                 break;
         }
