@@ -74,7 +74,8 @@ public class MeAvatarFragment extends BaseFragment {
 
     meActivityPresenter = new MeActivityPresenter(getActivity());
 
-    userAvatar = AppContext.user.getPhoto();
+      userAvatar = AppContext.user.getPhoto();
+    }
 
     getGenes();
 
@@ -117,7 +118,11 @@ public class MeAvatarFragment extends BaseFragment {
         polygonProgressView.animateProgress();
 
         final long before = System.currentTimeMillis();
-        Uri uri = Uri.parse(AppContext.user.getPhoto());
+        if (null==AppContext.user){
+          return;
+        }
+        Uri uri= Uri.parse(AppContext.user.getPhoto());
+
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
           @Override public void onFinalImageSet(String id, @Nullable ImageInfo imageInfo,
               @Nullable Animatable anim) {
