@@ -74,6 +74,7 @@ public class MeAvatarFragment extends BaseFragment {
 
     meActivityPresenter = new MeActivityPresenter(getActivity());
 
+    if (null!=AppContext.user){
       userAvatar = AppContext.user.getPhoto();
     }
 
