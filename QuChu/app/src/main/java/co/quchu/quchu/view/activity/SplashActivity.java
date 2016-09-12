@@ -11,10 +11,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -27,10 +30,13 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.AppUtil;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 
@@ -125,7 +131,17 @@ public class SplashActivity extends BaseActivity {
         mTvVersion.setVisibility(View.GONE);
 
         //mViewBg.setAlpha(1);
-        initLogic();
+        if (!NetUtil.isNetworkConnected(getApplicationContext())){
+            mTvAppName.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(SplashActivity.this,"失去与母星的通讯，请检查网络",Toast.LENGTH_LONG).show();
+                }
+            },500);
+        }else{
+            initLogic();
+        }
+
     }
 
     public String getVersionName() {
@@ -181,7 +197,9 @@ public class SplashActivity extends BaseActivity {
                     public void isUnique(JSONObject msg) {
 
                         ArrayMap<String,Object> params = new ArrayMap<>();
-                        params.put("用户名",AppContext.user.getFullname());
+                        if (null!=AppContext.user&&null!=AppContext.user.getUsername()){
+                            params.put("用户名",AppContext.user.getUsername());
+                        }
                         params.put("登陆方式","游客模式");
                         ZGEvent(params,"用户登陆");
 
@@ -257,6 +275,35 @@ public class SplashActivity extends BaseActivity {
             }
             enterApp();
         }
+    }
+
+
+    @Subscribe
+    public void onMessageEvent(QuchuEventModel event) {
+        if (null == event) {
+            return;
+        }
+        switch (event.getFlag()) {
+
+            case EventFlags.EVENT_DEVICE_NETWORK_CONNECTED_OR_CONNECTING:
+                Toast.makeText(SplashActivity.this,"尝试建立与母星的通讯，请稍后",Toast.LENGTH_LONG).show();
+                break;
+
+            case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
+                initLogic();
+                break;
+        }
+    }
+
+
+    @Override public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
 //    protected void setIcon() {

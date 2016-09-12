@@ -131,7 +131,7 @@ public class IMPresenter {
                   }
 
                   //连接融云服务器
-                  connectIMService(response.getRongYunToken(), null);
+                  connectIMService(null);
 
                   //保存融云token到本地
                   SPUtils.setRongYunToken(response.getRongYunToken());
@@ -144,7 +144,8 @@ public class IMPresenter {
   /**
    * 建立与融云服务器的连接
    */
-  public void connectIMService(final String token, final RongYunBehaviorListener listener) {
+  public void connectIMService(final RongYunBehaviorListener listener) {
+    final String token = SPUtils.getRongYunToken();
 
     RongIM.connect(token, new RongIMClient.ConnectCallback() {
 

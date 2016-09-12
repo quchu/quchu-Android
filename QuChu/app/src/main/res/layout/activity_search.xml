@@ -185,6 +185,16 @@
             android:background="@color/translucent_dark"
             android:visibility="gone"
             />
+
+        <TextView
+            android:id="@+id/tvNoData"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="没有该生物"
+            style="@style/TextView.H2"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 
 

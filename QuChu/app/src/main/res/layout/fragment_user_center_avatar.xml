@@ -58,9 +58,7 @@
       android:background="@drawable/shape_me_user_tag"
       android:gravity="center_vertical"
       android:orientation="horizontal"
-      android:paddingBottom="2dp"
       android:paddingRight="@dimen/half_margin"
-      android:paddingTop="2dp"
       android:visibility="invisible">
 
     <ImageView
@@ -74,7 +72,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/standard_color_h3_dark"
-        android:textSize="@dimen/standard_text_size_h4"/>
+        android:textSize="@dimen/standard_text_size_h4"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"/>
 
   </LinearLayout>
 

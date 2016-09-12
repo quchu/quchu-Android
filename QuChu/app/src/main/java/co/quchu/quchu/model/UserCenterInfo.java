@@ -141,7 +141,7 @@ public class UserCenterInfo implements Serializable{
         this.photo = photo;
     }
 
-    public static class BackImgBean {
+    public static class BackImgBean  implements Serializable{
         private String path;
         private int width;
         private String rgb;

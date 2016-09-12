@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +29,10 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         final android.net.NetworkInfo mobile = connMgr
                 .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
+
+        if (wifi.isConnectedOrConnecting()||mobile.isConnectedOrConnecting()){
+            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_DEVICE_NETWORK_CONNECTED_OR_CONNECTING));
+        }
         if (wifi.isAvailable() || mobile.isAvailable()) {
             EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE));
         }else{

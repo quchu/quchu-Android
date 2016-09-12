@@ -116,6 +116,7 @@
     <!-- 我的趣推荐 -->
     <activity
         android:name=".view.activity.RecommendActivity"
+        android:windowSoftInputMode="adjustPan"
         android:screenOrientation="portrait"/>
 
     <activity

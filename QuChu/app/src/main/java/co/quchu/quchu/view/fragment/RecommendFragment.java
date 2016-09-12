@@ -349,6 +349,7 @@ public class RecommendFragment extends BaseFragment
   }
 
   public void getData(final boolean loadMore) {
+    System.out.println("~~~~~~");
     mRefreshRunning = true;
 
     ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 1,
@@ -476,6 +477,9 @@ public class RecommendFragment extends BaseFragment
       new AccelerateDecelerateInterpolator();
 
   private void resetIndicators() {
+    if (null==rlNodata){
+      return;
+    }
     rlNodata.setVisibility(View.GONE);
     if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0 && currentIndex == 1) {
       tvEmptyView.setText("你已经收藏了全部场景");

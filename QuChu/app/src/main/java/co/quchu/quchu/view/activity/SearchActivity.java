@@ -93,6 +93,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
   @Bind(R.id.search_back) View vReturn;
   @Bind(R.id.search_line) View searchLine;
   @Bind(R.id.vCover) View vCover;
+  @Bind(R.id.tvNoData) TextView tvNoData;
 
   private ArrayList<RecommendModel> resultList;
   private SearchAdapter resultAdapter;
@@ -513,6 +514,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
   private String categoryGroupAllId = "";
 
   private void doSearch(final boolean loadMore) {
+    tvNoData.setVisibility(View.GONE);
 
     String str = "";
     if (filterUserInput) str = searchInputEt.getText().toString().trim();
@@ -574,7 +576,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                 }
               });
             } else {
-              Toast.makeText(getApplicationContext(), "没有该物种!", Toast.LENGTH_SHORT).show();
+              tvNoData.setVisibility(View.VISIBLE);
             }
             mIsLoading = false;
             DialogUtil.dismissProgess();
@@ -583,7 +585,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
           @Override public void errorNull() {
             //数据为空
             DialogUtil.dismissProgess();
-            Toast.makeText(getApplicationContext(), "没有该物种!", Toast.LENGTH_SHORT).show();
+            tvNoData.setVisibility(View.VISIBLE);
             mIsLoading = false;
             resultAdapter.notifyDataSetChanged();
           }

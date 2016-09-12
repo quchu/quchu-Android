@@ -446,7 +446,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
       ((LabelViewHolder) holder).ivInvite.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View view) {
-          if (AppContext.user.isIsVisitors()){
+          if (null!=AppContext.user && AppContext.user.isIsVisitors()){
             ((BaseActivity)mAnchorActivity).showLoginDialog();
           }else{
             final DialogMatchingUsers d = new DialogMatchingUsers();

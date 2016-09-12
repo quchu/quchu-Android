@@ -62,8 +62,8 @@ public class MeAvatarFragment extends BaseFragment {
   private MeActivityPresenter meActivityPresenter;
   private List<MyGeneModel.GenesEntity> genes;
   private static final int[] mBitmapSet = new int[] {
-      R.mipmap.ic_tuhao_blue, R.mipmap.ic_chihuo_blue, R.mipmap.ic_haoqi_blue,
-      R.mipmap.ic_shejiao_blue, R.mipmap.ic_shishang_blue, R.mipmap.ic_wenyi_blue
+      R.mipmap.ic_wenyi_blue, R.mipmap.ic_shejiao_blue, R.mipmap.ic_tuhao_blue,
+      R.mipmap.ic_chihuo_blue, R.mipmap.ic_shishang_blue, R.mipmap.ic_haoqi_blue
   };
 
   @Nullable @Override
@@ -74,7 +74,9 @@ public class MeAvatarFragment extends BaseFragment {
 
     meActivityPresenter = new MeActivityPresenter(getActivity());
 
-    userAvatar = AppContext.user.getPhoto();
+    if (null!=AppContext.user){
+      userAvatar = AppContext.user.getPhoto();
+    }
 
     getGenes();
 
@@ -117,7 +119,11 @@ public class MeAvatarFragment extends BaseFragment {
         polygonProgressView.animateProgress();
 
         final long before = System.currentTimeMillis();
-        Uri uri = Uri.parse(AppContext.user.getPhoto());
+        if (null==AppContext.user){
+          return;
+        }
+        Uri uri= Uri.parse(AppContext.user.getPhoto());
+
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
           @Override public void onFinalImageSet(String id, @Nullable ImageInfo imageInfo,
               @Nullable Animatable anim) {

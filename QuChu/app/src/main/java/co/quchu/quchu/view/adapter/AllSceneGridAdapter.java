@@ -131,10 +131,22 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       holder.itemView.setPivotX(0);
       holder.itemView.setPivotY(0);
     } else if (holder instanceof FooterViewHolder) {
-      ((FooterViewHolder) holder).ivIndicator.setVisibility(View.GONE);
-      ((FooterViewHolder) holder).textView.setText("没有更多了~");
-      ((FooterViewHolder) holder).textView.setVisibility(View.VISIBLE);
-      ((FooterViewHolder) holder).loadmoreMassage.setVisibility(View.GONE);
+      if (getItemCount()==2){
+        holder.itemView.setVisibility(View.GONE);
+      }else{
+        holder.itemView.setVisibility(View.VISIBLE);
+        ((FooterViewHolder) holder).ivIndicator.setVisibility(View.GONE);
+        ((FooterViewHolder) holder).textView.setText("没有更多了~");
+        ((FooterViewHolder) holder).textView.setVisibility(View.VISIBLE);
+        ((FooterViewHolder) holder).loadmoreMassage.setVisibility(View.GONE);
+      }
+
+    } else if(holder instanceof HeaderViewHolder){
+      if (getItemCount()==2){
+        holder.itemView.setVisibility(View.GONE);
+      }else{
+        holder.itemView.setVisibility(View.VISIBLE);
+      }
     }
   }
 
