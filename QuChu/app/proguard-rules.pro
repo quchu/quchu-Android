@@ -188,7 +188,7 @@ public static final int *;
 ## ----------------------------------
 ##   ########## 高德地图混淆    #########
 ## ----------------------------------
--libraryjars libs/BaiduLBS_Android.jar #替换成自己所用版本的jar包
+#-libraryjars libs/BaiduLBS_Android.jar #替换成自己所用版本的jar包
 -keep class com.baidu.** { *; }
 -keep class vi.com.gdi.bgl.android.**{*;}
 ## ----------------------------------
@@ -289,8 +289,7 @@ public static final int *;
 -keep class **$Properties
 -dontwarn org.eclipse.jdt.annotation.**
 
--libraryjars libs/agora-rtc-sdk.jar
--keep class io.agora.rtc.** {*;}
+
 
 -keep class io.rong.** {*;}
 -keep class io.agora.rtc.** {*; }
