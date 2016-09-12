@@ -422,6 +422,7 @@ public class RecommendFragment extends BaseFragment
           }
         }
 
+        vpMyScene.setCurrentItem(0);
         notifyAdapters(index, true);
         break;
       case EventFlags.EVENT_SCENE_CANCEL_FAVORITE:
