@@ -88,7 +88,7 @@ public class ChatActivity extends BaseBehaviorActivity {
     EnhancedToolbar toolbar = getEnhancedToolbar();
     titleTv = toolbar.getTitleTv();
     ImageView settingIv = toolbar.getRightIv();
-    settingIv.setImageResource(R.mipmap.ic_shezhi);
+    settingIv.setImageResource(R.mipmap.ic_gengduo);
     settingIv.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -105,7 +105,7 @@ public class ChatActivity extends BaseBehaviorActivity {
     mImPresenter = new IMPresenter();
 
     if (getIntent() == null || getIntent().getData() == null) {
-      LogUtils.e("------mwb", "intent null");
+      LogUtils.e("------ChatActivity", "intent null");
       return;
     }
 
@@ -354,7 +354,7 @@ public class ChatActivity extends BaseBehaviorActivity {
    * 重连融云服务
    */
   private void reconnect() {
-    mImPresenter.connectIMService(new IMPresenter.RongYunBehaviorListener() {
+    mImPresenter.connectIMService(SPUtils.getRongYunToken(), new IMPresenter.RongYunBehaviorListener() {
       @Override
       public void onSuccess(String msg) {
         enterFragment(mConversationType, mTargetId);
@@ -423,7 +423,7 @@ public class ChatActivity extends BaseBehaviorActivity {
       @Override
       public void onClick(View v) {
         popWin.dismiss();
-        mImPresenter.getLatestMessages(mTargetId, 50, new IMPresenter.RongYunBehaviorListener() {
+        mImPresenter.getLatestMessages(mTargetId, 100, new IMPresenter.RongYunBehaviorListener() {
           @Override
           public void onSuccess(String msg) {
             mImPresenter.sendImReport(ChatActivity.this, mTargetId, msg, new CommonListener<Object>() {

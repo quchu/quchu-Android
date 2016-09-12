@@ -94,7 +94,7 @@ public class MessageActivity extends BaseBehaviorActivity {
    * 重连融云服务
    */
   private void reconnect(String token) {
-    new IMPresenter().connectIMService(null);
+    new IMPresenter().connectIMService(token, null);
   }
 
   /**

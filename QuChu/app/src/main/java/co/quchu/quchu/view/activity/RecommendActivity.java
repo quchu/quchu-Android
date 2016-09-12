@@ -173,17 +173,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     if (!isChat && !isChatList) {
       //连接融云服务
-      new IMPresenter().connectIMService(new IMPresenter.RongYunBehaviorListener() {
-        @Override
-        public void onSuccess(String msg) {
-          getUnreadMessage();
-        }
-
-        @Override
-        public void onError() {
-
-        }
-      });
+      connectIM();
     }
 
     rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -221,6 +211,40 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
       accessPushMessage();
+    }
+  }
+
+  /**
+   * 连接IM
+   */
+  private void connectIM() {
+    String token = SPUtils.getRongYunToken();
+    LogUtils.e("RecommendActivity", "rongyun token is " + token);
+    if (!token.equals("null")) {
+      new IMPresenter().connectIMService(token, new IMPresenter.RongYunBehaviorListener() {
+        @Override
+        public void onSuccess(String msg) {
+          getUnreadMessage();
+        }
+
+        @Override
+        public void onError() {
+
+        }
+      });
+
+    } else {
+      new IMPresenter().getToken(this, new IMPresenter.RongYunBehaviorListener() {
+        @Override
+        public void onSuccess(String msg) {
+          getUnreadMessage();
+        }
+
+        @Override
+        public void onError() {
+
+        }
+      });
     }
   }
 

@@ -108,7 +108,7 @@ public class ChatListFragment extends BaseFragment {
           //列表点击
           if (RongIMClient.getInstance() != null) {
             if (!RongIMClient.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
-              Toast.makeText(getActivity(), "IM连接失败，请检查网络或者重启应用！", Toast.LENGTH_SHORT).show();
+              Toast.makeText(getActivity(), "IM连接失败，请检查网络或者重启应用", Toast.LENGTH_SHORT).show();
               return true;
             }
           }

@@ -20,14 +20,13 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.utils.LogUtil;
 import com.sina.weibo.sdk.utils.Utility;
 
-
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -78,6 +77,9 @@ public class WeiboHelper {
             Toast.makeText(context, (R.string.network_error), Toast.LENGTH_SHORT).show();
             return;
         }
+
+        //退出已经登录的融云账号
+        new IMPresenter().logout();
 
         ssoHandler.authorize(new WeiboAuthListener() {
             @Override

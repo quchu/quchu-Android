@@ -126,15 +126,15 @@ public class IMPresenter {
                 if (response != null) {
                   LogUtils.e(TAG, "onResponse() token = " + response.getRongYunToken());
 
+                  //保存融云token到本地
+                  SPUtils.setRongYunToken(response.getRongYunToken());
+
+                  //连接融云服务器
+                  connectIMService(response.getRongYunToken(), null);
+
                   if (listener != null) {
                     listener.onSuccess(response.getRongYunToken());
                   }
-
-                  //连接融云服务器
-                  connectIMService(null);
-
-                  //保存融云token到本地
-                  SPUtils.setRongYunToken(response.getRongYunToken());
                 }
               }
             });
@@ -144,9 +144,7 @@ public class IMPresenter {
   /**
    * 建立与融云服务器的连接
    */
-  public void connectIMService(final RongYunBehaviorListener listener) {
-    final String token = SPUtils.getRongYunToken();
-
+  public void connectIMService(final String token, final RongYunBehaviorListener listener) {
     RongIM.connect(token, new RongIMClient.ConnectCallback() {
 
       /**
@@ -275,8 +273,8 @@ public class IMPresenter {
    * 退出融云连接
    */
   public void logout() {
+    SPUtils.setRongYunToken("");
     if (RongIM.getInstance() != null) {
-      SPUtils.setRongYunToken("");
       RongIM.getInstance().logout();
     }
   }

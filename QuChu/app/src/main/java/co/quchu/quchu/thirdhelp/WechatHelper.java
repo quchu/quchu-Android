@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
@@ -73,6 +74,10 @@ public class WechatHelper {
             Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        //退出已经登录的融云账号
+        new IMPresenter().logout();
+
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "quchu";
@@ -88,6 +93,10 @@ public class WechatHelper {
             Toast.makeText(mActivity, "您还未安装微信", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        //退出已经登录的融云账号
+        new IMPresenter().logout();
+
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "quchu";

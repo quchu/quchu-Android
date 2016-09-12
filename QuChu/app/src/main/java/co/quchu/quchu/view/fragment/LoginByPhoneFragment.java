@@ -218,6 +218,10 @@ public class LoginByPhoneFragment extends Fragment
       return;
     }
     errorView.showLoading();
+
+    //退出已经登录的融云账号
+    new IMPresenter().logout();
+
     UserLoginPresenter.userLogin(getActivity(), userName, password, new UserLoginListener() {
       @Override public void loginSuccess(int type, String token, String appId) {
         LogUtils.e("LoginByPhoneFragment", "login success");

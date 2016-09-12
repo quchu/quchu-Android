@@ -13,18 +13,15 @@
       android:gravity="center"
       android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_shezhi"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/ic_jubao"
+        android:drawablePadding="@dimen/half_margin"
         android:gravity="center"
         android:text="举报"
-        android:textColor="#333333"
-        android:textSize="12sp"/>
+        android:textColor="#111111"
+        android:textSize="14sp"/>
 
   </LinearLayout>
 
@@ -42,19 +39,16 @@
       android:gravity="center"
       android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_shezhi"/>
-
     <TextView
         android:id="@+id/dialog_message_add_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/ic_pingbi"
+        android:drawablePadding="@dimen/half_margin"
         android:gravity="center"
         android:text="屏蔽"
-        android:textColor="#333333"
-        android:textSize="12sp"/>
+        android:textColor="#111111"
+        android:textSize="14sp"/>
 
   </LinearLayout>
 
