@@ -597,8 +597,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           ((CommentViewHolder) holder).tvFrom.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
               WebViewActivity.enterActivity(mAnchorActivity,commentModel.getPqUrl(),"查看评论",false);
+              ((CommentViewHolder) holder).ivArrow.setVisibility(View.VISIBLE);
             }
           });
+        }else{
+          ((CommentViewHolder) holder).ivArrow.setVisibility(View.GONE);
         }
 
         final boolean collapsed = mData.getReviewList().get(commentIndex).isCollapsed();
@@ -884,6 +887,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.rbRating) RatingBar rbRating;
     @Bind(R.id.rvImages) RecyclerView rvImages;
     @Bind(R.id.more_comments_layout) LinearLayout moreCommentsLayout;
+    @Bind(R.id.ivArrow) View ivArrow;
 
     CommentViewHolder(View view) {
       super(view);

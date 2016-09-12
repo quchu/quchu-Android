@@ -11,7 +11,9 @@ import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -148,6 +150,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     categoryCode = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_CODE);
     categoryName = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_NAME);
     searchInputEt.setText(keyword);
+
     doSearch(false);
 
 
@@ -156,12 +159,6 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     initData();
     //SearchPresenter.getCategoryTag(this);
     SearchPresenter.getGroupTags(this);
-    searchInputEt.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        searchInputEt.setCursorVisible(true);
-        filterUserInput = true;
-      }
-    });
     vReturn.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         onBackPressed();
@@ -439,7 +436,10 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         }
         break;
       case R.id.search_input_et:
-        if (popupWindow != null && popupWindow.isShowing()) {
+        searchInputEt.setCursorVisible(true);
+        filterUserInput = true;
+
+        if (popupWindow != null ) {
           dismissDialog();
         }
         break;

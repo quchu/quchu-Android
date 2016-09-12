@@ -133,7 +133,7 @@
       android:layout_marginLeft="48dp"
       android:layout_below="@id/llComments"
       android:layout_marginTop="@dimen/half_margin"
-      android:paddingBottom="@dimen/base_margin"
+      android:layout_marginBottom="@dimen/base_margin"
       >
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -148,10 +148,18 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_toRightOf="@id/ivFrom"
-        android:drawablePadding="@dimen/half_margin"
-        android:drawableRight="@mipmap/ic_tiaozhuan"
         tools:text="来自大众点评"
+        android:layout_centerVertical="true"
         style="@style/TextView.H3"
+        />
+    <ImageView
+        android:id="@+id/ivArrow"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_tiaozhuan"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_toRightOf="@+id/tvFrom"
         />
 
   </RelativeLayout>
