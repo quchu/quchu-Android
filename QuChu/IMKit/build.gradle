@@ -10,9 +10,13 @@ android {
         versionName "2.7.0"
     }
     buildTypes {
-        release {
+            release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [RONGYUN_APP_KEY: "vnroth0krrmfo"]
+        }
+        debug {
+            manifestPlaceholders = [RONGYUN_APP_KEY: "z3v5yqkbvvhu0"]
         }
     }
 

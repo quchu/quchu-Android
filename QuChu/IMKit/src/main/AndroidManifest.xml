@@ -126,7 +126,7 @@
         <!-- 融云key 开发环境：z3v5yqkbvvhu0 正式环境：vnroth0krrmfo-->
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
-            android:value="vnroth0krrmfo" />
+            android:value="${RONGYUN_APP_KEY}" />
 
         <service
             android:name="io.rong.imlib.ipc.RongService"
