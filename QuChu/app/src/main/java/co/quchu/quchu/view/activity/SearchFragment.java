@@ -119,7 +119,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     if (KeyboardUtils.isFastDoubleClick()) return;
     switch (v.getId()) {
       case R.id.search_button_rl:
-        searchInputEt.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+        //searchInputEt.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
         SearchActivity.enterActivity(getActivity(),null,null,searchInputEt.getText().toString());
         break;
 
@@ -190,7 +190,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                     getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT)
                     .show();
               } else {
-                SearchActivity.enterActivity(getActivity(),null,null,searchInputEt.getText().toString());
+                //SearchActivity.enterActivity(getActivity(),null,null,searchInputEt.getText().toString());
               }
             }
           } else {
