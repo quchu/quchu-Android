@@ -237,7 +237,6 @@ public static final int *;
 -keepattributes Signature
 -dontskipnonpubliclibraryclasses
 -dontwarn net.poemcode.**
--ignorewarnings
 -keep class co.quchu.quchu.widget.recyclerviewpager.RecyclerViewPager{*;}
 ## ----------------------------------
 ##   ########## 其他混淆    #########
@@ -276,14 +275,14 @@ public static final int *;
 
 ############## 融云
 -keepattributes Exceptions,InnerClasses
-
 -keep class **$Properties
 -dontwarn org.eclipse.jdt.annotation.**
-
 -keep class io.rong.** {*;}
+-keep class io.agora.rtc.** {*; }
 -keep class * implements io.rong.imlib.model.MessageContent{*;}
-
 -dontwarn io.rong.push.** 
 -dontnote io.rong.**
--keep class co.quchu.quchu.im.IMNotificationReceiver {*;}
+-dontnote com.xiaomi.** 
+-dontnote com.huawei.android.pushagent.** 
+-dontnote com.google.android.gms.gcm.** 
 ############## 融云 end
