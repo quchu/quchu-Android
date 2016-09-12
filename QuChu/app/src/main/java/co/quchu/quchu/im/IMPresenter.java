@@ -153,7 +153,7 @@ public class IMPresenter {
        * Token 错误，在线上环境下主要是因为 Token 已经过期，您需要向 App Server 重新请求一个新的 Token
        */
       @Override public void onTokenIncorrect() {
-        getToken(AppContext.mContext, null);
+        //getToken(AppContext.mContext, null);
         LogUtils.e(TAG, "onTokenIncorrect()");
       }
 

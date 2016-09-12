@@ -108,7 +108,7 @@ public class PhoneValidationFragment extends Fragment {
 
     }
 
-    private boolean verifyForm() {
+    private boolean verifyForm(boolean verifyValidCode) {
         boolean status = false;
         String userName = etUsername.getText().toString();
 
@@ -118,8 +118,10 @@ public class PhoneValidationFragment extends Fragment {
         }else if (!StringUtils.isMobileNO(userName)){
             tvNext.setText(R.string.promote_invalid_phone_number);
             tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        }else if( !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())){
+        }else if(verifyValidCode && !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())){
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+            status = true;
+        }else if(!verifyValidCode){
             status = true;
         }else{
             tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
@@ -185,7 +187,7 @@ public class PhoneValidationFragment extends Fragment {
         tvSendValidCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (verifyForm()){
+                if (verifyForm(false)){
                     if (null!=etUsername.getText() && StringUtils.isMobileNO(etUsername.getText().toString())){
                         getValidCode();
                     }
@@ -195,7 +197,7 @@ public class PhoneValidationFragment extends Fragment {
         tvNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(codeSent && verifyForm()){
+                if(codeSent && verifyForm(true)){
                     if (mVerifyed){
                         verifySms();
                     }else{
@@ -341,6 +343,7 @@ public class PhoneValidationFragment extends Fragment {
                             errorView.hideView();
                             scheduleCountDownTask();
                             mVerifyed = true;
+                            etValidCode.requestFocus();
                         }
 
                         @Override
