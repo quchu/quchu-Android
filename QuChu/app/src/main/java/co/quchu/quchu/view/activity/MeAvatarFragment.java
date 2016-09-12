@@ -223,7 +223,7 @@ public class MeAvatarFragment extends BaseFragment {
     }
 
     //更换了头像
-    if (!userAvatar.equals(AppContext.user.getPhoto())) {
+    if (AppContext.user != null && !userAvatar.equals(AppContext.user.getPhoto())) {
       userAvatar = AppContext.user.getPhoto();
       ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
     }
@@ -238,8 +238,10 @@ public class MeAvatarFragment extends BaseFragment {
     switch (event.getFlag()) {
       case EventFlags.EVENT_USER_LOGIN_SUCCESS:
         //头像
-        userAvatar = AppContext.user.getPhoto();
-        ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+        if (AppContext.user != null) {
+          userAvatar = AppContext.user.getPhoto();
+          ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+        }
         break;
 
       case EventFlags.EVENT_USER_LOGOUT:
@@ -248,7 +250,9 @@ public class MeAvatarFragment extends BaseFragment {
 
       case EventFlags.EVENT_USER_INFO_UPDATE:
         //姓名
-        userNameTv.setText(AppContext.user.getFullname());
+        if (AppContext.user != null) {
+          userNameTv.setText(AppContext.user.getFullname());
+        }
         break;
     }
   }

@@ -28,7 +28,6 @@ import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserCenterInfo;
-import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.UserCenterPresenter;
@@ -197,12 +196,11 @@ public class NewMeFragment extends BaseFragment {
 
   @OnClick({R.id.friend_layout, R.id.quchu_layout, R.id.massage_layout, R.id.feedback_layout})
   public void onClick(View view) {
-    UserInfoModel user = AppContext.user;
     switch (view.getId()) {
       case R.id.friend_layout:
         //趣友圈
         UMEvent("community_c");
-        if (user.isIsVisitors()) {
+        if (AppContext.user != null && AppContext.user.isIsVisitors()) {
           ((BaseActivity) getActivity()).showLoginDialog();
         } else {
           startActivity(QuFriendsActivity.class);
