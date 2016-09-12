@@ -275,14 +275,15 @@ public static final int *;
 
 ############## 融云
 -keepattributes Exceptions,InnerClasses
+
 -keep class **$Properties
 -dontwarn org.eclipse.jdt.annotation.**
+
 -keep class io.rong.** {*;}
--keep class io.agora.rtc.** {*; }
 -keep class * implements io.rong.imlib.model.MessageContent{*;}
+
 -dontwarn io.rong.push.** 
 -dontnote io.rong.**
--dontnote com.xiaomi.** 
--dontnote com.huawei.android.pushagent.** 
--dontnote com.google.android.gms.gcm.** 
+-keep class co.quchu.quchu.im.IMNotificationReceiver {*;}
+-keep class co.quchu.quchu.im.model.** { *; }
 ############## 融云 end
