@@ -289,10 +289,7 @@ public static final int *;
 -keep class **$Properties
 -dontwarn org.eclipse.jdt.annotation.**
 
-
-
 -keep class io.rong.** {*;}
--keep class io.agora.rtc.** {*; }
 -keep class * implements io.rong.imlib.model.MessageContent{*;}
 
 -dontwarn io.rong.push.** 
