@@ -3,6 +3,7 @@ package co.quchu.quchu.view.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
@@ -44,8 +45,11 @@ import co.quchu.quchu.view.fragment.DialogMatchingUsers;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.zhuge.analysis.stat.ZhugeSDK;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by admin on 2016/3/7.
@@ -453,6 +457,18 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             d.setOnDialogMatchListener(new DialogMatchingUsers.OnDialogMatchListener() {
               @Override public void onMatchfinish() {
                 d.dismiss();
+
+                if (null!=mData && null!=mData.getNearPlace()){
+                  JSONObject jsonObject = new JSONObject();
+                  try {
+                    jsonObject.put("入口", mData.getName());
+                  } catch (JSONException e) {
+                    e.printStackTrace();
+                  }
+                  ZhugeSDK.getInstance().track(mAnchorActivity, "搭伙", jsonObject);
+                }
+
+
                 InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid(),mData.getName());
               }
             });
@@ -497,22 +513,22 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                   if (finalBlockIndex<2){
                     if (null!=mData.getCircleMap()){
                       intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_AREA);
+                          NearbyPresenter.TYPE_CIRCLE);
                       intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getAreaMap().getId());
 
                     }else{
                       intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_CIRCLE);
+                          NearbyPresenter.TYPE_AREA);
                       intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getCircleMap().getId());
                     }
                   }else{
                     if (position==0){
                       intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_AREA);
+                          NearbyPresenter.TYPE_CIRCLE);
                       intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getAreaMap().getId());
                     }else{
                       intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_CIRCLE);
+                          NearbyPresenter.TYPE_AREA);
                       intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getCircleMap().getId());
 
                     }

@@ -70,9 +70,9 @@ public class NearbyPresenter {
     public static void getGuessWhatYouLike(Context context,int tagId,int type,String lat,String lon,final getNearbyDataListener listener){
         HashMap<String,String> params = new HashMap<>();
         if (type==TYPE_CIRCLE){
-            params.put("CircleId",String.valueOf(tagId));
-        }else{
             params.put("areaId",String.valueOf(tagId));
+        }else{
+            params.put("circleId",String.valueOf(tagId));
         }
         params.put("latitude",lat);
         params.put("longitude",lon);

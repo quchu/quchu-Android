@@ -575,6 +575,8 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
                   doSearch(true);
                 }
               });
+              tvNoData.setVisibility(View.GONE);
+
             } else {
               tvNoData.setVisibility(View.VISIBLE);
             }

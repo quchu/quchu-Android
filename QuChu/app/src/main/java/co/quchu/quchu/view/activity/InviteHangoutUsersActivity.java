@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import com.zhuge.analysis.stat.ZhugeSDK;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,8 @@ import co.quchu.quchu.view.adapter.InviteHangoutUsersAdapter;
 import co.quchu.quchu.view.fragment.DialogHangoutUserInfo;
 import co.quchu.quchu.widget.DividerItemDecoration;
 import co.quchu.quchu.widget.ErrorView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Nico on 16/8/29.
@@ -122,6 +126,16 @@ public class InviteHangoutUsersActivity extends BaseActivity {
         mAdapter.notifyDataSetChanged();
         Toast.makeText(getApplicationContext(), R.string.user_invited, Toast.LENGTH_SHORT).show();
         mInviteRunning = false;
+
+        if (null!=userName ){
+          JSONObject jsonObject = new JSONObject();
+          try {
+            jsonObject.put("被搭伙的用户名", userName);
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+          ZhugeSDK.getInstance().track(getApplicationContext(), "搭伙成功", jsonObject);
+        }
         HangoutPresenter.inviteUser(getApplicationContext(), uid, mPid, new CommonListener<String>() {
           @Override public void successListener(String response) {}
 

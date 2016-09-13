@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
+import com.zhuge.analysis.stat.ZhugeSDK;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -221,6 +222,7 @@ public class NewMeFragment extends BaseFragment {
 
       case R.id.feedback_layout:
         //意见与反馈
+        ZhugeSDK.getInstance().track(getActivity(),"意见反馈");
         startActivity(FeedbackActivity.class);
         break;
     }
