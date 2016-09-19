@@ -3,11 +3,14 @@ package co.quchu.quchu.base;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
 import com.zhuge.analysis.stat.ZhugeSDK;
@@ -16,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.ToastManager;
@@ -209,25 +211,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     public void showLoginDialog() {
-
-        final CommonDialog commonDialog = CommonDialog.newInstance("登录提醒", "前往该操作前需要进行登录\r\n是否现在前往", "立即前往", "容我三思");
-        commonDialog.setListener(new CommonDialog.OnActionListener() {
-            @Override
-            public boolean dialogClick(int id) {
-                switch (id) {
-                    case CommonDialog.CLICK_ID_ACTIVE:
-                        startActivity(new Intent(BaseActivity.this, LoginActivity.class));
-                        break;
-                    case CommonDialog.CLICK_ID_PASSIVE:
-                        commonDialog.dismiss();
-                        break;
+        new MaterialDialog.Builder(this)
+            .title("登录提醒")
+            .content("前往该操作前需要进行登录\r\n是否现在前往")
+            .positiveText("立即前往")
+            .negativeText("容我三思")
+            .cancelable(false)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    startActivity(new Intent(BaseActivity.this, LoginActivity.class));
                 }
-                return true;
-            }
-        });
-        commonDialog.setCancelable(false);
-        commonDialog.show(getSupportFragmentManager(), "");
-
+            })
+            .show();
     }
 
 

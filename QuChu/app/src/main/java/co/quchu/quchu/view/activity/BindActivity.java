@@ -2,6 +2,7 @@ package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
@@ -23,7 +26,6 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.BindPhoneNumDialog;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
@@ -122,8 +124,10 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
     switch (v.getId()) {
       case R.id.bind_phone:
         if (AppContext.user.isphone()) {
-          CommonDialog dialog = CommonDialog.newInstance("出错了", "手机号是唯一的身份标示,解除绑定后将无法正常登录.", "知道了", null);
-          dialog.show(getSupportFragmentManager(), "");
+          new MaterialDialog.Builder(this)
+              .content("手机号是唯一的身份标示,解除绑定后将无法正常登录.")
+              .positiveText("知道了")
+              .show();
         } else {
           mDialog = BindPhoneNumDialog.newInstance();
           mDialog.setCancelable(false);
@@ -183,12 +187,17 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
   }
 
   private void merger(final int type, final String token, final String appId) {
-    CommonDialog commonDialog = CommonDialog.newInstance("注意", "该账号已被使用,是否将此账号与当前账号进行合并,合并后不影响使用", "确定", "取消", "什么是账号合并");
-    commonDialog.setListener(new CommonDialog.OnActionListener() {
-      @Override
-      public boolean dialogClick(int id) {
-        switch (id) {
-          case CommonDialog.CLICK_ID_ACTIVE:
+
+    new MaterialDialog.Builder(this)
+        .title("注意")
+        .content("该账号已被使用,是否将此账号与当前账号进行合并,合并后不影响使用")
+        .positiveText("确定")
+        .negativeText("取消")
+        .neutralText("什么是账号合并")
+        .cancelable(false)
+        .onPositive(new MaterialDialog.SingleButtonCallback() {
+          @Override
+          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
             Map<String, String> params = new HashMap<>();
             params.put("open_type", type + "");
             params.put("open_token", token);
@@ -209,12 +218,15 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
                 UserInfoHelper.saveUserInfo(response);
                 //数据不变 暂时不刷新
                 initViews();
-//                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATA, response));
+                //                            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATA, response));
               }
             });
             request.start(BindActivity.this);
-            break;
-          case CommonDialog.CLICK_ID_SUBBUTTON:
+          }
+        })
+        .onNegative(new MaterialDialog.SingleButtonCallback() {
+          @Override
+          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
             Intent intent = new Intent(BindActivity.this, StatementActivity.class);
             intent.putExtra(StatementActivity.REQUEST_KEY_TITLE, "什么是账号合并");
             intent.putExtra(StatementActivity.REQUEST_KEY_CONTENT, "账号合并是将用户已经绑定的第三方账号与当前帐号的数据进行合并，合并后允许用户使用多种方式登录，个人信息和行为会被融合，例如收藏，点赞，发表的脚印等，合并后趣处将为用户更全面的推荐内容。\n" +
@@ -222,13 +234,11 @@ public class BindActivity extends BaseBehaviorActivity implements UserLoginListe
                 "\n\n\n" +
                 "——趣处人工智能实验室");
             startActivity(intent);
-            return false;
-        }
-        return true;
-      }
-    });
-    commonDialog.setCancelable(false);
-    commonDialog.show(getSupportFragmentManager(), "");
+          }
+        })
+        .show();
+
+
 
   }
 

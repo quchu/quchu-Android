@@ -1,6 +1,8 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
 
 import java.util.List;
@@ -19,7 +23,6 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.FeedbackDialog;
 import co.quchu.quchu.model.FeedbackModel;
 import co.quchu.quchu.presenter.CommonListener;
@@ -109,8 +112,10 @@ public class FeedbackActivity extends BaseBehaviorActivity {
             SPUtils.setFeedback("", "");
             feedbackDialog.dismiss();
 
-            CommonDialog commonDialog = CommonDialog.newInstance("提交成功", "感谢您对我们的支持", true);
-            commonDialog.show(getSupportFragmentManager(), "");
+            new MaterialDialog.Builder(FeedbackActivity.this)
+                .content("感谢您对我们的支持")
+                .positiveText("好的，退下")
+                .show();
 
             getFeedbackList();
           }

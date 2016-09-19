@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
@@ -21,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import co.quchu.quchu.view.activity.LoginActivity;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
 
 import org.json.JSONException;
@@ -33,7 +37,6 @@ import java.util.Locale;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.im.IMDialog;
 import co.quchu.quchu.im.IMPresenter;
@@ -453,18 +456,19 @@ public class ChatActivity extends BaseBehaviorActivity {
       public void onClick(View v) {
         popWin.dismiss();
 
-        CommonDialog commonDialog =
-            CommonDialog.newInstance("确定要屏蔽此用户吗？", "屏蔽该用户后，90天内您将不会再收到该用户的消息", "确定", "取消");
-        commonDialog.setListener(new CommonDialog.OnActionListener() {
-          @Override
-          public boolean dialogClick(int clickId) {
-            if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
-              addToBack();
-            }
-            return true;
-          }
-        });
-        commonDialog.show(getSupportFragmentManager(), "");
+        new MaterialDialog.Builder(ChatActivity.this)
+            .title("确定要屏蔽此用户吗？")
+            .content("屏蔽该用户后，90天内您将不会再收到该用户的消息")
+            .positiveText("确定")
+            .negativeText("取消")
+            .cancelable(false)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+              @Override
+              public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                addToBack();
+              }
+            })
+            .show();
       }
     });
   }

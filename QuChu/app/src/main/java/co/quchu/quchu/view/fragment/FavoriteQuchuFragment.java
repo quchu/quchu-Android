@@ -2,6 +2,7 @@ package co.quchu.quchu.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import co.quchu.quchu.view.activity.LoginActivity;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,7 +27,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.model.FavoriteBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.FavoritePresenter;
@@ -149,12 +152,15 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
      * 收藏
      */
     private void setFavorite(final RecyclerView.ViewHolder holder, final FavoriteBean.ResultBean item) {
-        CommonDialog dialog = CommonDialog.newInstance("提示", "确定取消收藏吗?", "确定", "取消");
 
-        dialog.setListener(new CommonDialog.OnActionListener() {
-            @Override
-            public boolean dialogClick(int clickId) {
-                if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
+        new MaterialDialog.Builder(getActivity())
+            .content("确定取消收藏吗?")
+            .positiveText("确定")
+            .negativeText("取消")
+            .cancelable(false)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     InterestingDetailPresenter.setDetailFavorite(getActivity(), item.getPid(), true, new InterestingDetailPresenter.DetailDataListener() {
                         @Override
                         public void onSuccessCall(String str) {
@@ -168,11 +174,8 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
                         }
                     });
                 }
-                return true;
-            }
-        });
-        dialog.show(getChildFragmentManager(), null);
-
+            })
+            .show();
 
     }
 

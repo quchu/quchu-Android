@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
 import com.sina.weibo.sdk.utils.LogUtil;
 
@@ -30,7 +33,6 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.gallery.GalleryFinal;
 import co.quchu.quchu.gallery.model.PhotoInfo;
@@ -341,17 +343,19 @@ public class FindPositionActivity extends BaseActivity implements FindPositionAd
     @Override
     public void onBackPressed() {
         if (dataChange) {
-            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "继续编辑", "不保存退出");
-            dialog.setListener(new CommonDialog.OnActionListener() {
-                @Override
-                public boolean dialogClick(int clickId) {
-                    if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
+            new MaterialDialog.Builder(this)
+                .content("当前修改尚未保存,退出会导致资料丢失,是否保存?")
+                .positiveText("继续编辑")
+                .negativeText("不保存退出")
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         finish();
                     }
-                    return true;
-                }
-            });
-            dialog.show(getSupportFragmentManager(), "");
+                })
+                .show();
+
         } else {
             super.onBackPressed();
         }

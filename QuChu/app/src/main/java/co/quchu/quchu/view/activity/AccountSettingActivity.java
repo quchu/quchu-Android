@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.baidu.location.BDLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -34,7 +37,6 @@ import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.dialog.ASUserPhotoDialogFg;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ModiffPasswordDialog;
 import co.quchu.quchu.dialog.QAvatarSettingDialogFg;
@@ -181,21 +183,25 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
         String location = accountSettingUserLocation.getText().toString();
         if (mProfileModified || userNameChanged || userGenderChanged || (!TextUtils.isEmpty(location) && !location.equals(AppContext.user.getLocation()))) {
-            CommonDialog dialog = CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "先保存", "取消");
-
-            dialog.setListener(new CommonDialog.OnActionListener() {
-                @Override
-                public boolean dialogClick(int clickId) {
-                    if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
-                        finish();
-                    } else {
+            new MaterialDialog.Builder(AccountSettingActivity.this)
+                .content("当前修改尚未保存,退出会导致资料丢失,是否保存?")
+                .positiveText("先保存")
+                .negativeText(R.string.cancel)
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mSaveUserInfo.callOnClick();
                     }
-                    return true;
-                }
-            });
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        AccountSettingActivity.this.finish();
+                    }
+                })
+                .show();
 
-            dialog.show(getSupportFragmentManager(), "");
+
         } else {
             super.onBackPressed();
         }
@@ -223,49 +229,49 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                 break;
             case R.id.toolbar_tv_right:
 
-                final CommonDialog commonDialog = CommonDialog.newInstance("确认退出", "退出后将以游客模式登录", "是", "否");
-                commonDialog.setListener(new CommonDialog.OnActionListener() {
-                    @Override
-                    public boolean dialogClick(int id) {
-                        switch (id) {
-                            case CommonDialog.CLICK_ID_ACTIVE:
-                                SPUtils.clearUserinfo(AppContext.mContext);
-                                AppContext.user = null;
-                                SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);
+                final MaterialDialog confirmDialog = new MaterialDialog.Builder(this)
+                    .title("确认退出")
+                    .content("退出后将以游客模式登录")
+                    .positiveText("是")
+                    .negativeText("否")
+                    .cancelable(false).build();
 
-                                //退出当前账号登录的融云信息
-                                new IMPresenter().logout();
+                    confirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            SPUtils.clearUserinfo(AppContext.mContext);
+                            AppContext.user = null;
+                            SPUtils.clearSpMap(AccountSettingActivity.this, AppKey.LOGIN_TYPE);
 
-                                UserLoginPresenter.visitorRegiest(AccountSettingActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
-                                    @Override
-                                    public void isUnique(JSONObject msg) {
-                                        ArrayMap<String,Object> params = new ArrayMap<>();
-                                        params.put("用户名",AppContext.user.getFullname());
-                                        params.put("登陆方式","游客模式");
-                                        ZGEvent(params,"用户登陆");
+                            //退出当前账号登录的融云信息
+                            new IMPresenter().logout();
 
-                                        //重新获取融云token连接服务器
-                                        new IMPresenter().getToken(AccountSettingActivity.this, null);
+                            UserLoginPresenter.visitorRegiest(AccountSettingActivity.this, new UserLoginPresenter.UserNameUniqueListener() {
+                                @Override
+                                public void isUnique(JSONObject msg) {
+                                    ArrayMap<String,Object> params = new ArrayMap<>();
+                                    params.put("用户名",AppContext.user.getFullname());
+                                    params.put("登陆方式","游客模式");
+                                    ZGEvent(params,"用户登陆");
 
-                                        commonDialog.dismiss();
-                                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
-                                        finish();
-                                    }
+                                    //重新获取融云token连接服务器
+                                    new IMPresenter().getToken(AccountSettingActivity.this, null);
+                                    confirmDialog.dismiss();
+                                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
+                                    finish();
+                                }
 
-                                    @Override
-                                    public void notUnique(String msg) {
+                                @Override
+                                public void notUnique(String msg) {
 
-                                    }
-                                });
-                                break;
-                            case CommonDialog.CLICK_ID_PASSIVE:
-                                commonDialog.dismiss();
-                                break;
+                                }
+                            });
                         }
-                        return true;
-                    }
-                });
-                commonDialog.show(getSupportFragmentManager(),"~");
+                    });
+
+                confirmDialog.show();
+
+
 
                 break;
             case R.id.location:

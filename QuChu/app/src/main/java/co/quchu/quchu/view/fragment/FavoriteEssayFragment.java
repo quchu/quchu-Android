@@ -1,6 +1,8 @@
 package co.quchu.quchu.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,13 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import co.quchu.quchu.view.activity.LoginActivity;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.model.FavoriteEssayBean;
 import co.quchu.quchu.presenter.ArticlePresenter;
 import co.quchu.quchu.presenter.CommonListener;
@@ -81,12 +85,16 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
         if (type == R.id.swipe_delete_content) {
             ArticleDetailActivity.enterActivity(getActivity(), String.valueOf(item.getArticleId()),String.valueOf(item.getArticleName()),getPageNameCN());
         } else {
-            CommonDialog dialog = CommonDialog.newInstance("提示", "确定取消收藏吗?", "确定", "取消");
 
-            dialog.setListener(new CommonDialog.OnActionListener() {
-                @Override
-                public boolean dialogClick(int clickId) {
-                    if (clickId == CommonDialog.CLICK_ID_ACTIVE) {
+            new MaterialDialog.Builder(getActivity())
+                .title("确定取消收藏吗?")
+                .content("前往该操作前需要进行登录\r\n是否现在前往")
+                .positiveText("确定")
+                .negativeText("取消")
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         ArticlePresenter.delFavoriteArticle(getContext(), item.getArticleId(), new CommonListener() {
                             @Override
                             public void successListener(Object response) {
@@ -99,10 +107,9 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
                             }
                         });
                     }
-                    return true;
-                }
-            });
-            dialog.show(getChildFragmentManager(), null);
+                })
+                .show();
+
         }
     }
 

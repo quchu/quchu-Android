@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -28,7 +31,6 @@ import co.quchu.quchu.BuildConfig;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserInfoModel;
@@ -161,25 +163,20 @@ public class SplashActivity extends BaseActivity {
 
         if (SPUtils.getForceUpdateIfNecessary(getApplicationContext())) {
 
-
-            final CommonDialog commonDialog = CommonDialog.newInstance("提示", SPUtils.getForceUpdateReason(getApplicationContext()), "立即前往", "容我三思");
-            commonDialog.setListener(new CommonDialog.OnActionListener() {
-                @Override
-                public boolean dialogClick(int id) {
-                    switch (id) {
-                        case CommonDialog.CLICK_ID_ACTIVE:
-                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(SPUtils.getForceUpdateUrl(getApplicationContext())));
-                            startActivity(browserIntent);
-                            break;
-                        case CommonDialog.CLICK_ID_PASSIVE:
-                            commonDialog.dismiss();
-                            break;
+            new MaterialDialog.Builder(this)
+                .title("提示")
+                .content(SPUtils.getForceUpdateReason(getApplicationContext()))
+                .positiveText("立即前往")
+                .negativeText("容我三思")
+                .cancelable(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(SPUtils.getForceUpdateUrl(getApplicationContext())));
+                        startActivity(browserIntent);
                     }
-                    return true;
-                }
-            });
-            commonDialog.setCancelable(false);
-            commonDialog.show(getSupportFragmentManager(), "");
+                })
+                .show();
 
 
         } else {

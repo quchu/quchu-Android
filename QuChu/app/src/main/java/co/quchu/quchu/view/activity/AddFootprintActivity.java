@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
-import co.quchu.quchu.dialog.CommonDialog;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.adapter.RatingQuchuDialogAdapter;
 import co.quchu.quchu.gallery.GalleryFinal;
@@ -32,6 +32,8 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.view.adapter.FindPositionAdapter;
 import co.quchu.quchu.widget.SelectedImagePopWin;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,9 +124,9 @@ public class AddFootprintActivity extends BaseBehaviorActivity
 
       @Override public void afterTextChanged(Editable s) {
 
-        if (140-s.length()>0){
+        if (140 - s.length() > 0) {
           textLength.setTextColor(getResources().getColor(R.color.standard_color_h3_dark));
-        }else{
+        } else {
           textLength.setTextColor(getResources().getColor(R.color.standard_color_red));
         }
         textLength.setText("剩余" + (140 - s.length()) + "字");
@@ -164,7 +166,7 @@ public class AddFootprintActivity extends BaseBehaviorActivity
       @Override public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
         tvSubmit.setBackgroundResource(R.color.standard_color_yellow);
         dataChange = true;
-        if (v<1){
+        if (v < 1) {
           ratingBar.setRating(1);
         }
       }
@@ -181,8 +183,9 @@ public class AddFootprintActivity extends BaseBehaviorActivity
       @Override public void onClick(View v) {
         if (dataChange) {
 
-          if (etContent.length()>140){
-            Toast.makeText(AddFootprintActivity.this,R.string.promote_comment_over_length,Toast.LENGTH_SHORT).show();
+          if (etContent.length() > 140) {
+            Toast.makeText(AddFootprintActivity.this, R.string.promote_comment_over_length,
+                Toast.LENGTH_SHORT).show();
             return;
           }
           List<String> im = new ArrayList<>();
@@ -232,7 +235,8 @@ public class AddFootprintActivity extends BaseBehaviorActivity
             if (null != strTagIds && strTagIds.endsWith(",")) {
               strTagIds = strTagIds.substring(0, strTagIds.length() - 1);
             }
-            saveRating("", strTagIds, pId, etContent.getText().toString(), (int) rbRating.getRating());
+            saveRating("", strTagIds, pId, etContent.getText().toString(),
+                (int) rbRating.getRating());
           }
         } else {
           Toast.makeText(AddFootprintActivity.this, "你还没有做出评价~", Toast.LENGTH_SHORT).show();
@@ -242,7 +246,8 @@ public class AddFootprintActivity extends BaseBehaviorActivity
   }
 
   @Override public void itemClick(boolean isDelete, int position, final PhotoInfo photoInfo) {
-    if (!isDelete && position == photoInfos.size()-1 && photoInfo.getPhotoPath().contains("res:///")) {
+    if (!isDelete && position == photoInfos.size() - 1 && photoInfo.getPhotoPath()
+        .contains("res:///")) {
       View view = getWindow().peekDecorView();
       if (view != null) {
         InputMethodManager inputmanger =
@@ -272,10 +277,10 @@ public class AddFootprintActivity extends BaseBehaviorActivity
     }
     if (isDelete) {
       photoInfos.remove(position);
-      if (photoInfos.size() < 4 && photoInfos.size() > 0 && !photoInfos.get(photoInfos.size()-1)
+      if (photoInfos.size() < 4 && photoInfos.size() > 0 && !photoInfos.get(photoInfos.size() - 1)
           .getPhotoPath()
           .contains("res:///")) {
-        photoInfos.add( tackImage);
+        photoInfos.add(tackImage);
       }
       adapter.notifyDataSetChanged();
     }
@@ -293,29 +298,25 @@ public class AddFootprintActivity extends BaseBehaviorActivity
           @Override public void errorListener(VolleyError error, String exception, String msg) {
             DialogUtil.dismissProgessDirectly();
             Toast.makeText(AddFootprintActivity.this, "评价提交失败!", Toast.LENGTH_SHORT).show();
-
           }
         });
   }
 
   @Override public void onBackPressed() {
     if (dataChange) {
-      CommonDialog dialog =
-          CommonDialog.newInstance("请先保存", "当前修改尚未保存,退出会导致资料丢失,是否保存?", "继续编辑", "退出");
-      dialog.setListener(new CommonDialog.OnActionListener() {
-        @Override public boolean dialogClick(int clickId) {
-          if (clickId != CommonDialog.CLICK_ID_ACTIVE) {
-            finish();
-          }
-          return true;
-        }
-      });
 
-      dialog.show(getSupportFragmentManager(), "");
+      new MaterialDialog.Builder(this).content("当前修改尚未保存,退出会导致资料丢失,是否保存?")
+          .positiveText("继续编辑")
+          .negativeText("退出")
+          .onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+              finish();
+            }
+          })
+          .show();
     } else {
       super.onBackPressed();
     }
   }
-
-
 }
