@@ -131,7 +131,9 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
         mOverlayMyLocation = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_me);
         mapView.onCreate(getApplicationContext(),savedInstanceState);// 此方法必须重写
         ImageView currentPosition = (ImageView) findViewById(R.id.current_position);
+        ImageView myPosition = (ImageView) findViewById(R.id.my_position);
         currentPosition.setOnClickListener(this);
+        myPosition.setOnClickListener(this);
         if (aMap == null) {
             aMap = mapView.getMap();
             setUpMap();
@@ -355,36 +357,52 @@ public class PlaceMapActivity extends BaseBehaviorActivity implements View.OnCli
             return;
         switch (v.getId()) {
             case R.id.current_position:
-                //如果没有定位权限,提醒
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission_group.LOCATION) == PackageManager.PERMISSION_DENIED) {
-                        AlertDialog.Builder b = new AlertDialog.Builder(this, R.style.dialog_two_button);
-                        b.setTitle("趣处没有权限获取您的位置!");
-                        b.setMessage("请在设置/应用管理/趣处/权限管理允许获取位置权限");
-                        b.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-
-                            }
-                        });
-                        b.setCancelable(false);
-                        b.show();
-                        return;
+                if(mVPNearby.getChildCount()>0){
+                    if (mVPNearby.getCurrentItem()==0){
+                        checkPermission();
+                        mVPNearby.setCurrentItem(0);
+                        MapStatus mapStatus = new MapStatus.Builder().target(new LatLng(lat,lont)).zoom(aMap.getMapStatus().zoom).build();
+                        MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
+                        aMap.animateMapStatus(mMapStatusUpdate);
+                    }else{
+                        mVPNearby.setCurrentItem(0);
                     }
                 }
+
+                break;
+            case R.id.my_position:
+                //如果没有定位权限,提醒
+                checkPermission();
                 //有权限
-
-                MapStatus mapStatus = new MapStatus.Builder().target(new LatLng(SPUtils.getLatitude(),SPUtils.getLongitude())).zoom(aMap.getMapStatus().zoom).build();
-                MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
-
-                aMap.animateMapStatus(mMapStatusUpdate);
+                MapStatus mapStatusCurrent = new MapStatus.Builder().target(new LatLng(SPUtils.getLatitude(),SPUtils.getLongitude())).zoom(aMap.getMapStatus().zoom).build();
+                MapStatusUpdate mMapStatusUpdateCurrent = MapStatusUpdateFactory.newMapStatus(mapStatusCurrent);
+                aMap.animateMapStatus(mMapStatusUpdateCurrent);
 
                 break;
             default:
                 finish();
         }
 
+    }
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission_group.LOCATION) == PackageManager.PERMISSION_DENIED) {
+                AlertDialog.Builder b = new AlertDialog.Builder(this, R.style.dialog_two_button);
+                b.setTitle("趣处没有权限获取您的位置!");
+                b.setMessage("请在设置/应用管理/趣处/权限管理允许获取位置权限");
+                b.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                });
+                b.setCancelable(false);
+                b.show();
+                return;
+            }
+        }
     }
 
     private int mLocationUpdateCounter = 0;

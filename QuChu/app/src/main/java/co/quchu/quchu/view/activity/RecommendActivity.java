@@ -331,7 +331,7 @@ public class RecommendActivity extends ImMainActivity {
           final String finalCurrentLocation = currentLocation;
 
           new MaterialDialog.Builder(this).title("切换城市")
-              .content("检测到你在\" + currentLocation + \"，是否切换？")
+              .content("检测到你在" + currentLocation + "，是否切换？")
               .positiveText("确定")
               .negativeText("取消")
               .cancelable(false)

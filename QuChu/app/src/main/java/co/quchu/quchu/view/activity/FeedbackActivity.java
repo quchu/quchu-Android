@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -112,10 +113,7 @@ public class FeedbackActivity extends BaseBehaviorActivity {
             SPUtils.setFeedback("", "");
             feedbackDialog.dismiss();
 
-            new MaterialDialog.Builder(FeedbackActivity.this)
-                .content("感谢您对我们的支持")
-                .positiveText("好的，退下")
-                .show();
+            makeToast("感谢您对我们的支持");
 
             getFeedbackList();
           }

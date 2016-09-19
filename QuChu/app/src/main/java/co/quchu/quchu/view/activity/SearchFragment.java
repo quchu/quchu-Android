@@ -190,7 +190,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
                     getResources().getString(R.string.search_content_has_emoji), Toast.LENGTH_SHORT)
                     .show();
               } else {
-                //SearchActivity.enterActivity(getActivity(),null,null,searchInputEt.getText().toString());
+                searchButtonRl.performClick();
               }
             }
           } else {
