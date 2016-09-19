@@ -9,13 +9,16 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.DateUtils;
-import co.quchu.quchu.utils.LogUtils;
+import io.rong.imkit.utils.AndroidEmoji;
+import io.rong.imkit.utils.TimeUtils;
 import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.MessageContent;
@@ -24,6 +27,9 @@ import io.rong.imlib.model.MessageContent;
  * Created by mwb on 16/8/29.
  */
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder> {
+
+  private static final int ITEM_VIEW_TYPE_HEADER = 0;
+  private static final int ITEM_VIEW_TYPE_ITEM = 1;
 
   private Context mContext;
   private List<Conversation> mConversations;
@@ -35,52 +41,92 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
     this.mConversations = conversations;
   }
 
-  @Override public ChatListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+  @Override
+  public int getItemViewType(int position) {
+    return position == 0 ? ITEM_VIEW_TYPE_HEADER : ITEM_VIEW_TYPE_ITEM;
+  }
+
+  @Override
+  public ChatListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ChatListViewHolder(
         LayoutInflater.from(mContext).inflate(R.layout.item_conversation_list, parent, false));
   }
 
-  @Override public void onBindViewHolder(ChatListViewHolder holder, int position) {
-    Conversation conversation = mConversations.get(position);
-    //草稿
-    String draft = conversation.getDraft();
-    //最后一条消息
+  @Override
+  public void onBindViewHolder(ChatListViewHolder holder, final int position) {
+    if (position == 0) {
+      holder.titleTv.setText("趣处小Q");
+      holder.contentTv.setText("趣处小Q是你的生活助手");
+      holder.timeTv.setVisibility(View.INVISIBLE);
+      holder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          if (mListener != null) {
+            mListener.itemClick(null, position);
+          }
+        }
+      });
+      return;
+    }
+
+    Conversation conversation = mConversations.get(position - 1);
     MessageContent latestMessage = conversation.getLatestMessage();
-    //JSONObject mentionInfoJson = latestMessage.getJsonMentionInfo();
-    //JSONObject userInfoJson = latestMessage.getJSONUserInfo();
-    //MentionedInfo mentionedInfo = latestMessage.getMentionedInfo();
-    //UserInfo userInfo = latestMessage.getUserInfo();
-    //未读消息数
-    int unreadMessageCount = conversation.getUnreadMessageCount();
-    String receivedTime = DateUtils.dateTimeFormat(conversation.getReceivedTime());
-    String sentTime = DateUtils.dateTimeFormat(conversation.getSentTime());
 
     holder.avatarImg.setAvatar(conversation.getPortraitUrl(), R.drawable.rc_default_portrait);
     holder.titleTv.setText(conversation.getTargetId());
-    if (!TextUtils.isEmpty(draft)) {
+    if (!TextUtils.isEmpty(conversation.getDraft())) {
       //有草稿显示草稿内容
-      LogUtils.e("==========mwb", "draft = " + draft);
-      holder.contentTv.setText("[草稿]" + draft);
+      holder.contentTv.setText("[草稿]" + AndroidEmoji.ensure(conversation.getDraft()));
     } else {
-      holder.contentTv.setText("------------");
+      if (latestMessage != null) {
+        String content = "";
+        try {
+          JSONObject jsonObject = new JSONObject(new String(latestMessage.encode()));
+          if (jsonObject.has("content")) {
+            //富文字
+            content = jsonObject.getString("content");
+
+          } else if (jsonObject.has("duration")) {
+            //语音
+            content = "[语音]";
+          }
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+        holder.contentTv.setText(AndroidEmoji.ensure(content));
+      } else {
+        holder.contentTv.setText("");
+      }
     }
-    holder.timeTv.setText(DateUtils.dateTimeFormat(conversation.getReceivedTime()));
-    holder.unreadMessageTv.setText("" + unreadMessageCount);
-    holder.unreadMessageTv.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.INVISIBLE);
+    holder.timeTv.setText(TimeUtils.formatData(conversation.getReceivedTime()));
+    holder.unreadMessageTv.setVisibility(conversation.getUnreadMessageCount() > 0 ? View.VISIBLE : View.INVISIBLE);
 
     holder.itemView.setTag(conversation);
     holder.itemView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
+      @Override
+      public void onClick(View view) {
         Conversation conversation = (Conversation) view.getTag();
         if (conversation != null && mListener != null) {
-          mListener.itemClick(conversation);
+          mListener.itemClick(conversation, position);
         }
+      }
+    });
+
+    holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View view) {
+        Conversation conversation = (Conversation) view.getTag();
+        if (conversation != null && mListener != null) {
+          mListener.itemLongClick(conversation);
+        }
+        return true;
       }
     });
   }
 
-  @Override public int getItemCount() {
-    return mConversations != null ? mConversations.size() : 0;
+  @Override
+  public int getItemCount() {
+    return mConversations != null ? mConversations.size() + 1 : 1;
   }
 
   public class ChatListViewHolder extends RecyclerView.ViewHolder {
@@ -105,6 +151,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
   }
 
   public interface OnConversationItemClickListener {
-    void itemClick(Conversation conversation);
+    void itemClick(Conversation conversation, int position);
+
+    void itemLongClick(Conversation conversation);
   }
 }

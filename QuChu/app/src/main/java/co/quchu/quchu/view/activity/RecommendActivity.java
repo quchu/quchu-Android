@@ -38,9 +38,9 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
-import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.im.IMPresenter;
+import co.quchu.quchu.im.activity.ImMainActivity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -65,7 +65,7 @@ import io.rong.imkit.RongIM;
  * Date: 2015-12-07
  * 趣处分类、推荐
  */
-public class RecommendActivity extends BaseBehaviorActivity {
+public class RecommendActivity extends ImMainActivity {
 
   @Override protected String getPageNameCN() {
     return null;
@@ -161,20 +161,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
       viewpagerSelected(3);
     }
 
-    //im推送跳转
-    boolean isChat = getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT, false);
-    boolean isChatList = getIntent().getBooleanExtra(SplashActivity.INTENT_KEY_IM_CHAT_LIST, false);
-    if (isChat) {
-      startChat();
-    } else if (isChatList) {
-      startChatList();
-    }
-
-    if (!isChat && !isChatList) {
-      //连接融云服务
-      connectIM();
-    }
-
     rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -213,47 +199,18 @@ public class RecommendActivity extends BaseBehaviorActivity {
   }
 
   /**
-   * 连接IM
-   */
-  private void connectIM() {
-    String token = SPUtils.getRongYunToken();
-    LogUtils.e("RecommendActivity", "rongyun token is " + token);
-    if (!token.equals("null")) {
-      new IMPresenter().connectIMService(token, new IMPresenter.RongYunBehaviorListener() {
-        @Override public void onSuccess(String msg) {
-          getUnreadMessage();
-        }
-
-        @Override public void onError() {
-
-        }
-      });
-    } else {
-      new IMPresenter().getToken(this, new IMPresenter.RongYunBehaviorListener() {
-        @Override public void onSuccess(String msg) {
-          getUnreadMessage();
-        }
-
-        @Override public void onError() {
-
-        }
-      });
-    }
-  }
-
-  /**
    * 设置我的Tab红点
    */
   private void initUnreadView() {
     final ViewTreeObserver observer = mRbMine.getViewTreeObserver();
     observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-      @Override public void onGlobalLayout() {
+      @Override
+      public void onGlobalLayout() {
         int width = mRbMine.getWidth();
         int x = (int) mRbMine.getX();
         int y = (int) mRbMine.getY();
 
-        RelativeLayout.LayoutParams params =
-            (RelativeLayout.LayoutParams) mUnReadMassageView.getLayoutParams();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mUnReadMassageView.getLayoutParams();
         params.setMargins(x + width / 2 + 30, y, 0, 0);
 
         if (observer.isAlive()) {
@@ -267,21 +224,35 @@ public class RecommendActivity extends BaseBehaviorActivity {
     });
   }
 
+  /**
+   * 连接融云服务成功
+   */
+  @Override
+  protected void onConnectImSuccess() {
+    getUnreadMessage();
+  }
+
+  /**
+   * 获取未读消息
+   */
   private void getUnreadMessage() {
-    //推送通知
+    //个推消息
     new MeActivityPresenter(this).getUnreadMassageCound(new CommonListener<Integer>() {
-      @Override public void successListener(Integer response) {
+      @Override
+      public void successListener(Integer response) {
         mHasPushUnreadMessage = response > 0 ? true : false;
         showUnreadView();
       }
 
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
       }
     });
 
-    //im未读消息数
+    //IM消息
     new IMPresenter().getUnreadCount(new RongIM.OnReceiveUnreadCountChangedListener() {
-      @Override public void onMessageIncreased(int i) {
+      @Override
+      public void onMessageIncreased(int i) {
         mHasPushUnreadMessage = false;
         mHasImUnreadMessage = i > 0 ? true : false;
         showUnreadView();
@@ -314,23 +285,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
     }
 
     mUnReadMassageView.setVisibility(isShow ? View.VISIBLE : View.GONE);
-  }
-
-  /**
-   * 开启聊天界面
-   */
-  public void startChat() {
-    if (RongIM.getInstance() != null) {
-      RongIM.getInstance()
-          .startPrivateChat(this, SPUtils.getRongYunTargetId(), SPUtils.getRongYunTitle());
-    }
-  }
-
-  /**
-   * 开启聊天列表
-   */
-  public void startChatList() {
-    startActivity(MessageActivity.class);
   }
 
   public void accessPushMessage() {

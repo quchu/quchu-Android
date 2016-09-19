@@ -23,7 +23,6 @@ public class UserInfoHelper {
                 try {
                     SPUtils.clearUserinfo(AppContext.mContext);
                     SPUtils.setUserToken(AppContext.mContext, userInfo.getString("token"));
-                    SPUtils.setRongYunToken(userInfo.getString("rongYunToken"));
                     AppContext.token = userInfo.getString("token");
                     SPUtils.setUserInfo(AppContext.mContext, userInfo.toString());
                     AppContext.user = new Gson().fromJson(userInfo.toString(), UserInfoModel.class);

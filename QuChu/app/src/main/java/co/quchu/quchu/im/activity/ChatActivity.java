@@ -357,7 +357,7 @@ public class ChatActivity extends BaseBehaviorActivity {
    * 重连融云服务
    */
   private void reconnect() {
-    mImPresenter.connectIMService(SPUtils.getRongYunToken(), new IMPresenter.RongYunBehaviorListener() {
+    mImPresenter.connect(SPUtils.getRongYunToken(), new IMPresenter.RongYunBehaviorListener() {
       @Override
       public void onSuccess(String msg) {
         enterFragment(mConversationType, mTargetId);

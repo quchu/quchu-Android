@@ -4,7 +4,7 @@
                 android:id="@+id/item_conversation"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:background="@android:color/transparent"
+                android:background="@color/standard_color_white"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
@@ -22,13 +22,13 @@
 
   <TextView
       android:id="@+id/item_conversation_unread_message_tv"
-      android:layout_width="15dp"
-      android:layout_height="15dp"
-      android:layout_marginLeft="-10dp"
+      android:layout_width="5dp"
+      android:layout_height="5dp"
+      android:layout_marginLeft="-5dp"
+      android:layout_marginTop="5dp"
       android:layout_toRightOf="@+id/item_conversation_avatar_img"
       android:background="@drawable/shape_round_red"
       android:gravity="center"
-      android:text="1"
       android:textColor="@android:color/white"
       android:textSize="10sp"
       android:visibility="invisible"/>
@@ -75,5 +75,9 @@
         android:textSize="14sp"/>
 
   </RelativeLayout>
+
+  <View
+      style="@style/HorizontalDivider"
+      android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

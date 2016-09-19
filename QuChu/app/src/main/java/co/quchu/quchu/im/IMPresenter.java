@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.im.model.RongImModel;
+import co.quchu.quchu.im.model.RongToken;
 import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
@@ -33,7 +33,7 @@ import io.rong.message.TextMessage;
 
 /**
  * 融云im聊天
- *
+ * <p/>
  * Created by mwb on 16/8/24.
  */
 public class IMPresenter {
@@ -63,14 +63,16 @@ public class IMPresenter {
     map.put("content", content);
 
     GsonRequest<Object> request = new GsonRequest<Object>(NetApi.sendImReport, Object.class, map, new ResponseListener<Object>() {
-      @Override public void onErrorResponse(@Nullable VolleyError error) {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
         if (listener != null) {
           listener.errorListener(error, "", "");
         }
       }
 
-      @Override public void onResponse(Object response, boolean result, String errorCode,
-          @Nullable String msg) {
+      @Override
+      public void onResponse(Object response, boolean result, String errorCode,
+                             @Nullable String msg) {
         if (listener != null) {
           listener.successListener(response);
         }
@@ -109,32 +111,22 @@ public class IMPresenter {
   /**
    * 获取im token
    */
-  public void getToken(Context context, final RongYunBehaviorListener listener) {
-    GsonRequest<RongImModel> request =
-        new GsonRequest<RongImModel>(NetApi.getRongYunToken, RongImModel.class,
-            new ResponseListener<RongImModel>() {
-              @Override public void onErrorResponse(@Nullable VolleyError error) {
-                LogUtils.e(TAG, "onErrorResponse()");
+  public void getToken(Context context, final CommonListener<RongToken> listener) {
+    GsonRequest<RongToken> request =
+        new GsonRequest<RongToken>(NetApi.getRongYunToken, RongToken.class,
+            new ResponseListener<RongToken>() {
+              @Override
+              public void onErrorResponse(@Nullable VolleyError error) {
                 if (listener != null) {
-                  listener.onError();
+                  listener.errorListener(error, "", "");
                 }
               }
 
               @Override
-              public void onResponse(RongImModel response, boolean result, String errorCode,
-                  @Nullable String msg) {
-                if (response != null) {
-                  LogUtils.e(TAG, "onResponse() token = " + response.getRongYunToken());
-
-                  //保存融云token到本地
-                  SPUtils.setRongYunToken(response.getRongYunToken());
-
-                  //连接融云服务器
-                  connectIMService(response.getRongYunToken(), null);
-
-                  if (listener != null) {
-                    listener.onSuccess(response.getRongYunToken());
-                  }
+              public void onResponse(RongToken response, boolean result, String errorCode,
+                                     @Nullable String msg) {
+                if (listener != null) {
+                  listener.successListener(response);
                 }
               }
             });
@@ -144,13 +136,14 @@ public class IMPresenter {
   /**
    * 建立与融云服务器的连接
    */
-  public void connectIMService(final String token, final RongYunBehaviorListener listener) {
+  public void connect(final String token, final RongYunBehaviorListener listener) {
     RongIM.connect(token, new RongIMClient.ConnectCallback() {
 
       /**
        * Token 错误，在线上环境下主要是因为 Token 已经过期，您需要向 App Server 重新请求一个新的 Token
        */
-      @Override public void onTokenIncorrect() {
+      @Override
+      public void onTokenIncorrect() {
         //getToken(AppContext.mContext, null);
         LogUtils.e(TAG, "onTokenIncorrect()");
       }
@@ -159,15 +152,17 @@ public class IMPresenter {
        * 连接融云成功
        * @param userid 当前 token
        */
-      @Override public void onSuccess(String userid) {
-        LogUtils.e(TAG, "connectIMService() ---- onSuccess()-----" + "userid = " + userid + ", token = " + token);
+      @Override
+      public void onSuccess(String userid) {
+        LogUtils.e(TAG, "onSuccess()--" + "userid = " + userid + ", token = " + token);
         if (listener != null) {
           listener.onSuccess("");
         }
 
         //指定用户信息
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-          @Override public UserInfo getUserInfo(String userId) {
+          @Override
+          public UserInfo getUserInfo(String userId) {
 
             LogUtils.e(TAG, "getUserInfo() ===== userId = " + userId);
 
@@ -180,7 +175,8 @@ public class IMPresenter {
        * 连接融云失败
        * @param errorCode 错误码，可到官网 查看错误码对应的注释
        */
-      @Override public void onError(RongIMClient.ErrorCode errorCode) {
+      @Override
+      public void onError(RongIMClient.ErrorCode errorCode) {
         LogUtils.e("IMPresenter", "onError()-----" + "errorCode = " + errorCode);
       }
     });
@@ -192,7 +188,8 @@ public class IMPresenter {
   private UserInfo findUserById(final String userId) {
     UserCenterPresenter.getUserCenterInfo(AppContext.mContext, Integer.valueOf(userId),
         new UserCenterPresenter.UserCenterInfoCallBack() {
-          @Override public void onSuccess(UserCenterInfo userCenterInfo) {
+          @Override
+          public void onSuccess(UserCenterInfo userCenterInfo) {
             if (userCenterInfo != null) {
               name = userCenterInfo.getName();
               avatar = userCenterInfo.getPhoto();
@@ -208,7 +205,8 @@ public class IMPresenter {
             }
           }
 
-          @Override public void onError() {
+          @Override
+          public void onError() {
             LogUtils.e(TAG, "UserCenterInfo-----onError()");
           }
         });
@@ -291,8 +289,8 @@ public class IMPresenter {
   /**
    * 发送文本消息
    *
-   * @param targetId    目标id
-   * @param content     发送的内容
+   * @param targetId 目标id
+   * @param content  发送的内容
    */
   public void sendMessage(String targetId, String content) {
     TextMessage myTextMessage = TextMessage.obtain(content);
@@ -304,10 +302,10 @@ public class IMPresenter {
   /**
    * 发送消息
    *
-   * @param targetId  目标id
-   * @param content   发送的内容
-   * @param jumpType  点击消息跳转类型 0-趣处详情；1-用户；2-趣处文章
-   * @param jumpId    点击消息跳转id
+   * @param targetId 目标id
+   * @param content  发送的内容
+   * @param jumpType 点击消息跳转类型 0-趣处详情；1-用户；2-趣处文章
+   * @param jumpId   点击消息跳转id
    * @param listener
    */
   public void sendMessage(String targetId, String content, String jumpType, String jumpId, RongYunBehaviorListener listener) {
@@ -338,12 +336,14 @@ public class IMPresenter {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance()
           .sendMessage(message, null, null, new IRongCallback.ISendMessageCallback() {
-            @Override public void onAttached(Message message) {
+            @Override
+            public void onAttached(Message message) {
               //消息本地数据库存储成功的回调
               LogUtils.e("IMPresenter", "message send onAttached()");
             }
 
-            @Override public void onSuccess(Message message) {
+            @Override
+            public void onSuccess(Message message) {
               //消息通过网络发送成功的回调
               LogUtils.e("IMPresenter", "message send onSuccess()");
               if (listener != null) {
@@ -351,7 +351,8 @@ public class IMPresenter {
               }
             }
 
-            @Override public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
               //消息发送失败的回调
               LogUtils.e("IMPresenter", "message send onError()");
               if (listener != null) {
@@ -380,10 +381,12 @@ public class IMPresenter {
       RongIM.getInstance()
           .setConversationToTop(Conversation.ConversationType.PRIVATE, targetId, isTop,
               new RongIMClient.ResultCallback<Boolean>() {
-                @Override public void onSuccess(Boolean aBoolean) {
+                @Override
+                public void onSuccess(Boolean aBoolean) {
                 }
 
-                @Override public void onError(RongIMClient.ErrorCode errorCode) {
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
                 }
               });
     }
@@ -396,13 +399,15 @@ public class IMPresenter {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().removeConversation(Conversation.ConversationType.PRIVATE, targetId,
           new RongIMClient.ResultCallback<Boolean>() {
-            @Override public void onSuccess(Boolean aBoolean) {
+            @Override
+            public void onSuccess(Boolean aBoolean) {
               if (listener != null) {
                 listener.onSuccess("");
               }
             }
 
-            @Override public void onError(RongIMClient.ErrorCode errorCode) {
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
               if (listener != null) {
                 listener.onError();
               }
@@ -417,11 +422,13 @@ public class IMPresenter {
   public void deleteMessages(int[] messageIds) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().deleteMessages(messageIds, new RongIMClient.ResultCallback<Boolean>() {
-        @Override public void onSuccess(Boolean aBoolean) {
+        @Override
+        public void onSuccess(Boolean aBoolean) {
 
         }
 
-        @Override public void onError(RongIMClient.ErrorCode errorCode) {
+        @Override
+        public void onError(RongIMClient.ErrorCode errorCode) {
 
         }
       });
@@ -443,13 +450,15 @@ public class IMPresenter {
   public void addToBlackList(String targetId, final RongYunBehaviorListener listener) {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().addToBlacklist(targetId, new RongIMClient.OperationCallback() {
-        @Override public void onSuccess() {
+        @Override
+        public void onSuccess() {
           if (listener != null) {
             listener.onSuccess("");
           }
         }
 
-        @Override public void onError(RongIMClient.ErrorCode errorCode) {
+        @Override
+        public void onError(RongIMClient.ErrorCode errorCode) {
           if (listener != null) {
             listener.onError();
           }
@@ -476,7 +485,8 @@ public class IMPresenter {
     if (RongIM.getInstance() != null) {
       RongIM.getInstance().getLatestMessages(Conversation.ConversationType.PRIVATE, targetId, count,
           new RongIMClient.ResultCallback<List<Message>>() {
-            @Override public void onSuccess(List<Message> messages) {
+            @Override
+            public void onSuccess(List<Message> messages) {
               StringBuffer sb = new StringBuffer();
               for (Message message : messages) {
                 try {
@@ -493,7 +503,8 @@ public class IMPresenter {
               }
             }
 
-            @Override public void onError(RongIMClient.ErrorCode errorCode) {
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
 
             }
           });

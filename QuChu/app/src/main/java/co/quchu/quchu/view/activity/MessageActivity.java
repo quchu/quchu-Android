@@ -16,7 +16,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.im.IMPresenter;
-import co.quchu.quchu.im.activity.ChatListFragment;
+import co.quchu.quchu.im.activity.ChatListFragmentNew;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.NoScrollViewPager;
 import io.rong.imlib.RongIMClient;
@@ -94,7 +94,7 @@ public class MessageActivity extends BaseBehaviorActivity {
    * 重连融云服务
    */
   private void reconnect(String token) {
-    new IMPresenter().connectIMService(token, null);
+    new IMPresenter().connect(token, null);
   }
 
   /**
@@ -102,14 +102,14 @@ public class MessageActivity extends BaseBehaviorActivity {
    */
   private class MessageAdapter extends FragmentPagerAdapter {
 
-    private final ChatListFragment chatListFragment;
+    private final ChatListFragmentNew chatListFragment;
     private final NoticeFragment noticeFragment;
 
     public MessageAdapter(FragmentManager fm) {
       super(fm);
 
       //im列表
-      chatListFragment = new ChatListFragment();
+      chatListFragment = new ChatListFragmentNew();
 
       //通知
       noticeFragment = new NoticeFragment();
