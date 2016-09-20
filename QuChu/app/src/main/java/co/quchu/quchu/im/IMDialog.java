@@ -136,7 +136,19 @@ public class IMDialog extends Dialog {
       case R.id.im_dialog_delete_tv:
         if (mIsChatList) {
           //聊天列表，删除聊天
-          mImPresenter.removeConversation(mTargetId, null);
+          mImPresenter.removeConversation(mTargetId, new IMPresenter.RongYunBehaviorListener() {
+            @Override
+            public void onSuccess(String msg) {
+              if (mListener != null) {
+                mListener.onSuccess();
+              }
+            }
+
+            @Override
+            public void onError() {
+
+            }
+          });
         } else {
           //聊天界面，删除消息
           mImPresenter.deleteMessages(messageIds);
@@ -155,5 +167,15 @@ public class IMDialog extends Dialog {
     }
 
     dismiss();
+  }
+
+  private ImDialogListener mListener;
+
+  public void setImDialogListener(ImDialogListener listener) {
+    mListener = listener;
+  }
+
+  public interface ImDialogListener{
+    void onSuccess();
   }
 }

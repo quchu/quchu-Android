@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +50,14 @@ public class ChatListFragmentNew extends BaseFragment {
     conversationListRv.setAdapter(mAdapter);
     refreshLayout.setOnRefreshListener(onRefreshListener);
 
-    getConversationList();
-
     return view;
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+
+    getConversationList();
   }
 
   /**
@@ -66,9 +70,11 @@ public class ChatListFragmentNew extends BaseFragment {
         LogUtils.e("ConversationListFragment", "getConversationList()-----onSuccess");
         refreshLayout.setRefreshing(false);
 
-        mConversations.clear();
-        mConversations.addAll(conversations);
-        mAdapter.notifyDataSetChanged();
+        if (conversations != null && conversations.size() > 0) {
+          mConversations.clear();
+          mConversations.addAll(conversations);
+          mAdapter.notifyDataSetChanged();
+        }
       }
 
       @Override
@@ -87,7 +93,7 @@ public class ChatListFragmentNew extends BaseFragment {
         @Override
         public void itemClick(Conversation conversation, int position) {
           if (position == 0) {
-            Toast.makeText(getActivity(), "小Q", Toast.LENGTH_SHORT).show();
+            XiaoQActivity.launch(getActivity());
             return;
           }
 
@@ -98,8 +104,17 @@ public class ChatListFragmentNew extends BaseFragment {
         }
 
         @Override
-        public void itemLongClick(Conversation conversation) {
+        public void itemLongClick(final Conversation conversation) {
           IMDialog dialog = new IMDialog(getActivity(), conversation.getTargetId(), conversation.isTop());
+          dialog.setImDialogListener(new IMDialog.ImDialogListener() {
+            @Override
+            public void onSuccess() {
+              if (mConversations.contains(conversation)) {
+                mConversations.remove(conversation);
+                mAdapter.notifyDataSetChanged();
+              }
+            }
+          });
           dialog.show();
         }
       };

@@ -305,6 +305,9 @@
       </intent-filter>
     </activity>
 
+    <activity android:name=".im.activity.XiaoQActivity"
+              android:screenOrientation="portrait"/>
+
     <receiver
         android:name=".im.IMNotificationReceiver"
         android:exported="true">

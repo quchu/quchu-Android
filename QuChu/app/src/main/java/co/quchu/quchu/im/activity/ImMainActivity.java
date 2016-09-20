@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
 
-import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.im.model.RongToken;
@@ -18,9 +17,7 @@ import co.quchu.quchu.view.activity.MessageActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.message.TextMessage;
 
 /**
  * IM相关操作
@@ -84,7 +81,7 @@ public class ImMainActivity extends BaseBehaviorActivity {
     RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
       @Override
       public boolean onReceived(Message message, int i) {
-        LogUtils.e(TAG, "message receive");
+        LogUtils.e(TAG, "message receive--------i = " + i);
         return false;
       }
     });
@@ -147,21 +144,7 @@ public class ImMainActivity extends BaseBehaviorActivity {
    * 连接融云服务成功
    */
   protected void onConnectImSuccess() {
-    if (RongIM.getInstance() != null) {
-      TextMessage textMessage = TextMessage.obtain("content");
-      RongIM.getInstance().insertMessage(Conversation.ConversationType.PRIVATE, "1",
-          String.valueOf(AppContext.user.getUserId()), textMessage, new RongIMClient.ResultCallback<Message>() {
-            @Override
-            public void onSuccess(Message message) {
-              LogUtils.e(TAG, "insert message success");
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-
-            }
-          });
-    }
+    LogUtils.e(TAG, "onConnectImSuccess()");
   }
 
   /**

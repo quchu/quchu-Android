@@ -214,6 +214,17 @@ public class IMPresenter {
     return userInfo;
   }
 
+  private UserInfo createUserInfo() {
+    UserInfo userInfo = null;
+    if (AppContext.user != null) {
+      String userId = String.valueOf(AppContext.user.getUserId());
+      String name = AppContext.user.getFullname();
+      Uri avatar = Uri.parse(AppContext.user.getPhoto());
+      userInfo = new UserInfo(userId, name, avatar);
+    }
+    return userInfo;
+  }
+
   /**
    * 设置小Q会话
    */
@@ -293,8 +304,9 @@ public class IMPresenter {
    * @param content  发送的内容
    */
   public void sendMessage(String targetId, String content) {
-    TextMessage myTextMessage = TextMessage.obtain(content);
-    Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, myTextMessage);
+    TextMessage textMessage = TextMessage.obtain(content);
+    textMessage.setUserInfo(createUserInfo());
+    Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, textMessage);
 
     send(message, null);
   }
@@ -310,6 +322,7 @@ public class IMPresenter {
    */
   public void sendMessage(String targetId, String content, String jumpType, String jumpId, RongYunBehaviorListener listener) {
     TextMessage textMessage = TextMessage.obtain(content);
+    textMessage.setUserInfo(createUserInfo());
     JSONObject jsonObject = null;
     try {
       jsonObject = new JSONObject();

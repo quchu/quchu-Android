@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,10 +20,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import io.rong.imkit.utils.AndroidEmoji;
-import io.rong.imkit.utils.TimeUtils;
-import io.rong.imkit.widget.AsyncImageView;
+import io.rong.imkit.utils.RongDateUtils;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.MessageContent;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by mwb on 16/8/29.
@@ -71,9 +73,20 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
     Conversation conversation = mConversations.get(position - 1);
     MessageContent latestMessage = conversation.getLatestMessage();
+    UserInfo userInfo = latestMessage.getUserInfo();
+    String avatar = "";
+    String name = "";
+    if (userInfo != null) {
+      avatar = userInfo.getPortraitUri().toString();
+      name = userInfo.getName();
+    }
 
-    holder.avatarImg.setAvatar(conversation.getPortraitUrl(), R.drawable.rc_default_portrait);
-    holder.titleTv.setText(conversation.getTargetId());
+    if (TextUtils.isEmpty(avatar)) {
+      holder.avatarImg.getHierarchy().setPlaceholderImage(R.drawable.rc_default_portrait);
+    } else {
+      holder.avatarImg.setImageURI(avatar);
+    }
+    holder.titleTv.setText(name);
     if (!TextUtils.isEmpty(conversation.getDraft())) {
       //有草稿显示草稿内容
       holder.contentTv.setText("[草稿]" + AndroidEmoji.ensure(conversation.getDraft()));
@@ -98,7 +111,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
         holder.contentTv.setText("");
       }
     }
-    holder.timeTv.setText(TimeUtils.formatData(conversation.getReceivedTime()));
+
+    String time = RongDateUtils.getConversationListFormatDate(conversation.getReceivedTime(), holder.unreadMessageTv.getContext());
+//    holder.timeTv.setText(TimeUtils.formatData(conversation.getReceivedTime()));
+    holder.timeTv.setText(time);
     holder.unreadMessageTv.setVisibility(conversation.getUnreadMessageCount() > 0 ? View.VISIBLE : View.INVISIBLE);
 
     holder.itemView.setTag(conversation);
@@ -131,7 +147,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
   public class ChatListViewHolder extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.item_conversation_avatar_img) AsyncImageView avatarImg;
+    @Bind(R.id.item_conversation_avatar_img) SimpleDraweeView avatarImg;
     @Bind(R.id.item_conversation_unread_message_tv) TextView unreadMessageTv;
     @Bind(R.id.item_conversation_title_tv) TextView titleTv;
     @Bind(R.id.item_conversation_content_tv) TextView contentTv;
