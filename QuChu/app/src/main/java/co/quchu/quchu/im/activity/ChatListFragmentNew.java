@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,12 @@ import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.im.IMDialog;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.view.activity.XiaoQActivity;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.MessageContent;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * 聊天列表
@@ -98,8 +102,16 @@ public class ChatListFragmentNew extends BaseFragment {
           }
 
           String targetId = conversation.getTargetId();
+          MessageContent messageContent = conversation.getLatestMessage();
+          String name = "";
+          if (messageContent != null) {
+            UserInfo userInfo = messageContent.getUserInfo();
+            if (userInfo != null) {
+              name = userInfo.getName();
+            }
+          }
           if (RongIM.getInstance() != null) {
-            RongIM.getInstance().startPrivateChat(getActivity(), targetId, targetId);
+            RongIM.getInstance().startPrivateChat(getActivity(), targetId, TextUtils.isEmpty(name) ? targetId : name);
           }
         }
 

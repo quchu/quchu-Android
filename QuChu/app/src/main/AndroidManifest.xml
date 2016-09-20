@@ -305,7 +305,7 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".im.activity.XiaoQActivity"
+    <activity android:name=".view.activity.XiaoQActivity"
               android:screenOrientation="portrait"/>
 
     <receiver

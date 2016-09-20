@@ -1,5 +1,7 @@
 package co.quchu.quchu.view.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +28,11 @@ public class SettingXioaQActivity extends BaseBehaviorActivity {
   @Bind(R.id.setting_item_quchu) SettingItemView itemQuchu;
   @Bind(R.id.setting_item_quchu_user) SettingItemView itemQuchuUser;
   @Bind(R.id.xiaoq_title_tv) TextView mXiaoqTitleTv;
+
+  public static void launch(Activity activity) {
+    Intent intent = new Intent(activity, SettingXioaQActivity.class);
+    activity.startActivity(intent);
+  }
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
