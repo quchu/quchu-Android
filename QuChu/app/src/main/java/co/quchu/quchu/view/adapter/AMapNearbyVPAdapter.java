@@ -58,6 +58,7 @@ public class AMapNearbyVPAdapter extends PagerAdapter {
                 tagsString.add(tags.get(i).getZh());
             }
         tagCloudView.setTags(tagsString);
+        tagCloudView.setVisibility(View.GONE);
 
         tvAddress.setText(mData.get(position).getAddress());
         tvAddress.setVisibility(View.VISIBLE);

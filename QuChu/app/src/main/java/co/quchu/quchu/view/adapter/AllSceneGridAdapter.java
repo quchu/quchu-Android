@@ -74,7 +74,7 @@ public class AllSceneGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         animator.playTogether(
             ObjectAnimator.ofFloat(((ViewHolder) holder).sdv, "translationY", scrollY, 0.0f),
             ObjectAnimator.ofFloat(((ViewHolder) holder).sdv, "alpha", 0f, 1.0f));
-        animator.setDuration(500);
+        animator.setDuration(1500);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.start();
         int delay = 10 * position;

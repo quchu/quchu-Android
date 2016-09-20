@@ -51,6 +51,9 @@
       </intent-filter>
     </activity>
     <activity
+        android:name=".view.activity.WizardActivity"
+        android:screenOrientation="portrait"/>
+    <activity
         android:name=".view.activity.QuFriendsActivity"
         android:label="@string/titlebar_word_qu_friends"
         android:screenOrientation="portrait"/>

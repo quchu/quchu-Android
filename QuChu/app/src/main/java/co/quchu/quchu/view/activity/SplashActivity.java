@@ -86,7 +86,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//startActivity(new Intent(SplashActivity.this,WizardActivity.class));
         mIsChat = getIntent().getBooleanExtra(INTENT_KEY_IM_CHAT, false);
         mIsChatList = getIntent().getBooleanExtra(INTENT_KEY_IM_CHAT_LIST, false);
 

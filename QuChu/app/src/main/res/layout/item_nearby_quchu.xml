@@ -62,7 +62,7 @@
             android:layout_marginLeft="@dimen/double_margin"
             android:layout_marginRight="@dimen/double_margin"
             android:layout_marginTop="@dimen/half_margin"
-            android:drawableLeft="@mipmap/ic_loca"
+
             android:ellipsize="marquee"
             android:focusable="true"
             android:marqueeRepeatLimit="marquee_forever"
