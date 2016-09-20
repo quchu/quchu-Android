@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
@@ -31,6 +32,9 @@ import co.quchu.quchu.utils.SPUtils;
  * Created by mwb on 16/8/22.
  */
 public class MeGenFragment extends BaseFragment {
+
+  private String BUNDLE_SAVE_KEY_GENES = "bundle_save_key_genes";
+  private String BUNDLE_SAVE_KEY_ME = "bundle_save_key_me";
 
   @Bind(R.id.tuhao_img)
   ImageView tuhaoImg;
@@ -63,6 +67,7 @@ public class MeGenFragment extends BaseFragment {
   private MeActivityPresenter meActivityPresenter;
   private boolean mIsMe;//是否是自己
   private int mUserId;
+  private List<MyGeneModel.GenesEntity> mGenes;
 
   public static MeGenFragment newInstance(boolean isMe, int userId) {
     MeGenFragment fragment = new MeGenFragment();
@@ -81,7 +86,11 @@ public class MeGenFragment extends BaseFragment {
 
     meActivityPresenter = new MeActivityPresenter(getActivity());
 
-    mIsMe = getArguments().getBoolean(IS_ME_BUNDLE_KEY, false);
+    if (savedInstanceState != null) {
+      mIsMe = savedInstanceState.getBoolean(BUNDLE_SAVE_KEY_ME, false);
+    } else {
+      mIsMe = getArguments().getBoolean(IS_ME_BUNDLE_KEY, false);
+    }
     mUserId = getArguments().getInt(USER_ID_BUNDLE_KEY, -1);
 
     mGeneTopLayout.setVisibility(mIsMe ? View.VISIBLE : View.GONE);
@@ -94,9 +103,21 @@ public class MeGenFragment extends BaseFragment {
     shishangTv.setTypeface(face);
     wenyiTv.setTypeface(face);
 
-    getGenes();
+    if (savedInstanceState != null) {
+      List<MyGeneModel.GenesEntity> genes = (List<MyGeneModel.GenesEntity>) savedInstanceState.getSerializable(BUNDLE_SAVE_KEY_GENES);
+      initGene(genes);
+    } else {
+      getGenes();
+    }
 
     return view;
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putSerializable(BUNDLE_SAVE_KEY_GENES, (Serializable) mGenes);
+    outState.putBoolean(BUNDLE_SAVE_KEY_ME, mIsMe);
   }
 
   private void getGenes() {
@@ -105,8 +126,8 @@ public class MeGenFragment extends BaseFragment {
         @Override
         public void successListener(MyGeneModel response) {
           if (response != null) {
-            List<MyGeneModel.GenesEntity> genes = response.getGenes();
-            initGene(genes);
+            mGenes = response.getGenes();
+            initGene(mGenes);
           }
         }
 
@@ -120,8 +141,8 @@ public class MeGenFragment extends BaseFragment {
         @Override
         public void successListener(MyGeneModel response) {
           if (response != null) {
-            List<MyGeneModel.GenesEntity> genes = response.getGenes();
-            initGene(genes);
+            mGenes = response.getGenes();
+            initGene(mGenes);
           }
         }
 

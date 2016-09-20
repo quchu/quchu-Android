@@ -229,6 +229,8 @@ public class RecommendActivity extends ImMainActivity {
    */
   @Override
   protected void onConnectImSuccess() {
+    super.onConnectImSuccess();
+
     getUnreadMessage();
   }
 

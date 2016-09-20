@@ -1,5 +1,6 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * User: Chenhs
  * Date: 2015-12-28
  */
-public class MyGeneModel {
+public class MyGeneModel implements Serializable {
 
 
     /**
@@ -43,7 +44,7 @@ public class MyGeneModel {
         return star;
     }
 
-    public static class GenesEntity {
+    public static class GenesEntity implements Serializable {
         private String en;
         private double weight;
         private String zh;
@@ -82,7 +83,7 @@ public class MyGeneModel {
         }
     }
 
-    public static class StarEntity {
+    public static class StarEntity implements Serializable {
         private String en;
         private String maxImg;
         private String minImg;

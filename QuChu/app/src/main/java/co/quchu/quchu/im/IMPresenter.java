@@ -48,6 +48,7 @@ public class IMPresenter {
   public static String xiaoqId = "1";
 
   //用户信息，名称，头像
+  private UserInfo mUserInfo;
   private UserInfo userInfo;
   private String name;
   private String avatar;
@@ -169,6 +170,9 @@ public class IMPresenter {
             return findUserById(userId);
           }
         }, true);
+
+        //初始化小Q
+        initXiaoQConversation();
       }
 
       /**
@@ -191,10 +195,10 @@ public class IMPresenter {
           @Override
           public void onSuccess(UserCenterInfo userCenterInfo) {
             if (userCenterInfo != null) {
-              name = userCenterInfo.getName();
-              avatar = userCenterInfo.getPhoto();
+              String name = userCenterInfo.getName();
+              String avatar = userCenterInfo.getPhoto();
 
-              userInfo = new UserInfo(userId, name, Uri.parse(avatar));
+              mUserInfo = new UserInfo(userId, name, Uri.parse(avatar));
 
               //刷新用户缓存用户
               if (RongIM.getInstance() != null) {
@@ -211,18 +215,7 @@ public class IMPresenter {
           }
         });
 
-    return userInfo;
-  }
-
-  private UserInfo createUserInfo() {
-    UserInfo userInfo = null;
-    if (AppContext.user != null) {
-      String userId = String.valueOf(AppContext.user.getUserId());
-      String name = AppContext.user.getFullname();
-      Uri avatar = Uri.parse(AppContext.user.getPhoto());
-      userInfo = new UserInfo(userId, name, avatar);
-    }
-    return userInfo;
+    return mUserInfo;
   }
 
   /**
@@ -305,7 +298,6 @@ public class IMPresenter {
    */
   public void sendMessage(String targetId, String content) {
     TextMessage textMessage = TextMessage.obtain(content);
-    textMessage.setUserInfo(createUserInfo());
     Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, textMessage);
 
     send(message, null);
@@ -322,7 +314,6 @@ public class IMPresenter {
    */
   public void sendMessage(String targetId, String content, String jumpType, String jumpId, RongYunBehaviorListener listener) {
     TextMessage textMessage = TextMessage.obtain(content);
-    textMessage.setUserInfo(createUserInfo());
     JSONObject jsonObject = null;
     try {
       jsonObject = new JSONObject();

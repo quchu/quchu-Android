@@ -28,6 +28,8 @@ public class ImMainActivity extends BaseBehaviorActivity {
 
   private String TAG = "ImMainActivity";
 
+  private IMPresenter mImPresenter;
+
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -45,15 +47,23 @@ public class ImMainActivity extends BaseBehaviorActivity {
 
     setConnectionStatusListener();
 
-    if (!isChat && !isChatList) {
+    String token = SPUtils.getRongYunToken();
+    mImPresenter = new IMPresenter();
+    if (TextUtils.isEmpty(token)) {
+      getToken();
+    } else {
+//      connect(token);
+      mImPresenter.connect(token, new IMPresenter.RongYunBehaviorListener() {
+        @Override
+        public void onSuccess(String msg) {
+          onConnectImSuccess();
+        }
 
-      String token = SPUtils.getRongYunToken();
-      if (TextUtils.isEmpty(token)) {
-        getToken();
-      } else {
-        connect(token);
-      }
+        @Override
+        public void onError() {
 
+        }
+      });
     }
   }
 
@@ -91,7 +101,7 @@ public class ImMainActivity extends BaseBehaviorActivity {
    * 获取融云Token
    */
   private void getToken() {
-    new IMPresenter().getToken(this, new CommonListener<RongToken>() {
+    mImPresenter.getToken(this, new CommonListener<RongToken>() {
       @Override
       public void successListener(RongToken response) {
         if (response == null) {
@@ -103,7 +113,17 @@ public class ImMainActivity extends BaseBehaviorActivity {
         //保存Token到本地
         SPUtils.setRongYunToken(response.getRongYunToken());
 
-        connect(response.getRongYunToken());
+        mImPresenter.connect(response.getRongYunToken(), new IMPresenter.RongYunBehaviorListener() {
+          @Override
+          public void onSuccess(String msg) {
+            onConnectImSuccess();
+          }
+
+          @Override
+          public void onError() {
+
+          }
+        });
       }
 
       @Override

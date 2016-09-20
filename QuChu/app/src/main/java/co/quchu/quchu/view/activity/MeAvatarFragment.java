@@ -28,6 +28,7 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
@@ -48,6 +49,9 @@ import co.quchu.quchu.widget.PolygonProgressView;
  * Created by mwb on 16/8/22.
  */
 public class MeAvatarFragment extends BaseFragment {
+
+  private String BUNDLE_SAVE_KEY_GENES = "bundle_save_key_genes";
+  private String BUNDLE_SAVE_KEY_USER_AVATAR = "bundle_save_key_user_avatar";
 
   @Bind(R.id.polygonProgressView) PolygonProgressView polygonProgressView;
   @Bind(R.id.headImage) SimpleDraweeView headImage;
@@ -74,13 +78,29 @@ public class MeAvatarFragment extends BaseFragment {
 
     meActivityPresenter = new MeActivityPresenter(getActivity());
 
-    if (null!=AppContext.user){
-      userAvatar = AppContext.user.getPhoto();
+    if (savedInstanceState != null) {
+      userAvatar = savedInstanceState.getString(BUNDLE_SAVE_KEY_USER_AVATAR);
+    } else {
+      if (null != AppContext.user) {
+        userAvatar = AppContext.user.getPhoto();
+      }
     }
 
-    getGenes();
+    if (savedInstanceState != null) {
+      genes = (List<MyGeneModel.GenesEntity>) savedInstanceState.getSerializable(BUNDLE_SAVE_KEY_GENES);
+      initGene();
+    } else {
+      getGenes();
+    }
 
     return view;
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putSerializable(BUNDLE_SAVE_KEY_GENES, (Serializable) genes);
+    outState.putString(BUNDLE_SAVE_KEY_USER_AVATAR, userAvatar);
   }
 
   private void getGenes() {

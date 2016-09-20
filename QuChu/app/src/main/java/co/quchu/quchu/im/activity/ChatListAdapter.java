@@ -112,7 +112,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
       }
     }
 
-    String time = RongDateUtils.getConversationListFormatDate(conversation.getReceivedTime(), holder.unreadMessageTv.getContext());
+    String time = RongDateUtils.getConversationFormatDate(conversation.getReceivedTime(), holder.unreadMessageTv.getContext());
 //    holder.timeTv.setText(TimeUtils.formatData(conversation.getReceivedTime()));
     holder.timeTv.setText(time);
     holder.unreadMessageTv.setVisibility(conversation.getUnreadMessageCount() > 0 ? View.VISIBLE : View.INVISIBLE);
