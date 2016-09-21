@@ -88,7 +88,7 @@ public class ImMainActivity extends BaseBehaviorActivity {
    * 在 connect 前调用
    */
   private void setReceiveMessageListener() {
-    RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+    RongIM.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
       @Override
       public boolean onReceived(Message message, int i) {
         LogUtils.e(TAG, "message receive--------i = " + i);

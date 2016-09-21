@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.im.model.RongToken;
@@ -190,6 +191,11 @@ public class IMPresenter {
    * 在App服务器查询用户信息，返回给融云显示
    */
   private UserInfo findUserById(final String userId) {
+    Pattern pattern = Pattern.compile("[0-9]*");
+    if (!pattern.matcher(userId).matches()) {
+      return null;
+    }
+
     UserCenterPresenter.getUserCenterInfo(AppContext.mContext, Integer.valueOf(userId),
         new UserCenterPresenter.UserCenterInfoCallBack() {
           @Override

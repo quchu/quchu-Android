@@ -199,7 +199,7 @@
     <string name="del_to_favorite_article_success">删除文章成功</string>
     <string name="del_to_favorite_article_fail">删除文章失败</string>
     <string name="process_running_please_wait">操作正在执行，请稍后</string>
-    <string name="no_more_data">没有更多数据了</string>
+    <string name="no_more_data">没有更多了</string>
     <string name="no_footprint">还没有人摁过脚印</string>
 
     <string name="pname_crop_image_activity">图片裁剪</string>

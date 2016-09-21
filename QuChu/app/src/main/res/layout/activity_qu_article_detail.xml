@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/standard_color_white"
+              android:orientation="vertical">
+
+  <include layout="@layout/cp_enhanced_toolbar"/>
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <RelativeLayout
+          android:id="@+id/topLayout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/articleCoverImg"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/articleCoverImg"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@mipmap/ic_launcher"/>
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="origin"/>
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="origin"/>
+
+          <View
+              android:layout_width="10dp"
+              android:layout_height="2dp"
+              android:background="@color/standard_color_yellow"/>
+
+        </LinearLayout>
+
+      </RelativeLayout>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/topLayout"
+          android:text="title"
+          android:textColor="@color/standard_color_h1_dark"
+          android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+  </ScrollView>
+
+</LinearLayout>

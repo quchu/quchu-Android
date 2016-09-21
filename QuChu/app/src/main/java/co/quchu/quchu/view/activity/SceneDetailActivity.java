@@ -37,6 +37,7 @@ import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.presenter.ScenePresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.WizardHelper;
 import co.quchu.quchu.view.adapter.SceneDetailAdapter;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.ErrorView;
@@ -312,7 +313,8 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
         mSwipeRefreshLayout.setRefreshing(false);
         mLoadingListener.loadingComplete();
 
-
+        //显示添加收藏引导
+        WizardHelper.showWizard(SceneDetailActivity.this, WizardHelper.Wizard.scene_detail, null);
       }
 
       @Override

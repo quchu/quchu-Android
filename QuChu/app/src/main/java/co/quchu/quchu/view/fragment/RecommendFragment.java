@@ -49,6 +49,7 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.ScaleAnimation;
 import co.quchu.quchu.utils.ScreenUtils;
+import co.quchu.quchu.utils.WizardHelper;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.SceneDetailActivity;
 import co.quchu.quchu.view.adapter.AllSceneGridAdapter;
@@ -356,6 +357,8 @@ public class RecommendFragment extends BaseFragment
               mMySceneAdapter.notifyDataSetChanged();
             }
             resetIndicators();
+
+            showWizard();
           }
 
           @Override
@@ -370,6 +373,13 @@ public class RecommendFragment extends BaseFragment
             });
           }
         });
+  }
+
+  /**
+   * 显示长按删除引导
+   */
+  private void showWizard() {
+    WizardHelper.showWizard(getActivity(), WizardHelper.Wizard.my_scene, null);
   }
 
   public void getData(final boolean loadMore) {
