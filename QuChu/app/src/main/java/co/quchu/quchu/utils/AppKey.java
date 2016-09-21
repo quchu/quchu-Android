@@ -85,6 +85,11 @@ public interface AppKey {
   String DISPLAY_RECOMMEND_GUID = "DISPLAY_RECOMMEND_GUID";
 
   /**
+   * 首页向导
+   */
+  String DISPLAY_GUILD = "DISPLAY_GUILD";
+
+  /**
    * 我的明信片照片界面是否需要弹出引导页
    */
   String IS_POSTCARD_IMAGES_GUIDE = "is_postcard_images_guide";

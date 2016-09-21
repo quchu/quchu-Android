@@ -2,11 +2,16 @@ package co.quchu.quchu.view.activity;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,15 +55,17 @@ public class WizardActivity extends BaseActivity {
   private void animateLogo() {
     ivLogo.setAlpha(0f);
     llTextArea.setAlpha(0);
-    ivLogo.setTranslationY(-ivLogo.getTop());
-    ObjectAnimator bounceAnimator =
-        ObjectAnimator.ofFloat(ivLogo, "translationY", -ivLogo.getTop(), 0);
-    bounceAnimator.setInterpolator(new BounceInterpolator());
+    //ivLogo.setTranslationY(-ivLogo.getTop());
+
+    ObjectAnimator scaleX = ObjectAnimator.ofFloat(ivLogo, "scaleX", .5f,1);
+    ObjectAnimator scaleY = ObjectAnimator.ofFloat(ivLogo, "scaleY", .5f,1);
+    scaleX.setInterpolator(new OvershootInterpolator(1.5f));
+    scaleY.setInterpolator(new OvershootInterpolator(1.5f));
     ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(ivLogo, "alpha", 0, 1);
     alphaAnimator.setDuration(500);
     alphaAnimator.setInterpolator(new LinearInterpolator());
     final AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.playTogether(bounceAnimator, alphaAnimator);
+    animatorSet.playTogether(scaleX, scaleY, alphaAnimator);
     animatorSet.setDuration(1000);
     animatorSet.setStartDelay(100);
     animatorSet.start();
@@ -67,18 +74,20 @@ public class WizardActivity extends BaseActivity {
       @Override public void run() {
         animateText(false);
       }
-    }, 1500);
+    }, 2500);
 
     ivLogo.postDelayed(new Runnable() {
       @Override public void run() {
         animateLast();
         animateText(true);
       }
-    }, 2500);
+    }, 3500);
   }
 
   private void animateLast() {
 
+    tvTitle.setText("搭伙功能");
+    tvSubTitle.setText("现在你可以约和你有相同基因的用\n户一起去High啦");
     ivFemale.setTranslationX(-400);
     ivMale.setTranslationX(400);
     ObjectAnimator alphaFemale = ObjectAnimator.ofFloat(ivFemale, "alpha", 0, 1);
@@ -91,6 +100,25 @@ public class WizardActivity extends BaseActivity {
     animatorSet.playTogether(alphaFemale, alphaMale, translationXFemale, translationXMale,alphaNext);
     animatorSet.setDuration(1000);
     animatorSet.start();
+
+    ObjectAnimator floatingAnimation = ObjectAnimator.ofFloat(tvNext,"translationY",20);
+    floatingAnimation.setRepeatCount(ValueAnimator.INFINITE);
+    floatingAnimation.setRepeatMode(ValueAnimator.REVERSE);
+    floatingAnimation.setInterpolator(new DecelerateInterpolator());
+    floatingAnimation.setDuration(1500);
+    floatingAnimation.setStartDelay(500);
+    floatingAnimation.start();
+
+    tvNext.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        startActivity(new Intent(WizardActivity.this, RecommendActivity.class));
+        tvNext.postDelayed(new Runnable() {
+          @Override public void run() {
+            finish();
+          }
+        },300);
+      }
+    });
   }
 
   private void animateText(boolean inOrOut) {
@@ -126,6 +154,7 @@ public class WizardActivity extends BaseActivity {
       alphaLogo.start();
       alphaLogo.setStartDelay(500);
     }
+
 
   }
 

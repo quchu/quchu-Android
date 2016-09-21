@@ -86,7 +86,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//startActivity(new Intent(SplashActivity.this,WizardActivity.class));
+
         mIsChat = getIntent().getBooleanExtra(INTENT_KEY_IM_CHAT, false);
         mIsChatList = getIntent().getBooleanExtra(INTENT_KEY_IM_CHAT_LIST, false);
 
@@ -240,11 +240,18 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void enterApp() {
-        Intent intent = new Intent(this, RecommendActivity.class);
-        intent.putExtra(INTENT_KEY_IM_CHAT, mIsChat);
-        intent.putExtra(INTENT_KEY_IM_CHAT_LIST, mIsChatList);
-        startActivity(intent);
-        SplashActivity.this.finish();
+
+        if (!SPUtils.getShowGuild()){
+            startActivity(new Intent(SplashActivity.this,WizardActivity.class));
+            SplashActivity.this.finish();
+        }else{
+            Intent intent = new Intent(this, RecommendActivity.class);
+            intent.putExtra(INTENT_KEY_IM_CHAT, mIsChat);
+            intent.putExtra(INTENT_KEY_IM_CHAT_LIST, mIsChatList);
+            startActivity(intent);
+            SplashActivity.this.finish();
+        }
+
     }
 
 

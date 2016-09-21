@@ -24,56 +24,59 @@
             fresco:placeholderImage="@mipmap/ic_image_empty"
             fresco:viewAspectRatio="1" />
 
-        <TextView
-            android:id="@+id/desc"
-            android:layout_toRightOf="@id/simpleDraweeView"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginTop="@dimen/base_margin"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="@color/standard_color_h1_dark"
-            android:textSize="@dimen/word_subhead_size"
-            tools:text="标题" />
-
-        <co.quchu.quchu.widget.TagCloudView
-            android:id="@+id/tag"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@id/simpleDraweeView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/desc"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginTop="@dimen/half_margin"
-            card_view:tcvBackground="@drawable/shape_lineframe_black_cap"
-            card_view:tcvTextSize="4dp"
-            card_view:tcvCanTagClick="false"
-            card_view:tcvItemBorderHorizontal="10dp"
-            card_view:tcvRightResId="@null"
-            card_view:tcvSingleLine="true"
-            card_view:tcvTextColor="@color/standard_color_h1_dark" />
+            >
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/standard_color_h1_dark"
+                android:textSize="@dimen/word_subhead_size"
+                tools:text="标题" />
 
-        <TextView
-            android:layout_toRightOf="@id/simpleDraweeView"
-            android:id="@+id/address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tag"
-            android:layout_marginLeft="@dimen/base_margin"
-            android:layout_marginRight="@dimen/base_margin"
-            android:layout_marginTop="@dimen/half_margin"
+            <co.quchu.quchu.widget.TagCloudView
+                android:id="@+id/tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginTop="@dimen/half_margin"
+                card_view:tcvBackground="@drawable/shape_lineframe_black_cap"
+                card_view:tcvTextSize="4dp"
+                card_view:tcvCanTagClick="false"
+                card_view:tcvItemBorderHorizontal="10dp"
+                card_view:tcvRightResId="@null"
+                card_view:tcvSingleLine="true"
+                card_view:tcvTextColor="@color/standard_color_h1_dark" />
 
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:textColor="@color/standard_color_h2_dark"
-            android:visibility="invisible"
-            android:textSize="@dimen/standard_text_size_h4"
-            tools:text="厦门观音山.dfd"
-            tools:visibility="visible" />
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginRight="@dimen/base_margin"
+                android:layout_marginTop="@dimen/half_margin"
 
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textColor="@color/standard_color_h2_dark"
+                android:visibility="invisible"
+                android:textSize="@dimen/standard_text_size_h4"
+                tools:text="厦门观音山.dfd"
+                tools:visibility="visible" />
+
+
+        </LinearLayout>
 
         <ImageView
             android:layout_width="wrap_content"

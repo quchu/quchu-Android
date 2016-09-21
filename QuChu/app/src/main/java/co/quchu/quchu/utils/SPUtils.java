@@ -242,6 +242,13 @@ public class SPUtils {
     return show;
   }
 
+
+  public static boolean getShowGuild() {
+    boolean show = getBooleanFromSPMap(AppContext.mContext, AppKey.DISPLAY_GUILD, false);
+    putBooleanToSPMap(AppContext.mContext, AppKey.DISPLAY_GUILD, true);
+    return show;
+  }
+
   //    /**
   //     * 初始化 引导页 标志
   //     */
