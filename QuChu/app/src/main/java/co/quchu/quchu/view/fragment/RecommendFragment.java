@@ -1,12 +1,12 @@
 package co.quchu.quchu.view.fragment;
 
 import android.app.ActivityOptions;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
@@ -20,11 +20,18 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -58,7 +65,8 @@ import co.quchu.quchu.widget.SpacesItemDecoration;
 public class RecommendFragment extends BaseFragment
     implements MySceneAdapter.CardClickListener, ViewPager.PageTransformer {
 
-  @Override protected String getPageNameCN() {
+  @Override
+  protected String getPageNameCN() {
     return getString(R.string.pname_f_recommendation);
   }
 
@@ -90,8 +98,10 @@ public class RecommendFragment extends BaseFragment
   private boolean mRefreshRunning = false;
   private boolean mItemClickable = true;
 
-  @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
+  @Nullable
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
     final View view = inflater.inflate(R.layout.fragment_recommend_hvp_new, container, false);
     ButterKnife.bind(this, view);
 
@@ -109,7 +119,8 @@ public class RecommendFragment extends BaseFragment
 
     mAllSceneGridAdapter =
         new AllSceneGridAdapter(mAllSceneList, new AllSceneGridAdapter.OnItemClickListener() {
-          @Override public void onItemClick(View v, int position) {
+          @Override
+          public void onItemClick(View v, int position) {
 
             if (!mItemClickable) {
               return;
@@ -129,7 +140,8 @@ public class RecommendFragment extends BaseFragment
     GridLayoutManager layoutManager =
         new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
     layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-      @Override public int getSpanSize(int position) {
+      @Override
+      public int getSpanSize(int position) {
         if (position == 0) {
           return 2;
         } else if (null != mAllSceneList && position > 0 && position <= mAllSceneList.size()) {
@@ -149,17 +161,20 @@ public class RecommendFragment extends BaseFragment
       public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
       }
 
-      @Override public void onPageSelected(int position) {
+      @Override
+      public void onPageSelected(int position) {
         resetIndicators();
         UMEvent("scene_c");
       }
 
-      @Override public void onPageScrollStateChanged(int state) {
+      @Override
+      public void onPageScrollStateChanged(int state) {
       }
     });
 
     radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-      @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
+      @Override
+      public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
           case R.id.rbFavorites:
 
@@ -188,7 +203,8 @@ public class RecommendFragment extends BaseFragment
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .setStartDelay((rvGrid.getChildCount() - i) * 30)
                     .withEndAction(new Runnable() {
-                      @Override public void run() {
+                      @Override
+                      public void run() {
                         rvGrid.setVisibility(View.GONE);
                       }
                     })
@@ -205,7 +221,8 @@ public class RecommendFragment extends BaseFragment
             }
             rvGrid.animate().alpha(0).setDuration(ANIMATION_DURATION).start();
             rvGrid.postDelayed(new Runnable() {
-              @Override public void run() {
+              @Override
+              public void run() {
                 vpMyScene.animate()
                     .translationX(0)
                     .alpha(1)
@@ -236,7 +253,8 @@ public class RecommendFragment extends BaseFragment
                 .start();
             rvGrid.setVisibility(View.VISIBLE);
             rvGrid.postDelayed(new Runnable() {
-              @Override public void run() {
+              @Override
+              public void run() {
                 for (int i = 0; i < rvGrid.getChildCount(); i++) {
                   rvGrid.getChildAt(i).setTranslationY(150);
                   rvGrid.getChildAt(i)
@@ -250,7 +268,8 @@ public class RecommendFragment extends BaseFragment
               }
             }, 10);
             rvGrid.animate().alpha(1).setDuration(ANIMATION_DURATION).withEndAction(new Runnable() {
-              @Override public void run() {
+              @Override
+              public void run() {
                 vpMyScene.setVisibility(View.GONE);
               }
             }).start();
@@ -279,7 +298,8 @@ public class RecommendFragment extends BaseFragment
         && mFavoriteSceneList.size() == 0
         && mAllSceneList.size() == 0) {
       errorView.showViewDefault(new View.OnClickListener() {
-        @Override public void onClick(View v) {
+        @Override
+        public void onClick(View v) {
           DialogUtil.showProgess(getActivity(), "加载中");
           getMyScene();
         }
@@ -293,7 +313,8 @@ public class RecommendFragment extends BaseFragment
     return view;
   }
 
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+  @Override
+  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     accessPushMessage();
   }
@@ -324,7 +345,8 @@ public class RecommendFragment extends BaseFragment
 
     ScenePresenter.getMyScene(getContext(), SPUtils.getCityId(), 1,
         new CommonListener<PagerModel<SceneModel>>() {
-          @Override public void successListener(PagerModel<SceneModel> response) {
+          @Override
+          public void successListener(PagerModel<SceneModel> response) {
             DialogUtil.dismissProgessDirectly();
             errorView.hideView();
 
@@ -336,10 +358,12 @@ public class RecommendFragment extends BaseFragment
             resetIndicators();
           }
 
-          @Override public void errorListener(VolleyError error, String exception, String msg) {
+          @Override
+          public void errorListener(VolleyError error, String exception, String msg) {
             DialogUtil.dismissProgessDirectly();
             errorView.showViewDefault(new View.OnClickListener() {
-              @Override public void onClick(View v) {
+              @Override
+              public void onClick(View v) {
                 DialogUtil.showProgess(getActivity(), "加载中");
                 getMyScene();
               }
@@ -355,7 +379,8 @@ public class RecommendFragment extends BaseFragment
     ScenePresenter.getAllScene(getContext(), SPUtils.getCityId(), 1,
         new CommonListener<PagerModel<SceneModel>>() {
 
-          @Override public void successListener(PagerModel<SceneModel> response) {
+          @Override
+          public void successListener(PagerModel<SceneModel> response) {
             if (response != null && response.getResult() != null) {
               if (!loadMore) {
                 mAllSceneList.clear();
@@ -367,13 +392,15 @@ public class RecommendFragment extends BaseFragment
             mRefreshRunning = false;
           }
 
-          @Override public void errorListener(VolleyError error, String exception, String msg) {
+          @Override
+          public void errorListener(VolleyError error, String exception, String msg) {
             mRefreshRunning = false;
           }
         });
   }
 
-  @Override public void onCardLick(View view, int position) {
+  @Override
+  public void onCardLick(View view, int position) {
 
     ArrayMap<String, Object> params = new ArrayMap<>();
     params.put("趣处名称", mFavoriteSceneList.get(position).getSceneName());
@@ -386,26 +413,62 @@ public class RecommendFragment extends BaseFragment
     }
   }
 
-  @Override public void onDestroyView() {
+  @Override
+  public void onCardLongClick(final int position) {
+    new MaterialDialog.Builder(getActivity())
+        .content("是否要将此场景从常用场景中移除？")
+        .negativeText("取消")
+        .positiveText("移除")
+        .onPositive(new MaterialDialog.SingleButtonCallback() {
+          @Override
+          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+            UMEvent("d_setcommon_c");
+            final SceneModel sceneModel = mFavoriteSceneList.get(position);
+            ScenePresenter.delFavoriteScene(getActivity(), sceneModel.getSceneId(), new CommonListener() {
+              @Override
+              public void successListener(Object response) {
+                if (mFavoriteSceneList.contains(sceneModel)) {
+                  mFavoriteSceneList.remove(sceneModel);
+                  mMySceneAdapter.notifyDataSetChanged();
+                  resetIndicators();
+                }
+                Toast.makeText(getActivity(), R.string.del_to_favorite_success, Toast.LENGTH_SHORT).show();
+              }
+
+              @Override
+              public void errorListener(VolleyError error, String exception, String msg) {
+                Toast.makeText(getActivity(), R.string.del_to_favorite_fail, Toast.LENGTH_SHORT).show();
+              }
+            });
+          }
+        }).show();
+  }
+
+  @Override
+  public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.unbind(this);
   }
 
-  @Override public void onStart() {
+  @Override
+  public void onStart() {
     super.onStart();
     EventBus.getDefault().register(this);
   }
 
-  @Override public void onStop() {
+  @Override
+  public void onStop() {
     EventBus.getDefault().unregister(this);
     super.onStop();
   }
 
-  @Override public void onDestroy() {
+  @Override
+  public void onDestroy() {
     super.onDestroy();
   }
 
-  @Subscribe public void onMessageEvent(QuchuEventModel event) {
+  @Subscribe
+  public void onMessageEvent(QuchuEventModel event) {
     if (null == event) {
       return;
     }
@@ -478,7 +541,7 @@ public class RecommendFragment extends BaseFragment
       new AccelerateDecelerateInterpolator();
 
   private void resetIndicators() {
-    if (null==rlNodata){
+    if (null == rlNodata) {
       return;
     }
     rlNodata.setVisibility(View.GONE);
@@ -488,6 +551,11 @@ public class RecommendFragment extends BaseFragment
     } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0 && currentIndex == 0) {
       tvEmptyView.setText("你还没有收藏场景");
       rlNodata.setVisibility(View.VISIBLE);
+    }
+
+    if (currentIndex == 1) {
+      llPageIndicator.setVisibility(View.GONE);
+      return;
     }
 
     if (mFavoriteSceneList.size() > 0) {
@@ -505,19 +573,20 @@ public class RecommendFragment extends BaseFragment
       TvPageIndicatorSize.setText(String.valueOf(mFavoriteSceneList.size()));
       llPageIndicator.setVisibility(View.VISIBLE);
     } else {
-      llPageIndicator.setVisibility(View.INVISIBLE);
-    }
-
-    if (currentIndex==0){
-      llPageIndicator.setVisibility(View.VISIBLE);
-    }else{
       llPageIndicator.setVisibility(View.GONE);
     }
+
+//    if (currentIndex == 0) {
+//      llPageIndicator.setVisibility(View.VISIBLE);
+//    } else {
+//      llPageIndicator.setVisibility(View.GONE);
+//    }
   }
 
   public static float MIN_SCALE = .9f;
 
-  @Override public void transformPage(View page, float position) {
+  @Override
+  public void transformPage(View page, float position) {
     //        LogUtils.e("id: " + page + " position:" + position);
     if (position <= 1) {
       if (position < 0) {//滑出的页 0.0 ~ -1 *
