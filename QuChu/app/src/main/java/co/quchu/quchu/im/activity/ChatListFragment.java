@@ -10,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
-import co.quchu.quchu.im.IMDialog;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.view.activity.XiaoQActivity;
 import io.rong.imkit.RongIM;
@@ -22,14 +23,15 @@ import io.rong.imlib.model.Conversation;
 
 /**
  * im聊天列表
- *
+ * <p/>
  * Created by mwb on 16/8/25.
  */
 public class ChatListFragment extends BaseFragment {
 
-  @Nullable @Override
+  @Nullable
+  @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
+                           @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
     //设置会话列表点击事件监听
@@ -73,33 +75,39 @@ public class ChatListFragment extends BaseFragment {
    */
   private RongIM.ConversationListBehaviorListener conversationListBehaviorListener =
       new RongIM.ConversationListBehaviorListener() {
-        @Override public boolean onConversationPortraitClick(Context context,
-            Conversation.ConversationType conversationType, String s) {
+        @Override
+        public boolean onConversationPortraitClick(Context context,
+                                                   Conversation.ConversationType conversationType, String s) {
           //点击头像
           return false;
         }
 
-        @Override public boolean onConversationPortraitLongClick(Context context,
-            Conversation.ConversationType conversationType, String s) {
+        @Override
+        public boolean onConversationPortraitLongClick(Context context,
+                                                       Conversation.ConversationType conversationType, String s) {
           //长按头像
           return false;
         }
 
-        @Override public boolean onConversationLongClick(Context context, View view,
-            UIConversation uiConversation) {
+        @Override
+        public boolean onConversationLongClick(Context context, View view,
+                                               UIConversation uiConversation) {
           //列表长按
           if (uiConversation.getConversationTargetId().equals(IMPresenter.xiaoqId)) {
             return true;
           }
 
-          IMDialog dialog = new IMDialog(getActivity(), uiConversation.getConversationTargetId(),
-              uiConversation.isTop());
-          dialog.show();
+          conversationLongClick(uiConversation.getConversationTargetId());
+
+//          IMDialog dialog = new IMDialog(getActivity(), uiConversation.getConversationTargetId(),
+//              uiConversation.isTop());
+//          dialog.show();
           return true;
         }
 
-        @Override public boolean onConversationClick(Context context, View view,
-            UIConversation uiConversation) {
+        @Override
+        public boolean onConversationClick(Context context, View view,
+                                           UIConversation uiConversation) {
           //列表点击
           if (RongIMClient.getInstance() != null) {
             if (!RongIMClient.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
@@ -123,7 +131,23 @@ public class ChatListFragment extends BaseFragment {
         }
       };
 
-  @Override protected String getPageNameCN() {
+  /**
+   * 会话列表长按
+   */
+  private void conversationLongClick(final String targetId) {
+    new MaterialDialog.Builder(getActivity())
+        .items("删除聊天")
+        .cancelable(true)
+        .itemsCallback(new MaterialDialog.ListCallback() {
+          @Override
+          public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+            new IMPresenter().removeConversation(targetId, null);
+          }
+        }).show();
+  }
+
+  @Override
+  protected String getPageNameCN() {
     return null;
   }
 }

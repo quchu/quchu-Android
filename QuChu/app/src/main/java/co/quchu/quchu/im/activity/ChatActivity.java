@@ -1,5 +1,6 @@
 package co.quchu.quchu.im.activity;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -22,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import co.quchu.quchu.view.activity.LoginActivity;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
@@ -38,7 +39,6 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.gallery.utils.Utils;
-import co.quchu.quchu.im.IMDialog;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.LogUtils;
@@ -162,11 +162,68 @@ public class ChatActivity extends BaseBehaviorActivity {
         public boolean onMessageLongClick(Context context, View view,
                                           io.rong.imlib.model.Message message) {
           //当长按消息时执行
-          IMDialog dialog = new IMDialog(ChatActivity.this, message);
-          dialog.show();
+          messageLongClick(message);
+//          IMDialog dialog = new IMDialog(ChatActivity.this, message);
+//          dialog.show();
           return true;
         }
       };
+
+  /**
+   * 消息长按
+   */
+  private void messageLongClick(final io.rong.imlib.model.Message message) {
+    //聊天界面，如果是自己发送的消息，并且在有效时间之内可以撤回消息
+    io.rong.imlib.model.Message.MessageDirection messageDirection = message.getMessageDirection();
+    long sentTime = message.getSentTime();
+    Calendar calendar = Calendar.getInstance();
+    long currentTime = calendar.getTimeInMillis();
+    if (messageDirection.getValue() == 1 && (currentTime - sentTime) < 0.5 * 30 * 1000) {
+      new MaterialDialog.Builder(this)
+          .items("复制消息", "删除消息", "撤回消息")
+          .itemsCallback(new MaterialDialog.ListCallback() {
+            @Override
+            public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+              operateMessage(message, position);
+            }
+          }).show();
+
+    } else {
+      new MaterialDialog.Builder(this)
+          .items("复制消息", "删除消息")
+          .itemsCallback(new MaterialDialog.ListCallback() {
+            @Override
+            public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+              operateMessage(message, position);
+            }
+          }).show();
+    }
+  }
+
+  private void operateMessage(io.rong.imlib.model.Message message, int position) {
+    int[] messageIds = new int[]{Integer.valueOf(message.getMessageId())};
+    String mMessageContent = "";
+    try {
+      JSONObject jsonObject = new JSONObject(new String(message.getContent().encode()));
+      mMessageContent = jsonObject.getString("content");
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    switch (position) {
+      case 0: //复制消息
+        ClipboardManager cmb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        cmb.setText(mMessageContent);
+        break;
+
+      case 1://删除消息
+        mImPresenter.deleteMessages(messageIds);
+        break;
+
+      case 2://撤回消息
+        mImPresenter.recallMessage(message);
+        break;
+    }
+  }
 
   /**
    * 自定义消息点击事件
