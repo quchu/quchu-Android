@@ -120,7 +120,7 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
             } else if (netError) {
                 if (rotation != null)
                     rotation.cancel();
-                loadMoreHold.loadView.setImageResource(R.mipmap.ic_data_isnull);
+                loadMoreHold.loadView.setImageResource(R.mipmap.ic_nointernet);
                 loadMoreHold.retryView.setText("点击重试");
                 ((LoadMoreViewHolder) holder).massage.setVisibility(View.VISIBLE);
 
