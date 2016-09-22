@@ -232,4 +232,9 @@ public interface NetApi {
    * 屏蔽
    */
   String shieldUrl = HOST + "/im/shield";
+
+  /**
+   * 小Q消息
+   */
+  String getQMsg = HOST + "/sysMsg/getQMsg";
 }

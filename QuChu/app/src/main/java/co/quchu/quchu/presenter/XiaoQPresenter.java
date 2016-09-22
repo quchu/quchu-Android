@@ -8,8 +8,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
-import co.quchu.quchu.model.XiaoQModel;
+import co.quchu.quchu.model.SysMessage;
 import co.quchu.quchu.net.GsonRequest;
+import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 
 /**
@@ -23,28 +24,20 @@ public class XiaoQPresenter {
     mContext = context;
   }
 
-  public void getMessage(final int pageNo, final PageLoadListener<List<XiaoQModel>> listener) {
-    GsonRequest<List<XiaoQModel>> request = new GsonRequest<List<XiaoQModel>>("", new TypeToken<List<XiaoQModel>>() {
-    }.getType(), new ResponseListener<List<XiaoQModel>>() {
+  public void getMessage(final int pageNo, final CommonListener<List<SysMessage>> listener) {
+    GsonRequest<List<SysMessage>> request = new GsonRequest<List<SysMessage>>(NetApi.getQMsg, new TypeToken<List<SysMessage>>() {
+    }.getType(), new ResponseListener<List<SysMessage>>() {
       @Override
       public void onErrorResponse(@Nullable VolleyError error) {
         if (listener != null) {
-          listener.netError(pageNo, "");
+          listener.errorListener(error, "", "");
         }
       }
 
       @Override
-      public void onResponse(List<XiaoQModel> response, boolean result, String errorCode, @Nullable String msg) {
-        if (listener == null) {
-          return;
-        }
-
-        if (response == null) {
-          listener.nullData();
-        } else if (pageNo == 1) {
-          listener.initData(response);
-        } else {
-          listener.moreData(response);
+      public void onResponse(List<SysMessage> response, boolean result, String errorCode, @Nullable String msg) {
+        if (listener != null && response != null) {
+          listener.successListener(response);
         }
       }
     });

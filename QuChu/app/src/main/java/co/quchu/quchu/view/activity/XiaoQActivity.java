@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.android.volley.VolleyError;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -18,17 +20,16 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.model.XiaoQModel;
-import co.quchu.quchu.presenter.PageLoadListener;
+import co.quchu.quchu.model.SysMessage;
+import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.XiaoQPresenter;
-import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.XiaoQAdapter;
 
 /**
  * Created by mwb on 16/9/19.
  */
-public class XiaoQActivity extends BaseBehaviorActivity implements PageLoadListener<List<XiaoQModel>>,
-    AdapterBase.OnLoadmoreListener, SwipeRefreshLayout.OnRefreshListener {
+public class XiaoQActivity extends BaseBehaviorActivity implements CommonListener<List<SysMessage>>,
+    SwipeRefreshLayout.OnRefreshListener, XiaoQAdapter.OnMessageItemClickListener {
 
   private int pageNo = 1;
 
@@ -54,7 +55,7 @@ public class XiaoQActivity extends BaseBehaviorActivity implements PageLoadListe
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     mAdapter = new XiaoQAdapter(this);
     mRecyclerView.setAdapter(mAdapter);
-    mAdapter.setLoadmoreListener(this);
+    mAdapter.setOnMessageItemClickListener(this);
 
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -76,44 +77,43 @@ public class XiaoQActivity extends BaseBehaviorActivity implements PageLoadListe
   }
 
   @Override
-  public void initData(List<XiaoQModel> data) {
-    mAdapter.initData(data);
-    mSwipeRefreshLayout.setRefreshing(false);
-  }
-
-  @Override
-  public void moreData(List<XiaoQModel> data) {
-    mSwipeRefreshLayout.setRefreshing(false);
-
-//    pageNo = data.getPagesNo();
-//    mAdapter.addMoreData(data);
-  }
-
-  @Override
-  public void nullData() {
-    if (mSwipeRefreshLayout != null) {
-      mSwipeRefreshLayout.setRefreshing(false);
+  public void onItemClick(SysMessage message) {
+    if (message == null) {
+      return;
     }
-    mAdapter.setLoadMoreEnable(false);
+
+    Intent intent = null;
+    switch (message.getType()) {
+      case SysMessage.TYPE_QUCHU_DETAIL:
+        intent = new Intent(XiaoQActivity.this, QuchuDetailsActivity.class);
+        intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, Integer.valueOf(message.getId()));
+        break;
+
+      case SysMessage.TYPE_ARTICLE_DETAIL:
+        ArticleDetailActivity.enterActivity(XiaoQActivity.this, message.getId(), "文章详情", "小Q聊天界面");
+        break;
+
+      case SysMessage.TYPE_USER:
+        intent = new Intent(XiaoQActivity.this, UserCenterActivity.class);
+        intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, Integer.valueOf(message.getId()));
+        break;
+    }
+
+    if (intent != null) {
+      startActivity(intent);
+    }
   }
 
   @Override
-  public void netError(final int pageNo, String massage) {
+  public void successListener(List<SysMessage> response) {
+    mAdapter.initData(response);
+    mSwipeRefreshLayout.setRefreshing(false);
+  }
+
+  @Override
+  public void errorListener(VolleyError error, String exception, String msg) {
     makeToast(R.string.network_error);
     mSwipeRefreshLayout.setRefreshing(false);
-
-    mAdapter.setNetError(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        mSwipeRefreshLayout.setRefreshing(false);
-        mPresenter.getMessage(pageNo, XiaoQActivity.this);
-      }
-    });
-  }
-
-  @Override
-  public void onLoadmore() {
-    mPresenter.getMessage(pageNo + 1, this);
   }
 
   @Override
