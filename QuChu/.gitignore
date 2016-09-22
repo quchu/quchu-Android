@@ -32,3 +32,4 @@ proguard/
 *.iml
 /captures/
 .idea/
+/gradle.properties
