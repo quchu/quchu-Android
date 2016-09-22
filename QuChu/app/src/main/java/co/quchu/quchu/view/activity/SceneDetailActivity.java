@@ -41,7 +41,6 @@ import co.quchu.quchu.utils.WizardHelper;
 import co.quchu.quchu.view.adapter.SceneDetailAdapter;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.ErrorView;
-import co.quchu.quchu.widget.SceneLikeDialog;
 
 /**
  * Created by Nico on 16/7/11.
@@ -93,9 +92,6 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
   private boolean mFavoriteRunning = false;
   private boolean mActivityStop = false;
-
-  private SceneLikeDialog likeDialog;
-
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -180,8 +176,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
           mFavoriteRunning = false;
           isFavorite = false;
 
-          likeDialog = new SceneLikeDialog(SceneDetailActivity.this, false, 0);
-          likeDialog.show();
+          Toast.makeText(getApplicationContext(), R.string.del_to_favorite_success, Toast.LENGTH_SHORT).show();
 
           changeFavoriteBtn(isFavorite);
         }
@@ -190,8 +185,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
         public void errorListener(VolleyError error, String exception, String msg) {
           mFavoriteRunning = false;
 
-          likeDialog = new SceneLikeDialog(SceneDetailActivity.this, false, 1);
-          likeDialog.show();
+          Toast.makeText(getApplicationContext(), R.string.del_to_favorite_fail, Toast.LENGTH_SHORT).show();
         }
       });
     } else {
@@ -208,8 +202,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
           mFavoriteRunning = false;
           isFavorite = true;
 
-          likeDialog = new SceneLikeDialog(SceneDetailActivity.this, true, 0);
-          likeDialog.show();
+          Toast.makeText(getApplicationContext(), R.string.add_to_favorite_success, Toast.LENGTH_SHORT).show();
 
           changeFavoriteBtn(isFavorite);
         }
@@ -218,8 +211,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
         public void errorListener(VolleyError error, String exception, String msg) {
           mFavoriteRunning = false;
 
-          likeDialog = new SceneLikeDialog(SceneDetailActivity.this, true, 1);
-          likeDialog.show();
+          Toast.makeText(getApplicationContext(), R.string.add_to_favorite_fail, Toast.LENGTH_SHORT).show();
         }
       });
     }
@@ -231,10 +223,10 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
   private void changeFavoriteBtn(boolean isFavorite) {
     if (isFavorite) {
       //场景已经收藏
-      mLikeFab.setImageResource(R.mipmap.ic_yichu);
+      mLikeFab.setImageResource(R.mipmap.ic_favorite_yichu);
 
     } else {
-      mLikeFab.setImageResource(R.mipmap.ic_tianjia);
+      mLikeFab.setImageResource(R.mipmap.ic_favorite_add);
     }
   }
 

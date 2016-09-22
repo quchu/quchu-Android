@@ -154,7 +154,7 @@ public class WizardHelper {
     frameLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
     ImageView imageView = new ImageView(activity);
-    imageView.setImageResource(R.mipmap.ic_changan);
+    imageView.setImageResource(R.mipmap.ic_wizard_changan);
     FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
     layoutParams.topMargin = dip2px(activity, 40);
     layoutParams.rightMargin = dip2px(activity, 40);
@@ -173,14 +173,14 @@ public class WizardHelper {
     View likeBtn = activity.findViewById(R.id.likeFab);
     if (likeBtn != null) {
 
-      Point point = getShape(R.mipmap.ic_changan);
+      Point point = getShape(R.mipmap.ic_wizard_favorite);
 
       FrameLayout frameLayout = new FrameLayout(activity);
       frameLayout.setBackgroundColor(BG_COLOR);
       frameLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
       ImageView imageView = new ImageView(activity);
-      imageView.setImageResource(R.mipmap.ic_changan);
+      imageView.setImageResource(R.mipmap.ic_wizard_favorite);
 
       FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP);
       layoutParams.leftMargin = likeBtn.getLeft() - point.x + dip2px(activity, 10);
