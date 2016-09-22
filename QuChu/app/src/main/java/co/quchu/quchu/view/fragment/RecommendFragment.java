@@ -356,9 +356,8 @@ public class RecommendFragment extends BaseFragment
               mFavoriteSceneList.addAll(response.getResult());
               mMySceneAdapter.notifyDataSetChanged();
             }
-            resetIndicators();
 
-            showWizard();
+            resetIndicators();
           }
 
           @Override
@@ -373,13 +372,6 @@ public class RecommendFragment extends BaseFragment
             });
           }
         });
-  }
-
-  /**
-   * 显示长按删除引导
-   */
-  private void showWizard() {
-    WizardHelper.showWizard(getActivity(), WizardHelper.Wizard.my_scene, null);
   }
 
   public void getData(final boolean loadMore) {
@@ -569,6 +561,8 @@ public class RecommendFragment extends BaseFragment
     }
 
     if (mFavoriteSceneList.size() > 0) {
+      //显示长按删除引导
+      WizardHelper.showWizard(getActivity(), WizardHelper.Wizard.my_scene, null);
 
       tvPageIndicatorLabel.setText("of");
       if (vpMyScene.getChildCount() > 0) {

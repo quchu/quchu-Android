@@ -141,6 +141,8 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
         changeFavorite();
       }
     });
+
+    changeFavoriteBtn(isFavorite);
   }
 
   public void getData() {
@@ -180,6 +182,8 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
           likeDialog = new SceneLikeDialog(SceneDetailActivity.this, false, 0);
           likeDialog.show();
+
+          changeFavoriteBtn(isFavorite);
         }
 
         @Override
@@ -206,6 +210,8 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
 
           likeDialog = new SceneLikeDialog(SceneDetailActivity.this, true, 0);
           likeDialog.show();
+
+          changeFavoriteBtn(isFavorite);
         }
 
         @Override
@@ -219,6 +225,18 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
     }
   }
 
+  /**
+   * 改变按钮状态
+   */
+  private void changeFavoriteBtn(boolean isFavorite) {
+    if (isFavorite) {
+      //场景已经收藏
+      mLikeFab.setImageResource(R.mipmap.ic_yichu);
+
+    } else {
+      mLikeFab.setImageResource(R.mipmap.ic_tianjia);
+    }
+  }
 
   private void getData(final boolean firstLoad, final boolean loadMore) {
     if (firstLoad) {

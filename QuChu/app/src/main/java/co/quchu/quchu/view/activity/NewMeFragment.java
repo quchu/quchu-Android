@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-
 import com.zhuge.analysis.stat.ZhugeSDK;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -35,6 +36,7 @@ import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.CircleIndicator;
+import co.quchu.quchu.widget.UserMarkDialog;
 import io.rong.imkit.RongIM;
 
 /**
@@ -102,8 +104,19 @@ public class NewMeFragment extends BaseFragment {
           @Override
           public void onSuccess(UserCenterInfo userCenterInfo) {
             if (userCenterInfo != null) {
-              String mark = userCenterInfo.getMark();
-              SPUtils.setUserMark(mark);
+              String newMark = userCenterInfo.getMark();
+
+              //称号不同则弹出对话框
+              String oldMark = SPUtils.getUserMark();
+              if (TextUtils.isEmpty(oldMark)) {
+                UserMarkDialog markDialog = new UserMarkDialog(getActivity(), newMark);
+                markDialog.show();
+              } else if (!oldMark.equals(newMark)) {
+                UserMarkDialog markDialog = new UserMarkDialog(getActivity(), newMark);
+                markDialog.show();
+              }
+
+              SPUtils.setUserMark(newMark);
             }
           }
 
@@ -151,14 +164,14 @@ public class NewMeFragment extends BaseFragment {
 
     if (mHasPushUnreadMessage) {
       unReadMassageView.setVisibility(View.VISIBLE);
-      ((RecommendActivity)getActivity()).showUnreadView(true);
+      ((RecommendActivity) getActivity()).showUnreadView(true);
     } else {
       if (mHasImUnreadMessage) {
         unReadMassageView.setVisibility(View.VISIBLE);
-        ((RecommendActivity)getActivity()).showUnreadView(true);
+        ((RecommendActivity) getActivity()).showUnreadView(true);
       } else {
         unReadMassageView.setVisibility(View.INVISIBLE);
-        ((RecommendActivity)getActivity()).showUnreadView(false);
+        ((RecommendActivity) getActivity()).showUnreadView(false);
       }
     }
   }
@@ -222,7 +235,7 @@ public class NewMeFragment extends BaseFragment {
 
       case R.id.feedback_layout:
         //意见与反馈
-        ZhugeSDK.getInstance().track(getActivity(),"意见反馈");
+        ZhugeSDK.getInstance().track(getActivity(), "意见反馈");
         startActivity(FeedbackActivity.class);
         break;
     }

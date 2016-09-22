@@ -50,6 +50,9 @@ public class WizardHelper {
 
   public static void showWizard(final Activity activity, final Wizard wizard, final OnWizardListener listener) {
     if (activity != null && !isWizardFinished(wizard)) {
+      // 设置WizardFlag（以后不再显示）
+      WizardHelper.finishWizardFlag(wizard);
+
       activity.runOnUiThread(new Runnable() {
         @Override
         public void run() {
@@ -139,8 +142,6 @@ public class WizardHelper {
       setWizardViewListener(wizard, wizardView);
       // 显示引导页
       mWizardViewMap.put(wizard, new WizardEntity(activity, wizard, createPopupWindow(activity, wizardView, wizard), listener));
-      // 设置WizardFlag（以后不再显示）
-      WizardHelper.finishWizardFlag(wizard);
     }
   }
 
@@ -153,9 +154,10 @@ public class WizardHelper {
     frameLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
     ImageView imageView = new ImageView(activity);
-    imageView.setImageResource(R.mipmap.ic_launcher);
+    imageView.setImageResource(R.mipmap.ic_changan);
     FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-    layoutParams.setMargins(0, 100, 40, 0);
+    layoutParams.topMargin = dip2px(activity, 40);
+    layoutParams.rightMargin = dip2px(activity, 40);
 
     frameLayout.addView(imageView, layoutParams);
 
@@ -171,18 +173,21 @@ public class WizardHelper {
     View likeBtn = activity.findViewById(R.id.likeFab);
     if (likeBtn != null) {
 
+      Point point = getShape(R.mipmap.ic_changan);
+
       FrameLayout frameLayout = new FrameLayout(activity);
       frameLayout.setBackgroundColor(BG_COLOR);
       frameLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
       ImageView imageView = new ImageView(activity);
-      imageView.setImageResource(R.mipmap.ic_launcher);
+      imageView.setImageResource(R.mipmap.ic_changan);
 
-      FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-      layoutParams.leftMargin = likeBtn.getLeft() - getShape(R.mipmap.ic_launcher).x / 2;
-      layoutParams.topMargin = likeBtn.getTop();
+      FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP);
+      layoutParams.leftMargin = likeBtn.getLeft() - point.x + dip2px(activity, 10);
+      layoutParams.topMargin = likeBtn.getTop() + (likeBtn.getMeasuredHeight() / 2 - point.y / 2);
+      imageView.setLayoutParams(layoutParams);
 
-      frameLayout.addView(imageView, layoutParams);
+      frameLayout.addView(imageView);
 
       view = frameLayout;
     }
