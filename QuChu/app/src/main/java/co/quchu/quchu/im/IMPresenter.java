@@ -173,7 +173,7 @@ public class IMPresenter {
         }, true);
 
         //初始化小Q
-        initXiaoQConversation();
+//        initXiaoQConversation();
       }
 
       /**

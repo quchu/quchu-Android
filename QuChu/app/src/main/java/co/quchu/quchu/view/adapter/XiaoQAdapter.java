@@ -34,19 +34,20 @@ public class XiaoQAdapter extends AdapterBase<SysMessage, XiaoQAdapter.XiaoQView
     switch (message.getType()) {
       case SysMessage.TYPE_QUCHU_DETAIL:
         holder.mPlaceLayout.setVisibility(View.VISIBLE);
+        holder.mArticleLayout.setVisibility(View.GONE);
         holder.mUserLayout.setVisibility(View.GONE);
 
         if (TextUtils.isEmpty(message.getImage())) {
-          holder.mPlaceImg.setImageURI("");
+          holder.mPlaceCoverImg.setImageURI("");
         } else {
-          holder.mPlaceImg.setImageURI(message.getImage());
+          holder.mPlaceCoverImg.setImageURI(message.getImage());
         }
         holder.mPlaceTv.setText(message.getName());
-        holder.mPlaceOriginTv.setVisibility(View.VISIBLE);
         break;
 
       case SysMessage.TYPE_USER:
         holder.mPlaceLayout.setVisibility(View.GONE);
+        holder.mArticleLayout.setVisibility(View.GONE);
         holder.mUserLayout.setVisibility(View.VISIBLE);
 
         if (TextUtils.isEmpty(message.getImage())) {
@@ -58,16 +59,16 @@ public class XiaoQAdapter extends AdapterBase<SysMessage, XiaoQAdapter.XiaoQView
         break;
 
       case SysMessage.TYPE_ARTICLE_DETAIL:
-        holder.mPlaceLayout.setVisibility(View.VISIBLE);
+        holder.mPlaceLayout.setVisibility(View.GONE);
+        holder.mArticleLayout.setVisibility(View.VISIBLE);
         holder.mUserLayout.setVisibility(View.GONE);
 
         if (TextUtils.isEmpty(message.getImage())) {
-          holder.mPlaceImg.setImageURI("");
+          holder.mArticleCoverImg.setImageURI("");
         } else {
-          holder.mPlaceImg.setImageURI(message.getImage());
+          holder.mArticleCoverImg.setImageURI(message.getImage());
         }
-        holder.mPlaceTv.setText(message.getName());
-        holder.mPlaceOriginTv.setVisibility(View.GONE);
+        holder.mArticleTitleTv.setText("#" + message.getName());
         break;
     }
 
@@ -90,11 +91,12 @@ public class XiaoQAdapter extends AdapterBase<SysMessage, XiaoQAdapter.XiaoQView
 
   public class XiaoQViewHolder extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.avatarImg) SimpleDraweeView mAvatarImg;
+    @Bind(R.id.placeCoverImg) SimpleDraweeView mPlaceCoverImg;
     @Bind(R.id.placeTv) TextView mPlaceTv;
-    @Bind(R.id.placeImg) SimpleDraweeView mPlaceImg;
-    @Bind(R.id.placeOriginTv) TextView mPlaceOriginTv;
     @Bind(R.id.placeLayout) LinearLayout mPlaceLayout;
+    @Bind(R.id.articleCoverImg) SimpleDraweeView mArticleCoverImg;
+    @Bind(R.id.articleTitleTv) TextView mArticleTitleTv;
+    @Bind(R.id.articleLayout) RelativeLayout mArticleLayout;
     @Bind(R.id.userAvatarImg) SimpleDraweeView mUserAvatarImg;
     @Bind(R.id.userNameTv) TextView mUserNameTv;
     @Bind(R.id.userLayout) RelativeLayout mUserLayout;

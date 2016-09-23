@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -46,8 +47,7 @@ public class ChatListFragment extends BaseFragment {
    * 加载融云会话列表
    */
   private void enterFragment() {
-    io.rong.imkit.fragment.ConversationListFragment fragment =
-        new io.rong.imkit.fragment.ConversationListFragment();
+    ConversationListFragmentEx fragment = new ConversationListFragmentEx();
     Uri uri = Uri.parse("rong://" + getActivity().getApplicationInfo().packageName).buildUpon()
         .appendPath("conversationlist")
         .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(),
@@ -66,6 +66,7 @@ public class ChatListFragment extends BaseFragment {
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
     fragmentTransaction.add(R.id.conversation_list_fragment, fragment);
     fragmentTransaction.commit();
+
   }
 
   /**
@@ -111,7 +112,7 @@ public class ChatListFragment extends BaseFragment {
           //列表点击
           if (RongIMClient.getInstance() != null) {
             if (!RongIMClient.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
-//              Toast.makeText(getActivity(), "IM连接失败，请检查网络或者重启应用", Toast.LENGTH_SHORT).show();
+              Toast.makeText(getActivity(), "IM连接出错，请检查网络或者重启应用", Toast.LENGTH_SHORT).show();
               return true;
             }
           }
