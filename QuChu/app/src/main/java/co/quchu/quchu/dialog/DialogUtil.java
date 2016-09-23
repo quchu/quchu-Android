@@ -5,12 +5,13 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class DialogUtil {
 
-    static LoadingDialog loadingDialog;
+    static MaterialDialog loadingDialog;
 
     static Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -27,29 +28,39 @@ public class DialogUtil {
 
     public static void showProgess(Context activity, int resId) {
         if (activity != null) {
-            String msg = activity.getString(resId);
-            if (loadingDialog == null) {
-                loadingDialog = new LoadingDialog(activity, msg);
-            } else {
-                loadingDialog.setText(msg);
+
+            if (loadingDialog!=null && loadingDialog.isShowing()){
+                loadingDialog.setContent(resId);
+            }else{
+                loadingDialog = new MaterialDialog.Builder(activity)
+                    .content(resId)
+                    .progress(true, 0)
+                    .show();
             }
+
             if(!((Activity) activity).isFinishing()) {
                 loadingDialog.show();
             }
+
         }
     }
 
     public static void showProgess(Context activity, String msg) {
         if (activity != null) {
-            if (loadingDialog == null) {
-                loadingDialog = new LoadingDialog(activity, msg);
-            } else {
-                loadingDialog.setText(msg);
+
+            if (loadingDialog!=null && loadingDialog.isShowing()){
+                loadingDialog.setContent(msg);
+            }else{
+                loadingDialog = new MaterialDialog.Builder(activity)
+                    .content(msg)
+                    .progress(true, 0)
+                    .show();
             }
-            if (!loadingDialog.isShowing()&&!((Activity) activity).isFinishing()) {
+
+            if(!((Activity) activity).isFinishing()) {
                 loadingDialog.show();
-                handler.sendMessageDelayed(handler.obtainMessage(2), 50 * 1000);
             }
+
         }
     }
 

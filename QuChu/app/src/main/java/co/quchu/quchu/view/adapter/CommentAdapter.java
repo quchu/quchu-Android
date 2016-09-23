@@ -120,7 +120,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         });
         ((CommentViewHolder) holder).sdvAvatar.setImageURI(
             Uri.parse(commentModel.getUserPhoneUrl()));
-        ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
+        if (null!=commentModel.getSourceUrl()){
+          ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
+        }
 
         if (!StringUtils.isEmpty(commentModel.getPqUrl())){
           ((CommentViewHolder) holder).tvFrom.setOnClickListener(new View.OnClickListener() {

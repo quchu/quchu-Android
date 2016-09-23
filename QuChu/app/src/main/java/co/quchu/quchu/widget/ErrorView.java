@@ -19,9 +19,7 @@ public class ErrorView extends FrameLayout {
 
     TextView massageView;
     TextView actionButtton;
-    ImageView loadingView;
     LinearLayout refreshLayout;
-    private AnimationDrawable drawable;
 
     public ErrorView(Context context) {
         super(context);
@@ -43,15 +41,12 @@ public class ErrorView extends FrameLayout {
         setVisibility(GONE);
         massageView = (TextView) findViewById(R.id.massage);
         actionButtton = (TextView) findViewById(R.id.action_buttton);
-        loadingView = (ImageView) findViewById(R.id.loadingView);
-        drawable = (AnimationDrawable) loadingView.getDrawable();
         refreshLayout = (LinearLayout) findViewById(R.id.refreshLayout);
     }
 
     public void showView(String massage, String actionString, OnClickListener actionListener) {
         setVisibility(VISIBLE);
         refreshLayout.setVisibility(VISIBLE);
-        loadingView.setVisibility(INVISIBLE);
         massageView.setText(massage);
         actionButtton.setText(actionString);
         actionButtton.setOnClickListener(actionListener);
@@ -60,8 +55,6 @@ public class ErrorView extends FrameLayout {
     public void showLoading() {
         setVisibility(VISIBLE);
         refreshLayout.setVisibility(INVISIBLE);
-        loadingView.setVisibility(VISIBLE);
-        drawable.start();
     }
 
     public void showViewDefault(OnClickListener actionListener) {
@@ -70,7 +63,6 @@ public class ErrorView extends FrameLayout {
         }
         setVisibility(VISIBLE);
         refreshLayout.setVisibility(VISIBLE);
-        loadingView.setVisibility(INVISIBLE);
         massageView.setText(R.string.network_error);
         actionButtton.setText(R.string.click_to_retry);
         actionButtton.setOnClickListener(actionListener);
@@ -81,10 +73,8 @@ public class ErrorView extends FrameLayout {
             return;
         }
         refreshLayout.setVisibility(GONE);
-        loadingView.setVisibility(GONE);
         setVisibility(GONE);
         actionButtton.setOnClickListener(null);
-        drawable.stop();
     }
 
 
@@ -94,12 +84,7 @@ public class ErrorView extends FrameLayout {
             refreshLayout.setVisibility(GONE);
         }
 
-        if (null!=loadingView){
-            loadingView.setVisibility(GONE);
-        }
-
         setVisibility(GONE);
         actionButtton.setOnClickListener(null);
-        drawable.stop();
     }
 }
