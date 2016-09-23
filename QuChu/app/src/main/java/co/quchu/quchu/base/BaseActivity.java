@@ -216,7 +216,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             .content("前往该操作前需要进行登录\r\n是否现在前往")
             .positiveText("立即前往")
             .negativeText("容我三思")
-            .cancelable(false)
             .onPositive(new MaterialDialog.SingleButtonCallback() {
                 @Override
                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
