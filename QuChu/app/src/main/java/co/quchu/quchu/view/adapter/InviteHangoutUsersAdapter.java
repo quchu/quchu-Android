@@ -49,7 +49,7 @@ public class InviteHangoutUsersAdapter
         }
       }
     });
-    holder.ivGender.setImageResource(mUsers.get(position).getGender()==0?R.mipmap.ic_women:R.mipmap.ic_man);
+    holder.ivGender.setImageResource(mUsers.get(position).getGender()==0?R.mipmap.ic_female:R.mipmap.ic_male);
   }
 
   @Override public int getItemCount() {
