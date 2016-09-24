@@ -138,6 +138,7 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
       }
     });
 
+    mLikeFab.setVisibility(View.VISIBLE);
     changeFavoriteBtn(isFavorite);
   }
 
