@@ -12,7 +12,6 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -40,12 +39,10 @@ import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.im.IMPresenter;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.activity.ArticleDetailActivity;
-import co.quchu.quchu.view.activity.QuchuDetailsActivity;
-import co.quchu.quchu.view.activity.SettingXioaQActivity;
 import co.quchu.quchu.view.activity.SplashActivity;
 import co.quchu.quchu.view.activity.UserCenterActivityNew;
 import io.rong.imkit.RongIM;
@@ -80,45 +77,45 @@ public class ChatActivity extends BaseBehaviorActivity {
   //会话类型
   private Conversation.ConversationType mConversationType;
 
-  private TextView titleTv;
+  private TextView mTitleTv;
   private IMPresenter mImPresenter;
+  private Handler mHandler;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_chat);
 
+    Intent intent = getIntent();
+    if (intent == null || intent.getData() == null) {
+      LogUtils.e("------ChatActivity", "intent or intent data is null");
+      return;
+    }
+
+    if (!NetUtil.isNetworkConnected(this)) {
+      makeToast("无网络");
+    }
+
     EnhancedToolbar toolbar = getEnhancedToolbar();
-    titleTv = toolbar.getTitleTv();
+    mTitleTv = toolbar.getTitleTv();
     ImageView settingIv = toolbar.getRightIv();
     settingIv.setImageResource(R.mipmap.ic_gengduo);
     settingIv.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if (mTargetId.equals(IMPresenter.xiaoqId)) {
-          //跳转小Q设置
-          startActivity(SettingXioaQActivity.class);
-        } else {
-          //普通聊天设置
           showBehaviorDialog();
-        }
       }
     });
 
     mImPresenter = new IMPresenter();
 
-    if (getIntent() == null || getIntent().getData() == null) {
-      LogUtils.e("------ChatActivity", "intent null");
-      return;
-    }
-
-    getIntentDate(getIntent());
-
-    isPushMessage(getIntent());
-
-    getTypingStatus();
-
     RongIM.setConversationBehaviorListener(conversationBehaviorListener);
+
+    getIntentDate(intent);
+
+    isPushMessage(intent);
+
+    setTypingStatus();
   }
 
   /**
@@ -149,7 +146,7 @@ public class ChatActivity extends BaseBehaviorActivity {
         public boolean onMessageClick(Context context, View view,
                                       io.rong.imlib.model.Message message) {
           //当点击消息时执行
-          return customClickMessage(message);
+          return false;
         }
 
         @Override
@@ -162,10 +159,10 @@ public class ChatActivity extends BaseBehaviorActivity {
         public boolean onMessageLongClick(Context context, View view,
                                           io.rong.imlib.model.Message message) {
           //当长按消息时执行
-          messageLongClick(message);
+//          messageLongClick(message);
 //          IMDialog dialog = new IMDialog(ChatActivity.this, message);
 //          dialog.show();
-          return true;
+          return false;
         }
       };
 
@@ -226,66 +223,22 @@ public class ChatActivity extends BaseBehaviorActivity {
   }
 
   /**
-   * 自定义消息点击事件
-   * 0-趣处详情；1-用户；2-趣处文章
-   */
-  private boolean customClickMessage(io.rong.imlib.model.Message message) {
-    try {
-      JSONObject jsonObject = new JSONObject(new String(message.getContent().encode()));
-      if (jsonObject.has("content")) {
-        String content = jsonObject.getString("content");
-      }
-
-      if (jsonObject.has("extra")) {
-        String extra = jsonObject.getString("extra");
-        JSONObject extraObject = new JSONObject(extra);
-        String id = "";
-        String type = "";
-        if (extraObject.has("id")) {
-          id = extraObject.getString("id");
-        }
-        if (extraObject.has("type")) {
-          type = extraObject.getString("type");
-        }
-
-        if (TextUtils.isEmpty(id)) {
-          return false;
-        }
-
-        Intent intent = null;
-        if (type.equals(IMPresenter.JUMP_TYPE_QUCHU_DETAIL)) {
-          //趣处详情
-          intent = new Intent(ChatActivity.this, QuchuDetailsActivity.class);
-          intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, Integer.valueOf(id));
-          startActivity(intent);
-
-        } else if (type.equals(IMPresenter.JUMP_TYPE_USER)) {
-          //用户
-          intent = new Intent(ChatActivity.this, UserCenterActivityNew.class);
-          intent.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID, Integer.valueOf(id));
-          startActivity(intent);
-
-        } else if (type.equals(IMPresenter.JUMP_TYPE_ARTICLE_DETAIL)) {
-          //文章详情
-          ArticleDetailActivity.enterActivity(ChatActivity.this, id, "文章详情", "小Q聊天界面");
-        }
-
-        return true;
-
-      } else {
-        return false;
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-
-    return false;
-  }
-
-  /**
    * 用户输入状态
    */
-  private void getTypingStatus() {
+  private void setTypingStatus() {
+    mHandler = new Handler() {
+      @Override
+      public void handleMessage(Message msg) {
+        if (msg.what == TITLE_DEFAULT) {
+          mTitleTv.setText(mTitle);
+        } else if (msg.what == TITLE_TEXT_TYPING) {
+          mTitleTv.setText("对方正在输入");
+        } else if (msg.what == TITLE_VOICE_TYPING) {
+          mTitleTv.setText("对方正在讲话");
+        }
+      }
+    };
+
     RongIMClient.setTypingStatusListener(new RongIMClient.TypingStatusListener() {
       @Override
       public void onTypingStatusChanged(Conversation.ConversationType type, String id,
@@ -304,38 +257,18 @@ public class ChatActivity extends BaseBehaviorActivity {
             //匹配对方正在输入的是文本消息还是语音消息
             if (objectName.equals(textTag.value())) {
               //显示“对方正在输入”
-              handler.sendEmptyMessage(TITLE_TEXT_TYPING);
+              mHandler.sendEmptyMessage(TITLE_TEXT_TYPING);
             } else if (objectName.equals(voiceTag.value())) {
               //显示"对方正在讲话"
-              handler.sendEmptyMessage(TITLE_VOICE_TYPING);
+              mHandler.sendEmptyMessage(TITLE_VOICE_TYPING);
             }
           } else {
             //当前会话没有用户正在输入，标题栏仍显示原来标题
-            handler.sendEmptyMessage(TITLE_DEFAULT);
+            mHandler.sendEmptyMessage(TITLE_DEFAULT);
           }
         }
       }
     });
-  }
-
-  private Handler handler = new Handler() {
-    @Override
-    public void handleMessage(Message msg) {
-      if (msg.what == TITLE_DEFAULT) {
-        titleTv.setText(mTitle);
-      } else if (msg.what == TITLE_TEXT_TYPING) {
-        titleTv.setText("对方正在输入");
-      } else if (msg.what == TITLE_VOICE_TYPING) {
-        titleTv.setText("对方正在讲话");
-      }
-    }
-  };
-
-  @Override
-  protected void onNewIntent(Intent intent) {
-    super.onNewIntent(intent);
-
-    LogUtils.e("ChatActivity", "onNewIntent()");
   }
 
   /**
@@ -343,44 +276,37 @@ public class ChatActivity extends BaseBehaviorActivity {
    * rong://{应用包名}/conversation/[private|discussion|group]?targetId={目标Id}&[title={开启会话名称}]
    */
   private void getIntentDate(Intent intent) {
-    LogUtils.e("------mwb", "getIntentDate");
     mTargetId = intent.getData().getQueryParameter("targetId");
     mTargetIds = intent.getData().getQueryParameter("targetIds");
     mTitle = intent.getData().getQueryParameter("title");
-    titleTv.setText(mTitle);
+    mTitleTv.setText(mTitle);
 
     //intent.getData().getLastPathSegment();获得当前会话类型
     mConversationType = Conversation.ConversationType
         .valueOf(intent.getData().getLastPathSegment().toUpperCase(Locale.getDefault()));
-
-    enterFragment(mConversationType, mTargetId);
   }
 
   /**
    * 判断消息是否是 push 消息
    */
   private void isPushMessage(Intent intent) {
-    LogUtils.e("------mwb", "isPushMessage");
-    if (intent.getData().getScheme().equals("rong")
-        && intent.getData().getQueryParameter("push") != null) {
+    if (intent.getData().getScheme().equals("rong") && intent.getData().getQueryParameter("isFromPush") != null) {
       //push消息
-
-      //通过intent.getData().getQueryParameter("push") 为true，判断是否是push消息
-      if (intent.getData().getQueryParameter("push").equals("true")) {
-
+      if (intent.getData().getQueryParameter("isFromPush").equals("true")) {
         enterActivity();
+      } else if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
+        enterActivity();
+      } else {
+        enterFragment(mConversationType, mTargetId);
       }
 
     } else {
-      //程序切到后台，收到消息后点击进入,会执行这里
-      if (!RongIMClient.getInstance().getCurrentConnectionStatus()
-          .equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
-
+      if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
+        //融云未连接
         enterActivity();
+      } else {
+        enterFragment(mConversationType, mTargetId);
       }
-
-//      enterFragment(mConversationType, mTargetId);
-      reconnect();
     }
   }
 

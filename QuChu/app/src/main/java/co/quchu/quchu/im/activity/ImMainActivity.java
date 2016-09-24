@@ -47,6 +47,10 @@ public class ImMainActivity extends BaseBehaviorActivity {
 
     setConnectionStatusListener();
 
+//    setConversationListListener();
+
+//    setConversationListener();
+
     String token = SPUtils.getRongYunToken();
     mImPresenter = new IMPresenter();
     if (TextUtils.isEmpty(token)) {
@@ -206,6 +210,20 @@ public class ImMainActivity extends BaseBehaviorActivity {
         }
       }
     });
+  }
+
+  /**
+   * 会话列表事件监听
+   */
+  private void setConversationListListener() {
+
+  }
+
+  /**
+   * 会话界面事件监听
+   */
+  private void setConversationListener() {
+
   }
 
   @Override

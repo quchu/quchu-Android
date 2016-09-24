@@ -323,8 +323,10 @@ public class SceneDetailActivity extends BaseBehaviorActivity implements SwipeRe
         mSwipeRefreshLayout.setRefreshing(false);
         mLoadingListener.loadingComplete();
 
-        //显示添加收藏引导
-        WizardHelper.showWizard(SceneDetailActivity.this, WizardHelper.Wizard.scene_detail, null);
+        if (!isFavorite) {
+          //显示添加收藏引导
+          WizardHelper.showWizard(SceneDetailActivity.this, WizardHelper.Wizard.scene_detail, null);
+        }
       }
 
       @Override

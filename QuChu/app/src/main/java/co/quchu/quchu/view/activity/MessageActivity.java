@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -10,16 +11,20 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.util.ArrayMap;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.im.IMPresenter;
-import co.quchu.quchu.im.activity.ChatListFragment;
-import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.im.activity.ConversationListFragmentEx;
+import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.widget.NoScrollViewPager;
+import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 
 /**
  * 消息首页
@@ -31,7 +36,11 @@ public class MessageActivity extends BaseBehaviorActivity {
   @Bind(R.id.message_tabLayout) TabLayout tabLayout;
   @Bind(R.id.message_viewpager) NoScrollViewPager viewpager;
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+  private List<Fragment> mFragments = new ArrayList<>();
+  private Fragment mConversationListFragment = null;
+
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_message);
     ButterKnife.bind(this);
@@ -52,31 +61,29 @@ public class MessageActivity extends BaseBehaviorActivity {
    */
   private void isPushMessage(Intent intent) {
     if (intent == null || intent.getData() == null) {
+      LogUtils.e("------MessageActivity", "intent or intent data is null");
       return;
     }
 
-    String token = SPUtils.getRongYunToken();
-
-    if (intent.getData().getScheme().equals("rong")
-        && intent.getData().getQueryParameter("push") != null) {
+    if (intent.getData().getScheme().equals("rong") && intent.getData().getQueryParameter("isFromPush") != null) {
       //push消息
-
-      //通过intent.getData().getQueryParameter("push") 为true，判断是否是push消息
-      if (intent.getData().getQueryParameter("push").equals("true")) {
-
+      if (intent.getData().getQueryParameter("isFromPush").equals("true")) {
+        enterActivity();
+      } else if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
         enterActivity();
       }
+//      else {
+//        enterActivity();
+//      }
 
     } else {
-      //程序切到后台，收到消息后点击进入,会执行这里
-      if (!RongIMClient.getInstance().getCurrentConnectionStatus()
-          .equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
-
+      if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
+        //融云未连接
         enterActivity();
       }
-
-      //enterFragment(mConversationType, mTargetId);
-      reconnect(token);
+//      else {
+//        enterActivity();
+//      }
     }
   }
 
@@ -91,42 +98,32 @@ public class MessageActivity extends BaseBehaviorActivity {
   }
 
   /**
-   * 重连融云服务
-   */
-  private void reconnect(String token) {
-    new IMPresenter().connect(token, null);
-  }
-
-  /**
    * ViewPager适配器
    */
   private class MessageAdapter extends FragmentPagerAdapter {
 
-    private final ChatListFragment chatListFragment;
-    private final NoticeFragment noticeFragment;
-
     public MessageAdapter(FragmentManager fm) {
       super(fm);
 
-      //im列表
-      chatListFragment = new ChatListFragment();
+      //im会话列表
+      Fragment conversationListFragment = initConversationList();
 
-      //通知
-      noticeFragment = new NoticeFragment();
+      mFragments.add(conversationListFragment);
+      mFragments.add(new NoticeFragment());
     }
 
-    @Override public Fragment getItem(int position) {
-      if (position == 0) {
-        return chatListFragment;
-      }
-      return noticeFragment;
+    @Override
+    public Fragment getItem(int position) {
+      return mFragments.get(position);
     }
 
-    @Override public int getCount() {
-      return 2;
+    @Override
+    public int getCount() {
+      return mFragments.size();
     }
 
-    @Override public CharSequence getPageTitle(int position) {
+    @Override
+    public CharSequence getPageTitle(int position) {
       if (position == 0) {
         return "私信";
       }
@@ -134,19 +131,46 @@ public class MessageActivity extends BaseBehaviorActivity {
     }
   }
 
-  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+  /**
+   * 初始化会话列表
+   */
+  private Fragment initConversationList() {
+    if (mConversationListFragment == null) {
+      ConversationListFragmentEx fragment = new ConversationListFragmentEx();
+      Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+          .appendPath("conversationlist")
+          .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
+          .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//群组
+          .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "false")//讨论组
+          .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
+          .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//公共服务号
+          .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//系统
+          .build();
+      fragment.setUri(uri);
+      return fragment;
+
+    } else {
+      return mConversationListFragment;
+    }
+  }
+
+  @Override
+  public ArrayMap<String, Object> getUserBehaviorArguments() {
     return null;
   }
 
-  @Override public int getUserBehaviorPageId() {
+  @Override
+  public int getUserBehaviorPageId() {
     return 0;
   }
 
-  @Override protected int activitySetup() {
+  @Override
+  protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
   }
 
-  @Override protected String getPageNameCN() {
+  @Override
+  protected String getPageNameCN() {
     return "消息中心";
   }
 }

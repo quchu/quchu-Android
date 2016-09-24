@@ -36,7 +36,7 @@
             android:layout_marginTop="22dp"
             android:text="Little Q"
             android:textColor="@color/standard_color_h1_dark"
-            android:textSize="30sp"/>
+            android:textSize="22sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +47,8 @@
             android:layout_marginTop="17dp"
             android:text="小Q是趣处的人工智能助手，它可以帮助你找到和你兴 趣相同的咨询、趣处和趣星人，关闭后你将无法继续接 受到此类信息，请谨慎关闭。"
             android:textColor="@color/standard_color_h2_dark"
-            android:textSize="14sp"/>
+            android:lineSpacingExtra="5dp"
+            android:textSize="13sp"/>
 
       </LinearLayout>
 
@@ -63,7 +64,7 @@
           app:stShowSwitchBtn="true"
           app:stText="推荐咨询"/>
 
-      <View style="@style/HorizontalLine"/>
+      <View style="@style/HorizontalDivider"/>
 
       <co.quchu.quchu.widget.SettingItemView
           android:id="@+id/setting_item_quchu"
@@ -72,7 +73,7 @@
           app:stShowSwitchBtn="true"
           app:stText="推荐趣处"/>
 
-      <View style="@style/HorizontalLine"/>
+      <View style="@style/HorizontalDivider"/>
 
       <co.quchu.quchu.widget.SettingItemView
           android:id="@+id/setting_item_quchu_user"

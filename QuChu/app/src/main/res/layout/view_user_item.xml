@@ -13,9 +13,8 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"
-      android:text="null"
-      android:textColor="@color/standard_color_h2_dark"
-      android:textSize="16sp"/>
+      android:textColor="@color/standard_color_h1_dark"
+      android:textSize="14sp"/>
 
   <co.quchu.quchu.widget.swithbutton.SwitchButton
       android:id="@+id/item_switch_btn"
