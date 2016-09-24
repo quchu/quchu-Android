@@ -28,6 +28,7 @@ import co.quchu.quchu.model.CommentModel;
 import co.quchu.quchu.model.DetailModel;
 import co.quchu.quchu.model.HangoutUserModel;
 import co.quchu.quchu.model.ImageModel;
+import co.quchu.quchu.model.QuchuDetailArticleModel;
 import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedInfoModel;
@@ -70,6 +71,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   protected static final int LAYOUT_TYPE_BLANK = 0x0012;
   protected static final int LAYOUT_TYPE_LABEL = 0x0013;
   protected static final int LAYOUT_TYPE_COMMENT = 0x0014;
+  protected static final int LAYOUT_TYPE_ARTICLE = 0x0015;
   protected static final int LAYOUT_TYPE_LOAD_MORE = 0x1001;
 
   private LayoutInflater mLayoutInflater;
@@ -153,6 +155,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     int imgSize = null != mData.getImglist() ? mData.getImglist().size() : 0;
     int nearbySize = null != mData.getNearPlace() ? mData.getNearPlace().size() : 0;
     int commentsSize = null != mData.getReviewList() ? mData.getReviewList().size() : 0;
+    int articleSize = null != mData.getArticleList() ? mData.getArticleList().size() : 0;
+
     if (position <= (BLOCK_INDEX + 1)) {
       return null != mData && mData.isIsActivity() ? VIEW_TYPES_PARTY[position]
           : VIEW_TYPES[position];
@@ -170,6 +174,14 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         + commentsSize
         + BLOCK_INDEX
         + 2
+        + articleSize)){
+      return LAYOUT_TYPE_ARTICLE;
+    }
+    else if (position >= (imgSize + commentsSize + (BLOCK_INDEX + 2)+articleSize) && position < (imgSize
+        + commentsSize
+        + BLOCK_INDEX
+        + 2
+        + articleSize
         + nearbySize)) {
       return LAYOUT_TYPE_NEARBY;
     } else {
@@ -229,6 +241,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       case LAYOUT_TYPE_NEARBY:
         return new NearbyViewHolder(
             mLayoutInflater.inflate(R.layout.item_nearby_quchu_detail, parent, false));
+      case LAYOUT_TYPE_ARTICLE:
+        return new ArticleViewHolder(
+            mLayoutInflater.inflate(R.layout.item_quchu_detail_article, parent, false));
       case LAYOUT_TYPE_COMMENT:
         return new CommentViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_comment, parent, false));
@@ -665,6 +680,30 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           });
         }
       }
+    } else if(holder instanceof ArticleViewHolder){
+      if (null != mData.getArticleList()){
+        int articleIndex = position - BLOCK_INDEX;
+        if (null != mData.getImglist()) {
+          articleIndex -= mData.getImglist().size();
+        }
+        if (null != mData.getReviewList()) {
+          articleIndex -= mData.getReviewList().size();
+        }
+        articleIndex -= 2;
+        final QuchuDetailArticleModel article = mData.getArticleList().get(articleIndex);
+        ((ArticleViewHolder) holder).sdvAuthor.setImageURI(Uri.parse(article.getUserPhoto()));
+        ((ArticleViewHolder) holder).tvTitle.setText(String.valueOf(article.getUserName()));
+        ((ArticleViewHolder) holder).tvSubTitle.setText(String.valueOf(article.getTitle()));
+        if (null!=article.getUrl()){
+
+          holder.itemView.setOnClickListener(new View.OnClickListener() {
+          @Override public void onClick(View v) {
+              WebViewActivity.enterActivity(mAnchorActivity,article.getUrl(),article.getTitle(),false);
+          }
+        });
+        }
+      }
+
     } else if (holder instanceof NearbyViewHolder) {
       if (null != mData.getNearPlace()) {
         int imgIndex = position - BLOCK_INDEX;
@@ -673,6 +712,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         if (null != mData.getReviewList()) {
           imgIndex -= mData.getReviewList().size();
+        }
+        if (null != mData.getArticleList()){
+          imgIndex -= mData.getArticleList().size();
         }
         imgIndex -= 1;
         if (null == mData.getNearPlace().get(imgIndex - 1) || null == mData.getNearPlace()
@@ -756,6 +798,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     if (null != mData && null != mData.getReviewList()) {
       basicCount += mData.getReviewList().size();
     }
+    if (null!= mData && null != mData.getArticleList()){
+      basicCount += mData.getArticleList().size();
+    }
     basicCount += 2;
     return basicCount;
   }
@@ -805,6 +850,17 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.tvVisitorCount) TextView tvVisitorCount;
 
     ActionViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
+    }
+  }
+
+  public static class ArticleViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.sdvAuthor) SimpleDraweeView sdvAuthor;
+    @Bind(R.id.tvTitle) TextView tvTitle;
+    @Bind(R.id.tvSubTitle) TextView tvSubTitle;
+
+    ArticleViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
     }

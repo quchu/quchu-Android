@@ -82,6 +82,15 @@ public class DetailModel implements Serializable{
     private int cardCount;
     private SimpleCircleModel areaMap;
     private SimpleCircleModel circleMap;
+    private List<QuchuDetailArticleModel> articleList;
+
+    public List<QuchuDetailArticleModel> getArticleList() {
+        return articleList;
+    }
+
+    public void setArticleList(List<QuchuDetailArticleModel> articleList) {
+        this.articleList = articleList;
+    }
 
     public SimpleCircleModel getAreaMap() {
         return areaMap;
@@ -268,6 +277,13 @@ public class DetailModel implements Serializable{
         }
         if (objTarget.getReviewList()!=null){
             reviewList.addAll(objTarget.getReviewList());
+        }
+
+        if (null==articleList){
+            articleList = new ArrayList<>();
+        }
+        if (null!= objTarget.getArticleList()){
+            articleList.addAll(objTarget.getArticleList());
         }
 
         cardCount = objTarget.getCardCount();
