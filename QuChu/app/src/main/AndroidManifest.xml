@@ -235,9 +235,6 @@
         android:name=".view.activity.ArticleDetailActivity"
         android:screenOrientation="portrait"/>
     <activity
-        android:name=".view.activity.QuArticleDetailActivity"
-        android:screenOrientation="portrait"/>
-    <activity
         android:name=".view.activity.FindPositionListActivity"
         android:screenOrientation="portrait"/>
     <activity
