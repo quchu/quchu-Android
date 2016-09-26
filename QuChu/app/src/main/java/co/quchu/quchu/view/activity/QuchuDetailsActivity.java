@@ -163,7 +163,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
         new CommonListener<VisitedUsersModel>() {
           @Override public void successListener(VisitedUsersModel response) {
             if (null != response) {
-              mQuchuDetailAdapter.updateVisitedUsers(response);
+              mQuchuDetailAdapter.updateVisitedUsers();
             }
           }
 

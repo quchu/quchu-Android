@@ -80,9 +80,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private View.OnClickListener mOnItemClickListener;
   public static final int BLOCK_INDEX = 7;
   private boolean mEnableLoadMore = true;
-  private VisitedUsersModel mVisitedUsers;
-  private int mVisitedUsersAvatarSize = -1;
-  private int mVisitedUsersAvatarMargin;
   private VisitedInfoModel mVisitedInfoModel;
   private SimpleQuchuDetailAnalysisModel mAnalysisModel;
   private List<HangoutUserModel> mHangoutUsers;
@@ -91,7 +88,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       LAYOUT_TYPE_INTRO_IMAGE,
       //LAYOUT_TYPE_SIMPLE_INFO,
       LAYOUT_TYPE_CONTACT_INFO, LAYOUT_TYPE_OPENING_INFO, LAYOUT_TYPE_RATING_INFO,
-      LAYOUT_TYPE_ACTIONBAR, LAYOUT_TYPE_ADDITIONAL_INFO, LAYOUT_TYPE_BLANK, LAYOUT_TYPE_BLANK,
+      LAYOUT_TYPE_ACTIONBAR, LAYOUT_TYPE_ADDITIONAL_INFO,
       LAYOUT_TYPE_IMAGE, LAYOUT_TYPE_NEARBY, LAYOUT_TYPE_LOAD_MORE
   };
 
@@ -99,12 +96,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       LAYOUT_TYPE_INTRO_IMAGE,
       //LAYOUT_TYPE_SIMPLE_INFO,
       LAYOUT_TYPE_CONTACT_INFO, LAYOUT_TYPE_OPENING_INFO, LAYOUT_TYPE_RATING_INFO,
-      LAYOUT_TYPE_ACTIONBAR, LAYOUT_TYPE_BLANK, LAYOUT_TYPE_PARTY_STARTER_INFO,
+      LAYOUT_TYPE_ACTIONBAR, LAYOUT_TYPE_PARTY_STARTER_INFO,
       LAYOUT_TYPE_PARTY_INFO, LAYOUT_TYPE_IMAGE, LAYOUT_TYPE_NEARBY, LAYOUT_TYPE_LOAD_MORE
   };
-
-  //public static final int[] RANDOM_AVATAR = {R.mipmap.ic_random_user_avatar_a, R.mipmap.ic_random_user_avatar_b,
-  //            R.mipmap.ic_random_user_avatar_c, R.mipmap.ic_random_user_avatar_d};
 
   public QuchuDetailsAdapter(Activity activity, DetailModel dModel,
       View.OnClickListener onClickListener) {
@@ -115,14 +109,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     mData = dModel;
     mLayoutInflater = LayoutInflater.from(activity);
     mOnItemClickListener = onClickListener;
-    mVisitedUsersAvatarSize =
-        mAnchorActivity.getResources().getDimensionPixelSize(R.dimen.visited_users_avatar_size);
-    mVisitedUsersAvatarMargin =
-        mAnchorActivity.getResources().getDimensionPixelOffset(R.dimen.base_margin) / 2;
   }
 
-  public void updateVisitedUsers(VisitedUsersModel pUsers) {
-    mVisitedUsers = pUsers;
+  public void updateVisitedUsers() {
     notifyDataSetChanged();
   }
 
@@ -1061,71 +1050,4 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
-  public class AdditionalInfoAdapter
-      extends RecyclerView.Adapter<AdditionalInfoAdapter.ViewHolder> {
-
-    List<DetailModel.IconsEntity> mIconSet;
-
-    public AdditionalInfoAdapter(List<DetailModel.IconsEntity> dataSet) {
-      this.mIconSet = dataSet;
-    }
-
-    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      return new ViewHolder(LayoutInflater.from(parent.getContext())
-          .inflate(R.layout.item_additional_info, parent, false));
-    }
-
-    @Override public void onBindViewHolder(ViewHolder holder, int position) {
-
-      int id = mIconSet.get(position).getId();
-      switch (id) {
-        case 18:
-          holder.ivIcon.setImageResource(R.mipmap.ic_cash);
-          holder.tvItemName.setText(R.string.cash);
-          break;
-        case 19:
-          holder.ivIcon.setImageResource(R.mipmap.ic_visacard);
-          holder.tvItemName.setText(R.string.visacard);
-          break;
-        case 21:
-          holder.ivIcon.setImageResource(R.mipmap.ic_parking_slot);
-          holder.tvItemName.setText(R.string.parking_slot);
-          break;
-        case 31:
-          holder.ivIcon.setImageResource(R.mipmap.ic_private_room);
-          holder.tvItemName.setText(R.string.private_room);
-          break;
-        case 61:
-          holder.ivIcon.setImageResource(R.mipmap.ic_wechatpay);
-          holder.tvItemName.setText(R.string.wechatpay);
-          break;
-        case 63:
-          holder.ivIcon.setImageResource(R.mipmap.ic_alipay);
-          holder.tvItemName.setText(R.string.alipay);
-          break;
-        case 64:
-          holder.ivIcon.setImageResource(R.mipmap.ic_no_seat);
-          holder.tvItemName.setText(R.string.no_seat);
-          break;
-        case 91:
-          holder.ivIcon.setImageResource(R.mipmap.ic_deliver);
-          holder.tvItemName.setText(R.string.deliver);
-          break;
-      }
-    }
-
-    @Override public int getItemCount() {
-      return null != mIconSet ? mIconSet.size() : 0;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-      @Bind(R.id.ivIcon) ImageView ivIcon;
-      @Bind(R.id.tvItemName) TextView tvItemName;
-
-      public ViewHolder(View itemView) {
-        super(itemView);
-        ButterKnife.bind(this, itemView);
-      }
-    }
-  }
 }
