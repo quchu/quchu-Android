@@ -150,8 +150,9 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     categoryCode = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_CODE);
     categoryName = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_NAME);
     searchInputEt.setText(keyword);
-
+    filterUserInput = true;
     doSearch(false);
+
 
 
     initPopupWindow();
@@ -459,55 +460,6 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     searchResultRv.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
     searchResultRv.setAdapter(resultAdapter);
     resultList = new ArrayList<>();
-
-    resultAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
-      @Override public void onClick(int position, Parcelable bean, int itemYype) {
-        if (itemYype == SearchAdapter.ITEM_TYPE_RESULT) {
-
-          ArrayMap<String, Object> params = new ArrayMap<>();
-          params.put("趣处名称", ((RecommendModel) bean).getName());
-          params.put("入口名称", getPageNameCN());
-          ZGEvent(params, "进入趣处详情页");
-
-          Intent intent = new Intent(getApplicationContext(), QuchuDetailsActivity.class);
-          intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, ((RecommendModel) bean).getPid());
-          startActivity(intent);
-        } else {
-          switch (position) {
-            case 0:
-              UMEvent("food_c");
-              break;
-            case 1:
-              UMEvent("hotel_c");
-              break;
-            case 2:
-              UMEvent("entertainment_c");
-              break;
-            case 3:
-              UMEvent("relaxation_c");
-              break;
-            case 4:
-              UMEvent("shopping_c");
-              break;
-            case 5:
-              UMEvent("event_c");
-              break;
-          }
-          categoryCode = String.valueOf(((SearchCategoryBean) bean).getTagId());
-          categoryName = String.valueOf(((SearchCategoryBean) bean).getZh());
-          categoryGroupAllString = "全部" + ((SearchCategoryBean) bean).getZh();
-          categoryGroupAllId = ((SearchCategoryBean) bean).getCode();
-          searchFilterTV1.setText(categoryGroupAllString);
-          //SearchPresenter.getTagByParentId(getApplicationContext(), ((SearchCategoryBean) bean).getTagId());
-          searchInputEt.setText(((SearchCategoryBean) bean).getZh());
-          filterUserInput = false;
-          doSearch(false);
-
-          searchInputEt.setSelection(searchInputEt.getText().toString().trim().length());
-          searchInputEt.setCursorVisible(false);
-        }
-      }
-    });
   }
 
   private String categoryGroupAllString = "全部";
@@ -519,30 +471,23 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     String str = "";
     if (filterUserInput) str = searchInputEt.getText().toString().trim();
 
-    System.out.println("dos 1");
     if (mIsLoading) return;
-    System.out.println("dos 2");
 
     if (loadMore && mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
-    System.out.println("dos 3");
 
     if (!loadMore && null!=resultList) {
-      System.out.println("dos 4");
 
       resultList.clear();
       mCurrentPageNo = 1;
     } else if (mCurrentPageNo < mMaxPageNo) {
-      System.out.println("dos 5");
 
       mCurrentPageNo += 1;
     }
-    System.out.println("dos 6");
 
     mIsLoading = true;
     if (NetUtil.isNetworkConnected(getApplicationContext())) {
       DialogUtil.showProgess(SearchActivity.this, R.string.loading_dialog_text);
     }
-    System.out.println("dos 7");
 
     //统计搜索关键字
     Map<String, String> p = new HashMap<>();
