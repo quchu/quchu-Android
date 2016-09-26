@@ -547,7 +547,7 @@ public class RecommendFragment extends BaseFragment
       return;
     }
     rlNodata.setVisibility(View.GONE);
-    if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0 && currentIndex == 1) {
+    if (mAllSceneList.size() == 0 && mFavoriteSceneList.size() > 0 && currentIndex == 1 ) {
       tvEmptyView.setText("你已经收藏了全部场景");
       rlNodata.setVisibility(View.VISIBLE);
     } else if (mFavoriteSceneList.size() == 0 && mAllSceneList.size() > 0 && currentIndex == 0) {
@@ -580,6 +580,9 @@ public class RecommendFragment extends BaseFragment
       llPageIndicator.setVisibility(View.GONE);
     }
 
+    if (!NetUtil.isNetworkConnected(getActivity())){
+      llPageIndicator.setVisibility(View.GONE);
+    }
 //    if (currentIndex == 0) {
 //      llPageIndicator.setVisibility(View.VISIBLE);
 //    } else {
