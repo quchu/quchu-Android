@@ -72,6 +72,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   protected static final int LAYOUT_TYPE_LABEL = 0x0013;
   protected static final int LAYOUT_TYPE_COMMENT = 0x0014;
   protected static final int LAYOUT_TYPE_ARTICLE = 0x0015;
+  protected static final int LAYOUT_TYPE_MATCHED_TAGS = 0x0016;
   protected static final int LAYOUT_TYPE_LOAD_MORE = 0x1001;
 
   private LayoutInflater mLayoutInflater;
@@ -167,14 +168,27 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         + BLOCK_INDEX
         + 2
         + articleSize)){
+      System.out.println("LAYOUT_TYPE_ARTICLE");
+
       return LAYOUT_TYPE_ARTICLE;
-    }
-    else if (position >= (imgSize + commentsSize + (BLOCK_INDEX + 2)+articleSize) && position < (imgSize
+    } else if(position >= (imgSize
         + commentsSize
         + BLOCK_INDEX
         + 2
+        + articleSize) && position<(imgSize
+        + commentsSize
+        + BLOCK_INDEX
+        + 3
+        + articleSize)){
+      System.out.println("LAYOUT_TYPE_MATCHED_TAGS");
+      return LAYOUT_TYPE_MATCHED_TAGS;
+    } else if (position >= (imgSize + commentsSize + (BLOCK_INDEX + 3)+articleSize) && position < (imgSize
+        + commentsSize
+        + BLOCK_INDEX
+        + 3
         + articleSize
         + nearbySize)) {
+      System.out.println("LAYOUT_TYPE_NEARBY");
       return LAYOUT_TYPE_NEARBY;
     } else {
       return LAYOUT_TYPE_BLANK;
@@ -230,6 +244,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       case LAYOUT_TYPE_LABEL:
         return new LabelViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
+      case LAYOUT_TYPE_MATCHED_TAGS:
+        return new MatchedTagsViewHolder(
+            mLayoutInflater.inflate(R.layout.item_quchu_detail_matched_tags,parent,false));
       case LAYOUT_TYPE_NEARBY:
         return new NearbyViewHolder(
             mLayoutInflater.inflate(R.layout.item_nearby_quchu_detail, parent, false));
@@ -489,6 +506,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
       });
 
+
+
+    } else if (holder instanceof MatchedTagsViewHolder){
       List<String> tags = new ArrayList<>();
       List<Boolean> highLights = new ArrayList<>();
       int blockIndex = 0;
@@ -509,9 +529,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           tags.add(" " + mData.getTags().get(i).getZh() + " ");
           highLights.add(false);
         }
-        ((LabelViewHolder) holder).tags.setTags(tags,highLights);
+        ((MatchedTagsViewHolder) holder).tags.setTags(tags,highLights);
         final int finalBlockIndex = blockIndex;
-        ((LabelViewHolder) holder).tags.setOnTagClickListener(
+        ((MatchedTagsViewHolder) holder).tags.setOnTagClickListener(
             new TagCloudView.OnTagClickListener() {
               @Override public void onTagClick(int position) {
 
@@ -552,7 +572,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
               }
             });
       }
-    } else if (holder instanceof StarterInfoViewHolder) {
+    }else if (holder instanceof StarterInfoViewHolder) {
 
       ((StarterInfoViewHolder) holder).detail_activity_initiator_ll.setVisibility(
           mData.isIsActivity() ? View.VISIBLE : View.GONE);
@@ -708,7 +728,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (null != mData.getArticleList()){
           imgIndex -= mData.getArticleList().size();
         }
-        imgIndex -= 1;
+        imgIndex -= 2;
         if (null == mData.getNearPlace().get(imgIndex - 1) || null == mData.getNearPlace()
             .get(imgIndex - 1)) {
           return;
@@ -793,7 +813,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     if (null!= mData && null != mData.getArticleList()){
       basicCount += mData.getArticleList().size();
     }
-    basicCount += 2;
+    basicCount += 3;
     return basicCount;
   }
 
@@ -814,9 +834,18 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.rvUsers) RecyclerView rvUsers;
     @Bind(R.id.ivInvite) ImageView ivInvite;
     @Bind(R.id.tvInvite) TextView tvInvite;
-    @Bind(R.id.tcvTags) TagCloudView tags;
 
     LabelViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
+    }
+  }
+
+  public static class MatchedTagsViewHolder extends RecyclerView.ViewHolder {
+
+    @Bind(R.id.tcvTags) TagCloudView tags;
+
+    MatchedTagsViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
     }
