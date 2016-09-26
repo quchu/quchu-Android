@@ -519,19 +519,30 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     String str = "";
     if (filterUserInput) str = searchInputEt.getText().toString().trim();
 
+    System.out.println("dos 1");
     if (mIsLoading) return;
+    System.out.println("dos 2");
 
     if (loadMore && mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
+    System.out.println("dos 3");
+
     if (!loadMore && null!=resultList) {
+      System.out.println("dos 4");
+
       resultList.clear();
       mCurrentPageNo = 1;
     } else if (mCurrentPageNo < mMaxPageNo) {
+      System.out.println("dos 5");
+
       mCurrentPageNo += 1;
     }
+    System.out.println("dos 6");
+
     mIsLoading = true;
     if (NetUtil.isNetworkConnected(getApplicationContext())) {
       DialogUtil.showProgess(SearchActivity.this, R.string.loading_dialog_text);
     }
+    System.out.println("dos 7");
 
     //统计搜索关键字
     Map<String, String> p = new HashMap<>();
@@ -585,6 +596,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
           }
 
           @Override public void errorNull() {
+            System.out.println("dos 100");
             //数据为空
             DialogUtil.dismissProgess();
             tvNoData.setVisibility(View.VISIBLE);
