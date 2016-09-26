@@ -1,9 +1,11 @@
 package co.quchu.quchu.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Nico on 16/9/24.
  */
-public class QuchuDetailArticleModel {
+public class QuchuDetailArticleModel implements Serializable{
 
   /**
    * id : 1098
