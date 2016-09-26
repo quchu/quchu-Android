@@ -195,16 +195,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       case LAYOUT_TYPE_RATING_INFO:
         return new RatingInfoViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
-      case LAYOUT_TYPE_ADDITIONAL_INFO:
-        if (null == mData || mData.isIsActivity()) {
-          return new BlankViewHolder(
-              mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
-        } else {
-          return new AdditionalInfoViewHolder(
-              mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
-        }
-        //            case LAYOUT_TYPE_OPENING_INFO:
-        //                return new OpeningInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_opening_info, parent, false));
       case LAYOUT_TYPE_PARTY_STARTER_INFO:
         if (null != mData && mData.isIsActivity()) {
           return new StarterInfoViewHolder(
@@ -222,8 +212,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           return new BlankViewHolder(
               mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
         }
-        //            case LAYOUT_TYPE_IMAGE:
-        //                return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
       case LAYOUT_TYPE_LABEL:
         return new LabelViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
@@ -439,10 +427,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           ((RatingInfoViewHolder) holder).tagCloudView.setTags(tags, highLight);
         }
       }
-    } else if (holder instanceof AdditionalInfoViewHolder) {
-
-    } else if (holder instanceof OpeningInfoViewHolder) {
-
     } else if (holder instanceof LabelViewHolder) {
       if (null != mHangoutUsers && mHangoutUsers.size() > 0) {
         ((LabelViewHolder) holder).rvUsers.setLayoutManager(
@@ -565,8 +549,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           mData.isIsActivity() ? View.VISIBLE : View.GONE);
       ((PartyInfoViewHolder) holder).detail_activity_info_tv.setText(
           mData.isIsActivity() && null != mData.getActivityInfo() ? mData.getActivityInfo() : "");
-    } else if (holder instanceof ImageViewHolder) {
-
     } else if (holder instanceof CommentViewHolder) {
       if (null != mData.getReviewList()) {
 
@@ -885,16 +867,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
-  public static class AdditionalInfoViewHolder extends RecyclerView.ViewHolder {
-    //
-    //        @Bind(R.id.rvAdditionalInfo)
-    //        RecyclerView rvInfoGrid;
-
-    AdditionalInfoViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
 
   public static class OpeningInfoViewHolder extends RecyclerView.ViewHolder {
     OpeningInfoViewHolder(View view) {
@@ -927,15 +899,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
-  public static class ImageViewHolder extends RecyclerView.ViewHolder {
-    //        @Bind(R.id.item_card_image_sdv)
-    //        SimpleDraweeView item_card_image_sdv;
 
-    ImageViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
 
   public static class CommentViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
