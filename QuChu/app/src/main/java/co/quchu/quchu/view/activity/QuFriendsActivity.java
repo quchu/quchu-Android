@@ -96,8 +96,8 @@ public class QuFriendsActivity extends BaseActivity {
     }
 
     public void setFaloowNum(int hostNum, int followNum) {
-        tabLayout.getTabAt(0).setText("关注" + hostNum);
-        tabLayout.getTabAt(1).setText("趣粉" + followNum);
+        tabLayout.getTabAt(0).setText("关注" + (hostNum==0?"":hostNum));
+        tabLayout.getTabAt(1).setText("趣粉" + (followNum==0?"":followNum));
     }
 
 

@@ -188,6 +188,8 @@ public class MeAvatarFragment extends BaseFragment {
         headImage.setController(controller);
       }
     }, 100);
+
+    resetLabels();
   }
 
   @Override protected String getPageNameCN() {
@@ -207,6 +209,16 @@ public class MeAvatarFragment extends BaseFragment {
   @Override public void onResume() {
     super.onResume();
 
+    resetLabels();
+
+    //更换了头像
+    if (AppContext.user != null && !userAvatar.equals(AppContext.user.getPhoto())) {
+      userAvatar = AppContext.user.getPhoto();
+      ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
+    }
+  }
+
+  private void resetLabels() {
     if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
       userNameTv.setText(AppContext.user.getFullname());
     } else {
@@ -216,7 +228,20 @@ public class MeAvatarFragment extends BaseFragment {
     String userMark = SPUtils.getUserMark();
     if (userMark != null) {
       userMarkLayout.setVisibility(View.VISIBLE);
-      userMarkTv.setText(userMark);
+
+
+      if (null!=genes){
+        int genesCounter = 0;
+        for (int i = 0; i < genes.size(); i++) {
+          genesCounter += genes.get(i).getWeight();
+        }
+
+        userMarkTv.setText(genesCounter>0?userMark:"新生宝宝");
+
+      }else{
+        userMarkTv.setText("新生宝宝");
+      }
+
 
       switch (userMark) {
         case "小食神":
@@ -243,12 +268,6 @@ public class MeAvatarFragment extends BaseFragment {
           userMarkImg.setImageResource(R.mipmap.ic_haoqi_ahsy);
           break;
       }
-    }
-
-    //更换了头像
-    if (AppContext.user != null && !userAvatar.equals(AppContext.user.getPhoto())) {
-      userAvatar = AppContext.user.getPhoto();
-      ImageUtils.loadWithAppropriateSize(headImage, Uri.parse(AppContext.user.getPhoto()));
     }
   }
 
