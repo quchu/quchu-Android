@@ -424,24 +424,31 @@ public class RecommendFragment extends BaseFragment
         .onPositive(new MaterialDialog.SingleButtonCallback() {
           @Override
           public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-            UMEvent("d_setcommon_c");
-            final SceneModel sceneModel = mFavoriteSceneList.get(position);
-            ScenePresenter.delFavoriteScene(getActivity(), sceneModel.getSceneId(), new CommonListener() {
-              @Override
-              public void successListener(Object response) {
-                if (mFavoriteSceneList.contains(sceneModel)) {
-                  mFavoriteSceneList.remove(sceneModel);
-                  mMySceneAdapter.notifyDataSetChanged();
-                  resetIndicators();
-                }
-                Toast.makeText(getActivity(), R.string.del_to_favorite_success, Toast.LENGTH_SHORT).show();
-              }
 
-              @Override
-              public void errorListener(VolleyError error, String exception, String msg) {
-                Toast.makeText(getActivity(), R.string.del_to_favorite_fail, Toast.LENGTH_SHORT).show();
-              }
-            });
+            if (!NetUtil.isNetworkConnected(getActivity())){
+              makeToast(R.string.network_error);
+            }else{
+              UMEvent("d_setcommon_c");
+              final SceneModel sceneModel = mFavoriteSceneList.get(position);
+              ScenePresenter.delFavoriteScene(getActivity(), sceneModel.getSceneId(), new CommonListener() {
+                @Override
+                public void successListener(Object response) {
+                  if (mFavoriteSceneList.contains(sceneModel)) {
+                    mFavoriteSceneList.remove(sceneModel);
+                    mMySceneAdapter.notifyDataSetChanged();
+                    resetIndicators();
+                  }
+                  Toast.makeText(getActivity(), R.string.del_to_favorite_success, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void errorListener(VolleyError error, String exception, String msg) {
+                  makeToast(R.string.del_to_favorite_fail);
+                }
+              });
+            }
+
+
           }
         }).show();
   }
@@ -539,8 +546,6 @@ public class RecommendFragment extends BaseFragment
     resetIndicators();
   }
 
-  private static final AccelerateDecelerateInterpolator sDecelerateInterpolator =
-      new AccelerateDecelerateInterpolator();
 
   private void resetIndicators() {
     if (null == rlNodata) {

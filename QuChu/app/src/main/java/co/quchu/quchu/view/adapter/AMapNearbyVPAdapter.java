@@ -7,8 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,18 +65,18 @@ public class AMapNearbyVPAdapter extends PagerAdapter {
         tagCloudView.setTags(tagsString);
         tagCloudView.setVisibility(View.GONE);
 
-        tvAddress.setText(mData.get(position).getAddress());
+
         tvAddress.setVisibility(View.VISIBLE);
 
 
-//        if (!StringUtils.isEmpty(mData.get(position).getGdLatitude())&&!StringUtils.isEmpty(mData.get(position).getGdLatitude())){
-//            float distance = AMapUtils.calculateLineDistance(new LatLng(Double.valueOf(mData.get(position).getGdLatitude()), Double.valueOf(mData.get(position).getGdLongitude())),new LatLng(SPUtils.getLatitude(),SPUtils.getLongitude()));
-//            address.setText("距离当前位置：" + new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km");
-//            address.setTextColor(Color.WHITE);
-//            address.setVisibility(View.VISIBLE);
-//        }else{
-//            address.setVisibility(View.INVISIBLE);
-//        }
+        if (!StringUtils.isEmpty(mData.get(position).getGdLatitude())&&!StringUtils.isEmpty(mData.get(position).getGdLatitude())){
+            double distance = DistanceUtil.getDistance(new LatLng(Double.valueOf(mData.get(position).getGdLatitude()), Double.valueOf(mData.get(position).getGdLongitude())),new LatLng(SPUtils.getLatitude(),
+                SPUtils.getLongitude()));
+            tvAddress.setText("距离当前位置：" + new DecimalFormat("#.##").format(((distance / 1000) / 100f) * 100) + "km");
+            tvAddress.setVisibility(View.VISIBLE);
+        }else{
+            tvAddress.setText(mData.get(position).getAddress());
+        }
 
 
         container.addView(v);

@@ -444,8 +444,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((RatingInfoViewHolder) holder).rbRating.setProgress(mVisitedInfoModel.getScore());
       }
       if (null != mAnalysisModel) {
-        ((RatingInfoViewHolder) holder).tvRatingCount.setText(
-            mAnalysisModel.getUserOutCount() + "人评价");
+        String ratingCount = mAnalysisModel.getUserOutCount()>999?"999+":String.valueOf(mAnalysisModel.getUserOutCount());
+
+
+        ((RatingInfoViewHolder) holder).tvRatingCount.setText(ratingCount + "人评价");
 
         List<String> tags = new ArrayList<>();
         List<Boolean> highLight = new ArrayList<>();
