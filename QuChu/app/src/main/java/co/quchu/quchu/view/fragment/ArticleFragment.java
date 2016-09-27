@@ -228,6 +228,9 @@ public class ArticleFragment extends BaseFragment implements SwipeRefreshLayout.
             case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
                 getArticles(false);
                 break;
+            case EventFlags.EVENT_ARTICLE_FAVORITE_CHANGED:
+                getArticles(false);
+                break;
         }
     }
 

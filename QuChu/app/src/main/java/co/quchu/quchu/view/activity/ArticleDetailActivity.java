@@ -261,6 +261,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
             ArticlePresenter.addFavoriteArticle(getApplicationContext(), aid, new CommonListener() {
                 @Override
                 public void successListener(Object response) {
+                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_ARTICLE_FAVORITE_CHANGED));
                     mFavoriteProgressRunning = false;
                     Toast.makeText(getApplicationContext(), R.string.add_to_favorite_article_success, Toast.LENGTH_SHORT).show();
                     ivFavorite.setImageResource(R.mipmap.ic_shoucang_yellow);
@@ -278,6 +279,7 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                 @Override
                 public void successListener(Object response) {
                     mFavoriteProgressRunning = false;
+                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_ARTICLE_FAVORITE_CHANGED));
                     Toast.makeText(getApplicationContext(), R.string.del_to_favorite_article_success, Toast.LENGTH_SHORT).show();
                     ivFavorite.setImageResource(R.mipmap.ic_shoucang);
                     mArticleDetailModel.getArticle().setFavorite(false);

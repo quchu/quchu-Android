@@ -35,10 +35,11 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
     public void onBindView(RecyclerView.ViewHolder viewHolder, int position) {
         FeedbackModel feedbackModel = data.get(position);
 
-        FeedbackViewHolder holder = (FeedbackViewHolder) viewHolder;
+        final FeedbackViewHolder holder = (FeedbackViewHolder) viewHolder;
         holder.createTimeTv.setText(feedbackModel.getCreateDate());
         holder.titleTv.setText(feedbackModel.getTitle());
         holder.contentTv.setText(feedbackModel.getValue());
+        holder.contentTv.setVisibility(View.GONE);
         if (feedbackModel.getState().equals("1")) {
             holder.settleTv.setVisibility(View.VISIBLE);
             holder.unsettleTv.setVisibility(View.GONE);
@@ -49,10 +50,10 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
 
         //和pm聊天
         holder.chatLayout.setTag(feedbackModel);
-        holder.chatLayout.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FeedbackModel feedbackModel = (FeedbackModel) view.getTag();
+                FeedbackModel feedbackModel = (FeedbackModel) holder.chatLayout.getTag();
                 if (feedbackModel != null && listener != null) {
                     listener.onItemClick(feedbackModel);
                 }

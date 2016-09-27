@@ -87,8 +87,7 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
         } else {
 
             new MaterialDialog.Builder(getActivity())
-                .title("确定取消收藏吗?")
-                .content("前往该操作前需要进行登录\r\n是否现在前往")
+                .content("确定取消收藏吗?")
                 .positiveText("确定")
                 .negativeText("取消")
                 .cancelable(false)

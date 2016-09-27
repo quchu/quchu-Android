@@ -35,6 +35,10 @@ public class FavoriteQuchuAdapter extends AdapterBase<FavoriteBean.ResultBean, F
     private boolean animationed;
     private boolean isMe;
 
+    @Override protected String getNullDataHint() {
+        return "你还没有收藏趣处";
+    }
+
     public FavoriteQuchuAdapter(boolean isMe) {
         animationed = SPUtils.getBooleanFromSPMap(AppContext.mContext, AppKey.SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU, false);
         this.isMe = isMe;

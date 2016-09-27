@@ -42,7 +42,7 @@
           android:layout_marginLeft="24dp"
           android:layout_marginRight="20dp"
           android:layout_marginTop="22dp"
-          android:textColor="@color/standard_color_h3_dark"
+          android:textColor="@color/standard_color_h1_dark"
           android:textSize="12sp"/>
 
       <TextView
