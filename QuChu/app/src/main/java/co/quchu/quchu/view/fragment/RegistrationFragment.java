@@ -57,7 +57,6 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
     TextView tvLoginViaPhone;
     private boolean mEmptyForum = false;
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -88,12 +87,25 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
         return status;
     }
 
-
     public void updateButtonStatus(){
-
         if (null==etUsername ||null==etPassword){
             return ;
         }
+
+        if (etUsername.hasFocus()) {
+            if (etUsername.getText().length() < 2) {
+                tvLoginViaPhone.setText("用户名请输入2-20位汉字或英文");
+                tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+                return;
+            }
+        } else if (etPassword.hasFocus()) {
+            if (etPassword.getText().length() < 6) {
+                tvLoginViaPhone.setText("密码请输入6-12位数字或英文");
+                tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+                return;
+            }
+        }
+
         String userName = null==etUsername.getText()?"":etUsername.getText().toString();
         String userPwd = null == etPassword.getText()?"":etPassword.getText().toString();
         if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPwd)){
@@ -130,8 +142,6 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
         tvLoginViaPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 if (!NetUtil.isNetworkConnected(getActivity())){
                     Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
                     return;
@@ -142,7 +152,7 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
                         return;
                     }
                     mRequestRunning = true;
-                    if (null!=AppContext.user && AppContext.user.isIsVisitors()){
+                    if (null!= AppContext.user && AppContext.user.isIsVisitors()){
 
                         int visitorUid = AppContext.user.getUserId();
                         String pwd = etPassword.getText().toString();
@@ -186,7 +196,8 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
 
     @Override
     public void afterTextChanged(Editable s) {

@@ -119,6 +119,9 @@ public class MeAvatarFragment extends BaseFragment {
   }
 
   public void initGene() {
+    if (genes == null) {
+      return;
+    }
     final String[] labels = new String[genes.size()];
     final float[] values = new float[genes.size()];
 

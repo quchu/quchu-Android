@@ -374,7 +374,7 @@ public class ChatActivity extends BaseBehaviorActivity {
     Rect frame = new Rect();
     getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
     lp.topMargin = Utils.dip2px(this, 20) + frame.top;
-    lp.rightMargin = Utils.dip2px(this, 10);
+    lp.rightMargin = Utils.dip2px(this, 12);
     viewGroup.addView(view, lp);
 
     final PopupWindow popWin = new PopupWindow(viewGroup, ViewGroup.LayoutParams.MATCH_PARENT,

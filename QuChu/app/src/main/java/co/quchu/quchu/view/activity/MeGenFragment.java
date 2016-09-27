@@ -155,6 +155,9 @@ public class MeGenFragment extends BaseFragment {
   }
 
   public void initGene(final List<MyGeneModel.GenesEntity> genes) {
+    if (genes == null) {
+      return;
+    }
     final String[] labels = new String[genes.size()];
     final float[] values = new float[genes.size()];
 

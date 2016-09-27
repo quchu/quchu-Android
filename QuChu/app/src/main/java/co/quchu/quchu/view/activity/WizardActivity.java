@@ -109,16 +109,24 @@ public class WizardActivity extends BaseActivity {
     floatingAnimation.setStartDelay(500);
     floatingAnimation.start();
 
-    tvNext.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
+    tvNext.postDelayed(new Runnable() {
+      @Override
+      public void run() {
         startActivity(new Intent(WizardActivity.this, RecommendActivity.class));
-        tvNext.postDelayed(new Runnable() {
-          @Override public void run() {
-            finish();
-          }
-        },300);
+        finish();
       }
-    });
+    }, 3000);
+
+//    tvNext.setOnClickListener(new View.OnClickListener() {
+//      @Override public void onClick(View view) {
+//        startActivity(new Intent(WizardActivity.this, RecommendActivity.class));
+//        tvNext.postDelayed(new Runnable() {
+//          @Override public void run() {
+//            finish();
+//          }
+//        },300);
+//      }
+//    });
   }
 
   private void animateText(boolean inOrOut) {
