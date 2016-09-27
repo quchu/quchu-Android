@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Toast;
+import co.quchu.quchu.net.NetUtil;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -57,6 +59,18 @@ public class CityFragment extends BaseFragment {
         cityList = (ArrayList<CityModel>) getArguments().getSerializable(CITY_LIST_MODEL);
         cityType = getArguments().getInt(CITY_LIST_TYPE);
 
+        int selectedIndex = -1;
+        for (int i = 0; i < cityList.size(); i++) {
+            if (cityList.get(i).getCid()==SPUtils.getCityId()){
+                selectedIndex = i;
+            }
+        }
+        if (selectedIndex!=-1){
+            CityModel cityModel = cityList.get(selectedIndex);
+            cityList.remove(selectedIndex);
+            cityList.add(0,cityModel);
+        }
+
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         LocationSelectedAdapter selectedAdapter = new LocationSelectedAdapter(cityList, null, getActivity(), new LocationSelectedAdapter.OnItemSelectedListener() {
             @Override
@@ -64,11 +78,15 @@ public class CityFragment extends BaseFragment {
 //                if (getActivity() instanceof RecommendActivity)
 //                    ((RecommendActivity) getActivity()).updateRecommend();
 
-                //保存数据 而后关闭
-                SPUtils.setCityId(cityId);
-                SPUtils.setCityName(cityName);
-                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED));
-                getActivity().finish();
+                if (!NetUtil.isNetworkConnected(getActivity())){
+                    Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
+                }else{
+                    //保存数据 而后关闭
+                    SPUtils.setCityId(cityId);
+                    SPUtils.setCityName(cityName);
+                    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED));
+                    getActivity().finish();
+                }
             }
         });
         recyclerView.addItemDecoration(new MyItemDecoration());
