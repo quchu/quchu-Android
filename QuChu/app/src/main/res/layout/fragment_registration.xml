@@ -27,7 +27,7 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="@string/hint_input_username"
-            android:maxLength="20"
+            android:maxLength="16"
             android:singleLine="true"
             android:textCursorDrawable="@drawable/shape_edit_text_cursor" />
 

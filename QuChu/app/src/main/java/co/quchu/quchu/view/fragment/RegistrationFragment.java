@@ -93,8 +93,8 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
         }
 
         if (etUsername.hasFocus()) {
-            if (etUsername.getText().length() < 2) {
-                tvLoginViaPhone.setText("用户名请输入2-20位汉字或英文");
+            if (etUsername.getText().length() < 1) {
+                tvLoginViaPhone.setText("用户名请输入1-16位汉字或英文");
                 tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
                 return;
             }

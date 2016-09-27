@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,6 +24,7 @@ import co.quchu.quchu.presenter.SettingPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.SettingItemView;
+import co.quchu.quchu.widget.swithbutton.SwitchButton;
 
 /**
  * 设置
@@ -51,11 +53,25 @@ public class SettingActivity extends BaseBehaviorActivity {
    * 设置搭伙开关
    */
   private void setDahuoSwitch() {
-    itemDahuo.setSwitchChecked(SPUtils.getDahuoSwitch(), new SettingItemView.SwitchChangedListener() {
-      @Override public void onSwitch(boolean isChecked) {
-        SettingPresenter.setUserMsg(SettingActivity.this, SettingPresenter.SETTING_TYPE_DAHUO, isChecked);
-      }
-    });
+    final SwitchButton switchButton = itemDahuo.getSwitchButton();
+    if (AppContext.user != null && AppContext.user.isIsVisitors() && switchButton != null) {
+      switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+          switchButton.setChecked(true);
+
+          showLoginDialog();
+        }
+      });
+
+    } else {
+      itemDahuo.setSwitchChecked(SPUtils.getDahuoSwitch(), new SettingItemView.SwitchChangedListener() {
+        @Override
+        public void onSwitch(boolean isChecked) {
+          SettingPresenter.setUserMsg(SettingActivity.this, SettingPresenter.SETTING_TYPE_DAHUO, isChecked);
+        }
+      });
+    }
   }
 
   @Override public ArrayMap<String, Object> getUserBehaviorArguments() {

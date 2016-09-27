@@ -73,6 +73,10 @@ public class SettingItemView extends LinearLayout {
     });
   }
 
+  public SwitchButton getSwitchButton() {
+    return switchBtn;
+  }
+
   public interface SwitchChangedListener {
     void onSwitch(boolean isChecked);
   }

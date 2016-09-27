@@ -83,53 +83,6 @@ public class PhoneValidationFragment extends Fragment {
 
   private VCodeTimeService mCodeTimeService;
 
-  public void updateButtonStatus() {
-    if (registed && null != tvLoginViaThisNumber) {
-      tvLoginViaThisNumber.setVisibility(View.GONE);
-    }
-
-    if (null == etUsername) {
-      return;
-    }
-    String userName = null == etUsername.getText() ? "" : etUsername.getText().toString();
-    ivIconClear.setVisibility(userName.length() > 0 ? View.VISIBLE : View.INVISIBLE);
-    if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
-      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-      tvNext.setText(R.string.next);
-      mEmptyForum = false;
-    } else {
-      tvNext.setText(R.string.next);
-      mEmptyForum = true;
-      tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
-    }
-    if (StringUtils.isMobileNO(userName)) {
-      tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
-    } else {
-      tvSendValidCode.setBackgroundColor(getResources().getColor(R.color.standard_color_h3_dark));
-    }
-  }
-
-  private boolean verifyForm(boolean verifyValidCode) {
-    boolean status = false;
-    String userName = etUsername.getText().toString();
-
-    if (TextUtils.isEmpty(userName)) {
-      tvNext.setText(R.string.promote_empty_phone);
-      tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-    } else if (!StringUtils.isMobileNO(userName)) {
-      tvNext.setText(R.string.promote_invalid_phone_number);
-      tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-    } else if (verifyValidCode && !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
-      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-      status = true;
-    } else if (!verifyValidCode) {
-      status = true;
-    } else {
-      tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
-    }
-    return status;
-  }
-
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -193,6 +146,57 @@ public class PhoneValidationFragment extends Fragment {
     return view;
   }
 
+  public void updateButtonStatus() {
+    if (registed && null != tvLoginViaThisNumber) {
+      tvLoginViaThisNumber.setVisibility(View.GONE);
+    }
+
+    if (null == etUsername) {
+      return;
+    }
+
+    String userName = null == etUsername.getText() ? "" : etUsername.getText().toString();
+    ivIconClear.setVisibility(userName.length() > 0 ? View.VISIBLE : View.INVISIBLE);
+    if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
+      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+      tvNext.setText(R.string.next);
+      mEmptyForum = false;
+    } else {
+      tvNext.setText(R.string.next);
+      mEmptyForum = true;
+      tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
+    }
+
+    if (!codeSent) {
+      if (StringUtils.isMobileNO(userName)) {
+        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
+      } else {
+        tvSendValidCode.setBackgroundColor(getResources().getColor(R.color.standard_color_h3_dark));
+      }
+    }
+  }
+
+  private boolean verifyForm(boolean verifyValidCode) {
+    boolean status = false;
+    String userName = etUsername.getText().toString();
+
+    if (TextUtils.isEmpty(userName)) {
+      tvNext.setText(R.string.promote_empty_phone);
+      tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+    } else if (!StringUtils.isMobileNO(userName)) {
+      tvNext.setText(R.string.promote_invalid_phone_number);
+      tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+    } else if (verifyValidCode && !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
+      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+      status = true;
+    } else if (!verifyValidCode) {
+      status = true;
+    } else {
+      tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
+    }
+    return status;
+  }
+
   /**
    * 倒计时监听
    */
@@ -201,17 +205,21 @@ public class PhoneValidationFragment extends Fragment {
     @Override
     public void timeRemaining(int leftSecond) {
       codeSent = true;
-      tvSendValidCode.setBackgroundResource(R.color.colorBorder);
-      tvSendValidCode.setText("(" + leftSecond + ")秒后重新发送");
-      tvSendValidCode.setEnabled(false);
+      if (tvSendValidCode != null) {
+        tvSendValidCode.setBackgroundResource(R.color.colorBorder);
+        tvSendValidCode.setText("(" + leftSecond + ")秒后重新发送");
+        tvSendValidCode.setEnabled(false);
+      }
     }
 
     @Override
     public void onTimeOut() {
       codeSent = false;
-      tvSendValidCode.setText(R.string.send_valid_code);
-      tvSendValidCode.setBackgroundResource(R.color.colorAccent);
-      tvSendValidCode.setEnabled(true);
+      if (tvSendValidCode != null) {
+        tvSendValidCode.setText(R.string.send_valid_code);
+        tvSendValidCode.setBackgroundResource(R.color.colorAccent);
+        tvSendValidCode.setEnabled(true);
+      }
     }
 
     @Override
@@ -228,11 +236,13 @@ public class PhoneValidationFragment extends Fragment {
     if (isVerifying) {
       return;
     }
+
     isVerifying = true;
     UserLoginPresenter.verifyNext(getActivity(), etUsername.getText().toString(), etValidCode.getText().toString(), new CommonListener() {
       @Override
       public void successListener(Object response) {
         Toast.makeText(getActivity(), R.string.promote_verify_pass, Toast.LENGTH_SHORT).show();
+        isVerifying = false;
         if (mIsRegistration) {
           RegistrationFragment registrationFragment = new RegistrationFragment();
           Bundle bundle = new Bundle();
@@ -250,6 +260,7 @@ public class PhoneValidationFragment extends Fragment {
               .commitAllowingStateLoss();
           getFragmentManager().executePendingTransactions();
           ((BaseActivity) getActivity()).getEnhancedToolbar().show();
+
         } else {
           RestorePasswordFragment restorePasswordFragment = new RestorePasswordFragment();
           Bundle bundleRestorePwd = new Bundle();
@@ -267,7 +278,6 @@ public class PhoneValidationFragment extends Fragment {
           getFragmentManager().executePendingTransactions();
           ((BaseActivity) getActivity()).getEnhancedToolbar().show();
         }
-        isVerifying = false;
       }
 
       @Override
