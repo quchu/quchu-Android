@@ -368,6 +368,17 @@ public class SPUtils {
   public static String getRongYunTitle() {
     return getValueFromSPMap(AppContext.mContext, AppKey.CHAT_TITLE, "");
   }
+
+  /**
+   * 保存是否有个推消息
+   */
+  public static void setHasPushMsg(boolean hasMsg) {
+    putBooleanToSPMap(AppContext.mContext, AppKey.PUSH_MESSAGE, hasMsg);
+  }
+
+  public static boolean getHasPushMsg() {
+    return getBooleanFromSPMap(AppContext.mContext, AppKey.PUSH_MESSAGE, false);
+  }
 }
 
 

@@ -12,6 +12,7 @@ import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
+import co.quchu.quchu.utils.SPUtils;
 
 /**
  * Created by no21 on 2016/4/8.
@@ -53,9 +54,23 @@ public class MeActivityPresenter {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
 
-                    int count = jsonObject.getInt("msgCount");
-                    if (count > 0) {
-                        listener.successListener(count);
+                    int count = 0;
+                    int qCount = 0;
+
+                    if (jsonObject.has("msgCount")) {
+                        count = jsonObject.getInt("msgCount");
+                    }
+
+                    if (jsonObject.has("qmsgCount")) {
+                        qCount = jsonObject.getInt("qmsgCount");
+                    }
+
+                    if (count > 0 ) {
+                        SPUtils.setHasPushMsg(true);
+                    }
+
+                    if (listener != null) {
+                        listener.successListener(count + qCount);
                     }
 
                 } catch (JSONException e) {

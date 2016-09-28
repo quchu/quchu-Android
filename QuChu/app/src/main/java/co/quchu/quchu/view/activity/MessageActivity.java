@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.util.ArrayMap;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.im.activity.ConversationListFragmentEx;
 import co.quchu.quchu.utils.LogUtils;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.NoScrollViewPager;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -38,6 +40,7 @@ public class MessageActivity extends BaseBehaviorActivity {
 
   private List<Fragment> mFragments = new ArrayList<>();
   private Fragment mConversationListFragment = null;
+  private View mTabUnreadMsgView;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +56,64 @@ public class MessageActivity extends BaseBehaviorActivity {
     viewpager.setAdapter(messageAdapter);
     tabLayout.setupWithViewPager(viewpager);
 
+    initTab();
+
     isPushMessage(getIntent());
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    if (tabLayout == null || mTabUnreadMsgView == null) {
+      return;
+    }
+
+    if (SPUtils.getHasPushMsg()) {
+      mTabUnreadMsgView.setVisibility(View.VISIBLE);
+    }
+
+    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+      @Override
+      public void onTabSelected(TabLayout.Tab tab) {
+        int tag = (int) tab.getTag();
+        if (tag == 1) {
+          mTabUnreadMsgView.setVisibility(View.INVISIBLE);
+          SPUtils.setHasPushMsg(false);
+        }
+      }
+
+      @Override
+      public void onTabUnselected(TabLayout.Tab tab) {
+
+      }
+
+      @Override
+      public void onTabReselected(TabLayout.Tab tab) {
+
+      }
+    });
+  }
+
+  /**
+   * 设置自定义的TabView,必须在设置ViewPager后设置
+   */
+  private void initTab() {
+    TabLayout.Tab tab0 = tabLayout.getTabAt(0);
+    tab0.setTag(0);
+    tab0.setCustomView(R.layout.view_message_tab);
+    TabLayout.Tab tab1 = tabLayout.getTabAt(1);
+    tab1.setTag(1);
+    tab1.setCustomView(R.layout.view_message_tab);
+
+    View tabView0 = tabLayout.getTabAt(0).getCustomView();
+    TextView tabTitleTv0 = (TextView) tabView0.findViewById(R.id.tabTitleTv);
+    tabTitleTv0.setText("私信");
+
+    View tabView1 = tabLayout.getTabAt(1).getCustomView();
+    TextView tabTitleTv1 = (TextView) tabView1.findViewById(R.id.tabTitleTv);
+    mTabUnreadMsgView = tabView1.findViewById(R.id.tabUnReadMsgTv);
+    tabTitleTv1.setText("通知");
   }
 
   /**
@@ -122,13 +182,13 @@ public class MessageActivity extends BaseBehaviorActivity {
       return mFragments.size();
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-      if (position == 0) {
-        return "私信";
-      }
-      return "通知";
-    }
+//    @Override
+//    public CharSequence getPageTitle(int position) {
+//      if (position == 0) {
+//        return "私信";
+//      }
+//      return "通知";
+//    }
   }
 
   /**

@@ -65,9 +65,11 @@ public class XiaoQPresenter {
         try {
           JSONObject jsonObject = new JSONObject(response);
 
-          int count = jsonObject.getInt("msgCount");
-          if (count > 0) {
-            listener.successListener(count);
+          if (jsonObject.has("qmsgCount")) {
+            int count = jsonObject.getInt("qmsgCount");
+            if (listener != null) {
+              listener.successListener(count);
+            }
           }
 
         } catch (JSONException e) {

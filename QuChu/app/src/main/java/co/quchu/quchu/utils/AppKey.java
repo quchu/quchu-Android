@@ -178,4 +178,9 @@ public interface AppKey {
    * 融云私聊title
    */
   String CHAT_TITLE = "chat_title";
+
+  /**
+   * 个推未读消息
+   */
+  String PUSH_MESSAGE = "push_message";
 }
