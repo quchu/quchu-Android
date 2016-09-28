@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import co.quchu.quchu.view.activity.LoginActivity;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -53,6 +52,9 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
     private int pagesNo = 1;
     private FavoritePresenter presenter;
 
+    private int REQUEST_CODE_JUMP_DETAIL = 0;
+    public static final int RESULT_OK = -1;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,9 +85,9 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
     @Override
     public void itemClick(final RecyclerView.ViewHolder holder, final FavoriteEssayBean.ResultBean item, int type, int position) {
         if (type == R.id.swipe_delete_content) {
-            ArticleDetailActivity.enterActivity(getActivity(), String.valueOf(item.getArticleId()),String.valueOf(item.getArticleName()),getPageNameCN());
-        } else {
+            ArticleDetailActivity.enterActivity(getActivity(), String.valueOf(item.getArticleId()),String.valueOf(item.getArticleName()),ArticleDetailActivity.FROM_TYPE_PROFILE);
 
+        } else {
             new MaterialDialog.Builder(getActivity())
                 .content("确定取消收藏吗?")
                 .positiveText("确定")
@@ -108,7 +110,14 @@ public class FavoriteEssayFragment extends BaseFragment implements AdapterBase.O
                     }
                 })
                 .show();
+        }
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_JUMP_DETAIL && resultCode == RESULT_OK) {
+            onRefresh();
         }
     }
 

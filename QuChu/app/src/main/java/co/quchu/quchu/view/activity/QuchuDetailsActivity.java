@@ -5,9 +5,19 @@ import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.io.Serializable;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,11 +43,6 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
 import co.quchu.quchu.widget.ErrorView;
-import com.android.volley.VolleyError;
-import java.io.Serializable;
-import java.util.List;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 /**
  * InterestingDetailsActivity
@@ -550,6 +555,11 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
               Toast.makeText(QuchuDetailsActivity.this, "收藏成功!", Toast.LENGTH_SHORT).show();
             } else {
               Toast.makeText(QuchuDetailsActivity.this, "取消收藏!", Toast.LENGTH_SHORT).show();
+            }
+
+            if (!TextUtils.isEmpty(from) && from.equals(FROM_TYPE_PROFILE)) {
+              //从用户收藏列表进来,通知列表刷新
+              setResult(RESULT_OK);
             }
           }
 

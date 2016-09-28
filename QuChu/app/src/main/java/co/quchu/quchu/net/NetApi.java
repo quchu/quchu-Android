@@ -237,4 +237,9 @@ public interface NetApi {
    * 小Q消息
    */
   String getQMsg = HOST + "/sysMsg/getQMsg";
+
+  /**
+   * 小Q消息未读数
+   */
+  String getQUnreadMsg = HOST + "/personal/getNotReadQMsgCount";
 }

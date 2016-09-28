@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import co.quchu.quchu.view.activity.LoginActivity;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhuge.analysis.stat.ZhugeSDK;
@@ -45,10 +44,6 @@ import co.quchu.quchu.view.adapter.FavoriteQuchuAdapter;
 public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.OnLoadmoreListener,
         SwipeRefreshLayout.OnRefreshListener, AdapterBase.OnItemClickListener<FavoriteBean.ResultBean>, PageLoadListener<FavoriteBean> {
 
-
-    private boolean mIsMe;
-    private int mUserId;
-
     protected String getPageNameCN() {
         return getString(R.string.pname_f_favorite_quchu);
     }
@@ -61,6 +56,11 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
     private FavoritePresenter presenter;
     private int pagesNo = 1;
 
+    private boolean mIsMe;
+    private int mUserId;
+
+    private int REQUEST_CODE_JUMP_DETAIL = 0;
+    public static final int RESULT_OK = -1;
     private static String IS_ME_BUNDLE_KEY = "is_me_bundle_key";
     private static String USER_ID_BUNDLE_KEY = "user_id_bundle_key";
 
@@ -121,10 +121,8 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
             case R.id.swipe_delete_action:
                 setFavorite(holder, item);
                 break;
+
             case R.id.swipe_delete_content:
-
-
-
                 ArrayMap<String,Object> params = new ArrayMap<>();
                 JSONObject jsonObject = new JSONObject();
                 try {
@@ -136,11 +134,10 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
                 }
                 ZhugeSDK.getInstance().track(getActivity(), "进入趣处详情页", jsonObject);
 
-
                 Intent intent = new Intent(getActivity(), QuchuDetailsActivity.class);
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_PID, item.getPid());
                 intent.putExtra(QuchuDetailsActivity.REQUEST_KEY_FROM, QuchuDetailsActivity.FROM_TYPE_PROFILE);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_JUMP_DETAIL);
                 if (!EventBus.getDefault().isRegistered(this)) {
                     EventBus.getDefault().register(this);
                 }
@@ -176,7 +173,14 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
                 }
             })
             .show();
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_JUMP_DETAIL && resultCode == RESULT_OK) {
+            onRefresh();
+        }
     }
 
     @Override

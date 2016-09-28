@@ -24,14 +24,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.dialog.ShareDialogFg;
 import co.quchu.quchu.model.ArticleDetailModel;
-import co.quchu.quchu.model.ArticleWithBannerModel;
 import co.quchu.quchu.model.QuchuEventModel;
-import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.model.SimplePlaceModel;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetUtil;
@@ -68,6 +65,8 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
     private static final String BUNDLE_KEY_ARTICLE_ID = "BUNDLE_KEY_ARTICLE_ID";
     private static final String BUNDLE_KEY_ARTICLE_TITLE = "BUNDLE_KEY_ARTICLE_TITLE";
     private static final String BUNDLE_KEY_ARTICLE_FROM = "BUNDLE_KEY_ARTICLE_FROM";
+
+    public static final String FROM_TYPE_PROFILE = "detail_profile_t";//从用户收藏进来的
 
     @Bind(R.id.rv)
     RecyclerView rv;
@@ -266,6 +265,11 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                     Toast.makeText(getApplicationContext(), R.string.add_to_favorite_article_success, Toast.LENGTH_SHORT).show();
                     ivFavorite.setImageResource(R.mipmap.ic_shoucang_yellow);
                     mArticleDetailModel.getArticle().setFavorite(true);
+
+                    if (!TextUtils.isEmpty(from) && from.equals(FROM_TYPE_PROFILE)) {
+                        //从用户收藏列表进入,通知列表刷新
+                        setResult(RESULT_OK);
+                    }
                 }
 
                 @Override
@@ -283,6 +287,11 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
                     Toast.makeText(getApplicationContext(), R.string.del_to_favorite_article_success, Toast.LENGTH_SHORT).show();
                     ivFavorite.setImageResource(R.mipmap.ic_shoucang);
                     mArticleDetailModel.getArticle().setFavorite(false);
+
+                    if (!TextUtils.isEmpty(from) && from.equals(FROM_TYPE_PROFILE)) {
+                        //从用户收藏列表进入,通知列表刷新
+                        setResult(RESULT_OK);
+                    }
                 }
 
                 @Override
@@ -344,11 +353,10 @@ public class ArticleDetailActivity extends BaseBehaviorActivity implements Swipe
     }
 
     public static void enterActivity(Activity from, String articleId, String articleTitle,String strFrom) {
-
-
         Intent intent = new Intent(from, ArticleDetailActivity.class);
         intent.putExtra(BUNDLE_KEY_ARTICLE_ID, articleId);
         intent.putExtra(BUNDLE_KEY_ARTICLE_TITLE, articleTitle);
+        intent.putExtra(BUNDLE_KEY_ARTICLE_FROM, strFrom);
         from.startActivity(intent);
     }
 
