@@ -66,7 +66,11 @@ public class DialogUtil {
 
     public static void dismissProgessDirectly() {
         if (loadingDialog != null && loadingDialog.isShowing()) {
-            loadingDialog.dismiss();
+            try{
+                loadingDialog.dismiss();
+            }catch (Exception ex){
+
+            }
         }
         loadingDialog = null;
     }
