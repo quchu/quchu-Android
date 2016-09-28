@@ -155,7 +155,7 @@ public class MeGenFragment extends BaseFragment {
   }
 
   public void initGene(final List<MyGeneModel.GenesEntity> genes) {
-    if (genes == null) {
+    if (genes == null || genes.size() < 6) {
       return;
     }
     final String[] labels = new String[genes.size()];
@@ -176,7 +176,13 @@ public class MeGenFragment extends BaseFragment {
           @Override
           public void onAnimationUpdate(ValueAnimator animation) {
             float progress = (float) animation.getAnimatedValue();
-            setGenes(progress, genes);
+            wenyiTv.setText(String.valueOf((int) (progress * genes.get(0).getWeight())));
+            shejiaoTv.setText(String.valueOf((int) (progress * genes.get(1).getWeight())));
+            tuhaoTv.setText(String.valueOf((int) (progress * genes.get(2).getWeight())));
+            chihuoTv.setText(String.valueOf((int) (progress * genes.get(3).getWeight())));
+            shishangTv.setText(String.valueOf((int) (progress * genes.get(4).getWeight())));
+            haoqiTv.setText(String.valueOf((int) (progress * genes.get(5).getWeight())));
+//            setGenes(progress, genes);
 //            tuhaoTv.setText(String.valueOf((int) (progress * genes.get(0).getWeight())));
 //            chihuoTv.setText(String.valueOf((int) (progress * genes.get(1).getWeight())));
 //            haoqiTv.setText(String.valueOf((int) (progress * genes.get(2).getWeight())));

@@ -34,6 +34,7 @@ public class ConversationListFragmentEx extends ConversationListFragment {
     qView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        mUnreadMsgCount.setVisibility(View.INVISIBLE);
         startActivity(new Intent(getActivity(), XiaoQActivity.class));
       }
     });
