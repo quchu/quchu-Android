@@ -32,6 +32,16 @@
                 android:visibility="visible"
                 fresco:fadeDuration="0"
                 fresco:roundAsCircle="true"/>
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/bgAvatar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/base_margin"
+                fresco:placeholderImage="@color/standard_color_white"
+                android:visibility="visible"
+                fresco:roundAsCircle="true"/>
         </RelativeLayout>
 
         <TextView
@@ -45,7 +55,7 @@
             android:singleLine="true"
             android:textColor="@color/standard_color_h1_dark"
             android:textSize="18sp"
-            tools:text="我的手_做不到"/>
+            tools:text="Username"/>
 
         <LinearLayout
             android:id="@+id/user_mark_layout"

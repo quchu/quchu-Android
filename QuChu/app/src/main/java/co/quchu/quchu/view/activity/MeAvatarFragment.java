@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import co.quchu.quchu.net.NetUtil;
 import com.android.volley.VolleyError;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -60,6 +61,7 @@ public class MeAvatarFragment extends BaseFragment {
   @Bind(R.id.user_mark_tv) TextView userMarkTv;
   @Bind(R.id.user_mark_img) ImageView userMarkImg;
   @Bind(R.id.user_mark_layout) LinearLayout userMarkLayout;
+  @Bind(R.id.bgAvatar) SimpleDraweeView bgAvatar;
 
   //用户头像
   private String userAvatar;
@@ -92,8 +94,16 @@ public class MeAvatarFragment extends BaseFragment {
     } else {
       getGenes();
     }
-
+    resetWhiteAvatar();
     return view;
+  }
+
+  private void resetWhiteAvatar(){
+    if (!NetUtil.isNetworkConnected(getActivity())){
+      bgAvatar.setVisibility(View.VISIBLE);
+    }else{
+      bgAvatar.setVisibility(View.GONE);
+    }
   }
 
   @Override
@@ -110,6 +120,7 @@ public class MeAvatarFragment extends BaseFragment {
 
           genes = response.getGenes();
           initGene();
+          resetWhiteAvatar();
         }
       }
 

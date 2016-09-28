@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import android.widget.Toast;
+import co.quchu.quchu.net.NetUtil;
 import com.android.volley.VolleyError;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -78,7 +80,11 @@ public class NewMeFragment extends BaseFragment {
     viewpager.setAdapter(new MyViewPagerAdapter(getActivity().getSupportFragmentManager()));
     indicator.setViewPager(viewpager);
 
-    getUserCenterInfo();
+    if (!NetUtil.isNetworkConnected(getActivity())){
+      Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();;
+    }else{
+      getUserCenterInfo();
+    }
 
     return view;
   }
@@ -204,6 +210,7 @@ public class NewMeFragment extends BaseFragment {
     switch (event.getFlag()) {
       case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
         getUnreadMessage();
+        getUserCenterInfo();
         break;
     }
   }

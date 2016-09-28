@@ -215,9 +215,8 @@ public class PolygonProgressView extends View {
 
     private void drawAvatar(Canvas canvas) {
 
-
         canvas.drawCircle(c, c, r * min * .6f * apv[0], pac);
-        pa.setAlpha((int) (apv[0]*255));
+        //pa.setAlpha((int) (apv[0]*255));
 //        canvas.drawBitmap(ba, c - (ba.getWidth() >> 1), c - (ba.getHeight() >> 1), pa);
     }
 
