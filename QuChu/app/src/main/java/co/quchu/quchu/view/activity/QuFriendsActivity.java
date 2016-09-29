@@ -73,7 +73,7 @@ public class QuFriendsActivity extends BaseActivity {
         headImage.setImageURI(Uri.parse(AppContext.user.getPhoto()));
         gender.setImageURI(Uri.parse("res:///" + (AppContext.user.getGender().equals("男") ? R.mipmap.ic_male : R.mipmap.ic_female)));
         if (AppContext.user.getGender().equals("未知")){
-            gender.setVisibility(View.INVISIBLE);
+            gender.setImageURI(Uri.parse("res:///" + R.mipmap.ic_unknown_gender));
         }
 
         FriendsFollowerFg fragment1 = new FriendsFollowerFg();
