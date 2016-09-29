@@ -81,7 +81,7 @@ public class NewMeFragment extends BaseFragment {
     indicator.setViewPager(viewpager);
 
     if (!NetUtil.isNetworkConnected(getActivity())){
-      Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();;
+      Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
     }else{
       getUserCenterInfo();
     }

@@ -50,6 +50,9 @@ public class InviteHangoutUsersAdapter
       }
     });
     holder.ivGender.setImageResource(mUsers.get(position).getGender()==0?R.mipmap.ic_female:R.mipmap.ic_male);
+    if (mUsers.get(position).getGender()==2){
+      holder.ivGender.setVisibility(View.INVISIBLE);
+    }
   }
 
   @Override public int getItemCount() {

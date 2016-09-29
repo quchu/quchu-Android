@@ -150,10 +150,14 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
         });
         photoNumber.setText(AppContext.user.getUsername());
         accountSettingUserLocation.setText(AppContext.user.getLocation());
-        if ("男".equals(user.getGender())) {
-            radioGroup.check(R.id.man);
-        } else {
-            radioGroup.check(R.id.girl);
+        if ("未知".equals(user.getGender())){
+            radioGroup.clearCheck();
+        }else{
+            if ("男".equals(user.getGender())) {
+                radioGroup.check(R.id.man);
+            } else {
+                radioGroup.check(R.id.girl);
+            }
         }
 
         switch (SPUtils.getLoginType()) {
@@ -275,16 +279,22 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
                 break;
             case R.id.location:
-                accountSettingUserLocation.setText("定位中...");
-                AppLocationListener.addLocationListener(new AppLocationListener.LocationListener() {
-                    @Override
-                    public void location(BDLocation amapLocation) {
-                        accountSettingUserLocation.setText(amapLocation.getCity());
-                        AppContext.stopLocation();
-                        AppLocationListener.removeListener(this);
-                    }
-                });
-                AppContext.initLocation();
+                if (!NetUtil.isNetworkConnected(getApplicationContext())){
+                    accountSettingUserLocation.setText("定位中...");
+                    AppLocationListener.addLocationListener(new AppLocationListener.LocationListener() {
+                        @Override
+                        public void location(BDLocation amapLocation) {
+                            accountSettingUserLocation.setText(amapLocation.getCity());
+                            AppContext.stopLocation();
+                            AppLocationListener.removeListener(this);
+                        }
+                    });
+                    AppContext.initLocation();
+                }else{
+                    makeToast(R.string.network_error);
+                }
+
+
                 break;
         }
     }
@@ -369,8 +379,8 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
         newUserNickName = nickname.getText().toString().trim();
 
-        if (newUserNickName.length() < 1 || newUserNickName.length() > 10) {
-            Toast.makeText(this, "昵称必须为1-10位字符", Toast.LENGTH_SHORT).show();
+        if (newUserNickName.length() < 1 || newUserNickName.length() > 16) {
+            Toast.makeText(this, "昵称必须为1-16位字符", Toast.LENGTH_SHORT).show();
             return;
         }
         //if (StringUtils.containsEmoji(newUserNickName)) {

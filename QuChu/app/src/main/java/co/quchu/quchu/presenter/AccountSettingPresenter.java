@@ -143,7 +143,11 @@ public class AccountSettingPresenter {
 
         Map<String, String> params = new HashMap<>();
         params.put("user.name", userName);
-        params.put("user.gander", ("男".equals(userGender) ? "M" : "W"));
+        if (userGender.equals("男")||userGender.equals("女")){
+            params.put("user.gander", ("男".equals(userGender) ? "M" : "W"));
+        }else{
+            params.put("user.gander", "A");
+        }
         params.put("user.location", userLocation);
         params.put("user.photo", userPhoto);
 //        params.put("user.password", TextUtils.isEmpty(userPw) ? "" : MD5.hexdigest(userPw));
