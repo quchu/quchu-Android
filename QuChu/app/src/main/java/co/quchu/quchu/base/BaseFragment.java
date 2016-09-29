@@ -30,8 +30,13 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        toastManager = ToastManager.getInstance(getActivity());
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        toastManager = ToastManager.getInstance(getActivity().getApplicationContext());
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

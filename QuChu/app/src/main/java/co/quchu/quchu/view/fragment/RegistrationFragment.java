@@ -34,178 +34,180 @@ import co.quchu.quchu.view.activity.RecommendActivity;
  */
 public class RegistrationFragment extends Fragment implements TextWatcher, View.OnFocusChangeListener {
 
-    public static final String TAG = "RegistrationFragment";
-    public static final String BUNDLE_KEY_VERIFY_CODE = "BUNDLE_KEY_VERIFY_CODE";
-    public static final String BUNDLE_KEY_USERNAME = "BUNDLE_KEY_USERNAME";
-    private boolean mRequestRunning = false;
-    public String mUserName = "";
-    public String mVerifyCode = "";
+  public static final String TAG = "RegistrationFragment";
+  public static final String BUNDLE_KEY_VERIFY_CODE = "BUNDLE_KEY_VERIFY_CODE";
+  public static final String BUNDLE_KEY_USERNAME = "BUNDLE_KEY_USERNAME";
+  private boolean mRequestRunning = false;
+  public String mUserName = "";
+  public String mVerifyCode = "";
 
-    @Bind(R.id.ivIconUserName)
-    ImageView ivIconUserName;
-    @Bind(R.id.etUsername)
-    EditText etUsername;
-    @Bind(R.id.rlUserNameField)
-    RelativeLayout rlUserNameField;
-    @Bind(R.id.ivIconPassword)
-    ImageView ivIconPassword;
-    @Bind(R.id.etPassword)
-    EditText etPassword;
-    @Bind(R.id.rlPasswordField)
-    RelativeLayout rlPasswordField;
-    @Bind(R.id.tvLoginViaPhone)
-    TextView tvLoginViaPhone;
-    private boolean mEmptyForum = false;
+  @Bind(R.id.ivIconUserName)
+  ImageView ivIconUserName;
+  @Bind(R.id.etUsername)
+  EditText etUsername;
+  @Bind(R.id.rlUserNameField)
+  RelativeLayout rlUserNameField;
+  @Bind(R.id.ivIconPassword)
+  ImageView ivIconPassword;
+  @Bind(R.id.etPassword)
+  EditText etPassword;
+  @Bind(R.id.rlPasswordField)
+  RelativeLayout rlPasswordField;
+  @Bind(R.id.tvLoginViaPhone)
+  TextView tvLoginViaPhone;
+  private boolean mEmptyForum = false;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(R.string.registration_step_2);
+  @Override
+  public void onResume() {
+    super.onResume();
+    ((BaseActivity) getActivity()).getEnhancedToolbar().getTitleTv().setText(R.string.registration_step_2);
 
+  }
+
+  private boolean verifyForm() {
+    boolean status = false;
+
+    String userName = etUsername.getText().toString();
+    String userPwd = etPassword.getText().toString();
+
+    if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)) {
+      tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+    } else if (!StringUtils.isGoodPassword(userPwd)) {
+      tvLoginViaPhone.setText(R.string.promote_invalid_password);
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+    } else if (StringUtils.isGoodPassword(userPwd)) {
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+      tvLoginViaPhone.setText(R.string.next);
+      status = true;
+    } else {
+      tvLoginViaPhone.setText(R.string.next);
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+    }
+    return status;
+  }
+
+  public void updateButtonStatus() {
+    mEmptyForum = true;
+
+    if (null == etUsername || null == etPassword) {
+      return;
     }
 
-    private boolean verifyForm() {
-        boolean status = false;
+    String userName = etUsername.getText().toString();
+    String userPwd = etPassword.getText().toString();
 
-        String userName = etUsername.getText().toString();
-        String userPwd = etPassword.getText().toString();
+    if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)) {
+      return;
+    }
 
-        if(TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)){
-            tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        }else if (!StringUtils.isGoodPassword(userPwd)){
-            tvLoginViaPhone.setText(R.string.promote_invalid_password);
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        }else if(StringUtils.isGoodPassword(userPwd)){
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-            tvLoginViaPhone.setText(R.string.next);
-            status = true;
-        }else{
-            tvLoginViaPhone.setText(R.string.next);
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+    if (etPassword.hasFocus()) {
+      if (etPassword.getText().length() < 6) {
+        tvLoginViaPhone.setText("密码请输入6-12位数字或英文");
+        tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+        return;
+      }
+    }
+
+    if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPwd)) {
+      tvLoginViaPhone.setText(R.string.next);
+      mEmptyForum = false;
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+    } else {
+      tvLoginViaPhone.setText(R.string.next);
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
+    }
+  }
+
+  @Nullable
+  @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_registration, container, false);
+    ButterKnife.bind(this, view);
+
+    if (null != getArguments()) {
+      mVerifyCode = getArguments().getString(BUNDLE_KEY_VERIFY_CODE);
+      mUserName = getArguments().getString(BUNDLE_KEY_USERNAME);
+    }
+    etUsername.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        etUsername.requestFocus();
+      }
+    }, 30);
+    etUsername.setOnFocusChangeListener(this);
+    etPassword.setOnFocusChangeListener(this);
+    etUsername.addTextChangedListener(this);
+    etPassword.addTextChangedListener(this);
+    tvLoginViaPhone.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (!NetUtil.isNetworkConnected(getActivity())) {
+          Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
+          return;
         }
-        return status;
-    }
 
-    public void updateButtonStatus(){
-        if (null==etUsername ||null==etPassword){
-            return ;
+        if (!mEmptyForum && verifyForm()) {
+
+          if (mRequestRunning) {
+            return;
+          }
+          mRequestRunning = true;
+          if (null != AppContext.user && AppContext.user.isIsVisitors()) {
+
+            int visitorUid = AppContext.user.getUserId();
+            String pwd = etPassword.getText().toString();
+            String nickName = etUsername.getText().toString();
+
+            UserLoginPresenter.userRegiest(getActivity(), visitorUid, mUserName, pwd, nickName, mVerifyCode, new UserLoginPresenter.UserNameUniqueListener() {
+              @Override
+              public void isUnique(JSONObject msg) {
+
+                Toast.makeText(getActivity(), R.string.promote_account_create_success, Toast.LENGTH_SHORT).show();
+                SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
+                getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN, true));
+                getActivity().finish();
+                mRequestRunning = false;
+              }
+
+              @Override
+              public void notUnique(String msg) {
+                Toast.makeText(getActivity(), R.string.promote_account_create_success_login_manually, Toast.LENGTH_SHORT).show();
+                mRequestRunning = false;
+              }
+            });
+          } else {
+            mRequestRunning = false;
+          }
         }
+      }
+    });
 
-        if (etUsername.hasFocus()) {
-            if (etUsername.getText().length() < 1) {
-                tvLoginViaPhone.setText("用户名请输入1-16位汉字或英文");
-                tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
-                return;
-            }
-        } else if (etPassword.hasFocus()) {
-            if (etPassword.getText().length() < 6) {
-                tvLoginViaPhone.setText("密码请输入6-12位数字或英文");
-                tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
-                return;
-            }
-        }
+    return view;
+  }
 
-        String userName = null==etUsername.getText()?"":etUsername.getText().toString();
-        String userPwd = null == etPassword.getText()?"":etPassword.getText().toString();
-        if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPwd)){
-            tvLoginViaPhone.setText(R.string.next);
-            mEmptyForum = false;
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-        }else{
-            mEmptyForum = true;
-            tvLoginViaPhone.setText(R.string.next);
-            tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_black));
-        }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_registration, container, false);
-        ButterKnife.bind(this, view);
-
-        if (null!=getArguments()){
-            mVerifyCode = getArguments().getString(BUNDLE_KEY_VERIFY_CODE);
-            mUserName = getArguments().getString(BUNDLE_KEY_USERNAME);
-        }
-        etUsername.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                etUsername.requestFocus();
-            }
-        },30);
-        etUsername.setOnFocusChangeListener(this);
-        etPassword.setOnFocusChangeListener(this);
-        etUsername.addTextChangedListener(this);
-        etPassword.addTextChangedListener(this);
-        tvLoginViaPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!NetUtil.isNetworkConnected(getActivity())){
-                    Toast.makeText(getActivity(),R.string.network_error,Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!mEmptyForum&&verifyForm()) {
-
-                    if (mRequestRunning){
-                        return;
-                    }
-                    mRequestRunning = true;
-                    if (null!= AppContext.user && AppContext.user.isIsVisitors()){
-
-                        int visitorUid = AppContext.user.getUserId();
-                        String pwd = etPassword.getText().toString();
-                        String nickName = etUsername.getText().toString();
-
-                        UserLoginPresenter.userRegiest(getActivity(), visitorUid, mUserName, pwd, nickName, mVerifyCode, new UserLoginPresenter.UserNameUniqueListener() {
-                            @Override
-                            public void isUnique(JSONObject msg) {
-
-                                Toast.makeText(getActivity(),R.string.promote_account_create_success,Toast.LENGTH_SHORT).show();
-                                SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
-                                getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN,true));
-                                getActivity().finish();
-                                mRequestRunning = false;
-                            }
-
-                            @Override
-                            public void notUnique(String msg) {
-                                Toast.makeText(getActivity(),R.string.promote_account_create_success_login_manually,Toast.LENGTH_SHORT).show();
-                                mRequestRunning = false;
-                            }
-                        });
-                    }else{
-                        mRequestRunning = false;
-                    }
-                }
-            }
-        });
-
-        return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    ButterKnife.unbind(this);
+  }
 
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+  @Override
+  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+  }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-    }
+  @Override
+  public void onTextChanged(CharSequence s, int start, int before, int count) {
+  }
 
-    @Override
-    public void afterTextChanged(Editable s) {
-        updateButtonStatus();
-    }
+  @Override
+  public void afterTextChanged(Editable s) {
+    updateButtonStatus();
+  }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        updateButtonStatus();
-    }
+  @Override
+  public void onFocusChange(View v, boolean hasFocus) {
+    updateButtonStatus();
+  }
 }
