@@ -131,6 +131,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
           });
         }
+        
+        if (position==0 ){
+          ((CommentViewHolder) holder).vDivider.setVisibility(View.GONE);
+        }
       }
   }
 
@@ -156,6 +160,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Bind(R.id.tvFrom) TextView tvFrom;
     @Bind(R.id.rbRating) RatingBar rbRating;
     @Bind(R.id.rvImages) RecyclerView rvImages;
+    @Bind(R.id.vDivider) View vDivider;
 
     CommentViewHolder(View view) {
       super(view);

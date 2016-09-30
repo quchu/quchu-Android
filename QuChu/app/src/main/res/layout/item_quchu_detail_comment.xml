@@ -165,6 +165,7 @@
   </RelativeLayout>
 
   <View
+      android:id="@+id/vDivider"
       android:layout_marginLeft="@dimen/base_margin"
       android:layout_marginRight="@dimen/base_margin"
       style="@style/HorizontalLine"
