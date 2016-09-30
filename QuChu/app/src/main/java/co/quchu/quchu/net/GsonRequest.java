@@ -188,6 +188,7 @@ public class GsonRequest<T> extends Request<T> {
         if (!TextUtils.isEmpty(msg)) {
             switch (msg) {
                 case "1077":
+                    SPUtils.clearUserinfo(context);
                     reLogin();
                     LogUtils.e("登录令牌错误");
                     return;
