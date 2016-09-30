@@ -279,7 +279,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
 
                 break;
             case R.id.location:
-                if (!NetUtil.isNetworkConnected(getApplicationContext())){
+                if (NetUtil.isNetworkConnected(getApplicationContext())){
                     accountSettingUserLocation.setText("定位中...");
                     AppLocationListener.addLocationListener(new AppLocationListener.LocationListener() {
                         @Override

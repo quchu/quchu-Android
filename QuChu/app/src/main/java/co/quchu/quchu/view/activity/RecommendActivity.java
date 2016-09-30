@@ -85,7 +85,6 @@ public class RecommendActivity extends ImMainActivity {
 
   @Bind(R.id.tvTitle) TextView tvTitle;
 
-  @Bind(R.id.ivDivider) View vDivider;
   @Bind(R.id.ivLeft) View ivLeft;
   @Bind(R.id.tvRight) TextView tvRight;
 
@@ -439,7 +438,6 @@ public class RecommendActivity extends ImMainActivity {
           .show(recommendFragment)
           .commitAllowingStateLoss();
 
-      vDivider.setVisibility(View.GONE);
 
       vLeft.setVisibility(View.VISIBLE);
       ivLeft.setVisibility(View.GONE);
@@ -456,7 +454,6 @@ public class RecommendActivity extends ImMainActivity {
       tvRight.setVisibility(View.GONE);
       vLeft.setVisibility(View.GONE);
       tvTitle.setText("趣发现");
-      vDivider.setVisibility(View.VISIBLE);
       vTitle.setVisibility(View.VISIBLE);
     } else if (index == 2) {
       transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
@@ -473,7 +470,6 @@ public class RecommendActivity extends ImMainActivity {
           .hide(recommendFragment)
           .show(meFragment)
           .commitAllowingStateLoss();
-      vDivider.setVisibility(View.VISIBLE);
       vLeft.setVisibility(View.GONE);
 
       ivLeft.setVisibility(View.VISIBLE);

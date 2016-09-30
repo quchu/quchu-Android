@@ -71,9 +71,6 @@
             android:textSize="@dimen/word_subhead_size" />
     </LinearLayout>
 
-    <View style="@style/HorizontalLine"
-
-        />
 
     <LinearLayout
         android:id="@+id/searchFilterContainer"

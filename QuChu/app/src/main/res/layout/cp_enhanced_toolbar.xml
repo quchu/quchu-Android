@@ -17,6 +17,7 @@
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     <View
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/bg_pager" />
