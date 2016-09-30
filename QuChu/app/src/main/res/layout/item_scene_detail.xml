@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,10 +10,19 @@
     android:background="@color/standard_color_white"
     >
 
+    <View
+        android:id="@+id/vDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/half_margin"
+        android:background="@color/colorBackground"
+        />
+
 
     <RelativeLayout
+        android:layout_below="@+id/vDivider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/base_margin"
         android:orientation="vertical">
 
 
@@ -25,7 +34,7 @@
             card_view:failureImageScaleType="center"
             card_view:placeholderImage="@mipmap/ic_image_empty"
             card_view:placeholderImageScaleType="center"
-            card_view:viewAspectRatio="1.7"
+            card_view:viewAspectRatio="2.2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             card_view:roundBottomLeft="false"
@@ -114,4 +123,22 @@
 
 
     </RelativeLayout>
-</LinearLayout>
+
+
+    <TextView
+        android:layout_below="@+id/vDivider"
+        android:layout_marginTop="@dimen/half_margin"
+        android:paddingTop="@dimen/quarter_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/quarter_margin"
+        android:paddingLeft="@dimen/base_margin"
+        android:paddingRight="@dimen/base_margin"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:background="@color/standard_color_yellow"
+        android:text="@string/editor_choice"
+        android:textColor="@color/standard_color_h1_dark"
+        android:textSize="@dimen/standard_text_size_h2"
+        />
+
+</RelativeLayout>

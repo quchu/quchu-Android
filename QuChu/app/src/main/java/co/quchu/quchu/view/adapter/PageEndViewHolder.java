@@ -16,6 +16,7 @@ public class PageEndViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.vDivider) View vDivider;
 
+
     public PageEndViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);

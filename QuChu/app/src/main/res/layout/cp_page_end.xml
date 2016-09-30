@@ -17,14 +17,17 @@
 
     <TextView
         android:id="@+id/textView"
-        style="@style/TextView.H3"        android:layout_marginTop="8dp"
-
+        style="@style/TextView.H3"
+        android:layout_marginTop="8dp"
         android:padding="8dp"
+        android:textColor="@color/standard_color_h0_dark"
         android:text="@string/no_more_data" />
 
     <ImageView
+        android:id="@+id/vLogo"
+        android:paddingBottom="@dimen/half_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_quchu"/>
+        android:src="@mipmap/ic_quchu_hc"/>
 
 </LinearLayout>

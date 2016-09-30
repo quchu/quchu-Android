@@ -93,6 +93,9 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
       //((ArticleViewHolder) holder).tvDescription.setVisibility(View.VISIBLE);
       //((ArticleViewHolder) holder).tvDescription.setText("# 小编推荐");
       ((ArticleViewHolder) holder).tvDescription.setText(mDataSet.get(position-1).getContent());
+    } else if (holder instanceof PageEndViewHolder){
+      ((PageEndViewHolder) holder).vDivider.setVisibility(View.VISIBLE);
+
     }
     final int finalPosition = position;
     holder.itemView.setOnClickListener(new View.OnClickListener() {

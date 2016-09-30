@@ -24,7 +24,7 @@
       android:layout_marginRight="@dimen/base_margin"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:src="@mipmap/ic_quchu_text_logo"
+      android:src="@mipmap/ic_quchu"
       />
 
   <TextView

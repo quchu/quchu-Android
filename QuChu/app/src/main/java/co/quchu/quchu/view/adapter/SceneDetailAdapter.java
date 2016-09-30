@@ -3,7 +3,6 @@ package co.quchu.quchu.view.adapter;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.model.SimpleArticleModel;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.widget.CornerLabelTextView;
 
 /**
  * Created by Nico on 16/7/8.
@@ -217,7 +215,7 @@ public class SceneDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             "¥" + objScene.getPlaceInfo().getPrice() + "元");
       } else {
         ((RecommendedViewHolder) holder).tvPrice.setText("");
-        ((SearchAdapter.ResultHolder) holder).vDivider2.setVisibility(View.GONE);
+        ((RecommendedViewHolder) holder).vDivider2.setVisibility(View.GONE);
       }
       ((RecommendedViewHolder) holder).ivFavorite.setImageResource(
           objScene.getPlaceInfo().isIsf() ? R.mipmap.ic_xuanzhong : R.mipmap.ic_weishoucang);
