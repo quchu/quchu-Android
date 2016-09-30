@@ -78,7 +78,10 @@ public class ArticleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
   }
 
   @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-    if (holder instanceof BannerViewHolder) {
+    if( holder instanceof PageEndViewHolder){
+      ((PageEndViewHolder) holder).textView.setText("一千个人就有一千个趣处");
+      ((PageEndViewHolder) holder).vDivider.setVisibility(View.VISIBLE);
+    }else if (holder instanceof BannerViewHolder) {
       ((BannerViewHolder) holder).tvDescription.setText(mSimpleArticleModel.getArticleComtent());
       ((BannerViewHolder) holder).tvArticleTitle.setText(mSimpleArticleModel.getArticleName());
       ((BannerViewHolder) holder).tvReviews.setText(String.valueOf(mSimpleArticleModel.getReadCount()));

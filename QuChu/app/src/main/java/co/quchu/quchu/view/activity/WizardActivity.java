@@ -33,12 +33,22 @@ public class WizardActivity extends BaseActivity {
   @Bind(R.id.tvSubTitle) TextView tvSubTitle;
   @Bind(R.id.llTextArea) LinearLayout llTextArea;
   @Bind(R.id.tvNext) TextView tvNext;
+  @Bind(R.id.tvPass) View vPass;
+  boolean passClicked = false;
+
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_wizard);
     ButterKnife.bind(this);
 
+
+    vPass.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        passClicked = true;
+        stopAnimation();
+      }
+    });
     tvNext.setAlpha(0);
     ivFemale.setAlpha(0f);
     ivMale.setAlpha(0f);
@@ -50,6 +60,19 @@ public class WizardActivity extends BaseActivity {
             animateLogo();
           }
         });
+  }
+
+  private void stopAnimation() {
+    ivFemale.clearAnimation();
+    ivMale.clearAnimation();
+    ivLogo.clearAnimation();
+    tvTitle.clearAnimation();
+    vBoldDivider.clearAnimation();
+    tvSubTitle.clearAnimation();
+    llTextArea.clearAnimation();
+    tvNext.clearAnimation();
+    startActivity(new Intent(WizardActivity.this, RecommendActivity.class));
+    finish();
   }
 
   private void animateLogo() {
@@ -112,8 +135,10 @@ public class WizardActivity extends BaseActivity {
     tvNext.postDelayed(new Runnable() {
       @Override
       public void run() {
-        startActivity(new Intent(WizardActivity.this, RecommendActivity.class));
-        finish();
+        if (!passClicked){
+          startActivity(new Intent(WizardActivity.this, RecommendActivity.class));
+          finish();
+        }
       }
     }, 3000);
 

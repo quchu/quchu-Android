@@ -273,5 +273,6 @@
     <string name="follow_str">关注(%d)</string>
     <string name="friend_str">趣粉(%d)</string>
     <string name="editor_choice">#小编推荐</string>
+    <string name="pass">跳过</string>
 
 </resources>
