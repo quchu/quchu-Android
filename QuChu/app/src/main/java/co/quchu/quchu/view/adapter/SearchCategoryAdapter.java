@@ -88,6 +88,11 @@ public class SearchCategoryAdapter extends SearchPopWinBaseAdapter {
 
     }
 
+    public void setSelected(int selectIndex){
+        selectedPosition = selectIndex;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return datas == null ? 0 : datas.size();

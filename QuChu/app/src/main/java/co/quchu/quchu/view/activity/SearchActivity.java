@@ -130,6 +130,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
   public static final String BUNDLE_KEY_CATEGORY_NAME = "BUNDLE_KEY_CATEGORY_NAME";
   public static final String BUNDLE_KEY_CATEGORY_CODE = "BUNDLE_KEY_CATEGORY_CODE";
   public static final String BUNDLE_KEY_KEYWORD = "BUNDLE_KEY_KEYWORD";
+  private int mInitialIndex = -1;
 
   public static void enterActivity(Activity from,String cName,String cCode,String keyWord){
     Intent intent = new Intent(from,SearchActivity.class);
@@ -150,6 +151,12 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     categoryCode = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_CODE);
     categoryName = getIntent().getStringExtra(BUNDLE_KEY_CATEGORY_NAME);
     searchInputEt.setText(keyword);
+    if (!StringUtils.isEmpty(categoryCode)){
+      mInitialIndex = Integer.valueOf(categoryCode);
+    }
+    if (!StringUtils.isEmpty(categoryName)){
+      searchFilterTV1.setText(categoryName);
+    }
     filterUserInput = true;
     doSearch(false);
 
@@ -590,7 +597,6 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
           }
 
           @Override public void errorNull() {
-            System.out.println("dos 100");
             //数据为空
             DialogUtil.dismissProgess();
             tvNoData.setVisibility(View.VISIBLE);
@@ -653,6 +659,10 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
   public void initGroupList(List<SearchCategoryBean> response) {
     this.categoryParentList = response;
     filterCategoryAdapter.setDatas(response);
+    if (mInitialIndex!=-1){
+      filterCategoryAdapter.setSelected(mInitialIndex+1);
+      mInitialIndex = -1;
+    }
     if (response.size() > 0) {
       childTagsAdapter.setData(response.get(0).getDatas());
     }

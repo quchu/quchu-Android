@@ -120,6 +120,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
     switch (v.getId()) {
       case R.id.search_button_rl:
         //searchInputEt.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+
         SearchActivity.enterActivity(getActivity(),"","",searchInputEt.getText().toString());
         break;
 
@@ -169,7 +170,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
 
         searchInputEt.setSelection(searchInputEt.getText().toString().trim().length());
         searchInputEt.setCursorVisible(false);
-        SearchActivity.enterActivity(getActivity(),((SearchCategoryBean) bean).getZh(),((SearchCategoryBean) bean).getCode(),searchInputEt.getText().toString());
+        SearchActivity.enterActivity(getActivity(),((SearchCategoryBean) bean).getZh(),String.valueOf(position),searchInputEt.getText().toString());
 
       }
     });
