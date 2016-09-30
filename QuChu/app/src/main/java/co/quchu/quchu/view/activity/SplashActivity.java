@@ -218,7 +218,7 @@ public class SplashActivity extends BaseActivity {
 
   public void enterApp() {
 
-    if (SPUtils.getShowGuild()) {
+    if (!SPUtils.getShowGuild()) {
       startActivity(new Intent(SplashActivity.this, WizardActivity.class));
       SplashActivity.this.finish();
     } else {
