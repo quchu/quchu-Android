@@ -66,10 +66,6 @@
             android:textSize="@dimen/word_subhead_size" />
     </LinearLayout>
 
-    <View style="@style/HorizontalLine"
-
-        />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_result_rv"
         android:padding="@dimen/double_margin"
