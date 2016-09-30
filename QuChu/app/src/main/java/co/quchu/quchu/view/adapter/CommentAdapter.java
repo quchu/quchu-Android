@@ -131,7 +131,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
           });
         }
-        
+
         if (position==0 ){
           ((CommentViewHolder) holder).vDivider.setVisibility(View.GONE);
         }

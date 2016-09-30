@@ -97,7 +97,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
           ((TextView) holder.tags.getChildAt(i)).setText(model.getTags().get(i).getZh());
         }
       }
-      holder.llHighLight.setVisibility(View.VISIBLE);
+      holder.llHighLight.setVisibility(View.GONE);
       holder.tvCircleName.setText(
           null != model.getAreaCircleName() ? model.getAreaCircleName() : "");
 
