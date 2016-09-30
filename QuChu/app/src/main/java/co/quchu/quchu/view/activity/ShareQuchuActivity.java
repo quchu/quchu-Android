@@ -81,7 +81,7 @@ public class ShareQuchuActivity extends BaseActivity {
         ivQuchuCover.setAspectRatio(1.5f);
         tvPlaceLocation.setText(mDetailModel.getAddress());
 
-        tvPlaceName.setText(R.string.guess_where_is_it);
+        tvPlaceName.setText(mDetailModel.getName());
 
         tvPhone.setText(mDetailModel.getTel());
         tvMoney.setText(mDetailModel.getPrice()+"元/人");
