@@ -124,6 +124,7 @@
           />
 
       <View
+          android:id="@+id/vDivider1"
           android:background="@color/standard_color_h2_dark"
           android:layout_width="1px"
           android:layout_marginLeft="@dimen/quarter_margin"
@@ -144,6 +145,7 @@
 
           />
       <View
+          android:id="@+id/vDivider2"
           android:background="@color/standard_color_h2_dark"
           android:layout_width="1px"
           android:layout_marginLeft="@dimen/quarter_margin"

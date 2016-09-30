@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    >
 
   <RelativeLayout
       android:layout_width="match_parent"
@@ -23,6 +25,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
+        tools:text="Simple String"
         android:textColor="@android:color/white"
         android:textSize="12sp"/>
 
@@ -42,6 +45,9 @@
           android:layout_marginLeft="24dp"
           android:layout_marginRight="20dp"
           android:layout_marginTop="22dp"
+          android:layout_marginBottom="22dp"
+          tools:text="Simple String"
+
           android:textColor="@color/standard_color_h1_dark"
           android:textSize="12sp"/>
 
@@ -53,6 +59,8 @@
           android:layout_marginLeft="24dp"
           android:layout_marginRight="20dp"
           android:layout_marginTop="5dp"
+          tools:text="Simple String"
+
           android:textColor="@color/standard_color_h1_dark"
           android:textSize="15sp"/>
 
