@@ -157,7 +157,7 @@ dependencies {
 
     compile 'com.android.support:multidex:1.0.0'
 
-    compile 'com.qiniu:qiniu-android-sdk:7.0.+'
+    compile 'com.qiniu:qiniu-android-sdk:7.0.0'
     compile 'me.relex:photodraweeview:1.0.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.he5ed.lib:volley:android-6.0.1_r5'
