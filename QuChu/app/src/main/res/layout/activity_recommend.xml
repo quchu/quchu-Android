@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
 
   <include
-      android:id="@+id/title"
       layout="@layout/layout_mai_title"
+      android:id="@+id/title"
       />
 
 
@@ -16,21 +18,25 @@
       android:layout_height="match_parent"
       android:layout_above="@+id/llTab"
       android:layout_below="@+id/title"
-      android:background="@color/colorBackground"/>
+      android:background="@color/colorBackground"
+      />
 
   <RelativeLayout
       android:id="@+id/llTab"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      android:orientation="vertical">
+      android:orientation="vertical"
+      android:visibility="gone"
+      >
 
     <RadioGroup
         android:id="@+id/rgTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_main_tab_bg"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
       <RadioButton
           android:id="@+id/rbRecommend"
@@ -44,7 +50,8 @@
           android:gravity="center"
           android:text="@string/qu_recommend"
           android:textColor="@color/color_selector_recommend_b_n_y"
-          android:textSize="@dimen/standard_text_size_h4"/>
+          android:textSize="@dimen/standard_text_size_h4"
+          />
 
       <RadioButton
           android:id="@+id/rbDiscovery"
@@ -58,7 +65,8 @@
           android:text="@string/qu_discover"
           android:textColor="@color/color_selector_recommend_b_n_y"
 
-          android:textSize="@dimen/standard_text_size_h4"/>
+          android:textSize="@dimen/standard_text_size_h4"
+          />
 
       <RadioButton
           android:id="@+id/rbSearch"
@@ -72,7 +80,8 @@
           android:text="@string/search"
           android:textColor="@color/color_selector_recommend_b_n_y"
 
-          android:textSize="@dimen/standard_text_size_h4"/>
+          android:textSize="@dimen/standard_text_size_h4"
+          />
 
 
       <RadioButton
@@ -86,7 +95,8 @@
           android:gravity="center"
           android:text="@string/mine"
           android:textColor="@color/color_selector_recommend_b_n_y"
-          android:textSize="@dimen/standard_text_size_h4"/>
+          android:textSize="@dimen/standard_text_size_h4"
+          />
 
     </RadioGroup>
 
@@ -96,7 +106,8 @@
         android:layout_height="5dp"
         android:background="@drawable/shape_round_red"
         android:textColor="@color/standard_color_white"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        />
 
   </RelativeLayout>
 

@@ -252,6 +252,7 @@ public class PolygonProgressView extends View {
         float x = (int) (Math.cos(angle) * actuallyValues + c );
         float y = (int) (Math.sin(angle) * actuallyValues + c);
 
+
         pab.setAlpha((int) (apv[0]*255));
 
         canvas.drawBitmap(bitmap,x - bitmap.getWidth()/2,y-bitmap.getHeight()/2,pab);

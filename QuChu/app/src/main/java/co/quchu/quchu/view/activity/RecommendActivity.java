@@ -1,6 +1,8 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,9 +10,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
@@ -90,6 +100,8 @@ public class RecommendActivity extends ImMainActivity {
 
   @Bind(R.id.rbMine) RadioButton mRbMine;
   @Bind(R.id.unReadMassage) TextView mUnReadMassageView;
+  @Bind(R.id.nav_view) NavigationView mNavigator;
+  @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
 
   public long firstTime = 0;
   private ArrayList<CityModel> list = new ArrayList<>();
@@ -116,8 +128,9 @@ public class RecommendActivity extends ImMainActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_recommend);
+    setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
+
 
     if (null == AppContext.user || AppContext.user.isIsVisitors()) {
       tvTitle.setText("未知生物");
@@ -125,6 +138,34 @@ public class RecommendActivity extends ImMainActivity {
     } else {
       tvTitle.setText(AppContext.user.getFullname());
       tvRight.setText(R.string.edit);
+    }
+
+
+    mNavigator.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+      @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+          case R.id.nav_camera:
+            viewpagerSelected(0);
+            break;
+          case R.id.nav_gallery:
+            viewpagerSelected(1);
+            break;
+          case R.id.nav_slideshow:
+            viewpagerSelected(2);
+            break;
+          case R.id.nav_manage:
+            viewpagerSelected(3);
+            break;
+        }
+        mDrawer.closeDrawer(GravityCompat.START);
+        return false;
+      }
+    });
+
+    if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+      mDrawer.setDrawerElevation(0);
+    } else {
+      mDrawer.setDrawerShadow(new ColorDrawable(Color.parseColor("#ff000000")), GravityCompat.START);
     }
 
     recommendTitleLocationIv.setText(SPUtils.getCityName());
@@ -152,40 +193,27 @@ public class RecommendActivity extends ImMainActivity {
 
     if (getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
       rbBottomTab.check(R.id.rbMine);
-      if (!meFragment.isAdded()) {
-        getSupportFragmentManager().beginTransaction()
-            .add(R.id.container, meFragment, "page_3")
-            .commitAllowingStateLoss();
-      }
       viewpagerSelected(3);
     }
 
     rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (checkedId) {
 
           case R.id.rbRecommend:
             viewpagerSelected(0);
             break;
           case R.id.rbDiscovery:
-            if (!articleFragment.isAdded()) {
-              transaction.add(R.id.container, articleFragment, "page_2").commitAllowingStateLoss();
-            }
+
             viewpagerSelected(1);
             UMEvent("discovery_c");
             break;
           case R.id.rbSearch:
-            if (!searchFragment.isAdded()) {
-              transaction.add(R.id.container, searchFragment, "page_3").commitAllowingStateLoss();
-            }
+
             viewpagerSelected(2);
             UMEvent("search_c");
             break;
           case R.id.rbMine:
-            if (!meFragment.isAdded()) {
-              transaction.add(R.id.container, meFragment, "page_4").commitAllowingStateLoss();
-            }
             viewpagerSelected(3);
             break;
         }
@@ -425,13 +453,15 @@ public class RecommendActivity extends ImMainActivity {
   }
 
   private void viewpagerSelected(int index) {
+
+
     LogUtils.json("selected == " + index);
     recommendTitleMoreRl.setVisibility(View.GONE);
 
     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
     if (index == 0) {
       tvTitle.setText(R.string.app_name);
-      transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
       transaction.hide(articleFragment)
           .hide(searchFragment)
           .hide(meFragment)
@@ -444,7 +474,9 @@ public class RecommendActivity extends ImMainActivity {
       tvRight.setVisibility(View.GONE);
       vTitle.setVisibility(View.VISIBLE);
     } else if (index == 1) {
-      transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+      if (!articleFragment.isAdded()) {
+        transaction.add(R.id.container, articleFragment, "page_2");
+      }
       transaction.hide(recommendFragment)
           .hide(searchFragment)
           .hide(meFragment)
@@ -456,7 +488,9 @@ public class RecommendActivity extends ImMainActivity {
       tvTitle.setText("趣发现");
       vTitle.setVisibility(View.VISIBLE);
     } else if (index == 2) {
-      transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+      if (!searchFragment.isAdded()) {
+        transaction.add(R.id.container, searchFragment, "page_3");
+      }
       transaction.hide(articleFragment)
           .hide(meFragment)
           .hide(recommendFragment)
@@ -464,7 +498,9 @@ public class RecommendActivity extends ImMainActivity {
           .commitAllowingStateLoss();
       vTitle.setVisibility(View.GONE);
     } else if (index == 3) {
-      transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+      if (!meFragment.isAdded()) {
+        transaction.add(R.id.container, meFragment, "page_4");
+      }
       transaction.hide(articleFragment)
           .hide(searchFragment)
           .hide(recommendFragment)
@@ -594,4 +630,14 @@ public class RecommendActivity extends ImMainActivity {
     super.onDestroy();
     ButterKnife.unbind(this);
   }
+
+  @Override public void onBackPressed() {
+
+    if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+      mDrawer.closeDrawer(GravityCompat.START);
+    } else {
+      super.onBackPressed();
+    }
+  }
+
 }
