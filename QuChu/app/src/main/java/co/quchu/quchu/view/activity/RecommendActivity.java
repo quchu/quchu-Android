@@ -165,7 +165,7 @@ public class RecommendActivity extends ImMainActivity {
     if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
       mDrawer.setDrawerElevation(0);
     } else {
-      mDrawer.setDrawerShadow(new ColorDrawable(Color.parseColor("#ff000000")), GravityCompat.START);
+      mDrawer.setDrawerShadow(new ColorDrawable(Color.TRANSPARENT), GravityCompat.START);
     }
 
     recommendTitleLocationIv.setText(SPUtils.getCityName());
@@ -191,10 +191,6 @@ public class RecommendActivity extends ImMainActivity {
       }
     });
 
-    if (getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
-      rbBottomTab.check(R.id.rbMine);
-      viewpagerSelected(3);
-    }
 
     rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
