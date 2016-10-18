@@ -10,24 +10,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,10 +54,11 @@ import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.fragment.ArticleFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
+import co.quchu.quchu.widget.DrawerHeaderView;
+import co.quchu.quchu.widget.DrawerItemView;
 import io.rong.imkit.RongIM;
 
 /**
@@ -77,7 +69,8 @@ import io.rong.imkit.RongIM;
  */
 public class RecommendActivity extends ImMainActivity {
 
-  @Override protected String getPageNameCN() {
+  @Override
+  protected String getPageNameCN() {
     return null;
   }
 
@@ -100,8 +93,14 @@ public class RecommendActivity extends ImMainActivity {
 
   @Bind(R.id.rbMine) RadioButton mRbMine;
   @Bind(R.id.unReadMassage) TextView mUnReadMassageView;
-  @Bind(R.id.nav_view) NavigationView mNavigator;
   @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
+
+  @Bind(R.id.drawerHeaderView) DrawerHeaderView mDrawerHeaderView;
+  @Bind(R.id.drawerItemFavorite) DrawerItemView mDrawerItemFavorite;
+  @Bind(R.id.drawerItemUserCenter) DrawerItemView mDrawerItemUserCenter;
+  @Bind(R.id.drawerItemMessage) DrawerItemView mDrawerItemMessage;
+  @Bind(R.id.drawerItemFeedback) DrawerItemView mDrawerItemFeedback;
+  @Bind(R.id.drawerItemSetting) DrawerItemView mDrawerItemSetting;
 
   public long firstTime = 0;
   private ArrayList<CityModel> list = new ArrayList<>();
@@ -118,103 +117,81 @@ public class RecommendActivity extends ImMainActivity {
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
 
-  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+  @Override
+  public ArrayMap<String, Object> getUserBehaviorArguments() {
     return null;
   }
 
-  @Override public int getUserBehaviorPageId() {
+  @Override
+  public int getUserBehaviorPageId() {
     return 110;
   }
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
 
-
-    if (null == AppContext.user || AppContext.user.isIsVisitors()) {
-      tvTitle.setText("未知生物");
-      tvRight.setText(R.string.login);
-    } else {
-      tvTitle.setText(AppContext.user.getFullname());
-      tvRight.setText(R.string.edit);
-    }
-
-
-    mNavigator.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-      @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-          case R.id.nav_camera:
-            viewpagerSelected(0);
-            break;
-          case R.id.nav_gallery:
-            viewpagerSelected(1);
-            break;
-          case R.id.nav_slideshow:
-            viewpagerSelected(2);
-            break;
-          case R.id.nav_manage:
-            viewpagerSelected(3);
-            break;
-        }
-        mDrawer.closeDrawer(GravityCompat.START);
-        return false;
-      }
-    });
-
-    if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-      mDrawer.setDrawerElevation(0);
-    } else {
-      mDrawer.setDrawerShadow(new ColorDrawable(Color.TRANSPARENT), GravityCompat.START);
-    }
+//    if (null == AppContext.user || AppContext.user.isIsVisitors()) {
+//      tvTitle.setText("未知生物");
+//      tvRight.setText(R.string.login);
+//    } else {
+//      tvTitle.setText(AppContext.user.getFullname());
+//      tvRight.setText(R.string.edit);
+//    }
 
     recommendTitleLocationIv.setText(SPUtils.getCityName());
     recommendFragment = new RecommendFragment();
-    articleFragment = new ArticleFragment();
-    meFragment = new NewMeFragment();
-    searchFragment = new SearchFragment();
+//    articleFragment = new ArticleFragment();
+//    meFragment = new NewMeFragment();
+//    searchFragment = new SearchFragment();
 
     getSupportFragmentManager().beginTransaction()
         .add(R.id.container, recommendFragment, "page_1")
         .commitAllowingStateLoss();
-    initView();
 
-    initUnreadView();
+//    initView();
+
+//    initUnreadView();
+
+    initDrawerView();
 
     VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
 
     RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-      @Override public void hasCityList(ArrayList<CityModel> pList) {
+      @Override
+      public void hasCityList(ArrayList<CityModel> pList) {
         list.clear();
         list.addAll(pList);
         checkIfCityChanged();
       }
     });
 
-
-    rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-      @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-
-          case R.id.rbRecommend:
-            viewpagerSelected(0);
-            break;
-          case R.id.rbDiscovery:
-
-            viewpagerSelected(1);
-            UMEvent("discovery_c");
-            break;
-          case R.id.rbSearch:
-
-            viewpagerSelected(2);
-            UMEvent("search_c");
-            break;
-          case R.id.rbMine:
-            viewpagerSelected(3);
-            break;
-        }
-      }
-    });
+//    rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//      @Override
+//      public void onCheckedChanged(RadioGroup group, int checkedId) {
+//        switch (checkedId) {
+//
+//          case R.id.rbRecommend:
+//            viewpagerSelected(0);
+//            break;
+//          case R.id.rbDiscovery:
+//
+//            viewpagerSelected(1);
+//            UMEvent("discovery_c");
+//            break;
+//          case R.id.rbSearch:
+//
+//            viewpagerSelected(2);
+//            UMEvent("search_c");
+//            break;
+//          case R.id.rbMine:
+//            viewpagerSelected(3);
+//            break;
+//        }
+//      }
+//    });
 
     if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
       accessPushMessage();
@@ -222,30 +199,130 @@ public class RecommendActivity extends ImMainActivity {
   }
 
   /**
-   * 设置我的Tab红点
+   * 初始化 DrawerView
    */
-  private void initUnreadView() {
-    final ViewTreeObserver observer = mRbMine.getViewTreeObserver();
-    observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+  private void initDrawerView() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      mDrawer.setDrawerElevation(0);
+    } else {
+      mDrawer.setDrawerShadow(new ColorDrawable(Color.TRANSPARENT), GravityCompat.START);
+    }
+
+    mDrawerHeaderView.setUser(AppContext.user);
+    mDrawerHeaderView.setOnDrawerAvatarClickListener(new DrawerHeaderView.OnDrawerAvatarClickListener() {
       @Override
-      public void onGlobalLayout() {
-        int width = mRbMine.getWidth();
-        int x = (int) mRbMine.getX();
-        int y = (int) mRbMine.getY();
+      public void onAvatarClick() {
+        if (AppContext.user != null && AppContext.user.isIsVisitors()) {
+          startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
 
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mUnReadMassageView.getLayoutParams();
-        params.setMargins(x + width / 2 + 30, y, 0, 0);
-
-        if (observer.isAlive()) {
-          if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-            observer.removeOnGlobalLayoutListener(this);
-          } else {
-            observer.removeGlobalOnLayoutListener(this);
-          }
+        } else {
+          UMEvent("profile_c");
+          startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
         }
       }
     });
+
+    mDrawerItemFavorite.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onDrawerItemClick(v);
+      }
+    });
+
+    mDrawerItemUserCenter.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onDrawerItemClick(v);
+      }
+    });
+
+    mDrawerItemMessage.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onDrawerItemClick(v);
+      }
+    });
+
+    mDrawerItemFeedback.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onDrawerItemClick(v);
+      }
+    });
+
+    mDrawerItemSetting.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onDrawerItemClick(v);
+      }
+    });
   }
+
+  /**
+   * Drawer Item Click
+   */
+  private void onDrawerItemClick(final View v) {
+    mDrawer.closeDrawer(GravityCompat.START);
+
+    new Handler().postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        switch (v.getId()) {
+          case R.id.drawerItemFavorite:
+            startActivity(FavoriteActivity.class);
+            break;
+
+          case R.id.drawerItemUserCenter:
+            if (AppContext.user == null) {
+              return;
+            }
+
+            Intent intent = new Intent(RecommendActivity.this, UserCenterActivityNew.class);
+            intent.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID, AppContext.user.getUserId());
+            startActivity(intent);
+            break;
+
+          case R.id.drawerItemMessage:
+            startActivity(MessageActivity.class);
+            break;
+
+          case R.id.drawerItemFeedback:
+            startActivity(FeedbackActivity.class);
+            break;
+
+          case R.id.drawerItemSetting:
+            startActivity(SettingActivity.class);
+            break;
+        }
+      }
+    }, 200);
+  }
+
+  /**
+   * 设置我的Tab红点
+   */
+//  private void initUnreadView() {
+//    final ViewTreeObserver observer = mRbMine.getViewTreeObserver();
+//    observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//      @Override
+//      public void onGlobalLayout() {
+//        int width = mRbMine.getWidth();
+//        int x = (int) mRbMine.getX();
+//        int y = (int) mRbMine.getY();
+//
+//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mUnReadMassageView.getLayoutParams();
+//        params.setMargins(x + width / 2 + 30, y, 0, 0);
+//
+//        if (observer.isAlive()) {
+//          if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+//            observer.removeOnGlobalLayoutListener(this);
+//          } else {
+//            observer.removeGlobalOnLayoutListener(this);
+//          }
+//        }
+//      }
+//    });
+//  }
 
   /**
    * 连接融云服务成功
@@ -289,19 +366,25 @@ public class RecommendActivity extends ImMainActivity {
    * 显示我的红点
    */
   private void showUnreadView() {
-    if (mUnReadMassageView == null) {
+    if (mDrawerItemMessage == null) {
       return;
     }
 
-    if (mHasPushUnreadMessage) {
-      mUnReadMassageView.setVisibility(View.VISIBLE);
-    } else {
-      if (mHasImUnreadMessage) {
-        mUnReadMassageView.setVisibility(View.VISIBLE);
-      } else {
-        mUnReadMassageView.setVisibility(View.INVISIBLE);
-      }
-    }
+    mDrawerItemMessage.showRedDot();
+
+//    if (mUnReadMassageView == null) {
+//      return;
+//    }
+//
+//    if (mHasPushUnreadMessage) {
+//      mUnReadMassageView.setVisibility(View.VISIBLE);
+//    } else {
+//      if (mHasImUnreadMessage) {
+//        mUnReadMassageView.setVisibility(View.VISIBLE);
+//      } else {
+//        mUnReadMassageView.setVisibility(View.INVISIBLE);
+//      }
+//    }
   }
 
   public void showUnreadView(boolean isShow) {
@@ -379,13 +462,15 @@ public class RecommendActivity extends ImMainActivity {
     }
   }
 
-  @Override protected int activitySetup() {
+  @Override
+  protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
   }
 
   @OnClick({
       R.id.recommend_title_location_rl, R.id.tvRight, R.id.ivLeft, R.id.recommend_title_more_iv
-  }) public void titleClick(View view) {
+  })
+  public void titleClick(View view) {
     if (KeyboardUtils.isFastDoubleClick()) return;
     switch (view.getId()) {
 
@@ -412,7 +497,8 @@ public class RecommendActivity extends ImMainActivity {
             selectedCity();
           } else {
             RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-              @Override public void hasCityList(ArrayList<CityModel> list) {
+              @Override
+              public void hasCityList(ArrayList<CityModel> list) {
                 RecommendActivity.this.list = list;
                 if (RecommendActivity.this.list != null) {
                   selectedCity();
@@ -444,76 +530,77 @@ public class RecommendActivity extends ImMainActivity {
     articleFragment.getArticles(false);
   }
 
-  private void initView() {
-    viewpagerSelected(0);
-  }
+//  private void initView() {
+//    viewpagerSelected(0);
+//  }
 
-  private void viewpagerSelected(int index) {
+//  private void viewpagerSelected(int index) {
+//
+//
+//    LogUtils.json("selected == " + index);
+//    recommendTitleMoreRl.setVisibility(View.GONE);
+//
+//    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//    transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
+//    if (index == 0) {
+//      tvTitle.setText(R.string.app_name);
+//      transaction.hide(articleFragment)
+//          .hide(searchFragment)
+//          .hide(meFragment)
+//          .show(recommendFragment)
+//          .commitAllowingStateLoss();
+//
+//
+//      vLeft.setVisibility(View.VISIBLE);
+//      ivLeft.setVisibility(View.GONE);
+//      tvRight.setVisibility(View.GONE);
+//      vTitle.setVisibility(View.VISIBLE);
+//    } else if (index == 1) {
+//      if (!articleFragment.isAdded()) {
+//        transaction.add(R.id.container, articleFragment, "page_2");
+//      }
+//      transaction.hide(recommendFragment)
+//          .hide(searchFragment)
+//          .hide(meFragment)
+//          .show(articleFragment)
+//          .commitAllowingStateLoss();
+//      ivLeft.setVisibility(View.GONE);
+//      tvRight.setVisibility(View.GONE);
+//      vLeft.setVisibility(View.GONE);
+//      tvTitle.setText("趣发现");
+//      vTitle.setVisibility(View.VISIBLE);
+//    } else if (index == 2) {
+//      if (!searchFragment.isAdded()) {
+//        transaction.add(R.id.container, searchFragment, "page_3");
+//      }
+//      transaction.hide(articleFragment)
+//          .hide(meFragment)
+//          .hide(recommendFragment)
+//          .show(searchFragment)
+//          .commitAllowingStateLoss();
+//      vTitle.setVisibility(View.GONE);
+//    } else if (index == 3) {
+//      if (!meFragment.isAdded()) {
+//        transaction.add(R.id.container, meFragment, "page_4");
+//      }
+//      transaction.hide(articleFragment)
+//          .hide(searchFragment)
+//          .hide(recommendFragment)
+//          .show(meFragment)
+//          .commitAllowingStateLoss();
+//      vLeft.setVisibility(View.GONE);
+//
+//      ivLeft.setVisibility(View.VISIBLE);
+//      tvRight.setVisibility(View.VISIBLE);
+//      vTitle.setVisibility(View.VISIBLE);
+//
+//      tvTitle.setText("");
+//    }
+//    viewPagerIndex = index;
+//  }
 
-
-    LogUtils.json("selected == " + index);
-    recommendTitleMoreRl.setVisibility(View.GONE);
-
-    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-    if (index == 0) {
-      tvTitle.setText(R.string.app_name);
-      transaction.hide(articleFragment)
-          .hide(searchFragment)
-          .hide(meFragment)
-          .show(recommendFragment)
-          .commitAllowingStateLoss();
-
-
-      vLeft.setVisibility(View.VISIBLE);
-      ivLeft.setVisibility(View.GONE);
-      tvRight.setVisibility(View.GONE);
-      vTitle.setVisibility(View.VISIBLE);
-    } else if (index == 1) {
-      if (!articleFragment.isAdded()) {
-        transaction.add(R.id.container, articleFragment, "page_2");
-      }
-      transaction.hide(recommendFragment)
-          .hide(searchFragment)
-          .hide(meFragment)
-          .show(articleFragment)
-          .commitAllowingStateLoss();
-      ivLeft.setVisibility(View.GONE);
-      tvRight.setVisibility(View.GONE);
-      vLeft.setVisibility(View.GONE);
-      tvTitle.setText("趣发现");
-      vTitle.setVisibility(View.VISIBLE);
-    } else if (index == 2) {
-      if (!searchFragment.isAdded()) {
-        transaction.add(R.id.container, searchFragment, "page_3");
-      }
-      transaction.hide(articleFragment)
-          .hide(meFragment)
-          .hide(recommendFragment)
-          .show(searchFragment)
-          .commitAllowingStateLoss();
-      vTitle.setVisibility(View.GONE);
-    } else if (index == 3) {
-      if (!meFragment.isAdded()) {
-        transaction.add(R.id.container, meFragment, "page_4");
-      }
-      transaction.hide(articleFragment)
-          .hide(searchFragment)
-          .hide(recommendFragment)
-          .show(meFragment)
-          .commitAllowingStateLoss();
-      vLeft.setVisibility(View.GONE);
-
-      ivLeft.setVisibility(View.VISIBLE);
-      tvRight.setVisibility(View.VISIBLE);
-      vTitle.setVisibility(View.VISIBLE);
-
-      tvTitle.setText("");
-    }
-    viewPagerIndex = index;
-  }
-
-  @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK) {
       long secondTime = System.currentTimeMillis();
       if (secondTime - firstTime > 700) {// 如果两次按键时间间隔大于800毫秒，则不退出
@@ -529,14 +616,16 @@ public class RecommendActivity extends ImMainActivity {
     return true;
   }
 
-  @Override protected void onResume() {
+  @Override
+  protected void onResume() {
     resumeUpdateDataTimes = 0;
     netHandler.sendMessageDelayed(netHandler.obtainMessage(0x02), 200);
     super.onResume();
   }
 
   private Handler netHandler = new Handler() {
-    @Override public void handleMessage(Message msg) {
+    @Override
+    public void handleMessage(Message msg) {
       switch (msg.what) {
         case 0x00:
           netHandler.sendMessageDelayed(netHandler.obtainMessage(0x01), 2000);
@@ -546,7 +635,8 @@ public class RecommendActivity extends ImMainActivity {
   };
   private int resumeUpdateDataTimes = 0;
 
-  @Subscribe public void onMessageEvent(QuchuEventModel event) {
+  @Subscribe
+  public void onMessageEvent(QuchuEventModel event) {
 
     switch (event.getFlag()) {
       case EventFlags.EVENT_NEW_CITY_SELECTED:
@@ -575,7 +665,8 @@ public class RecommendActivity extends ImMainActivity {
           checkUpdateRunning = true;
           VersionInfoPresenter.checkUpdate(getApplicationContext(),
               new CommonListener<UpdateInfoModel>() {
-                @Override public void successListener(final UpdateInfoModel response) {
+                @Override
+                public void successListener(final UpdateInfoModel response) {
                   checkUpdateRunning = false;
                   if (BuildConfig.VERSION_CODE < response.getVersionCode()) {
 
@@ -585,8 +676,9 @@ public class RecommendActivity extends ImMainActivity {
                         .negativeText("容我三思")
                         .cancelable(false)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
-                          @Override public void onClick(@NonNull MaterialDialog dialog,
-                              @NonNull DialogAction which) {
+                          @Override
+                          public void onClick(@NonNull MaterialDialog dialog,
+                                              @NonNull DialogAction which) {
                             Intent browserIntent =
                                 new Intent(Intent.ACTION_VIEW, Uri.parse(response.getDownUrl()));
                             startActivity(browserIntent);
@@ -612,22 +704,26 @@ public class RecommendActivity extends ImMainActivity {
     }
   }
 
-  @Override protected void onStart() {
+  @Override
+  protected void onStart() {
     super.onStart();
     EventBus.getDefault().register(this);
   }
 
-  @Override protected void onStop() {
+  @Override
+  protected void onStop() {
     EventBus.getDefault().unregister(this);
     super.onStop();
   }
 
-  @Override protected void onDestroy() {
+  @Override
+  protected void onDestroy() {
     super.onDestroy();
     ButterKnife.unbind(this);
   }
 
-  @Override public void onBackPressed() {
+  @Override
+  public void onBackPressed() {
 
     if (mDrawer.isDrawerOpen(GravityCompat.START)) {
       mDrawer.closeDrawer(GravityCompat.START);

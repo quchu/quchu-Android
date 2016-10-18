@@ -13,9 +13,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import android.widget.Toast;
-import co.quchu.quchu.net.NetUtil;
+
 import com.android.volley.VolleyError;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -32,6 +31,7 @@ import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserCenterInfo;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.UserCenterPresenter;
@@ -168,18 +168,18 @@ public class NewMeFragment extends BaseFragment {
       return;
     }
 
-    if (mHasPushUnreadMessage) {
-      unReadMassageView.setVisibility(View.VISIBLE);
-      ((RecommendActivity) getActivity()).showUnreadView(true);
-    } else {
-      if (mHasImUnreadMessage) {
-        unReadMassageView.setVisibility(View.VISIBLE);
-        ((RecommendActivity) getActivity()).showUnreadView(true);
-      } else {
-        unReadMassageView.setVisibility(View.INVISIBLE);
-        ((RecommendActivity) getActivity()).showUnreadView(false);
-      }
-    }
+//    if (mHasPushUnreadMessage) {
+//      unReadMassageView.setVisibility(View.VISIBLE);
+//      ((RecommendActivity) getActivity()).showUnreadView(true);
+//    } else {
+//      if (mHasImUnreadMessage) {
+//        unReadMassageView.setVisibility(View.VISIBLE);
+//        ((RecommendActivity) getActivity()).showUnreadView(true);
+//      } else {
+//        unReadMassageView.setVisibility(View.INVISIBLE);
+//        ((RecommendActivity) getActivity()).showUnreadView(false);
+//      }
+//    }
   }
 
   @Override

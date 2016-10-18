@@ -94,8 +94,8 @@ public class XiaoQActivity extends BaseBehaviorActivity implements CommonListene
         break;
 
       case SysMessage.TYPE_USER:
-        intent = new Intent(XiaoQActivity.this, UserCenterActivity.class);
-        intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, Integer.valueOf(message.getId()));
+        intent = new Intent(XiaoQActivity.this, UserCenterActivityNew.class);
+        intent.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID, Integer.valueOf(message.getId()));
         break;
     }
 

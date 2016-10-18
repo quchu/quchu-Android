@@ -16,15 +16,60 @@
       android:layout_height="match_parent"
       />
 
-  <android.support.design.widget.NavigationView
-      android:id="@+id/nav_view"
-      android:layout_width="wrap_content"
+  <ScrollView
+      android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_gravity="start"
-      android:fitsSystemWindows="true"
+      android:background="@color/standard_color_white"
+      android:fitsSystemWindows="true">
 
-      app:headerLayout="@layout/cp_banner"
-      app:menu="@menu/activity_main_drawer"
-      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+      <co.quchu.quchu.widget.DrawerHeaderView
+          android:id="@+id/drawerHeaderView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+
+      <co.quchu.quchu.widget.DrawerItemView
+          android:id="@+id/drawerItemFavorite"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:divImage="@mipmap/ic_shoucang_mine"
+          app:divText="收藏"/>
+
+      <co.quchu.quchu.widget.DrawerItemView
+          android:id="@+id/drawerItemUserCenter"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:divImage="@mipmap/ic_shoucang_mine"
+          app:divText="个人中心"/>
+
+      <co.quchu.quchu.widget.DrawerItemView
+          android:id="@+id/drawerItemMessage"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:divImage="@mipmap/ic_xiaoxi_mine"
+          app:divText="消息"/>
+
+      <co.quchu.quchu.widget.DrawerItemView
+          android:id="@+id/drawerItemFeedback"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:divImage="@mipmap/ic_yijianhefankui"
+          app:divText="意见反馈"/>
+
+      <co.quchu.quchu.widget.DrawerItemView
+          android:id="@+id/drawerItemSetting"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:divImage="@mipmap/ic_shezhi"
+          app:divText="设置"/>
+
+    </LinearLayout>
+
+  </ScrollView>
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="192dp"
+              android:background="@color/standard_color_white"
+              android:gravity="center"
+              android:orientation="vertical">
+
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/drawerHeaderAvatarImg"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/base_margin"
+        fresco:placeholderImage="@mipmap/head_place_hold"
+        fresco:roundAsCircle="true"
+        fresco:roundingBorderColor="@color/colorBorder"
+        fresco:roundingBorderWidth="2dp"/>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/drawerHeaderGenderImg"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@id/drawerHeaderAvatarImg"
+        android:layout_alignRight="@id/drawerHeaderAvatarImg"
+        android:layout_marginBottom="7dp"
+        android:layout_marginRight="7dp"
+        fresco:backgroundImage="@color/standard_color_white"
+        fresco:roundAsCircle="true"
+        fresco:roundingBorderColor="@color/colorBorder"
+        fresco:roundingBorderWidth="2dp"/>
+
+  </RelativeLayout>
+
+  <TextView
+      android:id="@+id/drawerHeaderNameTv"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/half_margin"
+      android:singleLine="true"
+      android:textColor="@color/standard_color_h2_dark"
+      tools:text="我的手_做不到"/>
+
+  <TextView
+      android:id="@+id/drawerHeaderMarkTv"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:background="@drawable/me_user_tag"
+      android:gravity="center"
+      android:minWidth="@dimen/double_margin"
+      android:paddingBottom="4dp"
+      android:paddingLeft="@dimen/half_margin"
+      android:paddingRight="@dimen/half_margin"
+      android:paddingTop="4dp"
+      android:textColor="@color/standard_color_h3_dark"
+      tools:text="好奇猫"/>
+
+</LinearLayout>
