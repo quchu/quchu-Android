@@ -477,11 +477,17 @@ public class RecommendActivity extends ImMainActivity {
   })
   public void titleClick(View view) {
     if (KeyboardUtils.isFastDoubleClick()) return;
+
     switch (view.getId()) {
 
       case R.id.ivLeft:
-        startActivity(SettingActivity.class);
-        //                MenuSettingDialogFg.newInstance().show(getSupportFragmentManager(), "~");
+        if (mDrawer != null) {
+          mDrawer.openDrawer(GravityCompat.START);
+        }
+        break;
+
+      case R.id.recommend_title_more_iv:
+        startActivity(SearchActivity.class);
         break;
 
       case R.id.tvRight:
@@ -494,8 +500,8 @@ public class RecommendActivity extends ImMainActivity {
           startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
         }
         break;
-      case R.id.recommend_title_location_rl:
 
+      case R.id.recommend_title_location_rl:
         UMEvent("location_c");
         if (NetUtil.isNetworkConnected(getApplicationContext())) {
           if (list != null) {
@@ -514,7 +520,6 @@ public class RecommendActivity extends ImMainActivity {
         } else {
           Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
         }
-
         break;
     }
   }

@@ -6,31 +6,71 @@
               android:background="@android:color/white"
               android:orientation="vertical">
 
-    <include layout="@layout/cp_enhanced_toolbar"/>
+  <include layout="@layout/cp_enhanced_toolbar"/>
 
-    <co.quchu.quchu.widget.SettingItemView
-        android:id="@+id/setting_item_dahuo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:stShowSwitchBtn="true"
-        app:stText="搭伙功能"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="15dp"
+      android:layout_marginTop="15dp"
+      android:text="智能助手设置"
+      android:textColor="@color/standard_color_h3_dark"
+      android:textSize="13sp"/>
 
-    <View style="@style/HorizontalLine"/>
+  <co.quchu.quchu.widget.SettingItemView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:stShowSwitchBtn="false"
+      app:stText="Patricia 设置"/>
 
-    <co.quchu.quchu.widget.SettingItemView
-        android:id="@+id/setting_item_about"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:stText="关于我们"/>
+  <View style="@style/HorizontalDivider"/>
 
-    <View style="@style/HorizontalLine"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="15dp"
+      android:layout_marginTop="15dp"
+      android:text="系统设置"
+      android:textColor="@color/standard_color_h3_dark"
+      android:textSize="13sp"/>
 
-    <co.quchu.quchu.widget.SettingItemView
-        android:id="@+id/setting_item_update"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:stText="检查更新"/>
+  <co.quchu.quchu.widget.SettingItemView
+      android:id="@+id/setting_item_dahuo"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:stShowSwitchBtn="true"
+      app:stText="搭伙功能"/>
 
-    <View style="@style/HorizontalLine"/>
+  <View style="@style/HorizontalDivider"/>
+
+  <co.quchu.quchu.widget.SettingItemView
+      android:id="@+id/setting_item_about"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:stText="关于趣处"/>
+
+  <View style="@style/HorizontalDivider"/>
+
+  <co.quchu.quchu.widget.SettingItemView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:stText="商务合作"/>
+
+  <View style="@style/HorizontalDivider"/>
+
+  <co.quchu.quchu.widget.SettingItemView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:stText="媒体合作"/>
+
+  <View style="@style/HorizontalDivider"/>
+
+  <co.quchu.quchu.widget.SettingItemView
+      android:id="@+id/setting_item_update"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:stText="检查更新"/>
+
+  <View style="@style/HorizontalDivider"/>
 
 </LinearLayout>
