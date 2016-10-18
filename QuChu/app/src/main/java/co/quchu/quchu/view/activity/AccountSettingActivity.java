@@ -413,8 +413,6 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                     @Override
                     public void onSuccess(String photoUrl) {
                         refreshUserInfo();
-                        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATE));
-
                     }
 
                     @Override
@@ -433,6 +431,7 @@ public class AccountSettingActivity extends BaseBehaviorActivity implements View
                 UserInfoHelper.saveUserInfo(response);
                 Toast.makeText(AccountSettingActivity.this, "账户信息修改成功", Toast.LENGTH_SHORT).show();
                 DialogUtil.dismissProgess();
+                EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_INFO_UPDATE));
                 SPUtils.putBooleanToSPMap(AccountSettingActivity.this, AppKey.IS_MENU_NEED_REFRESH, true);
                 finish();
             }

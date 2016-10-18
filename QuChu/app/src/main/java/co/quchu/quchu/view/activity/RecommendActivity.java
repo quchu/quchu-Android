@@ -212,13 +212,20 @@ public class RecommendActivity extends ImMainActivity {
     mDrawerHeaderView.setOnDrawerAvatarClickListener(new DrawerHeaderView.OnDrawerAvatarClickListener() {
       @Override
       public void onAvatarClick() {
-        if (AppContext.user != null && AppContext.user.isIsVisitors()) {
-          startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
+        mDrawer.closeDrawer(GravityCompat.START);
 
-        } else {
-          UMEvent("profile_c");
-          startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
-        }
+        new Handler().postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            if (AppContext.user != null && AppContext.user.isIsVisitors()) {
+              startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
+
+            } else {
+              UMEvent("profile_c");
+              startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
+            }
+          }
+        }, 200);
       }
     });
 
@@ -283,6 +290,10 @@ public class RecommendActivity extends ImMainActivity {
             break;
 
           case R.id.drawerItemMessage:
+            if (mDrawerItemMessage.getRedDotVisibility() == View.VISIBLE) {
+              mDrawerItemMessage.hideRedDot();
+            }
+
             startActivity(MessageActivity.class);
             break;
 
@@ -370,21 +381,15 @@ public class RecommendActivity extends ImMainActivity {
       return;
     }
 
-    mDrawerItemMessage.showRedDot();
-
-//    if (mUnReadMassageView == null) {
-//      return;
-//    }
-//
-//    if (mHasPushUnreadMessage) {
-//      mUnReadMassageView.setVisibility(View.VISIBLE);
-//    } else {
-//      if (mHasImUnreadMessage) {
-//        mUnReadMassageView.setVisibility(View.VISIBLE);
-//      } else {
-//        mUnReadMassageView.setVisibility(View.INVISIBLE);
-//      }
-//    }
+    if (mHasPushUnreadMessage) {
+      mDrawerItemMessage.showRedDot();
+    } else {
+      if (mHasImUnreadMessage) {
+        mDrawerItemMessage.showRedDot();
+      } else {
+        mDrawerItemMessage.hideRedDot();
+      }
+    }
   }
 
   public void showUnreadView(boolean isShow) {
@@ -637,7 +642,6 @@ public class RecommendActivity extends ImMainActivity {
 
   @Subscribe
   public void onMessageEvent(QuchuEventModel event) {
-
     switch (event.getFlag()) {
       case EventFlags.EVENT_NEW_CITY_SELECTED:
         ArrayMap<String, Object> arrayMap = new ArrayMap<>();
@@ -647,20 +651,27 @@ public class RecommendActivity extends ImMainActivity {
 
         updateRecommend();
         break;
+
       case EventFlags.EVENT_USER_LOGIN_SUCCESS:
         if (viewPagerIndex == 3) {
           tvTitle.setText("");
           tvRight.setText(R.string.edit);
         }
         break;
+
       case EventFlags.EVENT_USER_LOGOUT:
         if (viewPagerIndex == 3) {
           tvTitle.setText("");
           tvRight.setText(R.string.login);
         }
-        break;
-      case EventFlags.EVENT_APPLICATION_CHECK_UPDATE:
 
+        //用户退出登录
+        if (mDrawerHeaderView != null) {
+          mDrawerHeaderView.setUser(AppContext.user);
+        }
+        break;
+
+      case EventFlags.EVENT_APPLICATION_CHECK_UPDATE:
         if (!checkUpdateRunning) {
           checkUpdateRunning = true;
           VersionInfoPresenter.checkUpdate(getApplicationContext(),
@@ -699,7 +710,13 @@ public class RecommendActivity extends ImMainActivity {
                 }
               });
         }
+        break;
 
+      case EventFlags.EVENT_USER_INFO_UPDATE:
+        //用户信息更新
+        if (mDrawerHeaderView != null) {
+          mDrawerHeaderView.setUser(AppContext.user);
+        }
         break;
     }
   }

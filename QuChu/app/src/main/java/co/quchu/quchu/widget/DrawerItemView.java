@@ -56,4 +56,8 @@ public class DrawerItemView extends LinearLayout {
       mUnReadMassageView.setVisibility(INVISIBLE);
     }
   }
+
+  public int getRedDotVisibility() {
+    return mUnReadMassageView.getVisibility();
+  }
 }
