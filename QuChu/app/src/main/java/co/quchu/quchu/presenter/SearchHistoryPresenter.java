@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Nico on 16/10/19.
  */
 
-public class SearchPresenterNew {
+public class SearchHistoryPresenter {
 
   /**
    * 插入一条搜索键值
