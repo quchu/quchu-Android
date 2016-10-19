@@ -48,7 +48,7 @@ public class UserBehaviorPresentor {
         contentValues.put("arguments",arguments);
         contentValues.put("timestamp",timestamp);
         long id = DatabaseHelper.getInstance(context).getReadableDatabase().insert(DatabaseHelper.TABLE_NAME_USER_BEHAVIOR,null,contentValues);
-        closeDBIfOpen(context);
+        DatabaseHelper.closeIfOpend(context);
         return id;
     }
 
@@ -76,7 +76,7 @@ public class UserBehaviorPresentor {
             dataSet.add(ubm);
         }
         c.close();
-        closeDBIfOpen(context);
+        DatabaseHelper.closeIfOpend(context);
         return dataSet;
     }
 
@@ -87,7 +87,7 @@ public class UserBehaviorPresentor {
      */
     public static boolean delBehaviors(Context context){
         boolean delSuccess = DatabaseHelper.getInstance(context).getReadableDatabase().delete(DatabaseHelper.TABLE_NAME_USER_BEHAVIOR,null,null)>0;
-        closeDBIfOpen(context);
+        DatabaseHelper.closeIfOpend(context);
         return delSuccess;
     }
 
@@ -104,19 +104,11 @@ public class UserBehaviorPresentor {
             count = c.getCount();
         }
         c.close();
-        closeDBIfOpen(context);
+        DatabaseHelper.closeIfOpend(context);
         return count;
     }
 
-    /**
-     * 关闭数据库
-     * @param context
-     */
-    private static void closeDBIfOpen(Context context){
-        if (DatabaseHelper.getInstance(context).getReadableDatabase().isOpen()){
-            DatabaseHelper.getInstance(context).getReadableDatabase().close();
-        }
-    }
+
 
 
     public static void postBehaviors(final Context context, List<UserBehaviorModel> data, final CommonListener pListener) {
