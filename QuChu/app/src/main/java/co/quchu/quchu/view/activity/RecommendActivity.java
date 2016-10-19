@@ -487,7 +487,7 @@ public class RecommendActivity extends ImMainActivity {
         break;
 
       case R.id.recommend_title_more_iv:
-        startActivity(SearchActivity.class);
+        startActivity(SearchActivityNew.class);
         break;
 
       case R.id.tvRight:

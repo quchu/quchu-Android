@@ -16,7 +16,7 @@
     <LinearLayout
         android:id="@+id/search_title_bar_ll"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_heigh">
+        android:layout_height="@dimen/title_bar_height">
 
         <LinearLayout
             android:layout_marginLeft="@dimen/base_margin"
