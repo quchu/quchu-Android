@@ -1,53 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:SwipeDeleteLayout="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/half_margin"
-    android:layout_marginRight="@dimen/half_margin"
-    android:layout_marginTop="@dimen/half_margin">
+    android:background="@color/standard_color_white"
+    android:padding="@dimen/half_margin"
+    >
 
-    <co.quchu.quchu.widget.SwipeDeleteLayout
-        android:id="@+id/swipe_delete_item"
+  <co.quchu.quchu.widget.SwipeDeleteLayout
+      android:id="@+id/swipe_delete_item"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fillViewport="true"
+      app:content_margin="16dp"
+      >
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
-        SwipeDeleteLayout:content_margin="16dp">
+        android:orientation="horizontal"
+        >
+
+      <RelativeLayout
+          android:id="@id/swipe_delete_content"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
 
-            <RelativeLayout
-                android:id="@id/swipe_delete_content"
+          <com.facebook.drawee.view.SimpleDraweeView
+              android:id="@+id/simpleDraweeView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              app:placeholderImage="@mipmap/ic_image_empty"
+              app:viewAspectRatio="1.4"
+              />
+
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              >
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <include
-                    layout="@layout/item_nearby_quchu_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dp" />
-
-            </RelativeLayout>
-
-            <FrameLayout
-                android:id="@id/swipe_delete_action"
-                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
+                android:orientation="vertical"
+                >
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/ic_delete"
-                    tools:ignore="ContentDescription" />
-            </FrameLayout>
+              <TextView
+                  android:id="@+id/desc"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_above="@+id/tag"
+                  android:layout_marginLeft="@dimen/half_margin"
+                  android:layout_marginRight="@dimen/half_margin"
+                  android:layout_marginTop="@dimen/half_margin"
+                  android:maxLines="2"
+                  android:textColor="@color/standard_color_h1_dark"
+                  android:textSize="@dimen/standard_text_size_h1"
+                  tools:text="标题"
+                  />
+
+              <TextView
+                  android:id="@+id/address"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="@dimen/half_margin"
+                  android:layout_marginRight="@dimen/half_margin"
+                  android:layout_marginTop="@dimen/half_margin"
+                  android:singleLine="true"
+                  android:textColor="@color/standard_color_h2_dark"
+                  android:textSize="@dimen/standard_text_size_h2"
+                  android:visibility="invisible"
+                  tools:text="厦门观音山.dfd"
+                  tools:visibility="visible"
+                  />
+
+              <co.quchu.quchu.widget.TagCloudView
+                  android:id="@+id/tag"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+
+                  android:layout_marginLeft="@dimen/half_margin"
+                  android:layout_marginRight="@dimen/half_margin"
+                  android:layout_marginTop="@dimen/half_margin"
+
+                  app:tcvBackground="@drawable/shape_lineframe_gray_cap"
+                  app:tcvBorder="8dp"
+                  app:tcvCanTagClick="false"
+                  app:tcvItemBorderHorizontal="5dp"
+                  app:tcvSingleLine="true"
+                  app:tcvTextColor="@color/standard_color_h3_dark"
+                  app:tcvTextSize="4dp"
+                  />
+
+
+            </LinearLayout>
+
+          </LinearLayout>
         </LinearLayout>
 
-    </co.quchu.quchu.widget.SwipeDeleteLayout>
+      </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+      <FrameLayout
+          android:id="@id/swipe_delete_action"
+          android:layout_width="80dp"
+          android:layout_height="wrap_content"
+          android:background="@color/colorPrimary"
+          >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_delete"
+            tools:ignore="ContentDescription"
+            />
+      </FrameLayout>
+    </LinearLayout>
+
+  </co.quchu.quchu.widget.SwipeDeleteLayout>
+
+</LinearLayout>

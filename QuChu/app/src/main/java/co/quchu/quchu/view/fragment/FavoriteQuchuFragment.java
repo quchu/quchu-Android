@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import co.quchu.quchu.widget.DividerItemDecoration;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhuge.analysis.stat.ZhugeSDK;
@@ -88,6 +89,7 @@ public class FavoriteQuchuFragment extends BaseFragment implements AdapterBase.O
         adapter = new FavoriteQuchuAdapter(mIsMe);
         adapter.setLoadmoreListener(this);
         adapter.setItemClickListener(this);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(adapter);
 
         if (mIsMe) {

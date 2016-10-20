@@ -252,7 +252,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     mRecyclerView.setVisibility(View.VISIBLE);
     detail_bottom_group_ll.setVisibility(View.VISIBLE);
     dModel.copyFrom(model);
-    getEnhancedToolbar().getTitleTv().setText(dModel.getName());
+
     getEnhancedToolbar().getRightIv().setImageResource(R.mipmap.ic_home);
     getEnhancedToolbar().getRightIv().setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {

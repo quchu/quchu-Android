@@ -76,7 +76,11 @@ public class FavoriteQuchuAdapter extends AdapterBase<FavoriteBean.ResultBean, F
         holder.name.setText(bean.getName());
         holder.simpleDraweeView.setImageURI(Uri.parse(bean.getCover()));
         holder.tag.setTags(bean.getTagsString());
-        holder.address.setText(bean.getAddress());
+        if (null!=bean.getDescribe()&&bean.getDescribe().indexOf(",")!=-1){
+            holder.address.setText(bean.getDescribe().replace(",","-"));
+        }else{
+            holder.address.setText(bean.getDescribe());
+        }
         holder.address.setSelected(true);
 //        holder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -120,8 +124,6 @@ public class FavoriteQuchuAdapter extends AdapterBase<FavoriteBean.ResultBean, F
         TagCloudView tag;
         @Bind(R.id.address)
         TextView address;
-        @Bind(R.id.cvRoot)
-        CardView cvRoot;
         @Bind(R.id.swipe_delete_content)
         RelativeLayout swipeDeleteContent;
         @Bind(R.id.swipe_delete_action)

@@ -4,27 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="co.quchu.quchu.view.activity.FavoriteActivity">
+    android:background="@color/standard_color_white"
+    tools:context="co.quchu.quchu.view.activity.FavoriteActivity"
+    >
 
-    <include layout="@layout/cp_enhanced_toolbar" />
+  <include layout="@layout/cp_enhanced_toolbar"/>
 
+  <LinearLayout
+      android:id="@+id/llTab"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/appbar"
+      android:gravity="center_horizontal"
+      >
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="@dimen/item_height"
-        android:layout_below="@id/appbar"
-        android:background="@color/standard_color_white"
         app:tabIndicatorColor="@color/standard_color_h1_dark"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/standard_color_h1_dark"
-        app:tabTextColor="@color/standard_color_h3_dark" />
+        app:tabTextColor="@color/standard_color_h3_dark"
+        />
 
+  </LinearLayout>
 
-    <co.quchu.quchu.widget.NoScrollViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tabLayout" />
+  <View
+      android:id="@+id/vDivider"
+      android:layout_below="@+id/llTab"
+      style="@style/HorizontalDivider"
+      />
+
+  <co.quchu.quchu.widget.NoScrollViewPager
+      android:id="@+id/viewpager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/vDivider"
+      />
 
 </RelativeLayout>

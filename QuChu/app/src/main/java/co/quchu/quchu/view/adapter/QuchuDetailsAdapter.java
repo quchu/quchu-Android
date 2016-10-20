@@ -242,8 +242,10 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         //            case LAYOUT_TYPE_IMAGE:
         //                return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
       case LAYOUT_TYPE_LABEL:
-        return new LabelViewHolder(
-            mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
+        return new BlankViewHolder(
+          mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
+        //LabelViewHolder(
+        //      mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
       case LAYOUT_TYPE_MATCHED_TAGS:
         return new MatchedTagsViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_matched_tags,parent,false));

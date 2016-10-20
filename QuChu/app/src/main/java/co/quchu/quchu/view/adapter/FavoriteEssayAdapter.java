@@ -55,8 +55,12 @@ public class FavoriteEssayAdapter extends AdapterBase<FavoriteEssayBean.ResultBe
         }
         holder.swipeDeleteItem.setScrollX(0);
 
-
         final FavoriteEssayBean.ResultBean bean = getData().get(position);
+
+        holder.tvDescription.setText(bean.getAutor());
+        if (null !=bean.getAutorPhoto()){
+            holder.sdvAvatar.setImageURI(Uri.parse(bean.getAutorPhoto()));
+        }
         holder.simpleDraweeView.setImageURI(Uri.parse(bean.getImageUrl()));
         holder.favoriteEssayName.setText(bean.getArticleName());
         if (itemClickListener != null) {
@@ -89,12 +93,16 @@ public class FavoriteEssayAdapter extends AdapterBase<FavoriteEssayBean.ResultBe
         SimpleDraweeView simpleDraweeView;
         @Bind(R.id.favorite_essay_name)
         TextView favoriteEssayName;
+        @Bind(R.id.tvDescription)
+        TextView tvDescription;
         @Bind(R.id.swipe_delete_content)
         RelativeLayout swipeDeleteContent;
         @Bind(R.id.swipe_delete_action)
         FrameLayout swipeDeleteAction;
         @Bind(R.id.swipe_delete_item)
         SwipeDeleteLayout swipeDeleteItem;
+        @Bind(R.id.sdvAvatar)
+        SimpleDraweeView sdvAvatar;
 
         public ViewHold(View itemView) {
             super(itemView);

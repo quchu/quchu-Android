@@ -112,6 +112,33 @@ public class FavoriteEssayBean {
         private int readCount;
         private String imageUrl;
         private int favoriteCount;
+        private String autorPhoto;
+        private String name;
+        private String autor;
+
+        public String getAutor() {
+            return autor;
+        }
+
+        public void setAutor(String autor) {
+            this.autor = autor;
+        }
+
+        public String getAutorPhoto() {
+            return autorPhoto;
+        }
+
+        public void setAutorPhoto(String autorPhoto) {
+            this.autorPhoto = autorPhoto;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
 
         public int getArticleId() {
             return articleId;
@@ -176,5 +203,22 @@ public class FavoriteEssayBean {
         public void setFavoriteCount(int favoriteCount) {
             this.favoriteCount = favoriteCount;
         }
+
+        @Override public String toString() {
+            return "ResultBean{" +
+                "articleId=" + articleId +
+                ", articleName='" + articleName + '\'' +
+                ", articleComtent='" + articleComtent + '\'' +
+                ", articleCreateUserId=" + articleCreateUserId +
+                ", imageId=" + imageId +
+                ", readCount=" + readCount +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", favoriteCount=" + favoriteCount +
+                ", autorPhoto='" + autorPhoto + '\'' +
+                ", name='" + name + '\'' +
+                ", autor='" + autor + '\'' +
+                '}';
+        }
     }
+
 }
