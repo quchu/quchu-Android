@@ -180,6 +180,7 @@
     <attr name="indicator_color" format="color"/>
   </declare-styleable>
   <!--   动画 布局 end-->
+
   <declare-styleable name="TagCloudView">
     <attr name="tcvBackground" format="reference"/>
     <attr name="tcvTextColor" format="color"/>
@@ -266,6 +267,19 @@
   <declare-styleable name="DrawerItemView">
     <attr name="divText" format="string"/>
     <attr name="divImage" format="reference"/>
+  </declare-styleable>
+
+  <!-- DropDownMenu-->
+  <declare-styleable name="DropDownMenu">
+    <attr name="ddunderlineColor" format="color"/>
+    <attr name="dddividerColor" format="color"/>
+    <attr name="ddtextSelectedColor" format="color"/>
+    <attr name="ddtextUnselectedColor" format="color"/>
+    <attr name="ddmenuBackgroundColor" format="color"/>
+    <attr name="ddmaskColor" format="color"/>
+    <attr name="ddmenuTextSize" format="dimension"/>
+    <attr name="ddmenuSelectedIcon" format="reference"/>
+    <attr name="ddmenuUnselectedIcon" format="reference"/>
   </declare-styleable>
 
 </resources>

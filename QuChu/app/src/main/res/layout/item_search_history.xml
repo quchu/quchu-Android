@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="@dimen/half_margin">
+
+  <TextView
+      android:id="@+id/search_item_history_tv"
+      style="@style/TextView.H2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:ellipsize="end"
+      android:gravity="left"
+      android:singleLine="true"
+      tools:text="类别"/>
+
+  <ImageView
+      android:id="@+id/search_item_history_delete_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:paddingLeft="@dimen/half_margin"
+      android:paddingRight="@dimen/half_margin"
+      android:src="@mipmap/ic_close"/>
+
+</LinearLayout>

@@ -1,12 +1,10 @@
 package co.quchu.quchu.presenter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import co.quchu.quchu.view.activity.SearchActivity;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -34,7 +32,7 @@ import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.activity.SearchFragment;
+import co.quchu.quchu.view.activity.SearchActivity;
 
 /**
  * SearchPresenter
@@ -110,7 +108,7 @@ public class SearchPresenter {
     }
 
 
-    public static void getCategoryTag(final SearchFragment context,final CommonListener<ArrayList<SearchCategoryBean>> listener) {
+    public static void getCategoryTag(final Context context,final CommonListener<ArrayList<SearchCategoryBean>> listener) {
         GsonRequest<ArrayList<SearchCategoryBean>> request = new GsonRequest<>(NetApi.getCagegoryTag, new TypeToken<ArrayList<SearchCategoryBean>>() {
         }.getType(), new ResponseListener<ArrayList<SearchCategoryBean>>() {
             @Override
@@ -124,7 +122,7 @@ public class SearchPresenter {
 
             }
         });
-        request.start(context.getActivity());
+        request.start(context);
     }
 
     public static void getAreaList(final SearchActivity context) {

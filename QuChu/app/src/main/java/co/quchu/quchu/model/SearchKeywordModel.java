@@ -1,13 +1,50 @@
 package co.quchu.quchu.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Nico on 16/10/19.
  */
+public class SearchKeywordModel implements Parcelable {
 
-public class SearchKeywordModel {
   private int id;
   private String keyword;
   private long timestamp;
+
+  public SearchKeywordModel() {
+
+  }
+
+  protected SearchKeywordModel(Parcel in) {
+    id = in.readInt();
+    keyword = in.readString();
+    timestamp = in.readLong();
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(id);
+    dest.writeString(keyword);
+    dest.writeLong(timestamp);
+  }
+
+  public static final Creator<SearchKeywordModel> CREATOR = new Creator<SearchKeywordModel>() {
+    @Override
+    public SearchKeywordModel createFromParcel(Parcel in) {
+      return new SearchKeywordModel(in);
+    }
+
+    @Override
+    public SearchKeywordModel[] newArray(int size) {
+      return new SearchKeywordModel[size];
+    }
+  };
 
   public int getId() {
     return id;

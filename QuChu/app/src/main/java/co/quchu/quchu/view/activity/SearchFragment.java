@@ -1,6 +1,5 @@
 package co.quchu.quchu.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -14,6 +13,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -27,9 +31,6 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
 import co.quchu.quchu.widget.ErrorView;
-import com.android.volley.VolleyError;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * SearchFragment
@@ -81,7 +82,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
   }
 
   private void getData(){
-    SearchPresenter.getCategoryTag(this, new CommonListener<ArrayList<SearchCategoryBean>>() {
+    SearchPresenter.getCategoryTag(getActivity(), new CommonListener<ArrayList<SearchCategoryBean>>() {
       @Override public void successListener(ArrayList<SearchCategoryBean> response) {
         initCategoryList(response);
         errorView.hideView();
