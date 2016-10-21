@@ -13,6 +13,9 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import co.quchu.quchu.utils.StringUtils;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.Bind;
@@ -30,113 +33,118 @@ import co.quchu.quchu.widget.TagCloudView;
  * email:437943145@qq.com
  * desc :
  */
-public class FavoriteQuchuAdapter extends AdapterBase<FavoriteBean.ResultBean, FavoriteQuchuAdapter.ViewHold> {
+public class FavoriteQuchuAdapter
+    extends AdapterBase<FavoriteBean.ResultBean, FavoriteQuchuAdapter.ViewHold> {
 
-    private boolean animationed;
-    private boolean isMe;
+  private boolean animationed;
+  private boolean isMe;
 
-    @Override protected String getNullDataHint() {
-        return "你还没有收藏趣处";
+  @Override protected String getNullDataHint() {
+    return "你还没有收藏趣处";
+  }
+
+  public FavoriteQuchuAdapter(boolean isMe) {
+    animationed = SPUtils.getBooleanFromSPMap(AppContext.mContext,
+        AppKey.SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU, false);
+    this.isMe = isMe;
+  }
+
+  @Override public void onBindView(final ViewHold holder, final int position) {
+
+    if (position == 0 && !animationed) {
+      animationed = true;
+      SPUtils.putBooleanToSPMap(AppContext.mContext,
+          AppKey.SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU, true);
+      holder.itemView.getViewTreeObserver()
+          .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override public void onGlobalLayout() {
+              holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+              ObjectAnimator animator = ObjectAnimator.ofInt(holder.swipeDeleteItem, "ScrollX", 0,
+                  holder.swipeDeleteAction.getWidth(), 0);
+              animator.setDuration(800);
+              animator.setStartDelay(500);
+              animator.setInterpolator(new FastOutLinearInInterpolator());
+              animator.start();
+            }
+          });
     }
 
-    public FavoriteQuchuAdapter(boolean isMe) {
-        animationed = SPUtils.getBooleanFromSPMap(AppContext.mContext, AppKey.SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU, false);
-        this.isMe = isMe;
+    final FavoriteBean.ResultBean bean = data.get(position);
+
+    if (isMe) {
+      holder.swipeDeleteItem.hideAction(false);
+      holder.swipeDeleteItem.setScrollX(0);
+      holder.swipeDeleteAction.setVisibility(View.VISIBLE);
+    } else {
+      holder.swipeDeleteItem.hideAction(true);
+      holder.swipeDeleteAction.setVisibility(View.GONE);
+    }
+    holder.name.setText(bean.getName());
+    holder.simpleDraweeView.setImageURI(Uri.parse(bean.getCover()));
+    holder.tag.setTags(bean.getTagsString());
+    String info = "";
+    if (null != bean.getDescribe() && bean.getDescribe().indexOf(",") != -1) {
+      info = bean.getDescribe().replace(",", "-");
+    } else {
+      info = bean.getDescribe();
     }
 
-    @Override
-    public void onBindView(final ViewHold holder, final int position) {
+    String distance = "";
+    if (SPUtils.getLatitude() > 0
+        && null != bean.getLatitude()
+        && Double.valueOf(bean.getLatitude()) > 0) {
+      distance = " | "+StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(),
+          Double.valueOf(bean.getLatitude()), Double.valueOf(bean.getLongitude()));
 
-        if (position == 0 && !animationed) {
-            animationed = true;
-            SPUtils.putBooleanToSPMap(AppContext.mContext, AppKey.SPF_KEY_SWIPE_DELETE_PROMPT_FAVORITE_QUCHU, true);
-            holder.itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    holder.itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    ObjectAnimator animator = ObjectAnimator.ofInt(holder.swipeDeleteItem, "ScrollX", 0, holder.swipeDeleteAction.getWidth(), 0);
-                    animator.setDuration(800);
-                    animator.setStartDelay(500);
-                    animator.setInterpolator(new FastOutLinearInInterpolator());
-                    animator.start();
-                }
-            });
-        }
-
-        final FavoriteBean.ResultBean bean = data.get(position);
-
-        if (isMe) {
-            holder.swipeDeleteItem.hideAction(false);
-            holder.swipeDeleteItem.setScrollX(0);
-            holder.swipeDeleteAction.setVisibility(View.VISIBLE);
-        } else {
-            holder.swipeDeleteItem.hideAction(true);
-            holder.swipeDeleteAction.setVisibility(View.GONE);
-        }
-        holder.name.setText(bean.getName());
-        holder.simpleDraweeView.setImageURI(Uri.parse(bean.getCover()));
-        holder.tag.setTags(bean.getTagsString());
-        if (null!=bean.getDescribe()&&bean.getDescribe().indexOf(",")!=-1){
-            holder.address.setText(bean.getDescribe().replace(",","-"));
-        }else{
-            holder.address.setText(bean.getDescribe());
-        }
-        holder.address.setSelected(true);
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (itemClickListener != null) {
-//                    itemClickListener.itemClick(holder, bean, v.getId(), position);
-//                }
-//            }
-//        });
-        if (itemClickListener != null) {
-
-            View.OnClickListener onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v.getId() == R.id.swipe_delete_content && holder.swipeDeleteItem.getScrollX() > 0) {
-                        holder.swipeDeleteItem.animation(-holder.swipeDeleteItem.getScrollX());
-                        return;
-                    }
-                    itemClickListener.itemClick(holder, bean, v.getId(), position);
-                }
-            };
-
-            holder.swipeDeleteContent.setOnClickListener(onClickListener);
-            holder.swipeDeleteAction.setOnClickListener(onClickListener);
-        }
     }
 
-    @Override
-    public ViewHold onCreateView(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite_quchu, parent, false);
-        return new ViewHold(view);
-    }
+    holder.address.setText(info + distance);
+    holder.address.setSelected(true);
+    //        holder.itemView.setOnClickListener(new View.OnClickListener() {
+    //            @Override
+    //            public void onClick(View v) {
+    //                if (itemClickListener != null) {
+    //                    itemClickListener.itemClick(holder, bean, v.getId(), position);
+    //                }
+    //            }
+    //        });
+    if (itemClickListener != null) {
 
-    class ViewHold extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.simpleDraweeView)
-        SimpleDraweeView simpleDraweeView;
-        @Bind(R.id.desc)
-        TextView name;
-        @Bind(R.id.tag)
-        TagCloudView tag;
-        @Bind(R.id.address)
-        TextView address;
-        @Bind(R.id.swipe_delete_content)
-        RelativeLayout swipeDeleteContent;
-        @Bind(R.id.swipe_delete_action)
-        FrameLayout swipeDeleteAction;
-        @Bind(R.id.swipe_delete_item)
-        SwipeDeleteLayout swipeDeleteItem;
-
-        public ViewHold(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-            address.setVisibility(View.VISIBLE);
+      View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          if (v.getId() == R.id.swipe_delete_content && holder.swipeDeleteItem.getScrollX() > 0) {
+            holder.swipeDeleteItem.animation(-holder.swipeDeleteItem.getScrollX());
+            return;
+          }
+          itemClickListener.itemClick(holder, bean, v.getId(), position);
         }
+      };
+
+      holder.swipeDeleteContent.setOnClickListener(onClickListener);
+      holder.swipeDeleteAction.setOnClickListener(onClickListener);
     }
+  }
 
+  @Override public ViewHold onCreateView(ViewGroup parent, int viewType) {
+    View view = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.item_favorite_quchu, parent, false);
+    return new ViewHold(view);
+  }
 
+  class ViewHold extends RecyclerView.ViewHolder {
+
+    @Bind(R.id.simpleDraweeView) SimpleDraweeView simpleDraweeView;
+    @Bind(R.id.desc) TextView name;
+    @Bind(R.id.tag) TagCloudView tag;
+    @Bind(R.id.address) TextView address;
+    @Bind(R.id.swipe_delete_content) RelativeLayout swipeDeleteContent;
+    @Bind(R.id.swipe_delete_action) FrameLayout swipeDeleteAction;
+    @Bind(R.id.swipe_delete_item) SwipeDeleteLayout swipeDeleteItem;
+
+    public ViewHold(View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
+      address.setVisibility(View.VISIBLE);
+    }
+  }
 }
