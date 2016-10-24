@@ -11,9 +11,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -25,6 +23,12 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
@@ -39,7 +43,6 @@ import co.quchu.quchu.model.SearchSortBean;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
-import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapter;
 import co.quchu.quchu.view.adapter.SearchCategoryAdapter;
@@ -48,10 +51,6 @@ import co.quchu.quchu.view.adapter.SearchPopWinBaseAdapter;
 import co.quchu.quchu.view.adapter.SearchSortAdapter;
 import co.quchu.quchu.widget.AreaView;
 import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * SearchFragment
@@ -166,7 +165,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     initEdittext();
     initData();
     //SearchPresenter.getCategoryTag(this);
-    SearchPresenter.getGroupTags(this);
+    SearchPresenter.getGroupTags(this, null);
     vReturn.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         onBackPressed();
@@ -358,7 +357,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         break;
       case 1:
         if (areaData == null) {
-          SearchPresenter.getAreaList(this);
+          SearchPresenter.getAreaList(this, null);
         }
         areaView.setVisibility(View.VISIBLE);
         llCategories.setVisibility(View.INVISIBLE);
@@ -367,7 +366,7 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
         break;
       case 2:
         if (sortList == null) {
-          SearchPresenter.getSortTypeList(this);
+          SearchPresenter.getSortTypeList(this, null);
         }
         areaView.setVisibility(View.INVISIBLE);
         llCategories.setVisibility(View.INVISIBLE);
@@ -554,10 +553,10 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     params.put("输入文本", str);
     params.put("分类名称", categoryName);
     ZGEvent(params, "搜索条件");
-    SearchPresenter.searchFromService(getApplicationContext(), areaId, str, mCurrentPageNo,
-        SPUtils.getCityId(), categoryCode, circleId, sortType,
+    SearchPresenter.searchFromService(getApplicationContext(), mCurrentPageNo, str, categoryCode,
+        areaId, circleId, sortType,
         new SearchPresenter.SearchResultListener() {
-          @Override public void successResult(ArrayList<RecommendModel> arrayList, int maxPageNo) {
+          @Override public void successResult(List<RecommendModel> arrayList, int maxPageNo) {
             searchResultRv.clearOnScrollListeners();
 
             if (arrayList != null && arrayList.size() > 0) {

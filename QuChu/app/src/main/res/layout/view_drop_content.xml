@@ -1,33 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/standard_color_white"
-                android:orientation="vertical">
-
-  <LinearLayout
-      android:id="@+id/drop_both_sides_layout"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="horizontal">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/drop_left_recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/drop_right_recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
-  </LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/standard_color_white"
+              android:orientation="horizontal">
 
   <android.support.v7.widget.RecyclerView
-      android:id="@+id/drop_recycler_view"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+      android:id="@+id/drop_left_recycler_view"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"/>
 
-</RelativeLayout>
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/drop_right_recycler_view"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"/>
+
+</LinearLayout>

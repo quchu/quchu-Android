@@ -153,7 +153,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     mCategoryRv.setLayoutManager(new GridLayoutManager(this, 3));
     mSearchAdapter = new SearchAdapterNew();
     mCategoryRv.setAdapter(mSearchAdapter);
-    mSearchAdapter.setIsCategory(true);
     mSearchAdapter.setOnSearchItemClickListener(onItemClickListener);
 
     querySearchCategory();
@@ -165,7 +164,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   private void initHistory() {
     mHistoryRv.setLayoutManager(new LinearLayoutManager(this));
     mSearchAdapter = new SearchAdapterNew();
-    mSearchAdapter.setIsCategory(false);
     mHistoryRv.setAdapter(mSearchAdapter);
     mSearchAdapter.setOnSearchItemClickListener(onItemClickListener);
 

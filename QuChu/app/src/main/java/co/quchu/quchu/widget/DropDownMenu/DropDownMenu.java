@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -17,6 +18,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.AreaBean;
+import co.quchu.quchu.model.SearchCategoryBean;
+import co.quchu.quchu.model.SearchSortBean;
 
 /**
  * Created by dongjunkun on 2015/6/17.
@@ -51,6 +55,7 @@ public class DropDownMenu extends LinearLayout {
   private int menuUnselectedIcon;
   private DropContentView mDropContentView;
 
+  private boolean mIsSameTabClick;
 
   public DropDownMenu(Context context) {
     super(context, null);
@@ -82,8 +87,9 @@ public class DropDownMenu extends LinearLayout {
 
     //初始化tabMenuView并添加到tabMenuView
     tabMenuView = new LinearLayout(context);
-    LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.search_drop_tab_height));
     tabMenuView.setOrientation(HORIZONTAL);
+    tabMenuView.setGravity(Gravity.CENTER_VERTICAL);
     tabMenuView.setBackgroundColor(menuBackgroundColor);
     tabMenuView.setLayoutParams(params);
     addView(tabMenuView, 0);
@@ -96,12 +102,18 @@ public class DropDownMenu extends LinearLayout {
 
     //初始化containerView并将其添加到DropDownMenu
     containerView = new FrameLayout(context);
+    containerView.setBackgroundColor(maskColor);
     containerView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
     addView(containerView, 2);
-
-    //添加内容
+    containerView.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        closeMenu();
+      }
+    });
     mDropContentView = new DropContentView(getContext());
     containerView.addView(mDropContentView);
+    containerView.setVisibility(GONE);
     mDropContentView.setVisibility(GONE);
   }
 
@@ -161,12 +173,19 @@ public class DropDownMenu extends LinearLayout {
     for (int i = 0; i < tabMenuView.getChildCount(); i = i + 2) {
       if (target == tabMenuView.getChildAt(i)) {
         if (curClickTabPosition == i) {
+          mIsSameTabClick = true;
           closeMenu();
 
         } else {
+          mIsSameTabClick = false;
+
           showMenu(i);
 
           changeTabStatus(i, true);
+
+          if (mListener != null) {
+            mListener.onTabSelected(curClickTabPosition);
+          }
         }
 
       } else {
@@ -179,11 +198,13 @@ public class DropDownMenu extends LinearLayout {
    * 关闭菜单
    */
   private void closeMenu() {
-    if (curClickTabPosition != -1) {
+    if (isShowing()) {
       changeTabStatus(curClickTabPosition, false);
 
       mDropContentView.setVisibility(GONE);
       mDropContentView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_out));
+      containerView.setVisibility(GONE);
+      containerView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_out));
       curClickTabPosition = -1;
     }
   }
@@ -192,8 +213,12 @@ public class DropDownMenu extends LinearLayout {
    * 显示菜单
    */
   private void showMenu(int position) {
-    mDropContentView.setVisibility(View.VISIBLE);
-    mDropContentView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_in));
+    if (!isShowing()) {
+      mDropContentView.setVisibility(View.VISIBLE);
+      mDropContentView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_in));
+      containerView.setVisibility(VISIBLE);
+      containerView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_in));
+    }
     curClickTabPosition = position;
   }
 
@@ -214,6 +239,41 @@ public class DropDownMenu extends LinearLayout {
       textView.setTextColor(textUnselectedColor);
       imageView.setImageResource(R.mipmap.ic_down);
     }
+  }
+
+  /**
+   * 分类数据
+   */
+  public void setDropCategory(List<SearchCategoryBean> response) {
+    mDropContentView.setDropCategory(response);
+  }
+
+  /**
+   * 地区 商圈
+   */
+  public void setDropArea(List<AreaBean> response) {
+    mDropContentView.setDropArea(response);
+  }
+
+  /**
+   * 排序
+   */
+  public void setDropSort(List<SearchSortBean> response) {
+    mDropContentView.setDropSort(response);
+  }
+
+  private OnDropTabClickListener mListener;
+
+  public void setOnDropTabClickListener(OnDropTabClickListener listener) {
+    mListener = listener;
+
+    mDropContentView.setOnDropTabClickListener(mListener);
+  }
+
+  public interface OnDropTabClickListener {
+    void onTabSelected(int tabPosition);
+
+    void onItemSelected(DropContentView.DropBean dropBean);
   }
 
   private int dpToPx(float value) {

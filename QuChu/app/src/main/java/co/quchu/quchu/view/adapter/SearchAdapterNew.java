@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -17,30 +18,35 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.model.SearchKeywordModel;
+import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.StringUtils;
+
+import static co.quchu.quchu.R.id.vDivider2;
 
 /**
  * 搜索相关适配器
- * 搜索分类、搜索历史记录
- *
+ * 搜索分类、搜索历史记录、搜索结果
+ * <p>
  * Created by mwb on 16/10/19.
  */
 public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   public static final int ITEM_TYPE_CATEGORY = -1;//搜索分类
   public static final int ITEM_TYPE_HISTORY = -2;//搜索历史记录
+  public static final int ITEM_TYPE_RESULT = -3;//搜索结果
 
   private List<SearchCategoryBean> mCategoryList;
   private List<SearchKeywordModel> mHistoryList;
+  private List<RecommendModel> mResultList;
 
-  private boolean mIsCategory = true;
-
-  public void setIsCategory(boolean isCategory) {
-    mIsCategory = isCategory;
-  }
+  private boolean mIsCategory;
+  private boolean mIsResult;
 
   public void setCategoryList(List<SearchCategoryBean> categoryList) {
+    mIsCategory = true;
     mCategoryList = categoryList;
     notifyDataSetChanged();
   }
@@ -50,10 +56,19 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     notifyDataSetChanged();
   }
 
+  public void setResultList(List<RecommendModel> resultList) {
+    mIsResult = true;
+    mResultList = resultList;
+    notifyDataSetChanged();
+  }
+
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     if (viewType == ITEM_TYPE_CATEGORY) {
       return new CategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_category, parent, false));
+
+    } else if (viewType == ITEM_TYPE_RESULT) {
+      return new ResultViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_scene_detail_recommeded, parent, false));
     }
 
     return new HistoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_history, parent, false));
@@ -111,16 +126,80 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
           }
         }
       });
+
+    } else if (viewHolder instanceof ResultViewHolder) {
+      //搜索结果
+      ResultViewHolder holder = (ResultViewHolder) viewHolder;
+      RecommendModel model = mResultList.get(position);
+
+      if (null != model.getCover()) {
+        holder.mSdvCover.setImageURI(Uri.parse(model.getCover()));
+      }
+      holder.mTvTitle.setText(model.getName());
+      holder.mTvHeader.setText(model.getDescribe());
+      holder.mTvHeader.setVisibility(View.VISIBLE);
+      holder.mRecommendTag1.setVisibility(View.GONE);
+      holder.mRecommendTag2.setVisibility(View.GONE);
+      holder.mRecommendTag3.setVisibility(View.GONE);
+      for (int i = 0; i < model.getTags().size(); i++) {
+        if (holder.mTags.getChildAt(i) != null) {
+          holder.mTags.getChildAt(i).setVisibility(View.VISIBLE);
+          ((TextView) holder.mTags.getChildAt(i)).setText(model.getTags().get(i).getZh());
+        }
+      }
+      holder.mLlHighLight.setVisibility(View.GONE);
+      holder.mTvCircleName.setText(
+          null != model.getAreaCircleName() ? model.getAreaCircleName() : "");
+
+      holder.mVDivider1.setVisibility(View.VISIBLE);
+      holder.mVDivider2.setVisibility(View.VISIBLE);
+
+      if (TextUtils.isEmpty(String.valueOf(model.getLatitude())) || TextUtils.isEmpty(
+          String.valueOf(model.getLongitude()))) {
+        holder.mTvDistance.setVisibility(View.GONE);
+        holder.mVDivider1.setVisibility(View.GONE);
+      } else {
+        holder.mTvDistance.setText(
+            StringUtils.getDistance(SPUtils.getLatitude(), SPUtils.getLongitude(),
+                Double.valueOf(model.getLatitude()), Double.valueOf(model.getLongitude())));
+        holder.mTvDistance.setVisibility(View.VISIBLE);
+      }
+      if (!StringUtils.isEmpty(model.getPrice())) {
+        holder.mTvPrice.setText("¥" + model.getPrice() + "元");
+      } else {
+        holder.mVDivider2.setVisibility(View.GONE);
+        holder.mTvPrice.setText("");
+      }
+      holder.mIvFavorite.setVisibility(View.GONE);
+
+      holder.itemView.setTag(model);
+      holder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          RecommendModel model = (RecommendModel) v.getTag();
+          if (model != null && mListener != null) {
+            mListener.onClick(position, model, ITEM_TYPE_RESULT);
+          }
+        }
+      });
     }
   }
 
   @Override
   public int getItemViewType(int position) {
+    if (mIsResult) {
+      return ITEM_TYPE_RESULT;
+    }
+
     return mIsCategory ? ITEM_TYPE_CATEGORY : ITEM_TYPE_HISTORY;
   }
 
   @Override
   public int getItemCount() {
+    if (mIsResult) {
+      return mResultList != null ? mResultList.size() : 0;
+    }
+
     if (mIsCategory) {
       return mCategoryList != null ? mCategoryList.size() : 0;
     } else {
@@ -151,6 +230,32 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Bind(R.id.search_item_categoryName) TextView mCategoryNameTv;
 
     public CategoryViewHolder(View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
+    }
+  }
+
+  /**
+   * 搜索结果
+   */
+  public class ResultViewHolder extends RecyclerView.ViewHolder {
+
+    @Bind(R.id.sdvCover) SimpleDraweeView mSdvCover;
+    @Bind(R.id.tvHeader) TextView mTvHeader;
+    @Bind(R.id.llHighLight) LinearLayout mLlHighLight;
+    @Bind(R.id.ivFavorite) ImageView mIvFavorite;
+    @Bind(R.id.tvTitle) TextView mTvTitle;
+    @Bind(R.id.tvCircleName) TextView mTvCircleName;
+    @Bind(R.id.vDivider1) View mVDivider1;
+    @Bind(R.id.tvDistance) TextView mTvDistance;
+    @Bind(vDivider2) View mVDivider2;
+    @Bind(R.id.tvPrice) TextView mTvPrice;
+    @Bind(R.id.recommend_tag1) TextView mRecommendTag1;
+    @Bind(R.id.recommend_tag2) TextView mRecommendTag2;
+    @Bind(R.id.recommend_tag3) TextView mRecommendTag3;
+    @Bind(R.id.tags) LinearLayout mTags;
+
+    public ResultViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
     }
