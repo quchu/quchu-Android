@@ -32,9 +32,6 @@ public class DropDownMenu extends LinearLayout {
   //底部容器，包含popupMenuViews，maskView
   private FrameLayout containerView;
   //弹出菜单父布局
-  private FrameLayout popupMenuViews;
-  //遮罩半透明View，点击可关闭DropDownMenu
-  private View maskView;
   //tabMenuView里面选中的tab位置，-1表示未选中
   private int curClickTabPosition = -1;
 
@@ -54,8 +51,6 @@ public class DropDownMenu extends LinearLayout {
   //tab未选中图标
   private int menuUnselectedIcon;
   private DropContentView mDropContentView;
-
-  private boolean mIsSameTabClick;
 
   public DropDownMenu(Context context) {
     super(context, null);
@@ -128,9 +123,9 @@ public class DropDownMenu extends LinearLayout {
 
   private void addTab(List<String> tabTexts, int i) {
     final DropTabView tabView = new DropTabView(getContext());
-    tabView.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
+    tabView.setLayoutParams(new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f));
     ((TextView) tabView.getChildAt(0)).setText(tabTexts.get(i));
-    tabView.setPadding(dpToPx(5), dpToPx(12), dpToPx(5), dpToPx(12));
+//    tabView.setPadding(dpToPx(5), dpToPx(12), dpToPx(5), dpToPx(12));
 
     //添加点击事件
     tabView.setOnClickListener(new OnClickListener() {
@@ -155,7 +150,8 @@ public class DropDownMenu extends LinearLayout {
    */
   public void setTabText(String text) {
     if (curClickTabPosition != -1) {
-      ((TextView) tabMenuView.getChildAt(curClickTabPosition)).setText(text);
+      DropTabView tabView = (DropTabView) tabMenuView.getChildAt(curClickTabPosition);
+      ((TextView) tabView.getChildAt(0)).setText(text);
     }
   }
 
@@ -173,12 +169,9 @@ public class DropDownMenu extends LinearLayout {
     for (int i = 0; i < tabMenuView.getChildCount(); i = i + 2) {
       if (target == tabMenuView.getChildAt(i)) {
         if (curClickTabPosition == i) {
-          mIsSameTabClick = true;
           closeMenu();
 
         } else {
-          mIsSameTabClick = false;
-
           showMenu(i);
 
           changeTabStatus(i, true);
@@ -197,7 +190,7 @@ public class DropDownMenu extends LinearLayout {
   /**
    * 关闭菜单
    */
-  private void closeMenu() {
+  public void closeMenu() {
     if (isShowing()) {
       changeTabStatus(curClickTabPosition, false);
 
@@ -233,19 +226,20 @@ public class DropDownMenu extends LinearLayout {
     ImageView imageView = ((ImageView) tabView.getChildAt(1));
     if (isSelected) {
       textView.setTextColor(textSelectedColor);
-      imageView.setImageResource(R.mipmap.ic_down);
+
+//      imageView.animate().rotation(180).setDuration(250).start();
 
     } else {
       textView.setTextColor(textUnselectedColor);
-      imageView.setImageResource(R.mipmap.ic_down);
+
     }
   }
 
   /**
    * 分类数据
    */
-  public void setDropCategory(List<SearchCategoryBean> response) {
-    mDropContentView.setDropCategory(response);
+  public void setDropCategory(int categoryPosition, List<SearchCategoryBean> response) {
+    mDropContentView.setDropCategory(categoryPosition, response);
   }
 
   /**
@@ -273,7 +267,7 @@ public class DropDownMenu extends LinearLayout {
   public interface OnDropTabClickListener {
     void onTabSelected(int tabPosition);
 
-    void onItemSelected(DropContentView.DropBean dropBean);
+    void onItemSelected(DropContentView.DropBean parent, DropContentView.DropBean child);
   }
 
   private int dpToPx(float value) {

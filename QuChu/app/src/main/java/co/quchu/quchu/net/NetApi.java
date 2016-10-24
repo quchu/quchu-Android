@@ -242,4 +242,9 @@ public interface NetApi {
    * 小Q消息未读数
    */
   String getQUnreadMsg = HOST + "/personal/getNotReadQMsgCount";
+
+  /**
+   * 获取文章关键字
+   */
+  String getNetArticleKeyword = HOST + "/personal/getNetArticleKeyword";
 }

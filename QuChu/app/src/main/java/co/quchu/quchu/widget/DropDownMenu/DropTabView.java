@@ -37,17 +37,18 @@ public class DropTabView extends LinearLayout {
     setGravity(Gravity.CENTER);
 
     TextView textView = new TextView(context);
-    textView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+    textView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
     textView.setSingleLine();
     textView.setEllipsize(TextUtils.TruncateAt.END);
     textView.setGravity(Gravity.CENTER);
     textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
+    textView.setTextColor(getContext().getResources().getColor(R.color.standard_color_h2_dark));
     textView.setText("默认");
     addView(textView, 0);
 
     ImageView imageView = new ImageView(context);
     ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    imageView.setPadding(dip2px(getContext(), 5), 0, 0, 0);
+    imageView.setPadding(dip2px(getContext(), 2), 0, 0, 0);
     imageView.setLayoutParams(layoutParams);
     imageView.setImageResource(R.mipmap.ic_down);
     addView(imageView, 1);

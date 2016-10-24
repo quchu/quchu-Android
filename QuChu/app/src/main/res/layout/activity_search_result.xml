@@ -17,6 +17,19 @@
       android:layout_below="@+id/search_view"
       android:layout_marginTop="@dimen/search_drop_tab_height"/>
 
+  <TextView
+      android:id="@+id/search_no_data_tv"
+      style="@style/TextView.H2"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@+id/search_view"
+      android:layout_centerInParent="true"
+      android:layout_marginTop="@dimen/search_drop_tab_height"
+      android:background="@color/standard_color_white"
+      android:gravity="center"
+      android:text="没有该生物"
+      android:visibility="gone"/>
+
   <co.quchu.quchu.widget.DropDownMenu.DropDownMenu
       android:id="@+id/drop_down_menu"
       android:layout_width="match_parent"
@@ -27,6 +40,8 @@
       app:ddmenuSelectedIcon="@mipmap/ic_down"
       app:ddmenuTextSize="13sp"
       app:ddmenuUnselectedIcon="@mipmap/ic_down"
+      app:ddtextSelectedColor="@color/standard_color_yellow"
+      app:ddtextUnselectedColor="@color/standard_color_h2_dark"
       app:ddunderlineColor="@color/colorDivider"/>
 
 </RelativeLayout>

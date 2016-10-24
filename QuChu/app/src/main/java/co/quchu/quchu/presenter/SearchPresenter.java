@@ -23,6 +23,7 @@ import java.util.Map;
 import co.quchu.quchu.R;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.AreaBean;
+import co.quchu.quchu.model.ArticleKeyword;
 import co.quchu.quchu.model.RecommendModel;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.model.SearchSortBean;
@@ -39,6 +40,29 @@ import co.quchu.quchu.utils.SPUtils;
  * Date: 2015-12-10
  */
 public class SearchPresenter {
+
+  public static void getNetArticleKeyword(Context context, final CommonListener<List<ArticleKeyword>> listener) {
+    Map<String, String> map = new HashMap<>();
+    map.put("cityId", String.valueOf(SPUtils.getCityId()));
+
+    GsonRequest<List<ArticleKeyword>> request = new GsonRequest<>(NetApi.getNetArticleKeyword, new TypeToken<List<ArticleKeyword>>() {
+    }.getType(), map, new ResponseListener<List<ArticleKeyword>>() {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        if (listener != null) {
+          listener.errorListener(error, "", "");
+        }
+      }
+
+      @Override
+      public void onResponse(List<ArticleKeyword> response, boolean result, String errorCode, @Nullable String msg) {
+        if (listener != null) {
+          listener.successListener(response);
+        }
+      }
+    });
+    request.start(context);
+  }
 
   public static void searchFromService(Context context, int pageNum, String searchStr, String categoryCode, String areaId, String circleId, String sortType, final SearchResultListener listener) {
 

@@ -27,10 +27,12 @@ import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
+import co.quchu.quchu.model.ArticleKeyword;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.model.SearchKeywordModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.SearchHistoryPresenter;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
@@ -62,13 +64,32 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     setContentView(R.layout.activity_search_new);
     ButterKnife.bind(this);
 
-    initTags();
-
     initHistory();
 
     initCategory();
 
     initSearchView();
+
+    getNetArticleKeyword();
+  }
+
+  /**
+   * 获取文章关键字
+   */
+  private void getNetArticleKeyword() {
+    SearchPresenter.getNetArticleKeyword(this, new CommonListener<List<ArticleKeyword>>() {
+      @Override
+      public void successListener(List<ArticleKeyword> response) {
+        if (response != null && response.size() > 0) {
+          initTags(response);
+        }
+      }
+
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
+
+      }
+    });
   }
 
   /**
@@ -143,7 +164,9 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       return;
     }
 
-    SearchResultActivity.launch(SearchActivityNew.this, null, inputStr);
+    SearchHistoryPresenter.insertKeyword(this, inputStr);
+
+    SearchResultActivity.launch(SearchActivityNew.this, null, inputStr, -1);
   }
 
   /**
@@ -201,7 +224,7 @@ public class SearchActivityNew extends BaseBehaviorActivity {
         SearchCategoryBean categoryBean = (SearchCategoryBean) bean;
         if (categoryBean != null) {
 
-          SearchResultActivity.launch(SearchActivityNew.this, categoryBean, "");
+          SearchResultActivity.launch(SearchActivityNew.this, categoryBean, "", position);
         }
 
       } else if (itemType == SearchAdapterNew.ITEM_TYPE_HISTORY) {
@@ -217,7 +240,7 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       if (itemType == SearchAdapterNew.ITEM_TYPE_HISTORY) {
         SearchKeywordModel keywordModel = (SearchKeywordModel) bean;
         if (keywordModel != null) {
-          makeToast(keywordModel.getKeyword());
+          SearchHistoryPresenter.deleteIfExisted(SearchActivityNew.this, keywordModel.getKeyword());
         }
       }
     }
@@ -236,16 +259,16 @@ public class SearchActivityNew extends BaseBehaviorActivity {
    * 获取历史记录
    */
   private void queryHistory() {
-    List<SearchKeywordModel> keywordModelList = new ArrayList<>();
+    List<SearchKeywordModel> searchKeywordModels = SearchHistoryPresenter.getHistoryKeywords(this);
 
-    SearchKeywordModel keywordModel = new SearchKeywordModel();
-    keywordModel.setKeyword("阿萨德后就开始发货快结了婚的高科技哈看");
+//    SearchKeywordModel keywordModel = new SearchKeywordModel();
+//    keywordModel.setKeyword("阿萨德后就开始发货快结了婚的高科技哈看");
+//
+//    keywordModelList.add(keywordModel);
+//    keywordModelList.add(keywordModel);
+//    keywordModelList.add(keywordModel);
 
-    keywordModelList.add(keywordModel);
-    keywordModelList.add(keywordModel);
-    keywordModelList.add(keywordModel);
-
-    mSearchAdapter.setHistoryList(keywordModelList);
+    mSearchAdapter.setHistoryList(searchKeywordModels);
   }
 
   /**
@@ -275,24 +298,27 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   /**
    * 搜索标签
    */
-  private void initTags() {
+  private void initTags(final List<ArticleKeyword> articleKeywords) {
     final List<String> tags = new ArrayList<>();
-    tags.add("厦门");
-    tags.add("厦门观音山");
-    tags.add("软件园");
-    tags.add("厦门观音山趣处科技");
-    tags.add("趣处 App");
-    tags.add("厦门");
-    tags.add("厦门观音山");
-    tags.add("软件园");
-    tags.add("厦门观音山趣处科技");
-    tags.add("趣处 App");
+    for (ArticleKeyword keyword : articleKeywords) {
+      tags.add(keyword.getKeyword());
+    }
+//    tags.add("厦门");
+//    tags.add("厦门观音山");
+//    tags.add("软件园");
+//    tags.add("厦门观音山趣处科技");
+//    tags.add("趣处 App");
+//    tags.add("厦门");
+//    tags.add("厦门观音山");
+//    tags.add("软件园");
+//    tags.add("厦门观音山趣处科技");
+//    tags.add("趣处 App");
     mTagCloudView.setTags(tags);
     mTagCloudView.setOnTagClickListener(new TagCloudView.OnTagClickListener() {
       @Override
       public void onTagClick(int position) {
-        String tag = tags.get(position);
-        setInputEditText(tag);
+        ArticleKeyword keyword = articleKeywords.get(position);
+        ArticleDetailActivity.enterActivity(SearchActivityNew.this, String.valueOf(keyword.getNetArticleId()), keyword.getKeyword(), "");
       }
     });
   }
