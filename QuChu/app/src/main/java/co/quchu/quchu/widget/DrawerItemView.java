@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +20,7 @@ public class DrawerItemView extends LinearLayout {
 
   @Bind(R.id.drawerItemImg) ImageView mDrawerItemImg;
   @Bind(R.id.drawerTitleTv) TextView mDrawerTitleTv;
-  @Bind(R.id.unReadMassageView) View mUnReadMassageView;
+  @Bind(R.id.unReadMassageView) TextView mUnReadMassageView;
 
   public DrawerItemView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -45,9 +44,14 @@ public class DrawerItemView extends LinearLayout {
     }
   }
 
-  public void showRedDot() {
+  public void showRedDot(int msgCount) {
     if (mUnReadMassageView != null) {
       mUnReadMassageView.setVisibility(VISIBLE);
+      if (msgCount < 99) {
+        mUnReadMassageView.setText(msgCount);
+      } else {
+        mUnReadMassageView.setText(99 + "+");
+      }
     }
   }
 

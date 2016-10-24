@@ -25,7 +25,6 @@ import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.activity.RecommendActivity;
 
 /**
  * LocationSelectedDialogFg
@@ -127,8 +126,8 @@ public class LocationSelectedDialogFg extends DialogFragment {
                 SPUtils.setCityId(CityId);
                 SPUtils.setCityName(cityName);
                 EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_NEW_CITY_SELECTED));
-                if (getActivity() instanceof RecommendActivity)
-                    ((RecommendActivity) getActivity()).updateRecommend();
+//                if (getActivity() instanceof RecommendActivity)
+//                    ((RecommendActivity) getActivity()).updateRecommend();
                 dismiss();
             }
         });

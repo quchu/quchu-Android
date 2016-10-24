@@ -42,7 +42,7 @@ public class MeActivityPresenter {
         request.start(context);
     }
 
-    public void getUnreadMassageCound(final CommonListener<Integer> listener) {
+    public void getUnreadMassageCound(final OnUnreadMassageCountListener listener) {
         GsonRequest<String> request = new GsonRequest<>(NetApi.notReadMassage, new ResponseListener<String>() {
 
             @Override
@@ -54,23 +54,28 @@ public class MeActivityPresenter {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
 
-                    int count = 0;
+                    int msgCount = 0;
                     int qCount = 0;
+                    int feedMsgCount = 0;
 
                     if (jsonObject.has("msgCount")) {
-                        count = jsonObject.getInt("msgCount");
+                        msgCount = jsonObject.getInt("msgCount");
                     }
 
                     if (jsonObject.has("qmsgCount")) {
                         qCount = jsonObject.getInt("qmsgCount");
                     }
 
-                    if (count > 0 ) {
+                    if (jsonObject.has("feedmsgCount")) {
+                        feedMsgCount = jsonObject.getInt("feedmsgCount");
+                    }
+
+                    if (msgCount > 0 ) {
                         SPUtils.setHasPushMsg(true);
                     }
 
                     if (listener != null) {
-                        listener.successListener(count + qCount);
+                        listener.onUnreadMassageCount(msgCount, feedMsgCount);
                     }
 
                 } catch (JSONException e) {
@@ -80,6 +85,10 @@ public class MeActivityPresenter {
             }
         });
         request.start(context);
+    }
+
+    public interface OnUnreadMassageCountListener {
+        void onUnreadMassageCount(int msgCount, int feedbackMsgCount);
     }
 
 }

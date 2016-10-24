@@ -79,6 +79,10 @@
         android:label="@string/titlebar_word_message_center"
         android:screenOrientation="portrait"/>
     <activity
+        android:name=".view.activity.MessageActivityNew"
+        android:screenOrientation="portrait"/>
+
+    <activity
         android:name=".view.activity.PickingQuchuActivity"
         android:label="@string/picking_quchu"
         android:screenOrientation="portrait"/>

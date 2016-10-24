@@ -17,7 +17,7 @@
       android:layout_height="wrap_content"
       android:layout_marginLeft="15dp"/>
 
-  <View
+  <TextView
       android:id="@+id/unReadMassageView"
       android:layout_width="5dp"
       android:layout_height="5dp"

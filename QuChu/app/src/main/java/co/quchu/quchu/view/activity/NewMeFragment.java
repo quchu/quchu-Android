@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,7 +31,6 @@ import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.net.NetUtil;
-import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.EventFlags;
@@ -136,18 +134,18 @@ public class NewMeFragment extends BaseFragment {
    * 获取未读消息
    */
   private void getUnreadMessage() {
-    //推送通知
-    presenter.getUnreadMassageCound(new CommonListener<Integer>() {
-      @Override
-      public void successListener(Integer response) {
-        mHasPushUnreadMessage = response > 0 ? true : false;
-        showUnreadView();
-      }
-
-      @Override
-      public void errorListener(VolleyError error, String exception, String msg) {
-      }
-    });
+//    //推送通知
+//    presenter.getUnreadMassageCound(new CommonListener<Integer>() {
+//      @Override
+//      public void successListener(Integer response) {
+//        mHasPushUnreadMessage = response > 0 ? true : false;
+//        showUnreadView();
+//      }
+//
+//      @Override
+//      public void errorListener(VolleyError error, String exception, String msg) {
+//      }
+//    });
 
     //im未读消息数
     new IMPresenter().getUnreadCount(new RongIM.OnReceiveUnreadCountChangedListener() {

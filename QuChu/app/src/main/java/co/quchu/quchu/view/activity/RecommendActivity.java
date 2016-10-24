@@ -39,9 +39,9 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.ActManager;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.AppLocationListener;
+import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.im.IMPresenter;
-import co.quchu.quchu.im.activity.ImMainActivity;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
@@ -55,11 +55,9 @@ import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.fragment.ArticleFragment;
 import co.quchu.quchu.view.fragment.RecommendFragment;
 import co.quchu.quchu.widget.DrawerHeaderView;
 import co.quchu.quchu.widget.DrawerItemView;
-import io.rong.imkit.RongIM;
 
 /**
  * RecommendActivity
@@ -67,12 +65,7 @@ import io.rong.imkit.RongIM;
  * Date: 2015-12-07
  * 趣处分类、推荐
  */
-public class RecommendActivity extends ImMainActivity {
-
-  @Override
-  protected String getPageNameCN() {
-    return null;
-  }
+public class RecommendActivity extends BaseBehaviorActivity {
 
   @Bind(R.id.recommend_title_location_tv) TextView recommendTitleLocationIv;
 
@@ -106,16 +99,15 @@ public class RecommendActivity extends ImMainActivity {
   private ArrayList<CityModel> list = new ArrayList<>();
   public int viewPagerIndex = 0;
   private RecommendFragment recommendFragment;
-  private ArticleFragment articleFragment;
-  private NewMeFragment meFragment;
-  private SearchFragment searchFragment;
 
   boolean checkUpdateRunning = false;
 
-  private boolean mHasPushUnreadMessage;//个推消息
-  private boolean mHasImUnreadMessage;//im消息
-
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
+
+  @Override
+  protected String getPageNameCN() {
+    return null;
+  }
 
   @Override
   public ArrayMap<String, Object> getUserBehaviorArguments() {
@@ -133,29 +125,16 @@ public class RecommendActivity extends ImMainActivity {
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
 
-//    if (null == AppContext.user || AppContext.user.isIsVisitors()) {
-//      tvTitle.setText("未知生物");
-//      tvRight.setText(R.string.login);
-//    } else {
-//      tvTitle.setText(AppContext.user.getFullname());
-//      tvRight.setText(R.string.edit);
-//    }
-
     recommendTitleLocationIv.setText(SPUtils.getCityName());
     recommendFragment = new RecommendFragment();
-//    articleFragment = new ArticleFragment();
-//    meFragment = new NewMeFragment();
-//    searchFragment = new SearchFragment();
 
     getSupportFragmentManager().beginTransaction()
         .add(R.id.container, recommendFragment, "page_1")
         .commitAllowingStateLoss();
 
-//    initView();
-
-//    initUnreadView();
-
     initDrawerView();
+
+    getUnreadMessage();
 
     VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
 
@@ -167,31 +146,6 @@ public class RecommendActivity extends ImMainActivity {
         checkIfCityChanged();
       }
     });
-
-//    rbBottomTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//      @Override
-//      public void onCheckedChanged(RadioGroup group, int checkedId) {
-//        switch (checkedId) {
-//
-//          case R.id.rbRecommend:
-//            viewpagerSelected(0);
-//            break;
-//          case R.id.rbDiscovery:
-//
-//            viewpagerSelected(1);
-//            UMEvent("discovery_c");
-//            break;
-//          case R.id.rbSearch:
-//
-//            viewpagerSelected(2);
-//            UMEvent("search_c");
-//            break;
-//          case R.id.rbMine:
-//            viewpagerSelected(3);
-//            break;
-//        }
-//      }
-//    });
 
     if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
       accessPushMessage();
@@ -294,10 +248,14 @@ public class RecommendActivity extends ImMainActivity {
               mDrawerItemMessage.hideRedDot();
             }
 
-            startActivity(MessageActivity.class);
+            startActivity(MessageActivityNew.class);
             break;
 
           case R.id.drawerItemFeedback:
+            if (mDrawerItemFeedback.getRedDotVisibility() == View.VISIBLE) {
+              mDrawerItemFeedback.hideRedDot();
+            }
+
             startActivity(FeedbackActivity.class);
             break;
 
@@ -310,94 +268,46 @@ public class RecommendActivity extends ImMainActivity {
   }
 
   /**
-   * 设置我的Tab红点
-   */
-//  private void initUnreadView() {
-//    final ViewTreeObserver observer = mRbMine.getViewTreeObserver();
-//    observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//      @Override
-//      public void onGlobalLayout() {
-//        int width = mRbMine.getWidth();
-//        int x = (int) mRbMine.getX();
-//        int y = (int) mRbMine.getY();
-//
-//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mUnReadMassageView.getLayoutParams();
-//        params.setMargins(x + width / 2 + 30, y, 0, 0);
-//
-//        if (observer.isAlive()) {
-//          if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-//            observer.removeOnGlobalLayoutListener(this);
-//          } else {
-//            observer.removeGlobalOnLayoutListener(this);
-//          }
-//        }
-//      }
-//    });
-//  }
-
-  /**
-   * 连接融云服务成功
-   */
-  @Override
-  protected void onConnectImSuccess() {
-    super.onConnectImSuccess();
-
-    getUnreadMessage();
-  }
-
-  /**
    * 获取未读消息
    */
   private void getUnreadMessage() {
-    //个推消息
-    new MeActivityPresenter(this).getUnreadMassageCound(new CommonListener<Integer>() {
+    new MeActivityPresenter(this).getUnreadMassageCound(new MeActivityPresenter.OnUnreadMassageCountListener() {
       @Override
-      public void successListener(Integer response) {
-        mHasPushUnreadMessage = response > 0 ? true : false;
-        showUnreadView();
-      }
+      public void onUnreadMassageCount(int msgCount, int feedbackMsgCount) {
+        showMsgUnreadView(msgCount);
 
-      @Override
-      public void errorListener(VolleyError error, String exception, String msg) {
-      }
-    });
-
-    //IM消息
-    new IMPresenter().getUnreadCount(new RongIM.OnReceiveUnreadCountChangedListener() {
-      @Override
-      public void onMessageIncreased(int i) {
-        mHasPushUnreadMessage = false;
-        mHasImUnreadMessage = i > 0 ? true : false;
-        showUnreadView();
+        showFeedbackUnreadView(feedbackMsgCount);
       }
     });
   }
 
   /**
-   * 显示我的红点
+   * 意见反馈未读消息
    */
-  private void showUnreadView() {
+  private void showFeedbackUnreadView(int feedbackMsgCount) {
     if (mDrawerItemMessage == null) {
       return;
     }
 
-    if (mHasPushUnreadMessage) {
-      mDrawerItemMessage.showRedDot();
-    } else {
-      if (mHasImUnreadMessage) {
-        mDrawerItemMessage.showRedDot();
-      } else {
-        mDrawerItemMessage.hideRedDot();
-      }
-    }
+    if (feedbackMsgCount > 0)
+      mDrawerItemFeedback.showRedDot(feedbackMsgCount);
+    else
+      mDrawerItemFeedback.hideRedDot();
   }
 
-  public void showUnreadView(boolean isShow) {
-    if (mUnReadMassageView == null) {
+  /**
+   * 消息未读消息数
+   */
+  private void showMsgUnreadView(int msgCount) {
+    if (mDrawerItemMessage == null) {
       return;
     }
 
-    mUnReadMassageView.setVisibility(isShow ? View.VISIBLE : View.GONE);
+    if (msgCount > 0) {
+      mDrawerItemMessage.showRedDot(msgCount);
+    } else {
+      mDrawerItemMessage.hideRedDot();
+    }
   }
 
   public void accessPushMessage() {
@@ -454,7 +364,6 @@ public class RecommendActivity extends ImMainActivity {
                   if (finalInList) {
                     SPUtils.setCityId(finalCityIdInList);
                     SPUtils.setCityName(finalCurrentLocation);
-                    updateRecommend();
                     recommendTitleLocationIv.setText(SPUtils.getCityName());
                   } else {
                     findViewById(R.id.recommend_title_location_rl).performClick();
@@ -531,84 +440,6 @@ public class RecommendActivity extends ImMainActivity {
     SelectedCityActivity.launch(this, list);
   }
 
-  /**
-   * 城市切换后调用
-   */
-  public void updateRecommend() {
-    //recommendFragment.initData();
-    //TODO refresh
-    articleFragment.getArticles(false);
-  }
-
-//  private void initView() {
-//    viewpagerSelected(0);
-//  }
-
-//  private void viewpagerSelected(int index) {
-//
-//
-//    LogUtils.json("selected == " + index);
-//    recommendTitleMoreRl.setVisibility(View.GONE);
-//
-//    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//    transaction.setCustomAnimations(R.anim.default_dialog_in, R.anim.default_dialog_out);
-//    if (index == 0) {
-//      tvTitle.setText(R.string.app_name);
-//      transaction.hide(articleFragment)
-//          .hide(searchFragment)
-//          .hide(meFragment)
-//          .show(recommendFragment)
-//          .commitAllowingStateLoss();
-//
-//
-//      vLeft.setVisibility(View.VISIBLE);
-//      ivLeft.setVisibility(View.GONE);
-//      tvRight.setVisibility(View.GONE);
-//      vTitle.setVisibility(View.VISIBLE);
-//    } else if (index == 1) {
-//      if (!articleFragment.isAdded()) {
-//        transaction.add(R.id.container, articleFragment, "page_2");
-//      }
-//      transaction.hide(recommendFragment)
-//          .hide(searchFragment)
-//          .hide(meFragment)
-//          .show(articleFragment)
-//          .commitAllowingStateLoss();
-//      ivLeft.setVisibility(View.GONE);
-//      tvRight.setVisibility(View.GONE);
-//      vLeft.setVisibility(View.GONE);
-//      tvTitle.setText("趣发现");
-//      vTitle.setVisibility(View.VISIBLE);
-//    } else if (index == 2) {
-//      if (!searchFragment.isAdded()) {
-//        transaction.add(R.id.container, searchFragment, "page_3");
-//      }
-//      transaction.hide(articleFragment)
-//          .hide(meFragment)
-//          .hide(recommendFragment)
-//          .show(searchFragment)
-//          .commitAllowingStateLoss();
-//      vTitle.setVisibility(View.GONE);
-//    } else if (index == 3) {
-//      if (!meFragment.isAdded()) {
-//        transaction.add(R.id.container, meFragment, "page_4");
-//      }
-//      transaction.hide(articleFragment)
-//          .hide(searchFragment)
-//          .hide(recommendFragment)
-//          .show(meFragment)
-//          .commitAllowingStateLoss();
-//      vLeft.setVisibility(View.GONE);
-//
-//      ivLeft.setVisibility(View.VISIBLE);
-//      tvRight.setVisibility(View.VISIBLE);
-//      vTitle.setVisibility(View.VISIBLE);
-//
-//      tvTitle.setText("");
-//    }
-//    viewPagerIndex = index;
-//  }
-
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -653,8 +484,6 @@ public class RecommendActivity extends ImMainActivity {
         arrayMap.put("城市名称", SPUtils.getCityName());
         ZGEvent(arrayMap, "选择城市");
         recommendTitleLocationIv.setText(SPUtils.getCityName());
-
-        updateRecommend();
         break;
 
       case EventFlags.EVENT_USER_LOGIN_SUCCESS:

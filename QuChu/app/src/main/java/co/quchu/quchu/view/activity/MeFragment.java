@@ -118,14 +118,14 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
   private void getData() {
 
-    presenter.getUnreadMassageCound(new CommonListener<Integer>() {
-      @Override public void successListener(Integer response) {
-        notReadMassage(response);
-      }
-
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
-      }
-    });
+//    presenter.getUnreadMassageCound(new CommonListener<Integer>() {
+//      @Override public void successListener(Integer response) {
+//        notReadMassage(response);
+//      }
+//
+//      @Override public void errorListener(VolleyError error, String exception, String msg) {
+//      }
+//    });
   }
 
   private void getGenes() {
