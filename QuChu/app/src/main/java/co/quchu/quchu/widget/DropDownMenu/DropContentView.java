@@ -1,6 +1,7 @@
 package co.quchu.quchu.widget.DropDownMenu;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -32,13 +33,18 @@ public class DropContentView extends LinearLayout {
   @Bind(R.id.drop_left_recycler_view) RecyclerView mLeftRecyclerView;
   @Bind(R.id.drop_right_recycler_view) RecyclerView mRightRecyclerView;
 
+  //保存选中的 parent 下标
+  private static int mCategorySelectedIndex = 0;
+  private static int mAreaSelectedIndex = 0;
+  private static int mSortSelectedIndex = 0;
+
   private List<DropBean> mCategoryList = new ArrayList<>();
   private List<DropBean> mAreaList = new ArrayList<>();
   private List<DropBean> mSortList = new ArrayList<>();
-  private List<DropBean> mChildren = new ArrayList<>();
 
   private ContentLeftAdapter mContentLeftAdapter;
   private ContentRightAdapter mContentRightAdapter;
+  private boolean isFirstIn = true;
 
   public DropContentView(Context context) {
     this(context, null);
@@ -61,7 +67,7 @@ public class DropContentView extends LinearLayout {
     mContentLeftAdapter = new ContentLeftAdapter();
     mLeftRecyclerView.setAdapter(mContentLeftAdapter);
 
-    mContentRightAdapter = new ContentRightAdapter(getContext());
+    mContentRightAdapter = new ContentRightAdapter();
     mRightRecyclerView.setAdapter(mContentRightAdapter);
 
     mLeftRecyclerView.setHasFixedSize(true);
@@ -80,6 +86,9 @@ public class DropContentView extends LinearLayout {
     mContentRightAdapter.setOnDropContentItemClickListener(onRightItemClickListener);
   }
 
+  /**
+   * 父数据 点击监听
+   */
   private ContentLeftAdapter.OnDropContentItemClickListener onLeftItemClickListener = new ContentLeftAdapter.OnDropContentItemClickListener() {
     @Override
     public void onItemClick(DropBean parent) {
@@ -87,20 +96,16 @@ public class DropContentView extends LinearLayout {
         return;
       }
 
-      if (parent.getType() == DropBean.DATA_TYPE_SORT) {
-        mListener.onItemSelected(parent, null);
-
-      } else if (parent.getType() == DropBean.DATA_TYPE_CATEGORY) {
-        mListener.onItemSelected(parent, null);
-        mContentRightAdapter.setChildren(parent.getChildren());
-
-      } else if (parent.getType() == DropBean.DATA_TYPE_AREA) {
-        mListener.onItemSelected(parent, null);
+      mListener.onItemSelected(parent, null);
+      if (parent.getType() != DropBean.DATA_TYPE_SORT) {
         mContentRightAdapter.setChildren(parent.getChildren());
       }
     }
   };
 
+  /**
+   * 子数据 点击监听
+   */
   private ContentRightAdapter.OnDropContentItemClickListener onRightItemClickListener = new ContentRightAdapter.OnDropContentItemClickListener() {
     @Override
     public void onItemClick(DropBean child) {
@@ -110,6 +115,9 @@ public class DropContentView extends LinearLayout {
     }
   };
 
+  /**
+   * 设置分类
+   */
   public void setDropCategory(int categoryPosition, List<SearchCategoryBean> response) {
     if (mCategoryList.size() == 0) {
       if (response == null || response.size() == 0) {
@@ -155,11 +163,17 @@ public class DropContentView extends LinearLayout {
       }
     }
 
-    mContentLeftAdapter.setCategoryPosition(categoryPosition);
+    if (categoryPosition != -1 && isFirstIn) {
+      mCategorySelectedIndex = categoryPosition;
+      isFirstIn = false;
+    }
 
-    fillData(mCategoryList);
+    fillData(mCategorySelectedIndex, mCategoryList);
   }
 
+  /**
+   * 设置地区商圈
+   */
   public void setDropArea(List<AreaBean> response) {
     if (mAreaList.size() == 0) {
       if (response == null || response.size() == 0) {
@@ -205,9 +219,12 @@ public class DropContentView extends LinearLayout {
       }
     }
 
-    fillData(mAreaList);
+    fillData(mAreaSelectedIndex, mAreaList);
   }
 
+  /**
+   * 设置排序
+   */
   public void setDropSort(List<SearchSortBean> response) {
     if (mSortList.size() == 0) {
       if (response == null || response.size() == 0) {
@@ -224,26 +241,59 @@ public class DropContentView extends LinearLayout {
       }
     }
 
-    fillData(mSortList);
+    fillData(0, mSortList);
   }
 
-  private void fillData(List<DropBean> data) {
-    if (data != null && data.size() > 0 && data.get(0).getChildren() != null) {
-      mChildren.clear();
-      mChildren.addAll(data.get(0).getChildren());
-    } else {
-      mChildren.clear();
+  /**
+   * 统一填充适配器数据
+   */
+  private void fillData(final int index, final List<DropBean> parent) {
+    if (parent == null) {
+      return;
     }
 
-    if (mChildren.size() > 0) {
-      mRightRecyclerView.setVisibility(VISIBLE);
+    mContentLeftAdapter.setParent(parent);
 
-    } else {
-      mRightRecyclerView.setVisibility(GONE);
+    if (parent.get(index) != null) {
+      if (parent.get(index).getChildren() != null) {
+        mRightRecyclerView.setVisibility(VISIBLE);
+      } else {
+        mRightRecyclerView.setVisibility(GONE);
+      }
     }
 
-    mContentLeftAdapter.setParent(data);
-    mContentRightAdapter.setChildren(mChildren);
+    new Handler().postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        mContentRightAdapter.setChildren(parent.get(index).getChildren());
+      }
+    }, 200);
+  }
+
+  /**
+   * 获取已经选中 child 的 parent 的值
+   */
+  public String getSelectedParentValue(int dataType) {
+    if (dataType == DropBean.DATA_TYPE_CATEGORY) {
+      int categorySelectedIndex = mContentLeftAdapter.getCategorySelectedIndex();
+      return mCategoryList.get(categorySelectedIndex).getText();
+    }
+
+    int areaSelectedIndex = mContentLeftAdapter.getAreaSelectedIndex();
+    return mAreaList.get(areaSelectedIndex).getText();
+  }
+
+  /**
+   * 获取已经选中 child 的 parent 的 id
+   */
+  public String getSelectedParentId(int dataType) {
+    if (dataType == DropBean.DATA_TYPE_CATEGORY) {
+      int categorySelectedIndex = mContentLeftAdapter.getCategorySelectedIndex();
+      return categorySelectedIndex == 0 ? "" : mCategoryList.get(categorySelectedIndex).getId();
+    }
+
+    int areaSelectedIndex = mContentLeftAdapter.getAreaSelectedIndex();
+    return areaSelectedIndex == 0 ? "" : mAreaList.get(areaSelectedIndex).getId();
   }
 
   private DropDownMenu.OnDropTabClickListener mListener;
@@ -253,10 +303,6 @@ public class DropContentView extends LinearLayout {
   }
 
   public static class ContentLeftAdapter extends RecyclerView.Adapter<ContentLeftAdapter.ContentViewHolder> {
-
-    private int categorySelectedIndex = 0;
-    private int areaSelectedIndex = 0;
-    private int sortSelectedIndex = 0;
 
     private List<DropBean> mParent;
 
@@ -271,19 +317,20 @@ public class DropContentView extends LinearLayout {
       holder.mContentTv.setText(parent.getText());
       holder.mContentDivider.setVisibility(GONE);
       holder.mContentIv.setVisibility(GONE);
+      holder.mContentTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h2_dark));
 
       if (parent.getType() == DropBean.DATA_TYPE_CATEGORY) {
-        holder.mContentTv.setSelected(categorySelectedIndex == position ? true : false);
+        holder.mContentTv.setSelected(mCategorySelectedIndex == position ? true : false);
 
       } else if (parent.getType() == DropBean.DATA_TYPE_AREA) {
-        holder.mContentTv.setSelected(areaSelectedIndex == position ? true : false);
+        holder.mContentTv.setSelected(mAreaSelectedIndex == position ? true : false);
 
       } else if (parent.getType() == DropBean.DATA_TYPE_SORT) {
         holder.mContentTv.setSelected(true);
-        holder.mContentTv.setTextColor(categorySelectedIndex == position ?
+        holder.mContentTv.setTextColor(mSortSelectedIndex == position ?
             mContext.getResources().getColor(R.color.standard_color_yellow) : mContext.getResources().getColor(R.color.standard_color_h2_dark));
         holder.mContentDivider.setVisibility(VISIBLE);
-        holder.mContentIv.setVisibility(sortSelectedIndex == position ? VISIBLE : GONE);
+        holder.mContentIv.setVisibility(mSortSelectedIndex == position ? VISIBLE : GONE);
       }
 
       holder.itemView.setTag(parent);
@@ -294,13 +341,13 @@ public class DropContentView extends LinearLayout {
           if (dropBean != null && mListener != null) {
 
             if (dropBean.getType() == DropBean.DATA_TYPE_CATEGORY) {
-              categorySelectedIndex = position;
+              mCategorySelectedIndex = position;
 
             } else if (dropBean.getType() == DropBean.DATA_TYPE_AREA) {
-              areaSelectedIndex = position;
+              mAreaSelectedIndex = position;
 
             } else if (dropBean.getType() == DropBean.DATA_TYPE_SORT) {
-              sortSelectedIndex = position;
+              mSortSelectedIndex = position;
             }
 
             notifyDataSetChanged();
@@ -321,10 +368,12 @@ public class DropContentView extends LinearLayout {
       notifyDataSetChanged();
     }
 
-    public void setCategoryPosition(int categoryPosition) {
-      if (categoryPosition != -1 && categorySelectedIndex == 0) {
-        categorySelectedIndex = categoryPosition;
-      }
+    public int getCategorySelectedIndex() {
+      return mCategorySelectedIndex;
+    }
+
+    public int getAreaSelectedIndex() {
+      return mAreaSelectedIndex;
     }
 
     private OnDropContentItemClickListener mListener;
@@ -352,18 +401,16 @@ public class DropContentView extends LinearLayout {
 
   public static class ContentRightAdapter extends RecyclerView.Adapter<ContentRightAdapter.ContentViewHolder> {
 
-    private int categorySelectedIndex = 0;
-    private int areaSelectedIndex = 0;
+    //保存选中的 child
+    private DropBean categoryDropBean;
+    private DropBean areaDropBean;
 
     private List<DropBean> mChildren;
     private Context mContext;
 
-    public ContentRightAdapter(Context context) {
-      mContext = context;
-    }
-
     @Override
     public ContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      mContext = parent.getContext();
       return new ContentViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_drop_conent, parent, false));
     }
 
@@ -375,14 +422,22 @@ public class DropContentView extends LinearLayout {
       holder.mContentDivider.setVisibility(VISIBLE);
 
       if (child.getType() == DropBean.DATA_TYPE_CATEGORY) {
-        holder.mContentTv.setTextColor(categorySelectedIndex == position ?
-            mContext.getResources().getColor(R.color.standard_color_yellow) : mContext.getResources().getColor(R.color.standard_color_h2_dark));
-        holder.mContentIv.setVisibility(categorySelectedIndex == position ? VISIBLE : GONE);
+        if (categoryDropBean != null && categoryDropBean.equals(child)) {
+          holder.mContentTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_yellow));
+          holder.mContentIv.setVisibility(VISIBLE);
+        } else {
+          holder.mContentTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h2_dark));
+          holder.mContentIv.setVisibility(GONE);
+        }
 
       } else if (child.getType() == DropBean.DATA_TYPE_AREA) {
-        holder.mContentTv.setTextColor(areaSelectedIndex == position ?
-            mContext.getResources().getColor(R.color.standard_color_yellow) : mContext.getResources().getColor(R.color.standard_color_h2_dark));
-        holder.mContentIv.setVisibility(areaSelectedIndex == position ? VISIBLE : GONE);
+        if (areaDropBean != null && areaDropBean.equals(child)) {
+          holder.mContentTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_yellow));
+          holder.mContentIv.setVisibility(VISIBLE);
+        } else {
+          holder.mContentTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h2_dark));
+          holder.mContentIv.setVisibility(GONE);
+        }
       }
 
       holder.itemView.setTag(child);
@@ -393,10 +448,10 @@ public class DropContentView extends LinearLayout {
           if (dropBean != null && mListener != null) {
 
             if (dropBean.getType() == DropBean.DATA_TYPE_CATEGORY) {
-              categorySelectedIndex = position;
+              categoryDropBean = dropBean;
 
             } else if (dropBean.getType() == DropBean.DATA_TYPE_AREA) {
-              areaSelectedIndex = position;
+              areaDropBean = dropBean;
             }
 
             mListener.onItemClick(dropBean);

@@ -67,8 +67,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   private List<AreaBean> mAreaList;
   private List<SearchSortBean> mSortList;
 
-  private String mInputStr = "", mCategoryCode = "", mAreaId = "", mCircleId = "", mSortType = "";
-  private String mDefaultValue = "";
+  private String mCategoryZh = "", mInputStr = "", mTagId = "", mAreaId = "", mCircleId = "", mSortType = "";
   private int mCategoryPosition;
 
   public static void launch(Activity activity, SearchCategoryBean categoryBean, String input, int position) {
@@ -89,10 +88,8 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     mCategoryPosition = getIntent().getIntExtra(INTENT_KEY_CATEGORY_POSITION, -1);
     SearchCategoryBean categoryBean = getIntent().getParcelableExtra(INTENT_KEY_SEARCH_CATEGORY_BEAN);
     if (categoryBean != null) {
-      mCategoryCode = String.valueOf(categoryBean.getTagId());
-      String categoryZh = categoryBean.getZh();
-
-      mInputStr = categoryZh;
+      mTagId = String.valueOf(categoryBean.getTagId());
+      mCategoryZh = categoryBean.getZh();
     }
 
     initSearchView();
@@ -162,7 +159,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       }
     });
 
-    setInputEditText(mInputStr);
+    setInputEditText(TextUtils.isEmpty(mCategoryZh) ? mInputStr : mCategoryZh);
 
     //返回
     backBtn.setOnClickListener(new View.OnClickListener() {
@@ -201,7 +198,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       return;
     }
 
-    if (StringUtils.containsEmoji(mInputStr)) {
+    if (StringUtils.containsEmoji(inputStr)) {
       makeToast("搜索内容不能含有表情字符!");
       return;
     }
@@ -233,7 +230,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       DialogUtil.showProgess(this, R.string.loading_dialog_text);
     }
 
-    SearchPresenter.searchFromService(this, mCurrentPageNo, mInputStr, mCategoryCode, mAreaId, mCircleId, mSortType,
+    SearchPresenter.searchFromService(this, mCurrentPageNo, mInputStr, mTagId, mAreaId, mCircleId, mSortType,
         new SearchPresenter.SearchResultListener() {
           @Override
           public void successResult(List<RecommendModel> arrayList, int maxPageNo) {
@@ -343,10 +340,14 @@ public class SearchResultActivity extends BaseBehaviorActivity {
 
   private void initDropDownMenu() {
     List<String> tabs = new ArrayList<>();
-    tabs.add("全部");
+    tabs.add("全部分类");
     tabs.add("全部商圈");
     tabs.add("智能排序");
     mDropDownMenu.addTab(tabs);
+
+    if (!TextUtils.isEmpty(mCategoryZh)) {
+      mDropDownMenu.setTabText(0, mCategoryZh);
+    }
 
     mDropDownMenu.setOnDropTabClickListener(new DropDownMenu.OnDropTabClickListener() {
       @Override
@@ -382,13 +383,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       public void onItemSelected(DropContentView.DropBean parent, DropContentView.DropBean child) {
         if (parent != null) {
           if (parent.getType() == DropContentView.DropBean.DATA_TYPE_CATEGORY) {
-            if (parent.getText().substring(0, 2).equals("全部")) {
-              mInputStr = "";
-            } else {
-              mInputStr = parent.getText();
-            }
-            mDropDownMenu.setTabText(parent.getText());
-            mDefaultValue = parent.getText();
+            mInputStr = "";
 
           } else if (parent.getType() == DropContentView.DropBean.DATA_TYPE_AREA) {
             if (parent.getText().substring(0, 2).equals("全部")) {
@@ -396,38 +391,44 @@ public class SearchResultActivity extends BaseBehaviorActivity {
             } else {
               mAreaId = parent.getId();
             }
-            mDefaultValue = parent.getText();
 
           } else if (parent.getType() == DropContentView.DropBean.DATA_TYPE_SORT) {
             mSortType = parent.getId();
-
+            mDropDownMenu.setTabText(parent.getText());
             mDropDownMenu.closeMenu();
             queryResult(false);
           }
 
         } else if (child != null) {
           if (child.getType() == DropContentView.DropBean.DATA_TYPE_CATEGORY) {
+
+            mInputStr = "";
+
             if (child.getText().substring(0, 2).equals("全部")) {
-              mInputStr = mDefaultValue;
-              mCategoryCode = "";
-              setInputEditText(mDefaultValue);
+              String selectedParentValue = mDropDownMenu.getSelectedParentValue(DropContentView.DropBean.DATA_TYPE_CATEGORY);
+              String selectedParentId = mDropDownMenu.getSelectedParentId(DropContentView.DropBean.DATA_TYPE_CATEGORY);
+              mTagId = selectedParentId;
+              setInputEditText(selectedParentValue.equals("全部") ? selectedParentValue + "分类" : selectedParentValue);
+              mDropDownMenu.setTabText(selectedParentValue.equals("全部") ? selectedParentValue + "分类" : selectedParentValue);
             } else {
+              mTagId = child.getId();
               setInputEditText(child.getText());
-              mInputStr = child.getText();
-              mCategoryCode = child.getId();
             }
 
           } else if (child.getType() == DropContentView.DropBean.DATA_TYPE_AREA) {
-            if (child.getText().substring(0, 2).equals("全部")) {
-              setInputEditText(mDefaultValue);
-              mCircleId = "";
 
-              mDropDownMenu.setTabText(mDefaultValue);
+            if (child.getText().substring(0, 2).equals("全部")) {
+              String selectedParentValue = mDropDownMenu.getSelectedParentValue(DropContentView.DropBean.DATA_TYPE_AREA);
+              String selectedParentId = mDropDownMenu.getSelectedParentId(DropContentView.DropBean.DATA_TYPE_AREA);
+              mAreaId = selectedParentId;
+              mCircleId = "";
+              mDropDownMenu.setTabText(selectedParentValue);
+              setInputEditText(selectedParentValue);
 
             } else {
-              setInputEditText(child.getText());
               mCircleId = child.getId();
               mDropDownMenu.setTabText(child.getText());
+              setInputEditText(child.getText());
             }
           }
 

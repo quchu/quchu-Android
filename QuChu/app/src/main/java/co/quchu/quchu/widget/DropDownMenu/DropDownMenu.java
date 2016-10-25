@@ -156,6 +156,15 @@ public class DropDownMenu extends LinearLayout {
   }
 
   /**
+   * 改变 tab 文字
+   * position 只能为 0, 2, 4
+   */
+  public void setTabText(int position, String text) {
+    DropTabView tabView = (DropTabView) tabMenuView.getChildAt(position);
+    ((TextView) tabView.getChildAt(0)).setText(text);
+  }
+
+  /**
    * 是否处于可见状态
    */
   public boolean isShowing() {
@@ -254,6 +263,20 @@ public class DropDownMenu extends LinearLayout {
    */
   public void setDropSort(List<SearchSortBean> response) {
     mDropContentView.setDropSort(response);
+  }
+
+  /**
+   * 获取已经选中 child 的 parent 的值
+   */
+  public String getSelectedParentValue(int dataType) {
+    return mDropContentView.getSelectedParentValue(dataType);
+  }
+
+  /**
+   * 获取已经选中 child 的 parent 的 id
+   */
+  public String getSelectedParentId(int dataType) {
+    return mDropContentView.getSelectedParentId(dataType);
   }
 
   private OnDropTabClickListener mListener;

@@ -224,7 +224,7 @@ public class SearchActivityNew extends BaseBehaviorActivity {
         SearchCategoryBean categoryBean = (SearchCategoryBean) bean;
         if (categoryBean != null) {
 
-          SearchResultActivity.launch(SearchActivityNew.this, categoryBean, "", position);
+          SearchResultActivity.launch(SearchActivityNew.this, categoryBean, "", position + 1);
         }
 
       } else if (itemType == SearchAdapterNew.ITEM_TYPE_HISTORY) {
