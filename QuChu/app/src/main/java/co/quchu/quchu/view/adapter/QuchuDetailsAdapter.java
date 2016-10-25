@@ -224,6 +224,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     } else if (holder instanceof MapViewHolder) {
 
+      ((MapViewHolder) holder).tvAddress.setText(mData.getAddress());
       //http://developer.baidu.com/map/static-1.htm
       ((MapViewHolder) holder).ivMap.setImageURI(Uri.parse(
           "http://api.map.baidu.com/staticimage?center="
@@ -259,7 +260,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         final CommentModel commentModel = mData.getReviewList().get(commentIndex);
 
         ((CommentViewHolder) holder).rvImages.setLayoutManager(
-            new GridLayoutManager(mAnchorActivity, 2));
+            new GridLayoutManager(mAnchorActivity, 4));
         CommentImageAdapter adapter = new CommentImageAdapter(commentModel.getImageList());
         if (null != commentModel && null != commentModel.getImageList()) {
 
@@ -278,8 +279,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           });
         }
         ((CommentViewHolder) holder).rvImages.setAdapter(adapter);
-
-        ((CommentViewHolder) holder).rbRating.setRating(commentModel.getScore());
         ((CommentViewHolder) holder).tvUsername.setText(commentModel.getUserName());
         if (null != commentModel.getCreateDate()) {
           ((CommentViewHolder) holder).tvDate.setText(
@@ -293,11 +292,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override public void onClick(View view) {
               WebViewActivity.enterActivity(mAnchorActivity, commentModel.getPqUrl(), "查看评论",
                   false);
-              ((CommentViewHolder) holder).ivArrow.setVisibility(View.VISIBLE);
             }
           });
-        } else {
-          ((CommentViewHolder) holder).ivArrow.setVisibility(View.GONE);
         }
 
         final boolean collapsed = mData.getReviewList().get(commentIndex).isCollapsed();
@@ -334,16 +330,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
         }
 
-        //显示更多评论
-        if (mData.getPlaceReviewCount() > 3 && commentIndex == 2) {
-          ((CommentViewHolder) holder).moreCommentsLayout.setVisibility(View.VISIBLE);
-          ((CommentViewHolder) holder).moreCommentsLayout.setOnClickListener(
-              new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                  CommentListActivity.enterActivity(mAnchorActivity, mData.getPid());
-                }
-              });
-        }
       }
     } else if (holder instanceof MatchedTagsViewHolder) {
       List<String> tags = new ArrayList<>();
@@ -506,6 +492,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   public static class MapViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.ivMap) SimpleDraweeView ivMap;
+    @Bind(R.id.tvAddress) TextView tvAddress;
 
     MapViewHolder(View view) {
       super(view);
@@ -532,10 +519,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.tvCollapse) TextView tvCollapse;
     @Bind(R.id.ivFrom) SimpleDraweeView ivFrom;
     @Bind(R.id.tvFrom) TextView tvFrom;
-    @Bind(R.id.rbRating) RatingBar rbRating;
     @Bind(R.id.rvImages) RecyclerView rvImages;
-    @Bind(R.id.more_comments_layout) LinearLayout moreCommentsLayout;
-    @Bind(R.id.ivArrow) View ivArrow;
     @Bind(R.id.vDivider) View vDivider;
 
     CommentViewHolder(View view) {

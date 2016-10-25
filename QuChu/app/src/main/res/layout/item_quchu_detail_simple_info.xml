@@ -23,7 +23,7 @@
       android:layout_below="@id/detail_store_name_tv"
       android:layout_marginTop="@dimen/half_margin"
       tools:text="@string/empty_string"
-      style="@style/TextView.H2"
+      style="@style/TextView.H3"
       />
 
   <TextView
@@ -31,13 +31,14 @@
       android:layout_below="@id/tvDesc"
       android:layout_marginTop="@dimen/base_margin"
       tools:text="@string/empty_string"
-      style="@style/TextView.H3"
+      style="@style/TextView.H2"
+
       />
 
   <View
       android:layout_below="@+id/tvTags"
-      android:layout_marginTop="@dimen/base_margin"
       android:layout_marginBottom="@dimen/base_margin"
+      android:layout_marginTop="@dimen/base_margin"
       style="@style/HorizontalDividerDark"
       />
 </RelativeLayout>

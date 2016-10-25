@@ -8,6 +8,36 @@
     android:orientation="vertical"
     >
 
+
+  <RelativeLayout
+      android:id="@+id/bottom_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignTop="@+id/llStart"
+      android:layout_alignParentRight="true"
+      android:layout_marginRight="@dimen/base_margin"
+      android:layout_marginBottom="@dimen/base_margin"
+      >
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/ivFrom"
+        android:layout_width="@dimen/comment_from_avatar_size"
+        android:layout_height="@dimen/comment_from_avatar_size"
+        />
+
+    <TextView
+        android:id="@+id/tvFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/half_margin"
+        android:layout_toRightOf="@id/ivFrom"
+        tools:text="来自大众点评"
+        android:layout_centerVertical="true"
+        style="@style/TextView.H3"
+        />
+
+  </RelativeLayout>
+
   <LinearLayout
       android:id="@+id/llStart"
       android:layout_width="match_parent"
@@ -42,27 +72,18 @@
           style="@style/TextView.H2"
           />
 
-      <RatingBar
-          android:id="@+id/rbRating"
+
+      <TextView
+          android:id="@+id/tvDate"
+          android:layout_marginTop="@dimen/quarter_margin"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:isIndicator="true"
-          android:layout_marginTop="@dimen/quarter_margin"
-          android:max="5"
-          android:rating="3"
-          android:stepSize="0.5"
-          style="@style/StarProgressBar_Small"
+          tools:text="Date"
+          android:layout_gravity="top"
+          style="@style/TextView.H3"
           />
-
     </LinearLayout>
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Date"
-        android:layout_gravity="top"
-        style="@style/TextView.H3"
-        />
+
 
 
   </LinearLayout>
@@ -72,7 +93,7 @@
       android:layout_marginTop="@dimen/base_margin"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="48dp"
+      android:layout_marginLeft="@dimen/base_margin"
       android:layout_below="@+id/llStart"
       android:layout_marginRight="@dimen/base_margin"
       android:background="@color/colorBackground"
@@ -101,14 +122,14 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/half_margin"
-          android:layout_weight="0.4"
+          android:layout_weight="0.25"
           tools:listitem="@layout/rc_item_image_message"
           />
 
       <View
           android:layout_width="match_parent"
           android:layout_height="1dp"
-          android:layout_weight="0.6"
+          android:layout_weight="0.75"
           />
     </LinearLayout>
 
@@ -126,43 +147,6 @@
 
   </LinearLayout>
 
-  <RelativeLayout
-      android:id="@+id/bottom_layout"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="48dp"
-      android:layout_below="@id/llComments"
-      android:layout_marginTop="@dimen/half_margin"
-      android:layout_marginBottom="@dimen/base_margin"
-      >
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/ivFrom"
-        android:layout_width="@dimen/comment_from_avatar_size"
-        android:layout_height="@dimen/comment_from_avatar_size"
-        />
-
-    <TextView
-        android:id="@+id/tvFrom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_toRightOf="@id/ivFrom"
-        tools:text="来自大众点评"
-        android:layout_centerVertical="true"
-        style="@style/TextView.H3"
-        />
-    <ImageView
-        android:id="@+id/ivArrow"
-        android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_tiaozhuan"
-        android:layout_marginLeft="@dimen/half_margin"
-        android:layout_toRightOf="@+id/tvFrom"
-        />
-
-  </RelativeLayout>
 
   <View
       android:id="@+id/vDivider"
@@ -171,33 +155,6 @@
       style="@style/HorizontalLine"
       />
 
-  <LinearLayout
-      android:id="@+id/more_comments_layout"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/bottom_layout"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="@dimen/half_margin"
-      android:gravity="center_horizontal"
-      android:orientation="vertical"
-      android:visibility="gone"
-      >
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_gengduopinglun"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/half_margin"
-        android:layout_marginTop="@dimen/half_margin"
-        android:text="@string/more_comments"
-        style="@style/TextView.H2"
-        />
-
-  </LinearLayout>
 
 </RelativeLayout>

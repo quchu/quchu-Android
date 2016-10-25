@@ -16,6 +16,7 @@
       android:layout_marginLeft="@dimen/base_margin"
       android:layout_marginTop="@dimen/base_margin"
       android:text="@string/guess_what_you_like"
+      android:gravity="center"
       style="@style/TextView.H2"
       />
 
