@@ -12,7 +12,7 @@
       fresco:actualImageScaleType="fitXY"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      fresco:viewAspectRatio="1.77"
+      fresco:viewAspectRatio="2"
       />
 
 

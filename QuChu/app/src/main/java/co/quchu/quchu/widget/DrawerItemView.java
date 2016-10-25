@@ -48,7 +48,7 @@ public class DrawerItemView extends LinearLayout {
     if (mUnReadMassageView != null) {
       mUnReadMassageView.setVisibility(VISIBLE);
       if (msgCount < 99) {
-        mUnReadMassageView.setText(msgCount);
+        mUnReadMassageView.setText(String.valueOf(msgCount));
       } else {
         mUnReadMassageView.setText(99 + "+");
       }
