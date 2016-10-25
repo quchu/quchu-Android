@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,7 +49,6 @@ import co.quchu.quchu.view.adapter.SearchChildCategoryAdapter;
 import co.quchu.quchu.view.adapter.SearchPopWinBaseAdapter;
 import co.quchu.quchu.view.adapter.SearchSortAdapter;
 import co.quchu.quchu.widget.AreaView;
-import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 
 /**
  * SearchFragment
@@ -553,56 +551,56 @@ public class SearchActivity extends BaseBehaviorActivity implements View.OnClick
     params.put("输入文本", str);
     params.put("分类名称", categoryName);
     ZGEvent(params, "搜索条件");
-    SearchPresenter.searchFromService(getApplicationContext(), mCurrentPageNo, str, categoryCode,
-        areaId, circleId, sortType,
-        new SearchPresenter.SearchResultListener() {
-          @Override public void successResult(List<RecommendModel> arrayList, int maxPageNo) {
-            searchResultRv.clearOnScrollListeners();
-
-            if (arrayList != null && arrayList.size() > 0) {
-              if (mMaxPageNo == -1) {
-                mMaxPageNo = maxPageNo;
-              }
-              //                    if (searchFilterContainer.getVisibility() == View.INVISIBLE) {
-              searchFilterContainer.setVisibility(View.VISIBLE);
-              //                        searchFilterContainer.animate().translationYBy(-searchFilterContainer.getHeight()).translationY(searchFilterContainer.getHeight()).setDuration(300).start();
-              //                    }
-
-              searchLine.setBackgroundColor(
-                  ContextCompat.getColor(getApplicationContext(), R.color.bg_pager));
-
-              if (searchResultRv.getLayoutManager() instanceof GridLayoutManager) {
-                searchResultRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-              }
-
-              resultAdapter.setCategory(false);
-              resultList.addAll(arrayList);
-
-              hideKeyBoard();
-              resultAdapter.changeDataSet(resultList);
-              searchResultRv.addOnScrollListener(new EndlessRecyclerOnScrollListener(
-                  (LinearLayoutManager) searchResultRv.getLayoutManager()) {
-                @Override public void onLoadMore(int current_page) {
-                  doSearch(true);
-                }
-              });
-              tvNoData.setVisibility(View.GONE);
-
-            } else {
-              tvNoData.setVisibility(View.VISIBLE);
-            }
-            mIsLoading = false;
-            DialogUtil.dismissProgess();
-          }
-
-          @Override public void errorNull() {
-            //数据为空
-            DialogUtil.dismissProgess();
-            tvNoData.setVisibility(View.VISIBLE);
-            mIsLoading = false;
-            resultAdapter.notifyDataSetChanged();
-          }
-        });
+//    SearchPresenter.searchFromService(getApplicationContext(), mCurrentPageNo, str, categoryCode,
+//        areaId, circleId, sortType,
+//        new SearchPresenter.SearchResultListener() {
+//          @Override public void successResult(List<RecommendModel> arrayList, int maxPageNo) {
+//            searchResultRv.clearOnScrollListeners();
+//
+//            if (arrayList != null && arrayList.size() > 0) {
+//              if (mMaxPageNo == -1) {
+//                mMaxPageNo = maxPageNo;
+//              }
+//              //                    if (searchFilterContainer.getVisibility() == View.INVISIBLE) {
+//              searchFilterContainer.setVisibility(View.VISIBLE);
+//              //                        searchFilterContainer.animate().translationYBy(-searchFilterContainer.getHeight()).translationY(searchFilterContainer.getHeight()).setDuration(300).start();
+//              //                    }
+//
+//              searchLine.setBackgroundColor(
+//                  ContextCompat.getColor(getApplicationContext(), R.color.bg_pager));
+//
+//              if (searchResultRv.getLayoutManager() instanceof GridLayoutManager) {
+//                searchResultRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+//              }
+//
+//              resultAdapter.setCategory(false);
+//              resultList.addAll(arrayList);
+//
+//              hideKeyBoard();
+//              resultAdapter.changeDataSet(resultList);
+//              searchResultRv.addOnScrollListener(new EndlessRecyclerOnScrollListener(
+//                  (LinearLayoutManager) searchResultRv.getLayoutManager()) {
+//                @Override public void onLoadMore(int current_page) {
+//                  doSearch(true);
+//                }
+//              });
+//              tvNoData.setVisibility(View.GONE);
+//
+//            } else {
+//              tvNoData.setVisibility(View.VISIBLE);
+//            }
+//            mIsLoading = false;
+//            DialogUtil.dismissProgess();
+//          }
+//
+//          @Override public void errorNull() {
+//            //数据为空
+//            DialogUtil.dismissProgess();
+//            tvNoData.setVisibility(View.VISIBLE);
+//            mIsLoading = false;
+//            resultAdapter.notifyDataSetChanged();
+//          }
+//        });
   }
 
   private void hideKeyBoard() {

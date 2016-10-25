@@ -56,9 +56,15 @@ public class SearchAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHold
     notifyDataSetChanged();
   }
 
-  public void setResultList(List<RecommendModel> resultList) {
+  public void initResultList(List<RecommendModel> resultList) {
     mIsResult = true;
     mResultList = resultList;
+    notifyDataSetChanged();
+  }
+
+  public void addMoreResultList(List<RecommendModel> data) {
+    mIsResult = true;
+    mResultList.addAll(data);
     notifyDataSetChanged();
   }
 

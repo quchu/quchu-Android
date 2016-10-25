@@ -21,7 +21,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import co.quchu.quchu.R;
-import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.AreaBean;
 import co.quchu.quchu.model.ArticleKeyword;
 import co.quchu.quchu.model.RecommendModel;
@@ -31,7 +30,6 @@ import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
-import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 
 /**
@@ -64,64 +62,113 @@ public class SearchPresenter {
     request.start(context);
   }
 
-  public static void searchFromService(Context context, int pageNum, String searchStr, String categoryCode, String areaId, String circleId, String sortType, final SearchResultListener listener) {
+  public static void searchFromService(Context context, final int pageNum, String value, String tagId
+      , String areaId, String circleId, String sortType, final SearchResultListener listener) {
 
-    Map<String, String> object = new HashMap<>();
-    object.put("value", searchStr);
-    object.put("pagesNo", String.valueOf(pageNum));
-    object.put("cityId", String.valueOf(SPUtils.getCityId()));
-    object.put("tagId", categoryCode);
-    object.put("sortType", sortType);
-    object.put("areaId", areaId);
-    object.put("circleId", circleId);
-    object.put("longitude", String.valueOf(SPUtils.getLongitude()));
-    object.put("latitude", String.valueOf(SPUtils.getLatitude()));
+    Map<String, String> map = new HashMap<>();
+    map.put("value", value);
+    map.put("pagesNo", String.valueOf(pageNum));
+    map.put("cityId", String.valueOf(SPUtils.getCityId()));
+    map.put("tagId", tagId);
+    map.put("sortType", sortType);
+    map.put("areaId", areaId);
+    map.put("circleId", circleId);
+    map.put("longitude", String.valueOf(SPUtils.getLongitude()));
+    map.put("latitude", String.valueOf(SPUtils.getLatitude()));
 
-
-    GsonRequest<String> request = new GsonRequest<>(NetApi.Seach, null, object, new ResponseListener<String>() {
+    GsonRequest<String> request = new GsonRequest<>(NetApi.Seach, null, map, new ResponseListener<String>() {
       @Override
       public void onErrorResponse(@Nullable VolleyError error) {
-        LogUtils.json("onError=" + error.toString());
-        DialogUtil.dismissProgess();
-        listener.errorNull();
+        listener.onError();
       }
 
       @Override
       public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
         try {
           if (!TextUtils.isEmpty(response)) {
-
             JSONObject jsonObject = new JSONObject(response);
-
             JSONArray array = jsonObject.getJSONArray("result");
+            int pageCount = jsonObject.getInt("pageCount");
+            int pageNo = jsonObject.getInt("pagesNo");
+            int resultCount = jsonObject.getInt("resultCount");
+
             if (array.length() > 0) {
               List<RecommendModel> arrayList = new Gson().fromJson(array.toString(), new TypeToken<ArrayList<RecommendModel>>() {
               }.getType());
-              int maxPageNo = jsonObject.getInt("pageCount");
-              listener.successResult(arrayList, maxPageNo);
-            } else {
-              listener.errorNull();
+
+              listener.onSuccess(arrayList, pageNo, pageCount, resultCount);
             }
-            DialogUtil.dismissProgess();
+
           } else {
-            listener.errorNull();
+            listener.onError();
           }
+
         } catch (JSONException e) {
-          DialogUtil.dismissProgess();
-          listener.errorNull();
+          listener.onError();
           e.printStackTrace();
         }
       }
     });
     request.start(context);
-
-
   }
 
-  public interface SearchResultListener {
-    void successResult(List<RecommendModel> arrayList, int maxPageNo);
+//  public static void searchFromService(Context context, int pageNum, String searchStr, String categoryCode, String areaId, String circleId, String sortType, final SearchResultListener listener) {
+//
+//    Map<String, String> object = new HashMap<>();
+//    object.put("value", searchStr);
+//    object.put("pagesNo", String.valueOf(pageNum));
+//    object.put("cityId", String.valueOf(SPUtils.getCityId()));
+//    object.put("tagId", categoryCode);
+//    object.put("sortType", sortType);
+//    object.put("areaId", areaId);
+//    object.put("circleId", circleId);
+//    object.put("longitude", String.valueOf(SPUtils.getLongitude()));
+//    object.put("latitude", String.valueOf(SPUtils.getLatitude()));
+//
+//
+//    GsonRequest<String> request = new GsonRequest<>(NetApi.Seach, null, object, new ResponseListener<String>() {
+//      @Override
+//      public void onErrorResponse(@Nullable VolleyError error) {
+//        LogUtils.json("onError=" + error.toString());
+//        DialogUtil.dismissProgess();
+//        listener.errorNull();
+//      }
+//
+//      @Override
+//      public void onResponse(String response, boolean result, String errorCode, @Nullable String msg) {
+//        try {
+//          if (!TextUtils.isEmpty(response)) {
+//
+//            JSONObject jsonObject = new JSONObject(response);
+//
+//            JSONArray array = jsonObject.getJSONArray("result");
+//            if (array.length() > 0) {
+//              List<RecommendModel> arrayList = new Gson().fromJson(array.toString(), new TypeToken<ArrayList<RecommendModel>>() {
+//              }.getType());
+//              int maxPageNo = jsonObject.getInt("pageCount");
+//              listener.successResult(arrayList, maxPageNo);
+//            } else {
+//              listener.errorNull();
+//            }
+//            DialogUtil.dismissProgess();
+//          } else {
+//            listener.errorNull();
+//          }
+//        } catch (JSONException e) {
+//          DialogUtil.dismissProgess();
+//          listener.errorNull();
+//          e.printStackTrace();
+//        }
+//      }
+//    });
+//    request.start(context);
+//  }
 
-    void errorNull();
+  public interface SearchResultListener {
+
+    void onSuccess(List<RecommendModel> data, int pageNo, int pageCount, int resultCount);
+
+    void onError();
   }
 
 

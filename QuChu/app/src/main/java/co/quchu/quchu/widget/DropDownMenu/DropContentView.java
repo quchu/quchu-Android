@@ -405,6 +405,9 @@ public class DropContentView extends LinearLayout {
     private DropBean categoryDropBean;
     private DropBean areaDropBean;
 
+    private int categoryIndex = 0;
+    private int areaIndex = 0;
+
     private List<DropBean> mChildren;
     private Context mContext;
 
@@ -422,21 +425,29 @@ public class DropContentView extends LinearLayout {
       holder.mContentDivider.setVisibility(VISIBLE);
 
       if (child.getType() == DropBean.DATA_TYPE_CATEGORY) {
-        if (categoryDropBean != null && categoryDropBean.equals(child)) {
-          holder.mContentTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_yellow));
-          holder.mContentIv.setVisibility(VISIBLE);
+
+        if (categoryDropBean != null) {
+          holder.mContentTv.setTextColor(categoryDropBean.equals(child) ? mContext.getResources().getColor(R.color.standard_color_yellow)
+              : mContext.getResources().getColor(R.color.standard_color_h2_dark));
+          holder.mContentIv.setVisibility(categoryDropBean.equals(child) ? VISIBLE : GONE);
+
         } else {
-          holder.mContentTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h2_dark));
-          holder.mContentIv.setVisibility(GONE);
+          holder.mContentTv.setTextColor(categoryIndex == position ? mContext.getResources().getColor(R.color.standard_color_yellow)
+              : mContext.getResources().getColor(R.color.standard_color_h2_dark));
+          holder.mContentIv.setVisibility(categoryIndex == position ? VISIBLE : GONE);
         }
 
       } else if (child.getType() == DropBean.DATA_TYPE_AREA) {
-        if (areaDropBean != null && areaDropBean.equals(child)) {
-          holder.mContentTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_yellow));
-          holder.mContentIv.setVisibility(VISIBLE);
+
+        if (areaDropBean != null) {
+          holder.mContentTv.setTextColor(areaDropBean.equals(child) ? mContext.getResources().getColor(R.color.standard_color_yellow)
+              : mContext.getResources().getColor(R.color.standard_color_h2_dark));
+          holder.mContentIv.setVisibility(areaDropBean.equals(child) ? VISIBLE : GONE);
+
         } else {
-          holder.mContentTv.setTextColor(mContext.getResources().getColor(R.color.standard_color_h2_dark));
-          holder.mContentIv.setVisibility(GONE);
+          holder.mContentTv.setTextColor(areaIndex == position ? mContext.getResources().getColor(R.color.standard_color_yellow)
+              : mContext.getResources().getColor(R.color.standard_color_h2_dark));
+          holder.mContentIv.setVisibility(areaIndex == position ? VISIBLE : GONE);
         }
       }
 

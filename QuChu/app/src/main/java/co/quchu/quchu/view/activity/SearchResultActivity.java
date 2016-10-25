@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -37,7 +38,6 @@ import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
 import co.quchu.quchu.widget.DropDownMenu.DropContentView;
 import co.quchu.quchu.widget.DropDownMenu.DropDownMenu;
-import co.quchu.quchu.widget.EndlessRecyclerOnScrollListener;
 import co.quchu.quchu.widget.SearchView;
 
 /**
@@ -55,13 +55,15 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   @Bind(R.id.drop_down_menu) DropDownMenu mDropDownMenu;
   @Bind(R.id.recycler_view) RecyclerView mSearchResultRv;
   @Bind(R.id.search_no_data_tv) TextView mSearchNoDataTv;
+  @Bind(R.id.search_refresh_layout) SwipeRefreshLayout mSearchRefreshLayout;
 
   private EditText mSearchInputEt;
   private SearchAdapterNew mSearchAdapter;
 
-  private int mMaxPageNo = -1;
   private int mCurrentPageNo = 1;
   private boolean mIsLoading = false;
+  private boolean mHasMoreData;//有更多数据
+  private boolean mIsPullDownRefresh;//下拉刷新
 
   private List<SearchCategoryBean> mCategoryList;
   private List<AreaBean> mAreaList;
@@ -92,6 +94,8 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       mCategoryZh = categoryBean.getZh();
     }
 
+    initRefreshLayout();
+
     initSearchView();
 
     initDropDownMenu();
@@ -101,13 +105,50 @@ public class SearchResultActivity extends BaseBehaviorActivity {
     queryResult(false);
   }
 
+  private void initRefreshLayout() {
+    mSearchRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        mIsPullDownRefresh = true;
+        queryResult(false);
+      }
+    });
+  }
+
   private void initRecyclerView() {
     mSearchResultRv.setLayoutManager(new LinearLayoutManager(this));
     mSearchAdapter = new SearchAdapterNew();
-    mSearchAdapter.setOnSearchItemClickListener(onItemClickListener);
     mSearchResultRv.setAdapter(mSearchAdapter);
+    mSearchAdapter.setOnSearchItemClickListener(onItemClickListener);
+    mSearchResultRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+
+        //判断是否在顶部 false-顶部
+        boolean canScrollDown = recyclerView.canScrollVertically(-1);
+        //判断是否在底部 false-底部
+        boolean canScrollUp = recyclerView.canScrollVertically(1);
+
+        if (!canScrollDown) {
+          //已经在顶部,可以下拉刷新
+          mSearchRefreshLayout.setEnabled(true);
+        } else {
+          //不能下拉刷新
+          mSearchRefreshLayout.setEnabled(false);
+        }
+
+        if (!canScrollUp && mHasMoreData) {
+          //已经在底部,可以上拉加载更多
+          queryResult(true);
+        }
+      }
+    });
   }
 
+  /**
+   * 结果列表点击监听
+   */
   private SearchAdapterNew.OnSearchItemClickListener onItemClickListener = new SearchAdapterNew.OnSearchItemClickListener() {
     @Override
     public void onClick(int position, Parcelable bean, int itemType) {
@@ -190,7 +231,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   /**
    * 搜索
    */
-  private void doSearch(boolean loadMore) {
+  private void doSearch(boolean isLoadMore) {
     String inputStr = mSearchInputEt.getText().toString().trim();
 
     if (TextUtils.isEmpty(inputStr)) {
@@ -207,69 +248,70 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       mInputStr = inputStr;
     }
 
-    queryResult(loadMore);
+    queryResult(isLoadMore);
   }
 
   /**
    * 查询搜索结果
    */
-  private void queryResult(boolean loadMore) {
+  private void queryResult(boolean isLoadMore) {
+
+    if (!NetUtil.isNetworkConnected(this)) {
+      makeToast(R.string.network_error);
+      return;
+    }
+
     if (mIsLoading) return;
 
-    if (loadMore && mCurrentPageNo >= mMaxPageNo && mMaxPageNo != -1) return;
-
-    if (!loadMore) {
-      mCurrentPageNo = 1;
-
-    } else if (mCurrentPageNo < mMaxPageNo) {
-      mCurrentPageNo += 1;
-    }
-
-    mIsLoading = true;
-    if (NetUtil.isNetworkConnected(getApplicationContext())) {
+    if (!mIsPullDownRefresh && NetUtil.isNetworkConnected(this)) {
       DialogUtil.showProgess(this, R.string.loading_dialog_text);
+      mIsPullDownRefresh = false;
+    }
+    mIsLoading = true;
+
+    if (isLoadMore) {
+      mCurrentPageNo += 1;
+    } else {
+      mCurrentPageNo = 1;
     }
 
-    SearchPresenter.searchFromService(this, mCurrentPageNo, mInputStr, mTagId, mAreaId, mCircleId, mSortType,
-        new SearchPresenter.SearchResultListener() {
-          @Override
-          public void successResult(List<RecommendModel> arrayList, int maxPageNo) {
-            mSearchResultRv.clearOnScrollListeners();
+    SearchPresenter.searchFromService(this, mCurrentPageNo, mInputStr, mTagId, mAreaId, mCircleId, mSortType, new SearchPresenter.SearchResultListener() {
 
-            if (arrayList != null && arrayList.size() > 0) {
-              mSearchNoDataTv.setVisibility(View.GONE);
+      @Override
+      public void onSuccess(List<RecommendModel> data, int pageNo, int pageCount, int resultCount) {
+        mIsLoading = false;
+        mSearchNoDataTv.setVisibility(View.GONE);
+        DialogUtil.dismissProgess();
 
-              if (mMaxPageNo == -1) {
-                mMaxPageNo = maxPageNo;
-              }
+        if (mSearchRefreshLayout.isRefreshing()) {
+          mSearchRefreshLayout.setRefreshing(false);
+        }
 
-              mSearchAdapter.setResultList(arrayList);
+        //判断是否存在分页
+        if (pageNo < pageCount) {
+          mHasMoreData = true;
+        } else {
+          mHasMoreData = false;
+        }
 
-              mSearchResultRv.addOnScrollListener(
-                  new EndlessRecyclerOnScrollListener(mSearchResultRv.getLayoutManager()) {
-                    @Override
-                    public void onLoadMore(int current_page) {
-                      queryResult(true);
-                    }
-                  });
+        if (pageNo == 1) {
+          mSearchAdapter.initResultList(data);
+        } else {
+          mSearchAdapter.addMoreResultList(data);
+        }
+      }
 
-            } else {
-              //无数据
-              mSearchNoDataTv.setVisibility(View.VISIBLE);
-            }
+      @Override
+      public void onError() {
+        mIsLoading = false;
+        mSearchNoDataTv.setVisibility(View.VISIBLE);
+        DialogUtil.dismissProgess();
 
-            mIsLoading = false;
-            DialogUtil.dismissProgess();
-          }
-
-          @Override
-          public void errorNull() {
-            mIsLoading = false;
-            DialogUtil.dismissProgess();
-
-            mSearchNoDataTv.setVisibility(View.VISIBLE);
-          }
-        });
+        if (mSearchRefreshLayout.isRefreshing()) {
+          mSearchRefreshLayout.setRefreshing(false);
+        }
+      }
+    });
   }
 
   /**
@@ -284,7 +326,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
 
         mCategoryList = response;
-        mDropDownMenu.setDropCategory(mCategoryPosition, mCategoryList);
+//        mDropDownMenu.setDropCategory(mCategoryPosition, mCategoryList);
       }
 
       @Override
@@ -306,7 +348,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
 
         mAreaList = response;
-        mDropDownMenu.setDropArea(mAreaList);
+//        mDropDownMenu.setDropArea(mAreaList);
       }
 
       @Override
@@ -328,7 +370,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
         }
 
         mSortList = response;
-        mDropDownMenu.setDropSort(mSortList);
+//        mDropDownMenu.setDropSort(mSortList);
       }
 
       @Override
@@ -349,32 +391,36 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       mDropDownMenu.setTabText(0, mCategoryZh);
     }
 
+    queryGroupTags();
+    queryAreaList();
+    querySortTypeList();
+
     mDropDownMenu.setOnDropTabClickListener(new DropDownMenu.OnDropTabClickListener() {
       @Override
       public void onTabSelected(int tabPosition) {
         switch (tabPosition) {
           case 0:
-            if (mCategoryList != null && mCategoryList.size() > 0) {
-              mDropDownMenu.setDropCategory(mCategoryPosition, mCategoryList);
-            } else {
-              queryGroupTags();
-            }
+//            if (mCategoryList != null && mCategoryList.size() > 0) {
+            mDropDownMenu.setDropCategory(mCategoryPosition, mCategoryList);
+//            } else {
+//              queryGroupTags();
+//            }
             break;
 
           case 2:
-            if (mAreaList != null && mAreaList.size() > 0) {
-              mDropDownMenu.setDropArea(mAreaList);
-            } else {
-              queryAreaList();
-            }
+//            if (mAreaList != null && mAreaList.size() > 0) {
+            mDropDownMenu.setDropArea(mAreaList);
+//            } else {
+//              queryAreaList();
+//            }
             break;
 
           case 4:
-            if (mSortList != null && mSortList.size() > 0) {
-              mDropDownMenu.setDropSort(mSortList);
-            } else {
-              querySortTypeList();
-            }
+//            if (mSortList != null && mSortList.size() > 0) {
+            mDropDownMenu.setDropSort(mSortList);
+//            } else {
+//              querySortTypeList();
+//            }
             break;
         }
       }
@@ -456,7 +502,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
 
   @Override
   public int getUserBehaviorPageId() {
-    return 0;
+    return 114;
   }
 
   @Override
