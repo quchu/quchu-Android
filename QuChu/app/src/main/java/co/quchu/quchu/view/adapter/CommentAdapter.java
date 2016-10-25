@@ -59,7 +59,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       if (holder instanceof CommentViewHolder){
         final CommentModel commentModel = mDataSet.get(position);
 
-        ((CommentViewHolder) holder).rvImages.setLayoutManager(new GridLayoutManager(mAnchorActivity,2));
+        ((CommentViewHolder) holder).rvImages.setLayoutManager(new GridLayoutManager(mAnchorActivity,4));
         CommentImageAdapter adapter = new CommentImageAdapter(commentModel.getImageList());
         if (null!=commentModel && null!=commentModel.getImageList()){
 
@@ -80,7 +80,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ((CommentViewHolder) holder).rvImages.setAdapter(adapter);
 
 
-        ((CommentViewHolder) holder).rbRating.setRating(commentModel.getScore());
+        //((CommentViewHolder) holder).rbRating.setRating(commentModel.getScore());
         ((CommentViewHolder) holder).tvUsername.setText(commentModel.getUserName());
         if (null != commentModel.getCreateDate()) {
           ((CommentViewHolder) holder).tvDate.setText(
@@ -132,9 +132,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
           });
         }
 
-        if (position==0 ){
-          ((CommentViewHolder) holder).vDivider.setVisibility(View.GONE);
-        }
+        //if (position==0 ){
+        //  ((CommentViewHolder) holder).vDivider.setVisibility(View.GONE);
+        //}
       }
   }
 
@@ -158,9 +158,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Bind(R.id.tvCollapse) TextView tvCollapse;
     @Bind(R.id.ivFrom) SimpleDraweeView ivFrom;
     @Bind(R.id.tvFrom) TextView tvFrom;
-    @Bind(R.id.rbRating) RatingBar rbRating;
+    //@Bind(R.id.rbRating) RatingBar rbRating;
     @Bind(R.id.rvImages) RecyclerView rvImages;
-    @Bind(R.id.vDivider) View vDivider;
+    //@Bind(R.id.vDivider) View vDivider;
 
     CommentViewHolder(View view) {
       super(view);

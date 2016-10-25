@@ -300,9 +300,6 @@
 
     </activity>
 
-    <activity
-        android:name=".view.activity.CommentListActivity"
-        android:screenOrientation="portrait"/>
 
     <activity
         android:name=".im.activity.ChatActivity"

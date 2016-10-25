@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackground"
     android:orientation="vertical"
+    android:background="@color/standard_color_white"
+    android:paddingTop="@dimen/half_margin"
+    android:paddingBottom="@dimen/half_margin"
     >
 
   <RelativeLayout
+      android:layout_marginTop="@dimen/half_margin"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-
       android:layout_marginBottom="@dimen/half_margin"
-      android:background="@color/standard_color_white"
       >
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -21,9 +22,7 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/double_margin"
         android:layout_marginLeft="@dimen/base_margin"
-        android:layout_marginTop="@dimen/double_margin"
         fresco:actualImageScaleType="centerCrop"
         fresco:cardCornerRadius="4dp"
         fresco:cardPreventCornerOverlap="true"
@@ -74,4 +73,11 @@
   </RelativeLayout>
 
 
-</RelativeLayout>
+  <TextView
+      android:id="@+id/tvDesc"
+      tools:text="Description"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/base_margin"
+      />
+</LinearLayout>

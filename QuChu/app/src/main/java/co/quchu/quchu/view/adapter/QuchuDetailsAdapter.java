@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -28,7 +27,6 @@ import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.presenter.NearbyPresenter;
 
 import co.quchu.quchu.utils.StringUtils;
-import co.quchu.quchu.view.activity.CommentListActivity;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
@@ -254,7 +252,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
       }
     } else if (holder instanceof CommentViewHolder) {
-      ((CommentViewHolder) holder).vDivider.setVisibility(View.GONE);
+      //((CommentViewHolder) holder).vDivider.setVisibility(View.GONE);
       if (null != mData.getReviewList()) {
         int commentIndex = 0;
         final CommentModel commentModel = mData.getReviewList().get(commentIndex);
@@ -329,6 +327,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (null != commentModel.getSourceUrl()) {
           ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
         }
+        ((CommentViewHolder) holder).tvRatingCount.setVisibility(View.VISIBLE);
 
       }
     } else if (holder instanceof MatchedTagsViewHolder) {
@@ -520,7 +519,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.ivFrom) SimpleDraweeView ivFrom;
     @Bind(R.id.tvFrom) TextView tvFrom;
     @Bind(R.id.rvImages) RecyclerView rvImages;
-    @Bind(R.id.vDivider) View vDivider;
+    //@Bind(R.id.vDivider) View vDivider;
+    @Bind(R.id.tvRatingCount) TextView tvRatingCount;
 
     CommentViewHolder(View view) {
       super(view);
@@ -584,7 +584,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.desc) TextView tvName;
     @Bind(R.id.tag) TagCloudView tcvTag;
     @Bind(R.id.simpleDraweeView) SimpleDraweeView sdvImage;
-    @Bind(R.id.cvRoot) CardView cardView;
     @Bind(R.id.address) TextView address;
 
     NearbyViewHolder(View view) {

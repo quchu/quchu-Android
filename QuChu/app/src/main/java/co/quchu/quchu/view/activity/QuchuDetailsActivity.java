@@ -61,6 +61,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   public DetailModel dModel = new DetailModel();
   private QuchuDetailsAdapter mQuchuDetailAdapter;
   private VisitedInfoModel mVisitedInfoModel;
+  private CommentListFragment mCommentListFragment;
 
   public static final String FROM_TYPE_HOME = "detail_home_t";//从智能推荐进来的
   public static final String FROM_TYPE_MAP = "map";//从智能推荐进来的
@@ -93,6 +94,9 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     initData();
     getVisitors();
     getRatingInfo();
+
+
+
   }
 
   private void resetFavorite() {
@@ -169,6 +173,13 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
       } else {
         bindingDetailData(dModel);
       }
+
+      mCommentListFragment = new CommentListFragment();
+      Bundle bundle = new Bundle();
+      bundle.putInt(CommentListFragment.BUNDLE_KEY_PLACE_ID,pId);
+      mCommentListFragment.setArguments(bundle);
+      getSupportFragmentManager().beginTransaction().add(R.id.flContainer,mCommentListFragment).commitAllowingStateLoss();
+
     }
   }
 

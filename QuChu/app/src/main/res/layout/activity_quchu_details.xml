@@ -138,6 +138,12 @@
     </LinearLayout>
 
 
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_below="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></FrameLayout>
 
 
 

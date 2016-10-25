@@ -37,6 +37,7 @@
       android:textSize="@dimen/standard_text_size_h2"
       android:textColor="@color/standard_color_h1_dark"
       android:drawablePadding="@dimen/quarter_margin"
+      android:paddingBottom="@dimen/base_margin"
       android:drawableLeft="@mipmap/ic_zuobiao"
       tools:text="环岛路30号"
       />
