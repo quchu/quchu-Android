@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import co.quchu.quchu.model.ImageModel;
 import com.android.volley.VolleyError;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -22,6 +23,7 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import java.util.ArrayList;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -73,21 +75,16 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
   public static final String REQUEST_KEY_PID = "pid";
   public static final String REQUEST_KEY_FROM = "from";
-  private long startViewTime = 0L;
   private int pId = 0;
-  private boolean mLoadingMore = false;
   public DetailModel dModel = new DetailModel();
   private QuchuDetailsAdapter mQuchuDetailAdapter;
   private VisitedInfoModel mVisitedInfoModel;
-  private List<HangoutUserModel> mAvailableUsers;
   private View.OnClickListener mOnClickListener = new View.OnClickListener() {
     @Override public void onClick(View v) {
       detailClick(v);
     }
   };
   boolean mIsRatingRunning = false;
-  boolean mIsLoadMoreRunning = false;
-  private BitmapDescriptor mOverlayLocation;
 
   public static final String FROM_TYPE_HOME = "detail_home_t";//从智能推荐进来的
   public static final String FROM_TYPE_MAP = "map";//从智能推荐进来的
@@ -113,12 +110,10 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     mRecyclerView.setVisibility(View.INVISIBLE);
 
     mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel);
-    mOverlayLocation = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_me);
     mRecyclerView.setLayoutManager(
         new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
     mRecyclerView.setAdapter(mQuchuDetailAdapter);
 
-    startViewTime = System.currentTimeMillis();
     initData();
     getVisitors();
     getRatingInfo();
@@ -243,9 +238,21 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     detail_bottom_group_ll.setVisibility(View.VISIBLE);
     mRecyclerView.setVisibility(View.VISIBLE);
+
+
     mQuchuDetailAdapter.notifyDataSetChanged();
+    if (null!=dModel && null!=dModel.getImglist() &&dModel.getImglist().size()>0){
+
+      List<ImageModel> galleryImgs = new ArrayList<>();
+      for (int i = 0; i < dModel.getImglist().size(); i++) {
+        galleryImgs.add(dModel.getImglist().get(i).convert2ImageModel());
+      }
+
+      mQuchuDetailAdapter.updateGallery(galleryImgs);
+    }
 
     changeCollectState(dModel.isIsf());
+
     //initMap();
   }
 
