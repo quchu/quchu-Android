@@ -1,6 +1,7 @@
 package co.quchu.quchu.view.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,15 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -59,7 +69,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   @Bind(R.id.detail_recyclerview) RecyclerView mRecyclerView;
   @Bind(R.id.ivShouCang) ImageView ivShouCang;
   @Bind(R.id.detail_bottom_group_ll) View detail_bottom_group_ll;
-
   @Bind(R.id.errorView) ErrorView errorView;
 
   public static final String REQUEST_KEY_PID = "pid";
@@ -78,6 +87,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
   };
   boolean mIsRatingRunning = false;
   boolean mIsLoadMoreRunning = false;
+  private BitmapDescriptor mOverlayLocation;
 
   public static final String FROM_TYPE_HOME = "detail_home_t";//从智能推荐进来的
   public static final String FROM_TYPE_MAP = "map";//从智能推荐进来的
@@ -90,10 +100,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    //        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-    //            overridePendingTransition(-1,-1);
-    //        }
-
     setContentView(R.layout.activity_quchu_details);
     ButterKnife.bind(this);
     from = getIntent().getStringExtra(REQUEST_KEY_FROM);
@@ -106,8 +112,8 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     detail_bottom_group_ll.setVisibility(View.INVISIBLE);
     mRecyclerView.setVisibility(View.INVISIBLE);
 
-    mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel, mOnClickListener);
-
+    mQuchuDetailAdapter = new QuchuDetailsAdapter(this, dModel);
+    mOverlayLocation = BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_pin_me);
     mRecyclerView.setLayoutManager(
         new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
     mRecyclerView.setAdapter(mQuchuDetailAdapter);
@@ -115,27 +121,12 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     startViewTime = System.currentTimeMillis();
     initData();
     getVisitors();
-    getVisitorsAnlysis();
     getRatingInfo();
-    getHangoutUsers();
   }
 
   private void resetFavorite() {
     ivShouCang.setImageResource(
         dModel.isIsf() ? R.mipmap.ic_shoucang_yellow : R.mipmap.ic_shoucang_large);
-  }
-
-  private void getHangoutUsers() {
-    HangoutPresenter.getHangoutUsers(getApplicationContext(),
-        new CommonListener<List<HangoutUserModel>>() {
-          @Override public void successListener(List<HangoutUserModel> response) {
-            mAvailableUsers = response;
-            mQuchuDetailAdapter.updateHangoutUsers(mAvailableUsers);
-          }
-
-          @Override public void errorListener(VolleyError error, String exception, String msg) {
-          }
-        });
   }
 
   @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
@@ -147,20 +138,6 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
   @Override public int getUserBehaviorPageId() {
     return 104;
-  }
-
-  private void getVisitorsAnlysis() {
-    InterestingDetailPresenter.getVisitorAnalysis(getApplicationContext(), pId,
-        new CommonListener<SimpleQuchuDetailAnalysisModel>() {
-          @Override public void successListener(SimpleQuchuDetailAnalysisModel response) {
-            if (null != response) {
-              mQuchuDetailAdapter.updateVisitorAnalysis(response);
-            }
-          }
-
-          @Override public void errorListener(VolleyError error, String exception, String msg) {
-          }
-        });
   }
 
   private void getVisitors() {
@@ -209,37 +186,34 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
       if (dModel == null || StringUtils.isEmpty(dModel.getName())) {
 
-        if (!NetUtil.isNetworkConnected(getApplicationContext()) ){
+        if (!NetUtil.isNetworkConnected(getApplicationContext())) {
           errorView.showViewDefault(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            @Override public void onClick(View v) {
               getData();
             }
           });
-        }else{
+        } else {
           getData();
         }
-
       } else {
         bindingDetailData(dModel);
       }
     }
   }
 
-  private void getData(){
+  private void getData() {
 
     DialogUtil.showProgess(this, "数据加载中...");
     InterestingDetailPresenter.getInterestingData(this, pId, new CommonListener<DetailModel>() {
       @Override public void successListener(DetailModel response) {
-        bindingDetailData(response);
         DialogUtil.dismissProgess();
+        bindingDetailData(response);
         errorView.hideView();
       }
 
       @Override public void errorListener(VolleyError error, String exception, String msg) {
         errorView.showViewDefault(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
+          @Override public void onClick(View v) {
             DialogUtil.showProgess(QuchuDetailsActivity.this, "加载中");
             getData();
           }
@@ -247,6 +221,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
       }
     });
   }
+
 
   private void bindingDetailData(DetailModel model) {
     mRecyclerView.setVisibility(View.VISIBLE);
@@ -268,120 +243,50 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
 
     detail_bottom_group_ll.setVisibility(View.VISIBLE);
     mRecyclerView.setVisibility(View.VISIBLE);
-    //        if (null != dModel.getImglist()&&dModel.getImglist().size()>0) {
-    //            List<ImageModel> imageSet = new ArrayList<>();
-    //            for (int i = 0; i < dModel.getImglist().size(); i++) {
-    //                imageSet.add(dModel.getImglist().get(i).convert2ImageModel());
-    //            }
-    //            vpGallery.setAdapter(new GalleryAdapter(imageSet));
-    //            siv.setIndicators(imageSet.size());
-    //            siv.setVisibility(View.VISIBLE);
-    //            vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-    //                @Override
-    //                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    //
-    //                }
-    //
-    //                @Override
-    //                public void onPageSelected(int position) {
-    //                    siv.setCurrentIndex(position);
-    //                }
-    //
-    //                @Override
-    //                public void onPageScrollStateChanged(int state) {
-    //
-    //                }
-    //            });
-    //        }else{
-    //            siv.setVisibility(View.GONE);
-    //        }
-
     mQuchuDetailAdapter.notifyDataSetChanged();
-    //mQuchuDetailAdapter.setLoadMoreListener(new QuchuDetailsAdapter.OnLoadMoreListener() {
-    //    @Override
-    //    public void onLoadMore() {
-    //        if(!NetUtil.isNetworkConnected(getApplicationContext())){
-    //            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_SHORT).show();
-    //            return;
-    //
-    //        }
-    //
-    //        if (mLoadingMore) {
-    //            return;
-    //        }
-    //
-    //        mLoadingMore = true;
-    //        String str = "";
-    //
-    //        for (int i = 0; i < dModel.getNearPlace().size(); i++) {
-    //            str += dModel.getNearPlace().get(i).getPlaceId();
-    //            str += "|";
-    //        }
-    //        if (str.contains("|")) {
-    //            str = str.substring(0, str.length() - 1);
-    //        }
-    //        double la;
-    //        double lo;
-    //        try {
-    //            la = Double.valueOf(dModel.getLatitude());
-    //            lo = Double.valueOf(dModel.getLongitude());
-    //        } catch (Exception e) {
-    //            e.printStackTrace();
-    //            return;
-    //        }
-    //
-    //        loadMore(str, null, 1, dModel.getPid(), SPUtils.getCityId(), la, lo);
-    //    }
-    //});
 
     changeCollectState(dModel.isIsf());
+    //initMap();
   }
+
+  //private void initMap() {
+  //  LatLng locationLatLnb =
+  //      new LatLng(Double.valueOf(dModel.getLatitude()), Double.valueOf(dModel.getLongitude()));
+  //  MapStatusUpdate status = MapStatusUpdateFactory.newLatLngZoom(locationLatLnb, 17f);
+  //  mvMap.getMap().animateMapStatus(status);
+  //  mvMap.getMap().getUiSettings().setAllGesturesEnabled(false);
+  //  mvMap.showZoomControls(false);
+  //  OverlayOptions optionMyLoc = new MarkerOptions().position(locationLatLnb)
+  //      .anchor(.5f, .5f)
+  //      .perspective(true)
+  //      .draggable(false)
+  //      .period(50)
+  //      .icon(mOverlayLocation);
+  //  mvMap.getMap().addOverlay(optionMyLoc);
+  //
+  //
+  //  mvMap.postDelayed(new Runnable() {
+  //    @Override public void run() {
+  //      mvMap.getMap().snapshot(new BaiduMap.SnapshotReadyCallback() {
+  //        @Override public void onSnapshotReady(Bitmap bitmap) {
+  //          mQuchuDetailAdapter.updateMapBitmap(bitmap);
+  //          DialogUtil.dismissProgess();
+  //        }
+  //      });
+  //    }
+  //  },2500);
+  //
+  //
+  //
+  //
+  //}
+
+
 
   private void changeCollectState(boolean isCollect) {
     dModel.setIsf(isCollect);
     resetFavorite();
     mQuchuDetailAdapter.notifyDataSetChanged();
-  }
-
-  private void loadMore(final String recommendPids, final String cateIds, final int isFirst,
-      final int pid, final int cid, final double lat, final double lon) {
-    if (mIsLoadMoreRunning) return;
-    mIsLoadMoreRunning = true;
-
-    mRecyclerView.postDelayed(new Runnable() {
-      @Override public void run() {
-        NearbyPresenter.getNearbyData(getApplicationContext(), recommendPids, cateIds, isFirst, pid,
-            cid, lat, lon, 1, new NearbyPresenter.getNearbyDataListener() {
-              @Override public void getNearbyData(List<NearbyItemModel> model, int pMaxPageNo) {
-                Intent intent = new Intent(QuchuDetailsActivity.this, NearbyActivity.class);
-
-                String pids = "";
-                List<DetailModel.NearPlace> places = dModel.getNearPlace();
-
-                if (places.size() == 1) {
-                  pids += places.get(0).getPlaceId();
-                } else {
-                  for (int i = 0; i < places.size(); i++) {
-                    pids += places.get(i).getPlaceId();
-                    pids += "|";
-                  }
-                  pids = pids.substring(0, pids.length() - 1);
-                }
-                intent.putExtra(NearbyActivity.BUNDLE_KEY_DATA, (Serializable) model);
-                intent.putExtra(NearbyActivity.BUNDLE_KEY_PID, dModel.getPid());
-                intent.putExtra(NearbyActivity.BUNDLE_KEY_RECOMMEND_PIDS, pids);
-                mQuchuDetailAdapter.finishLoadMore();
-                startActivity(intent);
-                mRecyclerView.postDelayed(new Runnable() {
-                  @Override public void run() {
-                    mIsLoadMoreRunning = false;
-                    mLoadingMore = false;
-                  }
-                }, 500);
-              }
-            });
-      }
-    }, 1000l);
   }
 
   private void ratingQuchu(final List<TagsModel> selection, final int score) {
@@ -510,30 +415,30 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
         //                    }
         //                    break;
 
-        case R.id.detail_store_address_ll:
-
-          if (!NetUtil.isNetworkConnected(getApplicationContext())) {
-            Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT)
-                .show();
-          } else if (!dModel.isMap()) {
-            Toast.makeText(QuchuDetailsActivity.this, "此趣处暂无导航信息!", Toast.LENGTH_SHORT).show();
-          } else {
-            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_MAP));
-
-            UMEvent("map_c");
-            Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
-            mapIntent.putExtra("pid", dModel.getPid());
-            mapIntent.putExtra("lat", dModel.getLatitude());
-            mapIntent.putExtra("lon", dModel.getLongitude());
-            mapIntent.putExtra("gdlon", dModel.gdLongitude);
-            mapIntent.putExtra("gdlat", dModel.gdLatitude);
-            mapIntent.putExtra("title", dModel.getName());
-            mapIntent.putExtra("entity", dModel.convert2NearbyMapItem());
-            mapIntent.putExtra("placeAddress", dModel.getAddress());
-            startActivity(mapIntent);
-          }
-
-          break;
+        //case R.id.mvMap:
+        //
+        //  if (!NetUtil.isNetworkConnected(getApplicationContext())) {
+        //    Toast.makeText(QuchuDetailsActivity.this, R.string.network_error, Toast.LENGTH_SHORT)
+        //        .show();
+        //  } else if (!dModel.isMap()) {
+        //    Toast.makeText(QuchuDetailsActivity.this, "此趣处暂无导航信息!", Toast.LENGTH_SHORT).show();
+        //  } else {
+        //    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_FINISH_MAP));
+        //
+        //    UMEvent("map_c");
+        //    Intent mapIntent = new Intent(QuchuDetailsActivity.this, PlaceMapActivity.class);
+        //    mapIntent.putExtra("pid", dModel.getPid());
+        //    mapIntent.putExtra("lat", dModel.getLatitude());
+        //    mapIntent.putExtra("lon", dModel.getLongitude());
+        //    mapIntent.putExtra("gdlon", dModel.gdLongitude);
+        //    mapIntent.putExtra("gdlat", dModel.gdLatitude);
+        //    mapIntent.putExtra("title", dModel.getName());
+        //    mapIntent.putExtra("entity", dModel.convert2NearbyMapItem());
+        //    mapIntent.putExtra("placeAddress", dModel.getAddress());
+        //    startActivity(mapIntent);
+        //  }
+        //
+        //  break;
       }
     }
   }

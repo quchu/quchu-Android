@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    >
+
+  <com.facebook.drawee.view.SimpleDraweeView
+      android:id="@+id/ivMap"
+      android:background="@color/transparent"
+      fresco:actualImageScaleType="fitXY"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      fresco:viewAspectRatio="1.77"
+      />
+
+
+  <ImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@mipmap/ic_map_pin_me"
+      android:layout_centerInParent="true"
+      />
+</RelativeLayout>

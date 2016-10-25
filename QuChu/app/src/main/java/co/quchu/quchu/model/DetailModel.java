@@ -55,6 +55,7 @@ public class DetailModel implements Serializable{
     private String name;
     private String net;
     private String price;
+    private String describe = "";
     private String restDay = "";
     private String rgb;
     private String tel;
@@ -90,6 +91,14 @@ public class DetailModel implements Serializable{
 
     public void setArticleList(List<QuchuDetailArticleModel> articleList) {
         this.articleList = articleList;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 
     public SimpleCircleModel getAreaMap() {
@@ -219,6 +228,7 @@ public class DetailModel implements Serializable{
         setPlaceReviewCount(objTarget.getPlaceReviewCount());
         setAreaMap(objTarget.getAreaMap());
         setCircleMap(objTarget.getCircleMap());
+        setDescribe(objTarget.getDescribe());
 
         this.gdLatitude = objTarget.gdLatitude;
         this.gdLongitude = objTarget.gdLongitude;

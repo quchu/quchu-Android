@@ -2,8 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/standard_color_white"
-
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -20,44 +18,12 @@
 
         <co.quchu.quchu.widget.CircleIndicator
             android:id="@+id/siv"
-            android:layout_alignBottom="@id/vpGallery"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/base_margin"
             android:layout_height="20dp"/>
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rlBanner"
-        android:paddingLeft="@dimen/base_margin"
-        android:paddingRight="@dimen/base_margin"
-        >
 
-        <TextView
-
-            android:id="@+id/detail_store_name_tv"
-            style="@style/TextView.H1"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="34dp"
-            android:text="@string/empty_string"
-            android:textSize="@dimen/standard_text_size_h0"
-            />
-
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvAdditionalInfo"
-            android:layout_below="@id/detail_store_name_tv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/quchu_detail_addtionalinfo_icon_size"
-            android:layout_marginTop="@dimen/base_margin"
-            android:layout_marginBottom="@dimen/half_margin"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:visibility="gone"
-            />
-
-    </RelativeLayout>
 
 </RelativeLayout>

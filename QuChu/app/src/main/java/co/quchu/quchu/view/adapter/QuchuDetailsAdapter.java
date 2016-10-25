@@ -2,16 +2,20 @@ package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -20,37 +24,27 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.dialog.BottomListDialog;
 import co.quchu.quchu.model.CommentImageModel;
 import co.quchu.quchu.model.CommentModel;
 import co.quchu.quchu.model.DetailModel;
-import co.quchu.quchu.model.HangoutUserModel;
 import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.QuchuDetailArticleModel;
-import co.quchu.quchu.model.SimpleQuchuDetailAnalysisModel;
 import co.quchu.quchu.model.TagsModel;
 import co.quchu.quchu.model.VisitedInfoModel;
-import co.quchu.quchu.model.VisitedUsersModel;
 import co.quchu.quchu.presenter.NearbyPresenter;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.CommentListActivity;
-import co.quchu.quchu.view.activity.InviteHangoutUsersActivity;
 import co.quchu.quchu.view.activity.PhotoViewActivity;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
 import co.quchu.quchu.view.activity.QuchuListSpecifyTagActivity;
 import co.quchu.quchu.view.activity.WebViewActivity;
-import co.quchu.quchu.view.fragment.DialogMatchingUsers;
 import co.quchu.quchu.widget.CircleIndicator;
 import co.quchu.quchu.widget.TagCloudView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.zhuge.analysis.stat.ZhugeSDK;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by admin on 2016/3/7.
@@ -58,69 +52,45 @@ import org.json.JSONObject;
 public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   protected static final int LAYOUT_TYPE_INTRO_IMAGE = 0x0001;
-  protected static final int LAYOUT_TYPE_ACTIONBAR = 0x0002;
-  //protected static final int LAYOUT_TYPE_SIMPLE_INFO = 0x0003;
-  protected static final int LAYOUT_TYPE_CONTACT_INFO = 0x0004;
-  protected static final int LAYOUT_TYPE_RATING_INFO = 0x0005;
-  protected static final int LAYOUT_TYPE_ADDITIONAL_INFO = 0x0006;
-  protected static final int LAYOUT_TYPE_OPENING_INFO = 0x0007;
-  protected static final int LAYOUT_TYPE_PARTY_STARTER_INFO = 0x0008;
-  protected static final int LAYOUT_TYPE_PARTY_INFO = 0x0009;
-  protected static final int LAYOUT_TYPE_IMAGE = 0x0010;
-  protected static final int LAYOUT_TYPE_NEARBY = 0x0011;
-  protected static final int LAYOUT_TYPE_BLANK = 0x0012;
-  protected static final int LAYOUT_TYPE_LABEL = 0x0013;
-  protected static final int LAYOUT_TYPE_COMMENT = 0x0014;
-  protected static final int LAYOUT_TYPE_ARTICLE = 0x0015;
-  protected static final int LAYOUT_TYPE_MATCHED_TAGS = 0x0016;
-  protected static final int LAYOUT_TYPE_LOAD_MORE = 0x1001;
+  protected static final int LAYOUT_TYPE_SIMPLE_INFO = 0x0002;
+  protected static final int LAYOUT_TYPE_RATING_INFO = 0x0003;
+  protected static final int LAYOUT_TYPE_PARTY_INFO = 0x00031;
+  protected static final int LAYOUT_TYPE_ADDITIONAL_INFO = 0x0004;
+  protected static final int LAYOUT_TYPE_MAP_INFO = 0x0005;
+  protected static final int LAYOUT_TYPE_ARTICLE = 0x0006;
+  protected static final int LAYOUT_TYPE_COMMENT = 0x0007;
+  protected static final int LAYOUT_TYPE_MATCHED_TAGS = 0x008;
+  protected static final int LAYOUT_TYPE_NEARBY = 0x009;
 
   private LayoutInflater mLayoutInflater;
   private Activity mAnchorActivity;
   private DetailModel mData;
-  private View.OnClickListener mOnItemClickListener;
-  public static final int BLOCK_INDEX = 7;
-  private boolean mEnableLoadMore = true;
   private VisitedInfoModel mVisitedInfoModel;
-  private SimpleQuchuDetailAnalysisModel mAnalysisModel;
-  private List<HangoutUserModel> mHangoutUsers;
+  private Bitmap mBmMap;
 
   protected static final int VIEW_TYPES[] = new int[] {
-      LAYOUT_TYPE_INTRO_IMAGE,
-      //LAYOUT_TYPE_SIMPLE_INFO,
-      LAYOUT_TYPE_CONTACT_INFO, LAYOUT_TYPE_OPENING_INFO, LAYOUT_TYPE_RATING_INFO,
-      LAYOUT_TYPE_ACTIONBAR, LAYOUT_TYPE_ADDITIONAL_INFO, LAYOUT_TYPE_BLANK, LAYOUT_TYPE_BLANK,
-      LAYOUT_TYPE_IMAGE, LAYOUT_TYPE_NEARBY, LAYOUT_TYPE_LOAD_MORE
+      LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_RATING_INFO,
+      LAYOUT_TYPE_ADDITIONAL_INFO, LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_ARTICLE, LAYOUT_TYPE_COMMENT,
+      LAYOUT_TYPE_MATCHED_TAGS
   };
 
   protected static final int VIEW_TYPES_PARTY[] = new int[] {
-      LAYOUT_TYPE_INTRO_IMAGE,
-      //LAYOUT_TYPE_SIMPLE_INFO,
-      LAYOUT_TYPE_CONTACT_INFO, LAYOUT_TYPE_OPENING_INFO, LAYOUT_TYPE_RATING_INFO,
-      LAYOUT_TYPE_ACTIONBAR, LAYOUT_TYPE_BLANK, LAYOUT_TYPE_PARTY_STARTER_INFO,
-      LAYOUT_TYPE_PARTY_INFO, LAYOUT_TYPE_IMAGE, LAYOUT_TYPE_NEARBY, LAYOUT_TYPE_LOAD_MORE
+      LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_PARTY_INFO,
+      LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_ARTICLE, LAYOUT_TYPE_COMMENT, LAYOUT_TYPE_MATCHED_TAGS
   };
 
-  //public static final int[] RANDOM_AVATAR = {R.mipmap.ic_random_user_avatar_a, R.mipmap.ic_random_user_avatar_b,
-  //            R.mipmap.ic_random_user_avatar_c, R.mipmap.ic_random_user_avatar_d};
-
-  public QuchuDetailsAdapter(Activity activity, DetailModel dModel,
-      View.OnClickListener onClickListener) {
-    if (null == onClickListener) {
-      throw new IllegalArgumentException("OnClickListener Cannot be null");
-    }
+  public QuchuDetailsAdapter(Activity activity, DetailModel dModel) {
     mAnchorActivity = activity;
     mData = dModel;
     mLayoutInflater = LayoutInflater.from(activity);
-    mOnItemClickListener = onClickListener;
   }
 
   public void updateVisitedUsers() {
     notifyDataSetChanged();
   }
 
-  public void updateHangoutUsers(List<HangoutUserModel> users) {
-    mHangoutUsers = users;
+  public void updateMapBitmap(Bitmap bm) {
+    mBmMap = bm;
     notifyDataSetChanged();
   }
 
@@ -129,138 +99,78 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     notifyDataSetChanged();
   }
 
-  public void updateVisitorAnalysis(SimpleQuchuDetailAnalysisModel response) {
-    mAnalysisModel = response;
-    notifyDataSetChanged();
-  }
-
-  public void setLoadMoreListener(OnLoadMoreListener pListener) {
-    mLoadMoreListener = pListener;
-  }
-
-  private OnLoadMoreListener mLoadMoreListener;
-
-  public interface OnLoadMoreListener {
-    void onLoadMore();
+  private int getBasicChildCount() {
+    if (mData == null) {
+      return 0;
+    }
+    return !mData.isIsActivity() ? VIEW_TYPES.length : VIEW_TYPES_PARTY.length;
   }
 
   @Override public int getItemViewType(int position) {
-    int imgSize = null != mData.getImglist() ? mData.getImglist().size() : 0;
-    int nearbySize = null != mData.getNearPlace() ? mData.getNearPlace().size() : 0;
-    int commentsSize = null != mData.getReviewList() ? mData.getReviewList().size() : 0;
-    int articleSize = null != mData.getArticleList() ? mData.getArticleList().size() : 0;
 
-    if (position <= (BLOCK_INDEX + 1)) {
-      return null != mData && mData.isIsActivity() ? VIEW_TYPES_PARTY[position]
-          : VIEW_TYPES[position];
-    } else if (position >= (BLOCK_INDEX + 1) && position < (imgSize + (BLOCK_INDEX + 1))) {
-      return LAYOUT_TYPE_IMAGE;
-    } else if (position >= (imgSize + (BLOCK_INDEX + 1)) && position < (imgSize + commentsSize + (
-        BLOCK_INDEX
-            + 1))) {
-      return LAYOUT_TYPE_COMMENT;
-    } else if (position >= (imgSize + commentsSize + (BLOCK_INDEX + 1)) && position < (imgSize
-        + commentsSize
-        + (BLOCK_INDEX + 2))) {
-      return LAYOUT_TYPE_LABEL;
-    } else if (position >= (imgSize + commentsSize + (BLOCK_INDEX + 2)) && position < (imgSize
-        + commentsSize
-        + BLOCK_INDEX
-        + 2
-        + articleSize)){
-      System.out.println("LAYOUT_TYPE_ARTICLE");
-
-      return LAYOUT_TYPE_ARTICLE;
-    } else if(position >= (imgSize
-        + commentsSize
-        + BLOCK_INDEX
-        + 2
-        + articleSize) && position<(imgSize
-        + commentsSize
-        + BLOCK_INDEX
-        + 3
-        + articleSize)){
-      System.out.println("LAYOUT_TYPE_MATCHED_TAGS");
-      return LAYOUT_TYPE_MATCHED_TAGS;
-    } else if (position >= (imgSize + commentsSize + (BLOCK_INDEX + 3)+articleSize) && position < (imgSize
-        + commentsSize
-        + BLOCK_INDEX
-        + 3
-        + articleSize
-        + nearbySize)) {
-      System.out.println("LAYOUT_TYPE_NEARBY");
-      return LAYOUT_TYPE_NEARBY;
+    if (!mData.isIsActivity()) {
+      return position < VIEW_TYPES.length ? VIEW_TYPES[position] : LAYOUT_TYPE_NEARBY;
     } else {
-      return LAYOUT_TYPE_BLANK;
+      return position < VIEW_TYPES_PARTY.length ? VIEW_TYPES_PARTY[position] : LAYOUT_TYPE_NEARBY;
     }
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
     switch (viewType) {
       case LAYOUT_TYPE_INTRO_IMAGE:
         return new IntroImageViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_image, parent, false));
-      case LAYOUT_TYPE_ACTIONBAR:
-        return new ActionViewHolder(
-            mLayoutInflater.inflate(R.layout.item_quchu_detail_actionbar, parent, false));
-      //            case  LAYOUT_TYPE_SIMPLE_INFO:
-      //                return new SimpleInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_info, parent, false));
-      case LAYOUT_TYPE_CONTACT_INFO:
-        return new ContactInfoViewHolder(
-            mLayoutInflater.inflate(R.layout.item_quchu_detail_contact_info, parent, false));
+
+      case LAYOUT_TYPE_SIMPLE_INFO:
+        return new SimpleInfoViewHolder(
+            mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_info, parent, false));
+
       case LAYOUT_TYPE_RATING_INFO:
         return new RatingInfoViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_rating_info, parent, false));
-      case LAYOUT_TYPE_ADDITIONAL_INFO:
-        if (null == mData || mData.isIsActivity()) {
-          return new BlankViewHolder(
-              mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
-        } else {
-          return new AdditionalInfoViewHolder(
-              mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
-        }
-        //            case LAYOUT_TYPE_OPENING_INFO:
-        //                return new OpeningInfoViewHolder(mLayoutInflater.inflate(R.layout.item_quchu_detail_opening_info, parent, false));
-      case LAYOUT_TYPE_PARTY_STARTER_INFO:
-        if (null != mData && mData.isIsActivity()) {
-          return new StarterInfoViewHolder(
-              mLayoutInflater.inflate(R.layout.item_quchu_detail_party_starter_info, parent,
-                  false));
-        } else {
-          return new BlankViewHolder(
-              mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
-        }
+
       case LAYOUT_TYPE_PARTY_INFO:
-        if (null != mData && mData.isIsActivity()) {
-          return new PartyInfoViewHolder(
-              mLayoutInflater.inflate(R.layout.item_quchu_detail_party_info, parent, false));
+        return new PartyInfoViewHolder(
+            mLayoutInflater.inflate(R.layout.item_quchu_detail_party_info, parent, false));
+
+      case LAYOUT_TYPE_ADDITIONAL_INFO:
+        return new AdditionalInfoViewHolder(
+            mLayoutInflater.inflate(R.layout.item_quchu_detail_additional_info, parent, false));
+
+      case LAYOUT_TYPE_MAP_INFO:
+        return new MapViewHolder(
+            mLayoutInflater.inflate(R.layout.item_quchu_detail_map_info, parent, false));
+
+      case LAYOUT_TYPE_ARTICLE:
+
+        if (null != mData.getReviewList()) {
+          return new ArticleViewHolder(
+              mLayoutInflater.inflate(R.layout.item_quchu_detail_article, parent, false));
         } else {
           return new BlankViewHolder(
               mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
         }
-        //            case LAYOUT_TYPE_IMAGE:
-        //                return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_card_image, parent, false));
-      case LAYOUT_TYPE_LABEL:
-        return new BlankViewHolder(
-          mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
-        //LabelViewHolder(
-        //      mLayoutInflater.inflate(R.layout.item_quchu_detail_simple_label, parent, false));
+      case LAYOUT_TYPE_COMMENT:
+        if (null != mData.getReviewList() && mData.getReviewList().size() > 0) {
+          return new CommentViewHolder(
+              mLayoutInflater.inflate(R.layout.item_quchu_detail_comment, parent, false));
+        } else {
+          return new BlankViewHolder(
+              mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
+        }
       case LAYOUT_TYPE_MATCHED_TAGS:
         return new MatchedTagsViewHolder(
-            mLayoutInflater.inflate(R.layout.item_quchu_detail_matched_tags,parent,false));
+            mLayoutInflater.inflate(R.layout.item_quchu_detail_matched_tags, parent, false));
+
       case LAYOUT_TYPE_NEARBY:
-        return new NearbyViewHolder(
-            mLayoutInflater.inflate(R.layout.item_nearby_quchu_detail, parent, false));
-      case LAYOUT_TYPE_ARTICLE:
-        return new ArticleViewHolder(
-            mLayoutInflater.inflate(R.layout.item_quchu_detail_article, parent, false));
-      case LAYOUT_TYPE_COMMENT:
-        return new CommentViewHolder(
-            mLayoutInflater.inflate(R.layout.item_quchu_detail_comment, parent, false));
-      case LAYOUT_TYPE_LOAD_MORE:
-        return new LoadMoreViewHolder(
-            mLayoutInflater.inflate(R.layout.cp_loadmore_horizontal, parent, false));
+        if (null != mData.getNearPlace()) {
+          return new NearbyViewHolder(
+              mLayoutInflater.inflate(R.layout.item_nearby_quchu_detail, parent, false));
+        } else {
+          return new BlankViewHolder(
+              mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
+        }
+
       default:
         return new BlankViewHolder(
             mLayoutInflater.inflate(R.layout.item_quchu_detail_blank, parent, false));
@@ -268,9 +178,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   }
 
   @Override public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-    if (null == mData) {
-      return;
-    }
+
     if (holder instanceof IntroImageViewHolder) {
 
       if (null != mData.getImglist() && mData.getImglist().size() > 0) {
@@ -291,300 +199,27 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
       } else {
         ((IntroImageViewHolder) holder).siv.setVisibility(View.GONE);
       }
-
-      ((IntroImageViewHolder) holder).detail_store_name_tv.setText(
+    } else if (holder instanceof SimpleInfoViewHolder) {
+      //TODO
+      ((SimpleInfoViewHolder) holder).detail_store_name_tv.setText(
           null != mData.getName() ? mData.getName().trim() : "");
+      String tagsString = "";
 
-      if (!mData.isIsActivity() && null != mData.getIcons() && mData.getIcons().size() > 0) {
-        ((IntroImageViewHolder) holder).rvInfoGrid.setVisibility(View.GONE);
-        ((IntroImageViewHolder) holder).rvInfoGrid.setLayoutManager(
-            new LinearLayoutManager(mAnchorActivity, LinearLayoutManager.HORIZONTAL, false));
-        //((IntroImageViewHolder) holder).rvInfoGrid.setAdapter(new AdditionalInfoAdapter(mData.getIcons()));
-
-        if (null == ((IntroImageViewHolder) holder).rvInfoGrid.getTag()
-            || !((boolean) ((IntroImageViewHolder) holder).rvInfoGrid.getTag())) {
-
-          ((IntroImageViewHolder) holder).rvInfoGrid.setTag(true);
+      ((SimpleInfoViewHolder) holder).tvDesc.setText(mData.getDescribe());
+      if (null != mData.getTags()) {
+        for (int i = 0; i < mData.getTags().size(); i++) {
+          tagsString += mData.getTags().get(i).getZh();
+          tagsString += (i + 1) < mData.getTags().size() ? " | " : "";
         }
+        ((SimpleInfoViewHolder) holder).tvTags.setText(tagsString);
+        ((SimpleInfoViewHolder) holder).tvTags.setVisibility(View.VISIBLE);
       } else {
-        ((IntroImageViewHolder) holder).rvInfoGrid.setVisibility(View.GONE);
-      }
-    } else if (holder instanceof ActionViewHolder) {
-      //
-      //            ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
-      //
-      //            if (null != mVisitedUsers) {
-      //                if (mVisitedUsers.getUserOutCount() == 0) {
-      //                    ((ActionViewHolder) holder).tvVisitorCount.setText(R.string.no_visitor);
-      //                } else {
-      //                    ((ActionViewHolder) holder).tvVisitorCount.setText(StringUtils.getColorSpan(((ActionViewHolder) holder).llVisitedUsers.getContext(), R.color.standard_color_red, "有", String.valueOf(mVisitedUsers.getUserOutCount()), "人去过这里"));
-      //                }
-      //                LinearLayout.LayoutParams lpVisitedUsersAvatar;
-      //                //ic_care_friends_avatar
-      //
-      //                ((ActionViewHolder) holder).llVisitedUsers.removeAllViews();
-      //                for (int i = 0; i < 9; i++) {
-      //                    if (mVisitedUsers.getResult().size() > i) {
-      //                        SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
-      //                        sdv.setImageURI(Uri.parse(mVisitedUsers.getResult().get(i).getUserPhoneUrl()));
-      //                        RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
-      //                        roundingParams.setRoundAsCircle(true);
-      //                        sdv.getHierarchy().setRoundingParams(roundingParams);
-      //                        sdv.getHierarchy().setPlaceholderImage(R.mipmap.head_place_hold);
-      //                        sdv.getHierarchy().setFailureImage(ContextCompat.getDrawable(mAnchorActivity, R.mipmap.head_place_hold));
-      //                        if (i > 0) {
-      //                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
-      //                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
-      //                        } else {
-      //                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
-      //                            lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
-      //                        }
-      //                        //跳转用户中心
-      //
-      ////                        final int finalI = i;
-      ////                        sdv.setOnClickListener(new View.OnClickListener() {
-      ////                            @Override
-      ////                            public void onClick(View v) {
-      ////                                Intent intent = new Intent(v.getContext(), UserCenterActivity.class);
-      ////                                intent.putExtra(UserCenterActivity.REQUEST_KEY_USER_ID, mVisitedUsers.getResult().get(finalI).getUserId());
-      ////                                v.getContext().startActivity(intent);
-      ////                            }
-      ////                        });
-      //
-      //
-      //                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
-      //                        sdv.requestLayout();
-      //                    }
-      ////                    else if (mVisitedUsers.getResult().size() > 0) {
-      ////                    } else {
-      ////                        SimpleDraweeView sdv = new SimpleDraweeView(mAnchorActivity);
-      ////                        Random random = new Random();
-      ////                        int randomNumber = random.nextInt(3);
-      ////                        sdv.setImageResource(RANDOM_AVATAR[randomNumber]);
-      ////                        if (i > 0) {
-      ////                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
-      ////                            lpVisitedUsersAvatar.setMargins(mVisitedUsersAvatarMargin, 0, 0, 0);
-      ////                        } else {
-      ////                            lpVisitedUsersAvatar = new LinearLayout.LayoutParams(mVisitedUsersAvatarSize, mVisitedUsersAvatarSize);
-      ////                            lpVisitedUsersAvatar.setMargins(0, 0, 0, 0);
-      ////                        }
-      ////                        ((ActionViewHolder) holder).llVisitedUsers.addView(sdv, lpVisitedUsersAvatar);
-      ////                        sdv.requestLayout();
-      ////                    }
-      //
-      //                }
-      //                ((ActionViewHolder) holder).llVisitedUsers.invalidate();
-      //                ((ActionViewHolder) holder).llVisitedUsers.requestLayout();
-      //            }
-
-    } else if (holder instanceof ContactInfoViewHolder) {
-      mEnableLoadMore = true;
-      if (null == mData.getTraffic() || StringUtils.isEmpty(mData.getTraffic())) {
-        ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(mData.getAddress());
-        ((ContactInfoViewHolder) holder).detail_store_address_tv.setSelected(true);
-      } else if (!StringUtils.isEmpty(mData.getTraffic())) {
-        ((ContactInfoViewHolder) holder).detail_store_address_tv.setText(String.format(
-            mAnchorActivity.getResources().getString(R.string.detail_address_hint_text),
-            mData.getAddress(), mData.getTraffic()));
-      } else {
-        ((ContactInfoViewHolder) holder).detail_store_address_tv.setVisibility(View.GONE);
-      }
-      ((ContactInfoViewHolder) holder).detail_store_address_ll.setOnClickListener(
-          mOnItemClickListener);
-      if (null != mData && !StringUtils.isEmpty(mData.getTel())) {
-        ((ContactInfoViewHolder) holder).detail_store_phone_tv.setVisibility(View.VISIBLE);
-        ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText(mData.getTel());
-        ((ContactInfoViewHolder) holder).detail_store_phone_ll.setOnClickListener(
-            new View.OnClickListener() {
-              @Override public void onClick(View v) {
-                BottomListDialog b =
-                    new BottomListDialog(mAnchorActivity, mData.getTel().split(" "));
-                b.show();
-              }
-            });
-        ((ContactInfoViewHolder) holder).detail_store_phone_ll.setVisibility(View.VISIBLE);
-        ((ContactInfoViewHolder) holder).vDividerPhone.setVisibility(View.VISIBLE);
-      } else {
-        //                ((ContactInfoViewHolder) holder).detail_store_phone_tv.setText("电话：-");
-        ((ContactInfoViewHolder) holder).detail_store_phone_tv.setVisibility(View.GONE);
-        ((ContactInfoViewHolder) holder).detail_store_phone_ll.setVisibility(View.GONE);
-        ((ContactInfoViewHolder) holder).vDividerPhone.setVisibility(View.GONE);
-      }
-
-      if (mData.isIsActivity() && null != mData.getBusinessHours() && null != mData.getRestDay()) {
-        ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setText(
-            mData.getBusinessHours());
-        ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setVisibility(
-            View.VISIBLE);
-        ((ContactInfoViewHolder) holder).vDividerOpeningTime.setVisibility(View.VISIBLE);
-      } else {
-        ((ContactInfoViewHolder) holder).detail_store_business_hours_key_tv.setVisibility(
-            View.GONE);
-        ((ContactInfoViewHolder) holder).vDividerOpeningTime.setVisibility(View.GONE);
-      }
-
-      if (null != mData && !StringUtils.isEmpty(mData.getPrice()) && !"0".equals(
-          mData.getPrice())) {
-        ((ContactInfoViewHolder) holder).detail_avg_price_tv.setText(mData.getPrice() + "元/人");
-        //((ContactInfoViewHolder) holder).detail_avg_price_tv.setText(StringUtils.getColorSpan(((ContactInfoViewHolder) holder).detail_avg_price_tv.getContext(), R.color.standard_color_red, "人均消费", "¥" + mData.getPrice(), ""));
-        ((ContactInfoViewHolder) holder).detail_avg_price_tv.setVisibility(View.VISIBLE);
-      } else {
-        ((ContactInfoViewHolder) holder).detail_avg_price_tv.setVisibility(View.GONE);
+        ((SimpleInfoViewHolder) holder).tvTags.setVisibility(View.GONE);
       }
     } else if (holder instanceof RatingInfoViewHolder) {
 
-      if (!mData.isIsActivity()) {
-        ((RatingInfoViewHolder) holder).tvActivityDesc.setVisibility(View.GONE);
-        ((RatingInfoViewHolder) holder).tvActivityLabel.setVisibility(View.GONE);
-      } else {
-        ((RatingInfoViewHolder) holder).tvActivityDesc.setVisibility(View.VISIBLE);
-        ((RatingInfoViewHolder) holder).tvActivityLabel.setVisibility(View.VISIBLE);
-        ((RatingInfoViewHolder) holder).tvActivityDesc.setText(mData.getActivityInfo());
-      }
-
       if (null != mVisitedInfoModel) {
         ((RatingInfoViewHolder) holder).rbRating.setProgress(mVisitedInfoModel.getScore());
-      }
-      if (null != mAnalysisModel) {
-        String ratingCount = mAnalysisModel.getUserOutCount()>999?"999+":String.valueOf(mAnalysisModel.getUserOutCount());
-
-
-        ((RatingInfoViewHolder) holder).tvRatingCount.setText(ratingCount + "人评价");
-
-        List<String> tags = new ArrayList<>();
-        List<Boolean> highLight = new ArrayList<>();
-
-        if (null != mAnalysisModel.getResult()) {
-          for (int i = 0; i < mAnalysisModel.getResult().size(); i++) {
-            TagsModel objTag = mAnalysisModel.getResult().get(i);
-            tags.add(" " + objTag.getZh() + " " + objTag.getCount() + " ");
-            highLight.add(objTag.getCount() > 20);
-          }
-          ((RatingInfoViewHolder) holder).tagCloudView.setTags(tags, highLight);
-        }
-      }
-    } else if (holder instanceof AdditionalInfoViewHolder) {
-
-    } else if (holder instanceof OpeningInfoViewHolder) {
-
-    } else if (holder instanceof LabelViewHolder) {
-      if (null != mHangoutUsers && mHangoutUsers.size() > 0) {
-        ((LabelViewHolder) holder).rvUsers.setLayoutManager(
-            new GridLayoutManager(mAnchorActivity, 8));
-        ((LabelViewHolder) holder).rvUsers.setAdapter(new HangoutUserAdapter(mHangoutUsers));
-        ((LabelViewHolder) holder).tvUserBeenInvit.setText("接受邀请的人有" + mData.getJoinPartnerCount());
-
-      }
-
-      ((LabelViewHolder) holder).ivInvite.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-          if (null!=AppContext.user && AppContext.user.isIsVisitors()){
-            ((BaseActivity)mAnchorActivity).showLoginDialog();
-          }else{
-            final DialogMatchingUsers d = new DialogMatchingUsers();
-            d.setOnDialogMatchListener(new DialogMatchingUsers.OnDialogMatchListener() {
-              @Override public void onMatchfinish() {
-                d.dismiss();
-
-                if (null!=mData && null!=mData.getNearPlace()){
-                  JSONObject jsonObject = new JSONObject();
-                  try {
-                    jsonObject.put("入口", mData.getName());
-                  } catch (JSONException e) {
-                    e.printStackTrace();
-                  }
-                  ZhugeSDK.getInstance().track(mAnchorActivity, "搭伙", jsonObject);
-                }
-
-
-                InviteHangoutUsersActivity.enterActivity(mAnchorActivity,mData.getPid(),mData.getName());
-              }
-            });
-            d.show(mAnchorActivity.getFragmentManager(),"wth");
-          }
-        }
-      });
-      ((LabelViewHolder) holder).rvUsers.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-          ((LabelViewHolder) holder).ivInvite.performClick();
-        }
-      });
-
-
-
-    } else if (holder instanceof MatchedTagsViewHolder){
-      List<String> tags = new ArrayList<>();
-      List<Boolean> highLights = new ArrayList<>();
-      int blockIndex = 0;
-      if (null!=mData){
-        if (null!=mData.getAreaMap()){
-          tags.add(" " +mData.getAreaMap().getName()+" ");
-          blockIndex+=1;
-          highLights.add(true);
-        }
-        if (null!=mData.getCircleMap()){
-          tags.add(" "+mData.getCircleMap().getName()+" ");
-          blockIndex+=1;
-          highLights.add(true);
-        }
-      }
-      if (null != mData.getTags()) {
-        for (int i = 0; i < mData.getTags().size(); i++) {
-          tags.add(" " + mData.getTags().get(i).getZh() + " ");
-          highLights.add(false);
-        }
-        ((MatchedTagsViewHolder) holder).tags.setTags(tags,highLights);
-        final int finalBlockIndex = blockIndex;
-        ((MatchedTagsViewHolder) holder).tags.setOnTagClickListener(
-            new TagCloudView.OnTagClickListener() {
-              @Override public void onTagClick(int position) {
-
-                Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
-                if (position< finalBlockIndex){
-                  if (finalBlockIndex<2){
-                    if (null!=mData.getCircleMap()){
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_CIRCLE);
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getAreaMap().getId());
-
-                    }else{
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_AREA);
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getCircleMap().getId());
-                    }
-                  }else{
-                    if (position==0){
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_CIRCLE);
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getAreaMap().getId());
-                    }else{
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
-                          NearbyPresenter.TYPE_AREA);
-                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID, mData.getCircleMap().getId());
-
-                    }
-                  }
-
-                }else{
-                  intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
-                      mData.getTags().get(position-finalBlockIndex).getId());
-                  intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,
-                      mData.getTags().get(position-finalBlockIndex).getZh());
-                }
-                mAnchorActivity.startActivity(intent);
-
-              }
-            });
-      }
-    }else if (holder instanceof StarterInfoViewHolder) {
-
-      ((StarterInfoViewHolder) holder).detail_activity_initiator_ll.setVisibility(
-          mData.isIsActivity() ? View.VISIBLE : View.GONE);
-      ((StarterInfoViewHolder) holder).detail_activity_initiator_name_tv.setText(
-          null != mData.getAutor() ? mData.getAutor() : "");
-      if (null != mData.getAutorPhoto()) {
-        ((StarterInfoViewHolder) holder).detail_activity_initiator_avator_sdv.setImageURI(
-            Uri.parse(mData.getAutorPhoto()));
       }
     } else if (holder instanceof PartyInfoViewHolder) {
 
@@ -592,21 +227,34 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           mData.isIsActivity() ? View.VISIBLE : View.GONE);
       ((PartyInfoViewHolder) holder).detail_activity_info_tv.setText(
           mData.isIsActivity() && null != mData.getActivityInfo() ? mData.getActivityInfo() : "");
-    } else if (holder instanceof ImageViewHolder) {
+    } else if (holder instanceof AdditionalInfoViewHolder) {
 
+    } else if (holder instanceof MapViewHolder) {
+
+      //http://developer.baidu.com/map/static-1.htm
+      ((MapViewHolder) holder).ivMap.setImageURI(Uri.parse("http://api.map.baidu.com/staticimage?center="+mData.getLongitude()
+          +","+mData.getLatitude()+"&width="+256+"&height="+144+"&zoom=18&scale=2"));
+
+    } else if (holder instanceof ArticleViewHolder) {
+      if (null != mData.getArticleList()) {
+        int articleIndex = 0;
+        final QuchuDetailArticleModel article = mData.getArticleList().get(articleIndex);
+        ((ArticleViewHolder) holder).sdvAuthor.setImageURI(Uri.parse(article.getUserPhoto()));
+        ((ArticleViewHolder) holder).tvTitle.setText(String.valueOf(article.getUserName()));
+        ((ArticleViewHolder) holder).tvSubTitle.setText(String.valueOf(article.getTitle()));
+        if (null != article.getUrl()) {
+
+          holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+              WebViewActivity.enterActivity(mAnchorActivity, article.getUrl(), article.getTitle(),
+                  false);
+            }
+          });
+        }
+      }
     } else if (holder instanceof CommentViewHolder) {
       if (null != mData.getReviewList()) {
-
-        int commentIndex = position - BLOCK_INDEX;
-        if (null != mData.getImglist()) {
-          commentIndex -= mData.getImglist().size();
-        }
-        commentIndex -= 1;
-        if (null == mData.getReviewList().get(commentIndex) || null == mData.getReviewList()
-            .get(commentIndex)) {
-          return;
-        }
-
+        int commentIndex = 0;
         final CommentModel commentModel = mData.getReviewList().get(commentIndex);
 
         ((CommentViewHolder) holder).rvImages.setLayoutManager(
@@ -630,7 +278,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         ((CommentViewHolder) holder).rvImages.setAdapter(adapter);
 
-
         ((CommentViewHolder) holder).rbRating.setRating(commentModel.getScore());
         ((CommentViewHolder) holder).tvUsername.setText(commentModel.getUserName());
         if (null != commentModel.getCreateDate()) {
@@ -640,14 +287,15 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           ((CommentViewHolder) holder).tvDate.setText("-");
         }
         ((CommentViewHolder) holder).tvFrom.setText(commentModel.getSourceContent());
-        if (!StringUtils.isEmpty(commentModel.getPqUrl())){
+        if (!StringUtils.isEmpty(commentModel.getPqUrl())) {
           ((CommentViewHolder) holder).tvFrom.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-              WebViewActivity.enterActivity(mAnchorActivity,commentModel.getPqUrl(),"查看评论",false);
+              WebViewActivity.enterActivity(mAnchorActivity, commentModel.getPqUrl(), "查看评论",
+                  false);
               ((CommentViewHolder) holder).ivArrow.setVisibility(View.VISIBLE);
             }
           });
-        }else{
+        } else {
           ((CommentViewHolder) holder).ivArrow.setVisibility(View.GONE);
         }
 
@@ -681,78 +329,105 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         });
         ((CommentViewHolder) holder).sdvAvatar.setImageURI(
             Uri.parse(commentModel.getUserPhoneUrl()));
-        if (null!=commentModel.getSourceUrl()){
+        if (null != commentModel.getSourceUrl()) {
           ((CommentViewHolder) holder).ivFrom.setImageURI(Uri.parse(commentModel.getSourceUrl()));
         }
 
         //显示更多评论
         if (mData.getPlaceReviewCount() > 3 && commentIndex == 2) {
-          ((CommentViewHolder)holder).moreCommentsLayout.setVisibility(View.VISIBLE);
-          ((CommentViewHolder)holder).moreCommentsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              CommentListActivity.enterActivity(mAnchorActivity, mData.getPid());
-            }
-          });
+          ((CommentViewHolder) holder).moreCommentsLayout.setVisibility(View.VISIBLE);
+          ((CommentViewHolder) holder).moreCommentsLayout.setOnClickListener(
+              new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                  CommentListActivity.enterActivity(mAnchorActivity, mData.getPid());
+                }
+              });
         }
       }
-    } else if(holder instanceof ArticleViewHolder){
-      if (null != mData.getArticleList()){
-        int articleIndex = position - BLOCK_INDEX;
-        if (null != mData.getImglist()) {
-          articleIndex -= mData.getImglist().size();
+    } else if (holder instanceof MatchedTagsViewHolder) {
+      List<String> tags = new ArrayList<>();
+      List<Boolean> highLights = new ArrayList<>();
+      int blockIndex = 0;
+      if (null != mData) {
+        if (null != mData.getAreaMap()) {
+          tags.add(" " + mData.getAreaMap().getName() + " ");
+          blockIndex += 1;
+          highLights.add(true);
         }
-        if (null != mData.getReviewList()) {
-          articleIndex -= mData.getReviewList().size();
-        }
-        articleIndex -= 2;
-        final QuchuDetailArticleModel article = mData.getArticleList().get(articleIndex);
-        ((ArticleViewHolder) holder).sdvAuthor.setImageURI(Uri.parse(article.getUserPhoto()));
-        ((ArticleViewHolder) holder).tvTitle.setText(String.valueOf(article.getUserName()));
-        ((ArticleViewHolder) holder).tvSubTitle.setText(String.valueOf(article.getTitle()));
-        if (null!=article.getUrl()){
-
-          holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-              WebViewActivity.enterActivity(mAnchorActivity,article.getUrl(),article.getTitle(),false);
-            }
-          });
+        if (null != mData.getCircleMap()) {
+          tags.add(" " + mData.getCircleMap().getName() + " ");
+          blockIndex += 1;
+          highLights.add(true);
         }
       }
+      if (null != mData.getTags()) {
+        for (int i = 0; i < mData.getTags().size(); i++) {
+          tags.add(" " + mData.getTags().get(i).getZh() + " ");
+          highLights.add(false);
+        }
+        ((MatchedTagsViewHolder) holder).tags.setTags(tags, highLights);
+        final int finalBlockIndex = blockIndex;
+        ((MatchedTagsViewHolder) holder).tags.setOnTagClickListener(
+            new TagCloudView.OnTagClickListener() {
+              @Override public void onTagClick(int position) {
 
+                Intent intent = new Intent(mAnchorActivity, QuchuListSpecifyTagActivity.class);
+                if (position < finalBlockIndex) {
+                  if (finalBlockIndex < 2) {
+                    if (null != mData.getCircleMap()) {
+                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
+                          NearbyPresenter.TYPE_CIRCLE);
+                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                          mData.getAreaMap().getId());
+                    } else {
+                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
+                          NearbyPresenter.TYPE_AREA);
+                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                          mData.getCircleMap().getId());
+                    }
+                  } else {
+                    if (position == 0) {
+                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
+                          NearbyPresenter.TYPE_CIRCLE);
+                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                          mData.getAreaMap().getId());
+                    } else {
+                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_DATA_TYPE,
+                          NearbyPresenter.TYPE_AREA);
+                      intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                          mData.getCircleMap().getId());
+                    }
+                  }
+                } else {
+                  intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_ID,
+                      mData.getTags().get(position - finalBlockIndex).getId());
+                  intent.putExtra(QuchuListSpecifyTagActivity.BUNDLE_KEY_TAG_NAME,
+                      mData.getTags().get(position - finalBlockIndex).getZh());
+                }
+                mAnchorActivity.startActivity(intent);
+              }
+            });
+      }
     } else if (holder instanceof NearbyViewHolder) {
       if (null != mData.getNearPlace()) {
-        int imgIndex = position - BLOCK_INDEX;
-        if (null != mData.getImglist()) {
-          imgIndex -= mData.getImglist().size();
-        }
-        if (null != mData.getReviewList()) {
-          imgIndex -= mData.getReviewList().size();
-        }
-        if (null != mData.getArticleList()){
-          imgIndex -= mData.getArticleList().size();
-        }
-        imgIndex -= 2;
-        if (null == mData.getNearPlace().get(imgIndex - 1) || null == mData.getNearPlace()
-            .get(imgIndex - 1)) {
-          return;
-        }
-        ((NearbyViewHolder) holder).tvName.setText(
-            mData.getNearPlace().get(imgIndex - 1).getName());
+        int imgIndex = position - getBasicChildCount();
+
+        ((NearbyViewHolder) holder).tvName.setText(mData.getNearPlace().get(imgIndex).getName());
         List<String> strTags = new ArrayList<>();
-        List<TagsModel> tags = mData.getNearPlace().get(imgIndex - 1).getTags();
+        List<TagsModel> tags = mData.getNearPlace().get(imgIndex).getTags();
         if (null != tags && tags.size() > 0) {
           for (int i = 0; i < Math.min(tags.size(), 3); i++) {
-            strTags.add(" "+tags.get(i).getZh()+" ");
+            strTags.add(" " + tags.get(i).getZh() + " ");
           }
         }
 
         ((NearbyViewHolder) holder).tcvTag.setTags(strTags);
-        ((NearbyViewHolder) holder).address.setText(mData.getNearPlace().get(imgIndex - 1).getAddress());
+        ((NearbyViewHolder) holder).address.setText(
+            mData.getNearPlace().get(imgIndex).getAddress());
         ((NearbyViewHolder) holder).address.setVisibility(View.VISIBLE);
         ((NearbyViewHolder) holder).sdvImage.setImageURI(
-            Uri.parse(mData.getNearPlace().get(imgIndex - 1).getCover()));
-        final int pid = mData.getNearPlace().get(imgIndex - 1).getPlaceId();
+            Uri.parse(mData.getNearPlace().get(imgIndex).getCover()));
+        final int pid = mData.getNearPlace().get(imgIndex).getPlaceId();
         ((NearbyViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
 
@@ -764,105 +439,22 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           }
         });
       }
-    } else if (holder instanceof LoadMoreViewHolder) {
-
-      holder.itemView.setVisibility(View.GONE);
-      //if (mEnableLoadMore) {
-      //  ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
-      //  ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.GONE);
-      //  ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
-      //  ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
-      //  ((LoadMoreViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
-      //    @Override public void onClick(View v) {
-      //      ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.VISIBLE);
-      //      ((LoadMoreViewHolder) holder).textView.setText(R.string.loading_dialog_text);
-      //      ObjectAnimator rotation =
-      //          ObjectAnimator.ofFloat(((LoadMoreViewHolder) holder).ivLoadMore, "rotation", 0,
-      //              360);
-      //      rotation.setInterpolator(new LinearInterpolator());
-      //      rotation.setRepeatMode(ValueAnimator.RESTART);
-      //      rotation.setRepeatCount(ValueAnimator.INFINITE);
-      //      rotation.setDuration(1500);
-      //      rotation.start();
-      //      if (null != mLoadMoreListener) {
-      //        mLoadMoreListener.onLoadMore();
-      //      }
-      //    }
-      //  });
-      //} else {
-      //  ((LoadMoreViewHolder) holder).ivLoadMore.setVisibility(View.GONE);
-      //  ((LoadMoreViewHolder) holder).textView.setVisibility(View.VISIBLE);
-      //  ((LoadMoreViewHolder) holder).textView.setText(R.string.click_to_load_more);
-      //  ((LoadMoreViewHolder) holder).ivLoadMore.clearAnimation();
-      //}
     }
-  }
-
-  public void finishLoadMore() {
-    mEnableLoadMore = false;
-    notifyDataSetChanged();
   }
 
   @Override public int getItemCount() {
-    int basicCount = (BLOCK_INDEX + 1);
-    if (null != mData && null != mData.getImglist()) {
-      basicCount += mData.getImglist().size();
-    }
+    int count = getBasicChildCount();
     if (null != mData && null != mData.getNearPlace()) {
-      basicCount += mData.getNearPlace().size();
+      count += mData.getNearPlace().size();
     }
-    if (null != mData && null != mData.getReviewList()) {
-      basicCount += mData.getReviewList().size();
-    }
-    if (null!= mData && null != mData.getArticleList()){
-      basicCount += mData.getArticleList().size();
-    }
-    basicCount += 3;
-    return basicCount;
+    return count;
   }
 
-  public static class LoadMoreViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.ivIndicator) ImageView ivLoadMore;
-    @Bind(R.id.textView) TextView textView;
-
-    LoadMoreViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
-
-  public static class LabelViewHolder extends RecyclerView.ViewHolder {
-
-    @Bind(R.id.ivLogo) ImageView ivLogo;
-    @Bind(R.id.tvUserBeenInvit) TextView tvUserBeenInvit;
-    @Bind(R.id.rvUsers) RecyclerView rvUsers;
-    @Bind(R.id.ivInvite) ImageView ivInvite;
-    @Bind(R.id.tvInvite) TextView tvInvite;
-
-    LabelViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
-
-  public static class MatchedTagsViewHolder extends RecyclerView.ViewHolder {
-
-    @Bind(R.id.tcvTags) TagCloudView tags;
-
-    MatchedTagsViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
+  // INTRO_IMAGE , SIMPLE_INFO , RATING_INFO , PARTY_INFO , ADDITIONAL_INFO
 
   public static class IntroImageViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.detail_store_name_tv) TextView detail_store_name_tv;
-
     @Bind(R.id.vpGallery) ViewPager vpGallery;
-
     @Bind(R.id.siv) CircleIndicator siv;
-
-    @Bind(R.id.rvAdditionalInfo) RecyclerView rvInfoGrid;
 
     IntroImageViewHolder(View view) {
       super(view);
@@ -870,39 +462,12 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
-  public static class ActionViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.llVisitedUsers) LinearLayout llVisitedUsers;
-    @Bind(R.id.tvVisitorCount) TextView tvVisitorCount;
+  public static class SimpleInfoViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.detail_store_name_tv) TextView detail_store_name_tv;
+    @Bind(R.id.tvDesc) TextView tvDesc;
+    @Bind(R.id.tvTags) TextView tvTags;
 
-    ActionViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
-
-  public static class ArticleViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.sdvAuthor) SimpleDraweeView sdvAuthor;
-    @Bind(R.id.tvTitle) TextView tvTitle;
-    @Bind(R.id.tvSubTitle) TextView tvSubTitle;
-
-    ArticleViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
-
-  public static class ContactInfoViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.detail_store_address_ll) LinearLayout detail_store_address_ll;
-    @Bind(R.id.detail_store_address_tv) TextView detail_store_address_tv;
-    @Bind(R.id.detail_store_phone_ll) LinearLayout detail_store_phone_ll;
-    @Bind(R.id.detail_store_phone_tv) TextView detail_store_phone_tv;
-    @Bind(R.id.detail_store_business_hours_key_tv) TextView detail_store_business_hours_key_tv;
-    @Bind(R.id.vDividerOpeningTime) View vDividerOpeningTime;
-    @Bind(R.id.vDividerPhone) View vDividerPhone;
-
-    @Bind(R.id.detail_avg_price_tv) TextView detail_avg_price_tv;
-
-    ContactInfoViewHolder(View view) {
+    SimpleInfoViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
     }
@@ -911,42 +476,8 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   public static class RatingInfoViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.rbRating) RatingBar rbRating;
     @Bind(R.id.tvRatingCount) TextView tvRatingCount;
-    @Bind(R.id.tcvTags) TagCloudView tagCloudView;
-    @Bind(R.id.tvActivityLabel) TextView tvActivityLabel;
-    @Bind(R.id.tvActivityDesc) TextView tvActivityDesc;
 
     RatingInfoViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
-
-  public static class AdditionalInfoViewHolder extends RecyclerView.ViewHolder {
-    //
-    //        @Bind(R.id.rvAdditionalInfo)
-    //        RecyclerView rvInfoGrid;
-
-    AdditionalInfoViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
-
-  public static class OpeningInfoViewHolder extends RecyclerView.ViewHolder {
-    OpeningInfoViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
-
-  public static class StarterInfoViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.detail_activity_initiator_ll) LinearLayout detail_activity_initiator_ll;
-    @Bind(R.id.detail_activity_initiator_title_tv) TextView detail_activity_initiator_title_tv;
-    @Bind(R.id.detail_activity_initiator_avator_sdv) SimpleDraweeView
-        detail_activity_initiator_avator_sdv;
-    @Bind(R.id.detail_activity_initiator_name_tv) TextView detail_activity_initiator_name_tv;
-
-    StarterInfoViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
     }
@@ -963,11 +494,30 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
-  public static class ImageViewHolder extends RecyclerView.ViewHolder {
-    //        @Bind(R.id.item_card_image_sdv)
-    //        SimpleDraweeView item_card_image_sdv;
+  public static class AdditionalInfoViewHolder extends RecyclerView.ViewHolder {
+    AdditionalInfoViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
+    }
+  }
 
-    ImageViewHolder(View view) {
+  // MAP_INFO , ARTICLE , COMMENT , MATCHED_TAGS , NEARBY
+
+  public static class MapViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.ivMap) SimpleDraweeView ivMap;
+
+    MapViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
+    }
+  }
+
+  public static class ArticleViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.sdvAuthor) SimpleDraweeView sdvAuthor;
+    @Bind(R.id.tvTitle) TextView tvTitle;
+    @Bind(R.id.tvSubTitle) TextView tvSubTitle;
+
+    ArticleViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
     }
@@ -987,25 +537,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Bind(R.id.ivArrow) View ivArrow;
 
     CommentViewHolder(View view) {
-      super(view);
-      ButterKnife.bind(this, view);
-    }
-  }
-
-  public static class BlankViewHolder extends RecyclerView.ViewHolder {
-    BlankViewHolder(View view) {
-      super(view);
-    }
-  }
-
-  public static class NearbyViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.desc) TextView tvName;
-    @Bind(R.id.tag) TagCloudView tcvTag;
-    @Bind(R.id.simpleDraweeView) SimpleDraweeView sdvImage;
-    @Bind(R.id.cvRoot) CardView cardView;
-    @Bind(R.id.address) TextView address;
-
-    NearbyViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
     }
@@ -1054,35 +585,31 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
-  public class HangoutUserAdapter extends RecyclerView.Adapter<HangoutUserAdapter.ViewHolder> {
+  public static class MatchedTagsViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.tcvTags) TagCloudView tags;
 
-    List<HangoutUserModel> mUserSet;
-
-    public HangoutUserAdapter(List<HangoutUserModel> dataSet) {
-      this.mUserSet = dataSet;
+    MatchedTagsViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
     }
+  }
 
-    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      return new ViewHolder(LayoutInflater.from(parent.getContext())
-          .inflate(R.layout.item_quchu_detail_hangout_user, parent, false));
+  public static class NearbyViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.desc) TextView tvName;
+    @Bind(R.id.tag) TagCloudView tcvTag;
+    @Bind(R.id.simpleDraweeView) SimpleDraweeView sdvImage;
+    @Bind(R.id.cvRoot) CardView cardView;
+    @Bind(R.id.address) TextView address;
+
+    NearbyViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
     }
+  }
 
-    @Override public void onBindViewHolder(ViewHolder holder, int position) {
-
-      holder.sdvAvatar.setImageURI(Uri.parse(mUserSet.get(position).getPhoto()));
-    }
-
-    @Override public int getItemCount() {
-      return null != mUserSet ? mUserSet.size() > 16 ? 16 : mUserSet.size() : 0;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-      @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
-
-      public ViewHolder(View itemView) {
-        super(itemView);
-        ButterKnife.bind(this, itemView);
-      }
+  public static class BlankViewHolder extends RecyclerView.ViewHolder {
+    BlankViewHolder(View view) {
+      super(view);
     }
   }
 }

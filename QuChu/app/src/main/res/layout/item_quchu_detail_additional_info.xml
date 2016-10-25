@@ -1,20 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/standard_color_white"
     >
 
+  <LinearLayout
+      android:layout_width="match_parent"
 
-    <TextView
-        android:text="@string/quchu_detail"
-        android:visibility="gone"
-        android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:paddingTop="@dimen/base_margin"
+      android:paddingBottom="@dimen/base_margin"
+      >
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/TextView.H1"
-        android:gravity="center"
-        android:padding="@dimen/quarter_margin"
-        />
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        >
+
+      <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/sdvQueue"
+          android:layout_width="@dimen/detail_comment_image_size"
+          android:layout_height="@dimen/detail_comment_image_size"
+          android:layout_weight="1"
+          fresco:overlayImage="@color/colorSceneColor"
+          fresco:roundAsCircle="true"
+          fresco:viewAspectRatio="1"
+          />
+      <TextView
+          android:id="@+id/tvQueue"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/half_margin"
+          android:gravity="center"
+          android:text="@string/queue"
+          android:textColor="@color/standard_color_h2_dark"
+          android:textSize="@dimen/standard_text_size_h2"
+          />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        >
+      <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/sdvDeliver"
+          android:layout_width="@dimen/detail_comment_image_size"
+          android:layout_height="@dimen/detail_comment_image_size"
+          android:layout_weight="1"
+          fresco:overlayImage="@color/colorSceneColor"
+          fresco:roundAsCircle="true"
+          fresco:viewAspectRatio="1"
+          />
+      <TextView
+          android:id="@+id/tvDeliver"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/half_margin"
+          android:layout_weight="1"
+          android:gravity="center"
+
+          android:text="@string/deliver"
+          android:textColor="@color/standard_color_h2_dark"
+          android:textSize="@dimen/standard_text_size_h2"
+          />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        >
+      <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/sdvOrder"
+          android:layout_width="@dimen/detail_comment_image_size"
+          android:layout_height="@dimen/detail_comment_image_size"
+          android:layout_weight="1"
+          fresco:overlayImage="@color/colorSceneColor"
+          fresco:roundAsCircle="true"
+          fresco:viewAspectRatio="1"
+          />
+
+
+      <TextView
+          android:id="@+id/tvPreOrder"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/half_margin"
+          android:layout_weight="1"
+          android:gravity="center"
+
+          android:text="@string/pre_order"
+          android:textColor="@color/standard_color_h2_dark"
+          android:textSize="@dimen/standard_text_size_h2"
+          />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        >
+      <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/sdvTel"
+          android:layout_width="@dimen/detail_comment_image_size"
+          android:layout_height="@dimen/detail_comment_image_size"
+          android:layout_weight="1"
+          fresco:overlayImage="@color/colorSceneColor"
+          fresco:roundAsCircle="true"
+          fresco:viewAspectRatio="1"
+          />
+
+      <TextView
+          android:id="@+id/tvTel"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/half_margin"
+          android:layout_weight="1"
+          android:gravity="center"
+          android:text="@string/tel"
+          android:textColor="@color/standard_color_h2_dark"
+          android:textSize="@dimen/standard_text_size_h2"
+          />
+    </LinearLayout>
+  </LinearLayout>
+
 </LinearLayout>

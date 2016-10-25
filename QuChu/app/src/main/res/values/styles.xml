@@ -54,6 +54,10 @@
         <item name="android:background">@color/colorDivider</item>
     </style>
 
+    <style name="HorizontalDividerDark" parent="HorizontalDivider">
+        <item name="android:background">@color/standard_color_h2_dark</item>
+    </style>
+
     <style name="DetailHorizontalLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginLeft">@dimen/half_margin</item>
