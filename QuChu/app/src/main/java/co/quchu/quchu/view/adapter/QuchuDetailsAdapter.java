@@ -2,7 +2,6 @@ package co.quchu.quchu.view.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
@@ -64,13 +63,13 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   protected static final int VIEW_TYPES[] = new int[] {
       LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_RATING_INFO,
-      LAYOUT_TYPE_ADDITIONAL_INFO, LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_ARTICLE, LAYOUT_TYPE_COMMENT,
+      LAYOUT_TYPE_ADDITIONAL_INFO, LAYOUT_TYPE_ARTICLE, LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_COMMENT,
       LAYOUT_TYPE_MATCHED_TAGS
   };
 
   protected static final int VIEW_TYPES_PARTY[] = new int[] {
-      LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_PARTY_INFO,
-      LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_ARTICLE, LAYOUT_TYPE_COMMENT, LAYOUT_TYPE_MATCHED_TAGS
+      LAYOUT_TYPE_INTRO_IMAGE, LAYOUT_TYPE_SIMPLE_INFO, LAYOUT_TYPE_PARTY_INFO, LAYOUT_TYPE_ARTICLE,
+      LAYOUT_TYPE_MAP_INFO, LAYOUT_TYPE_COMMENT, LAYOUT_TYPE_MATCHED_TAGS
   };
 
   public QuchuDetailsAdapter(Activity activity, DetailModel dModel) {
@@ -84,10 +83,9 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   }
 
   public void updateGallery(List<ImageModel> mData) {
-    if (null!=mData && mData.size()>0){
+    if (null != mData && mData.size() > 0) {
       mImageSet.clear();
       mImageSet.addAll(mData);
-      notifyDataSetChanged();
     }
   }
 
@@ -139,7 +137,6 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             mLayoutInflater.inflate(R.layout.item_quchu_detail_map_info, parent, false));
 
       case LAYOUT_TYPE_ARTICLE:
-
         if (null != mData.getReviewList()) {
           return new ArticleViewHolder(
               mLayoutInflater.inflate(R.layout.item_quchu_detail_article, parent, false));
@@ -178,8 +175,7 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     if (holder instanceof IntroImageViewHolder) {
 
-      if (null != mImageSet && mImageSet.size()>0 ) {
-
+      if (null != mImageSet && mImageSet.size() > 0) {
 
         GalleryAdapter adapter = new GalleryAdapter(mImageSet);
         ((IntroImageViewHolder) holder).vpGallery.setAdapter(adapter);
@@ -193,13 +189,14 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.itemView.invalidate();
       }
     } else if (holder instanceof SimpleInfoViewHolder) {
+
       ((SimpleInfoViewHolder) holder).detail_store_name_tv.setText(
           null != mData.getName() ? mData.getName().trim() : "");
       String tagsString = "";
 
-      if (!TextUtils.isEmpty(mData.getDescribe())){
+      if (!TextUtils.isEmpty(mData.getDescribe())) {
         ((SimpleInfoViewHolder) holder).tvDesc.setText(mData.getDescribe());
-      }else{
+      } else {
         ((SimpleInfoViewHolder) holder).tvDesc.setText("- 还没有简介");
       }
       if (null != mData.getTags()) {
@@ -228,9 +225,16 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     } else if (holder instanceof MapViewHolder) {
 
       //http://developer.baidu.com/map/static-1.htm
-      ((MapViewHolder) holder).ivMap.setImageURI(Uri.parse("http://api.map.baidu.com/staticimage?center="+mData.getLongitude()
-          +","+mData.getLatitude()+"&width="+512+"&height="+256+"&zoom=18&scale=2"));
-
+      ((MapViewHolder) holder).ivMap.setImageURI(Uri.parse(
+          "http://api.map.baidu.com/staticimage?center="
+              + mData.getLongitude()
+              + ","
+              + mData.getLatitude()
+              + "&width="
+              + 512
+              + "&height="
+              + 256
+              + "&zoom=18&scale=2"));
     } else if (holder instanceof ArticleViewHolder) {
       if (null != mData.getArticleList()) {
         int articleIndex = 0;
