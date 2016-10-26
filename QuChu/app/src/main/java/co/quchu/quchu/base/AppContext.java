@@ -114,9 +114,9 @@ public class AppContext extends MultiDexApplication {
             e.printStackTrace();
         }
         String processName = getProcessName(this, android.os.Process.myPid());
-        if (processName.endsWith("pushservice")) {
-            PushManager.getInstance().initialize(this.getApplicationContext());
-        }
+        //if (processName.endsWith("PushService")) {
+        PushManager.getInstance().initialize(this.getApplicationContext());
+        //}
 
 
         //禁用页面自动统计
