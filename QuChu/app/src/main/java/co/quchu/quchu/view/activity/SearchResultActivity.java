@@ -254,7 +254,7 @@ public class SearchResultActivity extends BaseBehaviorActivity {
   /**
    * 查询搜索结果
    */
-  private void queryResult(boolean isLoadMore) {
+  private void queryResult(final boolean isLoadMore) {
 
     if (!NetUtil.isNetworkConnected(this)) {
       makeToast(R.string.network_error);
@@ -298,6 +298,10 @@ public class SearchResultActivity extends BaseBehaviorActivity {
           mSearchAdapter.initResultList(data);
         } else {
           mSearchAdapter.addMoreResultList(data);
+        }
+
+        if (!isLoadMore) {
+          mSearchResultRv.smoothScrollToPosition(0);
         }
       }
 

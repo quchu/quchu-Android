@@ -20,6 +20,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_gravity="start"
+      android:layout_marginRight="50dp"
       android:background="@color/standard_color_white"
       android:fitsSystemWindows="true">
 
@@ -37,6 +38,7 @@
           android:id="@+id/drawerItemFavorite"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginTop="30dp"
           app:divImage="@mipmap/ic_shoucang_mine"
           app:divText="收藏"/>
 

@@ -46,11 +46,13 @@ import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UpdateInfoModel;
+import co.quchu.quchu.model.UserCenterInfo;
 import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
+import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
@@ -136,6 +138,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     getUnreadMessage();
 
+    getUserInfo();
+
     VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
 
     RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
@@ -150,6 +154,36 @@ public class RecommendActivity extends BaseBehaviorActivity {
     if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
       accessPushMessage();
     }
+  }
+
+  /**
+   * 获取用户信息,只为了取 mark 字段
+   * 登录接口限制,后期根据接口调整
+   */
+  private void getUserInfo() {
+    if (AppContext.user == null) {
+      return;
+    }
+
+    int userId = AppContext.user.getUserId();
+
+    UserCenterPresenter
+        .getUserCenterInfo(this, userId, new UserCenterPresenter.UserCenterInfoCallBack() {
+          @Override
+          public void onSuccess(UserCenterInfo userCenterInfo) {
+            if (userCenterInfo != null) {
+              String mark = userCenterInfo.getMark();
+              SPUtils.setUserMark(mark);
+              mDrawerHeaderView.setMark(mark);
+            } else {
+              SPUtils.setUserMark("");
+            }
+          }
+
+          @Override
+          public void onError() {
+          }
+        });
   }
 
   /**
@@ -171,13 +205,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
         new Handler().postDelayed(new Runnable() {
           @Override
           public void run() {
-            if (AppContext.user != null && AppContext.user.isIsVisitors()) {
-              startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
-
-            } else {
-              UMEvent("profile_c");
-              startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
-            }
+            startActivity(MeActivity.class);
+//            if (AppContext.user != null) {
+//              if (AppContext.user.isIsVisitors()) {
+//                startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
+//              } else {
+//                UMEvent("profile_c");
+//                Intent intent = new Intent(RecommendActivity.this, UserCenterActivityNew.class);
+//                intent.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID, Integer.valueOf(AppContext.user.getUserId()));
+//                startActivity(intent);
+//              }
+//            }
           }
         }, 200);
       }
@@ -229,11 +267,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
       @Override
       public void run() {
         switch (v.getId()) {
-          case R.id.drawerItemFavorite:
+          case R.id.drawerItemFavorite://收藏
             startActivity(FavoriteActivity.class);
             break;
 
-          case R.id.drawerItemUserCenter:
+          case R.id.drawerItemUserCenter://个人中心
             if (AppContext.user == null) {
               return;
             }
@@ -243,7 +281,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             startActivity(intent);
             break;
 
-          case R.id.drawerItemMessage:
+          case R.id.drawerItemMessage://消息
             if (mDrawerItemMessage.getRedDotVisibility() == View.VISIBLE) {
               mDrawerItemMessage.hideRedDot();
             }
@@ -251,7 +289,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             startActivity(MessageActivityNew.class);
             break;
 
-          case R.id.drawerItemFeedback:
+          case R.id.drawerItemFeedback://意见反馈
             if (mDrawerItemFeedback.getRedDotVisibility() == View.VISIBLE) {
               mDrawerItemFeedback.hideRedDot();
             }
@@ -259,7 +297,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             startActivity(FeedbackActivity.class);
             break;
 
-          case R.id.drawerItemSetting:
+          case R.id.drawerItemSetting://设置
             startActivity(SettingActivity.class);
             break;
         }

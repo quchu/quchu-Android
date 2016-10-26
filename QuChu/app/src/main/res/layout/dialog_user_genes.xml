@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:paddingBottom="60dp"
+              android:paddingLeft="15dp"
+              android:paddingRight="15dp"
+              android:paddingTop="60dp">
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@drawable/shape_dialog_user_genes">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:padding="15dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="趣基因介绍"
+            android:textColor="@color/standard_color_h0_dark"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="系统会通过以下判断, 给予不同称号"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="小食神"
+            android:textColor="@color/standard_color_h0_dark"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="当系统判断您的 [吃货基因] 达到同类人70%以上时, 将会获得小食神称号"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="好奇喵"
+            android:textColor="@color/standard_color_h0_dark"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="当您搜索和探索的趣处, 都属于您意识形态外的时候, 将会获得好奇喵称号。"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="文艺咖"
+            android:textColor="@color/standard_color_h0_dark"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="浏览书店, 咖啡馆等带有文艺属性的趣处占兰兰所有的90%以上时, 将会获得文艺咖称号。"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="大财阀"
+            android:textColor="@color/standard_color_h0_dark"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="当您搜索和探索的趣处, 300元人均的趣处占浏览趣处的90%以上时, 将会获得大财阀称号"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="外交官"
+            android:textColor="@color/standard_color_h0_dark"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="浏览书店, 咖啡馆等带有文艺属性的趣处占浏览所有的90%以上时, 将会获得文艺咖称号。"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="时尚精"
+            android:textColor="@color/standard_color_h0_dark"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="当您搜索和探索的趣处, 300元人均的趣处占浏览趣处的90%以上时, 将会"
+            android:textColor="@color/standard_color_h3_dark"
+            android:textSize="13sp"/>
+
+      </LinearLayout>
+
+    </ScrollView>
+
+  </RelativeLayout>
+
+</LinearLayout>

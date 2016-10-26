@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import co.quchu.quchu.net.NetUtil;
 import com.android.volley.VolleyError;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -34,17 +33,20 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.gallery.utils.ImageUtils;
 import co.quchu.quchu.model.MyGeneModel;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.PolygonProgressView;
+import co.quchu.quchu.widget.UserGenesDialog;
 
 /**
  * Created by mwb on 16/8/22.
@@ -67,14 +69,15 @@ public class MeAvatarFragment extends BaseFragment {
   private String userAvatar;
   private MeActivityPresenter meActivityPresenter;
   private List<MyGeneModel.GenesEntity> genes;
-  private static final int[] mBitmapSet = new int[] {
+  private static final int[] mBitmapSet = new int[]{
       R.mipmap.ic_wenyi_blue, R.mipmap.ic_shejiao_blue, R.mipmap.ic_tuhao_blue,
       R.mipmap.ic_chihuo_blue, R.mipmap.ic_shishang_blue, R.mipmap.ic_haoqi_blue
   };
 
-  @Nullable @Override
+  @Nullable
+  @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
+                           @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_me_avatar, container, false);
     ButterKnife.bind(this, view);
 
@@ -98,10 +101,10 @@ public class MeAvatarFragment extends BaseFragment {
     return view;
   }
 
-  private void resetWhiteAvatar(){
-    if (!NetUtil.isNetworkConnected(getActivity())){
+  private void resetWhiteAvatar() {
+    if (!NetUtil.isNetworkConnected(getActivity())) {
       bgAvatar.setVisibility(View.VISIBLE);
-    }else{
+    } else {
       bgAvatar.setVisibility(View.GONE);
     }
   }
@@ -115,7 +118,8 @@ public class MeAvatarFragment extends BaseFragment {
 
   private void getGenes() {
     meActivityPresenter.getGene(new CommonListener<MyGeneModel>() {
-      @Override public void successListener(MyGeneModel response) {
+      @Override
+      public void successListener(MyGeneModel response) {
         if (null != response) {
 
           genes = response.getGenes();
@@ -124,7 +128,8 @@ public class MeAvatarFragment extends BaseFragment {
         }
       }
 
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
       }
     });
   }
@@ -142,7 +147,8 @@ public class MeAvatarFragment extends BaseFragment {
     }
 
     polygonProgressView.postDelayed(new Runnable() {
-      @Override public void run() {
+      @Override
+      public void run() {
 
         Bitmap[] bm = new Bitmap[mBitmapSet.length];
         for (int i = 0; i < mBitmapSet.length; i++) {
@@ -153,14 +159,15 @@ public class MeAvatarFragment extends BaseFragment {
         polygonProgressView.animateProgress();
 
         final long before = System.currentTimeMillis();
-        if (null==AppContext.user){
+        if (null == AppContext.user) {
           return;
         }
-        Uri uri= Uri.parse(AppContext.user.getPhoto());
+        Uri uri = Uri.parse(AppContext.user.getPhoto());
 
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
-          @Override public void onFinalImageSet(String id, @Nullable ImageInfo imageInfo,
-              @Nullable Animatable anim) {
+          @Override
+          public void onFinalImageSet(String id, @Nullable ImageInfo imageInfo,
+                                      @Nullable Animatable anim) {
             if (imageInfo == null) {
               return;
             }
@@ -184,10 +191,12 @@ public class MeAvatarFragment extends BaseFragment {
             scaleAnimatorSet.start();
           }
 
-          @Override public void onIntermediateImageSet(String id, @Nullable ImageInfo imageInfo) {
+          @Override
+          public void onIntermediateImageSet(String id, @Nullable ImageInfo imageInfo) {
           }
 
-          @Override public void onFailure(String id, Throwable throwable) {
+          @Override
+          public void onFailure(String id, Throwable throwable) {
           }
         };
 
@@ -203,21 +212,25 @@ public class MeAvatarFragment extends BaseFragment {
     resetLabels();
   }
 
-  @Override protected String getPageNameCN() {
+  @Override
+  protected String getPageNameCN() {
     return null;
   }
 
-  @Override public void onDestroyView() {
+  @Override
+  public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.unbind(this);
   }
 
-  @Override public void onStart() {
+  @Override
+  public void onStart() {
     super.onStart();
     EventBus.getDefault().register(this);
   }
 
-  @Override public void onResume() {
+  @Override
+  public void onResume() {
     super.onResume();
 
     resetLabels();
@@ -241,15 +254,15 @@ public class MeAvatarFragment extends BaseFragment {
       userMarkLayout.setVisibility(View.VISIBLE);
 
 
-      if (null!=genes){
+      if (null != genes) {
         int genesCounter = 0;
         for (int i = 0; i < genes.size(); i++) {
           genesCounter += genes.get(i).getWeight();
         }
 
-        userMarkTv.setText(genesCounter>0?userMark:"新生宝宝");
+        userMarkTv.setText(genesCounter > 0 ? userMark : "新生宝宝");
 
-      }else{
+      } else {
         userMarkTv.setText("新生宝宝");
       }
 
@@ -282,12 +295,14 @@ public class MeAvatarFragment extends BaseFragment {
     }
   }
 
-  @Override public void onStop() {
+  @Override
+  public void onStop() {
     EventBus.getDefault().unregister(this);
     super.onStop();
   }
 
-  @Subscribe public void onMessageEvent(QuchuEventModel event) {
+  @Subscribe
+  public void onMessageEvent(QuchuEventModel event) {
     switch (event.getFlag()) {
       case EventFlags.EVENT_USER_LOGIN_SUCCESS:
         //头像
@@ -308,5 +323,11 @@ public class MeAvatarFragment extends BaseFragment {
         }
         break;
     }
+  }
+
+  @OnClick(R.id.user_genes_describe_btn)
+  public void onClick() {
+    UserGenesDialog genesDialog = new UserGenesDialog(getActivity());
+    genesDialog.show();
   }
 }

@@ -3,91 +3,100 @@
                 xmlns:fresco="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/layout_head"
-        android:layout_width="match_parent"
+  <RelativeLayout
+      android:id="@+id/llheadImage"
+      android:layout_width="300dp"
+      android:layout_height="300dp"
+      android:layout_centerHorizontal="true">
+
+    <co.quchu.quchu.widget.PolygonProgressView
+        android:id="@+id/polygonProgressView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"/>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/headImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/base_margin"
+        android:visibility="visible"
+        fresco:fadeDuration="0"
+        fresco:roundAsCircle="true"/>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/bgAvatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/base_margin"
+        android:visibility="visible"
+        fresco:placeholderImage="@color/standard_color_white"
+        fresco:roundAsCircle="true"/>
+  </RelativeLayout>
+
+  <RelativeLayout
+      android:id="@+id/user_middle_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/llheadImage"
+      android:layout_marginTop="8dp">
+
+    <TextView
+        android:id="@+id/user_name_tv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/standard_color_h1_dark"
+        android:textSize="18sp"
+        tools:text="Username"/>
 
-        <RelativeLayout
-            android:id="@+id/llheadImage"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_centerHorizontal="true">
+    <ImageView
+        android:id="@+id/user_genes_describe_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="21dp"
+        android:src="@mipmap/ic_launcher"/>
 
-            <co.quchu.quchu.widget.PolygonProgressView
-                android:id="@+id/polygonProgressView"
-                android:layout_width="300dp"
-                android:layout_height="300dp"/>
+  </RelativeLayout>
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/headImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/base_margin"
-                android:visibility="visible"
-                fresco:fadeDuration="0"
-                fresco:roundAsCircle="true"/>
+  <LinearLayout
+      android:id="@+id/user_mark_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/user_middle_layout"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="7dp"
+      android:background="@drawable/shape_corner_yellow"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:paddingBottom="3dp"
+      android:paddingLeft="12dp"
+      android:paddingRight="12dp"
+      android:paddingTop="3dp"
+      android:visibility="invisible">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/bgAvatar"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/base_margin"
-                fresco:placeholderImage="@color/standard_color_white"
-                android:visibility="visible"
-                fresco:roundAsCircle="true"/>
-        </RelativeLayout>
+    <ImageView
+        android:id="@+id/user_mark_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/user_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/llheadImage"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="@color/standard_color_h1_dark"
-            android:textSize="18sp"
-            tools:text="Username"/>
+    <TextView
+        android:id="@+id/user_mark_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/standard_color_h2_dark"
+        android:textSize="@dimen/standard_text_size_h4"
+        tools:text="好奇猫"/>
 
-        <LinearLayout
-            android:id="@+id/user_mark_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/user_name_tv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="7dp"
-            android:background="@drawable/shape_me_user_tag"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="2dp"
-            android:paddingRight="@dimen/half_margin"
-            android:paddingTop="2dp"
-            android:visibility="invisible">
-
-            <ImageView
-                android:id="@+id/user_mark_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/user_mark_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/standard_color_h3_dark"
-                android:textSize="@dimen/standard_text_size_h4"
-                tools:text="好奇猫"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>
+  </LinearLayout>
 
 </RelativeLayout>

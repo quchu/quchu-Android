@@ -38,6 +38,11 @@
         <item name="android:background">@color/standard_color_h3_dark</item>
     </style>
 
+    <style name="VerticalDivider">
+        <item name="android:layout_width">@dimen/horizontal_divider</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/colorDivider</item>
+    </style>
 
     <!-- 横向分隔线 -->
     <style name="HorizontalLine">
@@ -45,7 +50,6 @@
         <item name="android:layout_height">@dimen/line_thickness</item>
         <item name="android:background">@color/standard_color_h3_dark</item>
     </style>
-
 
     <!-- 横向分隔线 -->
     <style name="HorizontalDivider">

@@ -2,6 +2,7 @@ package co.quchu.quchu.widget;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.utils.SPUtils;
 
 /**
  * Created by mwb on 16/10/18.
@@ -51,7 +53,15 @@ public class DrawerHeaderView extends LinearLayout {
     mDrawerHeaderGenderImg.setImageURI(Uri.parse(
         "res:///" + (user.getGender().equals("男") ? R.mipmap.ic_male
             : R.mipmap.ic_female)));
-    mDrawerHeaderMarkTv.setText("");
+  }
+
+  public void setMark(String mark) {
+    if (TextUtils.isEmpty(SPUtils.getUserMark())) {
+      mDrawerHeaderMarkTv.setVisibility(GONE);
+    } else {
+      mDrawerHeaderMarkTv.setVisibility(VISIBLE);
+      mDrawerHeaderMarkTv.setText(SPUtils.getUserMark());
+    }
   }
 
   private OnDrawerAvatarClickListener mListener;

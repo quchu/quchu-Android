@@ -282,4 +282,10 @@
     <attr name="ddmenuUnselectedIcon" format="reference"/>
   </declare-styleable>
 
+  <!-- MeItemView -->
+  <declare-styleable name="MeItemView">
+    <attr name="miText" format="string"/>
+    <attr name="miImage" format="reference"/>
+  </declare-styleable>
+
 </resources>
