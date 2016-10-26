@@ -125,9 +125,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        if (this instanceof RecommendActivity) {
-            return;
-        } else {
 
             switch (activitySetup()) {
                 case TRANSITION_TYPE_NOTHING:
@@ -145,7 +142,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                     overridePendingTransition(0, R.anim.out_top_to_bottom);
                     break;
             }
-        }
     }
 
     @Override

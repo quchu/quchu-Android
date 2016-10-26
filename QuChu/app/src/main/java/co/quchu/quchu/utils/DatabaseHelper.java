@@ -23,6 +23,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
       + TABLE_NAME_USER_SEARCH_HISTORY
       + "(id integer primary key autoincrement,keyword text not null,timestamp long not null);";
 
+
+  public static final String TABLE_NAME_SYSTEM_MSG = "tb_user_system_msg";
+  public static final String SQL_CREATE_TABLE_SYSTEM_MSG = "create table "
+      + TABLE_NAME_SYSTEM_MSG
+      + "(id integer primary key autoincrement,title text,content text,type text,eventRemark text, timestamp long);";
+
   public static final String TABLE_NAME_AI_CONVERSATION = "tb_ai_conversation";
   public static final String SQL_CREATE_USER_AI_CONVERSATION = "";
 
@@ -50,18 +56,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
   @Override public void onCreate(SQLiteDatabase db) {
     db.execSQL(SQL_CREATE_TABLE_USER_BEHAVIOR);
     db.execSQL(SQL_CREATE_TABLE_USER_SEARCH_HISTORY);
+    db.execSQL(SQL_CREATE_TABLE_SYSTEM_MSG);
     //db.execSQL(SQL_CREATE_USER_AI_CONVERSATION);
   }
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    if (oldVersion==1){
+    if (oldVersion == 1) {
       db.execSQL(SQL_CREATE_TABLE_USER_SEARCH_HISTORY);
+      db.execSQL(SQL_CREATE_TABLE_SYSTEM_MSG);
       //db.execSQL(SQL_CREATE_USER_AI_CONVERSATION);
     }
   }
 
-  public static void closeIfOpend(Context context){
-    if (getInstance(context).getReadableDatabase().isOpen()){
+  public static void closeIfOpend(Context context) {
+    if (getInstance(context).getReadableDatabase().isOpen()) {
       DatabaseHelper.getInstance(context).getReadableDatabase().close();
     }
   }

@@ -19,12 +19,24 @@ public class PushMessageBean implements Parcelable {
      * eventCreateTime : 2014-12-12
      */
 
+
+    //eventId:根据类别，打开应用相应页面的ID type: 01 为趣处ID 02:场景ID 03：文章ID
+
     private String title;
     private String contetn;
     private String type;
     private String eventId;
     private String eventRemark;
+    private long eventTimeStamp;
     private String eventCreateTime;
+
+    public long getEventTimeStamp() {
+        return eventTimeStamp;
+    }
+
+    public void setEventTimeStamp(long eventTimeStamp) {
+        this.eventTimeStamp = eventTimeStamp;
+    }
 
     public String getTitle() {
         return title;
@@ -87,6 +99,7 @@ public class PushMessageBean implements Parcelable {
         dest.writeString(this.eventId);
         dest.writeString(this.eventRemark);
         dest.writeString(this.eventCreateTime);
+        dest.writeLong(this.eventTimeStamp);
     }
 
     public PushMessageBean() {
@@ -99,6 +112,7 @@ public class PushMessageBean implements Parcelable {
         this.eventId = in.readString();
         this.eventRemark = in.readString();
         this.eventCreateTime = in.readString();
+        this.eventTimeStamp = in.readLong();
     }
 
     public static final Creator<PushMessageBean> CREATOR = new Creator<PushMessageBean>() {
@@ -112,4 +126,16 @@ public class PushMessageBean implements Parcelable {
             return new PushMessageBean[size];
         }
     };
+
+    @Override public String toString() {
+        return "PushMessageBean{" +
+            "title='" + title + '\'' +
+            ", contetn='" + contetn + '\'' +
+            ", type='" + type + '\'' +
+            ", eventId='" + eventId + '\'' +
+            ", eventRemark='" + eventRemark + '\'' +
+            ", eventTimeStamp=" + eventTimeStamp +
+            ", eventCreateTime='" + eventCreateTime + '\'' +
+            '}';
+    }
 }
