@@ -22,12 +22,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import co.quchu.quchu.presenter.SystemMessagePresentor;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
 
-import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -267,6 +265,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
           case R.id.drawerItemSetting://设置
             startActivity(SettingActivity.class);
+            break;
+
+          case R.id.drawerItemShareApp://分享 App
+            makeToast("share");
             break;
         }
       }

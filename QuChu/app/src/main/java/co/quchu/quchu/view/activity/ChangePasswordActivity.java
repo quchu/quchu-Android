@@ -98,6 +98,7 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
           tvSubmit.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
         } else {
           makeToast("密码修改成功");
+          finish();
         }
       }
     });

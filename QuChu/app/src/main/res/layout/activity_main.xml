@@ -61,7 +61,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           app:divImage="@mipmap/ic_yijianhefankui"
-          app:divText="意见反馈"/>
+          app:divText="意见和帮助"/>
 
       <co.quchu.quchu.widget.DrawerItemView
           android:id="@+id/drawerItemSetting"
@@ -69,6 +69,13 @@
           android:layout_height="wrap_content"
           app:divImage="@mipmap/ic_shezhi"
           app:divText="设置"/>
+
+      <co.quchu.quchu.widget.DrawerItemView
+          android:id="@+id/drawerItemShareApp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:divImage="@mipmap/ic_shezhi"
+          app:divText="将趣处 App 分享给朋友"/>
 
     </LinearLayout>
 

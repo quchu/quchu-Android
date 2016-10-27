@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -19,9 +17,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.presenter.SettingPresenter;
-import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.SettingItemView;
 import co.quchu.quchu.widget.swithbutton.SwitchButton;
@@ -35,9 +31,9 @@ public class SettingActivity extends BaseBehaviorActivity {
 
   @Bind(R.id.setting_item_dahuo) SettingItemView itemDahuo;
   @Bind(R.id.setting_item_about) SettingItemView itemAbout;
-  @Bind(R.id.setting_item_update) SettingItemView itemUpdate;
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_setting);
     ButterKnife.bind(this);
@@ -74,23 +70,27 @@ public class SettingActivity extends BaseBehaviorActivity {
     }
   }
 
-  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+  @Override
+  public ArrayMap<String, Object> getUserBehaviorArguments() {
     return null;
   }
 
-  @Override public int getUserBehaviorPageId() {
+  @Override
+  public int getUserBehaviorPageId() {
     return 0;
   }
 
-  @Override protected int activitySetup() {
+  @Override
+  protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
   }
 
-  @Override protected String getPageNameCN() {
+  @Override
+  protected String getPageNameCN() {
     return "设置";
   }
 
-  @OnClick({ R.id.setting_item_dahuo, R.id.setting_item_about, R.id.setting_item_update })
+  @OnClick({R.id.setting_item_dahuo, R.id.setting_item_about})
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.setting_item_dahuo:
@@ -105,11 +105,6 @@ public class SettingActivity extends BaseBehaviorActivity {
             AppContext.packageInfo.versionName);
         intent.putExtra(StatementActivity.REQUEST_KEY_CONTENT, about);
         startActivity(intent);
-        break;
-
-      case R.id.setting_item_update:
-        //检查更新
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_APPLICATION_CHECK_UPDATE));
         break;
     }
   }

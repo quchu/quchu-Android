@@ -1,11 +1,11 @@
 package co.quchu.quchu.view.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -40,20 +40,22 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
         holder.titleTv.setText(feedbackModel.getTitle());
         holder.contentTv.setText(feedbackModel.getValue());
         holder.contentTv.setVisibility(View.GONE);
+        holder.chatTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
+        holder.chatTv.getPaint().setAntiAlias(true);
         if (feedbackModel.getState().equals("1")) {
-            holder.settleTv.setVisibility(View.VISIBLE);
-            holder.unsettleTv.setVisibility(View.GONE);
+            holder.settleTv.setText("已解决");
+            holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_settle_btn));
         } else {
-            holder.settleTv.setVisibility(View.GONE);
-            holder.unsettleTv.setVisibility(View.VISIBLE);
+            holder.settleTv.setText("未解决");
+            holder.settleTv.setBackground(context.getResources().getDrawable(R.drawable.shape_feedback_unsettle_btn));
         }
 
         //和pm聊天
-        holder.chatLayout.setTag(feedbackModel);
+        holder.chatTv.setTag(feedbackModel);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FeedbackModel feedbackModel = (FeedbackModel) holder.chatLayout.getTag();
+                FeedbackModel feedbackModel = (FeedbackModel) holder.chatTv.getTag();
                 if (feedbackModel != null && listener != null) {
                     listener.onItemClick(feedbackModel);
                 }
@@ -76,10 +78,8 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
         TextView contentTv;
         @Bind(R.id.feedback_item_settle_tv)
         TextView settleTv;
-        @Bind(R.id.feedback_item_unsettle_tv)
-        TextView unsettleTv;
-        @Bind(R.id.feedback_item_chat_layout)
-        RelativeLayout chatLayout;
+        @Bind(R.id.feedback_item_chat_tv)
+        TextView chatTv;
 
         public FeedbackViewHolder(View itemView) {
             super(itemView);

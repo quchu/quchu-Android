@@ -51,26 +51,4 @@
 
   <View style="@style/HorizontalDivider"/>
 
-  <co.quchu.quchu.widget.SettingItemView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:stText="商务合作"/>
-
-  <View style="@style/HorizontalDivider"/>
-
-  <co.quchu.quchu.widget.SettingItemView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:stText="媒体合作"/>
-
-  <View style="@style/HorizontalDivider"/>
-
-  <co.quchu.quchu.widget.SettingItemView
-      android:id="@+id/setting_item_update"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:stText="检查更新"/>
-
-  <View style="@style/HorizontalDivider"/>
-
 </LinearLayout>

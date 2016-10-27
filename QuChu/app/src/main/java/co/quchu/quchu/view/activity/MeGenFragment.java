@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
-import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,9 +31,6 @@ import co.quchu.quchu.utils.SPUtils;
  * Created by mwb on 16/8/22.
  */
 public class MeGenFragment extends BaseFragment {
-
-  private String BUNDLE_SAVE_KEY_GENES = "bundle_save_key_genes";
-  private String BUNDLE_SAVE_KEY_ME = "bundle_save_key_me";
 
   @Bind(R.id.tuhao_img)
   ImageView tuhaoImg;
@@ -86,11 +82,7 @@ public class MeGenFragment extends BaseFragment {
 
     meActivityPresenter = new MeActivityPresenter(getActivity());
 
-    if (savedInstanceState != null) {
-      mIsMe = savedInstanceState.getBoolean(BUNDLE_SAVE_KEY_ME, false);
-    } else {
-      mIsMe = getArguments().getBoolean(IS_ME_BUNDLE_KEY, false);
-    }
+    mIsMe = getArguments().getBoolean(IS_ME_BUNDLE_KEY, false);
     mUserId = getArguments().getInt(USER_ID_BUNDLE_KEY, -1);
 
     mGeneTopLayout.setVisibility(mIsMe ? View.VISIBLE : View.GONE);
@@ -103,21 +95,9 @@ public class MeGenFragment extends BaseFragment {
     shishangTv.setTypeface(face);
     wenyiTv.setTypeface(face);
 
-    if (savedInstanceState != null) {
-      List<MyGeneModel.GenesEntity> genes = (List<MyGeneModel.GenesEntity>) savedInstanceState.getSerializable(BUNDLE_SAVE_KEY_GENES);
-      initGene(genes);
-    } else {
-      getGenes();
-    }
+    getGenes();
 
     return view;
-  }
-
-  @Override
-  public void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    outState.putSerializable(BUNDLE_SAVE_KEY_GENES, (Serializable) mGenes);
-    outState.putBoolean(BUNDLE_SAVE_KEY_ME, mIsMe);
   }
 
   private void getGenes() {
@@ -176,19 +156,16 @@ public class MeGenFragment extends BaseFragment {
           @Override
           public void onAnimationUpdate(ValueAnimator animation) {
             float progress = (float) animation.getAnimatedValue();
+            if (!mIsFragmentAlive) {
+              return;
+            }
+
             wenyiTv.setText(String.valueOf((int) (progress * genes.get(0).getWeight())));
             shejiaoTv.setText(String.valueOf((int) (progress * genes.get(1).getWeight())));
             tuhaoTv.setText(String.valueOf((int) (progress * genes.get(2).getWeight())));
             chihuoTv.setText(String.valueOf((int) (progress * genes.get(3).getWeight())));
             shishangTv.setText(String.valueOf((int) (progress * genes.get(4).getWeight())));
             haoqiTv.setText(String.valueOf((int) (progress * genes.get(5).getWeight())));
-//            setGenes(progress, genes);
-//            tuhaoTv.setText(String.valueOf((int) (progress * genes.get(0).getWeight())));
-//            chihuoTv.setText(String.valueOf((int) (progress * genes.get(1).getWeight())));
-//            haoqiTv.setText(String.valueOf((int) (progress * genes.get(2).getWeight())));
-//            shejiaoTv.setText(String.valueOf((int) (progress * genes.get(3).getWeight())));
-//            shishangTv.setText(String.valueOf((int) (progress * genes.get(4).getWeight())));
-//            wenyiTv.setText(String.valueOf((int) (progress * genes.get(5).getWeight())));
           }
         });
         va.start();

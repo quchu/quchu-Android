@@ -1,156 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/white"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    >
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-  <RelativeLayout
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical">
+      android:layout_margin="20dp"
+      android:background="@drawable/shape_feedback_item"
+      android:orientation="vertical"
+      android:padding="20dp">
 
     <TextView
         android:id="@+id/feedback_item_create_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="19dp"
-        android:layout_marginTop="19dp"
-        android:background="@drawable/shape_feedback_time_bg"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        tools:text="Simple String"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"/>
+        android:textColor="@color/standard_color_h3_dark"
+        android:textSize="12sp"
+        tools:text="Simple String"/>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/feedback_item_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/standard_color_h1_dark"
+        android:textSize="14sp"
+        tools:text="Simple String"/>
+
+    <TextView
+        android:id="@+id/feedback_item_content_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/standard_color_h1_dark"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:text="Simple StringSimple StringSimple StringSimple StringSimple StringSimple StringSimple String"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/feedback_item_create_time_tv"
-        android:layout_marginLeft="88dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/shape_feedback_item"
-        android:orientation="vertical">
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
 
       <TextView
-          android:id="@+id/feedback_item_title_tv"
+          android:id="@+id/feedback_item_settle_tv"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginLeft="24dp"
-          android:layout_marginRight="20dp"
-          android:layout_marginTop="22dp"
-          android:layout_marginBottom="22dp"
-          tools:text="Simple String"
+          android:layout_centerVertical="true"
+          android:background="@drawable/shape_feedback_settle_btn"
+          android:paddingBottom="5dp"
+          android:paddingLeft="18dp"
+          android:paddingRight="18dp"
+          android:paddingTop="5dp"
+          android:text="未处理"
+          android:textColor="@color/standard_color_h2_dark"
+          android:textSize="12sp"
+          android:visibility="visible"/>
 
-          android:textColor="@color/standard_color_h1_dark"
-          android:textSize="12sp"/>
-
-      <TextView
-          android:id="@+id/feedback_item_content_tv"
+      <RelativeLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="22dp"
-          android:layout_marginLeft="24dp"
-          android:layout_marginRight="20dp"
-          android:layout_marginTop="5dp"
-          tools:text="Simple String"
+          android:layout_alignParentRight="true"
+          android:layout_centerVertical="true">
 
-          android:textColor="@color/standard_color_h1_dark"
-          android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/feedback_item_chat_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看回复>"
+            android:textColor="@color/standard_color_h2_dark"
+            android:textSize="12sp"/>
 
-      <View
-          android:layout_width="match_parent"
-          android:layout_height="0.67dp"
-          android:background="@color/colorDivider"/>
+      </RelativeLayout>
 
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="48dp"
-          android:orientation="horizontal">
+    </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-          <TextView
-              android:id="@+id/feedback_item_settle_tv"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_centerInParent="true"
-              android:background="@drawable/shape_feedback_settle_btn"
-              android:drawableLeft="@mipmap/ic_gou"
-              android:drawablePadding="5dp"
-              android:gravity="center"
-              android:paddingBottom="5dp"
-              android:paddingLeft="8dp"
-              android:paddingRight="8dp"
-              android:paddingTop="5dp"
-              android:text="已处理"
-              android:textColor="@color/standard_color_h1_dark"
-              android:textSize="11sp"
-              android:visibility="gone"/>
-
-          <TextView
-              android:id="@+id/feedback_item_unsettle_tv"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_centerInParent="true"
-              android:background="@drawable/shape_feedback_unsettle_btn"
-              android:drawableLeft="@mipmap/ic_weichuli"
-              android:drawablePadding="5dp"
-              android:gravity="center"
-              android:paddingBottom="5dp"
-              android:paddingLeft="8dp"
-              android:paddingRight="8dp"
-              android:paddingTop="5dp"
-              android:text="未处理"
-              android:textColor="@android:color/white"
-              android:textSize="11sp"
-              android:visibility="gone"/>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="0.67dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorDivider"/>
-
-        <RelativeLayout
-            android:id="@+id/feedback_item_chat_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingBottom="6dp"
-            android:paddingTop="6dp">
-
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_centerInParent="true"
-              android:drawableLeft="@mipmap/ic_chat"
-              android:drawablePadding="5dp"
-              android:gravity="center"
-              android:paddingBottom="2dp"
-              android:paddingLeft="5dp"
-              android:paddingRight="5dp"
-              android:paddingTop="2dp"
-              android:text="回复"
-              android:textColor="@color/standard_color_h1_dark"
-              android:textSize="11sp"/>
-
-        </RelativeLayout>
-
-      </LinearLayout>
-
-    </LinearLayout>
-
-  </RelativeLayout>
+  </LinearLayout>
 
 </RelativeLayout>

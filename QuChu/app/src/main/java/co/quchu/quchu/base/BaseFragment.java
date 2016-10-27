@@ -24,6 +24,7 @@ import co.quchu.quchu.utils.ToastManager;
 public abstract class BaseFragment extends Fragment {
 
     private ToastManager toastManager;
+    protected boolean mIsFragmentAlive = false;
 
     protected abstract String getPageNameCN();
 
@@ -49,6 +50,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mIsFragmentAlive = true;
         if (null!=getPageNameCN()){
             MobclickAgent.onPageStart(getPageNameCN());
         }
@@ -57,6 +59,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        mIsFragmentAlive = false;
         if (null!=getPageNameCN()){
             MobclickAgent.onPageEnd(getPageNameCN());
         }
