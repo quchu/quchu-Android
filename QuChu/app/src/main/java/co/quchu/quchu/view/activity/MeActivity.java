@@ -92,7 +92,7 @@ public class MeActivity extends BaseBehaviorActivity {
           return;
         }
 
-        makeToast("change");
+        startActivity(ChangePasswordActivity.class);
         break;
 
       case R.id.user_logout_btn://退出登录

@@ -54,15 +54,25 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
   @Bind(R.id.tvForgottenPassword) TextView tvForgottenPassword;
   private int mContainerId = -1;
 
-  @Nullable @Override
+  @Nullable
+  @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
+                           @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_login_main, container, false);
     ButterKnife.bind(this, view);
     return view;
   }
 
-  @Override public void onDestroyView() {
+  @Override
+  public void onResume() {
+    super.onResume();
+
+    ((BaseActivity) getActivity()).getEnhancedToolbar().getTitleTv().setText("");
+    ((BaseActivity) getActivity()).getEnhancedToolbar().getRightTv().setVisibility(View.GONE);
+  }
+
+  @Override
+  public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.unbind(this);
   }
@@ -88,7 +98,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
   @OnClick({
       R.id.tvForgottenPassword, R.id.tvLoginViaPhone, R.id.tvCreateAccountViaPhone,
       R.id.llAuthorizationViaMm, R.id.llAuthorizationViaWeibo
-  }) public void onClick(View v) {
+  })
+  public void onClick(View v) {
     mContainerId = mContainerId == -1 ? ((ViewGroup) getView().getParent()).getId() : mContainerId;
     switch (v.getId()) {
       case R.id.tvForgottenPassword:
@@ -145,18 +156,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     }
   }
 
-  @Override public void onResume() {
-    super.onResume();
-    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOGIN_ACTIVITY_SHOW_RETURN));
-    ((BaseActivity) getActivity()).getEnhancedToolbar().hide();
-  }
-
-  @Override public void onPause() {
-    super.onPause();
-    EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_LOGIN_ACTIVITY_HIDE_RETURN));
-  }
-
-  @Override public void loginSuccess(int type, String token, String appId) {
+  @Override
+  public void loginSuccess(int type, String token, String appId) {
 
     //连接融云服务
     new IMPresenter().getToken(getActivity(), null);
@@ -190,7 +191,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
   }
 
-  @Override public void loginFail(String message) {
+  @Override
+  public void loginFail(String message) {
     LogUtils.e("LoginFragment", "login fail message : " + message);
   }
 }

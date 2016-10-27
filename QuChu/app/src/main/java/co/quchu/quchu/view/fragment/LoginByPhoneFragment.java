@@ -46,11 +46,10 @@ import co.quchu.quchu.widget.ErrorView;
  */
 public class LoginByPhoneFragment extends Fragment
     implements TextWatcher, View.OnFocusChangeListener {
-  @Bind(R.id.ivIconUserName) ImageView ivIconUserName;
+
   @Bind(R.id.etUsername) EditText etUsername;
   @Bind(R.id.ivIconClear) ImageView ivIconClear;
   @Bind(R.id.rlUserNameField) RelativeLayout rlUserNameField;
-  @Bind(R.id.ivIconPassword) ImageView ivIconPassword;
   @Bind(R.id.etPassword) EditText etPassword;
   @Bind(R.id.ivSwitchVisible) ImageView ivSwitchVisible;
   @Bind(R.id.tvLoginViaPhone) TextView tvLoginViaPhone;
@@ -65,29 +64,10 @@ public class LoginByPhoneFragment extends Fragment
 
   public boolean mDisplayPassword = false;
 
-  public void updateButtonStatus() {
-
-    if (null == etUsername || null == etPassword) {
-      return;
-    }
-    String userName = null == etUsername.getText() ? "" : etUsername.getText().toString();
-    String userPwd = null == etPassword.getText() ? "" : etPassword.getText().toString();
-
-    ivIconClear.setVisibility(userName.length() > 0 ? View.VISIBLE : View.INVISIBLE);
-    if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPwd)) {
-      tvLoginViaPhone.setText(R.string.login);
-      mEmptyForum = false;
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
-    } else {
-      mEmptyForum = true;
-      tvLoginViaPhone.setText(R.string.login);
-      tvLoginViaPhone.setBackgroundColor(Color.parseColor("#dbdbdb"));
-    }
-  }
-
-  @Nullable @Override
+  @Nullable
+  @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
+                           @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_phone_login, container, false);
     ButterKnife.bind(this, view);
     if (null != getArguments()) {
@@ -97,7 +77,8 @@ public class LoginByPhoneFragment extends Fragment
       etUsername.setText(mPhoneNumber);
       etPassword.postDelayed(new Runnable() {
 
-        @Override public void run() {
+        @Override
+        public void run() {
           etPassword.requestFocus();
           InputMethodManager keyboard =
               (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -111,7 +92,8 @@ public class LoginByPhoneFragment extends Fragment
     etPassword.addTextChangedListener(this);
 
     tvLoginViaPhone.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
+      @Override
+      public void onClick(View v) {
         if (!mEmptyForum && verifyForm()) {
           userLogin(etUsername.getText().toString(), etPassword.getText().toString());
         }
@@ -120,12 +102,14 @@ public class LoginByPhoneFragment extends Fragment
 
     ivIconClear.setVisibility(View.INVISIBLE);
     ivIconClear.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
+      @Override
+      public void onClick(View v) {
         etUsername.setText("");
       }
     });
     ivSwitchVisible.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
+      @Override
+      public void onClick(View v) {
 
         if (!mDisplayPassword) {
           etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -149,13 +133,13 @@ public class LoginByPhoneFragment extends Fragment
 
     if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_empty_username_or_password);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
     } else if (!StringUtils.isMobileNO(userName)) {
       tvLoginViaPhone.setText(R.string.promote_invalid_username);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
     } else if (!StringUtils.isGoodPassword(userPwd)) {
       tvLoginViaPhone.setText(R.string.promote_invalid_password);
-      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
     } else if (StringUtils.isMobileNO(userName) && StringUtils.isGoodPassword(userPwd)) {
       tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
       tvLoginViaPhone.setText(R.string.login);
@@ -167,25 +151,35 @@ public class LoginByPhoneFragment extends Fragment
     return status;
   }
 
-  @Override public void onResume() {
+  public void updateButtonStatus() {
+
+    if (null == etUsername || null == etPassword) {
+      return;
+    }
+    String userName = null == etUsername.getText() ? "" : etUsername.getText().toString();
+    String userPwd = null == etPassword.getText() ? "" : etPassword.getText().toString();
+
+    ivIconClear.setVisibility(userName.length() > 0 ? View.VISIBLE : View.INVISIBLE);
+    if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPwd)) {
+      mEmptyForum = false;
+      tvLoginViaPhone.setText(R.string.login);
+      tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
+    } else {
+      mEmptyForum = true;
+      tvLoginViaPhone.setText(R.string.login);
+      tvLoginViaPhone.setBackgroundColor(Color.parseColor("#dbdbdb"));
+    }
+  }
+
+  @Override
+  public void onResume() {
     super.onResume();
-    ((BaseActivity) getActivity()).getEnhancedToolbar().getTitleTv()
-        .setText(R.string.login_via_phone);
-
-    etUsername.requestFocus();
-    etUsername.postDelayed(new Runnable() {
-
-      @Override public void run() {
-        InputMethodManager keyboard =
-            (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        keyboard.showSoftInput(etUsername, 0);
-      }
-    }, 350);
-
+    ((BaseActivity) getActivity()).getEnhancedToolbar().getTitleTv().setText(R.string.login_via_phone);
     ((BaseActivity) getActivity()).getEnhancedToolbar().getRightTv().setText(R.string.forget_password);
     ((BaseActivity) getActivity()).getEnhancedToolbar().getRightTv().setVisibility(View.VISIBLE);
     ((BaseActivity) getActivity()).getEnhancedToolbar().getRightTv().setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
+      @Override
+      public void onClick(View view) {
         Fragment f = new PhoneValidationFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
@@ -198,9 +192,21 @@ public class LoginByPhoneFragment extends Fragment
         ((BaseActivity) getActivity()).getEnhancedToolbar().show();
       }
     });
+
+    etUsername.requestFocus();
+    etUsername.postDelayed(new Runnable() {
+
+      @Override
+      public void run() {
+        InputMethodManager keyboard =
+            (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.showSoftInput(etUsername, 0);
+      }
+    }, 350);
   }
 
-  @Override public void onPause() {
+  @Override
+  public void onPause() {
     super.onPause();
     ((BaseActivity) getActivity()).getEnhancedToolbar().getRightTv().setVisibility(View.GONE);
     View view = getActivity().getCurrentFocus();
@@ -226,7 +232,8 @@ public class LoginByPhoneFragment extends Fragment
     new IMPresenter().logout();
 
     UserLoginPresenter.userLogin(getActivity(), userName, password, new UserLoginListener() {
-      @Override public void loginSuccess(int type, String token, String appId) {
+      @Override
+      public void loginSuccess(int type, String token, String appId) {
         LogUtils.e("LoginByPhoneFragment", "login success");
 
         //连接融云服务
@@ -239,7 +246,8 @@ public class LoginByPhoneFragment extends Fragment
         errorView.hideView();
       }
 
-      @Override public void loginFail(String message) {
+      @Override
+      public void loginFail(String message) {
         LogUtils.e("LoginByPhoneFragment", "login fail message : " + message);
 
         if (!TextUtils.isEmpty(message)) {
@@ -247,7 +255,7 @@ public class LoginByPhoneFragment extends Fragment
             JSONObject object = new JSONObject(message);
             if (object.has("msg") && !object.isNull("msg")) {
               tvLoginViaPhone.setText(object.get("msg").toString());
-              tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+              tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
               //tvForgetPassword.setVisibility(View.GONE);
               //tvForgetPassword.setOnClickListener(new View.OnClickListener() {
               //  @Override public void onClick(View v) {
@@ -274,22 +282,27 @@ public class LoginByPhoneFragment extends Fragment
     });
   }
 
-  @Override public void onDestroyView() {
+  @Override
+  public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.unbind(this);
   }
 
-  @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+  @Override
+  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
   }
 
-  @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+  @Override
+  public void onTextChanged(CharSequence s, int start, int before, int count) {
   }
 
-  @Override public void afterTextChanged(Editable s) {
+  @Override
+  public void afterTextChanged(Editable s) {
     updateButtonStatus();
   }
 
-  @Override public void onFocusChange(View v, boolean hasFocus) {
+  @Override
+  public void onFocusChange(View v, boolean hasFocus) {
     updateButtonStatus();
   }
 }

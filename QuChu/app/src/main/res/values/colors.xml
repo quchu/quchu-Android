@@ -1,97 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">@color/standard_color_yellow</color>                 //应用主题色
-    <color name="colorPrimaryDark">@color/standard_color_yellow</color>             //应用主题色 暗
-    <color name="colorAccent">@color/standard_color_yellow</color>                     //应用次主题色
-    <color name="colorBackground">#efefef</color>                                   //通用背景颜色
+  <color name="colorPrimary">@color/standard_color_yellow</color>
+  //应用主题色
+  <color name="colorPrimaryDark">@color/standard_color_yellow</color>
+  //应用主题色 暗
+  <color name="colorAccent">@color/standard_color_yellow</color>
+  //应用次主题色
+  <color name="colorBackground">#efefef</color>
+  //通用背景颜色
 
-    <color name="colorSceneColor">#66000000</color>
+  <color name="colorSceneColor">#66000000</color>
 
-    <color name="colorDivider">#e3e3e3</color>                                      //分割线颜色
-    <color name="colorBorder">#dbdbdb</color>                                       //描边
+  <color name="colorDivider">#e3e3e3</color>
+  //分割线颜色
+  <color name="colorBorder">#dbdbdb</color>
+  //描边
 
-    <color name="translucent_white">#7fffffff</color>                               //白色半透明
-    <color name="translucent_dark">#7f000000</color>                                //黑色半透明
-    <color name="translucent_dark_deep">#cf000000</color>                           //黑色半透明深
-    <color name="translucent_dark_light">#3f000000</color>                           //黑色半透明
-    <color name="transparent">#00000000</color>                                     //完全透明浅
+  <color name="translucent_white">#7fffffff</color>
+  //白色半透明
+  <color name="translucent_dark">#7f000000</color>
+  //黑色半透明
+  <color name="translucent_dark_deep">#cf000000</color>
+  //黑色半透明深
+  <color name="translucent_dark_light">#3f000000</color>
+  //黑色半透明
+  <color name="transparent">#00000000</color>
+  //完全透明浅
 
-    <color name="standard_color_black">#000</color>
-    <color name="standard_color_white">#ffffff</color>
-    <color name="standard_color_red">#ff231f</color>                                //主题红
-    <color name="standard_color_yellow">#ffd102</color>                             //主题黄
-    <color name="standard_color_h1_dark">#333333</color>                            //一级字体 深色 色值 用于：Actionbar元素及自定义标题 或线框
-    <color name="standard_color_h2_dark">#666666</color>                            //二级字体 深色 色值 用于：页面子标题或线框
-    <color name="standard_color_h3_dark">#999999</color>                            //三级字体 深色 色值 用于：文章内容或线框
-    <color name="standard_color_h0_dark">#111111</color>
-    <color name="tagTextColor">#fff</color>
-    <!--页面空间之间背景-->
-    <color name="bg_pager">#EFEFEF</color>
+  <color name="standard_color_black">#000</color>
+  <color name="standard_color_white">#ffffff</color>
+  <color name="standard_color_red">#ff231f</color>
+  //主题红
+  <color name="standard_color_yellow">#ffd102</color>
+  //主题黄
+  <color name="standard_color_h1_dark">#333333</color>
+  //一级字体 深色 色值 用于：Actionbar元素及自定义标题 或线框
+  <color name="standard_color_h2_dark">#666666</color>
+  //二级字体 深色 色值 用于：页面子标题或线框
+  <color name="standard_color_h3_dark">#999999</color>
+  //三级字体 深色 色值 用于：文章内容或线框
+  <color name="standard_color_h0_dark">#111111</color>
+  <color name="tagTextColor">#fff</color>
+  <!--页面空间之间背景-->
+  <color name="bg_pager">#EFEFEF</color>
 
-    <!--以下为我界面进度条渐变色-->
-    <color name="progress1">#fed400</color>
-    <color name="progress3">#fee770</color>
+  <!--以下为我界面进度条渐变色-->
+  <color name="progress1">#fed400</color>
+  <color name="progress3">#fee770</color>
 
-    <color name="progress4">#f769ae</color>
-    <color name="progress5">#fb838c</color>
-    <color name="progress6">#fd9b69</color>
+  <color name="progress4">#f769ae</color>
+  <color name="progress5">#fb838c</color>
+  <color name="progress6">#fd9b69</color>
 
-    <color name="progress7">#67a9f6</color>
-    <color name="progress8">#78d1d4</color>
-    <color name="progress9">#68ffab</color>
+  <color name="progress7">#67a9f6</color>
+  <color name="progress8">#78d1d4</color>
+  <color name="progress9">#68ffab</color>
 
-    <color name="progress10">#a8a0f0</color>
-    <color name="progress11">#9abef5</color>
-    <color name="progress12">#86eaff</color>
+  <color name="progress10">#a8a0f0</color>
+  <color name="progress11">#9abef5</color>
+  <color name="progress12">#86eaff</color>
 
 
-    <!--圆形进度条颜色-->
-    <color name="bg_shade1">#d6efff</color>
-    //背景渐变
-    <color name="bg_shade2">#daeffb</color>
-    <color name="bg_shade3">#b6d9f0</color>
+  <!--圆形进度条颜色-->
+  <color name="bg_shade1">#d6efff</color>
+  //背景渐变
+  <color name="bg_shade2">#daeffb</color>
+  <color name="bg_shade3">#b6d9f0</color>
 
-    <color name="bg_progress1">#fbb5a6</color>
-    //进度渐变
-    <color name="bg_progress2">#fedeab</color>
-    //进度渐变
-    <color name="bg_progress3">#fee9ad</color>
-    //进度渐变
+  <color name="bg_progress1">#fbb5a6</color>
+  //进度渐变
+  <color name="bg_progress2">#fedeab</color>
+  //进度渐变
+  <color name="bg_progress3">#fee9ad</color>
+  //进度渐变
 
-    <color name="bg_progress">#e3e3e3</color>
-    //进度背景
+  <color name="bg_progress">#e3e3e3</color>
+  //进度背景
 
-    <color name="bg_round">#DBDBDB</color>
-    //中心园背景
+  <color name="bg_round">#DBDBDB</color>
+  //中心园背景
 
-    <color name="bg_round_bound">#EFEFEF</color>
+  <color name="bg_round_bound">#EFEFEF</color>
 
-    <!-- 自定义属性-->
-    <color name="titleBackground">#383635</color>
-    <color name="appBackground">#fff</color>
-    <color name="appBackgroundTrans">#cc383635</color>
-    <color name="appBackground_dark">#2c2a2a</color>
-    <!-- 我的趣星球 、titleBar字体颜色-->
-    <color name="lineBackground_gray">#595757</color>
-    <!-- 图片item 蒙版颜色-->
-    <color name="itemMask_black">#a6221814</color>
-    <!--上拉加载更多  进度条-->
-    <color name="load_progress_gray">#697081</color>
-    <!-- 用户登陆 -->
-    <color name="user_login_text_hint_text_color">#b3b3b3</color>
-    <color name="user_login_view_bg_color">#33ffffff</color>
-    <color name="user_login_text_clickable">#221714</color>
-    <color name="account_setting_text_hint_color">#595757</color>
+  <!-- 自定义属性-->
+  <color name="titleBackground">#383635</color>
+  <color name="appBackground">#fff</color>
+  <color name="appBackgroundTrans">#cc383635</color>
+  <color name="appBackground_dark">#2c2a2a</color>
+  <!-- 我的趣星球 、titleBar字体颜色-->
+  <color name="lineBackground_gray">#595757</color>
+  <!-- 图片item 蒙版颜色-->
+  <color name="itemMask_black">#a6221814</color>
+  <!--上拉加载更多  进度条-->
+  <color name="load_progress_gray">#697081</color>
+  <!-- 用户登陆 -->
+  <color name="user_login_text_hint_text_color">#b3b3b3</color>
+  <color name="user_login_view_bg_color">#33ffffff</color>
+  <color name="user_login_text_clickable">#221714</color>
+  <color name="account_setting_text_hint_color">#595757</color>
 
-    <color name="ksw_md_ripple_normal">#1E000000</color>
-    <color name="ksw_md_ripple_checked">#33019285</color>
+  <color name="ksw_md_ripple_normal">#1E000000</color>
+  <color name="ksw_md_ripple_checked">#33019285</color>
 
-    <color name="ksw_md_solid_shadow">#33000000</color>
+  <color name="ksw_md_solid_shadow">#33000000</color>
 
-    <color name="ksw_md_solid_normal">#ECECEC</color>
-    <color name="ksw_md_solid_checked">#019285</color>
-    <color name="ksw_md_solid_disable">#FFFFFF</color>
-    <color name="ksw_md_solid_checked_disable">#aaaaaa</color>
+  <color name="ksw_md_solid_normal">#ECECEC</color>
+  <color name="ksw_md_solid_checked">#019285</color>
+  <color name="ksw_md_solid_disable">#FFFFFF</color>
+  <color name="ksw_md_solid_checked_disable">#aaaaaa</color>
+
+  <!-- 输入框提示文案颜色 -->
+  <color name="colorHint">#DBDBDB</color>
 
 </resources>

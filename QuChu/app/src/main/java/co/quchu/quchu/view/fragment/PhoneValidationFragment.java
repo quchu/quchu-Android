@@ -41,16 +41,12 @@ import co.quchu.quchu.widget.ErrorView;
  */
 public class PhoneValidationFragment extends Fragment {
 
-  @Bind(R.id.ivIconUserName)
-  ImageView ivIconUserName;
   @Bind(R.id.etUsername)
   EditText etUsername;
   @Bind(R.id.ivIconClear)
   ImageView ivIconClear;
   @Bind(R.id.rlUserNameField)
   RelativeLayout rlUserNameField;
-  @Bind(R.id.ivIconValidCode)
-  ImageView ivIconValidCode;
   @Bind(R.id.etValidCode)
   EditText etValidCode;
   @Bind(R.id.tvSendValidCode)
@@ -93,7 +89,6 @@ public class PhoneValidationFragment extends Fragment {
       mIsRegistration = getArguments().getBoolean(BUNDLE_KEY_REGISTRATION, true);
       mPhoneNumber = getArguments().getString(BUNDLE_KEY_PHONE_NUMBER);
     }
-    //((BaseActivity)getActivity()).getEnhancedToolbar().getTitleTv().setText(mIsRegistration?R.string.registration_step_1:R.string.forget_pwd_step_1);
 
     tvLoginViaThisNumber.setVisibility(View.GONE);
     ivIconClear.setVisibility(View.INVISIBLE);
@@ -158,22 +153,22 @@ public class PhoneValidationFragment extends Fragment {
     String userName = null == etUsername.getText() ? "" : etUsername.getText().toString();
     ivIconClear.setVisibility(userName.length() > 0 ? View.VISIBLE : View.INVISIBLE);
     if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
-      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
       tvNext.setText(R.string.next);
+      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
       mEmptyForum = false;
     } else {
-      tvNext.setText(R.string.next);
       mEmptyForum = true;
+      tvNext.setText(R.string.next);
       tvNext.setBackgroundColor(Color.parseColor("#dbdbdb"));
     }
 
-    if (!codeSent) {
-      if (StringUtils.isMobileNO(userName)) {
-        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
-      } else {
-        tvSendValidCode.setBackgroundColor(getResources().getColor(R.color.standard_color_h3_dark));
-      }
-    }
+//    if (!codeSent) {
+//      if (StringUtils.isMobileNO(userName)) {
+//        tvSendValidCode.setBackgroundResource(R.drawable.shape_lineframe_yellow_fill);
+//      } else {
+//        tvSendValidCode.setBackgroundColor(getResources().getColor(R.color.standard_color_h3_dark));
+//      }
+//    }
   }
 
   private boolean verifyForm(boolean verifyValidCode) {
@@ -182,10 +177,10 @@ public class PhoneValidationFragment extends Fragment {
 
     if (TextUtils.isEmpty(userName)) {
       tvNext.setText(R.string.promote_empty_phone);
-      tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
     } else if (!StringUtils.isMobileNO(userName)) {
       tvNext.setText(R.string.promote_invalid_phone_number);
-      tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+      tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
     } else if (verifyValidCode && !TextUtils.isEmpty(userName) && !TextUtils.isEmpty(etValidCode.getText())) {
       tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_yellow));
       status = true;
@@ -206,7 +201,7 @@ public class PhoneValidationFragment extends Fragment {
     public void timeRemaining(int leftSecond) {
       codeSent = true;
       if (tvSendValidCode != null) {
-        tvSendValidCode.setBackgroundResource(R.color.colorBorder);
+//        tvSendValidCode.setBackgroundResource(R.color.colorBorder);
         tvSendValidCode.setText("(" + leftSecond + ")秒后重新发送");
         tvSendValidCode.setEnabled(false);
       }
@@ -217,7 +212,7 @@ public class PhoneValidationFragment extends Fragment {
       codeSent = false;
       if (tvSendValidCode != null) {
         tvSendValidCode.setText(R.string.send_valid_code);
-        tvSendValidCode.setBackgroundResource(R.color.colorAccent);
+//        tvSendValidCode.setBackgroundResource(R.color.colorAccent);
         tvSendValidCode.setEnabled(true);
       }
     }
@@ -284,9 +279,10 @@ public class PhoneValidationFragment extends Fragment {
       public void errorListener(VolleyError error, String exception, String msg) {
         Toast.makeText(getActivity(), R.string.promote_verify_fail, Toast.LENGTH_SHORT).show();
         isVerifying = false;
+        tvNext.setText("验证码错误");
+        tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
       }
     });
-
   }
 
   @Override
@@ -358,11 +354,10 @@ public class PhoneValidationFragment extends Fragment {
         @Override
         public void notUnique(String msg) {
           isRunning = false;
-          tvNext.setText(R.string.promote_duplicate_username);
           registed = true;
           tvLoginViaThisNumber.setVisibility(View.VISIBLE);
-          tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-
+          tvNext.setText(R.string.promote_duplicate_username);
+          tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
         }
       });
     } else {
@@ -421,7 +416,7 @@ public class PhoneValidationFragment extends Fragment {
     ButterKnife.unbind(this);
   }
 
-  @OnClick({R.id.ivIconUserName, R.id.etUsername, R.id.ivIconClear, R.id.rlUserNameField, R.id.ivIconValidCode, R.id.etValidCode, R.id.tvSendValidCode, R.id.rlValidCode, R.id.tvLoginViaThisNumber, R.id.tvNext, R.id.errorView})
+  @OnClick({R.id.etUsername, R.id.ivIconClear, R.id.rlUserNameField, R.id.etValidCode, R.id.tvSendValidCode, R.id.rlValidCode, R.id.tvLoginViaThisNumber, R.id.tvNext, R.id.errorView})
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.ivIconClear:
@@ -458,7 +453,7 @@ public class PhoneValidationFragment extends Fragment {
             verifySms();
           } else {
             tvNext.setText(R.string.promote_verify_fail);
-            tvNext.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
           }
         }
         break;

@@ -1,136 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground"
+                android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rlUserNameField"
+  <RelativeLayout
+      android:id="@+id/rlUserNameField"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/toolbar_item_size"
+      android:layout_marginLeft="20dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginTop="20dp"
+      android:background="@drawable/shape_rectangle_grey_wireframe_white_fill">
+
+    <EditText
+        android:id="@+id/etUsername"
+        style="@style/TextView.H3"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_toLeftOf="@+id/ivIconClear"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:hint="@string/hint_input_cellphone_number"
+        android:inputType="number"
+        android:maxLength="11"
+        android:singleLine="true"
+        android:textColorHint="@color/colorHint"
+        android:textCursorDrawable="@drawable/shape_edit_text_cursor"/>
+
+    <ImageView
+        android:id="@+id/ivIconClear"
+        android:layout_width="@dimen/toolbar_item_size"
         android:layout_height="@dimen/toolbar_item_size"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_alignParentRight="true"
+        android:scaleType="center"
+        android:src="@mipmap/ic_cancel"/>
 
-        <ImageView
-            android:id="@+id/ivIconUserName"
-            android:layout_width="@dimen/toolbar_item_size"
-            android:layout_height="@dimen/toolbar_item_size"
-            android:scaleType="center"
-            android:src="@mipmap/ic_phone" />
+  </RelativeLayout>
 
-        <EditText
-            android:id="@+id/etUsername"
-            style="@style/TextView.H3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/ivIconClear"
-            android:layout_toRightOf="@id/ivIconUserName"
-            android:background="@null"
-
-            android:gravity="center_vertical"
-            android:hint="@string/hint_input_cellphone_number"
-            android:inputType="number"
-            android:maxLength="11"
-            android:singleLine="true"
-            android:textCursorDrawable="@drawable/shape_edit_text_cursor" />
-
-        <ImageView
-            android:id="@+id/ivIconClear"
-            android:layout_width="@dimen/toolbar_item_size"
-            android:layout_height="@dimen/toolbar_item_size"
-            android:layout_alignParentRight="true"
-            android:scaleType="center"
-            android:src="@mipmap/ic_cancel" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/bg_pager" />
-
-    </RelativeLayout>
+  <LinearLayout
+      android:id="@+id/llValidCode"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/toolbar_item_size"
+      android:layout_below="@+id/rlUserNameField"
+      android:layout_marginLeft="20dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginTop="20dp"
+      android:orientation="horizontal">
 
     <RelativeLayout
         android:id="@+id/rlValidCode"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_item_size"
-        android:layout_below="@+id/rlUserNameField"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/tvSendValidCode"
+        android:layout_weight="1.3"
+        android:background="@drawable/shape_rectangle_grey_wireframe_white_fill"
+        android:paddingLeft="@dimen/base_margin"
+        android:paddingRight="@dimen/base_margin">
 
-        <ImageView
-            android:id="@+id/ivIconValidCode"
-            android:layout_width="@dimen/toolbar_item_size"
-            android:layout_height="@dimen/toolbar_item_size"
-            android:scaleType="center"
-            android:src="@mipmap/ic_yanzhengma" />
-
-        <EditText
-            android:id="@+id/etValidCode"
-            style="@style/TextView.H3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/tvSendValidCode"
-
-            android:layout_toRightOf="@id/ivIconValidCode"
-            android:background="@null"
-            android:hint="@string/hint_input_validate_code"
-            android:inputType="number"
-            android:maxLength="6"
-            android:textCursorDrawable="@drawable/shape_edit_text_cursor" />
-
-        <TextView
-            android:id="@+id/tvSendValidCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/shape_lineframe_yellow_fill"
-            android:gravity="center"
-            android:padding="@dimen/half_margin"
-            android:src="@mipmap/ic_launcher"
-            android:text="@string/send_valid_code"
-            android:textColor="@color/standard_color_white"
-            android:textSize="@dimen/standard_text_size_h3" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/bg_pager" />
+      <EditText
+          android:id="@+id/etValidCode"
+          style="@style/TextView.H3"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="@null"
+          android:hint="@string/hint_input_validate_code"
+          android:inputType="number"
+          android:maxLength="6"
+          android:textColorHint="@color/colorHint"
+          android:textCursorDrawable="@drawable/shape_edit_text_cursor"/>
 
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tvLoginViaThisNumber"
-        style="@style/TextView.H3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlValidCode"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/base_margin"
-        android:gravity="center"
-        android:text="@string/login_via_this_number" />
-
-
-    <TextView
-        android:id="@+id/tvNext"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_item_size"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/thirdLoginContainer"
-        android:layout_centerHorizontal="true"
-        android:background="#dbdbdb"
-        android:gravity="center"
-        android:text="@string/next"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/standard_text_size_h1" />
-
-
-    <co.quchu.quchu.widget.ErrorView
-        android:id="@+id/errorView"
-        android:layout_width="match_parent"
+        android:id="@+id/tvSendValidCode"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_below="@id/tabLayout"
-        android:visibility="gone" />
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_weight="1"
+        android:background="@drawable/shape_lineframe_yellow_fill"
+        android:gravity="center"
+        android:padding="@dimen/half_margin"
+        android:src="@mipmap/ic_launcher"
+        android:text="@string/send_valid_code"
+        android:textColor="@color/standard_color_h1_dark"
+        android:textSize="@dimen/standard_text_size_h3"/>
+
+  </LinearLayout>
+
+  <TextView
+      android:id="@+id/tvLoginViaThisNumber"
+      style="@style/TextView.H3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/llValidCode"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="@dimen/base_margin"
+      android:gravity="center"
+      android:text="@string/login_via_this_number"/>
+
+  <TextView
+      android:id="@+id/tvNext"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/toolbar_item_size"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true"
+      android:background="#dbdbdb"
+      android:gravity="center"
+      android:text="@string/next"
+      android:textColor="@android:color/white"
+      android:textSize="@dimen/standard_text_size_h1"/>
+
+  <co.quchu.quchu.widget.ErrorView
+      android:id="@+id/errorView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/tabLayout"
+      android:visibility="gone"/>
 </RelativeLayout>
