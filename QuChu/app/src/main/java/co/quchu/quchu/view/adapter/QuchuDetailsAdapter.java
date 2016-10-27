@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -481,6 +482,11 @@ public class QuchuDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   }
 
   public static class AdditionalInfoViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.ivOrder) ImageView ivOrder;
+    @Bind(R.id.ivDeliver) ImageView ivDeliver;
+    @Bind(R.id.ivTel) ImageView ivTel;
+    @Bind(R.id.ivQueue) ImageView ivQueue;
+
     AdditionalInfoViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
