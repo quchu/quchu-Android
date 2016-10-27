@@ -54,7 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/cardViewNone"
-        android:layout_alignTop="@id/headView"
         android:layout_below="@id/cardViewNone"
         android:layout_marginLeft="@dimen/half_margin"
         android:layout_marginTop="@dimen/half_margin"

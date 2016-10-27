@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,10 +29,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
+import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
@@ -230,8 +233,8 @@ public class LoginByPhoneFragment extends Fragment
         new IMPresenter().getToken(getActivity(), null);
 
         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
-        getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class)
-            .putExtra(RecommendActivity.REQUEST_KEY_FROM_LOGIN, true));
+        getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
+        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
         getActivity().finish();
         errorView.hideView();
       }

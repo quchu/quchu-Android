@@ -14,8 +14,12 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
-import co.quchu.quchu.model.UserInfoModel;
+import co.quchu.quchu.base.AppContext;
+import co.quchu.quchu.model.UserCenterInfo;
+import co.quchu.quchu.presenter.UserCenterPresenter;
 import co.quchu.quchu.utils.SPUtils;
+
+import static co.quchu.quchu.base.AppContext.user;
 
 /**
  * Created by mwb on 16/10/18.
@@ -43,15 +47,15 @@ public class DrawerHeaderView extends LinearLayout {
     });
   }
 
-  public void setUser(UserInfoModel user) {
-    if (user == null) {
+  public void setUser() {
+    if (AppContext.user == null) {
       return;
     }
 
-    mDrawerHeaderAvatarImg.setImageURI(user.getPhoto());
-    mDrawerHeaderNameTv.setText(user.getFullname());
+    mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
+    mDrawerHeaderNameTv.setText(AppContext.user.getFullname());
     mDrawerHeaderGenderImg.setImageURI(Uri.parse(
-        "res:///" + (user.getGender().equals("男") ? R.mipmap.ic_male
+        "res:///" + (AppContext.user.getGender().equals("男") ? R.mipmap.ic_male
             : R.mipmap.ic_female)));
   }
 
@@ -62,6 +66,36 @@ public class DrawerHeaderView extends LinearLayout {
       mDrawerHeaderMarkTv.setVisibility(VISIBLE);
       mDrawerHeaderMarkTv.setText(SPUtils.getUserMark());
     }
+  }
+
+  /**
+   * 获取用户信息,只为了取 mark 字段
+   * 登录接口限制,后期根据接口调整
+   */
+  public void getUserInfo() {
+    if (user == null) {
+      return;
+    }
+
+    int userId = user.getUserId();
+
+    UserCenterPresenter
+        .getUserCenterInfo(getContext(), userId, new UserCenterPresenter.UserCenterInfoCallBack() {
+          @Override
+          public void onSuccess(UserCenterInfo userCenterInfo) {
+            if (userCenterInfo != null) {
+              String mark = userCenterInfo.getMark();
+              SPUtils.setUserMark(mark);
+              setMark(mark);
+            } else {
+              SPUtils.setUserMark("");
+            }
+          }
+
+          @Override
+          public void onError() {
+          }
+        });
   }
 
   private OnDrawerAvatarClickListener mListener;

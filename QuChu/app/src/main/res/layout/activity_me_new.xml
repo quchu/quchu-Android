@@ -3,7 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/colorBackground"
+              android:background="@color/standard_color_white"
               android:orientation="vertical">
 
   <include layout="@layout/cp_enhanced_toolbar"/>
@@ -22,7 +22,6 @@
           android:id="@+id/me_fragment_container"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:background="@color/standard_color_white"
           android:paddingBottom="30dp"/>
 
       <LinearLayout
@@ -31,7 +30,8 @@
           android:layout_height="wrap_content"
           android:layout_below="@+id/me_fragment_container"
           android:layout_marginTop="7dp"
-          android:orientation="vertical">
+          android:orientation="vertical"
+          android:visibility="invisible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,10 +63,14 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorBackground"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1px"
             android:background="@color/standard_color_white"
             android:orientation="horizontal">
 
@@ -93,10 +97,14 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorBackground"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1px"
             android:background="@color/standard_color_white">
 
           <TextView
@@ -127,7 +135,7 @@
           android:layout_height="wrap_content"
           android:layout_alignBottom="@+id/user_operate_layout"
           android:layout_alignTop="@+id/user_operate_layout"
-          android:background="#80000000"
+          android:background="@mipmap/bg_user_center"
           android:visibility="gone">
 
         <TextView
@@ -136,14 +144,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/shape_corner_yellow"
+            android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
             android:gravity="center"
             android:paddingBottom="8dp"
             android:paddingLeft="58dp"
             android:paddingRight="58dp"
             android:paddingTop="8dp"
             android:text="登录"
-            android:textColor="@color/standard_color_h0_dark"
+            android:textColor="@color/standard_color_h1_dark"
             android:textSize="14sp"/>
 
       </RelativeLayout>

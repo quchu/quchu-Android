@@ -52,7 +52,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="5dp"
-      android:background="@drawable/shape_corner_yellow"
+      android:background="@drawable/bg_rectangle_wireframe_yellow_fill"
       android:gravity="center"
       android:paddingBottom="3dp"
       android:paddingLeft="12dp"

@@ -186,8 +186,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Use
     ZhugeSDK.getInstance().track(getActivity(), "用户登录", jsonObject);
 
     AppUtil.resignUser(getActivity());
-    startActivity(new Intent(getActivity(), RecommendActivity.class).putExtra(
-        RecommendActivity.REQUEST_KEY_FROM_LOGIN, true));
+    startActivity(new Intent(getActivity(), RecommendActivity.class));
     EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
   }
 
