@@ -108,6 +108,25 @@ public class FeedbackModel implements Serializable{
         private String type;
         private String createDate;
 
+        private String userName;
+        private boolean isHideUserInfo;
+
+        public boolean isHideUserInfo() {
+            return isHideUserInfo;
+        }
+
+        public void setHideUserInfo(boolean hideUserInfo) {
+            isHideUserInfo = hideUserInfo;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
         public String getContent() {
             return content;
         }

@@ -35,7 +35,7 @@ public class DrawerItemView extends LinearLayout {
       typedArray.recycle();
 
       if (!TextUtils.isEmpty(text)) {
-          mDrawerTitleTv.setText(text);
+        mDrawerTitleTv.setText(text);
       }
 
       if (imageResId != -1) {
@@ -46,12 +46,7 @@ public class DrawerItemView extends LinearLayout {
 
   public void showRedDot(int msgCount) {
     if (mUnReadMassageView != null) {
-      mUnReadMassageView.setVisibility(VISIBLE);
-      if (msgCount < 99) {
-        mUnReadMassageView.setText(String.valueOf(msgCount));
-      } else {
-        mUnReadMassageView.setText(99 + "+");
-      }
+      mUnReadMassageView.setVisibility(msgCount > 0 ? VISIBLE : INVISIBLE);
     }
   }
 

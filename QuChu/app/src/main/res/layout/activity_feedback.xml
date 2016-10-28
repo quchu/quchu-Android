@@ -11,6 +11,7 @@
       android:id="@+id/feedback_swipeRefreshLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:layout_above="@+id/feedback_input_view"
       android:layout_below="@+id/appbar"
       android:visibility="visible">
 
@@ -23,15 +24,11 @@
 
   </android.support.v4.widget.SwipeRefreshLayout>
 
-  <android.support.design.widget.FloatingActionButton
-      android:id="@+id/submit_feedback_btn"
-      android:layout_width="60dp"
-      android:layout_height="60dp"
-      android:layout_alignParentBottom="true"
-      android:layout_alignParentRight="true"
-      android:layout_marginBottom="49dp"
-      android:layout_marginRight="20dp"
-      android:src="@mipmap/ic_baocuo"
-      app:backgroundTint="@color/standard_color_yellow"/>
+  <include
+      android:id="@+id/feedback_input_view"
+      layout="@layout/view_common_input"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

@@ -1,12 +1,14 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.text.TextUtils;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -19,11 +21,10 @@ import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.dialog.FeedbackDialog;
 import co.quchu.quchu.model.FeedbackModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.FeedbackPresenter;
-import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.adapter.FeedbackAdapter;
 
 /**
@@ -35,19 +36,20 @@ import co.quchu.quchu.view.adapter.FeedbackAdapter;
 public class FeedbackActivity extends BaseBehaviorActivity {
 
   private FeedbackAdapter adapter;
-  private FeedbackDialog feedbackDialog;
 
   @Bind(R.id.feedback_recycler_view) RecyclerView recyclerView;
   @Bind(R.id.feedback_swipeRefreshLayout) SwipeRefreshLayout refreshLayout;
-  @Bind(R.id.submit_feedback_btn) FloatingActionButton submitFeedbackBtn;
+  @Bind(R.id.inputEditText) EditText mInputEditText;
+  @Bind(R.id.submitBtn) TextView mSubmitBtn;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_feedback);
     ButterKnife.bind(this);
     EnhancedToolbar toolbar = getEnhancedToolbar();
     TextView textView = toolbar.getTitleTv();
-    textView.setText("Felix");
+    textView.setText("意见和帮助");
 
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     adapter = new FeedbackAdapter(this);
@@ -63,13 +65,15 @@ public class FeedbackActivity extends BaseBehaviorActivity {
    */
   private void getFeedbackList() {
     FeedbackPresenter.getFeedbackList(this, new CommonListener<List<FeedbackModel>>() {
-      @Override public void successListener(List<FeedbackModel> response) {
+      @Override
+      public void successListener(List<FeedbackModel> response) {
         adapter.initData(response);
         adapter.setLoadMoreEnable(false);
         refreshLayout.setRefreshing(false);
       }
 
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
         makeToast(R.string.network_error);
         adapter.setLoadMoreEnable(false);
         refreshLayout.setRefreshing(false);
@@ -82,7 +86,8 @@ public class FeedbackActivity extends BaseBehaviorActivity {
    */
   private FeedbackAdapter.OnFeedbackItemClickListener onItemClickListener =
       new FeedbackAdapter.OnFeedbackItemClickListener() {
-        @Override public void onItemClick(FeedbackModel feedbackModel) {
+        @Override
+        public void onItemClick(FeedbackModel feedbackModel) {
           FeedbackDetailActivity.launch(FeedbackActivity.this, feedbackModel);
         }
       };
@@ -92,7 +97,8 @@ public class FeedbackActivity extends BaseBehaviorActivity {
    */
   private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
       new SwipeRefreshLayout.OnRefreshListener() {
-        @Override public void onRefresh() {
+        @Override
+        public void onRefresh() {
           getFeedbackList();
         }
       };
@@ -101,48 +107,71 @@ public class FeedbackActivity extends BaseBehaviorActivity {
    * 提交反馈
    */
   private void submitFeedbackClick() {
-    feedbackDialog = new FeedbackDialog(this, new FeedbackDialog.DialogConfirmListener() {
-      @Override public void confirm(String title, String content) {
-        FeedbackPresenter.sendFeedback(FeedbackActivity.this, title, content, new CommonListener() {
-          @Override public void successListener(Object response) {
-            SPUtils.setFeedback("", "");
-            feedbackDialog.dismiss();
+    String inputStr = mInputEditText.getText().toString().trim();
+    if (TextUtils.isEmpty(inputStr)) {
+      makeToast("请输入您的宝贵意见");
+      return;
+    }
 
-            makeToast("感谢您对我们的支持");
+    if (!NetUtil.isNetworkConnected(this)) {
+      makeToast(R.string.network_error);
+      return;
+    }
 
-            getFeedbackList();
-          }
+    inputStr = mInputEditText.getText().toString();
 
-          @Override public void errorListener(VolleyError error, String exception, String msg) {
-            makeToast(R.string.network_error);
-          }
-        });
+    FeedbackPresenter.sendFeedback(this, "", inputStr, new CommonListener() {
+      @Override
+      public void successListener(Object response) {
+        makeToast("感谢您对我们的支持");
+        mInputEditText.setText("");
+        hideSoftware(mInputEditText);
+        getFeedbackList();
+      }
+
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
+        makeToast(R.string.network_error);
       }
     });
-    feedbackDialog.show();
   }
 
-  @Override public ArrayMap<String, Object> getUserBehaviorArguments() {
+  /**
+   * 隐藏键盘
+   */
+  private void hideSoftware(EditText editText) {
+    InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+    if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+      if (getCurrentFocus() != null)
+        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+    //InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+    //manager
+    //    .hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+  }
+
+  @Override
+  public ArrayMap<String, Object> getUserBehaviorArguments() {
     return null;
   }
 
-  @Override public int getUserBehaviorPageId() {
+  @Override
+  public int getUserBehaviorPageId() {
     return 127;
   }
 
-  @Override protected String getPageNameCN() {
-    return "Felix";
+  @Override
+  protected String getPageNameCN() {
+    return "意见和帮助";
   }
 
-  @Override protected int activitySetup() {
+  @Override
+  protected int activitySetup() {
     return TRANSITION_TYPE_LEFT;
   }
 
-  @OnClick(R.id.submit_feedback_btn) public void onClick(View view) {
-    switch (view.getId()) {
-      case R.id.submit_feedback_btn:
-        submitFeedbackClick();
-        break;
-    }
+  @OnClick(R.id.submitBtn)
+  public void onClick() {
+    submitFeedbackClick();
   }
 }

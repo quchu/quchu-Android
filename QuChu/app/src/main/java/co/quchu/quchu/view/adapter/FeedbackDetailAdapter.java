@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -40,27 +41,51 @@ public class FeedbackDetailAdapter
     FeedbackModel.MsgListBean msgListBean = data.get(position);
     if (msgListBean.getType().equals("0")) {
       //自己发出的消息
-      holder.createTimeTv.setText(msgListBean.getCreateDate());
       holder.contentTv.setText(msgListBean.getContent());
-      holder.contentTv.setBackgroundResource(R.drawable.rc_ic_bubble_right);
-      holder.leftAvatarImg.setVisibility(View.INVISIBLE);
-      holder.rightAvatarImg.setVisibility(View.VISIBLE);
-      if (TextUtils.isEmpty(mIAvatar)) {
-        holder.rightAvatarImg.setImageURI("");
+      holder.contentTv.setBackgroundResource(R.drawable.shape_feedback_bubble_right);
+
+      if (msgListBean.isHideUserInfo()) {
+        holder.createTimeTv.setVisibility(View.GONE);
+        holder.userInfoLayout.setVisibility(View.GONE);
       } else {
-        holder.rightAvatarImg.setImageURI(mIAvatar);
+        holder.createTimeTv.setVisibility(View.VISIBLE);
+        holder.createTimeTv.setText(msgListBean.getCreateDate());
+
+        holder.userInfoLayout.setVisibility(View.VISIBLE);
+        holder.leftUserNameTv.setVisibility(View.INVISIBLE);
+        holder.rightUserNameTv.setVisibility(View.VISIBLE);
+        holder.rightUserNameTv.setText(msgListBean.getUserName());
+        holder.leftAvatarImg.setVisibility(View.INVISIBLE);
+        holder.rightAvatarImg.setVisibility(View.VISIBLE);
+        if (TextUtils.isEmpty(mIAvatar)) {
+          holder.rightAvatarImg.setImageURI("");
+        } else {
+          holder.rightAvatarImg.setImageURI(mIAvatar);
+        }
       }
 
     } else {
-      holder.createTimeTv.setText(msgListBean.getCreateDate());
       holder.contentTv.setText(msgListBean.getContent());
-      holder.contentTv.setBackgroundResource(R.drawable.rc_ic_bubble_left);
-      holder.rightAvatarImg.setVisibility(View.INVISIBLE);
-      holder.leftAvatarImg.setVisibility(View.VISIBLE);
-      if (TextUtils.isEmpty(mYAvatar)) {
-        holder.leftAvatarImg.setImageURI("");
+      holder.contentTv.setBackgroundResource(R.drawable.shape_feedback_bubble_left);
+
+      if (msgListBean.isHideUserInfo()) {
+        holder.createTimeTv.setVisibility(View.GONE);
+        holder.userInfoLayout.setVisibility(View.GONE);
       } else {
-        holder.leftAvatarImg.setImageURI(mIAvatar);
+        holder.createTimeTv.setVisibility(View.VISIBLE);
+        holder.createTimeTv.setText(msgListBean.getCreateDate());
+
+        holder.userInfoLayout.setVisibility(View.VISIBLE);
+        holder.leftUserNameTv.setVisibility(View.VISIBLE);
+        holder.rightUserNameTv.setVisibility(View.INVISIBLE);
+        holder.leftUserNameTv.setText(msgListBean.getUserName());
+        holder.rightAvatarImg.setVisibility(View.INVISIBLE);
+        holder.leftAvatarImg.setVisibility(View.VISIBLE);
+        if (TextUtils.isEmpty(mYAvatar)) {
+          holder.leftAvatarImg.setImageURI("");
+        } else {
+          holder.leftAvatarImg.setImageURI(mYAvatar);
+        }
       }
     }
   }
@@ -78,14 +103,13 @@ public class FeedbackDetailAdapter
 
   public class FeedbackDetailViewHolder extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.feedback_content_tv)
-    TextView contentTv;
-    @Bind(R.id.feedback_left_avatar_img)
-    SimpleDraweeView leftAvatarImg;
-    @Bind(R.id.feedback_right_avatar_img)
-    SimpleDraweeView rightAvatarImg;
-    @Bind(R.id.feedback_item_create_time_tv)
-    TextView createTimeTv;
+    @Bind(R.id.feedback_item_create_time_tv) TextView createTimeTv;
+    @Bind(R.id.feedback_left_avatar_img) SimpleDraweeView leftAvatarImg;
+    @Bind(R.id.feedback_left_user_name_tv) TextView leftUserNameTv;
+    @Bind(R.id.feedback_right_avatar_img) SimpleDraweeView rightAvatarImg;
+    @Bind(R.id.feedback_right_user_name_tv) TextView rightUserNameTv;
+    @Bind(R.id.feedback_user_info_layout) RelativeLayout userInfoLayout;
+    @Bind(R.id.feedback_content_tv) TextView contentTv;
 
     public FeedbackDetailViewHolder(View itemView) {
       super(itemView);

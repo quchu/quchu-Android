@@ -138,8 +138,9 @@ public class MeActivity extends BaseBehaviorActivity {
 //            new IMPresenter().getToken(MeActivity.this, null);
 
             confirmDialog.dismiss();
+            startActivity(RecommendActivity.class);
             EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
-            finish();
+//            finish();
           }
 
           @Override

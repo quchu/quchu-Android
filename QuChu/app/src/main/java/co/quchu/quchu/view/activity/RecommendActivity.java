@@ -157,7 +157,16 @@ public class RecommendActivity extends BaseBehaviorActivity {
   protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
 
+    //登录和退出登录,开启 RecommendActivity 会进入这里,做相关操作
+
     LogUtils.e("RecommendActivity", "onNewIntent");
+
+    if (mDrawerHeaderView != null) {
+      mDrawerHeaderView.setUser();
+      mDrawerHeaderView.getUserInfo();
+    }
+
+    getUnreadMessage();
 
   }
 
@@ -494,21 +503,21 @@ public class RecommendActivity extends BaseBehaviorActivity {
         recommendTitleLocationIv.setText(SPUtils.getCityName());
         break;
 
-      case EventFlags.EVENT_USER_LOGIN_SUCCESS:
-        //登录成功更新用户信息
-        if (mDrawerHeaderView != null) {
-          mDrawerHeaderView.setUser();
-          mDrawerHeaderView.getUserInfo();
-        }
-        break;
-
-      case EventFlags.EVENT_USER_LOGOUT:
-        //退出登录更新用户信息
-        if (mDrawerHeaderView != null) {
-          mDrawerHeaderView.setUser();
-          mDrawerHeaderView.getUserInfo();
-        }
-        break;
+//      case EventFlags.EVENT_USER_LOGIN_SUCCESS:
+//        //登录成功更新用户信息
+//        if (mDrawerHeaderView != null) {
+//          mDrawerHeaderView.setUser();
+//          mDrawerHeaderView.getUserInfo();
+//        }
+//        break;
+//
+//      case EventFlags.EVENT_USER_LOGOUT:
+//        //退出登录更新用户信息
+//        if (mDrawerHeaderView != null) {
+//          mDrawerHeaderView.setUser();
+//          mDrawerHeaderView.getUserInfo();
+//        }
+//        break;
 
       case EventFlags.EVENT_APPLICATION_CHECK_UPDATE:
         if (!checkUpdateRunning) {

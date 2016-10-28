@@ -242,7 +242,7 @@ public class LoginByPhoneFragment extends Fragment
         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
         getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
         EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
-        getActivity().finish();
+//        getActivity().finish();
         errorView.hideView();
       }
 

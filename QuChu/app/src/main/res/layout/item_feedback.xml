@@ -62,11 +62,14 @@
           android:textSize="12sp"
           android:visibility="visible"/>
 
-      <RelativeLayout
+      <LinearLayout
+          android:id="@+id/feedback_item_chat_layout"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_alignParentRight="true"
-          android:layout_centerVertical="true">
+          android:layout_centerVertical="true"
+          android:orientation="horizontal"
+          android:padding="5dp">
 
         <TextView
             android:id="@+id/feedback_item_chat_tv"
@@ -76,7 +79,17 @@
             android:textColor="@color/standard_color_h2_dark"
             android:textSize="12sp"/>
 
-      </RelativeLayout>
+        <TextView
+            android:id="@+id/feedback_item_unread_tv"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/drawerTitleTv"
+            android:background="@drawable/shape_round_red"
+            android:textColor="@color/standard_color_white"
+            android:visibility="invisible"/>
+
+      </LinearLayout>
 
     </RelativeLayout>
 

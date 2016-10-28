@@ -52,8 +52,13 @@ public class DrawerHeaderView extends LinearLayout {
       return;
     }
 
+    if (!AppContext.user.isIsVisitors()) {
+      mDrawerHeaderNameTv.setText(AppContext.user.getFullname());
+    } else {
+      mDrawerHeaderNameTv.setText("未知生物");
+    }
+
     mDrawerHeaderAvatarImg.setImageURI(AppContext.user.getPhoto());
-    mDrawerHeaderNameTv.setText(AppContext.user.getFullname());
     mDrawerHeaderGenderImg.setImageURI(Uri.parse(
         "res:///" + (AppContext.user.getGender().equals("男") ? R.mipmap.ic_male
             : R.mipmap.ic_female)));

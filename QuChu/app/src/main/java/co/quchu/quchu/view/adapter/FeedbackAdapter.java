@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -51,11 +52,11 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
         }
 
         //和pm聊天
-        holder.chatTv.setTag(feedbackModel);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.chatLayout.setTag(feedbackModel);
+        holder.chatLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FeedbackModel feedbackModel = (FeedbackModel) holder.chatTv.getTag();
+                FeedbackModel feedbackModel = (FeedbackModel) holder.chatLayout.getTag();
                 if (feedbackModel != null && listener != null) {
                     listener.onItemClick(feedbackModel);
                 }
@@ -80,6 +81,10 @@ public class FeedbackAdapter extends AdapterBase<FeedbackModel, RecyclerView.Vie
         TextView settleTv;
         @Bind(R.id.feedback_item_chat_tv)
         TextView chatTv;
+        @Bind(R.id.feedback_item_unread_tv)
+        TextView unReadTv;
+        @Bind(R.id.feedback_item_chat_layout)
+        LinearLayout chatLayout;
 
         public FeedbackViewHolder(View itemView) {
             super(itemView);
