@@ -249,6 +249,8 @@
     <string name="pname_f_subscribe">关注**</string>
     <string name="pname_invite_user">邀请用户</string>
     <string name="pname_comment_list">评价列表</string>
+    <string name="pname_main_activity">首页</string>
+
 
     <string name="no_update_available">当前版本已是最新！</string>
     <string name="pre_order_not_supported">暂不支持预定</string>

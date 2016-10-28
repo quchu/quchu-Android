@@ -10,13 +10,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -68,25 +73,16 @@ import co.quchu.quchu.widget.DrawerItemView;
  */
 public class RecommendActivity extends BaseBehaviorActivity {
 
-  @Bind(R.id.recommend_title_location_tv) TextView recommendTitleLocationIv;
 
-  @Bind(R.id.recommend_title_more_iv) ImageView recommendTitleMoreRl;
 
-  @Bind(R.id.recommend_title_location_rl) View vLeft;
+  @Bind(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.appbar) AppBarLayout appbar;
+  @Bind(R.id.llShit) LinearLayout llShit;
+  @Bind(R.id.etShit) View etShit;
+  @Bind(R.id.ivShit) View ivShit;
 
-  @Bind(R.id.container) FrameLayout flContainer;
-  @Bind(R.id.ivArrow) ImageView ivArrow;
-
-  @Bind(R.id.rgTab) RadioGroup rbBottomTab;
-  @Bind(R.id.title) View vTitle;
-
-  @Bind(R.id.tvTitle) TextView tvTitle;
-
-  @Bind(R.id.ivLeft) View ivLeft;
-  @Bind(R.id.tvRight) TextView tvRight;
-
-  @Bind(R.id.rbMine) RadioButton mRbMine;
-  @Bind(R.id.unReadMassage) TextView mUnReadMassageView;
+  @Bind(R.id.tvCity) TextView tvCity;
+  @Bind(R.id.rv) RecyclerView rv;
   @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
 
   @Bind(R.id.drawerHeaderView) DrawerHeaderView mDrawerHeaderView;
@@ -96,14 +92,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.drawerItemFeedback) DrawerItemView mDrawerItemFeedback;
   @Bind(R.id.drawerItemSetting) DrawerItemView mDrawerItemSetting;
 
-  public long firstTime = 0;
-  private ArrayList<CityModel> list = new ArrayList<>();
-  public int viewPagerIndex = 0;
-  private RecommendFragment recommendFragment;
-
-  boolean checkUpdateRunning = false;
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
+  private int scrollRange = 0;
+  public long firstTime = 0;
+  boolean checkUpdateRunning = false;
+  private ArrayList<CityModel> list = new ArrayList<>();
+
 
   @Override
   protected String getPageNameCN() {
@@ -126,19 +121,49 @@ public class RecommendActivity extends BaseBehaviorActivity {
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
 
-    recommendTitleLocationIv.setText(SPUtils.getCityName());
-    recommendFragment = new RecommendFragment();
 
-    getSupportFragmentManager().beginTransaction()
-        .add(R.id.container, recommendFragment, "page_1")
-        .commitAllowingStateLoss();
+    if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
+      accessPushMessage();
+    }
 
     initDrawerView();
 
     getUnreadMessage();
 
-    VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
+    checkForceUpdate();
 
+    tvCity.setText(SPUtils.getCityName());
+
+
+    rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+    List<String> data = new ArrayList<>();
+    for (int i = 0; i < 50; i++) {
+      data.add(String.valueOf(i));
+    }
+    SimpleAdapter adapter = new SimpleAdapter(data, getApplicationContext());
+    rv.setAdapter(adapter);
+    appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+      @Override public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+        if (verticalOffset>=0){
+          return;
+        }
+        System.out.println("ooc "+ verticalOffset +" | "+ appbar.getTotalScrollRange());
+
+        scrollRange = Math.abs(verticalOffset);
+        float offset = Math.abs(verticalOffset);
+
+        float progress = offset/appbar.getTotalScrollRange();
+        llShit.setAlpha(1-progress);
+        etShit.setTranslationY(ivShit.getHeight() * (1-progress));
+        etShit.setTranslationX(ivShit.getWidth() * (progress));
+
+      }
+    });
+  }
+
+  private void checkForceUpdate() {
+    VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
     RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
       @Override
       public void hasCityList(ArrayList<CityModel> pList) {
@@ -148,9 +173,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
       }
     });
 
-    if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
-      accessPushMessage();
-    }
   }
 
   @Override
@@ -321,11 +343,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
     //            eventId  : 根据类别，打开应用相应页面的ID  type: 01 为文章ID  02:场景ID  03：文章ID
     switch (bean.getType()) {
       case "01":
-        rbBottomTab.check(R.id.rbDiscovery);
+        //rbBottomTab.check(R.id.rbDiscovery);
         ArticleDetailActivity.enterActivity(this, bean.getEventId(), bean.getTitle(), "场景");
         break;
       case "03":
-        rbBottomTab.check(R.id.rbDiscovery);
+        //rbBottomTab.check(R.id.rbDiscovery);
         break;
     }
   }
@@ -366,9 +388,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
                   if (finalInList) {
                     SPUtils.setCityId(finalCityIdInList);
                     SPUtils.setCityName(finalCurrentLocation);
-                    recommendTitleLocationIv.setText(SPUtils.getCityName());
+                    tvCity.setText(SPUtils.getCityName());
                   } else {
-                    findViewById(R.id.recommend_title_location_rl).performClick();
+                    tvCity.performClick();
                   }
                 }
               })
@@ -384,56 +406,64 @@ public class RecommendActivity extends BaseBehaviorActivity {
   }
 
   @OnClick({
-      R.id.recommend_title_location_rl, R.id.tvRight, R.id.ivLeft, R.id.recommend_title_more_iv
+      R.id.tvCity
   })
-  public void titleClick(View view) {
-    if (KeyboardUtils.isFastDoubleClick()) return;
-
-    switch (view.getId()) {
-
-      case R.id.ivLeft:
-        if (mDrawer != null) {
-          mDrawer.openDrawer(GravityCompat.START);
-        }
-        break;
-
-      case R.id.recommend_title_more_iv:
-        startActivity(SearchActivityNew.class);
-        break;
-
-      case R.id.tvRight:
-        UserInfoModel user = AppContext.user;
-        if (user.isIsVisitors()) {
-          //游客
-          startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
-        } else {
-          UMEvent("profile_c");
-          startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
-        }
-        break;
-
-      case R.id.recommend_title_location_rl:
+  public void onClick(View view){
+    switch (view.getId()){
+      case R.id.tvCity:
         UMEvent("location_c");
-        if (NetUtil.isNetworkConnected(getApplicationContext())) {
-          if (list != null) {
-            selectedCity();
-          } else {
-            RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-              @Override
-              public void hasCityList(ArrayList<CityModel> list) {
-                RecommendActivity.this.list = list;
-                if (RecommendActivity.this.list != null) {
+              if (NetUtil.isNetworkConnected(getApplicationContext())) {
+                if (list != null) {
                   selectedCity();
+                } else {
+                  RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+                    @Override
+                    public void hasCityList(ArrayList<CityModel> list) {
+                      RecommendActivity.this.list = list;
+                      if (RecommendActivity.this.list != null) {
+                        selectedCity();
+                      }
+                    }
+                  });
                 }
+              } else {
+                Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
               }
-            });
-          }
-        } else {
-          Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
-        }
         break;
     }
   }
+
+  //@OnClick({
+  //    R.id.recommend_title_location_rl, R.id.tvRight, R.id.ivLeft, R.id.recommend_title_more_iv
+  //})
+  //public void titleClick(View view) {
+  //  if (KeyboardUtils.isFastDoubleClick()) return;
+  //
+  //  switch (view.getId()) {
+  //
+  //    case R.id.ivLeft:
+  //      if (mDrawer != null) {
+  //        mDrawer.openDrawer(GravityCompat.START);
+  //      }
+  //      break;
+  //
+  //    case R.id.recommend_title_more_iv:
+  //      startActivity(SearchActivityNew.class);
+  //      break;
+  //
+  //    case R.id.tvRight:
+  //      UserInfoModel user = AppContext.user;
+  //      if (user.isIsVisitors()) {
+  //        //游客
+  //        startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
+  //      } else {
+  //        UMEvent("profile_c");
+  //        startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
+  //      }
+  //      break;
+  //
+  //  }
+  //}
 
   /**
    * 切换城市
@@ -485,7 +515,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
         ArrayMap<String, Object> arrayMap = new ArrayMap<>();
         arrayMap.put("城市名称", SPUtils.getCityName());
         ZGEvent(arrayMap, "选择城市");
-        recommendTitleLocationIv.setText(SPUtils.getCityName());
+        tvCity.setText(SPUtils.getCityName());
         break;
 
 //      case EventFlags.EVENT_USER_LOGIN_SUCCESS:

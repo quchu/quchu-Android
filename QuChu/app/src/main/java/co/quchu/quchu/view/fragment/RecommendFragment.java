@@ -274,18 +274,7 @@ public class RecommendFragment extends BaseFragment
                 vpMyScene.setVisibility(View.GONE);
               }
             }).start();
-            //                        tvPageIndicator.animate()
-            //                                .alpha(0)
-            //                                .translationY(tvPageIndicator.getHeight())
-            //                                .setInterpolator(new AccelerateDecelerateInterpolator())
-            //                                .setDuration(ANIMATION_DURATION)
-            //                                .withEndAction(new Runnable() {
-            //                                    @Override
-            //                                    public void run() {
-            //                                        tvPageIndicator.setVisibility(View.GONE);
-            //                                    }
-            //                                })
-            //                                .start();
+
             llPageIndicator.setVisibility(View.GONE);
             resetIndicators();
             break;
