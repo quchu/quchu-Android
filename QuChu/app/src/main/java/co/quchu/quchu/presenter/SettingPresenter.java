@@ -29,7 +29,7 @@ public class SettingPresenter {
   public static String SETTING_TYPE_DAHUO = "3";
 
   /**
-   * @param type      0 '是否推荐趣处', 1 '是否推荐文章', 2 '是否推荐趣星人', 3 '是否开启搭伙'
+   * @param type      0 '是否推荐趣处', 1 '是否推荐文章', 2 '是否推荐趣星人', 3 '是否开启搭伙', 4 "消息推送"
    * @param isChecked false - 0 不推荐; true - 1 推荐
    */
   public static void setUserMsg(final Context context, final String type, final boolean isChecked) {

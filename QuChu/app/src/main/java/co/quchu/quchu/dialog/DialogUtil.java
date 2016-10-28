@@ -64,6 +64,27 @@ public class DialogUtil {
         }
     }
 
+    public static void showProgess(Context activity, String msg, boolean isCancelable) {
+        if (activity != null) {
+
+            if (loadingDialog!=null && loadingDialog.isShowing()){
+                loadingDialog.setContent(msg);
+            }else{
+                loadingDialog = new MaterialDialog.Builder(activity)
+                    .content(msg)
+                    .progress(true, 0)
+                    .cancelable(isCancelable)
+                    .canceledOnTouchOutside(isCancelable)
+                    .show();
+            }
+
+            if(!((Activity) activity).isFinishing()) {
+                loadingDialog.show();
+            }
+
+        }
+    }
+
     public static void dismissProgessDirectly() {
         if (loadingDialog != null && loadingDialog.isShowing()) {
             try{

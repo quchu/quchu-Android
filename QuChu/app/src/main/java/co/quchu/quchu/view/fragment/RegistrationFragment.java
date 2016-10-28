@@ -18,12 +18,14 @@ import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
 import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 
 import static co.quchu.quchu.base.AppContext.user;
@@ -209,5 +211,10 @@ public class RegistrationFragment extends Fragment implements TextWatcher, View.
   @Override
   public void onFocusChange(View v, boolean hasFocus) {
     updateButtonStatus();
+  }
+
+  @OnClick(R.id.backgroundLayout)
+  public void onClick() {
+    ((LoginActivity) getActivity()).hideSoftware();
   }
 }

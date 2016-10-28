@@ -21,23 +21,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseActivity;
-import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.net.NetUtil;
-import co.quchu.quchu.im.IMPresenter;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.thirdhelp.UserLoginListener;
-import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.widget.ErrorView;
 
@@ -226,10 +225,11 @@ public class LoginByPhoneFragment extends Fragment
       Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
       return;
     }
-    errorView.showLoading();
+
+    DialogUtil.showProgess(getActivity(), "正在登录", false);
 
     //退出已经登录的融云账号
-    new IMPresenter().logout();
+//    new IMPresenter().logout();
 
     UserLoginPresenter.userLogin(getActivity(), userName, password, new UserLoginListener() {
       @Override
@@ -237,13 +237,12 @@ public class LoginByPhoneFragment extends Fragment
         LogUtils.e("LoginByPhoneFragment", "login success");
 
         //连接融云服务
-        new IMPresenter().getToken(getActivity(), null);
+//        new IMPresenter().getToken(getActivity(), null);
 
         SPUtils.putLoginType(SPUtils.LOGIN_TYPE_PHONE);
+        DialogUtil.dismissProgess();
+
         getActivity().startActivity(new Intent(getActivity(), RecommendActivity.class));
-        EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGIN_SUCCESS));
-//        getActivity().finish();
-        errorView.hideView();
       }
 
       @Override
@@ -256,28 +255,14 @@ public class LoginByPhoneFragment extends Fragment
             if (object.has("msg") && !object.isNull("msg")) {
               tvLoginViaPhone.setText(object.get("msg").toString());
               tvLoginViaPhone.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
-              //tvForgetPassword.setVisibility(View.GONE);
-              //tvForgetPassword.setOnClickListener(new View.OnClickListener() {
-              //  @Override public void onClick(View v) {
-              //    Fragment f = new PhoneValidationFragment();
-              //    Bundle bundle = new Bundle();
-              //    bundle.putBoolean(PhoneValidationFragment.BUNDLE_KEY_REGISTRATION, false);
-              //    bundle.putString(PhoneValidationFragment.BUNDLE_KEY_PHONE_NUMBER,
-              //        etUsername.getText().toString());
-              //    f.setArguments(bundle);
-              //    getFragmentManager().beginTransaction().replace(R.id.flContent, f)
-              //        .addToBackStack(TAG).commitAllowingStateLoss();
-              //    getFragmentManager().executePendingTransactions();
-              //    ((BaseActivity) getActivity()).getEnhancedToolbar().show();
-              //  }
-              //});
             }
             //TODO
           } catch (JSONException e) {
             e.printStackTrace();
           }
         }
-        errorView.hideView();
+
+        DialogUtil.dismissProgess();
       }
     });
   }
@@ -304,5 +289,10 @@ public class LoginByPhoneFragment extends Fragment
   @Override
   public void onFocusChange(View v, boolean hasFocus) {
     updateButtonStatus();
+  }
+
+  @OnClick(R.id.backgroundLayout)
+  public void onClick() {
+    ((LoginActivity)getActivity()).hideSoftware();
   }
 }

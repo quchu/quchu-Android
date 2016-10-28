@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import butterknife.Bind;
@@ -24,10 +23,9 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
-import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.AppKey;
-import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 
 /**
@@ -119,6 +117,8 @@ public class MeActivity extends BaseBehaviorActivity {
     confirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
       @Override
       public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+        DialogUtil.showProgess(MeActivity.this, "正在退出登录", false);
+
         SPUtils.clearUserinfo(AppContext.mContext);
         AppContext.user = null;
         SPUtils.clearSpMap(MeActivity.this, AppKey.LOGIN_TYPE);
@@ -138,14 +138,14 @@ public class MeActivity extends BaseBehaviorActivity {
 //            new IMPresenter().getToken(MeActivity.this, null);
 
             confirmDialog.dismiss();
+            DialogUtil.dismissProgess();
+
             startActivity(RecommendActivity.class);
-            EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_USER_LOGOUT));
-//            finish();
           }
 
           @Override
           public void notUnique(String msg) {
-
+            DialogUtil.dismissProgess();
           }
         });
       }

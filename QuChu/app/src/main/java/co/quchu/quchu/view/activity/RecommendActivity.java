@@ -182,19 +182,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     mDrawerHeaderView.setUser();
     mDrawerHeaderView.getUserInfo();
-    mDrawerHeaderView.setOnDrawerAvatarClickListener(new DrawerHeaderView.OnDrawerAvatarClickListener() {
-      @Override
-      public void onAvatarClick() {
-        mDrawer.closeDrawer(GravityCompat.START);
-
-        new Handler().postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            startActivity(MeActivity.class);
-          }
-        }, 200);
-      }
-    });
 
     mDrawerItemFavorite.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -247,13 +234,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
             break;
 
           case R.id.drawerItemUserCenter://个人中心
-            if (AppContext.user == null) {
-              return;
+            if (AppContext.user != null && !AppContext.user.isIsVisitors()) {
+              startActivity(MeActivity.class);
+            } else {
+              startActivity(LoginActivity.class);
             }
-
-            Intent intent = new Intent(RecommendActivity.this, UserCenterActivityNew.class);
-            intent.putExtra(UserCenterActivityNew.REQUEST_KEY_USER_ID, AppContext.user.getUserId());
-            startActivity(intent);
             break;
 
           case R.id.drawerItemMessage://消息

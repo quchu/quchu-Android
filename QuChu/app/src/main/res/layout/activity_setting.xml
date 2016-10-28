@@ -38,8 +38,16 @@
       android:id="@+id/setting_item_dahuo"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:visibility="gone"
       app:stShowSwitchBtn="true"
       app:stText="搭伙功能"/>
+
+  <co.quchu.quchu.widget.SettingItemView
+      android:id="@+id/setting_item_message"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:stShowSwitchBtn="true"
+      app:stText="消息推送"/>
 
   <View style="@style/HorizontalDivider"/>
 

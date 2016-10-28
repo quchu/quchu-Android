@@ -34,6 +34,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.UserLoginPresenter;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.VCodeTimeService;
+import co.quchu.quchu.view.activity.LoginActivity;
 import co.quchu.quchu.widget.ErrorView;
 
 /**
@@ -456,6 +457,10 @@ public class PhoneValidationFragment extends Fragment {
             tvNext.setBackgroundColor(getResources().getColor(R.color.standard_color_red));
           }
         }
+        break;
+
+      case R.id.backgroundLayout:
+        ((LoginActivity)getActivity()).hideSoftware();
         break;
     }
   }

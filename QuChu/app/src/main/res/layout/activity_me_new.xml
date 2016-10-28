@@ -24,12 +24,18 @@
           android:layout_height="wrap_content"
           android:paddingBottom="30dp"/>
 
+      <View
+          android:id="@+id/me_horizontal_divider"
+          android:layout_width="match_parent"
+          android:layout_height="7dp"
+          android:layout_below="@+id/me_fragment_container"
+          android:background="@color/colorBackground"/>
+
       <LinearLayout
           android:id="@+id/user_operate_layout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_below="@+id/me_fragment_container"
-          android:layout_marginTop="7dp"
+          android:layout_below="@+id/me_horizontal_divider"
           android:orientation="vertical"
           android:visibility="invisible">
 

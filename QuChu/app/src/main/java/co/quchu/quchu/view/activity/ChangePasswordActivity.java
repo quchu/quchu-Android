@@ -8,6 +8,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -53,9 +55,24 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
     mEtNewPassword.addTextChangedListener(this);
   }
 
-  @OnClick(R.id.tvSubmit)
-  public void onClick() {
-    String newPassword =  mEtNewPassword.getText().toString().trim();
+  @OnClick({R.id.tvSubmit, R.id.userBackgroundLayout})
+  public void onClick(View view) {
+    switch (view.getId()) {
+      case R.id.tvSubmit:
+        submitClick();
+        break;
+
+      case R.id.userBackgroundLayout:
+        hideSoftware();
+        break;
+    }
+  }
+
+  /**
+   * 提交
+   */
+  private void submitClick() {
+    String newPassword = mEtNewPassword.getText().toString().trim();
     String originPassword = mEtOldPassword.getText().toString().trim();
 
     if (TextUtils.isEmpty(originPassword)) {
@@ -105,6 +122,20 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
     request.start(this);
   }
 
+  /**
+   * 隐藏键盘
+   */
+  private void hideSoftware() {
+    InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+    if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+      if (getCurrentFocus() != null)
+        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+    //InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+    //manager
+    //    .hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+  }
+
   @Override
   public void onFocusChange(View v, boolean hasFocus) {
     updateButtonStatus();
@@ -126,7 +157,7 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
   }
 
   public void updateButtonStatus() {
-    String newPassword =  mEtNewPassword.getText().toString().trim();
+    String newPassword = mEtNewPassword.getText().toString().trim();
     String originPassword = mEtOldPassword.getText().toString().trim();
 
     if (TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(originPassword)) {
@@ -158,4 +189,5 @@ public class ChangePasswordActivity extends BaseBehaviorActivity implements View
   protected String getPageNameCN() {
     return null;
   }
+
 }
