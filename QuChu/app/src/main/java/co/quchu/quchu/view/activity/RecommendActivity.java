@@ -55,7 +55,6 @@ import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UpdateInfoModel;
-import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
@@ -144,47 +143,52 @@ public class RecommendActivity extends BaseBehaviorActivity {
     AIConversationAdapter adapter = new AIConversationAdapter(data);
     rv.setAdapter(adapter);
     appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-      @Override public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+      @Override
+      public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
-        if (verticalOffset>=0){
+        if (verticalOffset >= 0) {
           return;
         }
 
         scrollRange = Math.abs(verticalOffset);
         float offset = Math.abs(verticalOffset);
 
-        float progress = offset/appbar.getTotalScrollRange();
-        llShit.setAlpha(1-progress);
-        etShit.setTranslationY(ivShit.getHeight() * (1-progress));
+        float progress = offset / appbar.getTotalScrollRange();
+        llShit.setAlpha(1 - progress);
+        etShit.setTranslationY(ivShit.getHeight() * (1 - progress));
         etShit.setTranslationX(ivShit.getWidth() * (progress));
 
       }
     });
 
-    Toast.makeText(RecommendActivity.this,"RecommendActivity",Toast.LENGTH_SHORT).show();
+    Toast.makeText(RecommendActivity.this, "RecommendActivity", Toast.LENGTH_SHORT).show();
     getQuestion(true);
   }
 
-  private void getQuestion(boolean startor){
+  private void getQuestion(boolean startor) {
     AIConversationPresenter.getAIQuestion(getApplicationContext(), startor, new CommonListener<AIConversationQuestionModel>() {
-      @Override public void successListener(AIConversationQuestionModel response) {
+      @Override
+      public void successListener(AIConversationQuestionModel response) {
 
-        getAnswer(response.getAnswer(),response.getFlash());
+        getAnswer(response.getAnswer(), response.getFlash());
       }
 
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
         System.out.println("error");
       }
     });
   }
 
-  private void getAnswer(String question ,String flash){
+  private void getAnswer(String question, String flash) {
     AIConversationPresenter.getAIAnswer(getApplicationContext(), question, flash, new CommonListener<AIConversationAnswerModel>() {
-      @Override public void successListener(AIConversationAnswerModel response) {
+      @Override
+      public void successListener(AIConversationAnswerModel response) {
         getQuestion(false);
       }
 
-      @Override public void errorListener(VolleyError error, String exception, String msg) {
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
         System.out.println("error");
       }
     });
@@ -435,30 +439,29 @@ public class RecommendActivity extends BaseBehaviorActivity {
   }
 
   @OnClick({R.id.tvCity})
-  public void onClick(View view){
-    switch (view.getId()){
+  public void onClick(View view) {
+    switch (view.getId()) {
       case R.id.tvCity:
-        UMEvent("location_c");
-              if (NetUtil.isNetworkConnected(getApplicationContext())) {
-                if (list != null) {
-                  selectedCity();
-                } else {
-                  RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-                    @Override
-                    public void hasCityList(ArrayList<CityModel> list) {
-                      RecommendActivity.this.list = list;
-                      if (RecommendActivity.this.list != null) {
-                        selectedCity();
-                      }
-                    }
-                  });
-                }
-              } else {
-                Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
-              }
+        startActivity(SearchActivityNew.class);
+//        UMEvent("location_c");
+//        if (NetUtil.isNetworkConnected(getApplicationContext())) {
+//          if (list != null) {
+//            selectedCity();
+//          } else {
+//            RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+//              @Override
+//              public void hasCityList(ArrayList<CityModel> list) {
+//                RecommendActivity.this.list = list;
+//                if (RecommendActivity.this.list != null) {
+//                  selectedCity();
+//                }
+//              }
+//            });
+//          }
+//        } else {
+//          Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
+//        }
         break;
-
-
     }
   }
 

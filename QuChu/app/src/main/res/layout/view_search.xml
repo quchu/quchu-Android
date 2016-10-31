@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/standard_color_white"
+              android:background="@color/standard_color_yellow"
               android:orientation="vertical">
 
   <LinearLayout
@@ -23,7 +23,7 @@
         android:layout_height="36dp"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:background="@color/bg_pager"
+        android:background="@drawable/shape_search_view"
         android:orientation="horizontal">
 
       <ImageView
@@ -39,10 +39,11 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_gravity="center_vertical"
+          android:layout_marginRight="5dp"
           android:background="@null"
           android:focusable="true"
           android:focusableInTouchMode="true"
-          android:hint="搜索您感兴趣的吃、喝、玩、乐"
+          android:hint="搜索您喜欢的吃喝玩乐"
           android:imeOptions="actionSearch"
           android:singleLine="true"
           android:textColor="@color/standard_color_h2_dark"
@@ -63,7 +64,5 @@
         android:textSize="@dimen/word_subhead_size"/>
 
   </LinearLayout>
-
-  <View style="@style/HorizontalDivider"/>
 
 </LinearLayout>

@@ -26,7 +26,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
-import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.ArticleKeyword;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.model.SearchKeywordModel;
@@ -36,7 +35,6 @@ import co.quchu.quchu.presenter.SearchHistoryPresenter;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
-import co.quchu.quchu.widget.ErrorView;
 import co.quchu.quchu.widget.ReboundRecyclerView;
 import co.quchu.quchu.widget.SearchView;
 import co.quchu.quchu.widget.TagCloudView;
@@ -50,7 +48,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
 
   @Bind(R.id.search_view) SearchView mSearchView;
   @Bind(R.id.tag_cloud_view) TagCloudView mTagCloudView;
-  @Bind(R.id.errorView) ErrorView mErrorView;
   @Bind(R.id.history_recycler_view) RecyclerView mHistoryRv;
   @Bind(R.id.search_category_recycler_view) ReboundRecyclerView mCategoryRv;
 
@@ -259,16 +256,9 @@ public class SearchActivityNew extends BaseBehaviorActivity {
    * 获取历史记录
    */
   private void queryHistory() {
-    List<SearchKeywordModel> searchKeywordModels = SearchHistoryPresenter.getHistoryKeywords(this);
+    List<SearchKeywordModel> searchHistoryList = SearchHistoryPresenter.getHistoryKeywords(this);
 
-//    SearchKeywordModel keywordModel = new SearchKeywordModel();
-//    keywordModel.setKeyword("阿萨德后就开始发货快结了婚的高科技哈看");
-//
-//    keywordModelList.add(keywordModel);
-//    keywordModelList.add(keywordModel);
-//    keywordModelList.add(keywordModel);
-
-    mSearchAdapter.setHistoryList(searchKeywordModels);
+    mSearchAdapter.setHistoryList(searchHistoryList);
   }
 
   /**
@@ -279,18 +269,10 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       @Override
       public void successListener(ArrayList<SearchCategoryBean> response) {
         mSearchAdapter.setCategoryList(response);
-        mErrorView.hideView();
       }
 
       @Override
       public void errorListener(VolleyError error, String exception, String msg) {
-        mErrorView.showViewDefault(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            DialogUtil.showProgess(SearchActivityNew.this, "加载中");
-            querySearchCategory();
-          }
-        });
       }
     });
   }
@@ -303,16 +285,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     for (ArticleKeyword keyword : articleKeywords) {
       tags.add(keyword.getKeyword());
     }
-//    tags.add("厦门");
-//    tags.add("厦门观音山");
-//    tags.add("软件园");
-//    tags.add("厦门观音山趣处科技");
-//    tags.add("趣处 App");
-//    tags.add("厦门");
-//    tags.add("厦门观音山");
-//    tags.add("软件园");
-//    tags.add("厦门观音山趣处科技");
-//    tags.add("趣处 App");
     mTagCloudView.setTags(tags);
     mTagCloudView.setOnTagClickListener(new TagCloudView.OnTagClickListener() {
       @Override
