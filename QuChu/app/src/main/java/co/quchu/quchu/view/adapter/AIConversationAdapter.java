@@ -54,10 +54,10 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     switch (getItemViewType(position)){
       case TYPE_QUESTION:
-        ((QuestionViewHolder)holder).tvQuestion.setText(String.valueOf(position));
+        ((QuestionViewHolder)holder).tvQuestion.setText(String.valueOf("Test Question Shit Number "+position) + (position %2==0?String.valueOf("Test Question Shit Number "+position):"") + (position %5==0?String.valueOf("Test Question Shit Number "+position):""));
         break;
       case TYPE_ANSWER:
-        ((AnswerViewHolder)holder).tvAnswer.setText(String.valueOf(position));
+        ((AnswerViewHolder)holder).tvAnswer.setText(String.valueOf("Test Answer Shit Number "+position)+(position %5==0?String.valueOf("Test Question Shit Number "+position):""));
         break;
     }
 

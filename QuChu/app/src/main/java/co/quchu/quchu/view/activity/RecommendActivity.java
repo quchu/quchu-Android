@@ -49,14 +49,11 @@ import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.im.IMPresenter;
-import co.quchu.quchu.model.AIConversationAnswerModel;
-import co.quchu.quchu.model.AIConversationQuestionModel;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UpdateInfoModel;
 import co.quchu.quchu.net.NetUtil;
-import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
@@ -134,7 +131,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     List<QAModel> data = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
+    data.add(new AIConversationQuestionModel());
+
+    for (int i = 0; i < 20; i++) {
       if (i%3==0){
         data.add(new AIConversationAnswerModel());
       }else{
