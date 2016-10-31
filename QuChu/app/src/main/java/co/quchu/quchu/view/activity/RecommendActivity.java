@@ -152,7 +152,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
       }
     });
 
-//    Toast.makeText(RecommendActivity.this,"RecommendActivity",Toast.LENGTH_SHORT).show();
+    Toast.makeText(RecommendActivity.this,"RecommendActivity",Toast.LENGTH_SHORT).show();
     getQuestion(true);
   }
 
@@ -425,9 +425,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     return TRANSITION_TYPE_NOTHING;
   }
 
-  @OnClick({
-      R.id.tvCity
-  })
+  @OnClick({R.id.tvCity})
   public void onClick(View view){
     switch (view.getId()){
       case R.id.tvCity:
@@ -450,8 +448,42 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
               }
         break;
+
+
     }
   }
+
+  //@OnClick({
+  //    R.id.recommend_title_location_rl, R.id.tvRight, R.id.ivLeft, R.id.recommend_title_more_iv
+  //})
+  //public void titleClick(View view) {
+  //  if (KeyboardUtils.isFastDoubleClick()) return;
+  //
+  //  switch (view.getId()) {
+  //
+  //    case R.id.ivLeft:
+  //      if (mDrawer != null) {
+  //        mDrawer.openDrawer(GravityCompat.START);
+  //      }
+  //      break;
+  //
+  //    case R.id.recommend_title_more_iv:
+  //      startActivity(SearchActivityNew.class);
+  //      break;
+  //
+  //    case R.id.tvRight:
+  //      UserInfoModel user = AppContext.user;
+  //      if (user.isIsVisitors()) {
+  //        //游客
+  //        startActivity(new Intent(RecommendActivity.this, LoginActivity.class));
+  //      } else {
+  //        UMEvent("profile_c");
+  //        startActivity(new Intent(RecommendActivity.this, AccountSettingActivity.class));
+  //      }
+  //      break;
+  //
+  //  }
+  //}
 
   /**
    * 切换城市
