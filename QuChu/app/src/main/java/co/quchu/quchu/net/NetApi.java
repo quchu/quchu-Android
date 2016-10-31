@@ -247,4 +247,15 @@ public interface NetApi {
    * 获取文章关键字
    */
   String getNetArticleKeyword = HOST + "/personal/getNetArticleKeyword";
+
+  /**
+   * 获取智能助手问题
+   */
+  String getAIQuestion = HOST + "/ai/accordGetAi";
+
+  /**
+   * 获取智能助手回答
+   */
+  String getAIAnswer = HOST + "/ai/passivityGetAi";
+
 }

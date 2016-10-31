@@ -27,10 +27,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import co.quchu.quchu.model.AIConversationAnswerModel;
+import co.quchu.quchu.model.AIConversationQuestionModel;
+import co.quchu.quchu.presenter.AIConversationPresenter;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
 
+import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -137,7 +141,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
     rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     List<String> data = new ArrayList<>();
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 10; i++) {
       data.add(String.valueOf(i));
     }
     SimpleAdapter adapter = new SimpleAdapter(data, getApplicationContext());
@@ -148,7 +152,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
         if (verticalOffset>=0){
           return;
         }
-        System.out.println("ooc "+ verticalOffset +" | "+ appbar.getTotalScrollRange());
 
         scrollRange = Math.abs(verticalOffset);
         float offset = Math.abs(verticalOffset);
@@ -160,7 +163,36 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
       }
     });
+
+    Toast.makeText(RecommendActivity.this,"RecommendActivity",Toast.LENGTH_SHORT).show();
+    getQuestion(true);
   }
+
+  private void getQuestion(boolean startor){
+    AIConversationPresenter.getAIQuestion(getApplicationContext(), startor, new CommonListener<AIConversationQuestionModel>() {
+      @Override public void successListener(AIConversationQuestionModel response) {
+
+        getAnswer(response.getAnswer(),response.getFlash());
+      }
+
+      @Override public void errorListener(VolleyError error, String exception, String msg) {
+        System.out.println("error");
+      }
+    });
+  }
+
+  private void getAnswer(String question ,String flash){
+    AIConversationPresenter.getAIAnswer(getApplicationContext(), question, flash, new CommonListener<AIConversationAnswerModel>() {
+      @Override public void successListener(AIConversationAnswerModel response) {
+        getQuestion(false);
+      }
+
+      @Override public void errorListener(VolleyError error, String exception, String msg) {
+        System.out.println("error");
+      }
+    });
+  }
+
 
   private void checkForceUpdate() {
     VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
