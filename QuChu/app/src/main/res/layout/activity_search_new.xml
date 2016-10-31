@@ -17,33 +17,32 @@
       android:layout_height="wrap_content"
       android:layout_below="@+id/search_view"
       app:tcvBackground="@drawable/shape_lineframe_search_tag"
-      app:tcvBorder="8dp"
-      app:tcvItemBorderHorizontal="5dp"
-      app:tcvItemBorderVertical="5dp"
+      app:tcvBorder="10dp"
+      app:tcvItemBorderHorizontal="10dp"
+      app:tcvItemBorderVertical="10dp"
+      app:tcvMultiLine="4"
+      app:tcvTagResId="@layout/item_search_tag"
       app:tcvTextColor="@color/standard_color_white"
-      app:tcvTextSize="5dp"/>
+      app:tcvTextSize="6dp"/>
 
   <ImageView
+      android:id="@+id/search_ic_logo"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@+id/tag_cloud_view"
       android:layout_centerHorizontal="true"
-      android:src="@mipmap/ic_xiaoq"/>
+      android:layout_marginTop="15dp"
+      android:src="@mipmap/ic_logo"/>
 
   <co.quchu.quchu.widget.ReboundRecyclerView
       android:id="@+id/search_category_recycler_view"
       android:layout_width="match_parent"
-      android:layout_height="400dp"
+      android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      android:layout_marginTop="@dimen/title_bar_height"
+      android:layout_alignTop="@+id/search_ic_logo"
+      android:layout_marginTop="30dp"
       android:background="@color/standard_color_white"
       android:padding="@dimen/double_margin"/>
-
-  <co.quchu.quchu.widget.ErrorView
-      android:id="@+id/errorView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:visibility="gone"/>
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/history_recycler_view"

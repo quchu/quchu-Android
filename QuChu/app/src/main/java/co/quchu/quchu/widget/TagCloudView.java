@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.HashMap;
 import java.util.List;
 
 import co.quchu.quchu.R;
@@ -43,6 +42,7 @@ public class TagCloudView extends ViewGroup {
     private int mTagResId;
     private boolean mSingleLine;
     private boolean mCanTagClick;
+    private int mMultiLine;//指定行数
 
 
     private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
@@ -91,6 +91,8 @@ public class TagCloudView extends ViewGroup {
         mCanTagClick = a.getBoolean(R.styleable.TagCloudView_tcvCanTagClick, DEFAULT_CAN_TAG_CLICK);
 
         mSingleLine = a.getBoolean(R.styleable.TagCloudView_tcvSingleLine, DEFAULT_SINGLE_LINE);
+
+        mMultiLine = a.getInteger(R.styleable.TagCloudView_tcvMultiLine, -1);
 
         mTagResId = a.getResourceId(R.styleable.TagCloudView_tcvTagResId, DEFAULT_TAG_RESID);
 
@@ -206,6 +208,7 @@ public class TagCloudView extends ViewGroup {
     private int getMultiTotalHeight(int totalWidth, int totalHeight) {
         int childWidth;
         int childHeight;
+
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             childWidth = child.getMeasuredWidth();
@@ -216,6 +219,7 @@ public class TagCloudView extends ViewGroup {
             if (i == 0) {
                 totalHeight = childHeight + mViewBorder;
             }
+
             // + marginLeft 保证最右侧与 ViewGroup 右边距有边界
             if (totalWidth + mTagBorderHor + mViewBorder > sizeWidth) {
                 totalWidth = mViewBorder;
@@ -234,6 +238,12 @@ public class TagCloudView extends ViewGroup {
                         totalHeight);
             }
         }
+
+        //指定行数的高
+        if (mMultiLine != -1 && getChildCount() > 0) {
+            return mMultiLine * (getChildAt(0).getMeasuredHeight() + mTagBorderVer) + mViewBorder;
+        }
+
         return totalHeight + mViewBorder;
     }
 

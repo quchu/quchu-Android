@@ -191,6 +191,7 @@
     <attr name="tcvItemBorderHorizontal" format="dimension"/>
 
     <attr name="tcvSingleLine" format="boolean"/>
+    <attr name="tcvMultiLine" format="integer"/>
     <attr name="tcvShowEndText" format="boolean"/>
     <attr name="tcvShowRightImg" format="boolean"/>
     <attr name="tcvEndText" format="string"/>
