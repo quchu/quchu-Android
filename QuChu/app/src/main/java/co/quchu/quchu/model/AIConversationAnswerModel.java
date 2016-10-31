@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Nico on 16/10/31.
  */
 
-public class AIConversationAnswerModel {
+public class AIConversationAnswerModel extends QAModel{
 
   /**
    * flash : null

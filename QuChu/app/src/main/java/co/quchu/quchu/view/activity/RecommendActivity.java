@@ -29,7 +29,9 @@ import android.widget.Toast;
 
 import co.quchu.quchu.model.AIConversationAnswerModel;
 import co.quchu.quchu.model.AIConversationQuestionModel;
+import co.quchu.quchu.model.QAModel;
 import co.quchu.quchu.presenter.AIConversationPresenter;
+import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -140,11 +142,15 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
 
     rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-    List<String> data = new ArrayList<>();
+    List<QAModel> data = new ArrayList<>();
     for (int i = 0; i < 10; i++) {
-      data.add(String.valueOf(i));
+      if (i%3==0){
+        data.add(new AIConversationAnswerModel());
+      }else{
+        data.add(new AIConversationQuestionModel());
+      }
     }
-    SimpleAdapter adapter = new SimpleAdapter(data, getApplicationContext());
+    AIConversationAdapter adapter = new AIConversationAdapter(data);
     rv.setAdapter(adapter);
     appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
       @Override public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
