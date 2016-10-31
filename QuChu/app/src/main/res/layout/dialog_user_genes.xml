@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_width="300dp"
+              android:layout_height="450dp"
+              android:layout_gravity="center"
               android:gravity="center"
-              android:orientation="vertical"
-              android:paddingBottom="60dp"
-              android:paddingLeft="15dp"
-              android:paddingRight="15dp"
-              android:paddingTop="60dp">
+              android:orientation="vertical">
 
   <RelativeLayout
       android:layout_width="match_parent"
@@ -45,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="25dp"
             android:text="小食神"
             android:textColor="@color/standard_color_h0_dark"
             android:textSize="16sp"/>

@@ -133,4 +133,25 @@ public class FeedbackPresenter {
     });
     request.start(context);
   }
+
+  /**
+   * 删除反馈
+   */
+  public static void deleteFeedback(Context context, String feedbackId, final CommonListener listener) {
+    Map<String, String> map = new HashMap<>();
+    map.put("feedbackId", feedbackId);
+
+    GsonRequest<Object> request = new GsonRequest<Object>(NetApi.deleteFeedback, Object.class, map, new ResponseListener<Object>() {
+      @Override
+      public void onErrorResponse(@Nullable VolleyError error) {
+        listener.errorListener(error, "", "");
+      }
+
+      @Override
+      public void onResponse(Object response, boolean result, String errorCode, @Nullable String msg) {
+        listener.successListener(response);
+      }
+    });
+    request.start(context);
+  }
 }

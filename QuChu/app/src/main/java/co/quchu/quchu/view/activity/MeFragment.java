@@ -66,7 +66,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
   //    TextView findPosition;
   @Bind(R.id.editOrLoginTV) TextView editOrLogin;
   @Bind(R.id.editIcon) ImageView editIcon;
-  @Bind(R.id.unReadMassage) TextView unReadMassage;
+  @Bind(R.id.unReadMessage) TextView unReadMessageView;
   @Bind(R.id.editOrLoginAction) RelativeLayout editOrLoginAction;
 
   @Bind(R.id.tv1) TextView tv1;
@@ -370,8 +370,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     }
   }
 
-  public void notReadMassage(int cound) {
-    unReadMassage.setText(String.valueOf(cound));
-    unReadMassage.setVisibility(View.VISIBLE);
+  public void notReadMessage(int cound) {
+    unReadMessageView.setText(String.valueOf(cound));
+    unReadMessageView.setVisibility(View.VISIBLE);
   }
 }

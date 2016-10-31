@@ -3,25 +3,22 @@
 
   <item android:state_enabled="false">
     <shape android:shape="rectangle">
-      <corners android:bottomLeftRadius="0dp" android:bottomRightRadius="5dp"
-               android:topLeftRadius="0dp" android:topRightRadius="0dp"/>
-      <solid android:color="#efefef"/>
+      <corners android:radius="5dp"/>
+      <solid android:color="@color/transparent"/>
     </shape>
   </item>
 
   <item android:state_enabled="true">
     <shape android:shape="rectangle">
-      <corners android:bottomLeftRadius="0dp" android:bottomRightRadius="5dp"
-               android:topLeftRadius="0dp" android:topRightRadius="0dp"/>
-      <solid android:color="@color/colorPrimary"/>
+      <corners android:radius="5dp"/>
+      <solid android:color="@color/standard_color_yellow_label"/>
     </shape>
   </item>
 
   <item>
     <shape android:shape="rectangle">
-      <corners android:bottomLeftRadius="0dp" android:bottomRightRadius="5dp"
-               android:topLeftRadius="0dp" android:topRightRadius="0dp"/>
-      <solid android:color="#efefef"/>
+      <corners android:radius="5dp"/>
+      <solid android:color="@color/transparent"/>
     </shape>
   </item>
 

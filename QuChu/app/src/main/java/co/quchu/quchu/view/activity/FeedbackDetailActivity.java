@@ -8,7 +8,9 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -78,7 +80,30 @@ public class FeedbackDetailActivity extends BaseBehaviorActivity
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     mAdapter = new FeedbackDetailAdapter(this);
     recyclerView.setAdapter(mAdapter);
+
+    mInputEditText.addTextChangedListener(textChangedListener);
   }
+
+  private TextWatcher textChangedListener = new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+      if (s.toString().trim().length() > 0) {
+        mSubmitBtn.setEnabled(true);
+      } else {
+        mSubmitBtn.setEnabled(false);
+      }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+  };
 
   /**
    * 获取反馈详情

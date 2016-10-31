@@ -74,7 +74,6 @@ public class DialogUtil {
                     .content(msg)
                     .progress(true, 0)
                     .cancelable(isCancelable)
-                    .canceledOnTouchOutside(isCancelable)
                     .show();
             }
 

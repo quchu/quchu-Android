@@ -494,7 +494,7 @@
                         android:textSize="@dimen/standard_text_size_h4" />
 
                     <TextView
-                        android:id="@+id/unReadMassage"
+                        android:id="@+id/unReadMessage"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_centerInParent="true"

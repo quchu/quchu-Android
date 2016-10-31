@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/standard_color_h3_dark"
         android:textSize="12sp"
-        tools:text="Simple String"/>
+        tools:text="2016-10-29"/>
 
     <TextView
         android:id="@+id/feedback_item_title_tv"
@@ -29,6 +29,7 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/standard_color_h1_dark"
         android:textSize="14sp"
+        android:visibility="gone"
         tools:text="Simple String"/>
 
     <TextView
@@ -38,13 +39,13 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/standard_color_h1_dark"
         android:textSize="14sp"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:text="Simple StringSimple StringSimple StringSimple StringSimple StringSimple StringSimple String"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
 
       <TextView
@@ -69,7 +70,8 @@
           android:layout_alignParentRight="true"
           android:layout_centerVertical="true"
           android:orientation="horizontal"
-          android:padding="5dp">
+          android:padding="5dp"
+          android:visibility="gone">
 
         <TextView
             android:id="@+id/feedback_item_chat_tv"
