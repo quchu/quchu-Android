@@ -15,15 +15,19 @@
       android:layout_marginTop="15dp"
       android:text="智能助手设置"
       android:textColor="@color/standard_color_h3_dark"
-      android:textSize="13sp"/>
+      android:textSize="13sp"
+      android:visibility="gone"/>
 
   <co.quchu.quchu.widget.SettingItemView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:visibility="gone"
       app:stShowSwitchBtn="false"
       app:stText="Patricia 设置"/>
 
-  <View style="@style/HorizontalDivider"/>
+  <View
+      style="@style/HorizontalDivider"
+      android:visibility="gone"/>
 
   <TextView
       android:layout_width="wrap_content"

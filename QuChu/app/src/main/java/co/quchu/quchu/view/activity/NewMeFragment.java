@@ -54,8 +54,8 @@ public class NewMeFragment extends BaseFragment {
   LinearLayout friendLayout;
   @Bind(R.id.quchu_layout)
   LinearLayout quchuLayout;
-  @Bind(R.id.unReadMassage)
-  TextView unReadMassageView;
+  @Bind(R.id.unReadMessage)
+  TextView unReadMessageView;
   @Bind(R.id.massage_layout)
   RelativeLayout massageLayout;
   @Bind(R.id.feedback_layout)
@@ -162,7 +162,7 @@ public class NewMeFragment extends BaseFragment {
    * 显示我的红点
    */
   private void showUnreadView() {
-    if (unReadMassageView == null) {
+    if (unReadMessageView == null) {
       return;
     }
 

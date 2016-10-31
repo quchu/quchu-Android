@@ -19,10 +19,11 @@ public class FeedbackModel implements Serializable{
      */
 
     private int feedbackId;
-    private String state;
+    private String state; // 0-未解决;1-已解决;2-有回复
     private String title;
     private String value;
     private String createDate;
+    private int feedmsgCount;
     /**
      * yphone : http://7xodsq.com1.z0.glb.clouddn.com/69-app-default-avatar
      * iphone : http://7xo7f0.com1.z0.glb.clouddn.com/app-default-avatar-46
@@ -38,6 +39,14 @@ public class FeedbackModel implements Serializable{
      */
 
     private List<MsgListBean> msgList;
+
+    public int getFeedmsgCount() {
+        return feedmsgCount;
+    }
+
+    public void setFeedmsgCount(int feedmsgCount) {
+        this.feedmsgCount = feedmsgCount;
+    }
 
     public int getFeedbackId() {
         return feedbackId;

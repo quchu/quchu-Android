@@ -150,7 +150,7 @@ public interface NetApi {
   String bindPassword = HOST + "/personal/bindSalt";
   String quchu_topic_h5 = HOST + "/searchSpecial/getSearchSpecialListByTagId?tagId=%d&cityId=%d";
 
-  String notReadMassage = HOST + "/personal/getNotReadMsgCount";//未读消息数
+  String notReadMessage = HOST + "/personal/getNotReadMsgCount";//未读消息数
   String deletePlace = HOST + "/operate/delPlaceTemp?placeTempId=%d";//删除我发现的趣处
   String footpritDetail = HOST + "/place/getCardById";//脚印详情
   /**
@@ -199,37 +199,42 @@ public interface NetApi {
   String setUserMsg = HOST + "/userMsSet/msgSet";
 
   /**
-   * 用户反馈信息列表
+   * 9.3 用户反馈信息列表
    */
   String getFeedbackList = HOST + "/feedback/getFeedbackList";
 
   /**
-   * 提交用户反馈
+   * 9.4 提交用户反馈
    */
   String sendFeedback = HOST + "/feedback/sendFeedback";
 
   /**
-   * 用户反馈详情列表
+   * 9.5 用户反馈详情列表
    */
   String getFeedMsgList = HOST + "/feedback/getFeedMsgList";
 
   /**
-   * 用户反馈详情发送反馈
+   * 3.20 删除反馈
+   */
+  String deleteFeedback = HOST + "/feedback/delFeedBack";
+
+  /**
+   * 9.6 用户反馈详情发送反馈
    */
   String sendFeedMsg = HOST + "/feedback/sendFeedMsg";
 
   /**
-   * 申请融云im token
+   * 9.7 申请融云im token
    */
   String getRongYunToken = HOST + "/userMsSet/appRongYunToken";
 
   /**
-   * im举报接口
+   * 9.8 im举报接口
    */
   String sendImReport = HOST + "/im/report";
 
   /**
-   * 屏蔽
+   * 9.9 屏蔽
    */
   String shieldUrl = HOST + "/im/shield";
 

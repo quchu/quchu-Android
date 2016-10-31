@@ -20,7 +20,7 @@ public class DrawerItemView extends LinearLayout {
 
   @Bind(R.id.drawerItemImg) ImageView mDrawerItemImg;
   @Bind(R.id.drawerTitleTv) TextView mDrawerTitleTv;
-  @Bind(R.id.unReadMassageView) TextView mUnReadMassageView;
+  @Bind(R.id.unReadMessageView) TextView mUnReadMessageView;
 
   public DrawerItemView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -45,18 +45,18 @@ public class DrawerItemView extends LinearLayout {
   }
 
   public void showRedDot(int msgCount) {
-    if (mUnReadMassageView != null) {
-      mUnReadMassageView.setVisibility(msgCount > 0 ? VISIBLE : INVISIBLE);
+    if (mUnReadMessageView != null) {
+      mUnReadMessageView.setVisibility(msgCount > 0 ? VISIBLE : INVISIBLE);
     }
   }
 
   public void hideRedDot() {
-    if (mUnReadMassageView != null) {
-      mUnReadMassageView.setVisibility(INVISIBLE);
+    if (mUnReadMessageView != null) {
+      mUnReadMessageView.setVisibility(INVISIBLE);
     }
   }
 
   public int getRedDotVisibility() {
-    return mUnReadMassageView.getVisibility();
+    return mUnReadMessageView.getVisibility();
   }
 }

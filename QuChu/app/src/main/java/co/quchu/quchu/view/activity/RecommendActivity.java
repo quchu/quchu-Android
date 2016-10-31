@@ -19,11 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,11 +32,11 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
 
-import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,21 +49,21 @@ import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.im.IMPresenter;
+import co.quchu.quchu.model.AIConversationAnswerModel;
+import co.quchu.quchu.model.AIConversationQuestionModel;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UpdateInfoModel;
-import co.quchu.quchu.model.UserInfoModel;
 import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
 import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
-import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
-import co.quchu.quchu.view.fragment.RecommendFragment;
 import co.quchu.quchu.widget.DrawerHeaderView;
 import co.quchu.quchu.widget.DrawerItemView;
 
@@ -78,8 +74,6 @@ import co.quchu.quchu.widget.DrawerItemView;
  * 趣处分类、推荐
  */
 public class RecommendActivity extends BaseBehaviorActivity {
-
-
 
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.appbar) AppBarLayout appbar;
@@ -98,13 +92,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.drawerItemFeedback) DrawerItemView mDrawerItemFeedback;
   @Bind(R.id.drawerItemSetting) DrawerItemView mDrawerItemSetting;
 
-
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
   private int scrollRange = 0;
   public long firstTime = 0;
   boolean checkUpdateRunning = false;
   private ArrayList<CityModel> list = new ArrayList<>();
-
 
   @Override
   protected String getPageNameCN() {
@@ -139,7 +131,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
     checkForceUpdate();
 
     tvCity.setText(SPUtils.getCityName());
-
 
     rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     List<QAModel> data = new ArrayList<>();
@@ -333,9 +324,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
    * 获取未读消息
    */
   private void getUnreadMessage() {
-    new MeActivityPresenter(this).getUnreadMassageCound(new MeActivityPresenter.OnUnreadMassageCountListener() {
+    new MeActivityPresenter(this).getUnreadMessageCound(new MeActivityPresenter.OnUnreadMessageCountListener() {
       @Override
-      public void onUnreadMassageCount(int msgCount, int feedbackMsgCount) {
+      public void onUnreadMessageCount(int msgCount, int feedbackMsgCount) {
         showMsgUnreadView(msgCount);
 
         showFeedbackUnreadView(feedbackMsgCount);
@@ -443,9 +434,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     return TRANSITION_TYPE_NOTHING;
   }
 
-  @OnClick({
-      R.id.tvCity
-  })
+  @OnClick({R.id.tvCity})
   public void onClick(View view){
     switch (view.getId()){
       case R.id.tvCity:
@@ -468,6 +457,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
                 Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
               }
         break;
+
+
     }
   }
 

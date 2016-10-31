@@ -42,8 +42,8 @@ public class MeActivityPresenter {
         request.start(context);
     }
 
-    public void getUnreadMassageCound(final OnUnreadMassageCountListener listener) {
-        GsonRequest<String> request = new GsonRequest<>(NetApi.notReadMassage, new ResponseListener<String>() {
+    public void getUnreadMessageCound(final OnUnreadMessageCountListener listener) {
+        GsonRequest<String> request = new GsonRequest<>(NetApi.notReadMessage, new ResponseListener<String>() {
 
             @Override
             public void onErrorResponse(@Nullable VolleyError error) {
@@ -75,7 +75,7 @@ public class MeActivityPresenter {
                     }
 
                     if (listener != null) {
-                        listener.onUnreadMassageCount(msgCount, feedMsgCount);
+                        listener.onUnreadMessageCount(msgCount, feedMsgCount);
                     }
 
                 } catch (JSONException e) {
@@ -87,8 +87,8 @@ public class MeActivityPresenter {
         request.start(context);
     }
 
-    public interface OnUnreadMassageCountListener {
-        void onUnreadMassageCount(int msgCount, int feedbackMsgCount);
+    public interface OnUnreadMessageCountListener {
+        void onUnreadMessageCount(int msgCount, int feedbackMsgCount);
     }
 
 }

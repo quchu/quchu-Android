@@ -87,7 +87,7 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/unReadMassage"
+        android:id="@+id/unReadMessage"
         android:layout_width="5dp"
         android:layout_height="5dp"
         android:background="@drawable/shape_round_red"

@@ -1,16 +1,22 @@
 package co.quchu.quchu.view.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
 
 import java.util.List;
@@ -57,8 +63,31 @@ public class FeedbackActivity extends BaseBehaviorActivity {
     adapter.setOnFeedbackItemClickListener(onItemClickListener);
     refreshLayout.setOnRefreshListener(onRefreshListener);
 
+    mInputEditText.addTextChangedListener(textChangedListener);
+
     getFeedbackList();
   }
+
+  private TextWatcher textChangedListener = new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+      if (s.toString().trim().length() > 0) {
+        mSubmitBtn.setEnabled(true);
+      } else {
+        mSubmitBtn.setEnabled(false);
+      }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+  };
 
   /**
    * 获取反馈列表
@@ -87,8 +116,53 @@ public class FeedbackActivity extends BaseBehaviorActivity {
   private FeedbackAdapter.OnFeedbackItemClickListener onItemClickListener =
       new FeedbackAdapter.OnFeedbackItemClickListener() {
         @Override
-        public void onItemClick(FeedbackModel feedbackModel) {
+        public void onItemClick(FeedbackModel feedbackModel, TextView textView) {
+          textView.setVisibility(View.INVISIBLE);
           FeedbackDetailActivity.launch(FeedbackActivity.this, feedbackModel);
+        }
+
+        @Override
+        public void onItemLongClick(final FeedbackModel feedbackModel) {
+          MaterialDialog confirmDialog = null;
+          if (feedbackModel.getState().equals("2")) {
+            confirmDialog = new MaterialDialog.Builder(FeedbackActivity.this)
+                .content("当前意见有回复,删除后无法查看回复,确定要删除吗?")
+                .positiveText("是")
+                .negativeText("否")
+                .cancelable(false).build();
+
+          } else {
+            confirmDialog = new MaterialDialog.Builder(FeedbackActivity.this)
+                .content("确定删除吗?")
+                .positiveText("是")
+                .negativeText("否")
+                .cancelable(false).build();
+          }
+
+          //删除反馈
+          confirmDialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+              FeedbackPresenter.deleteFeedback(FeedbackActivity.this, String.valueOf(feedbackModel.getFeedbackId()), new CommonListener() {
+                @Override
+                public void successListener(Object response) {
+                  List<FeedbackModel> data = adapter.getData();
+                  if (data.contains(feedbackModel)) {
+                    data.remove(feedbackModel);
+                  }
+
+                  adapter.initData(data);
+                  adapter.setLoadMoreEnable(false);
+                }
+
+                @Override
+                public void errorListener(VolleyError error, String exception, String msg) {
+
+                }
+              });
+            }
+          });
+          confirmDialog.show();
         }
       };
 

@@ -54,7 +54,7 @@ public class XiaoQPresenter {
    * 获取未读消息数
    */
   public void getUnreadMsgCount(final CommonListener<Integer> listener) {
-    GsonRequest<String> request = new GsonRequest<>(NetApi.notReadMassage, new ResponseListener<String>() {
+    GsonRequest<String> request = new GsonRequest<>(NetApi.notReadMessage, new ResponseListener<String>() {
 
       @Override
       public void onErrorResponse(@Nullable VolleyError error) {

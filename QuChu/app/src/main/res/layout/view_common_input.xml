@@ -9,13 +9,14 @@
       android:background="@color/standard_color_white"
       android:orientation="horizontal"
       android:paddingBottom="@dimen/half_margin"
-      android:paddingLeft="20dp"
       android:paddingTop="@dimen/half_margin">
 
     <EditText
         android:id="@+id/inputEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/base_margin"
+        android:layout_marginRight="@dimen/half_margin"
         android:layout_weight="1"
         android:background="@drawable/shape_rectangle_grey_wireframe_white_fill"
         android:hint="请输入您的宝贵意见"
@@ -30,9 +31,13 @@
         android:id="@+id/submitBtn"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/base_margin"
+        android:background="@drawable/selector_confirm_btn"
+        android:enabled="false"
         android:gravity="center"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="@dimen/base_margin"
+        android:paddingRight="@dimen/base_margin"
         android:text="发送"
         android:textColor="@color/standard_color_h2_dark"
         android:textSize="14sp"/>

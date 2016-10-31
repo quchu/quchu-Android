@@ -86,6 +86,9 @@ public class MeAvatarFragment extends BaseFragment {
     getGenes();
 
     resetWhiteAvatar();
+
+    resetLabels();
+
     return view;
   }
 
@@ -189,8 +192,6 @@ public class MeAvatarFragment extends BaseFragment {
         headImage.setController(controller);
       }
     }, 100);
-
-    resetLabels();
   }
 
   @Override
@@ -214,8 +215,6 @@ public class MeAvatarFragment extends BaseFragment {
   public void onResume() {
     super.onResume();
 
-    resetLabels();
-
     //更换了头像
     if (AppContext.user != null && !userAvatar.equals(AppContext.user.getPhoto())) {
       userAvatar = AppContext.user.getPhoto();
@@ -234,7 +233,6 @@ public class MeAvatarFragment extends BaseFragment {
     if (userMark != null) {
       userMarkLayout.setVisibility(View.VISIBLE);
 
-
       if (null != genes) {
         int genesCounter = 0;
         for (int i = 0; i < genes.size(); i++) {
@@ -246,7 +244,6 @@ public class MeAvatarFragment extends BaseFragment {
       } else {
         userMarkTv.setText("新生宝宝");
       }
-
 
       switch (userMark) {
         case "小食神":

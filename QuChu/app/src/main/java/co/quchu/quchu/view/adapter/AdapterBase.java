@@ -153,9 +153,11 @@ public abstract class AdapterBase<DT, VH extends RecyclerView.ViewHolder> extend
                 if (getItemCount() == 1) {
                     if (getFeedback()) {
                         loadMoreHold.feedbackEmptyView.setVisibility(View.VISIBLE);
+                        loadMoreHold.retryView.setText("");
                     } else {
                         loadMoreHold.retryView.setText(getNullDataHint());
                     }
+
                 } else {
                     if (getFeedback()) {
                         loadMoreHold.feedbackEmptyView.setVisibility(View.GONE);
