@@ -281,4 +281,7 @@
     <string name="tel">电话</string>
     <string name="queue">排号</string>
 
+
+    <string name="navigation_drawer_open">打开抽屉</string>
+    <string name="navigation_drawer_close">关闭抽屉</string>
 </resources>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="title_bar_height">56dp</dimen>
 
@@ -16,6 +16,7 @@
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_10">10sp</dimen>
 
+    <dimen name="design_fab_image_size" tools:override="true">56dp</dimen>
 
     <dimen name="capsule_scene_switch">24dp</dimen>
     <dimen name="capsule_scene_switch_radius">12dp</dimen>

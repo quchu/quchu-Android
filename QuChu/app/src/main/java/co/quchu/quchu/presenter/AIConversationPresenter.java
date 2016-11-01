@@ -38,7 +38,7 @@ public class AIConversationPresenter {
     public static void getAIQuestion(Context context, boolean startor,final CommonListener<AIConversationQuestionModel> listener){
 
         HashMap<String, String> params = new HashMap<>();
-        params.put("string", startor?String.valueOf("01"):"0");
+        params.put("type", startor?String.valueOf("01"):"0");
         NetService.get(context, NetApi.getAIQuestion, params, new IRequestListener() {
             @Override public void onSuccess(JSONObject response) {
                 if (null!=response){

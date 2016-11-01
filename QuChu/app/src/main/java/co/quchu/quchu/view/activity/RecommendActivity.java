@@ -11,9 +11,12 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -75,9 +78,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.toolbar) Toolbar toolbar;
   @Bind(R.id.appbar) AppBarLayout appbar;
   @Bind(R.id.llShit) LinearLayout llShit;
-  @Bind(R.id.etShit) View etShit;
-  @Bind(R.id.ivShit) View ivShit;
-
+  @Bind(R.id.fab) FloatingActionButton fab;
   @Bind(R.id.tvCity) TextView tvCity;
   @Bind(R.id.rv) RecyclerView rv;
   @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
@@ -88,6 +89,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.drawerItemMessage) DrawerItemView mDrawerItemMessage;
   @Bind(R.id.drawerItemFeedback) DrawerItemView mDrawerItemFeedback;
   @Bind(R.id.drawerItemSetting) DrawerItemView mDrawerItemSetting;
+  @Bind(R.id.placeHolder) View placeHolder;
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
   private int scrollRange = 0;
@@ -154,14 +156,16 @@ public class RecommendActivity extends BaseBehaviorActivity {
         float offset = Math.abs(verticalOffset);
 
         float progress = offset / appbar.getTotalScrollRange();
-        llShit.setAlpha(1 - progress);
-        etShit.setTranslationY(ivShit.getHeight() * (1 - progress));
-        etShit.setTranslationX(ivShit.getWidth() * (progress));
+        System.out.println(offset+"|"+scrollRange+"|"+progress);
 
+
+        placeHolder.setAlpha(progress);
       }
     });
 
-    Toast.makeText(RecommendActivity.this, "RecommendActivity", Toast.LENGTH_SHORT).show();
+
+
+
     getQuestion(true);
   }
 
@@ -234,6 +238,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
     } else {
       mDrawer.setDrawerShadow(new ColorDrawable(Color.TRANSPARENT), GravityCompat.START);
     }
+
+    ActionBarDrawerToggle toggle =
+        new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    mDrawer.addDrawerListener(toggle);
+    toggle.syncState();
 
     mDrawerHeaderView.setUser();
     mDrawerHeaderView.getUserInfo();
