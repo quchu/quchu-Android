@@ -201,8 +201,6 @@ public class DropDownMenu extends LinearLayout {
    */
   public void closeMenu() {
     if (isShowing()) {
-//      changeTabStatus(curClickTabPosition, false);
-
       DropTabView tabView = (DropTabView) tabMenuView.getChildAt(curClickTabPosition);
       ImageView imageView = ((ImageView) tabView.getChildAt(1));
       imageView.animate().rotation(0).setDuration(250).start();
@@ -219,17 +217,21 @@ public class DropDownMenu extends LinearLayout {
    * 显示菜单
    */
   private void showMenu(int position) {
+    DropTabView tabView = (DropTabView) tabMenuView.getChildAt(position);
+    ImageView imageView = ((ImageView) tabView.getChildAt(1));
+    imageView.animate().rotation(180).setDuration(250).start();
+
     if (!isShowing()) {
-//      changeTabStatus(position, true);
-
-      DropTabView tabView = (DropTabView) tabMenuView.getChildAt(position);
-      ImageView imageView = ((ImageView) tabView.getChildAt(1));
-      imageView.animate().rotation(180).setDuration(250).start();
-
       mDropContentView.setVisibility(View.VISIBLE);
       mDropContentView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_in));
       containerView.setVisibility(VISIBLE);
       containerView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_mask_in));
+
+    } else {
+      //上一次点击的 Tab 状态还原
+      DropTabView lastTabView = (DropTabView) tabMenuView.getChildAt(curClickTabPosition);
+      ImageView lastImageView = ((ImageView) lastTabView.getChildAt(1));
+      lastImageView.animate().rotation(0).setDuration(250).start();
     }
     curClickTabPosition = position;
   }
