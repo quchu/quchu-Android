@@ -14,7 +14,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,11 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import co.quchu.quchu.model.AIConversationAnswerModel;
-import co.quchu.quchu.model.AIConversationQuestionModel;
-import co.quchu.quchu.model.QAModel;
-import co.quchu.quchu.presenter.AIConversationPresenter;
-import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -52,11 +46,15 @@ import co.quchu.quchu.base.AppLocationListener;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.GeTuiReceiver;
 import co.quchu.quchu.im.IMPresenter;
+import co.quchu.quchu.model.AIConversationAnswerModel;
+import co.quchu.quchu.model.AIConversationQuestionModel;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.PushMessageBean;
+import co.quchu.quchu.model.QAModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.UpdateInfoModel;
-
+import co.quchu.quchu.net.NetUtil;
+import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.presenter.RecommendPresenter;
@@ -64,6 +62,7 @@ import co.quchu.quchu.presenter.VersionInfoPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
+import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.widget.DrawerHeaderView;
 import co.quchu.quchu.widget.DrawerItemView;
 
@@ -89,6 +88,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.drawerItemMessage) DrawerItemView mDrawerItemMessage;
   @Bind(R.id.drawerItemFeedback) DrawerItemView mDrawerItemFeedback;
   @Bind(R.id.drawerItemSetting) DrawerItemView mDrawerItemSetting;
+  @Bind(R.id.drawerItemShareApp) DrawerItemView mDrawerItemShareApp;
   @Bind(R.id.placeHolder) View placeHolder;
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
@@ -288,6 +288,13 @@ public class RecommendActivity extends BaseBehaviorActivity {
         onDrawerItemClick(v);
       }
     });
+
+    mDrawerItemShareApp.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onDrawerItemClick(v);
+      }
+    });
   }
 
   /**
@@ -333,7 +340,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
             break;
 
           case R.id.drawerItemShareApp://分享 App
-            makeToast("share");
+            startActivity(SearchActivityNew.class);
             break;
         }
       }
@@ -458,25 +465,24 @@ public class RecommendActivity extends BaseBehaviorActivity {
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.tvCity:
-        startActivity(SearchActivityNew.class);
-//        UMEvent("location_c");
-//        if (NetUtil.isNetworkConnected(getApplicationContext())) {
-//          if (list != null) {
-//            selectedCity();
-//          } else {
-//            RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
-//              @Override
-//              public void hasCityList(ArrayList<CityModel> list) {
-//                RecommendActivity.this.list = list;
-//                if (RecommendActivity.this.list != null) {
-//                  selectedCity();
-//                }
-//              }
-//            });
-//          }
-//        } else {
-//          Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
-//        }
+        UMEvent("location_c");
+        if (NetUtil.isNetworkConnected(getApplicationContext())) {
+          if (list != null) {
+            selectedCity();
+          } else {
+            RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {
+              @Override
+              public void hasCityList(ArrayList<CityModel> list) {
+                RecommendActivity.this.list = list;
+                if (RecommendActivity.this.list != null) {
+                  selectedCity();
+                }
+              }
+            });
+          }
+        } else {
+          Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT).show();
+        }
         break;
     }
   }

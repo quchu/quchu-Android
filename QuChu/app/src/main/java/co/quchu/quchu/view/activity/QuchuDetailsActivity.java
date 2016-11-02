@@ -13,15 +13,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import co.quchu.quchu.model.ImageModel;
-import co.quchu.quchu.utils.ScreenUtils;
 import com.android.volley.VolleyError;
 
-import io.rong.imlib.common.DeviceUtils;
-import java.util.ArrayList;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,6 +29,7 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.model.ImageModel;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.model.VisitedInfoModel;
 import co.quchu.quchu.model.VisitedUsersModel;
@@ -40,6 +38,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.InterestingDetailPresenter;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.KeyboardUtils;
+import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
 import co.quchu.quchu.widget.ErrorView;
@@ -405,7 +404,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
       case EventFlags.EVENT_CANCLE_FAVORITE_QUCHU:
         break;
       case EventFlags.EVENT_GOTO_HOME_PAGE:
-        finish();
+        startActivity(RecommendActivity.class);
         break;
     }
   }
