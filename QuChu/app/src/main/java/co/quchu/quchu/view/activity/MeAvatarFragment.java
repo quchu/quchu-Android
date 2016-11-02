@@ -143,7 +143,7 @@ public class MeAvatarFragment extends BaseFragment {
           bm[i] = BitmapFactory.decodeResource(getResources(), mBitmapSet[i]);
         }
 
-        polygonProgressView.initial(genes.size(), values, labels, bm);
+        polygonProgressView.initial(genes.size(), values, labels);
         polygonProgressView.animateProgress();
 
         final long before = System.currentTimeMillis();

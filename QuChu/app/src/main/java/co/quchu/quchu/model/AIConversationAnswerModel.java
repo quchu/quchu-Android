@@ -15,16 +15,16 @@ public class AIConversationAnswerModel extends QAModel{
    * type : 1
    */
 
-  private Object flash;
+  private String flash;
   private String answer;
   private String type;
   private List<String> answerPramms;
 
-  public Object getFlash() {
+  public String getFlash() {
     return flash;
   }
 
-  public void setFlash(Object flash) {
+  public void setFlash(String flash) {
     this.flash = flash;
   }
 

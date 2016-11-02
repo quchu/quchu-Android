@@ -170,11 +170,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
   }
 
   private void getQuestion(boolean startor) {
-    AIConversationPresenter.getAIQuestion(getApplicationContext(), startor, new CommonListener<AIConversationQuestionModel>() {
+    AIConversationPresenter.postAIQuestion(getApplicationContext(), startor, new CommonListener<AIConversationQuestionModel>() {
       @Override
       public void successListener(AIConversationQuestionModel response) {
 
-        getAnswer(response.getAnswer(), response.getFlash());
+        getAnswer(response.getAnswerPramms().get(0), response.getFlash());
       }
 
       @Override
@@ -184,18 +184,25 @@ public class RecommendActivity extends BaseBehaviorActivity {
     });
   }
 
-  private void getAnswer(String question, String flash) {
-    AIConversationPresenter.getAIAnswer(getApplicationContext(), question, flash, new CommonListener<AIConversationAnswerModel>() {
-      @Override
-      public void successListener(AIConversationAnswerModel response) {
-        getQuestion(false);
-      }
+  private void getAnswer(final String question, final String flash) {
+    appbar.postDelayed(new Runnable() {
+      @Override public void run() {
+        AIConversationPresenter.postAIAnswer(getApplicationContext(), question, flash, new CommonListener<AIConversationAnswerModel>() {
+          @Override
+          public void successListener(AIConversationAnswerModel response) {
+            if (Integer.valueOf(response.getType())==1){
+              getAnswer(response.getAnswerPramms().get(0),response.getFlash());
+            }
+          }
 
-      @Override
-      public void errorListener(VolleyError error, String exception, String msg) {
-        System.out.println("error");
+          @Override
+          public void errorListener(VolleyError error, String exception, String msg) {
+            System.out.println("error");
+          }
+        });
       }
-    });
+    },200);
+
   }
 
 

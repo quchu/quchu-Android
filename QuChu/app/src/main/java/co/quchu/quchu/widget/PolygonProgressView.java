@@ -17,48 +17,40 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import java.util.List;
-
 import co.quchu.quchu.R;
-import co.quchu.quchu.utils.ArrayUtils;
-
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
- * Created by Nico on 16/7/4.
+ * Created by TacticalTwerking on 16/6/23.
+ * GitHub   https://github.com/TacticalTwerking
  */
 public class PolygonProgressView extends View {
 
 
-    private static final long ADR = 1000l;
-    private static final long AD = 75l;
-    private int s = -1;
-    private int p = -1;
-    private int c = -1;
-    private int sw = 6;
-    private int n = 6;
-    private int r = -1;
-    private int ap = 5;
-    private int rO = 360 / 4;
-    private float pic = 0;
-    private float min = .5f;
-    private float[] pv;
-    private float[] apv;
-    private boolean ar = false;
-
-    private String[] lbl = new String[]{};
-    private Paint pr;
-    private Paint pn;
-    private Paint pa;
-    private Paint pil;
-    private Paint pl;
-    private Paint pab;
-    private Paint pac;
-    private Rect rBB4;
-    private Rect rBAft;
-    private Bitmap bmBackground;
-    private Bitmap ba;
-    private Bitmap[] bl;
-
+    private static final long ANIMATION_DURATION = 800l;
+    private static final long ANIMATION_DELAY = 50l;
+    private int mSize = -1;
+    private int mCirclePadding = -1;
+    private int mViewCenter = -1;
+    private int mCircleStrokeWidth = 4;
+    private int mSides = 5;
+    private int mActuallyRadius = -1;
+    private int mHighLightPadding = 5;
+    private int mRotateOffset = 90;
+    private float mPieces = 0;
+    private float mMinimalValuesPercentage = .5f;
+    private float[] mProgressValues;
+    private float[] mAnimationProgress;
+    private String[] mLabels = new String[]{};
+    private Paint mPaintCircle;
+    private Paint mPaintNodes;
+    private Paint mPaintArcs;
+    private Paint mPaintInnerLines;
+    private Paint mPaintLabels;
+    private boolean mAnimationRunning = false;
 
     public PolygonProgressView(Context context) {
         super(context);
@@ -81,47 +73,63 @@ public class PolygonProgressView extends View {
         init();
     }
 
+    public void initial(int side,float []values){
+        if (mAnimationRunning){
+            return;
+        }
+        mSides = side;
+        mProgressValues = values;
+        mPieces = mSides > 0 ? 360 / mSides : 0;
+    }
+
+    public void initial(int side,float []values,String []labels){
+        if (mAnimationRunning){
+            return;
+        }
+        mSides = side;
+        mProgressValues = values;
+        mLabels = labels;
+        mPieces = mSides > 0 ? 360 / mSides : 0;
+    }
+
     public void animateProgress() {
 
-        if (ar) {
+        if (mAnimationRunning) {
             return;
         }
 
-
-        apv = new float[n];
-        for (int i = 0; i < n; i++) {
-            ar = true;
+        mAnimationProgress = new float[mSides];
+        for (int i = 0; i < mSides; i++) {
+            mAnimationRunning = true;
             final int finalI = i;
             ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-            animator.setDuration(ADR);
+            animator.setDuration(ANIMATION_DURATION);
             animator.setInterpolator(new AccelerateDecelerateInterpolator());
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    apv[finalI] = (float) animation.getAnimatedValue();
+                    mAnimationProgress[finalI] = (float) animation.getAnimatedValue();
                     invalidate();
                 }
             });
-            animator.setStartDelay(AD * i);
-            if (finalI == n - 1) {
+            animator.setStartDelay(ANIMATION_DELAY * i);
+            if (finalI== mSides -1){
                 animator.addListener(new Animator.AnimatorListener() {
                     @Override
-                    public void onAnimationStart(Animator animation) {
-                    }
+                    public void onAnimationStart(Animator animation) {}
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        ar = false;
+                        mAnimationRunning = false;
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
-                        ar = false;
+                        mAnimationRunning = false;
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animator animation) {
-                    }
+                    public void onAnimationRepeat(Animator animation) {}
                 });
             }
             animator.start();
@@ -132,52 +140,28 @@ public class PolygonProgressView extends View {
 
     private void init() {
 
-        pr = new Paint();
-        pr.setStrokeWidth(sw);
-        pr.setColor(Color.parseColor("#bed4da"));
-        pr.setAntiAlias(true);
-        pr.setStrokeCap(Paint.Cap.ROUND);
-        pr.setShader(null);
-        pr.setStyle(Paint.Style.STROKE);
+        mPaintCircle = new Paint();
+        mPaintCircle.setStrokeWidth(mCircleStrokeWidth);
+        mPaintCircle.setColor(Color.parseColor("#A4DBCB"));
+        mPaintCircle.setAntiAlias(true);
+        mPaintCircle.setStrokeCap(Paint.Cap.ROUND);
+        mPaintCircle.setShader(null);
+        mPaintCircle.setStyle(Paint.Style.STROKE);
 
-        pn = new Paint(pr);
-        pn.setColor(Color.parseColor("#ffd102"));
-        pn.setStrokeWidth(2);
-        pn.setStyle(Paint.Style.FILL);
+        mPaintNodes = new Paint(mPaintCircle);
+        mPaintNodes.setColor(Color.parseColor("#7fB1EDDE"));
+        mPaintNodes.setStrokeWidth(2);
+        mPaintNodes.setStyle(Paint.Style.FILL);
 
-        pa = new Paint(pr);
-        pa.setColor(Color.parseColor("#ffd102"));
-        pa.setStrokeCap(Paint.Cap.SQUARE);
-        pa.setStrokeWidth(6);
+        mPaintArcs = new Paint(mPaintCircle);
+        mPaintArcs.setColor(Color.parseColor("#88b6a9"));
+        mPaintArcs.setStrokeCap(Paint.Cap.SQUARE);
+        mPaintArcs.setStrokeWidth(5);
 
-        pil = new Paint(pr);
-        pil.setStrokeWidth(2);
-        pil.setStyle(Paint.Style.FILL);
-        pil.setColor(Color.parseColor("#e2edf1"));
+        mPaintInnerLines = new Paint(mPaintCircle);
+        mPaintInnerLines.setStrokeWidth(1);
+        mPaintInnerLines.setColor(Color.parseColor("#e0e0e0"));
 
-        pab = new Paint();
-        pab.setAntiAlias(true);
-        pab.setColor(Color.WHITE);
-        pab.setStyle(Paint.Style.FILL);
-
-        pac = new Paint();
-        pac.setAntiAlias(true);
-        pac.setColor(Color.WHITE);
-        pac.setStyle(Paint.Style.FILL);
-
-
-    }
-
-    public void initial(int side, float[] values, String[] labels,Bitmap []pbl) {
-
-        if (ar) {
-            return;
-        }
-        n = side;
-        pv = values;
-        lbl = labels;
-        pic = n > 0 ? 360 / n : 0;
-        bl = pbl;
 
     }
 
@@ -188,75 +172,82 @@ public class PolygonProgressView extends View {
         initProperties();
         drawCircle(canvas);
 
-        drawInnerPattern(canvas);
+        for (int i = 0; i < mSides; i++) {
+            double angle = ((Math.PI * 2 / mSides) * i) - (Math.toRadians(mRotateOffset));
 
-
-        for (int i = 0; i < n; i++) {
-            double angle = ((Math.PI * 2 / n) * i) - (Math.toRadians(rO));
-
-//            drawInnerLines(canvas, angle);
-            drawArcs(canvas, i);
-            drawLabels(canvas, i, angle);
+            drawInnerLines(canvas,angle);
+            drawArcs(canvas,i);
+            //DrawNode belong here
+            drawLabels(canvas,i,angle);
         }
-
-
         drawNodes(canvas);
+
         drawAvatar(canvas);
     }
 
-    private void drawInnerPattern(Canvas canvas) {
-        canvas.save();
-        canvas.rotate(rO,c,c);
-        canvas.drawBitmap(bmBackground,rBB4,rBAft,pil);
-        canvas.restore();
-
-    }
-
+    private Bitmap mBitmapAvatar;
 
     private void drawAvatar(Canvas canvas) {
+        Paint pAvtBg = new Paint();
+        pAvtBg.setAntiAlias(true);
+        pAvtBg.setColor(Color.WHITE);
+        pAvtBg.setStyle(Paint.Style.FILL);
 
-        canvas.drawCircle(c, c, r * min * .6f * apv[0], pac);
-        //pa.setAlpha((int) (apv[0]*255));
-//        canvas.drawBitmap(ba, c - (ba.getWidth() >> 1), c - (ba.getHeight() >> 1), pa);
+        canvas.drawCircle(mViewCenter, mViewCenter, mActuallyRadius * mMinimalValuesPercentage * .6f, pAvtBg);
+        canvas.drawBitmap(mBitmapAvatar, mViewCenter - (mBitmapAvatar.getWidth() / 2), mViewCenter - (mBitmapAvatar.getHeight() / 2), mPaintArcs);
+
+
     }
 
 
-    private void drawArcs(Canvas canvas, int i) {
+    private void drawArcs(Canvas canvas,int i) {
 
-        List<Integer> maxValues = ArrayUtils.getMaxValues((pv));
-
-        RectF rectF = new RectF(p, p, (r * 2) + p, (r * 2) + p);
-        if (maxValues.size() > i) {
-            int sweepAngle = (int) (pic * apv[maxValues.get(i)]);
-            int startAngle = (int) ((maxValues.get(i) * pic) - (sweepAngle / 2) - rO);
-            if (n == 0) {
-                ap = 0;
+        List<Integer> maxValues = getMaxValues(mProgressValues);
+        RectF rectF = new RectF(mCirclePadding, mCirclePadding, (mActuallyRadius * 2) + mCirclePadding, (mActuallyRadius * 2) + mCirclePadding);
+        if (maxValues.size()>i){
+            int sweepAngle = (int) (mPieces * mAnimationProgress[maxValues.get(i)]);
+            int startAngle = (int) ((maxValues.get(i) * mPieces) - (sweepAngle / 2) - mRotateOffset);
+            if (mSides == 0) {
+                mHighLightPadding = 0;
             }
 
             if (sweepAngle != 0) {
-                canvas.drawArc(rectF, startAngle + ap, sweepAngle - ap, false, pa);
+                canvas.drawArc(rectF, startAngle + mHighLightPadding, sweepAngle - mHighLightPadding, false, mPaintArcs);
             }
         }
     }
 
-    private void drawLabels(Canvas canvas, int i, double angle) {
-        if (null == lbl || lbl.length != n) {
+    private void drawLabels(Canvas canvas,int i,double angle) {
+        if (null == mLabels || mLabels.length != mSides) {
             return;
         }
 
-        int maxLength = r;
-        Bitmap bitmap = bl[i];
+        int maxLength = mActuallyRadius;
 
-        float actuallyValues = maxLength -20 + bitmap.getWidth();
+        String strNumericValues = new DecimalFormat("##").format(mProgressValues[i] * mAnimationProgress[i] * 100);
 
-        float x = (int) (Math.cos(angle) * actuallyValues + c );
-        float y = (int) (Math.sin(angle) * actuallyValues + c);
+        Rect textBoundLabel = new Rect();
+        Rect textBoundNumeric = new Rect();
 
+        mPaintLabels.getTextBounds(mLabels[i], 0, mLabels[i].length(), textBoundLabel);
+        mPaintLabels.getTextBounds(strNumericValues, 0, strNumericValues.length(), textBoundNumeric);
 
-        pab.setAlpha((int) (apv[0]*255));
+        float actuallyValues = maxLength + textBoundLabel.width();
 
-        canvas.drawBitmap(bitmap,x - bitmap.getWidth()/2,y-bitmap.getHeight()/2,pab);
+        float x = (int) (Math.cos(angle) * actuallyValues + mViewCenter);
+        float y = (int) (Math.sin(angle) * actuallyValues + mViewCenter);
 
+        canvas.drawText(mLabels[i], x - (textBoundLabel.width() / 2), y + (textBoundLabel.height() / 2), mPaintLabels);
+
+        canvas.drawText(strNumericValues, x - (textBoundNumeric.width() / 2), y - (textBoundLabel.height() / 2), mPaintLabels);
+
+    }
+
+    private void drawInnerLines(Canvas canvas,double angle) {
+        float actuallyValues = mActuallyRadius;
+        float x = (int) (Math.cos(angle) * actuallyValues + mViewCenter);
+        float y = (int) (Math.sin(angle) * actuallyValues + mViewCenter);
+        canvas.drawLine( mViewCenter, mViewCenter,x,y, mPaintInnerLines);
     }
 
 
@@ -266,22 +257,22 @@ public class PolygonProgressView extends View {
         float minimalValues = 0;
         float startX = 0;
         float startY = 0;
-        int maxHill = r - sw / 2;
+        int maxHill = mActuallyRadius - mCircleStrokeWidth * 2;
 
-        if (min > 0) {
-            minimalValues = maxHill * min;
+        if (mMinimalValuesPercentage > 0) {
+            minimalValues = maxHill * mMinimalValuesPercentage;
         }
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < mSides; i++) {
 
-            float actuallyValues = pv[i] * maxHill * apv[i];
+            float actuallyValues = mProgressValues[i] * maxHill * mAnimationProgress[i];
             if (minimalValues > 0) {
-                actuallyValues = (minimalValues + (maxHill - minimalValues) * pv[i] )* apv[i];
+                actuallyValues = minimalValues + (maxHill - minimalValues) * mProgressValues[i] * mAnimationProgress[i];
             }
 
-            double angle = ((Math.PI * 2 / n) * i) - (Math.toRadians(rO));
+            double angle = ((Math.PI * 2 / mSides) * i) - (Math.toRadians(mRotateOffset));
 
-            float x = (int) (Math.cos(angle) * actuallyValues + c);
-            float y = (int) (Math.sin(angle) * actuallyValues + c);
+            float x = (int) (Math.cos(angle) * actuallyValues + mViewCenter);
+            float y = (int) (Math.sin(angle) * actuallyValues + mViewCenter);
 
             if (i == 0) {
                 startX = x;
@@ -292,35 +283,57 @@ public class PolygonProgressView extends View {
             }
         }
         path.lineTo(startX, startY);
-        canvas.drawPath(path, pn);
+        canvas.drawPath(path, mPaintNodes);
     }
 
     private void drawCircle(Canvas canvas) {
-        canvas.drawCircle(c, c, r, pr);
-        //canvas.drawCircle(c, c, r * .6f, pil);
+        canvas.drawCircle(mViewCenter, mViewCenter, mActuallyRadius, mPaintCircle);
+        canvas.drawCircle(mViewCenter, mViewCenter, mActuallyRadius / 2, mPaintInnerLines);
     }
 
     private void initProperties() {
-        if (s == -1) {
-            s = Math.min(getHeight(), getWidth());
-            p = s / 9;
-            c = s / 2;
-            r = c - p;
-            apv = new float[n];
-            pv = new float[n];
+        if (mSize == -1) {
+            mSize = Math.min(getHeight(), getWidth());
+            mCirclePadding = mSize / 6;
+            mViewCenter = mSize / 2;
+            mActuallyRadius = mViewCenter - mCirclePadding;
+            mProgressValues = new float[mSides];
+            mAnimationProgress = new float[mSides];
 
 
-            pl = new Paint(pil);
-            pl.setTextSize(s / 30);
-            pl.setColor(Color.BLACK);
-            pl.setStyle(Paint.Style.FILL);
-            pl.setAntiAlias(true);
-            pic = n > 0 ? 360 / n : 0;
-            ba = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_logo),(int)(r*.4f),(int)(r*.4f),false);
-            bmBackground = BitmapFactory.decodeResource(getResources(),R.mipmap.bg);
-            rBB4 = new Rect(0,0,bmBackground.getHeight(),bmBackground.getWidth());
-            rBAft = new Rect(p,p,s-p,s-p);
+            mPaintLabels = new Paint(mPaintInnerLines);
+            mPaintLabels.setTextSize(mSize / 30);
+            mPaintLabels.setColor(Color.BLACK);
+            mPaintLabels.setStyle(Paint.Style.FILL);
+            mPaintLabels.setAntiAlias(true);
+            mPieces = mSides > 0 ? 360 / mSides : 0;
+            mBitmapAvatar = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
         }
     }
 
+    private List<Integer> getMaxValues(float[] source) {
+        List<Integer> maxArrayIndex = new ArrayList<>();
+        float maxValue = source[0];
+        int maxValuesIndex = 0;
+        boolean notUnique = false;
+        for (int i = 1; i < source.length; i++) {
+            if (maxValue < source[i]) {
+                maxValue = source[i];
+                maxValuesIndex = i;
+            } else if (maxValue == source[i]) {
+                notUnique = true;
+            }
+        }
+        if (notUnique) {
+            for (int i = 0; i < source.length; i++) {
+                if (maxValue == source[i]) {
+                    maxArrayIndex.add(i);
+                }
+            }
+        } else {
+            maxArrayIndex.add(maxValuesIndex);
+        }
+        return maxArrayIndex;
+    }
 }
