@@ -170,7 +170,7 @@ public class PolygonProgressView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         initProperties();
-        drawCircle(canvas);
+        drawInnerPattern(canvas);
 
         for (int i = 0; i < mSides; i++) {
             double angle = ((Math.PI * 2 / mSides) * i) - (Math.toRadians(mRotateOffset));
@@ -185,7 +185,19 @@ public class PolygonProgressView extends View {
         drawAvatar(canvas);
     }
 
-    private Bitmap mBitmapAvatar;
+    private void drawInnerPattern(Canvas canvas) {
+
+        canvas.save();
+        canvas.rotate(90,mViewCenter,mViewCenter);
+        int scaleSize = mSize/7;
+        canvas.drawBitmap(mBitmapBackground
+            ,new Rect(0,0,mBitmapBackground.getHeight(),mBitmapBackground.getWidth())
+            ,new Rect(scaleSize,scaleSize,mSize-scaleSize,mSize-scaleSize),mPaintArcs);
+        drawCircle(canvas);
+        canvas.restore();
+    }
+
+    private Bitmap mBitmapBackground;
 
     private void drawAvatar(Canvas canvas) {
         Paint pAvtBg = new Paint();
@@ -194,7 +206,7 @@ public class PolygonProgressView extends View {
         pAvtBg.setStyle(Paint.Style.FILL);
 
         canvas.drawCircle(mViewCenter, mViewCenter, mActuallyRadius * mMinimalValuesPercentage * .6f, pAvtBg);
-        canvas.drawBitmap(mBitmapAvatar, mViewCenter - (mBitmapAvatar.getWidth() / 2), mViewCenter - (mBitmapAvatar.getHeight() / 2), mPaintArcs);
+
 
 
     }
@@ -307,7 +319,7 @@ public class PolygonProgressView extends View {
             mPaintLabels.setStyle(Paint.Style.FILL);
             mPaintLabels.setAntiAlias(true);
             mPieces = mSides > 0 ? 360 / mSides : 0;
-            mBitmapAvatar = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+            mBitmapBackground = BitmapFactory.decodeResource(getResources(), R.mipmap.bg);
 
         }
     }

@@ -169,12 +169,14 @@ public class RecommendActivity extends BaseBehaviorActivity {
     getQuestion(true);
   }
 
-  private void getQuestion(boolean startor) {
+  private void getQuestion(final boolean startor) {
     AIConversationPresenter.postAIQuestion(getApplicationContext(), startor, new CommonListener<AIConversationQuestionModel>() {
       @Override
       public void successListener(AIConversationQuestionModel response) {
 
-        getAnswer(response.getAnswerPramms().get(0), response.getFlash());
+        if (startor){
+          getAnswer(response.getAnswerPramms().get(0), response.getFlash());
+        }
       }
 
       @Override
