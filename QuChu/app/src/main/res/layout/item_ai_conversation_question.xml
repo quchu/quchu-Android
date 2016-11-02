@@ -5,6 +5,12 @@
     android:orientation="vertical"
     >
 
+  <View
+      android:id="@+id/vSpace"
+      android:layout_height="36dp"
+      android:layout_width="0dp"
+      android:visibility="gone"
+      />
 
   <TextView
       android:id="@+id/tvQuestion"

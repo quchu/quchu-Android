@@ -14,7 +14,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,11 +25,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import co.quchu.quchu.model.AIConversationAnswerModel;
-import co.quchu.quchu.model.AIConversationQuestionModel;
-import co.quchu.quchu.model.QAModel;
+import co.quchu.quchu.model.AIConversationModel;
 import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
+import co.quchu.quchu.widget.ConversationListAnimator;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
@@ -96,6 +94,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
   public long firstTime = 0;
   boolean checkUpdateRunning = false;
   private ArrayList<CityModel> list = new ArrayList<>();
+  private AIConversationAdapter mAdapter;
+  private List<AIConversationModel> mConversation = new ArrayList<>();
+  public static final int CONVERSATION_REQUEST_DELAY = 500;
+  public static final int CONVERSATION_ANSWER_DELAY = 300;
 
   @Override
   protected String getPageNameCN() {
@@ -119,9 +121,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
     ButterKnife.bind(this);
 
 
-    if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
-      accessPushMessage();
-    }
+    initPush();
 
     initDrawerView();
 
@@ -132,18 +132,22 @@ public class RecommendActivity extends BaseBehaviorActivity {
     tvCity.setText(SPUtils.getCityName());
 
     rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-    List<QAModel> data = new ArrayList<>();
-    data.add(new AIConversationQuestionModel());
+    rv.setItemAnimator(new ConversationListAnimator());
+    mAdapter = new AIConversationAdapter(RecommendActivity.this, mConversation, new AIConversationAdapter.OnAnswerListener() {
+      @Override public void onAnswer(String answer,String additionalShit) {
+        int position = mConversation.size()-1;
+        mConversation.get(position).getAnswerPramms().clear();
+        mAdapter.notifyDataSetChanged();
 
-    for (int i = 0; i < 20; i++) {
-      if (i%3==0){
-        data.add(new AIConversationAnswerModel());
-      }else{
-        data.add(new AIConversationQuestionModel());
+        AIConversationModel answerModel = new AIConversationModel();
+        answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
+        answerModel.setAnswer(answer);
+        mConversation.add(answerModel);
+        mAdapter.notifyItemInserted(mConversation.size()-1);
+        getNext(answer,additionalShit);
       }
-    }
-    AIConversationAdapter adapter = new AIConversationAdapter(data);
-    rv.setAdapter(adapter);
+    });
+    rv.setAdapter(mAdapter);
     appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
       @Override
       public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -166,44 +170,71 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
 
 
-    getQuestion(true);
+    startConversation(true);
   }
 
-  private void getQuestion(final boolean startor) {
-    AIConversationPresenter.postAIQuestion(getApplicationContext(), startor, new CommonListener<AIConversationQuestionModel>() {
-      @Override
-      public void successListener(AIConversationQuestionModel response) {
+  /**
+   * 初始化推送
+   */
+  private void initPush() {
+    if (!getIntent().getBooleanExtra(REQUEST_KEY_FROM_LOGIN, false)) {
+      accessPushMessage();
+    }
+  }
 
-        if (startor){
-          getAnswer(response.getAnswerPramms().get(0), response.getFlash());
+  private void startConversation(final boolean starter) {
+    AIConversationPresenter.startConversation(getApplicationContext(), starter, new CommonListener<AIConversationModel>() {
+      @Override
+      public void successListener(AIConversationModel response) {
+        addModel(response);
+        if (starter){
+          getNext(response.getAnswerPramms().get(0), response.getFlash());
         }
       }
 
       @Override
-      public void errorListener(VolleyError error, String exception, String msg) {
-        System.out.println("error");
-      }
+      public void errorListener(VolleyError error, String exception, String msg) {}
     });
   }
 
-  private void getAnswer(final String question, final String flash) {
+  private void addModel(AIConversationModel model){
+    mConversation.add(model);
+    mAdapter.notifyItemInserted(mConversation.size()-1);
+    if (Integer.valueOf(model.getType())==0 && model.getAnswerPramms().size()>0){
+      final AIConversationModel modelOption = new AIConversationModel();
+      modelOption.setAnswerPramms(model.getAnswerPramms());
+      modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
+      modelOption.setPlaceList(model.getPlaceList());
+      modelOption.setFlash(model.getFlash());
+      rv.postDelayed(new Runnable() {
+        @Override public void run() {
+          mConversation.add(modelOption);
+          mAdapter.notifyItemInserted(mConversation.size()-1);
+        }
+      },CONVERSATION_ANSWER_DELAY);
+      rv.smoothScrollToPosition(mConversation.size()-1);
+    }
+    rv.smoothScrollToPosition(mConversation.size()-1);
+  }
+
+  private void getNext(final String question, final String flash) {
     appbar.postDelayed(new Runnable() {
       @Override public void run() {
-        AIConversationPresenter.postAIAnswer(getApplicationContext(), question, flash, new CommonListener<AIConversationAnswerModel>() {
+        AIConversationPresenter.getNext(getApplicationContext(), question, flash, new CommonListener<AIConversationModel>() {
           @Override
-          public void successListener(AIConversationAnswerModel response) {
+          public void successListener(AIConversationModel response) {
+            addModel(response);
+
             if (Integer.valueOf(response.getType())==1){
-              getAnswer(response.getAnswerPramms().get(0),response.getFlash());
+              getNext(response.getAnswerPramms().get(0),response.getFlash());
             }
           }
 
           @Override
-          public void errorListener(VolleyError error, String exception, String msg) {
-            System.out.println("error");
-          }
+          public void errorListener(VolleyError error, String exception, String msg) {}
         });
       }
-    },200);
+    },CONVERSATION_REQUEST_DELAY);
 
   }
 
