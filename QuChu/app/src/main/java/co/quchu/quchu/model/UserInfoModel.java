@@ -39,6 +39,16 @@ public class UserInfoModel implements Parcelable {
     private boolean isphone;//是否绑定手机号
     private String rongYunToken;//融云token
 
+    private String getuiStatus;//个推开关状态 0-关闭;1-开启
+
+    public String getGetuiStatus() {
+        return getuiStatus;
+    }
+
+    public void setGetuiStatus(String getuiStatus) {
+        this.getuiStatus = getuiStatus;
+    }
+
     public String getRongYunToken() {
         return rongYunToken;
     }

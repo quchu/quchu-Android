@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.ResponseListener;
@@ -27,6 +28,8 @@ public class SettingPresenter {
   public static String SETTING_TYPE_QUCHU_USER = "2";
   //是否开启搭伙
   public static String SETTING_TYPE_DAHUO = "3";
+  //是否开启个推消息
+  public static String SETTING_TYPE_GETUI = "4";
 
   /**
    * @param type      0 '是否推荐趣处', 1 '是否推荐文章', 2 '是否推荐趣星人', 3 '是否开启搭伙', 4 "消息推送"
@@ -96,6 +99,12 @@ public class SettingPresenter {
       } else {
         ToastManager.getInstance(context).show("关闭推荐趣星人");
       }
+
+    } else if (type.equals(SETTING_TYPE_GETUI)) {
+      //个推
+      AppContext.user.setGetuiStatus(isChecked ? "1" : "0");
+
+      ToastManager.getInstance(context).show(isChecked ? "个推消息推送开启" : "个推消息推送关闭");
     }
   }
 

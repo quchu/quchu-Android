@@ -27,6 +27,8 @@ import co.quchu.quchu.model.SearchSortBean;
  */
 public class DropDownMenu extends LinearLayout {
 
+  private static String TAG = "DropDownMenu";
+
   //顶部菜单布局
   private LinearLayout tabMenuView;
   //底部容器，包含popupMenuViews，maskView
@@ -183,8 +185,6 @@ public class DropDownMenu extends LinearLayout {
         } else {
           showMenu(i);
 
-          changeTabStatus(i, true);
-
           if (mListener != null) {
             mListener.onTabSelected(curClickTabPosition);
           }
@@ -201,7 +201,11 @@ public class DropDownMenu extends LinearLayout {
    */
   public void closeMenu() {
     if (isShowing()) {
-      changeTabStatus(curClickTabPosition, false);
+//      changeTabStatus(curClickTabPosition, false);
+
+      DropTabView tabView = (DropTabView) tabMenuView.getChildAt(curClickTabPosition);
+      ImageView imageView = ((ImageView) tabView.getChildAt(1));
+      imageView.animate().rotation(0).setDuration(250).start();
 
       mDropContentView.setVisibility(GONE);
       mDropContentView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_out));
@@ -216,6 +220,12 @@ public class DropDownMenu extends LinearLayout {
    */
   private void showMenu(int position) {
     if (!isShowing()) {
+//      changeTabStatus(position, true);
+
+      DropTabView tabView = (DropTabView) tabMenuView.getChildAt(position);
+      ImageView imageView = ((ImageView) tabView.getChildAt(1));
+      imageView.animate().rotation(180).setDuration(250).start();
+
       mDropContentView.setVisibility(View.VISIBLE);
       mDropContentView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.dd_menu_in));
       containerView.setVisibility(VISIBLE);
@@ -230,18 +240,19 @@ public class DropDownMenu extends LinearLayout {
    * true-选中,false-未选中
    */
   private void changeTabStatus(int position, boolean isSelected) {
-    DropTabView tabView = (DropTabView) tabMenuView.getChildAt(position);
-    TextView textView = ((TextView) tabView.getChildAt(0));
-    ImageView imageView = ((ImageView) tabView.getChildAt(1));
-    if (isSelected) {
-      textView.setTextColor(textSelectedColor);
-
+//    DropTabView tabView = (DropTabView) tabMenuView.getChildAt(position);
+//    TextView textView = ((TextView) tabView.getChildAt(0));
+//    ImageView imageView = ((ImageView) tabView.getChildAt(1));
+//    if (isSelected) {
+////      textView.setTextColor(textSelectedColor);
+//
 //      imageView.animate().rotation(180).setDuration(250).start();
-
-    } else {
-      textView.setTextColor(textUnselectedColor);
-
-    }
+//
+//    } else {
+////      textView.setTextColor(textUnselectedColor);
+//
+//      imageView.animate().rotation(-180).setDuration(250).start();
+//    }
   }
 
   /**

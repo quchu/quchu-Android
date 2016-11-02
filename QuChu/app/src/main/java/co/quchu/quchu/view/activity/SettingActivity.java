@@ -31,6 +31,7 @@ public class SettingActivity extends BaseBehaviorActivity {
 
   @Bind(R.id.setting_item_dahuo) SettingItemView itemDahuo;
   @Bind(R.id.setting_item_about) SettingItemView itemAbout;
+  @Bind(R.id.setting_item_getui_message) SettingItemView itemGetuiMessage;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +44,35 @@ public class SettingActivity extends BaseBehaviorActivity {
     titleTv.setText("设置");
 
     setDahuoSwitch();
+
+    setGetuiSwitch();
+  }
+
+  /**
+   * 个推消息开关
+   */
+  private void setGetuiSwitch() {
+    final SwitchButton switchButton = itemGetuiMessage.getSwitchButton();
+    if (AppContext.user != null) {
+      if (AppContext.user.isIsVisitors()) {
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            switchButton.setChecked(true);
+
+            showLoginDialog();
+          }
+        });
+
+      } else {
+        itemGetuiMessage.setSwitchChecked(AppContext.user.getGetuiStatus().equals("1") ? true : false, new SettingItemView.SwitchChangedListener() {
+          @Override
+          public void onSwitch(boolean isChecked) {
+            SettingPresenter.setUserMsg(SettingActivity.this, SettingPresenter.SETTING_TYPE_GETUI, isChecked);
+          }
+        });
+      }
+    }
   }
 
   /**

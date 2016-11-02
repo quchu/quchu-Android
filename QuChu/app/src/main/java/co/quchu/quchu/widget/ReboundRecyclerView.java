@@ -1,24 +1,28 @@
 package co.quchu.quchu.widget;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 /**
  * Created by mwb on 16/10/19.
  */
 public class ReboundRecyclerView extends RecyclerView {
 
+  private static String TAG = "ReboundRecyclerView";
+
   private float mY;
-  private int mLeft;
-  private int mTop;
-  private int mRight;
-  private int mBottom;
   private boolean mIsMoved;
   private boolean mCanScrollDown;
   private boolean mCanScrollUp;
+  private Rect mNormal = new Rect();
+  private View mInner;
+  private boolean mCanMove;
 
   public ReboundRecyclerView(Context context) {
     super(context);
@@ -33,17 +37,10 @@ public class ReboundRecyclerView extends RecyclerView {
   }
 
   @Override
-  protected void onLayout(boolean changed, int l, int t, int r, int b) {
-    super.onLayout(changed, l, t, r, b);
+  protected void onFinishInflate() {
+    super.onFinishInflate();
 
-    if (!changed) {
-      mLeft = getLeft();
-      mTop = getTop();
-      mRight = getRight();
-      mBottom = getBottom();
-    }
-
-//    Log.e("onLayout()", "getTop() = " + getTop());
+    mInner = this;
   }
 
   @Override
@@ -54,58 +51,74 @@ public class ReboundRecyclerView extends RecyclerView {
     mCanScrollDown = canScrollVertically(-1);
     //在底部,手指不能继续上滑
     mCanScrollUp = canScrollVertically(1);
-
-//    Log.e("onScrolled", "mCanScrollDown = " + mCanScrollDown + ", mCanScrollUp = " + mCanScrollUp);
   }
 
   @Override
   public boolean dispatchTouchEvent(MotionEvent ev) {
-//    Log.e("---mwb", "dispatchTouchEvent");
+    if (mInner == null) {
+      return super.onTouchEvent(ev);
+    }
 
     int action = ev.getAction();
+
     switch (action) {
       case MotionEvent.ACTION_DOWN:
-//        Log.e("dispatchTouchEvent", "ACTION_DOWN");
-
+        Log.e(TAG, "ACTION_DOWN");
         mY = ev.getY();
+        mCanMove = true;
         break;
 
       case MotionEvent.ACTION_UP:
-//        Log.e("dispatchTouchEvent", "ACTION_UP");
-
+        Log.e(TAG, "ACTION_UP");
         if (mIsMoved) {
-          layout(mLeft, mTop, mRight, mBottom);
+          layout(mNormal.left, mNormal.top, mNormal.right, mNormal.bottom);
           mIsMoved = false;
+          mCanMove = true;
           return true;
         }
+        break;
 
+      case MotionEvent.ACTION_POINTER_DOWN:
+        Log.e(TAG, "ACTION_POINTER_DOWN");
+        mCanMove = false;
+        break;
+
+      case MotionEvent.ACTION_POINTER_UP:
+        Log.e(TAG, "ACTION_POINTER_UP");
+        mCanMove = false;
         break;
 
       case MotionEvent.ACTION_MOVE:
-//        Log.e("dispatchTouchEvent", "ACTION_MOVE");
+        Log.e(TAG, "ACTION_MOVE");
+        float preY = mY;
+        float nowY = ev.getY();
+        int offset = (int) (preY - nowY);
 
-        float newY = ev.getY();
-        int offset = (int) (mY - newY);
+        if (mNormal.isEmpty()) {
+          mNormal.set(mInner.getLeft(), mInner.getTop(), mInner.getRight(), mInner.getBottom());
+        }
 
-        if (offset < 0) {
-          //手指下滑
-          if (!mCanScrollDown) {
-
-            layout(mLeft, (int) (mTop - offset * 0.75), mRight, (int) (mBottom - offset * 0.75));
-
-            mIsMoved = true;
-            return true;
-          }
-        } else {
-          //手指上滑
-          if (!mCanScrollUp) {
-
-            layout(mLeft, (int) (mTop - offset * 0.75), mRight, (int) (mBottom - offset * 0.75));
-
-            mIsMoved = true;
-            return true;
+        if (mCanMove) {
+          if (offset < 0) {
+            //手指下滑
+            if (!mCanScrollDown) {
+              mInner.layout(mNormal.left, (int) (mNormal.top - offset * 0.75), mNormal.right, (int) (mNormal.bottom - offset * 0.75));
+              mIsMoved = true;
+              Log.e(TAG, "ACTION_MOVE" + ", " + getLeft() + ", " + getTop() + ", " + getRight() + ", " + getBottom());
+              return true;
+            }
+          } else {
+            //手指上滑
+            if (!mCanScrollUp) {
+              mInner.layout(mNormal.left, (int) (mNormal.top - offset * 0.75), mNormal.right, (int) (mNormal.bottom - offset * 0.75));
+              mIsMoved = true;
+              Log.e(TAG, "ACTION_MOVE" + ", " + getLeft() + ", " + getTop() + ", " + getRight() + ", " + getBottom());
+              return true;
+            }
           }
         }
+
+        mY = nowY;
         break;
 
       default:
@@ -113,74 +126,4 @@ public class ReboundRecyclerView extends RecyclerView {
     }
     return super.dispatchTouchEvent(ev);
   }
-
-//  @Override
-//  public boolean onTouchEvent(MotionEvent event) {
-////    Log.e("onTouchEvent", "mCanScrollDown = " + mCanScrollDown + ", mCanScrollUp = " + mCanScrollUp);
-//
-//    int action = event.getAction();
-//    switch (action) {
-//      case MotionEvent.ACTION_DOWN:
-//        Log.e("----mwb", "ACTION_DOWN");
-//
-//        mY = event.getY();
-//        break;
-//
-//      case MotionEvent.ACTION_UP:
-//
-//        Log.e("----mwb", "ACTION_UP");
-//
-//        if (!mIsMoved) {
-//          return super.onTouchEvent(event);
-//        }
-//
-//        layout(mLeft, mTop, mRight, mBottom);
-////        postInvalidate();
-//        break;
-//
-//      case MotionEvent.ACTION_MOVE:
-//
-//        Log.e("----mwb", "ACTION_MOVE");
-//
-//        float newY = event.getY();
-//        int offset = (int) (mY - newY);
-//
-//        if (offset < 0) {
-//          //手指下滑
-//          if (!mCanScrollDown) {
-//
-//            Log.e("----mwb", "mCanScrollDown");
-//
-//
-//            layout(mLeft, (int) (mTop - offset * 0.75), mRight, (int) (mBottom - offset * 0.75));
-////            postInvalidate();
-//
-//            mIsMoved = true;
-//            return true;
-//          }
-//
-//        } else {
-//          //手指上滑
-//          if (!mCanScrollUp) {
-//
-//            Log.e("----mwb", "mCanScrollUp");
-//
-//
-//            layout(mLeft, (int) (mTop - offset * 0.75), mRight, (int) (mBottom - offset * 0.75));
-////            postInvalidate();
-//
-//            mIsMoved = true;
-//            return true;
-//          }
-//        }
-//        break;
-//
-//      default:
-//        break;
-//    }
-//
-//    Log.e("----mwb", "ACTION_END");
-//
-//    return super.onTouchEvent(event);
-//  }
 }

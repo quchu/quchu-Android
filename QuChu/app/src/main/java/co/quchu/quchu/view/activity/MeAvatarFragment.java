@@ -8,6 +8,7 @@ import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,9 @@ import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.widget.PolygonProgressView;
 import co.quchu.quchu.widget.UserGenesDialog;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * Created by mwb on 16/8/22.
@@ -94,9 +98,9 @@ public class MeAvatarFragment extends BaseFragment {
 
   private void resetWhiteAvatar() {
     if (!NetUtil.isNetworkConnected(getActivity())) {
-      bgAvatar.setVisibility(View.VISIBLE);
+      bgAvatar.setVisibility(VISIBLE);
     } else {
-      bgAvatar.setVisibility(View.GONE);
+      bgAvatar.setVisibility(GONE);
     }
   }
 
@@ -230,47 +234,54 @@ public class MeAvatarFragment extends BaseFragment {
     }
 
     String userMark = SPUtils.getUserMark();
-    if (userMark != null) {
-      userMarkLayout.setVisibility(View.VISIBLE);
-
-      if (null != genes) {
-        int genesCounter = 0;
-        for (int i = 0; i < genes.size(); i++) {
-          genesCounter += genes.get(i).getWeight();
-        }
-
-        userMarkTv.setText(genesCounter > 0 ? userMark : "新生宝宝");
-
-      } else {
-        userMarkTv.setText("新生宝宝");
-      }
-
-      switch (userMark) {
-        case "小食神":
-          userMarkImg.setImageResource(R.mipmap.ic_chihuo_ahsy);
-          break;
-
-        case "艺术家":
-          userMarkImg.setImageResource(R.mipmap.ic_wenyi_ahsy);
-          break;
-
-        case "外交官":
-          userMarkImg.setImageResource(R.mipmap.ic_shejiao_ahsy);
-          break;
-
-        case "时尚精":
-          userMarkImg.setImageResource(R.mipmap.ic_shishang_ahsy);
-          break;
-
-        case "大财阀":
-          userMarkImg.setImageResource(R.mipmap.ic_tuhao_ahsy);
-          break;
-
-        case "玩乐咖":
-          userMarkImg.setImageResource(R.mipmap.ic_haoqi_ahsy);
-          break;
-      }
+    if (TextUtils.isEmpty(userMark)) {
+      userMarkLayout.setVisibility(GONE);
+    } else {
+      userMarkLayout.setVisibility(VISIBLE);
+      userMarkTv.setText(userMark);
     }
+
+//    if (userMark != null) {
+//      userMarkLayout.setVisibility(View.VISIBLE);
+//
+//      if (null != genes) {
+//        int genesCounter = 0;
+//        for (int i = 0; i < genes.size(); i++) {
+//          genesCounter += genes.get(i).getWeight();
+//        }
+//
+//        userMarkTv.setText(genesCounter > 0 ? userMark : "新生宝宝");
+//
+//      } else {
+//        userMarkTv.setText("新生宝宝");
+//      }
+//
+//      switch (userMark) {
+//        case "小食神":
+//          userMarkImg.setImageResource(R.mipmap.ic_chihuo_ahsy);
+//          break;
+//
+//        case "艺术家":
+//          userMarkImg.setImageResource(R.mipmap.ic_wenyi_ahsy);
+//          break;
+//
+//        case "外交官":
+//          userMarkImg.setImageResource(R.mipmap.ic_shejiao_ahsy);
+//          break;
+//
+//        case "时尚精":
+//          userMarkImg.setImageResource(R.mipmap.ic_shishang_ahsy);
+//          break;
+//
+//        case "大财阀":
+//          userMarkImg.setImageResource(R.mipmap.ic_tuhao_ahsy);
+//          break;
+//
+//        case "玩乐咖":
+//          userMarkImg.setImageResource(R.mipmap.ic_haoqi_ahsy);
+//          break;
+//      }
+//    }
   }
 
   @Override

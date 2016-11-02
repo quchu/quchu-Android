@@ -8,13 +8,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -26,6 +27,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
+import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.model.ArticleKeyword;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.model.SearchKeywordModel;
@@ -33,6 +35,7 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.SearchHistoryPresenter;
 import co.quchu.quchu.presenter.SearchPresenter;
+import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
 import co.quchu.quchu.widget.ReboundRecyclerView;
@@ -51,9 +54,11 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   @Bind(R.id.history_recycler_view) RecyclerView mHistoryRv;
   @Bind(R.id.search_category_recycler_view) ReboundRecyclerView mCategoryRv;
 
-  private SearchAdapterNew mSearchAdapter;
+  private SearchAdapterNew mSearchCategoryAdapter;
+  private SearchAdapterNew mSearchHistoryAdapter;
   private InputMethodManager mInputMethodManager;
   private EditText mSearchInputEt;
+  private List<SearchKeywordModel> mSearchHistoryList;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,9 +68,9 @@ public class SearchActivityNew extends BaseBehaviorActivity {
 
     initHistory();
 
-    initCategory();
-
     initSearchView();
+
+    initCategory();
 
     getNetArticleKeyword();
   }
@@ -106,22 +111,24 @@ public class SearchActivityNew extends BaseBehaviorActivity {
         mSearchInputEt.setFocusable(true);
         mSearchInputEt.setFocusableInTouchMode(true);
         mSearchInputEt.requestFocus();
-        mCategoryRv.setVisibility(View.GONE);
-        mHistoryRv.setVisibility(View.VISIBLE);
-        return false;
-      }
-    });
-
-    mSearchInputEt.setOnKeyListener(new View.OnKeyListener() {
-      @Override
-      public boolean onKey(View v, int keyCode, KeyEvent event) {
-        //修改回车键功能
-        if (keyCode == KeyEvent.KEYCODE_ENTER) {
-          doSearch();
+        if (mSearchHistoryList != null && mSearchHistoryList.size() > 0) {
+          mCategoryRv.setVisibility(View.GONE);
+          mHistoryRv.setVisibility(View.VISIBLE);
         }
         return false;
       }
     });
+
+//    mSearchInputEt.setOnKeyListener(new View.OnKeyListener() {
+//      @Override
+//      public boolean onKey(View v, int keyCode, KeyEvent event) {
+//        //修改回车键功能
+//        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+//          doSearch();
+//        }
+//        return false;
+//      }
+//    });
 
     //返回
     backBtn.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +168,8 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       return;
     }
 
-    SearchHistoryPresenter.insertKeyword(this, inputStr);
+    //存入数据库
+    insertHistory(inputStr);
 
     SearchResultActivity.launch(SearchActivityNew.this, null, inputStr, -1);
   }
@@ -171,9 +179,56 @@ public class SearchActivityNew extends BaseBehaviorActivity {
    */
   private void initCategory() {
     mCategoryRv.setLayoutManager(new GridLayoutManager(this, 3));
-    mSearchAdapter = new SearchAdapterNew();
-    mCategoryRv.setAdapter(mSearchAdapter);
-    mSearchAdapter.setOnSearchItemClickListener(onItemClickListener);
+    mSearchCategoryAdapter = new SearchAdapterNew();
+    mCategoryRv.setAdapter(mSearchCategoryAdapter);
+    mSearchCategoryAdapter.setOnSearchItemClickListener(onItemClickListener);
+
+    final ImageView imageView = (ImageView) findViewById(R.id.search_ic_logo);
+    ViewTreeObserver imageViewTreeObserver = imageView.getViewTreeObserver();
+    if (imageViewTreeObserver.isAlive()) {
+      imageViewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+        boolean isFirstIn = true;
+
+        @Override
+        public void onGlobalLayout() {
+          if (isFirstIn) {
+            int top = imageView.getTop();
+            int height = imageView.getHeight();
+            int screenHeight = ScreenUtils.getScreenHeight(SearchActivityNew.this);
+
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCategoryRv.getLayoutParams();
+            layoutParams.height = screenHeight - Utils.dip2px(SearchActivityNew.this, 56 + 15) - top - height - height / 2;
+            mCategoryRv.setLayoutParams(layoutParams);
+
+            isFirstIn = false;
+          }
+        }
+      });
+    }
+//    ViewTreeObserver viewTreeObserver = mCategoryRv.getViewTreeObserver();
+//    if (viewTreeObserver.isAlive()) {
+//      viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//
+//        boolean isFirstIn = true;
+//
+//        @Override
+//        public void onGlobalLayout() {
+//          if (isFirstIn) {
+//            float y = imageView.getY();
+//            int top = imageView.getTop();
+//
+//            Log.e("---mwb", "top = " + top);
+//
+//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCategoryRv.getLayoutParams();
+//            layoutParams.height = top;
+//            mCategoryRv.setLayoutParams(layoutParams);
+//
+//            isFirstIn = false;
+//          }
+//        }
+//      });
+//    }
 
     querySearchCategory();
   }
@@ -183,9 +238,9 @@ public class SearchActivityNew extends BaseBehaviorActivity {
    */
   private void initHistory() {
     mHistoryRv.setLayoutManager(new LinearLayoutManager(this));
-    mSearchAdapter = new SearchAdapterNew();
-    mHistoryRv.setAdapter(mSearchAdapter);
-    mSearchAdapter.setOnSearchItemClickListener(onItemClickListener);
+    mSearchHistoryAdapter = new SearchAdapterNew();
+    mHistoryRv.setAdapter(mSearchHistoryAdapter);
+    mSearchHistoryAdapter.setOnSearchItemClickListener(onItemClickListener);
 
     queryHistory();
   }
@@ -236,9 +291,7 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     public void onDelete(Parcelable bean, int itemType) {
       if (itemType == SearchAdapterNew.ITEM_TYPE_HISTORY) {
         SearchKeywordModel keywordModel = (SearchKeywordModel) bean;
-        if (keywordModel != null) {
-          SearchHistoryPresenter.deleteIfExisted(SearchActivityNew.this, keywordModel.getKeyword());
-        }
+        deleteHistory(keywordModel);
       }
     }
   };
@@ -256,9 +309,27 @@ public class SearchActivityNew extends BaseBehaviorActivity {
    * 获取历史记录
    */
   private void queryHistory() {
-    List<SearchKeywordModel> searchHistoryList = SearchHistoryPresenter.getHistoryKeywords(this);
+    mSearchHistoryList = SearchHistoryPresenter.getHistoryKeywords(this);
+    mSearchHistoryAdapter.setHistoryList(mSearchHistoryList);
+  }
 
-    mSearchAdapter.setHistoryList(searchHistoryList);
+  private void insertHistory(String history) {
+    if (!TextUtils.isEmpty(history)) {
+      SearchHistoryPresenter.insertKeyword(this, history);
+    }
+  }
+
+  private void deleteHistory(SearchKeywordModel keywordModel) {
+    if (keywordModel == null) {
+      return;
+    }
+
+    if (mSearchHistoryList.contains(keywordModel)) {
+      mSearchHistoryList.remove(keywordModel);
+      mSearchHistoryAdapter.setHistoryList(mSearchHistoryList);
+    }
+
+    SearchHistoryPresenter.deleteIfExisted(SearchActivityNew.this, keywordModel.getKeyword());
   }
 
   /**
@@ -268,7 +339,7 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     SearchPresenter.getCategoryTag(this, new CommonListener<ArrayList<SearchCategoryBean>>() {
       @Override
       public void successListener(ArrayList<SearchCategoryBean> response) {
-        mSearchAdapter.setCategoryList(response);
+        mSearchCategoryAdapter.setCategoryList(response);
       }
 
       @Override
