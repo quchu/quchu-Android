@@ -8,10 +8,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -82,9 +84,7 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     SearchPresenter.getNetArticleKeyword(this, new CommonListener<List<ArticleKeyword>>() {
       @Override
       public void successListener(List<ArticleKeyword> response) {
-        if (response != null && response.size() > 0) {
-          initTags(response);
-        }
+        initTags(response);
       }
 
       @Override
@@ -119,16 +119,16 @@ public class SearchActivityNew extends BaseBehaviorActivity {
       }
     });
 
-//    mSearchInputEt.setOnKeyListener(new View.OnKeyListener() {
-//      @Override
-//      public boolean onKey(View v, int keyCode, KeyEvent event) {
-//        //修改回车键功能
-//        if (keyCode == KeyEvent.KEYCODE_ENTER) {
-//          doSearch();
-//        }
-//        return false;
-//      }
-//    });
+    mSearchInputEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+      @Override
+      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+          doSearch();
+          return true;
+        }
+        return false;
+      }
+    });
 
     //返回
     backBtn.setOnClickListener(new View.OnClickListener() {
@@ -206,29 +206,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
         }
       });
     }
-//    ViewTreeObserver viewTreeObserver = mCategoryRv.getViewTreeObserver();
-//    if (viewTreeObserver.isAlive()) {
-//      viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//
-//        boolean isFirstIn = true;
-//
-//        @Override
-//        public void onGlobalLayout() {
-//          if (isFirstIn) {
-//            float y = imageView.getY();
-//            int top = imageView.getTop();
-//
-//            Log.e("---mwb", "top = " + top);
-//
-//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCategoryRv.getLayoutParams();
-//            layoutParams.height = top;
-//            mCategoryRv.setLayoutParams(layoutParams);
-//
-//            isFirstIn = false;
-//          }
-//        }
-//      });
-//    }
 
     querySearchCategory();
   }
@@ -353,8 +330,10 @@ public class SearchActivityNew extends BaseBehaviorActivity {
    */
   private void initTags(final List<ArticleKeyword> articleKeywords) {
     final List<String> tags = new ArrayList<>();
-    for (ArticleKeyword keyword : articleKeywords) {
-      tags.add(keyword.getKeyword());
+    if (articleKeywords != null && articleKeywords.size() > 0) {
+      for (ArticleKeyword keyword : articleKeywords) {
+        tags.add(keyword.getKeyword());
+      }
     }
     mTagCloudView.setTags(tags);
     mTagCloudView.setOnTagClickListener(new TagCloudView.OnTagClickListener() {

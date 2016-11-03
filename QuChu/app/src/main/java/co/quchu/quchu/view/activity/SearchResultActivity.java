@@ -10,8 +10,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -188,16 +190,16 @@ public class SearchResultActivity extends BaseBehaviorActivity {
       }
     });
 
-//    mSearchInputEt.setOnKeyListener(new View.OnKeyListener() {
-//      @Override
-//      public boolean onKey(View v, int keyCode, KeyEvent event) {
-//        //修改回车键功能
-//        if (keyCode == KeyEvent.KEYCODE_ENTER) {
-//          doSearch(false);
-//        }
-//        return false;
-//      }
-//    });
+    mSearchInputEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+      @Override
+      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+          doSearch(false);
+          return true;
+        }
+        return false;
+      }
+    });
 
     setInputEditText(TextUtils.isEmpty(mCategoryZh) ? mInputStr : mCategoryZh);
 
