@@ -63,9 +63,9 @@
 
 
       <View
-          android:layout_margin="16dp"
           android:layout_width="match_parent"
           android:layout_height="36dp"
+          android:layout_margin="16dp"
           android:background="@color/standard_color_white"
           />
       <LinearLayout
@@ -116,56 +116,62 @@
         android:id="@+id/placeHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="36dp"
-        android:background="@color/transparent"
         android:alpha="0"
-    >
+        android:background="@color/transparent"
+        android:paddingBottom="36dp"
+        >
 
       <ImageView
           android:id="@+id/vLeft"
-          android:layout_centerVertical="true"
           android:layout_width="?attr/actionBarSize"
           android:layout_height="?attr/actionBarSize"
-          android:src="@mipmap/ic_add_position"
+          android:layout_centerVertical="true"
           android:scaleType="centerInside"
+          android:src="@mipmap/ic_add_position"
           />
 
       <View
           android:id="@+id/vRight"
-          android:layout_centerVertical="true"
-          android:layout_toRightOf="@+id/vLeft"
-          android:layout_marginRight="16dp"
           android:layout_width="match_parent"
           android:layout_height="36dp"
+          android:layout_centerVertical="true"
+          android:layout_marginRight="16dp"
+          android:layout_toRightOf="@+id/vLeft"
           android:background="@color/standard_color_white"
           />
 
     </RelativeLayout>
 
 
-
   </android.support.design.widget.AppBarLayout>
 
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/rv"
+  <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      />
 
+      >
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+  </FrameLayout>
 
 
   <android.support.design.widget.FloatingActionButton
       android:id="@+id/fab"
-      android:layout_height="56dp"
       android:layout_width="56dp"
-      app:layout_anchor="@id/appbar"
-      app:fabSize="normal"
-      app:backgroundTint="@android:color/white"
-      app:layout_anchorGravity="bottom|center_horizontal"
-      app:layout_behavior="co.quchu.quchu.widget.DisableAutoHideFABBehavior"
+      android:layout_height="56dp"
+      android:clickable="true"
       android:src="@mipmap/ic_xiaoq_logo"
+      app:backgroundTint="@android:color/white"
+      app:fabSize="normal"
+      app:layout_anchor="@id/appbar"
+      app:layout_anchorGravity="bottom|center_horizontal"
 
-      android:clickable="true"/>
+      app:layout_behavior="co.quchu.quchu.widget.DisableAutoHideFABBehavior"
+      />
 
 </android.support.design.widget.CoordinatorLayout>

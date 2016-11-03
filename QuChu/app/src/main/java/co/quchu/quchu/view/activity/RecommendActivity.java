@@ -16,9 +16,11 @@ import android.support.v4.util.ArrayMap;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 
 import co.quchu.quchu.model.AIConversationModel;
 import co.quchu.quchu.presenter.AIConversationPresenter;
+import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import co.quchu.quchu.widget.ConversationListAnimator;
 import com.afollestad.materialdialogs.DialogAction;
@@ -133,19 +136,25 @@ public class RecommendActivity extends BaseBehaviorActivity {
     tvCity.setText(SPUtils.getCityName());
 
     rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-    rv.setItemAnimator(new ConversationListAnimator());
+    rv.setItemAnimator(new DefaultItemAnimator());
     mAdapter = new AIConversationAdapter(RecommendActivity.this, mConversation, new AIConversationAdapter.OnAnswerListener() {
-      @Override public void onAnswer(String answer,String additionalShit) {
+      @Override public void onAnswer(final String answer, final String additionalShit) {
         int position = mConversation.size()-1;
         mConversation.get(position).getAnswerPramms().clear();
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemChanged(position);
 
-        AIConversationModel answerModel = new AIConversationModel();
-        answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
-        answerModel.setAnswer(answer);
-        mConversation.add(answerModel);
-        mAdapter.notifyItemInserted(mConversation.size()-1);
-        getNext(answer,additionalShit);
+
+        rv.postDelayed(new Runnable() {
+          @Override public void run() {
+            AIConversationModel answerModel = new AIConversationModel();
+            answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
+            answerModel.setAnswer(answer);
+            mConversation.add(answerModel);
+            mAdapter.notifyItemInserted(mConversation.size()-1);
+            scrollToBottom();
+            getNext(answer,additionalShit);
+          }
+        },CONVERSATION_REQUEST_DELAY);
       }
     });
     rv.setAdapter(mAdapter);
@@ -170,8 +179,30 @@ public class RecommendActivity extends BaseBehaviorActivity {
 
 
 
-
     startConversation(true);
+
+
+
+  }
+
+
+  private void scrollToBottom(){
+
+    rv.postDelayed(new Runnable() {
+      @Override public void run() {
+        int i = ScreenUtils.getScreenHeight(getApplicationContext());
+        int topOffSet = appbar.getHeight()+ScreenUtils.getStatusHeight(getApplicationContext());
+
+        View v = rv.getChildAt(rv.getChildCount()-1);
+
+        if (null!=v &&(v.getTop()+v.getHeight()+topOffSet)>i){
+          appbar.setExpanded(false);
+          rv.smoothScrollToPosition(mAdapter.getItemCount());
+        }
+      }
+    },50);
+
+
   }
 
   /**
@@ -199,8 +230,17 @@ public class RecommendActivity extends BaseBehaviorActivity {
   }
 
   private void addModel(AIConversationModel model){
-    mConversation.add(model);
-    mAdapter.notifyItemInserted(mConversation.size()-1);
+
+    if (Integer.valueOf(model.getType())==0 && TextUtils.isEmpty(model.getAnswer())){
+
+    }else{
+      mConversation.add(model);
+      mAdapter.notifyItemInserted(mConversation.size()-1);
+      scrollToBottom();
+
+    }
+
+
     if (Integer.valueOf(model.getType())==0 && model.getAnswerPramms().size()>0){
       final AIConversationModel modelOption = new AIConversationModel();
       modelOption.setAnswerPramms(model.getAnswerPramms());
@@ -211,11 +251,11 @@ public class RecommendActivity extends BaseBehaviorActivity {
         @Override public void run() {
           mConversation.add(modelOption);
           mAdapter.notifyItemInserted(mConversation.size()-1);
+          scrollToBottom();
         }
       },CONVERSATION_ANSWER_DELAY);
-      rv.smoothScrollToPosition(mConversation.size()-1);
+      scrollToBottom();
     }
-    rv.smoothScrollToPosition(mConversation.size()-1);
   }
 
   private void getNext(final String question, final String flash) {

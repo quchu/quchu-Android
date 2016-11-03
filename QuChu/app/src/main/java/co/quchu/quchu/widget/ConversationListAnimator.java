@@ -34,7 +34,7 @@ public class ConversationListAnimator extends DefaultItemAnimator {
             @Override public void onAnimationRepeat(Animator animation) {}
           })
           .start();
-    } else if (holder instanceof AIConversationAdapter.AnswerViewHolder) {
+    } else if (holder instanceof AIConversationAdapter.AnswerViewHolder && holder instanceof AIConversationAdapter.OptionViewHolder) {
       holder.itemView.setTranslationX(holderWidth);
       holder.itemView.animate()
           .translationX(0)
