@@ -146,17 +146,14 @@
   </android.support.design.widget.AppBarLayout>
 
   <FrameLayout
+      android:id="@+id/flContainer"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
       >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+
   </FrameLayout>
 
 

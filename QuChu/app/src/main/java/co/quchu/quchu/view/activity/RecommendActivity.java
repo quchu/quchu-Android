@@ -28,9 +28,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import co.quchu.quchu.model.AIConversationModel;
+import co.quchu.quchu.model.SceneInfoModel;
 import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
+import co.quchu.quchu.view.fragment.AIConversationFragment;
 import co.quchu.quchu.widget.ConversationListAnimator;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -81,7 +83,6 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.llShit) LinearLayout llShit;
   @Bind(R.id.fab) FloatingActionButton fab;
   @Bind(R.id.tvCity) TextView tvCity;
-  @Bind(R.id.rv) RecyclerView rv;
   @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
 
   @Bind(R.id.drawerHeaderView) DrawerHeaderView mDrawerHeaderView;
@@ -94,14 +95,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.placeHolder) View placeHolder;
 
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
-  private int scrollRange = 0;
   public long firstTime = 0;
   boolean checkUpdateRunning = false;
   private ArrayList<CityModel> list = new ArrayList<>();
-  private AIConversationAdapter mAdapter;
-  private List<AIConversationModel> mConversation = new ArrayList<>();
-  public static final int CONVERSATION_REQUEST_DELAY = 500;
-  public static final int CONVERSATION_ANSWER_DELAY = 300;
 
   @Override
   protected String getPageNameCN() {
@@ -125,39 +121,20 @@ public class RecommendActivity extends BaseBehaviorActivity {
     ButterKnife.bind(this);
 
 
+
     initPush();
 
     initDrawerView();
 
     getUnreadMessage();
 
+    getSceneList();
+
     checkForceUpdate();
 
     tvCity.setText(SPUtils.getCityName());
 
-    rv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-    rv.setItemAnimator(new DefaultItemAnimator());
-    mAdapter = new AIConversationAdapter(RecommendActivity.this, mConversation, new AIConversationAdapter.OnAnswerListener() {
-      @Override public void onAnswer(final String answer, final String additionalShit) {
-        int position = mConversation.size()-1;
-        mConversation.get(position).getAnswerPramms().clear();
-        mAdapter.notifyItemChanged(position);
 
-
-        rv.postDelayed(new Runnable() {
-          @Override public void run() {
-            AIConversationModel answerModel = new AIConversationModel();
-            answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
-            answerModel.setAnswer(answer);
-            mConversation.add(answerModel);
-            mAdapter.notifyItemInserted(mConversation.size()-1);
-            scrollToBottom();
-            getNext(answer,additionalShit);
-          }
-        },CONVERSATION_REQUEST_DELAY);
-      }
-    });
-    rv.setAdapter(mAdapter);
     appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
       @Override
       public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -166,43 +143,41 @@ public class RecommendActivity extends BaseBehaviorActivity {
           return;
         }
 
-        scrollRange = Math.abs(verticalOffset);
         float offset = Math.abs(verticalOffset);
 
         float progress = offset / appbar.getTotalScrollRange();
-        System.out.println(offset+"|"+scrollRange+"|"+progress);
-
+        progress = progress>=0.8?1:progress;
+        progress = progress<=0.2?0:progress;
 
         placeHolder.setAlpha(progress);
       }
     });
 
 
-
-    startConversation(true);
-
-
+    initFragment();
 
   }
 
+  /**
+   * 添加Fragment
+   */
+  private void initFragment() {
+    getSupportFragmentManager().beginTransaction().add(R.id.flContainer,new AIConversationFragment()).commitAllowingStateLoss();
+  }
 
-  private void scrollToBottom(){
+  /**
+   * 获得场景列表
+   */
+  private void getSceneList() {
+    RecommendPresenter.getSceneList(getApplicationContext(), new CommonListener<List<SceneInfoModel>>() {
+      @Override public void successListener(List<SceneInfoModel> response) {
 
-    rv.postDelayed(new Runnable() {
-      @Override public void run() {
-        int i = ScreenUtils.getScreenHeight(getApplicationContext());
-        int topOffSet = appbar.getHeight()+ScreenUtils.getStatusHeight(getApplicationContext());
-
-        View v = rv.getChildAt(rv.getChildCount()-1);
-
-        if (null!=v &&(v.getTop()+v.getHeight()+topOffSet)>i){
-          appbar.setExpanded(false);
-          rv.smoothScrollToPosition(mAdapter.getItemCount());
-        }
       }
-    },50);
 
+      @Override public void errorListener(VolleyError error, String exception, String msg) {
 
+      }
+    });
   }
 
   /**
@@ -214,72 +189,9 @@ public class RecommendActivity extends BaseBehaviorActivity {
     }
   }
 
-  private void startConversation(final boolean starter) {
-    AIConversationPresenter.startConversation(getApplicationContext(), starter, new CommonListener<AIConversationModel>() {
-      @Override
-      public void successListener(AIConversationModel response) {
-        addModel(response);
-        if (starter){
-          getNext(response.getAnswerPramms().get(0), response.getFlash());
-        }
-      }
-
-      @Override
-      public void errorListener(VolleyError error, String exception, String msg) {}
-    });
-  }
-
-  private void addModel(AIConversationModel model){
-
-    if (Integer.valueOf(model.getType())==0 && TextUtils.isEmpty(model.getAnswer())){
-
-    }else{
-      mConversation.add(model);
-      mAdapter.notifyItemInserted(mConversation.size()-1);
-      scrollToBottom();
-
-    }
-
-
-    if (Integer.valueOf(model.getType())==0 && model.getAnswerPramms().size()>0){
-      final AIConversationModel modelOption = new AIConversationModel();
-      modelOption.setAnswerPramms(model.getAnswerPramms());
-      modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
-      modelOption.setPlaceList(model.getPlaceList());
-      modelOption.setFlash(model.getFlash());
-      rv.postDelayed(new Runnable() {
-        @Override public void run() {
-          mConversation.add(modelOption);
-          mAdapter.notifyItemInserted(mConversation.size()-1);
-          scrollToBottom();
-        }
-      },CONVERSATION_ANSWER_DELAY);
-      scrollToBottom();
-    }
-  }
-
-  private void getNext(final String question, final String flash) {
-    appbar.postDelayed(new Runnable() {
-      @Override public void run() {
-        AIConversationPresenter.getNext(getApplicationContext(), question, flash, new CommonListener<AIConversationModel>() {
-          @Override
-          public void successListener(AIConversationModel response) {
-            addModel(response);
-
-            if (Integer.valueOf(response.getType())==1){
-              getNext(response.getAnswerPramms().get(0),response.getFlash());
-            }
-          }
-
-          @Override
-          public void errorListener(VolleyError error, String exception, String msg) {}
-        });
-      }
-    },CONVERSATION_REQUEST_DELAY);
-
-  }
-
-
+  /**
+   * 检查更新
+   */
   private void checkForceUpdate() {
     VersionInfoPresenter.getIfForceUpdate(getApplicationContext());
     RecommendPresenter.getCityList(this, new RecommendPresenter.CityListListener() {

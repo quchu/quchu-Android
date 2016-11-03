@@ -263,4 +263,8 @@ public interface NetApi {
    */
   String getAIAnswer = HOST + "/ai/passivityGetAi";
 
+  /**
+   * 获得首页场景列表
+   */
+  String getSceneList = HOST + "/scene/getIndexSceneList";
 }
