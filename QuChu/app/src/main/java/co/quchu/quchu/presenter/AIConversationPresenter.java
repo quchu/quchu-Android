@@ -21,7 +21,7 @@ public class AIConversationPresenter {
     public static void startConversation(Context context, boolean startor,final CommonListener<AIConversationModel> listener){
 
         Map<String, String> map = new HashMap<>();
-        map.put("type", startor?String.valueOf("01"):"0");
+        map.put("type", startor?String.valueOf("01"):"03");
         GsonRequest<AIConversationModel> request =
             new GsonRequest<>(NetApi.getAIQuestion, AIConversationModel.class, map, new ResponseListener<AIConversationModel>() {
                 @Override public void onErrorResponse(@Nullable VolleyError error) {

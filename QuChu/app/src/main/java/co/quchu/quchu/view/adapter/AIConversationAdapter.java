@@ -29,9 +29,38 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   public static final int TYPE_QUESTION = 0x001;
   public static final int TYPE_ANSWER = 0x002;
   public static final int TYPE_OPTION = 0x003;
+  public static final int TYPE_NO_NETWORK = 0x004;
   private Activity mAnchor;
   private List<AIConversationModel> mDataSet;
   private OnAnswerListener mOnAnswerListener;
+
+  public void updateNoNetwork(boolean noNetWork) {
+    if (noNetWork){
+
+      if (mDataSet.size()>0){
+        for (int i = 0; i < mDataSet.size(); i++) {
+          if (mDataSet.get(i).getDataType()== AIConversationModel.EnumDataType.NO_NETWORK){
+            mDataSet.remove(i);
+          }
+        }
+
+      }
+      AIConversationModel aiConversationModel = new AIConversationModel();
+      aiConversationModel.setDataType(AIConversationModel.EnumDataType.NO_NETWORK);
+      mDataSet.add(aiConversationModel);
+
+    }else{
+      for (int i = 0; i < mDataSet.size(); i++) {
+        if (mDataSet.get(i).getDataType()== AIConversationModel.EnumDataType.NO_NETWORK){
+          mDataSet.remove(i);
+        }
+      }
+
+    }
+
+    notifyDataSetChanged();
+
+  }
 
   public interface OnAnswerListener {
     void onAnswer(String answer, String additionalShit);
@@ -55,78 +84,74 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       case TYPE_OPTION:
         return new OptionViewHolder(LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_ai_conversation_option, parent, false));
+      case TYPE_NO_NETWORK:
       default:
-        return null;
+        return new NoNetworkViewHolder(
+            LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_loadmore, parent, false));
+
     }
   }
 
   @Override public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
-    AIConversationModel q = mDataSet.get(position);
-    switch (getItemViewType(position)) {
-      case TYPE_QUESTION:
+      AIConversationModel q = mDataSet.get(position);
+      switch (getItemViewType(position)) {
+        case TYPE_QUESTION:
 
-        if (position == 0) {
-          ((QuestionViewHolder) holder).vSpace.setVisibility(View.VISIBLE);
-        } else {
-          ((QuestionViewHolder) holder).vSpace.setVisibility(View.GONE);
-        }
-        ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
-        break;
-      case TYPE_ANSWER:
-        ((AnswerViewHolder) holder).tvAnswer.setText(q.getAnswer());
-        break;
-      case TYPE_OPTION:
+          if (position == 0) {
+            ((QuestionViewHolder) holder).vSpace.setVisibility(View.VISIBLE);
+          } else {
+            ((QuestionViewHolder) holder).vSpace.setVisibility(View.GONE);
+          }
+          ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
+          break;
+        case TYPE_ANSWER:
+          ((AnswerViewHolder) holder).tvAnswer.setText(q.getAnswer());
+          break;
+        case TYPE_OPTION:
 
-        if (null != q.getPlaceList() && q.getPlaceList().size() > 0) {
-          ((OptionViewHolder) holder).vpPlace.setAdapter(
-              new PlaceVPAdapter(q.getPlaceList()));
-          ((OptionViewHolder) holder).vpPlace.setVisibility(View.VISIBLE);
+          if (null != q.getPlaceList() && q.getPlaceList().size() > 0) {
+            ((OptionViewHolder) holder).vpPlace.setAdapter(new PlaceVPAdapter(q.getPlaceList()));
+            ((OptionViewHolder) holder).vpPlace.setVisibility(View.VISIBLE);
 
-          ((OptionViewHolder) holder).vpPlace.setClipToPadding(false);
-          ((OptionViewHolder) holder).vpPlace.setPadding(40, 0, 40, 20);
-          ((OptionViewHolder) holder).vpPlace.setPageMargin(20);
-        }else{
-          ((OptionViewHolder) holder).vpPlace.setVisibility(View.GONE);
-        }
+            ((OptionViewHolder) holder).vpPlace.setClipToPadding(false);
+            ((OptionViewHolder) holder).vpPlace.setPadding(40, 0, 40, 20);
+            ((OptionViewHolder) holder).vpPlace.setPageMargin(20);
+          } else {
+            ((OptionViewHolder) holder).vpPlace.setVisibility(View.GONE);
+          }
 
-        ((OptionViewHolder) holder).rvOption.setItemAnimator(new DefaultItemAnimator());
-        TextOptionAdapter adapter = new TextOptionAdapter(q.getAnswerPramms(), q.getFlash());
-        ((OptionViewHolder) holder).rvOption.setAdapter(adapter);
-        ((OptionViewHolder) holder).rvOption.setLayoutManager(
-            new LinearLayoutManager(mAnchor, LinearLayoutManager.VERTICAL, false));
+          ((OptionViewHolder) holder).rvOption.setItemAnimator(new DefaultItemAnimator());
+          TextOptionAdapter adapter = new TextOptionAdapter(q.getAnswerPramms(), q.getFlash());
+          ((OptionViewHolder) holder).rvOption.setAdapter(adapter);
+          ((OptionViewHolder) holder).rvOption.setLayoutManager(
+              new LinearLayoutManager(mAnchor, LinearLayoutManager.VERTICAL, false));
 
-
-        //
-        //holder.itemView.setAlpha(0);
-        //holder.itemView.setTranslationY(200);
-        //holder.itemView.animate()
-        //    .alpha(1)
-        //    .translationY(0)
-        //    .setInterpolator(new AccelerateDecelerateInterpolator())
-        //    .setDuration(300)
-        //    .setStartDelay(500)
-        //    .start();
-        break;
-    }
+          break;
+      }
   }
 
   @Override public int getItemCount() {
-    return null != mDataSet ? mDataSet.size() : 0;
+
+    int count = null!=mDataSet?mDataSet.size():0;
+    return count;
   }
 
   @Override public int getItemViewType(int position) {
 
-    switch (mDataSet.get(position).getDataType()) {
-      case QUESTION:
-        return TYPE_QUESTION;
-      case ANSWER:
-        return TYPE_ANSWER;
-      case OPTION:
-        return TYPE_OPTION;
-      default:
-        return TYPE_QUESTION;
-    }
+      switch (mDataSet.get(position).getDataType()) {
+        case QUESTION:
+          return TYPE_QUESTION;
+        case ANSWER:
+          return TYPE_ANSWER;
+        case OPTION:
+          return TYPE_OPTION;
+        case NO_NETWORK:
+          return TYPE_NO_NETWORK;
+        default:
+          return TYPE_NO_NETWORK;
+      }
+
   }
 
   public static class QuestionViewHolder extends RecyclerView.ViewHolder {
@@ -160,7 +185,13 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
   }
 
+  public static class NoNetworkViewHolder extends RecyclerView.ViewHolder {
 
+    NoNetworkViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
+    }
+  }
 
   private class TextOptionAdapter extends RecyclerView.Adapter<TextOptionViewHolder> {
 
@@ -202,7 +233,6 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
   }
 
-
   public class PlaceVPAdapter extends PagerAdapter {
 
     List<DetailModel> mData;
@@ -211,19 +241,17 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       mData = pData;
     }
 
-    @Override
-    public int getCount() {
+    @Override public int getCount() {
       return null != mData ? mData.size() : 0;
     }
 
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
+    @Override public boolean isViewFromObject(View view, Object object) {
       return view == object;
     }
 
-    @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
-      View v = LayoutInflater.from(container.getContext()).inflate(R.layout.item_ai_conversation_place, container, false);
+    @Override public Object instantiateItem(ViewGroup container, final int position) {
+      View v = LayoutInflater.from(container.getContext())
+          .inflate(R.layout.item_ai_conversation_place, container, false);
 
       SimpleDraweeView simpleDraweeView = (SimpleDraweeView) v.findViewById(R.id.simpleDraweeView);
 
@@ -239,10 +267,8 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       return v;
     }
 
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    @Override public void destroyItem(ViewGroup container, int position, Object object) {
       container.removeView((View) object);
     }
-
   }
 }

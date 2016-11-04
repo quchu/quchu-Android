@@ -10,19 +10,25 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseFragment;
 import co.quchu.quchu.model.AIConversationModel;
+import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.AIConversationPresenter;
 import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ScreenUtils;
-import co.quchu.quchu.view.activity.RecommendActivity;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by Nico on 16/11/3.
@@ -38,7 +44,9 @@ public class AIConversationFragment extends BaseFragment{
 
   private int mScreenHeight;
   private int mAppbarOffSet;
-  @Bind(R.id.rv) RecyclerView rv;
+  //是否断开网络
+  private boolean mNetworkInterrupted = false;
+  @Bind(R.id.rv) RecyclerView mRecyclerView;
 
 
   @Override protected String getPageNameCN() {
@@ -54,18 +62,33 @@ public class AIConversationFragment extends BaseFragment{
     ButterKnife.bind(this, v);
 
     mScreenHeight = ScreenUtils.getScreenHeight(getActivity());
-    mAppbarOffSet = getActivity().findViewById(R.id.appbar).getHeight()+ScreenUtils.getStatusHeight(getActivity());
 
-    rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-    rv.setItemAnimator(new DefaultItemAnimator());
+    final View appbar = getActivity().findViewById(R.id.appbar);
+    appbar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+      @Override public void onGlobalLayout() {
+        appbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        mAppbarOffSet = appbar.getHeight()+ScreenUtils.getStatusHeight(getActivity());
+      }
+    });
+
+    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     mAdapter = new AIConversationAdapter(getActivity(), mConversation, new AIConversationAdapter.OnAnswerListener() {
       @Override public void onAnswer(final String answer, final String additionalShit) {
+
+
+        if (!NetUtil.isNetworkConnected(getActivity())){
+          makeToast(R.string.network_error);
+          return;
+        }
+
+
         int position = mConversation.size()-1;
         mConversation.get(position).getAnswerPramms().clear();
         mAdapter.notifyItemChanged(position);
 
 
-        rv.postDelayed(new Runnable() {
+        mRecyclerView.postDelayed(new Runnable() {
           @Override public void run() {
             AIConversationModel answerModel = new AIConversationModel();
             answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
@@ -78,7 +101,7 @@ public class AIConversationFragment extends BaseFragment{
         },CONVERSATION_REQUEST_DELAY);
       }
     });
-    rv.setAdapter(mAdapter);
+    mRecyclerView.setAdapter(mAdapter);
     startConversation(true);
 
     return v;
@@ -103,7 +126,7 @@ public class AIConversationFragment extends BaseFragment{
       modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
       modelOption.setPlaceList(model.getPlaceList());
       modelOption.setFlash(model.getFlash());
-      rv.postDelayed(new Runnable() {
+      mRecyclerView.postDelayed(new Runnable() {
         @Override public void run() {
           mConversation.add(modelOption);
           mAdapter.notifyItemInserted(mConversation.size()-1);
@@ -114,12 +137,47 @@ public class AIConversationFragment extends BaseFragment{
     }
   }
 
+
+
+
+  private void scrollToBottom(){
+
+    mRecyclerView.postDelayed(new Runnable() {
+      @Override public void run() {
+        View v = mRecyclerView.getChildAt(mRecyclerView.getChildCount()-1);
+
+        if (null!=v &&(v.getTop()+v.getHeight()+mAppbarOffSet)>=mScreenHeight){
+          ((AppBarLayout)getActivity().findViewById(R.id.appbar)).setExpanded(false);
+          mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
+        }
+      }
+    },100);
+
+
+  }
   private void getNext(final String question, final String flash) {
-    rv.postDelayed(new Runnable() {
+
+    System.out.println("count fg 1");
+    if (!NetUtil.isNetworkConnected(getActivity())){
+      mNetworkInterrupted = true;
+      makeToast(R.string.network_error);
+      mAdapter.updateNoNetwork(true);
+
+      return;
+    }
+
+
+
+    mRecyclerView.postDelayed(new Runnable() {
       @Override public void run() {
         AIConversationPresenter.getNext(getActivity(), question, flash, new CommonListener<AIConversationModel>() {
           @Override
           public void successListener(AIConversationModel response) {
+            System.out.println("count fg 2");
+
+            if (mNetworkInterrupted){
+              mNetworkInterrupted = false;
+            }
             addModel(response);
 
             if (Integer.valueOf(response.getType())==1){
@@ -128,43 +186,79 @@ public class AIConversationFragment extends BaseFragment{
           }
 
           @Override
-          public void errorListener(VolleyError error, String exception, String msg) {}
+          public void errorListener(VolleyError error, String exception, String msg) {
+            System.out.println("count fg 3");
+
+            mNetworkInterrupted = true;
+            mAdapter.updateNoNetwork(true);
+            makeToast(R.string.network_error);
+
+          }
         });
       }
     },CONVERSATION_REQUEST_DELAY);
 
   }
-
-
-  private void scrollToBottom(){
-
-    rv.postDelayed(new Runnable() {
-      @Override public void run() {
-        View v = rv.getChildAt(rv.getChildCount()-1);
-
-        if (null!=v &&(v.getTop()+v.getHeight()+mAppbarOffSet)>=mScreenHeight){
-          ((AppBarLayout)getActivity().findViewById(R.id.appbar)).setExpanded(false);
-          rv.smoothScrollToPosition(mAdapter.getItemCount());
-        }
-      }
-    },50);
-
-
-  }
-
   private void startConversation(final boolean starter) {
+
+    if (!NetUtil.isNetworkConnected(getActivity())){
+      mNetworkInterrupted = true;
+      makeToast(R.string.network_error);
+      mAdapter.updateNoNetwork(true);
+      return;
+    }
+
     AIConversationPresenter.startConversation(getActivity(), starter, new CommonListener<AIConversationModel>() {
       @Override
       public void successListener(AIConversationModel response) {
-        addModel(response);
+        if (mNetworkInterrupted){
+          mNetworkInterrupted = false;
+        }
+        if (!TextUtils.isEmpty(response.getAnswer())){
+          addModel(response);
+        }
         if (starter){
+          getNext(response.getAnswerPramms().get(0), response.getFlash());
+        }else{
+          //断开网络情况
+          //mConversation.remove(mConversation.size()-1);
+          //mAdapter.notifyItemRemoved(mConversation.size()-1);
           getNext(response.getAnswerPramms().get(0), response.getFlash());
         }
       }
 
       @Override
-      public void errorListener(VolleyError error, String exception, String msg) {}
+      public void errorListener(VolleyError error, String exception, String msg) {
+          mNetworkInterrupted = true;
+          mAdapter.updateNoNetwork(true);
+          makeToast(R.string.network_error);
+      }
     });
+  }
+
+  @Override public void onStart() {
+    super.onStart();
+    EventBus.getDefault().register(this);
+  }
+
+  @Override public void onStop() {
+    EventBus.getDefault().unregister(this);
+    super.onStop();
+  }
+
+  @Subscribe public void onMessageEvent(QuchuEventModel event) {
+    if (null == event) {
+      return;
+    }
+    switch (event.getFlag()) {
+      case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
+        if (mNetworkInterrupted){
+          mAdapter.updateNoNetwork(false);
+          startConversation(false);
+        }
+        break;
+
+    }
   }
 
 }

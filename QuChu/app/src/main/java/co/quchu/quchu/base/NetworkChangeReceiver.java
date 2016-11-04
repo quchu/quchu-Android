@@ -33,7 +33,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         if (wifi.isConnectedOrConnecting()||mobile.isConnectedOrConnecting()){
             EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_DEVICE_NETWORK_CONNECTED_OR_CONNECTING));
         }
-        if (wifi.isAvailable() || mobile.isAvailable()) {
+        if ((wifi.isAvailable() && wifi.isConnected()) || (mobile.isAvailable()&&mobile.isConnected())) {
             EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE));
         }else{
             EventBus.getDefault().post(new QuchuEventModel(EventFlags.EVENT_DEVICE_NETWORK_UNAVAILABLE));
