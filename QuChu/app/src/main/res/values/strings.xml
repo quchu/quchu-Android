@@ -284,4 +284,7 @@
 
     <string name="navigation_drawer_open">打开抽屉</string>
     <string name="navigation_drawer_close">关闭抽屉</string>
+    <string name="retry">重试</string>
+    <string name="ai_retry">重新连接</string>
+    <string name="ai_search">手动搜索</string>
 </resources>

@@ -2,24 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
     >
 
   <TextView
       android:id="@+id/tvAnswer"
-      android:layout_width="wrap_content"
+      android:layout_weight="1"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="right"
-      android:layout_marginTop="8dp"
-      android:layout_marginBottom="8dp"
-      android:layout_marginRight="8dp"
       android:layout_marginLeft="@dimen/toolbar_item_size"
       android:background="@mipmap/bg_conversation_yellow"
       android:padding="12dp"
+      android:textSize="12sp"
       android:text="Super Super Super Super Super Super Super Super Super Super Super Super Super Super Long Answer Number 1"
       />
 
+  <com.facebook.drawee.view.SimpleDraweeView
+      android:id="@+id/sdvAvatar"
+      android:layout_width="@dimen/ai_conversation_avatar_size"
+      android:layout_height="@dimen/ai_conversation_avatar_size"
+      android:layout_gravity="bottom"
+      android:layout_marginLeft="8dp"
+      android:layout_marginRight="8dp"
+      android:scaleType="fitXY"
+      fresco:placeholderImage="@color/translucent_dark"
+      fresco:roundAsCircle="true"
+      />
   
 
 </LinearLayout>

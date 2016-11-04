@@ -34,8 +34,7 @@ import org.greenrobot.eventbus.Subscribe;
  * Created by Nico on 16/11/3.
  */
 
-public class AIConversationFragment extends BaseFragment{
-
+public class AIConversationFragment extends BaseFragment {
 
   private AIConversationAdapter mAdapter;
   private List<AIConversationModel> mConversation = new ArrayList<>();
@@ -48,7 +47,6 @@ public class AIConversationFragment extends BaseFragment{
   private boolean mNetworkInterrupted = false;
   @Bind(R.id.rv) RecyclerView mRecyclerView;
 
-
   @Override protected String getPageNameCN() {
     return null;
   }
@@ -57,70 +55,66 @@ public class AIConversationFragment extends BaseFragment{
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
 
-    View v = inflater.inflate(R.layout.fragment_ai_conversation,container,false);
+    View v = inflater.inflate(R.layout.fragment_ai_conversation, container, false);
 
     ButterKnife.bind(this, v);
 
     mScreenHeight = ScreenUtils.getScreenHeight(getActivity());
 
     final View appbar = getActivity().findViewById(R.id.appbar);
-    appbar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-      @Override public void onGlobalLayout() {
-        appbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-        mAppbarOffSet = appbar.getHeight()+ScreenUtils.getStatusHeight(getActivity());
-      }
-    });
+    appbar.getViewTreeObserver()
+        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+          @Override public void onGlobalLayout() {
+            appbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            mAppbarOffSet = appbar.getHeight() + ScreenUtils.getStatusHeight(getActivity());
+          }
+        });
 
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-    mAdapter = new AIConversationAdapter(getActivity(), mConversation, new AIConversationAdapter.OnAnswerListener() {
-      @Override public void onAnswer(final String answer, final String additionalShit) {
+    mAdapter = new AIConversationAdapter(getActivity(), mConversation,
+        new AIConversationAdapter.OnAnswerListener() {
+          @Override public void onAnswer(final String answer, final String additionalShit) {
 
+            if (!NetUtil.isNetworkConnected(getActivity())) {
+              makeToast(R.string.network_error);
+              return;
+            }
 
-        if (!NetUtil.isNetworkConnected(getActivity())){
-          makeToast(R.string.network_error);
-          return;
-        }
+            int position = mConversation.size() - 1;
+            mConversation.get(position).getAnswerPramms().clear();
+            mAdapter.notifyItemChanged(position);
 
-
-        int position = mConversation.size()-1;
-        mConversation.get(position).getAnswerPramms().clear();
-        mAdapter.notifyItemChanged(position);
-
-
-        mRecyclerView.postDelayed(new Runnable() {
-          @Override public void run() {
-            AIConversationModel answerModel = new AIConversationModel();
-            answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
-            answerModel.setAnswer(answer);
-            mConversation.add(answerModel);
-            mAdapter.notifyItemInserted(mConversation.size()-1);
-            scrollToBottom();
-            getNext(answer,additionalShit);
+            mRecyclerView.postDelayed(new Runnable() {
+              @Override public void run() {
+                AIConversationModel answerModel = new AIConversationModel();
+                answerModel.setDataType(AIConversationModel.EnumDataType.ANSWER);
+                answerModel.setAnswer(answer);
+                mConversation.add(answerModel);
+                mAdapter.notifyItemInserted(mConversation.size() - 1);
+                scrollToBottom();
+                getNext(answer, additionalShit);
+              }
+            }, CONVERSATION_REQUEST_DELAY);
           }
-        },CONVERSATION_REQUEST_DELAY);
-      }
-    });
+        });
     mRecyclerView.setAdapter(mAdapter);
     startConversation(true);
 
     return v;
   }
 
+  private void addModel(AIConversationModel model) {
 
-  private void addModel(AIConversationModel model){
+    if (Integer.valueOf(model.getType()) == 0 && TextUtils.isEmpty(model.getAnswer())) {
 
-    if (Integer.valueOf(model.getType())==0 && TextUtils.isEmpty(model.getAnswer())){
-
-    }else{
+    } else {
       mConversation.add(model);
-      mAdapter.notifyItemInserted(mConversation.size()-1);
+      mAdapter.notifyItemInserted(mConversation.size() - 1);
       scrollToBottom();
-
     }
 
-
-    if (Integer.valueOf(model.getType())==0 && model.getAnswerPramms().size()>0){
+    if (Integer.valueOf(model.getType()) == 0 && model.getAnswerPramms().size() > 0) {
       final AIConversationModel modelOption = new AIConversationModel();
       modelOption.setAnswerPramms(model.getAnswerPramms());
       modelOption.setDataType(AIConversationModel.EnumDataType.OPTION);
@@ -129,111 +123,97 @@ public class AIConversationFragment extends BaseFragment{
       mRecyclerView.postDelayed(new Runnable() {
         @Override public void run() {
           mConversation.add(modelOption);
-          mAdapter.notifyItemInserted(mConversation.size()-1);
+          mAdapter.notifyItemInserted(mConversation.size() - 1);
           scrollToBottom();
         }
-      },CONVERSATION_ANSWER_DELAY);
+      }, CONVERSATION_ANSWER_DELAY);
       scrollToBottom();
     }
   }
 
-
-
-
-  private void scrollToBottom(){
+  private void scrollToBottom() {
 
     mRecyclerView.postDelayed(new Runnable() {
       @Override public void run() {
-        View v = mRecyclerView.getChildAt(mRecyclerView.getChildCount()-1);
+        View v = mRecyclerView.getChildAt(mRecyclerView.getChildCount() - 1);
 
-        if (null!=v &&(v.getTop()+v.getHeight()+mAppbarOffSet)>=mScreenHeight){
-          ((AppBarLayout)getActivity().findViewById(R.id.appbar)).setExpanded(false);
+        if (null != v && (v.getTop() + v.getHeight() + mAppbarOffSet) >= mScreenHeight) {
+          ((AppBarLayout) getActivity().findViewById(R.id.appbar)).setExpanded(false);
           mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
         }
       }
-    },100);
-
-
+    }, 100);
   }
+
   private void getNext(final String question, final String flash) {
 
-    System.out.println("count fg 1");
-    if (!NetUtil.isNetworkConnected(getActivity())){
+    if (!NetUtil.isNetworkConnected(getActivity())) {
       mNetworkInterrupted = true;
-      makeToast(R.string.network_error);
       mAdapter.updateNoNetwork(true);
+      scrollToBottom();
 
       return;
     }
-
-
 
     mRecyclerView.postDelayed(new Runnable() {
       @Override public void run() {
-        AIConversationPresenter.getNext(getActivity(), question, flash, new CommonListener<AIConversationModel>() {
-          @Override
-          public void successListener(AIConversationModel response) {
-            System.out.println("count fg 2");
+        AIConversationPresenter.getNext(getActivity(), question, flash,
+            new CommonListener<AIConversationModel>() {
+              @Override public void successListener(AIConversationModel response) {
+                if (mNetworkInterrupted) {
+                  mNetworkInterrupted = false;
+                }
+                addModel(response);
 
-            if (mNetworkInterrupted){
-              mNetworkInterrupted = false;
-            }
-            addModel(response);
+                if (Integer.valueOf(response.getType()) == 1) {
+                  getNext(response.getAnswerPramms().get(0), response.getFlash());
+                }
+              }
 
-            if (Integer.valueOf(response.getType())==1){
-              getNext(response.getAnswerPramms().get(0),response.getFlash());
-            }
-          }
-
-          @Override
-          public void errorListener(VolleyError error, String exception, String msg) {
-            System.out.println("count fg 3");
-
-            mNetworkInterrupted = true;
-            mAdapter.updateNoNetwork(true);
-            makeToast(R.string.network_error);
-
-          }
-        });
+              @Override public void errorListener(VolleyError error, String exception, String msg) {
+                mNetworkInterrupted = true;
+                mAdapter.updateNoNetwork(true);
+                scrollToBottom();
+              }
+            });
       }
-    },CONVERSATION_REQUEST_DELAY);
-
+    }, CONVERSATION_REQUEST_DELAY);
   }
+
   private void startConversation(final boolean starter) {
 
-    if (!NetUtil.isNetworkConnected(getActivity())){
+    if (!NetUtil.isNetworkConnected(getActivity())) {
       mNetworkInterrupted = true;
-      makeToast(R.string.network_error);
       mAdapter.updateNoNetwork(true);
+      scrollToBottom();
       return;
     }
 
-    AIConversationPresenter.startConversation(getActivity(), starter, new CommonListener<AIConversationModel>() {
-      @Override
-      public void successListener(AIConversationModel response) {
-        if (mNetworkInterrupted){
-          mNetworkInterrupted = false;
-        }
-        if (!TextUtils.isEmpty(response.getAnswer())){
-          addModel(response);
-        }
-        if (starter){
-          getNext(response.getAnswerPramms().get(0), response.getFlash());
-        }else{
-          //断开网络情况
-          //mConversation.remove(mConversation.size()-1);
-          //mAdapter.notifyItemRemoved(mConversation.size()-1);
-          getNext(response.getAnswerPramms().get(0), response.getFlash());
-        }
-      }
+    AIConversationPresenter.startConversation(getActivity(), starter,
+        new CommonListener<AIConversationModel>() {
+          @Override public void successListener(AIConversationModel response) {
+            if (mNetworkInterrupted) {
+              mNetworkInterrupted = false;
+            }
+            if (!TextUtils.isEmpty(response.getAnswer())) {
+              addModel(response);
+            }
+            if (starter) {
+              getNext(response.getAnswerPramms().get(0), response.getFlash());
+            } else {
+              //断开网络情况
+              //mConversation.remove(mConversation.size()-1);
+              //mAdapter.notifyItemRemoved(mConversation.size()-1);
+              getNext(response.getAnswerPramms().get(0), response.getFlash());
+            }
+          }
 
-      @Override
-      public void errorListener(VolleyError error, String exception, String msg) {
-          mNetworkInterrupted = true;
-          mAdapter.updateNoNetwork(true);
-          makeToast(R.string.network_error);
-      }
-    });
+          @Override public void errorListener(VolleyError error, String exception, String msg) {
+            mNetworkInterrupted = true;
+            mAdapter.updateNoNetwork(true);
+            scrollToBottom();
+          }
+        });
   }
 
   @Override public void onStart() {
@@ -252,13 +232,11 @@ public class AIConversationFragment extends BaseFragment{
     }
     switch (event.getFlag()) {
       case EventFlags.EVENT_DEVICE_NETWORK_AVAILABLE:
-        if (mNetworkInterrupted){
+        if (mNetworkInterrupted) {
           mAdapter.updateNoNetwork(false);
           startConversation(false);
         }
         break;
-
     }
   }
-
 }

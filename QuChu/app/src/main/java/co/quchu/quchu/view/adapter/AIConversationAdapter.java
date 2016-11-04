@@ -15,9 +15,12 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
+import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.AIConversationModel;
 import co.quchu.quchu.model.DetailModel;
+import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.view.activity.QuchuDetailsActivity;
+import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
 
@@ -87,13 +90,16 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
       case TYPE_NO_NETWORK:
       default:
         return new NoNetworkViewHolder(
-            LayoutInflater.from(parent.getContext()).inflate(R.layout.cp_loadmore, parent, false));
+            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ai_conversation_no_network, parent, false));
 
     }
   }
 
   @Override public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-
+    Uri xiaoQLogoUri = new Uri.Builder()
+        .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+        .path(String.valueOf(R.mipmap.ic_xiaoq_logo))
+        .build();
       AIConversationModel q = mDataSet.get(position);
       switch (getItemViewType(position)) {
         case TYPE_QUESTION:
@@ -103,10 +109,14 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           } else {
             ((QuestionViewHolder) holder).vSpace.setVisibility(View.GONE);
           }
+
+
+          ((QuestionViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
           ((QuestionViewHolder) holder).tvQuestion.setText(q.getAnswer());
           break;
         case TYPE_ANSWER:
           ((AnswerViewHolder) holder).tvAnswer.setText(q.getAnswer());
+          ((AnswerViewHolder) holder).sdvAvatar.setImageURI(Uri.parse(AppContext.user.getPhoto()));
           break;
         case TYPE_OPTION:
 
@@ -116,7 +126,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             ((OptionViewHolder) holder).vpPlace.setClipToPadding(false);
             ((OptionViewHolder) holder).vpPlace.setPadding(40, 0, 40, 20);
-            ((OptionViewHolder) holder).vpPlace.setPageMargin(20);
+            ((OptionViewHolder) holder).vpPlace.setPageMargin(0);
           } else {
             ((OptionViewHolder) holder).vpPlace.setVisibility(View.GONE);
           }
@@ -127,6 +137,10 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
           ((OptionViewHolder) holder).rvOption.setLayoutManager(
               new LinearLayoutManager(mAnchor, LinearLayoutManager.VERTICAL, false));
 
+          break;
+        case TYPE_NO_NETWORK:
+
+          ((NoNetworkViewHolder) holder).sdvAvatar.setImageURI(xiaoQLogoUri);
           break;
       }
   }
@@ -157,6 +171,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   public static class QuestionViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.tvQuestion) TextView tvQuestion;
     @Bind(R.id.vSpace) View vSpace;
+    @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
 
     QuestionViewHolder(View view) {
       super(view);
@@ -167,6 +182,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   public static class AnswerViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.tvAnswer) TextView tvAnswer;
+    @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
 
     AnswerViewHolder(View view) {
       super(view);
@@ -186,6 +202,7 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
   }
 
   public static class NoNetworkViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.sdvAvatar) SimpleDraweeView sdvAvatar;
 
     NoNetworkViewHolder(View view) {
       super(view);
@@ -209,8 +226,9 @@ public class AIConversationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override public void onBindViewHolder(TextOptionViewHolder holder, int position) {
+      String s = Character.toString ((char) (65+position));
       final String answer = String.valueOf(options.get(position));
-      holder.tvOption.setText(answer);
+      holder.tvOption.setText(s+": "+answer);
       holder.tvOption.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
           mOnAnswerListener.onAnswer(answer, additionalShit);
