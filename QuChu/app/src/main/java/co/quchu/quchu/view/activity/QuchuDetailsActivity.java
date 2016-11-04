@@ -95,7 +95,7 @@ public class QuchuDetailsActivity extends BaseBehaviorActivity {
     getEnhancedToolbar().addCustomView(tabLayout,lp);
 
     tabLayout.addTab(tabLayout.newTab().setText("趣处").setTag(0));
-    tabLayout.addTab(tabLayout.newTab().setText("文章").setTag(1));
+    tabLayout.addTab(tabLayout.newTab().setText("评论").setTag(1));
 
     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
       @Override public void onTabSelected(TabLayout.Tab tab) {
