@@ -9,17 +9,19 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.AppContext;
-import co.quchu.quchu.model.UserCenterInfo;
-import co.quchu.quchu.presenter.UserCenterPresenter;
+import co.quchu.quchu.model.MyGeneModel;
+import co.quchu.quchu.presenter.CommonListener;
+import co.quchu.quchu.presenter.MeActivityPresenter;
 import co.quchu.quchu.utils.SPUtils;
-
-import static co.quchu.quchu.base.AppContext.user;
 
 /**
  * Created by mwb on 16/10/18.
@@ -30,6 +32,8 @@ public class DrawerHeaderView extends LinearLayout {
   @Bind(R.id.drawerHeaderGenderImg) SimpleDraweeView mDrawerHeaderGenderImg;
   @Bind(R.id.drawerHeaderNameTv) TextView mDrawerHeaderNameTv;
   @Bind(R.id.drawerHeaderMarkTv) TextView mDrawerHeaderMarkTv;
+
+  private List<MyGeneModel.GenesEntity> mGenes;
 
   public DrawerHeaderView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -74,33 +78,38 @@ public class DrawerHeaderView extends LinearLayout {
   }
 
   /**
-   * 获取用户信息,只为了取 mark 字段
+   * 获取基因,取最大值的基因
    * 登录接口限制,后期根据接口调整
    */
-  public void getUserInfo() {
-    if (user == null) {
-      return;
+  public void getGenes() {
+    new MeActivityPresenter(getContext()).getGene(new CommonListener<MyGeneModel>() {
+      @Override
+      public void successListener(MyGeneModel response) {
+        if (null != response) {
+          mGenes = response.getGenes();
+          getMaxGene(mGenes);
+        }
+      }
+
+      @Override
+      public void errorListener(VolleyError error, String exception, String msg) {
+      }
+    });
+  }
+
+  private void getMaxGene(List<MyGeneModel.GenesEntity> genes) {
+    double defaultValue = 0;
+    int index = 0;
+    for (int i = 0; i < genes.size(); i++) {
+      if (genes.get(i).getWeight() > defaultValue) {
+        defaultValue = genes.get(i).getWeight();
+        index = i;
+      }
     }
 
-    int userId = user.getUserId();
-
-    UserCenterPresenter
-        .getUserCenterInfo(getContext(), userId, new UserCenterPresenter.UserCenterInfoCallBack() {
-          @Override
-          public void onSuccess(UserCenterInfo userCenterInfo) {
-            if (userCenterInfo != null) {
-              String mark = userCenterInfo.getMark();
-              SPUtils.setUserMark(mark);
-              setMark(mark);
-            } else {
-              SPUtils.setUserMark("");
-            }
-          }
-
-          @Override
-          public void onError() {
-          }
-        });
+    String mark = genes.get(index).getMark();
+    SPUtils.setUserMark(mark);
+    setMark(mark);
   }
 
   private OnDrawerAvatarClickListener mListener;

@@ -131,7 +131,7 @@ public class MeAvatarFragment extends BaseFragment {
 
     for (int i = 0; i < genes.size(); i++) {
       values[i] = (float) (genes.get(i).getWeight() / 1000);
-      labels[i] = genes.get(i).getZh();
+      labels[i] = genes.get(i).getMark();
     }
 
     polygonProgressView.postDelayed(new Runnable() {
