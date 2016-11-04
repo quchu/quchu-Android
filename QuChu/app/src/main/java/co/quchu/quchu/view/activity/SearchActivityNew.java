@@ -1,26 +1,31 @@
 package co.quchu.quchu.view.activity;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +34,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
-import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.model.ArticleKeyword;
 import co.quchu.quchu.model.SearchCategoryBean;
 import co.quchu.quchu.model.SearchKeywordModel;
@@ -37,10 +41,8 @@ import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.SearchHistoryPresenter;
 import co.quchu.quchu.presenter.SearchPresenter;
-import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.SearchAdapterNew;
-import co.quchu.quchu.widget.ReboundRecyclerView;
 import co.quchu.quchu.widget.SearchView;
 import co.quchu.quchu.widget.TagCloudView;
 
@@ -54,13 +56,15 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   @Bind(R.id.search_view) SearchView mSearchView;
   @Bind(R.id.tag_cloud_view) TagCloudView mTagCloudView;
   @Bind(R.id.history_recycler_view) RecyclerView mHistoryRv;
-  @Bind(R.id.search_category_recycler_view) ReboundRecyclerView mCategoryRv;
+  @Bind(R.id.search_category_grid_view) GridView mCategoryGridView;
 
-  private SearchAdapterNew mSearchCategoryAdapter;
+  private CategoryGridAdapter mCategoryAdapter;
   private SearchAdapterNew mSearchHistoryAdapter;
   private InputMethodManager mInputMethodManager;
   private EditText mSearchInputEt;
+
   private List<SearchKeywordModel> mSearchHistoryList;
+  private ArrayList<SearchCategoryBean> mSearchCategoryList = new ArrayList<>();
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +116,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
         mSearchInputEt.setFocusableInTouchMode(true);
         mSearchInputEt.requestFocus();
         if (mSearchHistoryList != null && mSearchHistoryList.size() > 0) {
-          mCategoryRv.setVisibility(View.GONE);
           mHistoryRv.setVisibility(View.VISIBLE);
         }
         return false;
@@ -178,34 +181,46 @@ public class SearchActivityNew extends BaseBehaviorActivity {
    * 搜索分类
    */
   private void initCategory() {
-    mCategoryRv.setLayoutManager(new GridLayoutManager(this, 3));
-    mSearchCategoryAdapter = new SearchAdapterNew();
-    mCategoryRv.setAdapter(mSearchCategoryAdapter);
-    mSearchCategoryAdapter.setOnSearchItemClickListener(onItemClickListener);
-
-    final ImageView imageView = (ImageView) findViewById(R.id.search_ic_logo);
-    ViewTreeObserver imageViewTreeObserver = imageView.getViewTreeObserver();
-    if (imageViewTreeObserver.isAlive()) {
-      imageViewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-        boolean isFirstIn = true;
-
-        @Override
-        public void onGlobalLayout() {
-          if (isFirstIn) {
-            int top = imageView.getTop();
-            int height = imageView.getHeight();
-            int screenHeight = ScreenUtils.getScreenHeight(SearchActivityNew.this);
-
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCategoryRv.getLayoutParams();
-            layoutParams.height = screenHeight - Utils.dip2px(SearchActivityNew.this, 56 + 15) - top - height - height / 2;
-            mCategoryRv.setLayoutParams(layoutParams);
-
-            isFirstIn = false;
-          }
+    mCategoryAdapter = new CategoryGridAdapter(this);
+    mCategoryGridView.setAdapter(mCategoryAdapter);
+    mCategoryGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (mSearchCategoryList == null) {
+          return;
         }
-      });
-    }
+
+        SearchCategoryBean categoryBean = mSearchCategoryList.get(position);
+        if (categoryBean == null) {
+          return;
+        }
+
+        //统计
+        switch (position) {
+          case 0:
+            UMEvent("food_c");
+            break;
+          case 1:
+            UMEvent("hotel_c");
+            break;
+          case 2:
+            UMEvent("entertainment_c");
+            break;
+          case 3:
+            UMEvent("relaxation_c");
+            break;
+          case 4:
+            UMEvent("shopping_c");
+            break;
+          case 5:
+            UMEvent("event_c");
+            break;
+        }
+
+        //启动搜索结果界面
+        SearchResultActivity.launch(SearchActivityNew.this, categoryBean, "", position + 1);
+      }
+    });
 
     querySearchCategory();
   }
@@ -316,7 +331,10 @@ public class SearchActivityNew extends BaseBehaviorActivity {
     SearchPresenter.getCategoryTag(this, new CommonListener<ArrayList<SearchCategoryBean>>() {
       @Override
       public void successListener(ArrayList<SearchCategoryBean> response) {
-        mSearchCategoryAdapter.setCategoryList(response);
+
+        mSearchCategoryList.clear();
+        mSearchCategoryList.addAll(response);
+        mCategoryAdapter.notifyDataSetChanged();
       }
 
       @Override
@@ -348,7 +366,6 @@ public class SearchActivityNew extends BaseBehaviorActivity {
   @Override
   public void onBackPressed() {
     if (mHistoryRv.getVisibility() == View.VISIBLE) {
-      mCategoryRv.setVisibility(View.VISIBLE);
       mHistoryRv.setVisibility(View.GONE);
       return;
     }
@@ -403,5 +420,65 @@ public class SearchActivityNew extends BaseBehaviorActivity {
         mInputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
       }
     }, 200);
+  }
+
+  /**
+   * 搜索分类适配器
+   */
+  private class CategoryGridAdapter extends BaseAdapter {
+
+    private Context mContext;
+
+    public CategoryGridAdapter(Context context) {
+      mContext = context;
+    }
+
+    @Override
+    public int getCount() {
+      return mSearchCategoryList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+      return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+      return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+      CategoryViewHolder holder;
+      if (convertView == null) {
+        holder = new CategoryViewHolder();
+
+        convertView = LayoutInflater.from(mContext).inflate(R.layout.item_search_category, parent, false);
+        holder.coverImg = (SimpleDraweeView) convertView.findViewById(R.id.simpleDraweeView);
+        holder.nameTv = (TextView) convertView.findViewById(R.id.search_item_categoryName);
+
+        convertView.setTag(holder);
+      } else {
+        holder = (CategoryViewHolder) convertView.getTag();
+      }
+
+      //搜索分类
+      final SearchCategoryBean categoryBean = mSearchCategoryList.get(position);
+      if (!TextUtils.isEmpty(categoryBean.getIconUrl())) {
+        holder.coverImg.setImageURI(Uri.parse(categoryBean.getIconUrl()));
+      } else {
+        holder.coverImg.getHierarchy().setPlaceholderImage(R.mipmap.ic_launcher);
+      }
+
+      holder.nameTv.setText(categoryBean.getZh());
+
+      return convertView;
+    }
+
+    private class CategoryViewHolder {
+      SimpleDraweeView coverImg;
+      TextView nameTv;
+    }
   }
 }

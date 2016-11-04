@@ -25,25 +25,47 @@
       app:tcvTextColor="@color/standard_color_white"
       app:tcvTextSize="6dp"/>
 
-  <ImageView
-      android:id="@+id/search_ic_logo"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/tag_cloud_view"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="15dp"
-      android:src="@mipmap/ic_logo"/>
-
-  <co.quchu.quchu.widget.ReboundRecyclerView
-      android:id="@+id/search_category_recycler_view"
+  <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
+      android:layout_height="match_parent"
+      android:layout_below="@+id/tag_cloud_view"
+      android:layout_marginTop="15dp"
       android:background="@color/standard_color_white"
-      android:fadingEdge="none"
-      android:overScrollMode="never"
-      android:padding="@dimen/double_margin"
-      android:scrollbars="none"/>
+      android:orientation="vertical">
+
+    <co.quchu.quchu.widget.MFrameLayout.MFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/ic_xiaoq_logo"/>
+
+      </RelativeLayout>
+
+      <GridView
+          android:id="@+id/search_category_grid_view"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fadingEdge="none"
+          android:listSelector="@color/transparent"
+          android:numColumns="3"
+          android:overScrollMode="never"
+          android:paddingTop="30dp"
+          android:scrollbars="none"
+          android:verticalSpacing="30dp"/>
+
+    </co.quchu.quchu.widget.MFrameLayout.MFrameLayout>
+
+  </LinearLayout>
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/history_recycler_view"

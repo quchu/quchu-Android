@@ -104,7 +104,7 @@ public class SettingPresenter {
       //个推
       AppContext.user.setGetuiStatus(isChecked ? "1" : "0");
 
-      ToastManager.getInstance(context).show(isChecked ? "个推消息推送开启" : "个推消息推送关闭");
+      ToastManager.getInstance(context).show(isChecked ? "开启消息推送" : "关闭消息推送");
     }
   }
 
