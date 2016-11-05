@@ -1,4 +1,4 @@
-package co.quchu.quchu.view.activity;
+package co.quchu.quchu.view.fragment;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -29,6 +29,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.presenter.SearchPresenter;
 import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.StringUtils;
+import co.quchu.quchu.view.activity.SearchActivity;
 import co.quchu.quchu.view.adapter.SearchAdapter;
 import co.quchu.quchu.widget.ErrorView;
 

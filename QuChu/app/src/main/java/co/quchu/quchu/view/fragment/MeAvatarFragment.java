@@ -1,4 +1,4 @@
-package co.quchu.quchu.view.activity;
+package co.quchu.quchu.view.fragment;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

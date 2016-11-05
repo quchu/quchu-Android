@@ -3,24 +3,23 @@ package co.quchu.quchu.presenter;
 
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 
-import co.quchu.quchu.model.ArticleBannerModel;
 import co.quchu.quchu.model.ArticleDetailModel;
-import co.quchu.quchu.model.ArticleModel;
 import co.quchu.quchu.model.ArticleWithBannerModel;
-import co.quchu.quchu.model.PagerModel;
+import co.quchu.quchu.net.GsonRequest;
 import co.quchu.quchu.net.IRequestListener;
 import co.quchu.quchu.net.NetApi;
 import co.quchu.quchu.net.NetService;
+import co.quchu.quchu.net.ResponseListener;
 
 /**
  * Created by Nico on 16/6/2.
@@ -95,22 +94,35 @@ public class ArticlePresenter {
         params.put("cityId",String.valueOf(cityId));
         params.put("pagesNo",String.valueOf(pageNo));
         params.put("articleId",String.valueOf(articleId));
-        NetService.get(context, NetApi.getArticleById,params, new IRequestListener() {
+        GsonRequest<ArticleDetailModel> request = new GsonRequest<ArticleDetailModel>(NetApi.getArticleById, ArticleDetailModel.class, params, new ResponseListener<ArticleDetailModel>() {
             @Override
-            public void onSuccess(JSONObject response) {
-
-                ArticleDetailModel articleDetailModel;
-                articleDetailModel = new Gson().fromJson(response.toString(), new TypeToken<ArticleDetailModel>() {}.getType());
-
-                listener.successListener(articleDetailModel);
+            public void onErrorResponse(@Nullable VolleyError error) {
+                listener.errorListener(error, "", "");
             }
 
             @Override
-            public boolean onError(String error) {
-                listener.errorListener(null,error,null);
-                return false;
+            public void onResponse(ArticleDetailModel response, boolean result, String errorCode, @Nullable String msg) {
+                listener.successListener(response);
             }
         });
+        request.start(context);
+
+//        NetService.get(context, NetApi.getArticleById,params, new IRequestListener() {
+//            @Override
+//            public void onSuccess(JSONObject response) {
+//
+//                ArticleDetailModel articleDetailModel;
+//                articleDetailModel = new Gson().fromJson(response.toString(), new TypeToken<ArticleDetailModel>() {}.getType());
+//
+//                listener.successListener(articleDetailModel);
+//            }
+//
+//            @Override
+//            public boolean onError(String error) {
+//                listener.errorListener(null,error,null);
+//                return false;
+//            }
+//        });
     }
 
 

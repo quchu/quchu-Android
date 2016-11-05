@@ -1,4 +1,4 @@
-package co.quchu.quchu.view.activity;
+package co.quchu.quchu.view.fragment;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -8,9 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Toast;
-import co.quchu.quchu.net.NetUtil;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ import co.quchu.quchu.dialog.adapter.LocationSelectedAdapter;
 import co.quchu.quchu.gallery.utils.Utils;
 import co.quchu.quchu.model.CityModel;
 import co.quchu.quchu.model.QuchuEventModel;
+import co.quchu.quchu.net.NetUtil;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.SPUtils;
 

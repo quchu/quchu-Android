@@ -41,6 +41,7 @@ import co.quchu.quchu.utils.KeyboardUtils;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.adapter.QuchuDetailsAdapter;
+import co.quchu.quchu.view.fragment.CommentListFragment;
 import co.quchu.quchu.widget.ErrorView;
 
 /**

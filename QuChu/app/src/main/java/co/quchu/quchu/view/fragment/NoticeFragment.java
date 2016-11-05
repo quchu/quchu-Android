@@ -1,4 +1,4 @@
-package co.quchu.quchu.view.activity;
+package co.quchu.quchu.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,8 @@ import co.quchu.quchu.dialog.DialogUtil;
 import co.quchu.quchu.model.MessageModel;
 import co.quchu.quchu.presenter.MessageCenterPresenter;
 import co.quchu.quchu.presenter.PageLoadListener;
+import co.quchu.quchu.view.activity.MyFootprintDetailActivity;
+import co.quchu.quchu.view.activity.UserCenterActivityNew;
 import co.quchu.quchu.view.adapter.AdapterBase;
 import co.quchu.quchu.view.adapter.MessageCenterAdapter;
 

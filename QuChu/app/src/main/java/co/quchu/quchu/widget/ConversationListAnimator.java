@@ -12,6 +12,22 @@ import co.quchu.quchu.view.adapter.AIConversationAdapter;
 
 public class ConversationListAnimator extends DefaultItemAnimator {
 
+  @Override public boolean animateRemove(RecyclerView.ViewHolder holder) {
+    return super.animateRemove(holder);
+  }
+
+  @Override
+  public boolean animateMove(RecyclerView.ViewHolder holder, int fromX, int fromY, int toX,
+      int toY) {
+    return super.animateMove(holder, fromX, fromY, toX, toY);
+  }
+
+  @Override
+  public boolean animateChange(RecyclerView.ViewHolder oldHolder, RecyclerView.ViewHolder newHolder,
+      int fromX, int fromY, int toX, int toY) {
+    return super.animateChange(oldHolder, newHolder, fromX, fromY, toX, toY);
+  }
+
   @Override public boolean animateAdd(final RecyclerView.ViewHolder holder) {
     int holderWidth = holder.itemView.getWidth();
     if (holder instanceof AIConversationAdapter.QuestionViewHolder) {
@@ -34,7 +50,7 @@ public class ConversationListAnimator extends DefaultItemAnimator {
             @Override public void onAnimationRepeat(Animator animation) {}
           })
           .start();
-    } else if (holder instanceof AIConversationAdapter.AnswerViewHolder && holder instanceof AIConversationAdapter.OptionViewHolder) {
+    } else if (holder instanceof AIConversationAdapter.AnswerViewHolder || holder instanceof AIConversationAdapter.OptionViewHolder) {
       holder.itemView.setTranslationX(holderWidth);
       holder.itemView.animate()
           .translationX(0)

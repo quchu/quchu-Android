@@ -23,7 +23,6 @@ import co.quchu.quchu.utils.LogUtils;
 import co.quchu.quchu.utils.SPUtils;
 import co.quchu.quchu.utils.StringUtils;
 import co.quchu.quchu.view.activity.LoginActivity;
-import co.quchu.quchu.view.activity.SearchFragment;
 
 /**
  * NetService

@@ -24,6 +24,7 @@ import co.quchu.quchu.presenter.CommonListener;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.utils.ScreenUtils;
 import co.quchu.quchu.view.adapter.AIConversationAdapter;
+import co.quchu.quchu.widget.ConversationListAnimator;
 import co.quchu.quchu.widget.XiaoQFab;
 import com.android.volley.VolleyError;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class AIConversationFragment extends BaseFragment {
         });
 
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    mRecyclerView.setItemAnimator(new ConversationListAnimator());
     mAdapter = new AIConversationAdapter(getActivity(), mConversation,
         new AIConversationAdapter.OnAnswerListener() {
           @Override public void onAnswer(final String answer, final String additionalShit) {

@@ -21,7 +21,6 @@ import co.quchu.quchu.base.AppContext;
 import co.quchu.quchu.model.QuchuEventModel;
 import co.quchu.quchu.utils.EventFlags;
 import co.quchu.quchu.view.activity.FeedbackActivity;
-import co.quchu.quchu.view.activity.MeFragment;
 import co.quchu.quchu.view.activity.StatementActivity;
 
 /**

@@ -19,6 +19,7 @@ import co.quchu.quchu.R;
 import co.quchu.quchu.base.BaseBehaviorActivity;
 import co.quchu.quchu.base.EnhancedToolbar;
 import co.quchu.quchu.model.CityModel;
+import co.quchu.quchu.view.fragment.CityFragment;
 import co.quchu.quchu.widget.NoScrollViewPager;
 
 /**
