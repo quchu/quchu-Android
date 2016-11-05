@@ -13,4 +13,6 @@ public class DisableAutoHideFABBehavior extends FloatingActionButton.Behavior {
     super(context, attrs);
     setAutoHideEnabled(false);
   }
+
+
 }

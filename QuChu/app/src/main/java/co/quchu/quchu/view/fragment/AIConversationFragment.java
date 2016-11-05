@@ -243,11 +243,11 @@ public class AIConversationFragment extends BaseFragment {
           }
 
           @Override public void errorListener(VolleyError error, String exception, String msg) {
-            mNetworkBusy = false;
             mNetworkInterrupted = true;
             mAdapter.updateNoNetwork(true);
             scrollToBottom();
             mXiaoQFab.endLoading();
+            mNetworkBusy = false;
           }
         });
   }

@@ -23,8 +23,7 @@ import java.util.List;
 import co.quchu.quchu.R;
 
 /**
- * Created by TacticalTwerking on 16/6/23.
- * GitHub   https://github.com/TacticalTwerking
+ * Created by Nico on 16/11/3.
  */
 public class PolygonProgressView extends View {
 

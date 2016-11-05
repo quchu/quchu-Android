@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -131,16 +132,8 @@ public class RecommendActivity extends BaseBehaviorActivity {
       @Override
       public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
-        if (verticalOffset >= 0) {
-          return;
-        }
-
         float offset = Math.abs(verticalOffset);
-
         float progress = offset / appbar.getTotalScrollRange();
-        progress = progress>=0.8?1:progress;
-        progress = progress<=0.2?0:progress;
-
         placeHolder.setAlpha(progress);
       }
     });

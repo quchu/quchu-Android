@@ -162,6 +162,7 @@
       android:layout_width="56dp"
       android:layout_height="56dp"
       android:clickable="true"
+      android:src="@mipmap/ic_xiaoq_logo"
       app:backgroundTint="@android:color/white"
       app:fabSize="normal"
       app:layout_anchor="@id/appbar"
