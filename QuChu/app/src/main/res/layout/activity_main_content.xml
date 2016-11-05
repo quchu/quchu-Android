@@ -63,6 +63,7 @@
 
 
       <View
+          android:id="@+id/vSearchBar"
           android:layout_width="match_parent"
           android:layout_height="36dp"
           android:layout_margin="16dp"
@@ -122,7 +123,7 @@
         >
 
       <ImageView
-          android:id="@+id/vLeft"
+          android:id="@+id/vFakeDrawer"
           android:layout_width="?attr/actionBarSize"
           android:layout_height="?attr/actionBarSize"
           android:layout_centerVertical="true"
@@ -131,12 +132,12 @@
           />
 
       <View
-          android:id="@+id/vRight"
+          android:id="@+id/vFakeSearchBar"
           android:layout_width="match_parent"
           android:layout_height="36dp"
           android:layout_centerVertical="true"
           android:layout_marginRight="16dp"
-          android:layout_toRightOf="@+id/vLeft"
+          android:layout_toRightOf="@+id/vFakeDrawer"
           android:background="@color/standard_color_white"
           />
 

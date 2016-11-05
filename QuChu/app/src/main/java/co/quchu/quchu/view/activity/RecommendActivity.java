@@ -87,6 +87,10 @@ public class RecommendActivity extends BaseBehaviorActivity {
   @Bind(R.id.drawerItemShareApp) DrawerItemView mDrawerItemShareApp;
   @Bind(R.id.placeHolder) View placeHolder;
 
+  @Bind(R.id.vFakeDrawer) View vLeft;
+  @Bind(R.id.vFakeSearchBar) View vRight;
+  @Bind(R.id.vSearchBar) View vSearchBar;
+
   public static final String REQUEST_KEY_FROM_LOGIN = "REQUEST_KEY_FROM_LOGIN";
   public long firstTime = 0;
   boolean checkUpdateRunning = false;
@@ -138,11 +142,7 @@ public class RecommendActivity extends BaseBehaviorActivity {
       }
     });
 
-
     initFragment();
-
-
-
   }
 
   /**
@@ -433,9 +433,25 @@ public class RecommendActivity extends BaseBehaviorActivity {
     return TRANSITION_TYPE_NOTHING;
   }
 
-  @OnClick({R.id.tvCity})
+  @OnClick({R.id.tvCity,R.id.vSearchBar,R.id.vFakeDrawer,R.id.vFakeSearchBar})
   public void onClick(View view) {
     switch (view.getId()) {
+
+      case R.id.vFakeDrawer:
+        if (placeHolder.getAlpha()==1){
+          mDrawer.openDrawer(GravityCompat.START);
+        }
+        break;
+      case R.id.vFakeSearchBar:
+        if (placeHolder.getAlpha()==1){
+          startActivity(SearchActivityNew.class);
+        }
+        break;
+
+      case R.id.vSearchBar:
+        startActivity(SearchActivityNew.class);
+        break;
+
       case R.id.tvCity:
         UMEvent("location_c");
         if (NetUtil.isNetworkConnected(getApplicationContext())) {
